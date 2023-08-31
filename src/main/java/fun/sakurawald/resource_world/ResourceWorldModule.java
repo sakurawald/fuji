@@ -159,11 +159,19 @@ public class ResourceWorldModule {
         return getWorldByFullName(server, DEFAULT_WORLD_PREFIX + ":" + path);
     }
 
-    private static BlockPos createSafePlatform(ServerWorld world, BlockPos raw_pos) {
-        BlockPos pos = raw_pos;
+    private static BlockPos createSafePlatform(ServerWorld world, BlockPos pos) {
         world.setBlockState(pos.down(), Blocks.BEDROCK.getDefaultState());
+        world.setBlockState(pos.down().north(), Blocks.BEDROCK.getDefaultState());
+        world.setBlockState(pos.down().north().west(), Blocks.BEDROCK.getDefaultState());
+        world.setBlockState(pos.down().north().east(), Blocks.BEDROCK.getDefaultState());
+        world.setBlockState(pos.down().south(), Blocks.BEDROCK.getDefaultState());
+        world.setBlockState(pos.down().south().west(), Blocks.BEDROCK.getDefaultState());
+        world.setBlockState(pos.down().south().east(), Blocks.BEDROCK.getDefaultState());
+        world.setBlockState(pos.down().west(), Blocks.BEDROCK.getDefaultState());
+        world.setBlockState(pos.down().east(), Blocks.BEDROCK.getDefaultState());
         world.setBlockState(pos, Blocks.AIR.getDefaultState());
         world.setBlockState(pos.up(), Blocks.AIR.getDefaultState());
+
         return pos;
     }
 
@@ -188,7 +196,7 @@ public class ResourceWorldModule {
             destPos = createSafePlatform(world, world.getSpawnPos());
         }
 
-        player.teleport(world, destPos.getX(), destPos.getY(), destPos.getZ(), destYaw, destPitch);
+        player.teleport(world, destPos.getX() + 0.5, destPos.getY(), destPos.getZ() + 0.5, destYaw, destPitch);
         return 1;
     }
 
