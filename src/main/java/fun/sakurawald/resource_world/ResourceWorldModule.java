@@ -159,6 +159,14 @@ public class ResourceWorldModule {
         return getWorldByFullName(server, DEFAULT_WORLD_PREFIX + ":" + path);
     }
 
+    private static BlockPos createSafePlatform(ServerWorld world, BlockPos raw_pos) {
+        BlockPos pos = raw_pos;
+        world.setBlockState(pos.down(), Blocks.BEDROCK.getDefaultState());
+        world.setBlockState(pos, Blocks.AIR.getDefaultState());
+        world.setBlockState(pos.up(), Blocks.AIR.getDefaultState());
+        return pos;
+    }
+
     public static int teleportWorld(CommandContext<ServerCommandSource> ctx) {
         String path = ctx.getNodes().get(2).getNode().getName();
         ServerWorld world = getResourceWorldByPath(ctx.getSource().getServer(), path);
@@ -177,7 +185,7 @@ public class ResourceWorldModule {
             destYaw = 90;
             destPitch = 0;
         } else {
-            destPos = world.getSpawnPos();
+            destPos = createSafePlatform(world, world.getSpawnPos());
         }
 
         player.teleport(world, destPos.getX(), destPos.getY(), destPos.getZ(), destYaw, destPitch);
