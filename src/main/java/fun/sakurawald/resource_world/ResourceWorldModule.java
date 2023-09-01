@@ -226,6 +226,9 @@ public class ResourceWorldModule {
     public static void onWorldUnload(MinecraftServer server, ServerWorld world) {
         if (server.isRunning()) {
             String path = world.getRegistryKey().getValue().getPath();
+            String namespace = world.getRegistryKey().getValue().getNamespace();
+            if (!namespace.equals(DEFAULT_WORLD_PREFIX)) return;
+
             server.sendMessage(Text.of(String.format("UNLOAD event: create world %s", path)));
             ResourceWorldModule.createWorld(server, ResourceWorldModule.getDimensionTypeByPath(path), path);
         }
