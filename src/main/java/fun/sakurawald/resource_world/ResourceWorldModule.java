@@ -138,6 +138,7 @@ public class ResourceWorldModule {
                 .setDimensionType(dimensionType)
                 .setDifficulty(Difficulty.HARD)
                 .setSeed(RandomSeed.getSeed())
+                .setShouldTickTime(true)
                 .setGenerator(generator);
 
         Fantasy fantasy = Fantasy.get(server);
