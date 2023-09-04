@@ -93,6 +93,7 @@ public class MyWorldManager {
         }
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private static void cleanFiles(File file) {
         if (file.exists() && file.isDirectory()) {
             File[] files = file.listFiles();

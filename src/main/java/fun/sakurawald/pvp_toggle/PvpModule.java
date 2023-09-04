@@ -7,8 +7,11 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+
+import java.util.Objects;
 
 public class PvpModule {
     public static LiteralCommandNode<ServerCommandSource> registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
@@ -35,7 +38,7 @@ public class PvpModule {
 
     private static int enablePvp(CommandContext<ServerCommandSource> ctx) {
         ServerCommandSource source = ctx.getSource();
-        GameProfile player = source.getPlayer().getGameProfile();
+        GameProfile player = Objects.requireNonNull(source.getPlayer()).getGameProfile();
 
         if (!PvpWhitelist.contains(player)) {
             PvpWhitelist.addPlayer(player);
@@ -49,7 +52,7 @@ public class PvpModule {
 
     private static int disablePvp(CommandContext<ServerCommandSource> ctx) {
         ServerCommandSource source = ctx.getSource();
-        GameProfile player = source.getPlayer().getGameProfile();
+        GameProfile player = Objects.requireNonNull(source.getPlayer()).getGameProfile();
 
         if (PvpWhitelist.contains(player)) {
             PvpWhitelist.removePlayer(player);
@@ -67,7 +70,7 @@ public class PvpModule {
 
     private static int pvpStatus(CommandContext<ServerCommandSource> ctx) {
         ServerCommandSource source = ctx.getSource();
-        GameProfile player = source.getPlayer().getGameProfile();
+        GameProfile player = Objects.requireNonNull(source.getPlayer()).getGameProfile();
         feedback(source, "PvP for you is " + (PvpWhitelist.contains(player) ? "on" : "off"));
         return 1;
     }

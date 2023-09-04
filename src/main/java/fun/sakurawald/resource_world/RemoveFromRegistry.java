@@ -6,14 +6,9 @@ import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
 public interface RemoveFromRegistry<T> {
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"UnusedReturnValue", "unchecked"})
     static <T> boolean sakurawald$remove(SimpleRegistry<T> registry, Identifier key) {
         return ((RemoveFromRegistry<T>) registry).sakurawald$remove(key);
-    }
-
-    @SuppressWarnings("unchecked")
-    static <T> boolean sakurawald$remove(SimpleRegistry<T> registry, T value) {
-        return ((RemoveFromRegistry<T>) registry).sakurawald$remove(value);
     }
 
     boolean sakurawald$remove(T value);
