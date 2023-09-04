@@ -4,18 +4,13 @@ import fun.sakurawald.pvp_toggle.PvpModule;
 import fun.sakurawald.pvp_toggle.PvpWhitelist;
 import fun.sakurawald.resource_world.ResourceWorldModule;
 import net.fabricmc.api.ModInitializer;
-
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-
-import static net.minecraft.server.command.CommandManager.*;
 
 public class ModMain implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("sakurawald");

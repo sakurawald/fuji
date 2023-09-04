@@ -1,38 +1,38 @@
 {
-	"schemaVersion": 1,
-	"id": "sakurawald",
-	"version": "${version}",
-	"name": "sakurawald",
-	"description": "A mod for play.sakurawald.fun",
-	"authors": [
-		"SakuraWald"
-	],
-	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
-	},
-	"license": "CC0-1.0",
-	"icon": "assets/sakurawald/icon.png",
-	"environment": "*",
-	"entrypoints": {
-		"main": [
-			"fun.sakurawald.ModMain"
-		]
-	},
-	"mixins": [
-		"sakurawald.mixins.json",
-		{
-			"config": "sakurawald.client.mixins.json",
-			"environment": "client"
-		}
-	],
-	"depends": {
-		"fabricloader": ">=0.14.22",
-		"minecraft": "~1.20.1",
-		"java": ">=17",
-		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
-	}
+  "schemaVersion": 1,
+  "id": "sakurawald",
+  "version": "${version}",
+  "name": "sakurawald",
+  "description": "A mod for play.sakurawald.fun",
+  "authors": [
+    "SakuraWald"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "CC0-1.0",
+  "icon": "assets/sakurawald/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "fun.sakurawald.ModMain"
+    ]
+  },
+  "mixins": [
+    "sakurawald.mixins.json",
+    {
+      "config": "sakurawald.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.22",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
 }

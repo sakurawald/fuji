@@ -1,12 +1,18 @@
 package fun.sakurawald.resource_world;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import fun.sakurawald.ModMain;
+import fun.sakurawald.mixin.MinecraftServerAccessor;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.block.Blocks;
 import net.minecraft.command.CommandRegistryAccess;
+import net.minecraft.entity.boss.dragon.EnderDragonFight;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -15,16 +21,14 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.RandomSeed;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.source.BiomeAccess;
+import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.dimension.DimensionTypes;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
-import xyz.nucleoid.fantasy.Fantasy;
-import xyz.nucleoid.fantasy.RuntimeWorldConfig;
-import xyz.nucleoid.fantasy.RuntimeWorldHandle;
 
 import java.time.LocalTime;
 import java.util.concurrent.Executors;
@@ -36,10 +40,9 @@ import static net.minecraft.server.command.CommandManager.literal;
 public class ResourceWorldModule {
 
     public static final String DEFAULT_WORLD_PREFIX = "resource_world";
-    private static final String DEFAULT_OVERWORLD_PATH = "overworld";
     public static final String DEFAULT_THE_NETHER_PATH = "the_nether";
     public static final String DEFAULT_THE_END_PATH = "the_end";
-
+    private static final String DEFAULT_OVERWORLD_PATH = "overworld";
     public static ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
 
@@ -91,17 +94,17 @@ public class ResourceWorldModule {
         createWorld(server, DimensionTypes.THE_END, DEFAULT_THE_END_PATH);
     }
 
-    private static ChunkGenerator dimensionTypeToChunkGenerator(MinecraftServer server, RegistryKey<DimensionType> dimensionType) {
+    private static DimensionOptions getDimensionOptionsByDimensionType(MinecraftServer server, RegistryKey<DimensionType> dimensionType) {
+        Registry<DimensionOptions> registry = server.getCombinedDynamicRegistries().getCombinedRegistryManager().get(RegistryKeys.DIMENSION);
         if (dimensionType == DimensionTypes.OVERWORLD) {
-            return server.getWorld(World.OVERWORLD).getChunkManager().getChunkGenerator();
+            return registry.get(DimensionOptions.OVERWORLD);
         }
         if (dimensionType == DimensionTypes.THE_NETHER) {
-            return server.getWorld(World.NETHER).getChunkManager().getChunkGenerator();
+            return registry.get(DimensionOptions.NETHER);
         }
         if (dimensionType == DimensionTypes.THE_END) {
-            return server.getWorld(World.END).getChunkManager().getChunkGenerator();
+            return registry.get(DimensionOptions.END);
         }
-
         return null;
     }
 
@@ -133,31 +136,36 @@ public class ResourceWorldModule {
     }
 
     public static void createWorld(MinecraftServer server, RegistryKey<DimensionType> dimensionType, String path) {
-        ChunkGenerator generator = dimensionTypeToChunkGenerator(server, dimensionType);
-        RuntimeWorldConfig config = new RuntimeWorldConfig()
-                .setDimensionType(dimensionType)
-                .setDifficulty(Difficulty.HARD)
-                .setSeed(RandomSeed.getSeed())
-                .setShouldTickTime(true)
-                .setGenerator(generator);
+        /* create the world */
+        RegistryKey<World> worldRegistryKey = RegistryKey.of(RegistryKeys.WORLD, new Identifier(DEFAULT_WORLD_PREFIX, path));
+        MinecraftServerAccessor serverAccess = (MinecraftServerAccessor) server;
+        long seed = RandomSeed.getSeed();
+        ServerWorld world = new MyServerWorld(server,
+                Util.getMainWorkerExecutor(),
+                ((MinecraftServerAccessor) server).getSession(),
+                server.getSaveProperties().getMainWorldProperties(),
+                worldRegistryKey,
+                getDimensionOptionsByDimensionType(server, dimensionType),
+                VoidWorldGenerationProgressListener.INSTANCE,
+                false,
+                BiomeAccess.hashSeed(seed),
+                ImmutableList.of(),
+                true,
+                null);
 
-        Fantasy fantasy = Fantasy.get(server);
-        fantasy.getOrOpenPersistentWorld(new Identifier(DEFAULT_WORLD_PREFIX, path), config);
-    }
-
-    private static ServerWorld getWorldByFullName(MinecraftServer server, String fullName) {
-        ServerWorld world = null;
-        for (RegistryKey<World> worldRegistryKey : server.getWorldRegistryKeys()) {
-            String worldFullName = worldRegistryKey.getValue().toString();
-            if (!worldFullName.equals(fullName)) continue;
-            world = server.getWorld(worldRegistryKey);
-            break;
+        if (dimensionType == DimensionTypes.THE_END) {
+            world.setEnderDragonFight(new EnderDragonFight(world, world.getSeed(), EnderDragonFight.Data.DEFAULT));
         }
-        return world;
+
+        /* register the world */
+        serverAccess.getWorlds().put(world.getRegistryKey(), world);
+        server.sendMessage(Text.of("Create world -> " + world.getRegistryKey().toString()));
+        ServerWorldEvents.LOAD.invoker().onWorldLoad(server, world);
     }
 
     private static ServerWorld getResourceWorldByPath(MinecraftServer server, String path) {
-        return getWorldByFullName(server, DEFAULT_WORLD_PREFIX + ":" + path);
+        RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, new Identifier(DEFAULT_WORLD_PREFIX, path));
+        return server.getWorld(worldKey);
     }
 
     private static BlockPos createSafePlatform(ServerWorld world, BlockPos pos) {
@@ -172,7 +180,6 @@ public class ResourceWorldModule {
         world.setBlockState(pos.down().east(), Blocks.BEDROCK.getDefaultState());
         world.setBlockState(pos, Blocks.AIR.getDefaultState());
         world.setBlockState(pos.up(), Blocks.AIR.getDefaultState());
-
         return pos;
     }
 
@@ -185,30 +192,30 @@ public class ResourceWorldModule {
         }
 
         ServerPlayerEntity player = ctx.getSource().getPlayer();
-        BlockPos destPos = null;
-        float destYaw = 0;
+        if (player == null) return 0;
+
+        BlockPos destPos;
+        float destYaw = 90;
         float destPitch = 0;
         if (world.getDimensionKey() == DimensionTypes.THE_END) {
             ServerWorld.createEndSpawnPlatform(world);
             destPos = ServerWorld.END_SPAWN_POS;
-            destYaw = 90;
-            destPitch = 0;
         } else {
-            destPos = createSafePlatform(world, world.getSpawnPos());
+            destPos = createSafePlatform(world, new BlockPos(0, 96, 0));
         }
 
         player.teleport(world, destPos.getX() + 0.5, destPos.getY(), destPos.getZ() + 0.5, destYaw, destPitch);
         return 1;
     }
 
+
     public static void deleteWorld(MinecraftServer server, String path) {
         ServerWorld world = getResourceWorldByPath(server, path);
         if (world == null) return;
 
-        Fantasy fantasy = Fantasy.get(server);
-        RuntimeWorldHandle worldHandle = fantasy.getOrOpenPersistentWorld(new Identifier(DEFAULT_WORLD_PREFIX, path), null);
-        worldHandle.delete();
+        MyWorldManager.enqueueWorldDeletion(world);
     }
+
 
     public static int deleteWorld(CommandContext<ServerCommandSource> ctx) {
         String path = ctx.getNodes().get(2).getNode().getName();
@@ -226,8 +233,8 @@ public class ResourceWorldModule {
 
     public static void onWorldUnload(MinecraftServer server, ServerWorld world) {
         if (server.isRunning()) {
-            String path = world.getRegistryKey().getValue().getPath();
             String namespace = world.getRegistryKey().getValue().getNamespace();
+            String path = world.getRegistryKey().getValue().getPath();
             if (!namespace.equals(DEFAULT_WORLD_PREFIX)) return;
 
             server.sendMessage(Text.of(String.format("UNLOAD event: create world %s", path)));

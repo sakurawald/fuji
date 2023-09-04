@@ -20,15 +20,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ServerPlayerEntity.class)
 public abstract class PvpToggleMixin extends PlayerEntity {
 
-    @Shadow public abstract void sendMessage(Text message);
-
-    @Shadow @Final private ServerRecipeBook recipeBook;
-
-    @Shadow public abstract void readCustomDataFromNbt(NbtCompound nbt);
+    @Shadow
+    @Final
+    private ServerRecipeBook recipeBook;
 
     public PvpToggleMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
         super(world, pos, yaw, gameProfile);
     }
+
+    @Shadow
+    public abstract void sendMessage(Text message);
+
+    @Shadow
+    public abstract void readCustomDataFromNbt(NbtCompound nbt);
 
     @Inject(method = "shouldDamagePlayer", at = @At("HEAD"), cancellable = true)
     public void checkWhitelist(PlayerEntity sourcePlayer, CallbackInfoReturnable<Boolean> cir) {
@@ -43,7 +47,6 @@ public abstract class PvpToggleMixin extends PlayerEntity {
         if (!PvpWhitelist.contains(this.getGameProfile())) {
             PvpModule.feedback(sourcePlayer.getCommandSource(), String.format("PvP for %s is now off!", this.getGameProfile().getName()));
             cir.setReturnValue(false);
-            return;
         }
 
     }

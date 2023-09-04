@@ -4,8 +4,6 @@ import com.mojang.authlib.GameProfile;
 import fun.sakurawald.ModMain;
 import net.minecraft.server.Whitelist;
 import net.minecraft.server.WhitelistEntry;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
@@ -20,8 +18,7 @@ public class PvpWhitelist {
     public static void load() {
         try {
             pvpWhitelist.load();
-        }
-        catch(Exception error) {
+        } catch (Exception error) {
             ModMain.LOGGER.error("Failed to load pvp whitelist: ", error);
         }
     }
