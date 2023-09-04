@@ -7,7 +7,6 @@
     "EndGatewayBlockEntityMixin",
     "MinecraftServerAccessor",
     "PvpToggleMixin",
-    "ServerWorldAccessor",
     "SimpleRegistryMixin"
   ],
   "injectors": {
