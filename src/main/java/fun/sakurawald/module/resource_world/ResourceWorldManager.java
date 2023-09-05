@@ -1,6 +1,7 @@
-package fun.sakurawald.resource_world;
+package fun.sakurawald.module.resource_world;
 
-import fun.sakurawald.mixin.MinecraftServerAccessor;
+import fun.sakurawald.mixin.resource_world.MinecraftServerAccessor;
+import fun.sakurawald.module.resource_world.interfaces.SimpleRegistryMixinInterface;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
@@ -86,7 +87,7 @@ public class ResourceWorldManager {
         if (serverAccess.getWorlds().remove(dimensionKey, world)) {
             ServerWorldEvents.UNLOAD.invoker().onWorldUnload(server, world);
             SimpleRegistry<DimensionOptions> dimensionsRegistry = getDimensionsRegistry(server);
-            RemoveFromRegistry.remove(dimensionsRegistry, dimensionKey.getValue());
+            SimpleRegistryMixinInterface.remove(dimensionsRegistry, dimensionKey.getValue());
             LevelStorage.Session session = serverAccess.getSession();
             File worldDirectory = session.getWorldDirectory(dimensionKey).toFile();
             cleanFiles(worldDirectory);

@@ -1,4 +1,4 @@
-package fun.sakurawald.mixin;
+package fun.sakurawald.mixin.resource_world;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.advancement.criterion.Criteria;

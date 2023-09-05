@@ -1,12 +1,12 @@
-package fun.sakurawald.mixin.registry;
+package fun.sakurawald.mixin.resource_world.registry;
 
-import fun.sakurawald.resource_world.FantasyDimensionOptions;
+import fun.sakurawald.module.resource_world.interfaces.DimensionOptionsMixinInterface;
 import net.minecraft.world.dimension.DimensionOptions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(DimensionOptions.class)
-public class DimensionOptionsMixin implements FantasyDimensionOptions {
+public class DimensionOptionsMixin implements DimensionOptionsMixinInterface {
 
     @Unique
     private boolean sakurawald$saveProperties = true;

@@ -1,8 +1,8 @@
-package fun.sakurawald.mixin;
+package fun.sakurawald.mixin.pvp_toggle;
 
 import com.mojang.authlib.GameProfile;
-import fun.sakurawald.pvp_toggle.PvpModule;
-import fun.sakurawald.pvp_toggle.PvpWhitelist;
+import fun.sakurawald.module.pvp_toggle.PvpModule;
+import fun.sakurawald.module.pvp_toggle.PvpWhitelist;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;

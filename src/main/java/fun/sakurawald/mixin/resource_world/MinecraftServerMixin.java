@@ -1,6 +1,6 @@
-package fun.sakurawald.mixin;
+package fun.sakurawald.mixin.resource_world;
 
-import fun.sakurawald.resource_world.SafeIterator;
+import fun.sakurawald.module.resource_world.SafeIterator;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;

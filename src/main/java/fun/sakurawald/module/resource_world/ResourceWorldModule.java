@@ -1,4 +1,4 @@
-package fun.sakurawald.resource_world;
+package fun.sakurawald.module.resource_world;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.CommandDispatcher;
@@ -6,7 +6,9 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.mojang.serialization.Lifecycle;
 import fun.sakurawald.ModMain;
-import fun.sakurawald.mixin.MinecraftServerAccessor;
+import fun.sakurawald.mixin.resource_world.MinecraftServerAccessor;
+import fun.sakurawald.module.resource_world.interfaces.DimensionOptionsMixinInterface;
+import fun.sakurawald.module.resource_world.interfaces.SimpleRegistryMixinInterface;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.block.Blocks;
 import net.minecraft.command.CommandRegistryAccess;
@@ -173,16 +175,16 @@ public class ResourceWorldModule {
         }
 
         /* register the world */
-        ((FantasyDimensionOptions) (Object) dimensionOptions).sakurawald$setSaveProperties(false);
+        ((DimensionOptionsMixinInterface) (Object) dimensionOptions).sakurawald$setSaveProperties(false);
 
         SimpleRegistry<DimensionOptions> dimensionsRegistry = getDimensionOptionsRegistry(server);
-        boolean isFrozen = ((RemoveFromRegistry<?>) dimensionsRegistry).sakurawald$isFrozen();
-        ((RemoveFromRegistry<?>) dimensionsRegistry).sakurawald$setFrozen(false);
+        boolean isFrozen = ((SimpleRegistryMixinInterface<?>) dimensionsRegistry).sakurawald$isFrozen();
+        ((SimpleRegistryMixinInterface<?>) dimensionsRegistry).sakurawald$setFrozen(false);
         var dimensionOptionsRegistryKey = RegistryKey.of(RegistryKeys.DIMENSION, worldRegistryKey.getValue());
         if (!dimensionsRegistry.contains(dimensionOptionsRegistryKey)) {
             dimensionsRegistry.add(dimensionOptionsRegistryKey, dimensionOptions, Lifecycle.stable());
         }
-        ((RemoveFromRegistry<?>) dimensionsRegistry).sakurawald$setFrozen(isFrozen);
+        ((SimpleRegistryMixinInterface<?>) dimensionsRegistry).sakurawald$setFrozen(isFrozen);
 
         ((MinecraftServerAccessor) server).getWorlds().put(world.getRegistryKey(), world);
         ServerWorldEvents.LOAD.invoker().onWorldLoad(server, world);

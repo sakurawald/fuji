@@ -1,4 +1,4 @@
-package fun.sakurawald.pvp_toggle;
+package fun.sakurawald.module.pvp_toggle;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;

@@ -3,16 +3,16 @@
   "package": "fun.sakurawald.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "EndGatewayBlockEntityAccessor",
-    "EndGatewayBlockEntityMixin",
-    "MinecraftServerAccessor",
-    "MinecraftServerMixin",
-    "PvpToggleMixin",
-    "ServerWorldMixin",
-    "WhitelistMixin",
-    "registry.DimensionOptionsMixin",
-    "registry.DimensionOptionsRegistryHolderMixin",
-    "registry.SimpleRegistryMixin"
+    "resource_world.EndGatewayBlockEntityAccessor",
+    "resource_world.EndGatewayBlockEntityMixin",
+    "resource_world.MinecraftServerAccessor",
+    "resource_world.MinecraftServerMixin",
+    "pvp_toggle.PvpToggleMixin",
+    "resource_world.ServerWorldMixin",
+    "whitelist_fix.WhitelistMixin",
+    "resource_world.registry.DimensionOptionsMixin",
+    "resource_world.registry.DimensionOptionsRegistryHolderMixin",
+    "resource_world.registry.SimpleRegistryMixin"
   ],
   "injectors": {
     "defaultRequire": 1

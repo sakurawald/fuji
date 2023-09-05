@@ -1,8 +1,8 @@
 package fun.sakurawald;
 
-import fun.sakurawald.pvp_toggle.PvpModule;
-import fun.sakurawald.pvp_toggle.PvpWhitelist;
-import fun.sakurawald.resource_world.ResourceWorldModule;
+import fun.sakurawald.module.pvp_toggle.PvpModule;
+import fun.sakurawald.module.pvp_toggle.PvpWhitelist;
+import fun.sakurawald.module.resource_world.ResourceWorldModule;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;

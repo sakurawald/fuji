@@ -1,4 +1,4 @@
-package fun.sakurawald.mixin;
+package fun.sakurawald.mixin.resource_world;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.EndGatewayBlockEntity;

@@ -1,4 +1,4 @@
-package fun.sakurawald.resource_world;
+package fun.sakurawald.module.resource_world;
 
 import net.minecraft.world.SaveProperties;
 import net.minecraft.world.level.UnmodifiableLevelProperties;

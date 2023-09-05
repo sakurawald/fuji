@@ -1,7 +1,7 @@
-package fun.sakurawald.mixin.registry;
+package fun.sakurawald.mixin.resource_world.registry;
 
 import com.mojang.serialization.Lifecycle;
-import fun.sakurawald.resource_world.RemoveFromRegistry;
+import fun.sakurawald.module.resource_world.interfaces.SimpleRegistryMixinInterface;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import net.minecraft.registry.RegistryKey;
@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @SuppressWarnings("unused")
 @Mixin(SimpleRegistry.class)
-public abstract class SimpleRegistryMixin<T> implements RemoveFromRegistry<T> {
+public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInterface<T> {
 
     @Shadow
     @Final

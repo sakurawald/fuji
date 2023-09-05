@@ -1,4 +1,4 @@
-package fun.sakurawald.resource_world;
+package fun.sakurawald.module.resource_world.interfaces;
 
 import net.minecraft.world.dimension.DimensionOptions;
 import org.jetbrains.annotations.ApiStatus;
@@ -6,8 +6,8 @@ import org.jetbrains.annotations.ApiStatus;
 import java.util.function.Predicate;
 
 @ApiStatus.Internal
-public interface FantasyDimensionOptions {
-    Predicate<DimensionOptions> SAVE_PROPERTIES_PREDICATE = (e) -> ((FantasyDimensionOptions) (Object) e).sakurawald$getSaveProperties();
+public interface DimensionOptionsMixinInterface {
+    Predicate<DimensionOptions> SAVE_PROPERTIES_PREDICATE = (e) -> ((DimensionOptionsMixinInterface) (Object) e).sakurawald$getSaveProperties();
 
     void sakurawald$setSaveProperties(boolean value);
 

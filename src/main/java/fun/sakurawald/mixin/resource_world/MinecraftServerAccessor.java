@@ -1,4 +1,4 @@
-package fun.sakurawald.mixin;
+package fun.sakurawald.mixin.resource_world;
 
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;

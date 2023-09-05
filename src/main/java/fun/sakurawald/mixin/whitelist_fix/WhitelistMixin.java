@@ -1,4 +1,4 @@
-package fun.sakurawald.mixin;
+package fun.sakurawald.mixin.whitelist_fix;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.network.ClientConnection;
