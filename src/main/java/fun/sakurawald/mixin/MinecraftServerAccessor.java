@@ -17,4 +17,5 @@ public interface MinecraftServerAccessor {
 
     @Accessor
     LevelStorage.Session getSession();
+
 }

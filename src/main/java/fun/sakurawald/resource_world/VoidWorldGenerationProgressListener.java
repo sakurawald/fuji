@@ -6,6 +6,7 @@ import net.minecraft.world.chunk.ChunkStatus;
 import org.jetbrains.annotations.Nullable;
 
 public class VoidWorldGenerationProgressListener implements WorldGenerationProgressListener {
+
     public static final VoidWorldGenerationProgressListener INSTANCE = new VoidWorldGenerationProgressListener();
 
     @Override

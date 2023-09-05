@@ -15,17 +15,18 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-public class MyServerWorld extends ServerWorld {
+public class ResourceWorld extends ServerWorld {
 
-    private final long seed;
-
-    public MyServerWorld(MinecraftServer server, Executor workerExecutor, LevelStorage.Session session, ServerWorldProperties properties, RegistryKey<World> worldKey, DimensionOptions dimensionOptions, WorldGenerationProgressListener worldGenerationProgressListener, boolean debugWorld, long seed, List<Spawner> spawners, boolean shouldTickTime, @Nullable RandomSequencesState randomSequencesState) {
+    public ResourceWorld(MinecraftServer server, Executor workerExecutor, LevelStorage.Session session, ServerWorldProperties properties, RegistryKey<World> worldKey, DimensionOptions dimensionOptions, WorldGenerationProgressListener worldGenerationProgressListener, boolean debugWorld, long seed, List<Spawner> spawners, boolean shouldTickTime, @Nullable RandomSequencesState randomSequencesState) {
         super(server, workerExecutor, session, properties, worldKey, dimensionOptions, worldGenerationProgressListener, debugWorld, seed, spawners, shouldTickTime, randomSequencesState);
-        this.seed = seed;
     }
 
+    /*
+        The main issue is that the runtime world must return the custom seed through World#getSeed, including within the ServerWorld constructor.
+        The solution is to override World#getSeed in a way that the seed is initialized before it is called.
+     */
+    @Override
     public long getSeed() {
-        return this.seed;
+        return ((ResourceWorldProperties) this.properties).getSeed();
     }
-
 }

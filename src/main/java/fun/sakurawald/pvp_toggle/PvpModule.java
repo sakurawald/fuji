@@ -75,7 +75,6 @@ public class PvpModule {
     }
 
     private static int listPlayers(CommandContext<ServerCommandSource> ctx) {
-        String[] playerNames = ctx.getSource().getServer().getPlayerNames();
         feedback(ctx.getSource(), "Players with PvP on: " + String.join(", ", PvpWhitelist.getPlayers()));
         return 1;
     }

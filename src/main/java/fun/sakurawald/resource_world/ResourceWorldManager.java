@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class MyWorldManager {
+public class ResourceWorldManager {
 
     private static final Set<ServerWorld> deletionQueue = new ReferenceOpenHashSet<>();
 
@@ -40,7 +40,7 @@ public class MyWorldManager {
 
     private static void tick() {
         if (!deletionQueue.isEmpty()) {
-            deletionQueue.removeIf(MyWorldManager::tickDeleteWorld);
+            deletionQueue.removeIf(ResourceWorldManager::tickDeleteWorld);
         }
     }
 
@@ -86,7 +86,7 @@ public class MyWorldManager {
         if (serverAccess.getWorlds().remove(dimensionKey, world)) {
             ServerWorldEvents.UNLOAD.invoker().onWorldUnload(server, world);
             SimpleRegistry<DimensionOptions> dimensionsRegistry = getDimensionsRegistry(server);
-            RemoveFromRegistry.sakurawald$remove(dimensionsRegistry, dimensionKey.getValue());
+            RemoveFromRegistry.remove(dimensionsRegistry, dimensionKey.getValue());
             LevelStorage.Session session = serverAccess.getSession();
             File worldDirectory = session.getWorldDirectory(dimensionKey).toFile();
             cleanFiles(worldDirectory);

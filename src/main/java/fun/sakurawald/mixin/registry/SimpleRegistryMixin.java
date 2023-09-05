@@ -1,4 +1,4 @@
-package fun.sakurawald.mixin;
+package fun.sakurawald.mixin.registry;
 
 import com.mojang.serialization.Lifecycle;
 import fun.sakurawald.resource_world.RemoveFromRegistry;
@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@SuppressWarnings("unused")
 @Mixin(SimpleRegistry.class)
 public abstract class SimpleRegistryMixin<T> implements RemoveFromRegistry<T> {
 
@@ -43,6 +44,8 @@ public abstract class SimpleRegistryMixin<T> implements RemoveFromRegistry<T> {
     @Shadow
     @Final
     private Object2IntMap<T> entryToRawId;
+    @Shadow
+    private boolean frozen;
     @Shadow
     @Nullable
     private List<RegistryEntry.Reference<T>> cachedEntries;
@@ -81,4 +84,13 @@ public abstract class SimpleRegistryMixin<T> implements RemoveFromRegistry<T> {
         return entry != null && entry.hasKeyAndValue() && this.sakurawald$remove(entry.value());
     }
 
+    @Override
+    public void sakurawald$setFrozen(boolean value) {
+        this.frozen = value;
+    }
+
+    @Override
+    public boolean sakurawald$isFrozen() {
+        return this.frozen;
+    }
 }

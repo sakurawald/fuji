@@ -6,9 +6,13 @@
     "EndGatewayBlockEntityAccessor",
     "EndGatewayBlockEntityMixin",
     "MinecraftServerAccessor",
+    "MinecraftServerMixin",
     "PvpToggleMixin",
-    "SimpleRegistryMixin",
-    "WhitelistMixin"
+    "ServerWorldMixin",
+    "WhitelistMixin",
+    "registry.DimensionOptionsMixin",
+    "registry.DimensionOptionsRegistryHolderMixin",
+    "registry.SimpleRegistryMixin"
   ],
   "injectors": {
     "defaultRequire": 1

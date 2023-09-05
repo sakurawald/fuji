@@ -29,7 +29,6 @@ public class ModMain implements ModInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(ResourceWorldModule::loadWorlds);
         ServerWorldEvents.UNLOAD.register(ResourceWorldModule::onWorldUnload);
         ServerLifecycleEvents.SERVER_STARTED.register(ResourceWorldModule::registerScheduleTask);
-
     }
 
 }
