@@ -6,6 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.mojang.serialization.Lifecycle;
 import fun.sakurawald.ModMain;
+import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.mixin.resource_world.MinecraftServerAccessor;
 import fun.sakurawald.module.resource_world.interfaces.DimensionOptionsMixinInterface;
 import fun.sakurawald.module.resource_world.interfaces.SimpleRegistryMixinInterface;
@@ -68,9 +69,6 @@ public class ResourceWorldModule {
         return dispatcher.register(
                 CommandManager.literal("rw")
                         .then(literal("reset").requires(source -> source.hasPermissionLevel(4)).executes(ResourceWorldModule::resetWorlds))
-                        .then(literal("create").requires(source -> source.hasPermissionLevel(4)).then(literal(DEFAULT_OVERWORLD_PATH).executes(ResourceWorldModule::createWorld))
-                                .then(literal(DEFAULT_THE_NETHER_PATH).executes(ResourceWorldModule::createWorld))
-                                .then(literal(DEFAULT_THE_END_PATH).executes(ResourceWorldModule::createWorld)))
                         .then(literal("delete").requires(source -> source.hasPermissionLevel(4)).then(literal(DEFAULT_OVERWORLD_PATH).executes(ResourceWorldModule::deleteWorld))
                                 .then(literal(DEFAULT_THE_NETHER_PATH).executes(ResourceWorldModule::deleteWorld))
                                 .then(literal(DEFAULT_THE_END_PATH).executes(ResourceWorldModule::deleteWorld)))
@@ -88,15 +86,18 @@ public class ResourceWorldModule {
 
     private static void resetWorlds(MinecraftServer server) {
         broadcast(server, "Start to reset resource worlds...");
+        ConfigManager.configWrapper.instance().modules.resource_world.seed = RandomSeed.getSeed();
+        ConfigManager.configWrapper.saveToDisk();
         deleteWorld(server, DEFAULT_OVERWORLD_PATH);
         deleteWorld(server, DEFAULT_THE_NETHER_PATH);
         deleteWorld(server, DEFAULT_THE_END_PATH);
     }
 
     public static void loadWorlds(MinecraftServer server) {
-        createWorld(server, DimensionTypes.OVERWORLD, DEFAULT_OVERWORLD_PATH);
-        createWorld(server, DimensionTypes.THE_NETHER, DEFAULT_THE_NETHER_PATH);
-        createWorld(server, DimensionTypes.THE_END, DEFAULT_THE_END_PATH);
+        long seed = ConfigManager.configWrapper.instance().modules.resource_world.seed;
+        createWorld(server, DimensionTypes.OVERWORLD, DEFAULT_OVERWORLD_PATH, seed);
+        createWorld(server, DimensionTypes.THE_NETHER, DEFAULT_THE_NETHER_PATH, seed);
+        createWorld(server, DimensionTypes.THE_END, DEFAULT_THE_END_PATH, seed);
     }
 
     @SuppressWarnings("DataFlowIssue")
@@ -131,19 +132,11 @@ public class ResourceWorldModule {
     }
 
     private static void feedback(ServerCommandSource source, String content) {
-        source.sendFeedback(() -> Text.literal(content).formatted(Formatting.RED), false);
+        source.sendFeedback(() -> Text.literal(content).formatted(Formatting.GOLD), false);
     }
 
     private static void broadcast(MinecraftServer server, String content) {
-        server.getPlayerManager().broadcast(Text.literal(content).formatted(Formatting.RED), false);
-    }
-
-    private static int createWorld(CommandContext<ServerCommandSource> ctx) {
-        MinecraftServer server = ctx.getSource().getServer();
-        String path = ctx.getNodes().get(2).getNode().getName();
-        RegistryKey<DimensionType> dimensionTypeRegistryKey = getDimensionTypeRegistryKeyByPath(path);
-        createWorld(server, dimensionTypeRegistryKey, path);
-        return 1;
+        server.getPlayerManager().broadcast(Text.literal(content).formatted(Formatting.GOLD), false);
     }
 
     private static SimpleRegistry<DimensionOptions> getDimensionOptionsRegistry(MinecraftServer server) {
@@ -151,9 +144,8 @@ public class ResourceWorldModule {
         return (SimpleRegistry<DimensionOptions>) registryManager.get(RegistryKeys.DIMENSION);
     }
 
-    public static void createWorld(MinecraftServer server, RegistryKey<DimensionType> dimensionTypeRegistryKey, String path) {
+    public static void createWorld(MinecraftServer server, RegistryKey<DimensionType> dimensionTypeRegistryKey, String path, long seed) {
         /* create the world */
-        long seed = RandomSeed.getSeed();
         ResourceWorldProperties resourceWorldProperties = new ResourceWorldProperties(server.getSaveProperties(), seed);
         RegistryKey<World> worldRegistryKey = RegistryKey.of(RegistryKeys.WORLD, new Identifier(DEFAULT_WORLD_PREFIX, path));
         DimensionOptions dimensionOptions = createDimensionOptions(server, dimensionTypeRegistryKey);
@@ -198,19 +190,20 @@ public class ResourceWorldModule {
         return server.getWorld(worldKey);
     }
 
-    private static BlockPos createSafePlatform(ServerWorld world, BlockPos pos) {
-        world.setBlockState(pos.down(), Blocks.BEDROCK.getDefaultState());
-        world.setBlockState(pos.down().north(), Blocks.BEDROCK.getDefaultState());
-        world.setBlockState(pos.down().north().west(), Blocks.BEDROCK.getDefaultState());
-        world.setBlockState(pos.down().north().east(), Blocks.BEDROCK.getDefaultState());
-        world.setBlockState(pos.down().south(), Blocks.BEDROCK.getDefaultState());
-        world.setBlockState(pos.down().south().west(), Blocks.BEDROCK.getDefaultState());
-        world.setBlockState(pos.down().south().east(), Blocks.BEDROCK.getDefaultState());
-        world.setBlockState(pos.down().west(), Blocks.BEDROCK.getDefaultState());
-        world.setBlockState(pos.down().east(), Blocks.BEDROCK.getDefaultState());
-        world.setBlockState(pos, Blocks.AIR.getDefaultState());
-        world.setBlockState(pos.up(), Blocks.AIR.getDefaultState());
-        return pos;
+    private static void createSafePlatform(ServerWorld world, BlockPos pos) {
+        BlockPos origin = pos.down().north().west();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                for (int k = 0; k < 5; k++) {
+                    BlockPos blockPos = origin.add(i, k, j);
+                    if (k == 0 || k == 4) {
+                        world.setBlockState(blockPos, Blocks.BEDROCK.getDefaultState());
+                    } else {
+                        world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+                    }
+                }
+            }
+        }
     }
 
     private static int teleportWorld(CommandContext<ServerCommandSource> ctx) {
@@ -231,7 +224,8 @@ public class ResourceWorldModule {
             ServerWorld.createEndSpawnPlatform(world);
             destPos = ServerWorld.END_SPAWN_POS;
         } else {
-            destPos = createSafePlatform(world, new BlockPos(0, 96, 0));
+            destPos = new BlockPos(0, 96, 0);
+            createSafePlatform(world, destPos);
         }
 
         player.teleport(world, destPos.getX() + 0.5, destPos.getY(), destPos.getZ() + 0.5, destYaw, destPitch);
@@ -269,7 +263,8 @@ public class ResourceWorldModule {
             if (!namespace.equals(DEFAULT_WORLD_PREFIX)) return;
 
             server.sendMessage(Text.of(String.format("Creating world %s ...", path)));
-            ResourceWorldModule.createWorld(server, ResourceWorldModule.getDimensionTypeRegistryKeyByPath(path), path);
+            long seed = ConfigManager.configWrapper.instance().modules.resource_world.seed;
+            ResourceWorldModule.createWorld(server, ResourceWorldModule.getDimensionTypeRegistryKeyByPath(path), path, seed);
         }
     }
 }

@@ -24,6 +24,8 @@ public class ResourceWorld extends ServerWorld {
     /*
         The main issue is that the runtime world must return the custom seed through World#getSeed, including within the ServerWorld constructor.
         The solution is to override World#getSeed in a way that the seed is initialized before it is called.
+        Please note that: all the resource world will not save its data (properties) into level.dat, so if you restart the server.
+        then the seed of resource world will be changed randomly (and then the chunk generator will generate new chunks with the new seed).
      */
     @Override
     public long getSeed() {

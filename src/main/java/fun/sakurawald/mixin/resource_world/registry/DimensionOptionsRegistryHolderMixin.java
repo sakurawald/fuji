@@ -1,7 +1,7 @@
 package fun.sakurawald.mixin.resource_world.registry;
 
-import fun.sakurawald.module.resource_world.interfaces.DimensionOptionsMixinInterface;
 import fun.sakurawald.module.resource_world.FilteredRegistry;
+import fun.sakurawald.module.resource_world.interfaces.DimensionOptionsMixinInterface;
 import net.minecraft.registry.Registry;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionOptionsRegistryHolder;
