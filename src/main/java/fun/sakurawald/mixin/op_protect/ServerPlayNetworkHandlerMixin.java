@@ -19,6 +19,7 @@ public class ServerPlayNetworkHandlerMixin {
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerEntity;onDisconnect()V"), method = "onDisconnected")
     private void onPlayerLeave(Text reason, CallbackInfo info) {
+        ModMain.LOGGER.info("Op Protect: deop " + player.getGameProfile());
         ModMain.SERVER.getPlayerManager().removeFromOperators(player.getGameProfile());
     }
 
