@@ -2,6 +2,8 @@ package fun.sakurawald.module.resource_world;
 
 import fun.sakurawald.mixin.resource_world.MinecraftServerAccessor;
 import fun.sakurawald.module.resource_world.interfaces.SimpleRegistryMixinInterface;
+import fun.sakurawald.module.teleport_warmup.TeleportTicket;
+import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
@@ -13,6 +15,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.level.storage.LevelStorage;
@@ -65,6 +68,8 @@ public class ResourceWorldManager {
 
         List<ServerPlayerEntity> players = new ArrayList<>(world.getPlayers());
         for (ServerPlayerEntity player : players) {
+            // fix: if the player is inside resource-world while resetting the worlds, then resource worlds will delay its deletion until the player left the resource-world.
+            TeleportWarmupModule.tickets.put(player, new TeleportTicket(player, overworld, player.getPos(), new Vec3d(spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5), 0, 0, true));
             player.teleport(overworld, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, overworld.getSpawnAngle(), 0.0F);
         }
     }
