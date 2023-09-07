@@ -1,0 +1,110 @@
+package fun.sakurawald.module.newbie_welcome;
+
+import net.minecraft.block.BlockState;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkSectionPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkSection;
+
+import java.util.OptionalInt;
+
+public enum HeightFindingStrategy implements HeightFinder {
+    SKY_TO_SURFACE__FIRST_SOLID(HeightFindingStrategy::findYTopBottom),
+    BOTTOM_TO_SKY__FIRST_SAFE_AIR(HeightFindingStrategy::findYBottomUp),
+    ;
+
+    private final HeightFinder heightFinder;
+
+    HeightFindingStrategy(HeightFinder heightFinder) {
+        this.heightFinder = heightFinder;
+    }
+
+    private static int calculateMaxY(Chunk chunk) {
+        final int maxY = chunk.getTopY();
+        ChunkSection[] sections = chunk.getSectionArray();
+        int maxSectionIndex = Math.min(sections.length - 1, maxY >> 4);
+
+        for (int index = maxSectionIndex; index >= 0; --index) {
+            if (!sections[index].isEmpty()) {
+                return Math.min(index << 4 + 15, maxY);
+            }
+        }
+
+        return Integer.MAX_VALUE;
+    }
+
+    public static HeightFindingStrategy forWorld(RegistryKey<World> worldRegistryKey) {
+        if (worldRegistryKey == World.OVERWORLD || worldRegistryKey == World.END) {
+            return HeightFindingStrategy.SKY_TO_SURFACE__FIRST_SOLID;
+        }
+        if (worldRegistryKey == World.NETHER) {
+            return HeightFindingStrategy.BOTTOM_TO_SKY__FIRST_SAFE_AIR;
+        }
+
+        // fallback
+        return HeightFindingStrategy.SKY_TO_SURFACE__FIRST_SOLID;
+    }
+
+    public static OptionalInt findYTopBottom(Chunk chunk, int x, int z) {
+        final int maxY = calculateMaxY(chunk);
+        final int bottomY = chunk.getBottomY();
+        if (maxY <= bottomY) {
+            return OptionalInt.empty();
+        }
+
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable(x, maxY, z);
+        boolean isAir1 = chunk.getBlockState(mutablePos).isAir(); // Block at head level
+        boolean isAir2 = chunk.getBlockState(mutablePos.move(Direction.DOWN)).isAir(); // Block at feet level
+        boolean isAir3; // Block below feet
+
+        while (mutablePos.getY() > bottomY) {
+            isAir3 = chunk.getBlockState(mutablePos.move(Direction.DOWN)).isAir();
+            if (!isAir3 && isAir2 && isAir1) { // If there is a floor block and space for player body+head
+                return OptionalInt.of(mutablePos.getY() + 1);
+            }
+
+            isAir1 = isAir2;
+            isAir2 = isAir3;
+        }
+
+        return OptionalInt.empty();
+    }
+
+    private static OptionalInt findYBottomUp(Chunk chunk, int x, int z) {
+        final int topY = getChunkHighestNonEmptySectionYOffsetOrTopY(chunk);
+        final int bottomY = chunk.getBottomY();
+        if (topY <= bottomY) {
+            return OptionalInt.empty();
+        }
+
+        final BlockPos.Mutable mutablePos = new BlockPos.Mutable(x, bottomY, z);
+        BlockState bsFeet1 = chunk.getBlockState(mutablePos); // Block below feet
+        BlockState bsBody2 = chunk.getBlockState(mutablePos.move(Direction.UP)); // Block at feet level
+        BlockState bsHead3; // Block at head level
+
+        while (mutablePos.getY() < topY) {
+            bsHead3 = chunk.getBlockState(mutablePos.move(Direction.UP));
+            if (bsFeet1.isSolid() && bsBody2.isAir() && bsHead3.isAir()) { // If there is a floor block and space for player body+head
+                return OptionalInt.of(mutablePos.getY() - 1);
+            }
+
+            bsFeet1 = bsBody2;
+            bsBody2 = bsHead3;
+        }
+
+        return OptionalInt.empty();
+    }
+
+    public static int getChunkHighestNonEmptySectionYOffsetOrTopY(Chunk chunk) {
+        int i = chunk.getHighestNonEmptySection();
+        return i == chunk.getTopY() ? chunk.getBottomY() : ChunkSectionPos.getBlockCoord(chunk.sectionIndexToCoord(i));
+    }
+
+    @Override
+    public OptionalInt getY(Chunk chunk, int x, int z) {
+        return heightFinder.getY(chunk, x, z);
+    }
+}

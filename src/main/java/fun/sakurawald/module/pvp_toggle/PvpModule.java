@@ -4,10 +4,10 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import fun.sakurawald.util.MessageUtil;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.util.Objects;
@@ -41,11 +41,12 @@ public class PvpModule {
 
         if (!PvpWhitelist.contains(player)) {
             PvpWhitelist.addPlayer(player);
-            feedback(source, "PvP for you is now on.");
+
+            MessageUtil.feedback(source, "PvP for you is now on.", Formatting.DARK_AQUA);
             return 1;
         }
 
-        feedback(source, "You already have PvP on!");
+        MessageUtil.feedback(source, "You already have PvP on!", Formatting.DARK_AQUA);
         return 0;
     }
 
@@ -55,27 +56,24 @@ public class PvpModule {
 
         if (PvpWhitelist.contains(player)) {
             PvpWhitelist.removePlayer(player);
-            feedback(source, "PvP for you is now off.");
+            MessageUtil.feedback(source, "PvP for you is now off.", Formatting.DARK_AQUA);
             return 1;
         }
 
-        feedback(source, "You already have PvP off!");
+        MessageUtil.feedback(source, "You already have PvP off!", Formatting.DARK_AQUA);
         return 0;
     }
 
-    public static void feedback(ServerCommandSource source, String content) {
-        source.sendFeedback(() -> Text.literal(content).formatted(Formatting.DARK_AQUA), false);
-    }
 
     private static int pvpStatus(CommandContext<ServerCommandSource> ctx) {
         ServerCommandSource source = ctx.getSource();
         GameProfile player = Objects.requireNonNull(source.getPlayer()).getGameProfile();
-        feedback(source, "PvP for you is " + (PvpWhitelist.contains(player) ? "on" : "off"));
+        MessageUtil.feedback(source, "PvP for you is " + (PvpWhitelist.contains(player) ? "on" : "off"), Formatting.DARK_AQUA);
         return 1;
     }
 
     private static int listPlayers(CommandContext<ServerCommandSource> ctx) {
-        feedback(ctx.getSource(), "Players with PvP on: " + String.join(", ", PvpWhitelist.getPlayers()));
+        MessageUtil.feedback(ctx.getSource(), "Players with PvP on: " + String.join(", ", PvpWhitelist.getPlayers()), Formatting.DARK_AQUA);
         return 1;
     }
 }

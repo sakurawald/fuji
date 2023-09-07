@@ -1,12 +1,12 @@
 package fun.sakurawald.mixin.pvp_toggle;
 
 import com.mojang.authlib.GameProfile;
-import fun.sakurawald.module.pvp_toggle.PvpModule;
 import fun.sakurawald.module.pvp_toggle.PvpWhitelist;
+import fun.sakurawald.util.MessageUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,9 +23,6 @@ public abstract class PvpToggleMixin extends PlayerEntity {
     }
 
     @Shadow
-    public abstract void sendMessage(Text message);
-
-    @Shadow
     public abstract void readCustomDataFromNbt(NbtCompound nbt);
 
     @Inject(method = "shouldDamagePlayer", at = @At("HEAD"), cancellable = true)
@@ -33,13 +30,13 @@ public abstract class PvpToggleMixin extends PlayerEntity {
         if (this == sourcePlayer) return;
 
         if (!PvpWhitelist.contains(sourcePlayer.getGameProfile())) {
-            PvpModule.feedback(sourcePlayer.getCommandSource(), "PvP for you is now off!");
+            MessageUtil.feedback(sourcePlayer.getCommandSource(), "PvP for you is now off!", Formatting.DARK_AQUA);
             cir.setReturnValue(false);
             return;
         }
 
         if (!PvpWhitelist.contains(this.getGameProfile())) {
-            PvpModule.feedback(sourcePlayer.getCommandSource(), String.format("PvP for %s is now off!", this.getGameProfile().getName()));
+            MessageUtil.feedback(sourcePlayer.getCommandSource(), String.format("PvP for %s is now off!", this.getGameProfile().getName()), Formatting.DARK_AQUA);
             cir.setReturnValue(false);
         }
 

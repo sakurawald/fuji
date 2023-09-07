@@ -10,6 +10,7 @@ import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.mixin.resource_world.MinecraftServerAccessor;
 import fun.sakurawald.module.resource_world.interfaces.DimensionOptionsMixinInterface;
 import fun.sakurawald.module.resource_world.interfaces.SimpleRegistryMixinInterface;
+import fun.sakurawald.util.MessageUtil;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.block.Blocks;
 import net.minecraft.command.CommandRegistryAccess;
@@ -24,7 +25,6 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
@@ -85,7 +85,7 @@ public class ResourceWorldModule {
     }
 
     private static void resetWorlds(MinecraftServer server) {
-        broadcast(server, "Start to reset resource worlds...");
+        MessageUtil.broadcast("Start to reset resource worlds...", Formatting.GOLD);
         ConfigManager.configWrapper.instance().modules.resource_world.seed = RandomSeed.getSeed();
         ConfigManager.configWrapper.saveToDisk();
         deleteWorld(server, DEFAULT_OVERWORLD_PATH);
@@ -131,13 +131,6 @@ public class ResourceWorldModule {
         return null;
     }
 
-    private static void feedback(ServerCommandSource source, String content) {
-        source.sendFeedback(() -> Text.literal(content).formatted(Formatting.GOLD), false);
-    }
-
-    private static void broadcast(MinecraftServer server, String content) {
-        server.getPlayerManager().broadcast(Text.literal(content).formatted(Formatting.GOLD), false);
-    }
 
     private static SimpleRegistry<DimensionOptions> getDimensionOptionsRegistry(MinecraftServer server) {
         DynamicRegistryManager registryManager = server.getCombinedDynamicRegistries().getCombinedRegistryManager();
@@ -182,7 +175,7 @@ public class ResourceWorldModule {
         ServerWorldEvents.LOAD.invoker().onWorldLoad(server, world);
         world.tick(() -> true);
 
-        broadcast(server, String.format("Create resource world %s done.", path));
+        MessageUtil.broadcast(String.format("Create resource world %s done.", path), Formatting.GOLD);
     }
 
     private static ServerWorld getResourceWorldByPath(MinecraftServer server, String path) {
@@ -191,13 +184,13 @@ public class ResourceWorldModule {
     }
 
     private static void createSafePlatform(ServerWorld world, BlockPos pos) {
-        BlockPos origin = pos.down().north().west();
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
+        BlockPos origin = pos.add(-2, -1, -2);
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
                 for (int k = 0; k < 5; k++) {
                     BlockPos blockPos = origin.add(i, k, j);
                     if (k == 0 || k == 4) {
-                        world.setBlockState(blockPos, Blocks.BEDROCK.getDefaultState());
+                        world.setBlockState(blockPos, Blocks.OBSIDIAN.getDefaultState());
                     } else {
                         world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
                     }
@@ -210,7 +203,7 @@ public class ResourceWorldModule {
         String path = ctx.getNodes().get(2).getNode().getName();
         ServerWorld world = getResourceWorldByPath(ctx.getSource().getServer(), path);
         if (world == null) {
-            feedback(ctx.getSource(), String.format("Target resource world %s doesn't exist.", path));
+            MessageUtil.feedback(ctx.getSource(), String.format("Target resource world %s doesn't exist.", path), Formatting.RED);
             return 0;
         }
 
@@ -238,7 +231,7 @@ public class ResourceWorldModule {
         if (world == null) return;
 
         ResourceWorldManager.enqueueWorldDeletion(world);
-        broadcast(server, String.format("Delete resource world %s done.", path));
+        MessageUtil.broadcast(String.format("Delete resource world %s done.", path), Formatting.GOLD);
     }
 
 
@@ -246,7 +239,7 @@ public class ResourceWorldModule {
         String path = ctx.getNodes().get(2).getNode().getName();
         ServerWorld world = getResourceWorldByPath(ctx.getSource().getServer(), path);
         if (world == null) {
-            feedback(ctx.getSource(), String.format("Target resource world %s doesn't exist.", path));
+            MessageUtil.feedback(ctx.getSource(), String.format("Target resource world %s doesn't exist.", path), Formatting.RED);
             return 0;
         }
 
@@ -262,7 +255,7 @@ public class ResourceWorldModule {
             // Important: only delete the world if it's a resource world
             if (!namespace.equals(DEFAULT_WORLD_PREFIX)) return;
 
-            server.sendMessage(Text.of(String.format("Creating world %s ...", path)));
+            ModMain.LOGGER.info(String.format("Creating world %s ...", path));
             long seed = ConfigManager.configWrapper.instance().modules.resource_world.seed;
             ResourceWorldModule.createWorld(server, ResourceWorldModule.getDimensionTypeRegistryKeyByPath(path), path, seed);
         }

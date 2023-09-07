@@ -5,6 +5,7 @@
   "mixins": [
     "custom_stats.BlockMixin",
     "custom_stats.StatsAccessor",
+    "newbie_welcome.PlayerManagerMixin",
     "pvp_toggle.PvpToggleMixin",
     "resource_world.EndGatewayBlockEntityAccessor",
     "resource_world.EndGatewayBlockEntityMixin",
@@ -14,6 +15,7 @@
     "resource_world.registry.DimensionOptionsMixin",
     "resource_world.registry.DimensionOptionsRegistryHolderMixin",
     "resource_world.registry.SimpleRegistryMixin",
+    "teleport_warmup.ServerPlayerEntityMixin",
     "whitelist_fix.WhitelistMixin"
   ],
   "injectors": {
