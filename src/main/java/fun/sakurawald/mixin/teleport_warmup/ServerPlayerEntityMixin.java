@@ -22,7 +22,7 @@ public abstract class ServerPlayerEntityMixin implements ServerPlayerEntityAcces
     @Unique
     public boolean sakurawald$inCombat;
 
-    @Inject(method = "teleport*", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "teleport(Lnet/minecraft/server/world/ServerWorld;DDDFF)V", at = @At("HEAD"), cancellable = true)
     public void teleport(ServerWorld targetWorld, double x, double y, double z, float yaw, float pitch, CallbackInfo ci) {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
         if (!TeleportWarmupModule.tickets.containsKey(player)) {

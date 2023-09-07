@@ -28,7 +28,7 @@ public class TeleportTicket {
         this.pitch = pitch;
         this.ready = ready;
         this.bossbar = new ServerBossBar(Text.of(ConfigManager.configWrapper.instance().modules.teleport_warmup.bossbar_name), BossBar.Color.BLUE, BossBar.Style.PROGRESS);
-        bossbar.setPercent(1.0f);
+        bossbar.setPercent(0f);
         bossbar.addPlayer(player);
         bossbar.setVisible(true);
     }

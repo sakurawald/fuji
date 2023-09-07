@@ -23,7 +23,7 @@ public class TeleportWarmupModule {
 
             Map.Entry<ServerPlayerEntity, TeleportTicket> pair = iterator.next();
             ServerBossBar bossbar = pair.getValue().bossbar;
-            bossbar.setPercent(bossbar.getPercent() - DELFA_PERCENT);
+            bossbar.setPercent(bossbar.getPercent() + DELFA_PERCENT);
 
             ServerPlayerEntity player = (ServerPlayerEntity) bossbar.getPlayers().toArray()[0];
             TeleportTicket teleportTicket = TeleportWarmupModule.tickets.get(player);
@@ -41,7 +41,7 @@ public class TeleportWarmupModule {
                 continue;
             }
 
-            if (bossbar.getPercent() <= 0F) {
+            if (bossbar.getPercent() >= 1.0F) {
                 bossbar.setVisible(false);
 
                 teleportTicket.ready = true;
