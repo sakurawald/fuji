@@ -6,6 +6,7 @@
     "custom_stats.BlockMixin",
     "custom_stats.StatsAccessor",
     "newbie_welcome.PlayerManagerMixin",
+    "op_protect.ServerPlayNetworkHandlerMixin",
     "pvp_toggle.PvpToggleMixin",
     "resource_world.EndGatewayBlockEntityAccessor",
     "resource_world.EndGatewayBlockEntityMixin",
