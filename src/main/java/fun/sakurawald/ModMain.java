@@ -47,7 +47,10 @@ public class ModMain implements ModInitializer {
         /* custom custom_stats*/
         CustomStatisticsModule.registerCustomStats();
         CustomStatisticsModule.mergeServerStats();
-        ServerLifecycleEvents.SERVER_STARTED.register(CustomStatisticsModule::registerScheduleTask);
+        ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
+            CustomStatisticsModule.registerScheduleTask(server);
+            CustomStatisticsModule.updateMOTD();
+        });
 
         /* teleport warmup */
         ServerTickEvents.START_SERVER_TICK.register(TeleportWarmupModule::onServerTick);

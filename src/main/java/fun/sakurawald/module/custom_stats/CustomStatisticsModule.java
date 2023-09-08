@@ -126,7 +126,7 @@ public class CustomStatisticsModule {
         statHandler.setStat(player, Stats.CUSTOM.getOrCreateStat(MOVED_ALL), value);
     }
 
-    private static void updateMOTD() {
+    public static void updateMOTD() {
         ServerStats serverStats = mergeServerStats();
         String motd = ConfigManager.configWrapper.instance().modules.custom_stats.dynamic_motd
                 .replace("%server_playtime%", String.valueOf(serverStats.server_playtime))
