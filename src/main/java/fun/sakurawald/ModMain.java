@@ -1,7 +1,7 @@
 package fun.sakurawald;
 
 import fun.sakurawald.config.ConfigManager;
-import fun.sakurawald.module.custom_stats.registry.CustomStatisticsRegistry;
+import fun.sakurawald.module.custom_stats.CustomStatisticsModule;
 import fun.sakurawald.module.pvp_toggle.PvpModule;
 import fun.sakurawald.module.pvp_toggle.PvpWhitelist;
 import fun.sakurawald.module.resource_world.ResourceWorldModule;
@@ -12,16 +12,15 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.stat.StatFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
+// TODO: command suggestion -> tab
 public class ModMain implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("sakurawald");
     public static MinecraftServer SERVER;
-
 
     @Override
     public void onInitialize() {
@@ -46,9 +45,9 @@ public class ModMain implements ModInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(ResourceWorldModule::registerScheduleTask);
 
         /* custom custom_stats*/
-        CustomStatisticsRegistry.MINE_ALL = CustomStatisticsRegistry.register("mined_all", StatFormatter.DEFAULT);
-        CustomStatisticsRegistry.PLACED_ALL = CustomStatisticsRegistry.register("placed_all", StatFormatter.DEFAULT);
-        CustomStatisticsRegistry.syncPlayersStats();
+        CustomStatisticsModule.registerCustomStats();
+        CustomStatisticsModule.mergeServerStats();
+        ServerLifecycleEvents.SERVER_STARTED.register(CustomStatisticsModule::registerScheduleTask);
 
         /* teleport warmup */
         ServerTickEvents.START_SERVER_TICK.register(TeleportWarmupModule::onServerTick);

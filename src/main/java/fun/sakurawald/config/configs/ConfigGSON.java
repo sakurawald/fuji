@@ -11,14 +11,18 @@ public class ConfigGSON {
         public ResourceWorld resource_world = new ResourceWorld();
         public NewbieWelcome newbie_welcome = new NewbieWelcome();
         public TeleportWarmup teleport_warmup = new TeleportWarmup();
+        public CustomStats custom_stats = new CustomStats();
 
         public class ResourceWorld {
             public long seed = 0L;
         }
 
+        public class CustomStats {
+            public String dynamic_motd = "\u00a7l  \u00a72   Pure Survival 1.20.1 \u00a7c\u2764 \u00a76QQ Group 912363929\n    §b%server_playtime%\uD83D\uDD25 %server_mined%⛏ %server_placed%\uD83D\uDD33 %server_killed%\uD83D\uDDE1 %server_moved%\uD83C\uDF0D";
+        }
+
         public class NewbieWelcome {
             public String welcome_message = "§dWelcome new player %player% to join us!";
-
             public RandomTeleport random_teleport = new RandomTeleport();
 
             public class RandomTeleport {

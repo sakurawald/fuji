@@ -1,6 +1,6 @@
 package fun.sakurawald.mixin.custom_stats;
 
-import fun.sakurawald.module.custom_stats.registry.CustomStatisticsRegistry;
+import fun.sakurawald.module.custom_stats.CustomStatisticsModule;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -17,14 +17,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Block.class)
 public class BlockMixin {
+
     @Inject(method = "afterBreak", at = @At("HEAD"))
     private void increaseCustomStat(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack stack, CallbackInfo ci) {
-        player.incrementStat(CustomStatisticsRegistry.MINE_ALL);
+        player.incrementStat(CustomStatisticsModule.MINE_ALL);
     }
 
     @Inject(method = "onPlaced", at = @At("HEAD"))
     public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack, CallbackInfo ci) {
-        if (!(placer instanceof ServerPlayerEntity)) return;
-        ((ServerPlayerEntity) placer).incrementStat(CustomStatisticsRegistry.PLACED_ALL);
+        if (!(placer instanceof ServerPlayerEntity player)) return;
+        player.incrementStat(CustomStatisticsModule.PLACED_ALL);
     }
 }
