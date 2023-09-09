@@ -17,7 +17,7 @@ public abstract class DedicatedPlayerManagerMixin {
             )
     )
     public boolean disablePlayerLimit(boolean original, GameProfile profile) {
-       return true;
+        return true;
     }
 
 }

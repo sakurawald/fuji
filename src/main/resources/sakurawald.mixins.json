@@ -7,7 +7,7 @@
     "bypass_things.chat_speed.ServerPlayNetworkHandlerMixin",
     "bypass_things.move_speed.ServerPlayNetworkHandlerMixin",
     "bypass_things.player_limit.DedicatedPlayerManagerMixin",
-    "chat_style.ServerPlayNetworkManagerMixin",
+    "chat_history.PlayerManagerMixin",
     "custom_stats.BlockMixin",
     "custom_stats.StatsAccessor",
     "newbie_welcome.PlayerManagerMixin",

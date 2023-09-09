@@ -2,7 +2,6 @@ package fun.sakurawald.module.zero_command_permission;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.CommandNode;
-import fun.sakurawald.ModMain;
 import fun.sakurawald.mixin.zero_command_permission.CommandNodeAccessor;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.fabric.api.util.TriState;

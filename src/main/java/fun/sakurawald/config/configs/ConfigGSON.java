@@ -12,6 +12,7 @@ public class ConfigGSON {
         public NewbieWelcome newbie_welcome = new NewbieWelcome();
         public TeleportWarmup teleport_warmup = new TeleportWarmup();
         public CustomStats custom_stats = new CustomStats();
+        public ChatHistory chat_history = new ChatHistory();
 
         public class ResourceWorld {
             public long seed = 0L;
@@ -38,6 +39,10 @@ public class ConfigGSON {
             public String bossbar_name = "Teleport";
             public String in_progress_message = "§bYou have a teleportation in progress.";
             public String in_combat_message = "§bYou can't teleport while in combat.";
+        }
+
+        public class ChatHistory {
+            public int max_history = 30;
         }
     }
 }
