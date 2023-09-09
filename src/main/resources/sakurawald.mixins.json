@@ -3,6 +3,11 @@
   "package": "fun.sakurawald.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "better_fake_player.PlayerCommandMixin",
+    "bypass_things.chat_speed.ServerPlayNetworkHandlerMixin",
+    "bypass_things.move_speed.ServerPlayNetworkHandlerMixin",
+    "bypass_things.player_limit.DedicatedPlayerManagerMixin",
+    "chat_style.ServerPlayNetworkManagerMixin",
     "custom_stats.BlockMixin",
     "custom_stats.StatsAccessor",
     "newbie_welcome.PlayerManagerMixin",
@@ -17,7 +22,9 @@
     "resource_world.registry.DimensionOptionsRegistryHolderMixin",
     "resource_world.registry.SimpleRegistryMixin",
     "teleport_warmup.ServerPlayerEntityMixin",
-    "whitelist_fix.WhitelistMixin"
+    "whitelist_fix.WhitelistMixin",
+    "zero_command_permission.CommandNodeAccessor",
+    "zero_command_permission.CommandSourceStackAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,6 +1,7 @@
 package fun.sakurawald;
 
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.zero_command_permission.ZeroCommandPermissionModule;
 import fun.sakurawald.module.custom_stats.CustomStatisticsModule;
 import fun.sakurawald.module.pvp_toggle.PvpModule;
 import fun.sakurawald.module.pvp_toggle.PvpWhitelist;
@@ -17,12 +18,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
-// TDOO: /player restrict
-// TODO: vanilla commands mod
-// TODO: command suggestion -> tab
+// TODO: simple chat
 // TODO: xht bug
 public class ModMain implements ModInitializer {
-    public static final Logger LOGGER = LoggerFactory.getLogger("sakurawald");
+    public static final Logger LOGGER = LoggerFactory.getLogger("SakuraWald");
     public static MinecraftServer SERVER;
 
     @Override
@@ -57,6 +56,9 @@ public class ModMain implements ModInitializer {
 
         /* teleport warmup */
         ServerTickEvents.START_SERVER_TICK.register(TeleportWarmupModule::onServerTick);
+
+        /* zero command permission */
+        ServerLifecycleEvents.SERVER_STARTED.register(ZeroCommandPermissionModule::alterCommandPermission);
     }
 
 }
