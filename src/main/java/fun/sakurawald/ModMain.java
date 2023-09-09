@@ -17,7 +17,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
+// TDOO: /player restrict
+// TODO: vanilla commands mod
 // TODO: command suggestion -> tab
+// TODO: xht bug
 public class ModMain implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("sakurawald");
     public static MinecraftServer SERVER;

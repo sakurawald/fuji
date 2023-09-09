@@ -4,6 +4,7 @@ import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.module.teleport_warmup.ServerPlayerEntityAccessor;
 import fun.sakurawald.module.teleport_warmup.TeleportTicket;
 import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
+import fun.sakurawald.util.CarpetUtil;
 import fun.sakurawald.util.MessageUtil;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -25,6 +26,8 @@ public abstract class ServerPlayerEntityMixin implements ServerPlayerEntityAcces
     @Inject(method = "teleport(Lnet/minecraft/server/world/ServerWorld;DDDFF)V", at = @At("HEAD"), cancellable = true)
     public void teleport(ServerWorld targetWorld, double x, double y, double z, float yaw, float pitch, CallbackInfo ci) {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+        if (CarpetUtil.isFakePlayer(player)) return;
+
         if (!TeleportWarmupModule.tickets.containsKey(player)) {
             TeleportWarmupModule.tickets.put(player, new TeleportTicket(player, targetWorld, player.getPos(), new Vec3d(x, y, z), yaw, pitch, false));
             ci.cancel();
