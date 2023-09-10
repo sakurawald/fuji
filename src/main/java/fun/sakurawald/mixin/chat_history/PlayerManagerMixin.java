@@ -2,6 +2,7 @@ package fun.sakurawald.mixin.chat_history;
 
 
 import fun.sakurawald.module.chat_history.CachedMessage;
+import fun.sakurawald.util.CarpetUtil;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.network.message.SignedMessage;
@@ -36,6 +37,7 @@ public class PlayerManagerMixin {
 
     @Inject(method = "onPlayerConnect", at = @At(value = "TAIL", target = "Lnet/minecraft/server/network/ServerPlayerEntity;onSpawn()V"))
     public void sendCachedMessages(ClientConnection connection, ServerPlayerEntity player, CallbackInfo ci) {
+        if (CarpetUtil.isFakePlayer(player)) return;
         for (var message : CachedMessage.MESSAGE_CACHE) {
             message.send(player);
         }

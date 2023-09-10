@@ -44,5 +44,11 @@ public class ConfigGSON {
         public class ChatHistory {
             public int max_history = 30;
         }
+
+
+        public BetterFakePlayer better_fake_player = new BetterFakePlayer();
+        public class BetterFakePlayer {
+            public int max_fake_player_limit = 2;
+        }
     }
 }
