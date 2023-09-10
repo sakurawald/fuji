@@ -1,6 +1,8 @@
 package fun.sakurawald.config.configs;
 
 
+import java.util.HashMap;
+
 @SuppressWarnings("ALL")
 public class ConfigGSON {
 
@@ -49,6 +51,15 @@ public class ConfigGSON {
         public BetterFakePlayer better_fake_player = new BetterFakePlayer();
         public class BetterFakePlayer {
             public int max_fake_player_limit = 2;
+        }
+
+        public CommandCooldown command_cooldown = new CommandCooldown();
+        public class CommandCooldown {
+            public HashMap<String, Long> command_regex_2_cooldown_ms = new HashMap<>() {
+                {
+                    this.put("rw tp (overworld|the_nether|the_end)", 60 * 1000L);
+                }
+            };
         }
     }
 }
