@@ -8,6 +8,7 @@ import com.mojang.serialization.Lifecycle;
 import fun.sakurawald.ModMain;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.mixin.resource_world.MinecraftServerAccessor;
+import fun.sakurawald.module.newbie_welcome.RandomTeleport;
 import fun.sakurawald.module.resource_world.interfaces.DimensionOptionsMixinInterface;
 import fun.sakurawald.module.resource_world.interfaces.SimpleRegistryMixinInterface;
 import fun.sakurawald.util.MessageUtil;
@@ -210,18 +211,14 @@ public class ResourceWorldModule {
         ServerPlayerEntity player = ctx.getSource().getPlayer();
         if (player == null) return 0;
 
-        BlockPos destPos;
-        float destYaw = 90;
-        float destPitch = 0;
         if (world.getDimensionKey() == DimensionTypes.THE_END) {
             ServerWorld.createEndSpawnPlatform(world);
-            destPos = ServerWorld.END_SPAWN_POS;
+            BlockPos endSpawnPos = ServerWorld.END_SPAWN_POS;
+            player.teleport(world, endSpawnPos.getX() + 0.5, endSpawnPos.getY(), endSpawnPos.getZ() + 0.5, 90, 0);
         } else {
-            destPos = new BlockPos(0, 96, 0);
-            createSafePlatform(world, destPos);
+            RandomTeleport.randomTeleport(player, world, false);
         }
 
-        player.teleport(world, destPos.getX() + 0.5, destPos.getY(), destPos.getZ() + 0.5, destYaw, destPitch);
         return 1;
     }
 

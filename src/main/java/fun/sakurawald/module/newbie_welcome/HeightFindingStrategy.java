@@ -2,12 +2,14 @@ package fun.sakurawald.module.newbie_welcome;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkSection;
+import net.minecraft.world.dimension.DimensionTypes;
 
 import java.util.OptionalInt;
 
@@ -36,11 +38,11 @@ public enum HeightFindingStrategy implements HeightFinder {
         return Integer.MAX_VALUE;
     }
 
-    public static HeightFindingStrategy forWorld(RegistryKey<World> worldRegistryKey) {
-        if (worldRegistryKey == World.OVERWORLD || worldRegistryKey == World.END) {
+    public static HeightFindingStrategy forWorld(ServerWorld world) {
+        if (world.getDimensionKey() == DimensionTypes.OVERWORLD || world.getDimensionKey() == DimensionTypes.THE_END) {
             return HeightFindingStrategy.SKY_TO_SURFACE__FIRST_SOLID;
         }
-        if (worldRegistryKey == World.NETHER) {
+        if (world.getDimensionKey() == DimensionTypes.THE_NETHER) {
             return HeightFindingStrategy.BOTTOM_TO_SKY__FIRST_SAFE_AIR;
         }
 

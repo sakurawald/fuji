@@ -8,6 +8,7 @@
     "bypass_things.move_speed.ServerPlayNetworkHandlerMixin",
     "bypass_things.player_limit.DedicatedPlayerManagerMixin",
     "chat_history.PlayerManagerMixin",
+    "command_cooldown.CommandDispatcherMixin",
     "custom_stats.BlockMixin",
     "custom_stats.StatsAccessor",
     "newbie_welcome.PlayerManagerMixin",

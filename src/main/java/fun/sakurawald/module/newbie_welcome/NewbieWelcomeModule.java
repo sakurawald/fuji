@@ -18,6 +18,6 @@ public class NewbieWelcomeModule {
         MessageUtil.broadcast(MessageUtil.resolve(ConfigManager.configWrapper.instance().modules.newbie_welcome.welcome_message, player), false);
 
         /* random teleport */
-        RandomTeleport.randomTeleport(player);
+        RandomTeleport.randomTeleport(player, player.getServerWorld(), true);
     }
 }

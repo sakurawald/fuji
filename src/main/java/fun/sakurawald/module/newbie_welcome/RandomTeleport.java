@@ -31,26 +31,24 @@ public class RandomTeleport {
         return thread;
     });
 
-    public static void randomTeleport(ServerPlayerEntity player) {
+    public static void randomTeleport(ServerPlayerEntity player, ServerWorld world, boolean shouldSetSpawnPoint) {
         threadExecutor.execute(() -> {
             ModMain.LOGGER.info(
                     String.format(
                             "Starting RTP location search for %s",
                             player.getGameProfile().getName()
                     ));
-
             Stopwatch timer = Stopwatch.createStarted();
-
-            exec(player, player.getServerWorld());
-
+            exec(player, world);
             var totalTime = timer.stop();
             ModMain.LOGGER.info(
                     String.format(
                             "Total RTP Time: %s",
                             totalTime
                     ));
-
-            player.setSpawnPoint(player.getServerWorld().getRegistryKey(), player.getBlockPos(), 0, true, false);
+            if (shouldSetSpawnPoint) {
+                player.setSpawnPoint(world.getRegistryKey(), player.getBlockPos(), 0, true, false);
+            }
         });
 
     }
@@ -63,7 +61,7 @@ public class RandomTeleport {
         Vec3i center = centerOpt.get();
 
         final var executionContext = new ExecutionContext(world);
-        final var heightFinder = HeightFindingStrategy.forWorld(world.getRegistryKey());
+        final var heightFinder = HeightFindingStrategy.forWorld(world);
 
         int timesRun = 0;
         Optional<BlockPos> pos;
@@ -77,7 +75,7 @@ public class RandomTeleport {
         }
 
         // Teleport the player
-        player.teleport(world, pos.get().getX(), pos.get().getY(), pos.get().getZ(), 0, 0);
+        player.teleport(world, pos.get().getX() + 0.5, pos.get().getY(), pos.get().getZ() + 0.5, 0, 0);
     }
 
     private static Optional<Vec3i> getRtpCenter(ServerPlayerEntity player) {

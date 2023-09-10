@@ -31,9 +31,12 @@ public abstract class ServerPlayerEntityMixin implements ServerPlayerEntityAcces
         if (!TeleportWarmupModule.tickets.containsKey(player)) {
             TeleportWarmupModule.tickets.put(player, new TeleportTicket(player, targetWorld, player.getPos(), new Vec3d(x, y, z), yaw, pitch, false));
             ci.cancel();
-        } else if (!(TeleportWarmupModule.tickets.get(player).ready)) {
-            MessageUtil.message(player, ConfigManager.configWrapper.instance().modules.teleport_warmup.in_progress_message, true);
-            ci.cancel();
+        } else {
+            TeleportTicket ticket = TeleportWarmupModule.tickets.get(player);
+            if (!ticket.ready) {
+                MessageUtil.message(player, ConfigManager.configWrapper.instance().modules.teleport_warmup.in_progress_message, true);
+                ci.cancel();
+            }
         }
     }
 
