@@ -2,7 +2,6 @@ package fun.sakurawald.module.chat_style;
 
 import fun.sakurawald.ModMain;
 import fun.sakurawald.config.ConfigManager;
-import fun.sakurawald.config.configs.ConfigGSON;
 import fun.sakurawald.module.chat_history.ChatHistoryModule;
 import fun.sakurawald.module.main_stats.MainStats;
 import net.kyori.adventure.text.Component;

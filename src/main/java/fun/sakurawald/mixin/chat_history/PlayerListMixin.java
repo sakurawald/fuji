@@ -1,7 +1,6 @@
 package fun.sakurawald.mixin.chat_history;
 
 import fun.sakurawald.module.chat_history.ChatHistoryModule;
-import fun.sakurawald.module.main_stats.MainStats;
 import fun.sakurawald.util.CarpetUtil;
 import net.kyori.adventure.text.Component;
 import net.minecraft.network.Connection;
