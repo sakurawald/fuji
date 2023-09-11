@@ -1,6 +1,6 @@
-package fun.sakurawald.mixin.custom_stats;
+package fun.sakurawald.mixin.main_stats;
 
-import fun.sakurawald.module.custom_stats.CustomStatisticsModule;
+import fun.sakurawald.module.main_stats.MainStats;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,12 +20,12 @@ public class BlockMixin {
 
     @Inject(method = "playerDestroy", at = @At("HEAD"))
     private void $playerDestroy(Level world, Player player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack stack, CallbackInfo ci) {
-        player.awardStat(CustomStatisticsModule.MINE_ALL);
+        MainStats.uuid2stats.get(player.getUUID().toString()).mined += 1;
     }
 
     @Inject(method = "setPlacedBy", at = @At("HEAD"))
     public void $setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack, CallbackInfo ci) {
         if (!(placer instanceof ServerPlayer player)) return;
-        player.awardStat(CustomStatisticsModule.PLACED_ALL);
+        MainStats.uuid2stats.get(player.getUUID().toString()).placed += 1;
     }
 }
