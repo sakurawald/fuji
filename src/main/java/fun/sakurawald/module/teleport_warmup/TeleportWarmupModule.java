@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public class TeleportWarmupModule {
 
@@ -18,36 +19,42 @@ public class TeleportWarmupModule {
     private static final double INTERRUPT_DISTANCE = ConfigManager.configWrapper.instance().modules.teleport_warmup.interrupt_distance;
 
     public static void onServerTick(MinecraftServer server) {
-        Iterator<Map.Entry<ServerPlayer, TeleportTicket>> iterator = tickets.entrySet().iterator();
-        while (iterator.hasNext()) {
 
-            Map.Entry<ServerPlayer, TeleportTicket> pair = iterator.next();
-            ServerBossEvent bossbar = pair.getValue().bossbar;
-            bossbar.setProgress(bossbar.getProgress() + DELFA_PERCENT);
+        if (tickets.isEmpty()) return;
 
-            ServerPlayer player = (ServerPlayer) bossbar.getPlayers().toArray()[0];
-            TeleportTicket teleportTicket = TeleportWarmupModule.tickets.get(player);
+        CompletableFuture.runAsync(() -> {
+            Iterator<Map.Entry<ServerPlayer, TeleportTicket>> iterator = tickets.entrySet().iterator();
+            while (iterator.hasNext()) {
 
-            if (((ServerPlayerAccessor) player).sakurawald$inCombat()) {
-                bossbar.setVisible(false);
-                iterator.remove();
-                MessageUtil.message(player, ConfigManager.configWrapper.instance().modules.teleport_warmup.in_combat_message, true);
-                continue;
+                Map.Entry<ServerPlayer, TeleportTicket> pair = iterator.next();
+                ServerBossEvent bossbar = pair.getValue().bossbar;
+                bossbar.setProgress(bossbar.getProgress() + DELFA_PERCENT);
+
+                ServerPlayer player = (ServerPlayer) bossbar.getPlayers().toArray()[0];
+                TeleportTicket teleportTicket = TeleportWarmupModule.tickets.get(player);
+
+                if (((ServerPlayerAccessor) player).sakurawald$inCombat()) {
+                    bossbar.setVisible(false);
+                    iterator.remove();
+                    MessageUtil.message(player, ConfigManager.configWrapper.instance().modules.teleport_warmup.in_combat_message, true);
+                    continue;
+                }
+
+                if (player.position().distanceTo(teleportTicket.source) >= INTERRUPT_DISTANCE) {
+                    bossbar.setVisible(false);
+                    iterator.remove();
+                    continue;
+                }
+
+                if (bossbar.getProgress() >= 1.0F) {
+                    bossbar.setVisible(false);
+
+                    teleportTicket.ready = true;
+                    player.teleportTo(teleportTicket.world, teleportTicket.destination.x, teleportTicket.destination.y, teleportTicket.destination.z, teleportTicket.yaw, teleportTicket.pitch);
+                    iterator.remove();
+                }
             }
+        });
 
-            if (player.position().distanceTo(teleportTicket.source) >= INTERRUPT_DISTANCE) {
-                bossbar.setVisible(false);
-                iterator.remove();
-                continue;
-            }
-
-            if (bossbar.getProgress() >= 1.0F) {
-                bossbar.setVisible(false);
-
-                teleportTicket.ready = true;
-                player.teleportTo(teleportTicket.world, teleportTicket.destination.x, teleportTicket.destination.y, teleportTicket.destination.z, teleportTicket.yaw, teleportTicket.pitch);
-                iterator.remove();
-            }
-        }
     }
 }

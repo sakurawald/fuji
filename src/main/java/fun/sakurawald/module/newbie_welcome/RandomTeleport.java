@@ -39,20 +39,17 @@ public class RandomTeleport {
                             player.getGameProfile().getName()
                     ));
             Stopwatch timer = Stopwatch.createStarted();
-            exec(player, world);
+            exec(player, world, shouldSetSpawnPoint);
             var totalTime = timer.stop();
             ModMain.LOGGER.info(
                     String.format(
                             "Total RTP Time: %s",
                             totalTime
                     ));
-            if (shouldSetSpawnPoint) {
-                player.setRespawnPosition(world.dimension(), player.blockPosition(), 0, true, false);
-            }
         });
     }
 
-    private static void exec(ServerPlayer player, ServerLevel world) {
+    private static void exec(ServerPlayer player, ServerLevel world, boolean shouldSetSpawnPoint) {
         var centerOpt = getRtpCenter(player);
         if (centerOpt.isEmpty()) {
             return;
@@ -73,7 +70,12 @@ public class RandomTeleport {
             return;
         }
 
-        // Teleport the player
+        // set spawn point
+        if (shouldSetSpawnPoint) {
+            player.setRespawnPosition(world.dimension(), pos.get(), 0, true, false);
+        }
+
+        // teleport the player
         player.teleportTo(world, pos.get().getX() + 0.5, pos.get().getY(), pos.get().getZ() + 0.5, 0, 0);
     }
 

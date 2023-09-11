@@ -21,13 +21,14 @@ public class ConfigGSON {
         public BetterFakePlayer better_fake_player = new BetterFakePlayer();
         public CommandCooldown command_cooldown = new CommandCooldown();
         public TopChunks top_chunks = new TopChunks();
+        public ChatStyle chat_style = new ChatStyle();
 
         public class ResourceWorld {
             public long seed = 0L;
         }
 
         public class CustomStats {
-            public String dynamic_motd = "\u00a7l  \u00a72   Pure Survival 1.20.1 \u00a7c\u2764 \u00a76QQ Group 912363929\n    §b%server_playtime%\uD83D\uDD25 %server_mined%⛏ %server_placed%\uD83D\uDD33 %server_killed%\uD83D\uDDE1 %server_moved%\uD83C\uDF0D";
+            public String dynamic_motd = "\u00a7l  \u00a72   Pure Survival 1.20.1 \u00a7c\u2764 \u00a76QQ Group 912363929\n    §b%playtime%\uD83D\uDD25 %mined%⛏ %placed%\uD83D\uDD33 %killed%\uD83D\uDDE1 %moved%\uD83C\uDF0D";
         }
 
         public class NewbieWelcome {
@@ -125,6 +126,10 @@ public class ConfigGSON {
                     this.put(EntityType.getKey(EntityType.HOPPER_MINECART).getPath(), 20);
                 }
             };
+        }
+
+        public class ChatStyle {
+            public String format = "<#B1B2FF>[%playtime%\uD83D\uDD25 %mined%⛏ %placed%\uD83D\uDD33 %killed%\uD83D\uDDE1 %moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:/msg %player% ><hover:show_text:'Time: <date:'yyyy-MM-dd HH:mm:ss'><newline><italic>Click to Message'>%player%</hover></click></dark_green>> %message%";
         }
     }
 }

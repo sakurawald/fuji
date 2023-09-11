@@ -2,7 +2,7 @@ package fun.sakurawald;
 
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.module.config.ConfigModule;
-import fun.sakurawald.module.custom_stats.CustomStatisticsModule;
+import fun.sakurawald.module.main_stats.CustomStatisticsModule;
 import fun.sakurawald.module.pvp_toggle.PvpModule;
 import fun.sakurawald.module.pvp_toggle.PvpWhitelist;
 import fun.sakurawald.module.resource_world.ResourceWorldModule;
@@ -49,12 +49,10 @@ public class ModMain implements ModInitializer {
         ServerWorldEvents.UNLOAD.register(ResourceWorldModule::onWorldUnload);
         ServerLifecycleEvents.SERVER_STARTED.register(ResourceWorldModule::registerScheduleTask);
 
-        /* custom custom_stats*/
-        CustomStatisticsModule.registerCustomStats();
-        CustomStatisticsModule.mergeServerStats();
+        /* main stats */
         ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
-            CustomStatisticsModule.registerScheduleTask(server);
             CustomStatisticsModule.updateMOTD();
+            CustomStatisticsModule.registerScheduleTask(server);
         });
 
         /* teleport warmup */

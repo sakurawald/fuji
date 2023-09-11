@@ -50,6 +50,7 @@ dependencies {
     modImplementation("carpet:fabric-carpet:${project.carpet_core_version}")
     modImplementation include("me.lucko:fabric-permissions-api:${project.fabric_permissions_version}")
     modImplementation include("net.kyori:adventure-platform-fabric:5.9.0")
+    implementation "net.kyori:adventure-text-minimessage:4.14.0"
 
 //    Set<String> apiModules = [
 //            'fabric-api-base',

@@ -3,7 +3,6 @@ package fun.sakurawald.module.top_chunks;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import fun.sakurawald.ModMain;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.config.configs.ConfigGSON;
 import fun.sakurawald.mixin.top_chunks.ThreadedAnvilChunkStorageMixin;
