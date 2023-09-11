@@ -1,6 +1,7 @@
 package fun.sakurawald;
 
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
 import fun.sakurawald.module.config.ConfigModule;
 import fun.sakurawald.module.main_stats.CustomStatisticsModule;
 import fun.sakurawald.module.pvp_toggle.PvpModule;
@@ -63,6 +64,9 @@ public class ModMain implements ModInitializer {
 
         /* top chunks */
         CommandRegistrationCallback.EVENT.register(TopChunksModule::registerCommand);
+
+        /* better fake-player */
+        ServerLifecycleEvents.SERVER_STARTED.register(BetterFakePlayerModule::registerScheduleTask);
     }
 
 }

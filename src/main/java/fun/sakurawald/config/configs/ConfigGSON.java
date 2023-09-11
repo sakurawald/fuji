@@ -1,9 +1,11 @@
 package fun.sakurawald.config.configs;
 
 
+import net.fabricmc.tinyremapper.extension.mixin.common.data.Pair;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @SuppressWarnings("ALL")
@@ -55,7 +57,13 @@ public class ConfigGSON {
         }
 
         public class BetterFakePlayer {
-            public int max_fake_player_limit = 2;
+            public ArrayList<Pair<Integer, Integer>> time2limit = new ArrayList<Pair<Integer, Integer>>() {
+                {
+                    this.add(Pair.of(0, 2));
+                    this.add(Pair.of(840, 0));
+                    this.add(Pair.of(1260, 2));
+                }
+            };
         }
 
         public class CommandCooldown {

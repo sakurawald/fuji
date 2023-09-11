@@ -4,7 +4,7 @@ import carpet.commands.PlayerCommand;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.ModMain;
-import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
 import fun.sakurawald.util.MessageUtil;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,22 +21,15 @@ import java.util.stream.Stream;
 @Mixin(PlayerCommand.class)
 public abstract class PlayerCommandMixin {
 
-    @SuppressWarnings("MissingUnique")
-    private static String getDecoratedString(final CommandContext<CommandSourceStack> context, final String name) {
-        ServerPlayer player = context.getSource().getPlayer();
-        String sourcePlayerName = player.getGameProfile().getName();
-        String spawnPlayerName = StringArgumentType.getString(context, name);
-        return sourcePlayerName + "_" + spawnPlayerName;
-    }
 
     @Inject(method = "spawn", at = @At("HEAD"), remap = false, cancellable = true)
     private static void $spawn(CommandContext<CommandSourceStack> context, CallbackInfoReturnable<Integer> cir) {
         ServerPlayer player = context.getSource().getPlayer();
-        int limit = ConfigManager.configWrapper.instance().modules.better_fake_player.max_fake_player_limit;
+        int limit = BetterFakePlayerModule.getCurrentAmountLimit();
         Stream<String> current = Arrays.stream(ModMain.SERVER.getPlayerList().getPlayerNamesArray())
                 .filter(sourcePlayerName -> sourcePlayerName.toLowerCase().startsWith(player.getGameProfile().getName().toLowerCase() + "_"));
         if (current.count() >= limit) {
-            MessageUtil.message(player, "You have reach the fake-player limit (%d).".formatted(limit), false);
+            MessageUtil.message(player, "You have reach the fake-player limit (current is %d).".formatted(limit), false);
             cir.setReturnValue(0);
         }
     }
@@ -50,7 +43,7 @@ public abstract class PlayerCommandMixin {
             remap = false
     )
     private static String $spawn(final CommandContext<CommandSourceStack> context, final String name) {
-        return getDecoratedString(context, name);
+        return BetterFakePlayerModule.getDecoratedString(context, name);
     }
 
     @Redirect(
@@ -63,7 +56,7 @@ public abstract class PlayerCommandMixin {
             remap = false
     )
     private static String $cantSpawn(final CommandContext<CommandSourceStack> context, final String name) {
-        return getDecoratedString(context, name);
+        return BetterFakePlayerModule.getDecoratedString(context, name);
     }
 
     @Inject(method = "cantManipulate", at = @At("HEAD"), remap = false, cancellable = true)
