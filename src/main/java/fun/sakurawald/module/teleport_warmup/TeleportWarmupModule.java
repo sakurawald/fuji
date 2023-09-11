@@ -28,7 +28,7 @@ public class TeleportWarmupModule {
             ServerPlayer player = (ServerPlayer) bossbar.getPlayers().toArray()[0];
             TeleportTicket teleportTicket = TeleportWarmupModule.tickets.get(player);
 
-            if (((ServerPlayerEntityAccessor) player).sakurawald$inCombat()) {
+            if (((ServerPlayerAccessor) player).sakurawald$inCombat()) {
                 bossbar.setVisible(false);
                 iterator.remove();
                 MessageUtil.message(player, ConfigManager.configWrapper.instance().modules.teleport_warmup.in_combat_message, true);

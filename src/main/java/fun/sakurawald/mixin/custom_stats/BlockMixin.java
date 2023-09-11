@@ -19,12 +19,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class BlockMixin {
 
     @Inject(method = "playerDestroy", at = @At("HEAD"))
-    private void increaseCustomStat(Level world, Player player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack stack, CallbackInfo ci) {
+    private void $playerDestroy(Level world, Player player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack stack, CallbackInfo ci) {
         player.awardStat(CustomStatisticsModule.MINE_ALL);
     }
 
     @Inject(method = "setPlacedBy", at = @At("HEAD"))
-    public void onPlaced(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack, CallbackInfo ci) {
+    public void $setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack, CallbackInfo ci) {
         if (!(placer instanceof ServerPlayer player)) return;
         player.awardStat(CustomStatisticsModule.PLACED_ALL);
     }

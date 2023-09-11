@@ -50,7 +50,6 @@ public class RandomTeleport {
                 player.setRespawnPosition(world.dimension(), player.blockPosition(), 0, true, false);
             }
         });
-
     }
 
     private static void exec(ServerPlayer player, ServerLevel world) {

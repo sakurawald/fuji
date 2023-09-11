@@ -26,7 +26,7 @@ public abstract class PvpToggleMixin extends Player {
     public abstract void readAdditionalSaveData(CompoundTag nbt);
 
     @Inject(method = "canHarmPlayer", at = @At("HEAD"), cancellable = true)
-    public void checkWhitelist(Player sourcePlayer, CallbackInfoReturnable<Boolean> cir) {
+    public void $canHarmPlayer(Player sourcePlayer, CallbackInfoReturnable<Boolean> cir) {
         if (this == sourcePlayer) return;
 
         if (!PvpWhitelist.contains(sourcePlayer.getGameProfile())) {

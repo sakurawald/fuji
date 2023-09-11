@@ -30,7 +30,7 @@ public abstract class PlayerCommandMixin {
     }
 
     @Inject(method = "spawn", at = @At("HEAD"), remap = false, cancellable = true)
-    private static void spawn(CommandContext<CommandSourceStack> context, CallbackInfoReturnable<Integer> cir) {
+    private static void $spawn(CommandContext<CommandSourceStack> context, CallbackInfoReturnable<Integer> cir) {
         ServerPlayer player = context.getSource().getPlayer();
         int limit = ConfigManager.configWrapper.instance().modules.better_fake_player.max_fake_player_limit;
         Stream<String> current = Arrays.stream(ModMain.SERVER.getPlayerList().getPlayerNamesArray())
@@ -49,7 +49,7 @@ public abstract class PlayerCommandMixin {
             ),
             remap = false
     )
-    private static String spawn(final CommandContext<CommandSourceStack> context, final String name) {
+    private static String $spawn(final CommandContext<CommandSourceStack> context, final String name) {
         return getDecoratedString(context, name);
     }
 
@@ -62,12 +62,12 @@ public abstract class PlayerCommandMixin {
             require = 1,
             remap = false
     )
-    private static String cantSpawn(final CommandContext<CommandSourceStack> context, final String name) {
+    private static String $cantSpawn(final CommandContext<CommandSourceStack> context, final String name) {
         return getDecoratedString(context, name);
     }
 
     @Inject(method = "cantManipulate", at = @At("HEAD"), remap = false, cancellable = true)
-    private static void cantManipulate(CommandContext<CommandSourceStack> context, CallbackInfoReturnable<Boolean> cir) {
+    private static void $cantManipulate(CommandContext<CommandSourceStack> context, CallbackInfoReturnable<Boolean> cir) {
         ServerPlayer sourcePlayer = context.getSource().getPlayer();
         String targetPlayerName = StringArgumentType.getString(context, "player");
         if (!targetPlayerName.toLowerCase().startsWith(sourcePlayer.getGameProfile().getName().toLowerCase() + "_")) {

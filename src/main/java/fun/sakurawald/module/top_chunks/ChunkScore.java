@@ -65,7 +65,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
 
     @Override
     public String toString() {
-        return String.format("% 5d", this.score);
+        return String.format("%-5d", this.score);
     }
 
     @Override

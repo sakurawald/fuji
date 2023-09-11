@@ -29,7 +29,7 @@ public class WhitelistMixin {
      * @see net.minecraft.server.players.GameProfileCache#add(GameProfile)
      **/
     @Inject(method = "getKeyForUser*", at = @At("HEAD"), cancellable = true)
-    void toString(GameProfile gameProfile, CallbackInfoReturnable<String> ci) {
+    void $getKeyForUser(GameProfile gameProfile, CallbackInfoReturnable<String> ci) {
         ci.setReturnValue(gameProfile.getName());
     }
 }

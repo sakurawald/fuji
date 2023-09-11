@@ -23,12 +23,11 @@ repositories {
 }
 
 loom {
-    splitEnvironmentSourceSets()
+//    splitEnvironmentSourceSets()
 
     mods {
         "sakurawald" {
             sourceSet sourceSets.main
-            sourceSet sourceSets.client
         }
     }
 
@@ -50,19 +49,17 @@ dependencies {
     include(implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras_version}")))
     modImplementation("carpet:fabric-carpet:${project.carpet_core_version}")
     modImplementation include("me.lucko:fabric-permissions-api:${project.fabric_permissions_version}")
-    implementation "net.kyori:adventure-api:4.14.0"
     modImplementation include("net.kyori:adventure-platform-fabric:5.9.0")
 
-
-    Set<String> apiModules = [
-            'fabric-api-base',
-            'fabric-command-api-v2',
-            'fabric-lifecycle-events-v1',
-            'fabric-networking-api-v1'
-    ]
-    apiModules.forEach {
-        modImplementation(fabricApi.module(it, '0.83.1+1.20.1'))
-    }
+//    Set<String> apiModules = [
+//            'fabric-api-base',
+//            'fabric-command-api-v2',
+//            'fabric-lifecycle-events-v1',
+//            'fabric-networking-api-v1'
+//    ]
+//    apiModules.forEach {
+//        modImplementation(fabricApi.module(it, '0.83.1+1.20.1'))
+//    }
 }
 
 processResources {

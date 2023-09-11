@@ -60,8 +60,7 @@ public class ConfigGSON {
         public class CommandCooldown {
             public HashMap<String, Long> command_regex_2_cooldown_ms = new HashMap<>() {
                 {
-                    this.put("rw tp (overworld|the_nether|the_end)", 180 * 1000L);
-                    this.put("chunks", 60 * 1000L);
+                    this.put("rw tp (overworld|the_nether|the_end)", 120 * 1000L);
                 }
             };
         }

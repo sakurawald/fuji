@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class EndGatewayBlockEntityMixin {
 
     @Inject(at = @At("HEAD"), method = "teleportEntity", cancellable = true)
-    private static void myTeleportEntity(Level world, BlockPos pos, BlockState state, Entity entity, TheEndGatewayBlockEntity blockEntity, CallbackInfo ci) {
+    private static void $teleportEntity(Level world, BlockPos pos, BlockState state, Entity entity, TheEndGatewayBlockEntity blockEntity, CallbackInfo ci) {
         // cancel the original method invoke and do our own logic
         ci.cancel();
 

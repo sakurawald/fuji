@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class CommandManagerMixin {
     // If you issue "///abcdefg", then commandLine = "//abcdefg"
     @Inject(method = "performCommand", at = @At("HEAD"), cancellable = true)
-    public void execute(ParseResults<CommandSourceStack> parseResults, String commandLine, CallbackInfoReturnable<Integer> cir) {
+    public void $performCommand(ParseResults<CommandSourceStack> parseResults, String commandLine, CallbackInfoReturnable<Integer> cir) {
         ServerPlayer player = parseResults.getContext().getSource().getPlayer();
         if (player == null) return;
 

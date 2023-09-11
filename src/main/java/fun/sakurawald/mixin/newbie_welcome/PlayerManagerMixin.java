@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerManagerMixin {
 
     @Inject(at = @At(value = "TAIL"), method = "placeNewPlayer")
-    private void onPlayerJoin(Connection connection, ServerPlayer player, CallbackInfo info) {
+    private void $placeNewPlayer(Connection connection, ServerPlayer player, CallbackInfo info) {
         if (player.getStats().getValue(Stats.CUSTOM.get(Stats.LEAVE_GAME)) < 1) {
             NewbieWelcomeModule.welcomeNewbiePlayer(player);
         }

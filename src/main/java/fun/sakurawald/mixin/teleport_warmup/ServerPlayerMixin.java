@@ -1,7 +1,7 @@
 package fun.sakurawald.mixin.teleport_warmup;
 
 import fun.sakurawald.config.ConfigManager;
-import fun.sakurawald.module.teleport_warmup.ServerPlayerEntityAccessor;
+import fun.sakurawald.module.teleport_warmup.ServerPlayerAccessor;
 import fun.sakurawald.module.teleport_warmup.TeleportTicket;
 import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
 import fun.sakurawald.util.CarpetUtil;
@@ -18,13 +18,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayer.class)
-public abstract class ServerPlayerEntityMixin implements ServerPlayerEntityAccessor {
+public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
 
     @Unique
     public boolean sakurawald$inCombat;
 
     @Inject(method = "teleportTo(Lnet/minecraft/server/level/ServerLevel;DDDFF)V", at = @At("HEAD"), cancellable = true)
-    public void teleport(ServerLevel targetWorld, double x, double y, double z, float yaw, float pitch, CallbackInfo ci) {
+    public void $teleportTo(ServerLevel targetWorld, double x, double y, double z, float yaw, float pitch, CallbackInfo ci) {
         ServerPlayer player = (ServerPlayer) (Object) this;
         if (CarpetUtil.isFakePlayer(player)) return;
 
@@ -41,7 +41,7 @@ public abstract class ServerPlayerEntityMixin implements ServerPlayerEntityAcces
     }
 
     @Inject(method = "hurt", at = @At("RETURN"))
-    public void onDamage(DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> cir) {
+    public void $hurt(DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> cir) {
         // If damage was actually applied...
         if (cir.getReturnValue()) {
             ServerPlayer player = (ServerPlayer) (Object) this;
@@ -53,12 +53,12 @@ public abstract class ServerPlayerEntityMixin implements ServerPlayerEntityAcces
     }
 
     @Inject(method = "onEnterCombat", at = @At("RETURN"))
-    public void onEnterCombat(CallbackInfo ci) {
+    public void $onEnterCombat(CallbackInfo ci) {
         sakurawald$inCombat = true;
     }
 
-    @Inject(method = "onEnterCombat", at = @At("RETURN"))
-    public void onExitCombat(CallbackInfo ci) {
+    @Inject(method = "onLeaveCombat", at = @At("RETURN"))
+    public void $onLeaveCombat(CallbackInfo ci) {
         sakurawald$inCombat = false;
     }
 

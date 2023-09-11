@@ -15,7 +15,7 @@ public abstract class ServerGamePacketListenerImplMixin {
     public ServerPlayer player;
 
     @Inject(method = "detectRateSpam", at = @At("HEAD"), cancellable = true)
-    public void disableCheckForSpam(CallbackInfo ci) {
+    public void $detectRateSpam(CallbackInfo ci) {
         ci.cancel();
     }
 
