@@ -73,9 +73,9 @@ public class ChatStyleModule {
         Component component = miniMessage.deserialize(input, Formatter.date("date", LocalDateTime.now(ZoneId.systemDefault()))).asComponent();
         component = resolveItemTag(source, component);
         component = resolvePositionTag(source, component);
+        ChatHistoryModule.CACHE.add(component);
         for (ServerPlayer player : ModMain.SERVER.getPlayerList().getPlayers()) {
             player.sendMessage(component);
-            ChatHistoryModule.CACHE.add(component);
         }
     }
 }
