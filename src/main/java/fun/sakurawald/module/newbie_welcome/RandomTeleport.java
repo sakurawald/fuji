@@ -3,14 +3,14 @@ package fun.sakurawald.module.newbie_welcome;
 import com.google.common.base.Stopwatch;
 import fun.sakurawald.ModMain;
 import fun.sakurawald.config.ConfigManager;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.Vec3i;
-import net.minecraft.world.chunk.Chunk;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
 
 import java.util.Iterator;
 import java.util.Optional;
@@ -31,7 +31,7 @@ public class RandomTeleport {
         return thread;
     });
 
-    public static void randomTeleport(ServerPlayerEntity player, ServerWorld world, boolean shouldSetSpawnPoint) {
+    public static void randomTeleport(ServerPlayer player, ServerLevel world, boolean shouldSetSpawnPoint) {
         threadExecutor.execute(() -> {
             ModMain.LOGGER.info(
                     String.format(
@@ -47,13 +47,13 @@ public class RandomTeleport {
                             totalTime
                     ));
             if (shouldSetSpawnPoint) {
-                player.setSpawnPoint(world.getRegistryKey(), player.getBlockPos(), 0, true, false);
+                player.setRespawnPosition(world.dimension(), player.blockPosition(), 0, true, false);
             }
         });
 
     }
 
-    private static void exec(ServerPlayerEntity player, ServerWorld world) {
+    private static void exec(ServerPlayer player, ServerLevel world) {
         var centerOpt = getRtpCenter(player);
         if (centerOpt.isEmpty()) {
             return;
@@ -75,19 +75,19 @@ public class RandomTeleport {
         }
 
         // Teleport the player
-        player.teleport(world, pos.get().getX() + 0.5, pos.get().getY(), pos.get().getZ() + 0.5, 0, 0);
+        player.teleportTo(world, pos.get().getX() + 0.5, pos.get().getY(), pos.get().getZ() + 0.5, 0, 0);
     }
 
-    private static Optional<Vec3i> getRtpCenter(ServerPlayerEntity player) {
+    private static Optional<Vec3i> getRtpCenter(ServerPlayer player) {
         return Optional.of(new Vec3i(0, 0, 0));
     }
 
-    private static Optional<BlockPos> findRtpPosition(ServerWorld world, Vec3i center, HeightFinder heightFinder, ExecutionContext ctx) {
+    private static Optional<BlockPos> findRtpPosition(ServerLevel world, Vec3i center, HeightFinder heightFinder, ExecutionContext ctx) {
         // Search for a valid y-level (not in a block, underwater, out of the world, etc.)
         final BlockPos targetXZ = getRandomXZ(center);
-        final Chunk chunk = world.getChunk(targetXZ);
+        final ChunkAccess chunk = world.getChunk(targetXZ);
 
-        for (BlockPos.Mutable candidateBlock : getChunkCandidateBlocks(chunk.getPos())) {
+        for (BlockPos.MutableBlockPos candidateBlock : getChunkCandidateBlocks(chunk.getPos())) {
             final int x = candidateBlock.getX();
             final int z = candidateBlock.getZ();
             final OptionalInt yOpt = heightFinder.getY(chunk, x, z);
@@ -123,8 +123,8 @@ public class RandomTeleport {
         return new BlockPos(new_x, 0, new_z);
     }
 
-    private static boolean isSafePosition(Chunk chunk, BlockPos pos, ExecutionContext ctx) {
-        if (pos.getY() <= chunk.getBottomY()) {
+    private static boolean isSafePosition(ChunkAccess chunk, BlockPos pos, ExecutionContext ctx) {
+        if (pos.getY() <= chunk.getMinBuildHeight()) {
             return false;
         }
 
@@ -132,9 +132,9 @@ public class RandomTeleport {
         return pos.getY() < ctx.topY && blockState.getFluidState().isEmpty() && blockState.getBlock() != Blocks.FIRE;
     }
 
-    public static Iterable<BlockPos.Mutable> getChunkCandidateBlocks(ChunkPos chunkPos) {
+    public static Iterable<BlockPos.MutableBlockPos> getChunkCandidateBlocks(ChunkPos chunkPos) {
         return () -> new Iterator<>() {
-            private final BlockPos.Mutable _pos = new BlockPos.Mutable();
+            private final BlockPos.MutableBlockPos _pos = new BlockPos.MutableBlockPos();
             private int _idx = -1;
 
             @Override
@@ -143,14 +143,14 @@ public class RandomTeleport {
             }
 
             @Override
-            public BlockPos.Mutable next() {
+            public BlockPos.MutableBlockPos next() {
                 _idx++;
                 return switch (_idx) {
-                    case 0 -> _pos.set(chunkPos.getStartX(), 0, chunkPos.getStartZ());
-                    case 1 -> _pos.set(chunkPos.getStartX(), 0, chunkPos.getEndZ());
-                    case 2 -> _pos.set(chunkPos.getEndX(), 0, chunkPos.getStartZ());
-                    case 3 -> _pos.set(chunkPos.getEndX(), 0, chunkPos.getEndZ());
-                    case 4 -> _pos.set(chunkPos.getCenterX(), 0, chunkPos.getCenterZ());
+                    case 0 -> _pos.set(chunkPos.getMinBlockX(), 0, chunkPos.getMinBlockZ());
+                    case 1 -> _pos.set(chunkPos.getMinBlockX(), 0, chunkPos.getMaxBlockZ());
+                    case 2 -> _pos.set(chunkPos.getMaxBlockX(), 0, chunkPos.getMinBlockZ());
+                    case 3 -> _pos.set(chunkPos.getMaxBlockX(), 0, chunkPos.getMaxBlockZ());
+                    case 4 -> _pos.set(chunkPos.getMiddleBlockX(), 0, chunkPos.getMiddleBlockZ());
                     default -> throw new IllegalStateException("Unexpected value: " + _idx);
                 };
             }
@@ -161,9 +161,9 @@ public class RandomTeleport {
         public final int topY;
         public final int bottomY;
 
-        public ExecutionContext(ServerWorld world) {
-            this.topY = world.getTopY();
-            this.bottomY = world.getBottomY();
+        public ExecutionContext(ServerLevel world) {
+            this.topY = world.getMaxBuildHeight();
+            this.bottomY = world.getMinBuildHeight();
         }
     }
 

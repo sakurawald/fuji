@@ -1,32 +1,32 @@
 package fun.sakurawald.mixin.resource_world;
 
-import net.minecraft.network.packet.Packet;
-import net.minecraft.server.PlayerManager;
-import net.minecraft.server.world.ServerChunkManager;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.server.level.ServerChunkCache;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.players.PlayerList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(ServerWorld.class)
+@Mixin(ServerLevel.class)
 public abstract class ServerWorldMixin {
 
     @Shadow
-    public abstract ServerChunkManager getChunkManager();
+    public abstract ServerChunkCache getChunkSource();
 
     @Redirect(
-            method = "tickWeather",
+            method = "advanceWeatherCycle",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/server/PlayerManager;sendToAll(Lnet/minecraft/network/packet/Packet;)V"
+                    target = "Lnet/minecraft/server/players/PlayerList;broadcastAll(Lnet/minecraft/network/protocol/Packet;)V"
             )
 
     )
-    private void dontSendWeatherPacketsToAllWorlds(PlayerManager instance, Packet<?> packet) {
+    private void dontSendWeatherPacketsToAllWorlds(PlayerList instance, Packet<?> packet) {
         // Vanilla sends rain packets to all players when rain starts in a world,
         // even if they are not in it, meaning that if it is possible to rain in the world they are in
         // the rain effect will remain until the player changes dimension or reconnects.
-        instance.sendToDimension(packet, this.getChunkManager().getWorld().getRegistryKey());
+        instance.broadcastAll(packet, this.getChunkSource().getLevel().dimension());
     }
 }

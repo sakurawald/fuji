@@ -1,15 +1,15 @@
 package fun.sakurawald.mixin.whitelist_fix;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.network.ClientConnection;
-import net.minecraft.server.Whitelist;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.network.Connection;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.UserWhiteList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(Whitelist.class)
+@Mixin(UserWhiteList.class)
 public class WhitelistMixin {
 
     /**
@@ -23,12 +23,12 @@ public class WhitelistMixin {
      * <p>
      * This @Inject makes the whitelist.json only look-up for the player's name, not the uuid.
      *
-     * @see Whitelist#isAllowed(GameProfile)
-     * @see Whitelist#toString(GameProfile)
-     * @see net.minecraft.server.PlayerManager#onPlayerConnect(ClientConnection, ServerPlayerEntity)
-     * @see net.minecraft.util.UserCache#add(GameProfile)
+     * @see UserWhiteList#isWhiteListed(GameProfile)
+     * @see UserWhiteList#getKeyForUser(GameProfile)
+     * @see net.minecraft.server.players.PlayerList#placeNewPlayer(Connection, ServerPlayer)
+     * @see net.minecraft.server.players.GameProfileCache#add(GameProfile)
      **/
-    @Inject(method = "toString*", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "getKeyForUser*", at = @At("HEAD"), cancellable = true)
     void toString(GameProfile gameProfile, CallbackInfoReturnable<String> ci) {
         ci.setReturnValue(gameProfile.getName());
     }

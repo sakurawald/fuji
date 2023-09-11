@@ -5,75 +5,75 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import fun.sakurawald.util.MessageUtil;
-import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 
 import java.util.Objects;
 
 public class PvpModule {
-    public static LiteralCommandNode<ServerCommandSource> registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public static LiteralCommandNode<CommandSourceStack> registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         return dispatcher.register(
-                CommandManager.literal("pvp")
+                Commands.literal("pvp")
                         .then(
-                                CommandManager.literal("on")
+                                Commands.literal("on")
                                         .executes(PvpModule::enablePvp)
                         )
                         .then(
-                                CommandManager.literal("off")
+                                Commands.literal("off")
                                         .executes(PvpModule::disablePvp)
                         )
                         .then(
-                                CommandManager.literal("list")
+                                Commands.literal("list")
                                         .executes(PvpModule::listPlayers)
                         )
                         .then(
-                                CommandManager.literal("status")
+                                Commands.literal("status")
                                         .executes(PvpModule::pvpStatus)
                         )
         );
     }
 
-    private static int enablePvp(CommandContext<ServerCommandSource> ctx) {
-        ServerCommandSource source = ctx.getSource();
+    private static int enablePvp(CommandContext<CommandSourceStack> ctx) {
+        CommandSourceStack source = ctx.getSource();
         GameProfile player = Objects.requireNonNull(source.getPlayer()).getGameProfile();
 
         if (!PvpWhitelist.contains(player)) {
             PvpWhitelist.addPlayer(player);
 
-            MessageUtil.feedback(source, "PvP for you is now on.", Formatting.DARK_AQUA);
+            MessageUtil.feedback(source, "PvP for you is now on.", ChatFormatting.DARK_AQUA);
             return 1;
         }
 
-        MessageUtil.feedback(source, "You already have PvP on!", Formatting.DARK_AQUA);
+        MessageUtil.feedback(source, "You already have PvP on!", ChatFormatting.DARK_AQUA);
         return 0;
     }
 
-    private static int disablePvp(CommandContext<ServerCommandSource> ctx) {
-        ServerCommandSource source = ctx.getSource();
+    private static int disablePvp(CommandContext<CommandSourceStack> ctx) {
+        CommandSourceStack source = ctx.getSource();
         GameProfile player = Objects.requireNonNull(source.getPlayer()).getGameProfile();
 
         if (PvpWhitelist.contains(player)) {
             PvpWhitelist.removePlayer(player);
-            MessageUtil.feedback(source, "PvP for you is now off.", Formatting.DARK_AQUA);
+            MessageUtil.feedback(source, "PvP for you is now off.", ChatFormatting.DARK_AQUA);
             return 1;
         }
 
-        MessageUtil.feedback(source, "You already have PvP off!", Formatting.DARK_AQUA);
+        MessageUtil.feedback(source, "You already have PvP off!", ChatFormatting.DARK_AQUA);
         return 0;
     }
 
 
-    private static int pvpStatus(CommandContext<ServerCommandSource> ctx) {
-        ServerCommandSource source = ctx.getSource();
+    private static int pvpStatus(CommandContext<CommandSourceStack> ctx) {
+        CommandSourceStack source = ctx.getSource();
         GameProfile player = Objects.requireNonNull(source.getPlayer()).getGameProfile();
-        MessageUtil.feedback(source, "PvP for you is " + (PvpWhitelist.contains(player) ? "on" : "off"), Formatting.DARK_AQUA);
+        MessageUtil.feedback(source, "PvP for you is " + (PvpWhitelist.contains(player) ? "on" : "off"), ChatFormatting.DARK_AQUA);
         return 1;
     }
 
-    private static int listPlayers(CommandContext<ServerCommandSource> ctx) {
-        MessageUtil.feedback(ctx.getSource(), "Players with PvP on: " + String.join(", ", PvpWhitelist.getPlayers()), Formatting.DARK_AQUA);
+    private static int listPlayers(CommandContext<CommandSourceStack> ctx) {
+        MessageUtil.feedback(ctx.getSource(), "Players with PvP on: " + String.join(", ", PvpWhitelist.getPlayers()), ChatFormatting.DARK_AQUA);
         return 1;
     }
 }

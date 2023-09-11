@@ -4,10 +4,10 @@ import fun.sakurawald.ModMain;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.util.CarpetUtil;
 import fun.sakurawald.util.MessageUtil;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.level.ServerPlayer;
 
 public class NewbieWelcomeModule {
-    public static void welcomeNewbiePlayer(ServerPlayerEntity player) {
+    public static void welcomeNewbiePlayer(ServerPlayer player) {
         /* ignore carpet fake-player */
         if (CarpetUtil.isFakePlayer(player)) {
             ModMain.LOGGER.info("NewbieWelcomeModule: " + player.getGameProfile() + " is not whitelisted, ignore it.");
@@ -18,6 +18,6 @@ public class NewbieWelcomeModule {
         MessageUtil.broadcast(MessageUtil.resolve(ConfigManager.configWrapper.instance().modules.newbie_welcome.welcome_message, player), false);
 
         /* random teleport */
-        RandomTeleport.randomTeleport(player, player.getServerWorld(), true);
+        RandomTeleport.randomTeleport(player, player.serverLevel(), true);
     }
 }

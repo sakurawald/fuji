@@ -25,7 +25,6 @@ public class ConfigWrapper<T> {
         this.configClass = configClass;
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void loadFromDisk() {
         // Does the file exists ?
         try {

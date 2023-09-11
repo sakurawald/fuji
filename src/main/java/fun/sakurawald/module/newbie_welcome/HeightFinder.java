@@ -1,6 +1,6 @@
 package fun.sakurawald.module.newbie_welcome;
 
-import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.level.chunk.ChunkAccess;
 
 import java.util.OptionalInt;
 
@@ -11,6 +11,6 @@ public interface HeightFinder {
      *
      * @return A Y value corresponding to the player's feet pos
      */
-    OptionalInt getY(Chunk chunk, int x, int z);
+    OptionalInt getY(ChunkAccess chunk, int x, int z);
 }
 

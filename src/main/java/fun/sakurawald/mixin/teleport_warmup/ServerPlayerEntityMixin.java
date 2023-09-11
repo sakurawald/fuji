@@ -6,10 +6,10 @@ import fun.sakurawald.module.teleport_warmup.TeleportTicket;
 import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
 import fun.sakurawald.util.CarpetUtil;
 import fun.sakurawald.util.MessageUtil;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,19 +17,19 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ServerPlayerEntity.class)
+@Mixin(ServerPlayer.class)
 public abstract class ServerPlayerEntityMixin implements ServerPlayerEntityAccessor {
 
     @Unique
     public boolean sakurawald$inCombat;
 
-    @Inject(method = "teleport(Lnet/minecraft/server/world/ServerWorld;DDDFF)V", at = @At("HEAD"), cancellable = true)
-    public void teleport(ServerWorld targetWorld, double x, double y, double z, float yaw, float pitch, CallbackInfo ci) {
-        ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+    @Inject(method = "teleportTo(Lnet/minecraft/server/level/ServerLevel;DDDFF)V", at = @At("HEAD"), cancellable = true)
+    public void teleport(ServerLevel targetWorld, double x, double y, double z, float yaw, float pitch, CallbackInfo ci) {
+        ServerPlayer player = (ServerPlayer) (Object) this;
         if (CarpetUtil.isFakePlayer(player)) return;
 
         if (!TeleportWarmupModule.tickets.containsKey(player)) {
-            TeleportWarmupModule.tickets.put(player, new TeleportTicket(player, targetWorld, player.getPos(), new Vec3d(x, y, z), yaw, pitch, false));
+            TeleportWarmupModule.tickets.put(player, new TeleportTicket(player, targetWorld, player.position(), new Vec3(x, y, z), yaw, pitch, false));
             ci.cancel();
         } else {
             TeleportTicket ticket = TeleportWarmupModule.tickets.get(player);
@@ -40,11 +40,11 @@ public abstract class ServerPlayerEntityMixin implements ServerPlayerEntityAcces
         }
     }
 
-    @Inject(method = "damage", at = @At("RETURN"))
+    @Inject(method = "hurt", at = @At("RETURN"))
     public void onDamage(DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> cir) {
         // If damage was actually applied...
         if (cir.getReturnValue()) {
-            ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+            ServerPlayer player = (ServerPlayer) (Object) this;
             if (TeleportWarmupModule.tickets.containsKey(player)) {
                 TeleportWarmupModule.tickets.get(player).bossbar.setVisible(false);
                 TeleportWarmupModule.tickets.remove(player);
@@ -52,12 +52,12 @@ public abstract class ServerPlayerEntityMixin implements ServerPlayerEntityAcces
         }
     }
 
-    @Inject(method = "enterCombat", at = @At("RETURN"))
+    @Inject(method = "onEnterCombat", at = @At("RETURN"))
     public void onEnterCombat(CallbackInfo ci) {
         sakurawald$inCombat = true;
     }
 
-    @Inject(method = "endCombat", at = @At("RETURN"))
+    @Inject(method = "onEnterCombat", at = @At("RETURN"))
     public void onExitCombat(CallbackInfo ci) {
         sakurawald$inCombat = false;
     }

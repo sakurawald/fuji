@@ -13,37 +13,38 @@ import fun.sakurawald.module.resource_world.interfaces.DimensionOptionsMixinInte
 import fun.sakurawald.module.resource_world.interfaces.SimpleRegistryMixinInterface;
 import fun.sakurawald.util.MessageUtil;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
-import net.minecraft.block.Blocks;
-import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.entity.boss.dragon.EnderDragonFight;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.SimpleRegistry;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.MappedRegistry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.RandomSeed;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.source.BiomeAccess;
-import net.minecraft.world.dimension.DimensionOptions;
-import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.dimension.DimensionTypes;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.BiomeManager;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
+import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.dimension.LevelStem;
+import net.minecraft.world.level.dimension.end.EndDragonFight;
+import net.minecraft.world.level.levelgen.RandomSupport;
 
 import java.time.LocalTime;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static net.minecraft.server.command.CommandManager.literal;
+import static net.minecraft.commands.Commands.literal;
 
 public class ResourceWorldModule {
 
@@ -66,11 +67,11 @@ public class ResourceWorldModule {
         }, initialDelay, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS);
     }
 
-    public static LiteralCommandNode<ServerCommandSource> registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public static LiteralCommandNode<CommandSourceStack> registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         return dispatcher.register(
-                CommandManager.literal("rw")
-                        .then(literal("reset").requires(source -> source.hasPermissionLevel(4)).executes(ResourceWorldModule::resetWorlds))
-                        .then(literal("delete").requires(source -> source.hasPermissionLevel(4)).then(literal(DEFAULT_OVERWORLD_PATH).executes(ResourceWorldModule::deleteWorld))
+                Commands.literal("rw")
+                        .then(literal("reset").requires(source -> source.hasPermission(4)).executes(ResourceWorldModule::resetWorlds))
+                        .then(literal("delete").requires(source -> source.hasPermission(4)).then(literal(DEFAULT_OVERWORLD_PATH).executes(ResourceWorldModule::deleteWorld))
                                 .then(literal(DEFAULT_THE_NETHER_PATH).executes(ResourceWorldModule::deleteWorld))
                                 .then(literal(DEFAULT_THE_END_PATH).executes(ResourceWorldModule::deleteWorld)))
                         .then(literal("tp").then(literal(DEFAULT_OVERWORLD_PATH).executes(ResourceWorldModule::teleportWorld))
@@ -80,14 +81,14 @@ public class ResourceWorldModule {
         );
     }
 
-    private static int resetWorlds(CommandContext<ServerCommandSource> ctx) {
+    private static int resetWorlds(CommandContext<CommandSourceStack> ctx) {
         resetWorlds(ctx.getSource().getServer());
         return 1;
     }
 
     private static void resetWorlds(MinecraftServer server) {
-        MessageUtil.broadcast("Start to reset resource worlds...", Formatting.GOLD);
-        ConfigManager.configWrapper.instance().modules.resource_world.seed = RandomSeed.getSeed();
+        MessageUtil.broadcast("Start to reset resource worlds...", ChatFormatting.GOLD);
+        ConfigManager.configWrapper.instance().modules.resource_world.seed = RandomSupport.generateUniqueSeed();
         ConfigManager.configWrapper.saveToDisk();
         deleteWorld(server, DEFAULT_OVERWORLD_PATH);
         deleteWorld(server, DEFAULT_THE_NETHER_PATH);
@@ -96,126 +97,127 @@ public class ResourceWorldModule {
 
     public static void loadWorlds(MinecraftServer server) {
         long seed = ConfigManager.configWrapper.instance().modules.resource_world.seed;
-        createWorld(server, DimensionTypes.OVERWORLD, DEFAULT_OVERWORLD_PATH, seed);
-        createWorld(server, DimensionTypes.THE_NETHER, DEFAULT_THE_NETHER_PATH, seed);
-        createWorld(server, DimensionTypes.THE_END, DEFAULT_THE_END_PATH, seed);
+        createWorld(server, BuiltinDimensionTypes.OVERWORLD, DEFAULT_OVERWORLD_PATH, seed);
+        createWorld(server, BuiltinDimensionTypes.NETHER, DEFAULT_THE_NETHER_PATH, seed);
+        createWorld(server, BuiltinDimensionTypes.END, DEFAULT_THE_END_PATH, seed);
     }
 
     @SuppressWarnings("DataFlowIssue")
-    private static ChunkGenerator getChunkGenerator(MinecraftServer server, RegistryKey<DimensionType> dimensionTypeRegistryKey) {
-        if (dimensionTypeRegistryKey == DimensionTypes.OVERWORLD) {
-            return server.getWorld(World.OVERWORLD).getChunkManager().getChunkGenerator();
+    private static ChunkGenerator getChunkGenerator(MinecraftServer server, ResourceKey<DimensionType> dimensionTypeRegistryKey) {
+        if (dimensionTypeRegistryKey == BuiltinDimensionTypes.OVERWORLD) {
+            return server.getLevel(Level.OVERWORLD).getChunkSource().getGenerator();
         }
-        if (dimensionTypeRegistryKey == DimensionTypes.THE_NETHER) {
-            return server.getWorld(World.NETHER).getChunkManager().getChunkGenerator();
+        if (dimensionTypeRegistryKey == BuiltinDimensionTypes.NETHER) {
+            return server.getLevel(Level.NETHER).getChunkSource().getGenerator();
         }
-        if (dimensionTypeRegistryKey == DimensionTypes.THE_END) {
-            return server.getWorld(World.END).getChunkManager().getChunkGenerator();
+        if (dimensionTypeRegistryKey == BuiltinDimensionTypes.END) {
+            return server.getLevel(Level.END).getChunkSource().getGenerator();
         }
         return null;
     }
 
-    private static DimensionOptions createDimensionOptions(MinecraftServer server, RegistryKey<DimensionType> dimensionTypeRegistryKey) {
-        RegistryEntry<DimensionType> dimensionTypeRegistryEntry = getDimensionTypeRegistryEntry(server, dimensionTypeRegistryKey);
+    private static LevelStem createDimensionOptions(MinecraftServer server, ResourceKey<DimensionType> dimensionTypeRegistryKey) {
+        Holder<DimensionType> dimensionTypeRegistryEntry = getDimensionTypeRegistryEntry(server, dimensionTypeRegistryKey);
         ChunkGenerator chunkGenerator = getChunkGenerator(server, dimensionTypeRegistryKey);
-        return new DimensionOptions(dimensionTypeRegistryEntry, chunkGenerator);
+        return new LevelStem(dimensionTypeRegistryEntry, chunkGenerator);
     }
 
-    private static RegistryEntry<DimensionType> getDimensionTypeRegistryEntry(MinecraftServer server, RegistryKey<DimensionType> dimensionTypeRegistryKey) {
-        return server.getRegistryManager().get(RegistryKeys.DIMENSION_TYPE).getEntry(dimensionTypeRegistryKey).orElse(null);
+    private static Holder<DimensionType> getDimensionTypeRegistryEntry(MinecraftServer server, ResourceKey<DimensionType> dimensionTypeRegistryKey) {
+        return server.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getHolder(dimensionTypeRegistryKey).orElse(null);
     }
 
-    private static RegistryKey<DimensionType> getDimensionTypeRegistryKeyByPath(String path) {
-        if (path.equals(DEFAULT_OVERWORLD_PATH)) return DimensionTypes.OVERWORLD;
-        if (path.equals(DEFAULT_THE_NETHER_PATH)) return DimensionTypes.THE_NETHER;
-        if (path.equals(DEFAULT_THE_END_PATH)) return DimensionTypes.THE_END;
+    private static ResourceKey<DimensionType> getDimensionTypeRegistryKeyByPath(String path) {
+        if (path.equals(DEFAULT_OVERWORLD_PATH)) return BuiltinDimensionTypes.OVERWORLD;
+        if (path.equals(DEFAULT_THE_NETHER_PATH)) return BuiltinDimensionTypes.NETHER;
+        if (path.equals(DEFAULT_THE_END_PATH)) return BuiltinDimensionTypes.END;
         return null;
     }
 
 
-    private static SimpleRegistry<DimensionOptions> getDimensionOptionsRegistry(MinecraftServer server) {
-        DynamicRegistryManager registryManager = server.getCombinedDynamicRegistries().getCombinedRegistryManager();
-        return (SimpleRegistry<DimensionOptions>) registryManager.get(RegistryKeys.DIMENSION);
+    private static MappedRegistry<LevelStem> getDimensionOptionsRegistry(MinecraftServer server) {
+        RegistryAccess registryManager = server.registries().compositeAccess();
+        return (MappedRegistry<LevelStem>) registryManager.registryOrThrow(Registries.LEVEL_STEM);
     }
 
-    public static void createWorld(MinecraftServer server, RegistryKey<DimensionType> dimensionTypeRegistryKey, String path, long seed) {
+    public static void createWorld(MinecraftServer server, ResourceKey<DimensionType> dimensionTypeRegistryKey, String path, long seed) {
         /* create the world */
-        ResourceWorldProperties resourceWorldProperties = new ResourceWorldProperties(server.getSaveProperties(), seed);
-        RegistryKey<World> worldRegistryKey = RegistryKey.of(RegistryKeys.WORLD, new Identifier(DEFAULT_WORLD_PREFIX, path));
-        DimensionOptions dimensionOptions = createDimensionOptions(server, dimensionTypeRegistryKey);
-        ServerWorld world = new ResourceWorld(server,
-                Util.getMainWorkerExecutor(),
-                ((MinecraftServerAccessor) server).getSession(),
+        ResourceWorldProperties resourceWorldProperties = new ResourceWorldProperties(server.getWorldData(), seed);
+        ResourceKey<Level> worldRegistryKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(DEFAULT_WORLD_PREFIX, path));
+        LevelStem dimensionOptions = createDimensionOptions(server, dimensionTypeRegistryKey);
+        ServerLevel world = new ResourceWorld(server,
+                Util.backgroundExecutor(),
+                ((MinecraftServerAccessor) server).getStorageSource(),
                 resourceWorldProperties,
                 worldRegistryKey,
                 dimensionOptions,
                 VoidWorldGenerationProgressListener.INSTANCE,
                 false,
-                BiomeAccess.hashSeed(seed),
+                BiomeManager.obfuscateSeed(seed),
                 ImmutableList.of(),
                 true,
                 null);
 
-        if (dimensionTypeRegistryKey == DimensionTypes.THE_END) {
-            world.setEnderDragonFight(new EnderDragonFight(world, world.getSeed(), EnderDragonFight.Data.DEFAULT));
+        if (dimensionTypeRegistryKey == BuiltinDimensionTypes.END) {
+            world.setDragonFight(new EndDragonFight(world, world.getSeed(), EndDragonFight.Data.DEFAULT));
         }
 
         /* register the world */
         ((DimensionOptionsMixinInterface) (Object) dimensionOptions).sakurawald$setSaveProperties(false);
 
-        SimpleRegistry<DimensionOptions> dimensionsRegistry = getDimensionOptionsRegistry(server);
+        MappedRegistry<LevelStem> dimensionsRegistry = getDimensionOptionsRegistry(server);
         boolean isFrozen = ((SimpleRegistryMixinInterface<?>) dimensionsRegistry).sakurawald$isFrozen();
         ((SimpleRegistryMixinInterface<?>) dimensionsRegistry).sakurawald$setFrozen(false);
-        var dimensionOptionsRegistryKey = RegistryKey.of(RegistryKeys.DIMENSION, worldRegistryKey.getValue());
-        if (!dimensionsRegistry.contains(dimensionOptionsRegistryKey)) {
-            dimensionsRegistry.add(dimensionOptionsRegistryKey, dimensionOptions, Lifecycle.stable());
+        var dimensionOptionsRegistryKey = ResourceKey.create(Registries.LEVEL_STEM, worldRegistryKey.location());
+        if (!dimensionsRegistry.containsKey(dimensionOptionsRegistryKey)) {
+            dimensionsRegistry.register(dimensionOptionsRegistryKey, dimensionOptions, Lifecycle.stable());
         }
         ((SimpleRegistryMixinInterface<?>) dimensionsRegistry).sakurawald$setFrozen(isFrozen);
 
-        ((MinecraftServerAccessor) server).getWorlds().put(world.getRegistryKey(), world);
+        ((MinecraftServerAccessor) server).getLevels().put(world.dimension(), world);
         ServerWorldEvents.LOAD.invoker().onWorldLoad(server, world);
         world.tick(() -> true);
 
-        MessageUtil.broadcast(String.format("Create resource world %s done.", path), Formatting.GOLD);
+        MessageUtil.broadcast(String.format("Create resource world %s done.", path), ChatFormatting.GOLD);
     }
 
-    private static ServerWorld getResourceWorldByPath(MinecraftServer server, String path) {
-        RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, new Identifier(DEFAULT_WORLD_PREFIX, path));
-        return server.getWorld(worldKey);
+    private static ServerLevel getResourceWorldByPath(MinecraftServer server, String path) {
+        ResourceKey<Level> worldKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(DEFAULT_WORLD_PREFIX, path));
+        return server.getLevel(worldKey);
     }
 
-    private static void createSafePlatform(ServerWorld world, BlockPos pos) {
-        BlockPos origin = pos.add(-2, -1, -2);
+    private static void createSafePlatform(ServerLevel world, BlockPos pos) {
+        BlockPos origin = pos.offset(-2, -1, -2);
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 for (int k = 0; k < 5; k++) {
-                    BlockPos blockPos = origin.add(i, k, j);
+                    BlockPos blockPos = origin.offset(i, k, j);
                     if (k == 0 || k == 4) {
-                        world.setBlockState(blockPos, Blocks.OBSIDIAN.getDefaultState());
+                        world.setBlockAndUpdate(blockPos, Blocks.OBSIDIAN.defaultBlockState());
                     } else {
-                        world.setBlockState(blockPos, Blocks.AIR.getDefaultState());
+                        world.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
                     }
                 }
             }
         }
     }
 
-    private static int teleportWorld(CommandContext<ServerCommandSource> ctx) {
+    private static int teleportWorld(CommandContext<CommandSourceStack> ctx) {
         String path = ctx.getNodes().get(2).getNode().getName();
-        ServerWorld world = getResourceWorldByPath(ctx.getSource().getServer(), path);
+        ServerLevel world = getResourceWorldByPath(ctx.getSource().getServer(), path);
         if (world == null) {
-            MessageUtil.feedback(ctx.getSource(), String.format("Target resource world %s doesn't exist.", path), Formatting.RED);
+            MessageUtil.feedback(ctx.getSource(), String.format("Target resource world %s doesn't exist.", path), ChatFormatting.RED);
             return 0;
         }
 
-        ServerPlayerEntity player = ctx.getSource().getPlayer();
+        ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return 0;
 
-        if (world.getDimensionKey() == DimensionTypes.THE_END) {
-            ServerWorld.createEndSpawnPlatform(world);
-            BlockPos endSpawnPos = ServerWorld.END_SPAWN_POS;
-            player.teleport(world, endSpawnPos.getX() + 0.5, endSpawnPos.getY(), endSpawnPos.getZ() + 0.5, 90, 0);
+        if (world.dimensionTypeId() == BuiltinDimensionTypes.END) {
+            ServerLevel.makeObsidianPlatform(world);
+            BlockPos endSpawnPos = ServerLevel.END_SPAWN_POINT;
+            player.teleportTo(world, endSpawnPos.getX() + 0.5, endSpawnPos.getY(), endSpawnPos.getZ() + 0.5, 90, 0);
         } else {
+            MessageUtil.message(player, Component.literal("Looking for a safe location... (don't move)").withStyle(ChatFormatting.GOLD), true);
             RandomTeleport.randomTeleport(player, world, false);
         }
 
@@ -224,19 +226,19 @@ public class ResourceWorldModule {
 
 
     public static void deleteWorld(MinecraftServer server, String path) {
-        ServerWorld world = getResourceWorldByPath(server, path);
+        ServerLevel world = getResourceWorldByPath(server, path);
         if (world == null) return;
 
         ResourceWorldManager.enqueueWorldDeletion(world);
-        MessageUtil.broadcast(String.format("Delete resource world %s done.", path), Formatting.GOLD);
+        MessageUtil.broadcast(String.format("Delete resource world %s done.", path), ChatFormatting.GOLD);
     }
 
 
-    private static int deleteWorld(CommandContext<ServerCommandSource> ctx) {
+    private static int deleteWorld(CommandContext<CommandSourceStack> ctx) {
         String path = ctx.getNodes().get(2).getNode().getName();
-        ServerWorld world = getResourceWorldByPath(ctx.getSource().getServer(), path);
+        ServerLevel world = getResourceWorldByPath(ctx.getSource().getServer(), path);
         if (world == null) {
-            MessageUtil.feedback(ctx.getSource(), String.format("Target resource world %s doesn't exist.", path), Formatting.RED);
+            MessageUtil.feedback(ctx.getSource(), String.format("Target resource world %s doesn't exist.", path), ChatFormatting.RED);
             return 0;
         }
 
@@ -245,10 +247,10 @@ public class ResourceWorldModule {
     }
 
 
-    public static void onWorldUnload(MinecraftServer server, ServerWorld world) {
+    public static void onWorldUnload(MinecraftServer server, ServerLevel world) {
         if (server.isRunning()) {
-            String namespace = world.getRegistryKey().getValue().getNamespace();
-            String path = world.getRegistryKey().getValue().getPath();
+            String namespace = world.dimension().location().getNamespace();
+            String path = world.dimension().location().getPath();
             // Important: only delete the world if it's a resource world
             if (!namespace.equals(DEFAULT_WORLD_PREFIX)) return;
 

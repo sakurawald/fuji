@@ -1,35 +1,35 @@
 package fun.sakurawald.mixin.resource_world;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.EndGatewayBlockEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.EndGatewayFeatureConfig;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.TheEndGatewayBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.configurations.EndGatewayConfiguration;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(EndGatewayBlockEntity.class)
+@Mixin(TheEndGatewayBlockEntity.class)
 public interface EndGatewayBlockEntityAccessor {
 
-    @Invoker("setupExitPortalLocation")
-    static BlockPos setupExitPortalLocation(ServerWorld world, BlockPos pos) {
+    @Invoker("findOrCreateValidTeleportPos")
+    static BlockPos findOrCreateValidTeleportPos(ServerLevel world, BlockPos pos) {
         throw new AssertionError();
     }
 
-    @Invoker("createPortal")
-    static void createPortal(ServerWorld world, BlockPos pos, EndGatewayFeatureConfig config) {
+    @Invoker("spawnGatewayPortal")
+    static void spawnGatewayPortal(ServerLevel world, BlockPos pos, EndGatewayConfiguration config) {
         throw new AssertionError();
     }
 
-    @Invoker("findBestPortalExitPos")
-    static BlockPos findBestPortalExitPos(World world, BlockPos pos) {
+    @Invoker("findExitPosition")
+    static BlockPos findExitPosition(Level world, BlockPos pos) {
         throw new AssertionError();
     }
 
-    @Invoker("startTeleportCooldown")
-    static void startTeleportCooldown(World world, BlockPos pos, BlockState state, EndGatewayBlockEntity blockEntity) {
+    @Invoker("triggerCooldown")
+    static void triggerCooldown(Level world, BlockPos pos, BlockState state, TheEndGatewayBlockEntity blockEntity) {
         throw new AssertionError();
     }
 
@@ -37,10 +37,10 @@ public interface EndGatewayBlockEntityAccessor {
     void setTeleportCooldown(int teleportCooldown);
 
     @Accessor
-    BlockPos getExitPortalPos();
+    BlockPos getExitPortal();
 
     @Accessor
-    void setExitPortalPos(BlockPos exitPortalPos);
+    void setExitPortal(BlockPos exitPortalPos);
 
     @Accessor
     boolean isExactTeleport();

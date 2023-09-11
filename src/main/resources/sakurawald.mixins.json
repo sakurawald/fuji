@@ -4,8 +4,8 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "better_fake_player.PlayerCommandMixin",
-    "bypass_things.chat_speed.ServerPlayNetworkHandlerMixin",
-    "bypass_things.move_speed.ServerPlayNetworkHandlerMixin",
+    "bypass_things.chat_speed.ServerGamePacketListenerImplMixin",
+    "bypass_things.move_speed.ServerGamePacketListenerImplMixin",
     "bypass_things.player_limit.DedicatedPlayerManagerMixin",
     "chat_history.PlayerManagerMixin",
     "command_cooldown.CommandManagerMixin",
@@ -23,9 +23,9 @@
     "resource_world.registry.DimensionOptionsRegistryHolderMixin",
     "resource_world.registry.SimpleRegistryMixin",
     "teleport_warmup.ServerPlayerEntityMixin",
+    "top_chunks.ThreadedAnvilChunkStorageMixin",
     "whitelist_fix.WhitelistMixin",
-    "zero_command_permission.CommandNodeAccessor",
-    "zero_command_permission.CommandSourceStackAccessor"
+    "zero_command_permission.CommandNodeAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

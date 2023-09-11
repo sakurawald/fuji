@@ -7,14 +7,14 @@ import com.google.gson.JsonParser;
 import fun.sakurawald.ModMain;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.mixin.custom_stats.StatsAccessor;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.stat.ServerStatHandler;
-import net.minecraft.stat.StatFormatter;
-import net.minecraft.stat.Stats;
-import net.minecraft.util.Identifier;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.ServerStatsCounter;
+import net.minecraft.stats.StatFormatter;
+import net.minecraft.stats.Stats;
 
 import java.io.File;
 import java.io.FileReader;
@@ -29,9 +29,9 @@ public class CustomStatisticsModule {
     private static final int CM_TO_KM_DIVISOR = 100 * 1000;
     private static final int GT_TO_H_DIVISOR = 20 * 3600;
     private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
-    public static Identifier MINE_ALL;
-    public static Identifier PLACED_ALL;
-    public static Identifier MOVED_ALL;
+    public static ResourceLocation MINE_ALL;
+    public static ResourceLocation PLACED_ALL;
+    public static ResourceLocation MOVED_ALL;
 
     public static void registerCustomStats() {
         CustomStatisticsModule.MINE_ALL = CustomStatisticsModule.registerCustomStat("mined_all", StatFormatter.DEFAULT);
@@ -39,10 +39,10 @@ public class CustomStatisticsModule {
         CustomStatisticsModule.MOVED_ALL = CustomStatisticsModule.registerCustomStat("moved_all", StatFormatter.DEFAULT);
     }
 
-    private static Identifier registerCustomStat(String name, StatFormatter statFormatter) {
-        Identifier statId = new Identifier(name);
-        Registry.register(Registries.CUSTOM_STAT, name, statId);
-        StatsAccessor.getCUSTOM().getOrCreateStat(statId, statFormatter);
+    private static ResourceLocation registerCustomStat(String name, StatFormatter statFormatter) {
+        ResourceLocation statId = new ResourceLocation(name);
+        Registry.register(BuiltInRegistries.CUSTOM_STAT, name, statId);
+        StatsAccessor.getCUSTOM().get(statId, statFormatter);
         ModMain.LOGGER.info("Registered custom statistic " + statId);
         return statId;
     }
@@ -105,25 +105,25 @@ public class CustomStatisticsModule {
         return count;
     }
 
-    private static void updateMovedAllStat(ServerPlayerEntity player) {
-        ServerStatHandler statHandler = player.getStatHandler();
+    private static void updateMovedAllStat(ServerPlayer player) {
+        ServerStatsCounter statHandler = player.getStats();
         int value =
-                (statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.WALK_ONE_CM))
-                        + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.CROUCH_ONE_CM))
-                        + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.SPRINT_ONE_CM))
-                        + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.WALK_ON_WATER_ONE_CM))
-                        + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.FALL_ONE_CM))
-                        + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.CLIMB_ONE_CM))
-                        + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.FLY_ONE_CM))
-                        + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.WALK_UNDER_WATER_ONE_CM))
-                        + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.MINECART_ONE_CM))
-                        + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.BOAT_ONE_CM))
-                        + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.PIG_ONE_CM))
-                        + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.HORSE_ONE_CM))
-                        + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.AVIATE_ONE_CM))
-                        + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.SWIM_ONE_CM))
-                        + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.STRIDER_ONE_CM))) / CM_TO_KM_DIVISOR;
-        statHandler.setStat(player, Stats.CUSTOM.getOrCreateStat(MOVED_ALL), value);
+                (statHandler.getValue(Stats.CUSTOM.get(Stats.WALK_ONE_CM))
+                        + statHandler.getValue(Stats.CUSTOM.get(Stats.CROUCH_ONE_CM))
+                        + statHandler.getValue(Stats.CUSTOM.get(Stats.SPRINT_ONE_CM))
+                        + statHandler.getValue(Stats.CUSTOM.get(Stats.WALK_ON_WATER_ONE_CM))
+                        + statHandler.getValue(Stats.CUSTOM.get(Stats.FALL_ONE_CM))
+                        + statHandler.getValue(Stats.CUSTOM.get(Stats.CLIMB_ONE_CM))
+                        + statHandler.getValue(Stats.CUSTOM.get(Stats.FLY_ONE_CM))
+                        + statHandler.getValue(Stats.CUSTOM.get(Stats.WALK_UNDER_WATER_ONE_CM))
+                        + statHandler.getValue(Stats.CUSTOM.get(Stats.MINECART_ONE_CM))
+                        + statHandler.getValue(Stats.CUSTOM.get(Stats.BOAT_ONE_CM))
+                        + statHandler.getValue(Stats.CUSTOM.get(Stats.PIG_ONE_CM))
+                        + statHandler.getValue(Stats.CUSTOM.get(Stats.HORSE_ONE_CM))
+                        + statHandler.getValue(Stats.CUSTOM.get(Stats.AVIATE_ONE_CM))
+                        + statHandler.getValue(Stats.CUSTOM.get(Stats.SWIM_ONE_CM))
+                        + statHandler.getValue(Stats.CUSTOM.get(Stats.STRIDER_ONE_CM))) / CM_TO_KM_DIVISOR;
+        statHandler.setValue(player, Stats.CUSTOM.get(MOVED_ALL), value);
     }
 
     public static void updateMOTD() {
@@ -141,9 +141,9 @@ public class CustomStatisticsModule {
         // async task
         executorService.scheduleAtFixedRate(() -> {
             // update all players' moved_all stat and save its stat data into disk
-            server.getPlayerManager().getPlayerList().forEach((p) -> {
+            server.getPlayerList().getPlayers().forEach((p) -> {
                 updateMovedAllStat(p);
-                p.getStatHandler().save();
+                p.getStats().save();
             });
 
             // update motd

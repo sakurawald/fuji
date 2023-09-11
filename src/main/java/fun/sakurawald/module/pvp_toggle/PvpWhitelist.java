@@ -2,16 +2,16 @@ package fun.sakurawald.module.pvp_toggle;
 
 import com.mojang.authlib.GameProfile;
 import fun.sakurawald.ModMain;
-import net.minecraft.server.Whitelist;
-import net.minecraft.server.WhitelistEntry;
+import net.minecraft.server.players.UserWhiteList;
+import net.minecraft.server.players.UserWhiteListEntry;
 
 import java.io.File;
 
 public class PvpWhitelist {
-    private static Whitelist pvpWhitelist;
+    private static UserWhiteList pvpWhitelist;
 
     public static void create(File file) {
-        pvpWhitelist = new Whitelist(file);
+        pvpWhitelist = new UserWhiteList(file);
         load();
     }
 
@@ -24,11 +24,11 @@ public class PvpWhitelist {
     }
 
     public static boolean contains(GameProfile player) {
-        return pvpWhitelist.isAllowed(player);
+        return pvpWhitelist.isWhiteListed(player);
     }
 
     public static void addPlayer(GameProfile player) {
-        pvpWhitelist.add(new WhitelistEntry(player));
+        pvpWhitelist.add(new UserWhiteListEntry(player));
     }
 
     public static void removePlayer(GameProfile player) {
@@ -36,6 +36,6 @@ public class PvpWhitelist {
     }
 
     public static String[] getPlayers() {
-        return pvpWhitelist.getNames();
+        return pvpWhitelist.getUserList();
     }
 }

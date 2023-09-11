@@ -4,10 +4,10 @@ import com.mojang.serialization.Lifecycle;
 import fun.sakurawald.module.resource_world.interfaces.SimpleRegistryMixinInterface;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.ObjectList;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.SimpleRegistry;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Holder;
+import net.minecraft.core.MappedRegistry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,57 +18,57 @@ import java.util.Map;
 import java.util.Optional;
 
 @SuppressWarnings("unused")
-@Mixin(SimpleRegistry.class)
+@Mixin(MappedRegistry.class)
 public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInterface<T> {
 
     @Shadow
     @Final
-    private Map<T, RegistryEntry.Reference<T>> valueToEntry;
+    private Map<T, Holder.Reference<T>> byValue;
 
     @Shadow
     @Final
-    private Map<Identifier, RegistryEntry.Reference<T>> idToEntry;
+    private Map<ResourceLocation, Holder.Reference<T>> byLocation;
 
     @Shadow
     @Final
-    private Map<RegistryKey<T>, RegistryEntry.Reference<T>> keyToEntry;
+    private Map<ResourceKey<T>, Holder.Reference<T>> byKey;
 
     @Shadow
     @Final
-    private Map<T, Lifecycle> entryToLifecycle;
+    private Map<T, Lifecycle> lifecycles;
 
     @Shadow
     @Final
-    private ObjectList<RegistryEntry.Reference<T>> rawIdToEntry;
+    private ObjectList<Holder.Reference<T>> byId;
 
     @Shadow
     @Final
-    private Object2IntMap<T> entryToRawId;
+    private Object2IntMap<T> toId;
     @Shadow
     private boolean frozen;
     @Shadow
     @Nullable
-    private List<RegistryEntry.Reference<T>> cachedEntries;
+    private List<Holder.Reference<T>> holdersInOrder;
 
     @Shadow
-    public abstract Optional<RegistryEntry<T>> getEntry(int rawId);
+    public abstract Optional<Holder<T>> getHolder(int rawId);
 
     @Override
     public boolean sakurawald$remove(T entry) {
-        var registryEntry = this.valueToEntry.get(entry);
-        int rawId = this.entryToRawId.removeInt(entry);
+        var registryEntry = this.byValue.get(entry);
+        int rawId = this.toId.removeInt(entry);
         if (rawId == -1) {
             return false;
         }
 
         try {
-            this.rawIdToEntry.set(rawId, null);
-            this.idToEntry.remove(registryEntry.registryKey().getValue());
-            this.keyToEntry.remove(registryEntry.registryKey());
-            this.entryToLifecycle.remove(entry);
-            this.valueToEntry.remove(entry);
-            if (this.cachedEntries != null) {
-                this.cachedEntries.remove(registryEntry);
+            this.byId.set(rawId, null);
+            this.byLocation.remove(registryEntry.key().location());
+            this.byKey.remove(registryEntry.key());
+            this.lifecycles.remove(entry);
+            this.byValue.remove(entry);
+            if (this.holdersInOrder != null) {
+                this.holdersInOrder.remove(registryEntry);
             }
 
             return true;
@@ -79,9 +79,9 @@ public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInter
     }
 
     @Override
-    public boolean sakurawald$remove(Identifier key) {
-        var entry = this.idToEntry.get(key);
-        return entry != null && entry.hasKeyAndValue() && this.sakurawald$remove(entry.value());
+    public boolean sakurawald$remove(ResourceLocation key) {
+        var entry = this.byLocation.get(key);
+        return entry != null && entry.isBound() && this.sakurawald$remove(entry.value());
     }
 
     @Override

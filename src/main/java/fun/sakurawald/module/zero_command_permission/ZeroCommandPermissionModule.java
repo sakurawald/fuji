@@ -6,28 +6,28 @@ import fun.sakurawald.mixin.zero_command_permission.CommandNodeAccessor;
 import fun.sakurawald.util.CommandUtil;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.fabric.api.util.TriState;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.ServerCommandSource;
 
 import java.util.function.Predicate;
 
 public class ZeroCommandPermissionModule {
 
     public static void alterCommandPermission(MinecraftServer server) {
-        CommandDispatcher<ServerCommandSource> dispatcher = server.getCommandManager().getDispatcher();
+        CommandDispatcher<CommandSourceStack> dispatcher = server.getCommands().getDispatcher();
         alterCommandNode(dispatcher, dispatcher.getRoot());
     }
 
     @SuppressWarnings("unchecked")
-    private static void alterCommandNode(CommandDispatcher<ServerCommandSource> dispatcher, CommandNode<ServerCommandSource> node) {
+    private static void alterCommandNode(CommandDispatcher<CommandSourceStack> dispatcher, CommandNode<CommandSourceStack> node) {
         var commandPath = CommandUtil.buildCommandNodePath(dispatcher, node);
-        for (CommandNode<ServerCommandSource> child : node.getChildren()) {
+        for (CommandNode<CommandSourceStack> child : node.getChildren()) {
             alterCommandNode(dispatcher, child);
         }
-        ((CommandNodeAccessor<ServerCommandSource>) node).setRequirement(createZeroPermission(commandPath, node.getRequirement()));
+        ((CommandNodeAccessor<CommandSourceStack>) node).setRequirement(createZeroPermission(commandPath, node.getRequirement()));
     }
 
-    private static Predicate<ServerCommandSource> createZeroPermission(String commandPath, Predicate<ServerCommandSource> original) {
+    private static Predicate<CommandSourceStack> createZeroPermission(String commandPath, Predicate<CommandSourceStack> original) {
         return source -> {
             // ignore non-player command source
             if (source.getPlayer() == null) return original.test(source);

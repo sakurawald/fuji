@@ -1,11 +1,13 @@
 package fun.sakurawald;
 
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.config.ConfigModule;
 import fun.sakurawald.module.custom_stats.CustomStatisticsModule;
 import fun.sakurawald.module.pvp_toggle.PvpModule;
 import fun.sakurawald.module.pvp_toggle.PvpWhitelist;
 import fun.sakurawald.module.resource_world.ResourceWorldModule;
 import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
+import fun.sakurawald.module.top_chunks.TopChunksModule;
 import fun.sakurawald.module.zero_command_permission.ZeroCommandPermissionModule;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -35,6 +37,7 @@ public class ModMain implements ModInitializer {
 
         /* config */
         ConfigManager.configWrapper.loadFromDisk();
+        CommandRegistrationCallback.EVENT.register(ConfigModule::registerCommand);
 
         /* pvp toggle */
         PvpWhitelist.create(new File("pvp_whitelist.json"));
@@ -59,6 +62,9 @@ public class ModMain implements ModInitializer {
 
         /* zero command permission */
         ServerLifecycleEvents.SERVER_STARTED.register(ZeroCommandPermissionModule::alterCommandPermission);
+
+        /* top chunks */
+        CommandRegistrationCallback.EVENT.register(TopChunksModule::registerCommand);
     }
 
 }

@@ -2,9 +2,9 @@ package fun.sakurawald.module.teleport_warmup;
 
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.util.MessageUtil;
-import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerPlayer;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,20 +12,20 @@ import java.util.Map;
 
 public class TeleportWarmupModule {
 
-    public static final HashMap<ServerPlayerEntity, TeleportTicket> tickets = new HashMap<>();
+    public static final HashMap<ServerPlayer, TeleportTicket> tickets = new HashMap<>();
     private static final float MAX_VALUE = 20 * ConfigManager.configWrapper.instance().modules.teleport_warmup.warmup_second;
     private static final float DELFA_PERCENT = 1F / MAX_VALUE;
     private static final double INTERRUPT_DISTANCE = ConfigManager.configWrapper.instance().modules.teleport_warmup.interrupt_distance;
 
     public static void onServerTick(MinecraftServer server) {
-        Iterator<Map.Entry<ServerPlayerEntity, TeleportTicket>> iterator = tickets.entrySet().iterator();
+        Iterator<Map.Entry<ServerPlayer, TeleportTicket>> iterator = tickets.entrySet().iterator();
         while (iterator.hasNext()) {
 
-            Map.Entry<ServerPlayerEntity, TeleportTicket> pair = iterator.next();
-            ServerBossBar bossbar = pair.getValue().bossbar;
-            bossbar.setPercent(bossbar.getPercent() + DELFA_PERCENT);
+            Map.Entry<ServerPlayer, TeleportTicket> pair = iterator.next();
+            ServerBossEvent bossbar = pair.getValue().bossbar;
+            bossbar.setProgress(bossbar.getProgress() + DELFA_PERCENT);
 
-            ServerPlayerEntity player = (ServerPlayerEntity) bossbar.getPlayers().toArray()[0];
+            ServerPlayer player = (ServerPlayer) bossbar.getPlayers().toArray()[0];
             TeleportTicket teleportTicket = TeleportWarmupModule.tickets.get(player);
 
             if (((ServerPlayerEntityAccessor) player).sakurawald$inCombat()) {
@@ -35,17 +35,17 @@ public class TeleportWarmupModule {
                 continue;
             }
 
-            if (player.getPos().distanceTo(teleportTicket.source) >= INTERRUPT_DISTANCE) {
+            if (player.position().distanceTo(teleportTicket.source) >= INTERRUPT_DISTANCE) {
                 bossbar.setVisible(false);
                 iterator.remove();
                 continue;
             }
 
-            if (bossbar.getPercent() >= 1.0F) {
+            if (bossbar.getProgress() >= 1.0F) {
                 bossbar.setVisible(false);
 
                 teleportTicket.ready = true;
-                player.teleport(teleportTicket.world, teleportTicket.destination.x, teleportTicket.destination.y, teleportTicket.destination.z, teleportTicket.yaw, teleportTicket.pitch);
+                player.teleportTo(teleportTicket.world, teleportTicket.destination.x, teleportTicket.destination.y, teleportTicket.destination.z, teleportTicket.yaw, teleportTicket.pitch);
                 iterator.remove();
             }
         }

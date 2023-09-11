@@ -1,6 +1,9 @@
 package fun.sakurawald.config.configs;
 
 
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+
 import java.util.HashMap;
 
 @SuppressWarnings("ALL")
@@ -15,6 +18,9 @@ public class ConfigGSON {
         public TeleportWarmup teleport_warmup = new TeleportWarmup();
         public CustomStats custom_stats = new CustomStats();
         public ChatHistory chat_history = new ChatHistory();
+        public BetterFakePlayer better_fake_player = new BetterFakePlayer();
+        public CommandCooldown command_cooldown = new CommandCooldown();
+        public TopChunks top_chunks = new TopChunks();
 
         public class ResourceWorld {
             public long seed = 0L;
@@ -47,17 +53,77 @@ public class ConfigGSON {
             public int max_history = 30;
         }
 
-
-        public BetterFakePlayer better_fake_player = new BetterFakePlayer();
         public class BetterFakePlayer {
             public int max_fake_player_limit = 2;
         }
 
-        public CommandCooldown command_cooldown = new CommandCooldown();
         public class CommandCooldown {
             public HashMap<String, Long> command_regex_2_cooldown_ms = new HashMap<>() {
                 {
-                    this.put("rw tp (overworld|the_nether|the_end)", 60 * 1000L);
+                    this.put("rw tp (overworld|the_nether|the_end)", 180 * 1000L);
+                    this.put("chunks", 60 * 1000L);
+                }
+            };
+        }
+
+        public class TopChunks {
+
+            public int rows = 10;
+            public int columns = 10;
+            public int nearest_distance = 128;
+
+            public boolean hide_location = true;
+            public HashMap<String, Integer> type2score = new HashMap<>() {
+                {
+                    this.put("default", 1);
+                    this.put(BlockEntityType.getKey(BlockEntityType.CHEST).getPath(), 1);
+                    this.put(BlockEntityType.getKey(BlockEntityType.TRAPPED_CHEST).getPath(), 2);
+                    this.put(BlockEntityType.getKey(BlockEntityType.FURNACE).getPath(), 3);
+                    this.put(BlockEntityType.getKey(BlockEntityType.JUKEBOX).getPath(), 35);
+                    this.put(BlockEntityType.getKey(BlockEntityType.BEACON).getPath(), 35);
+                    this.put(BlockEntityType.getKey(BlockEntityType.HOPPER).getPath(), 8);
+                    this.put(BlockEntityType.getKey(BlockEntityType.PISTON).getPath(), 10);
+                    this.put(BlockEntityType.getKey(BlockEntityType.DISPENSER).getPath(), 10);
+                    this.put(BlockEntityType.getKey(BlockEntityType.DROPPER).getPath(), 10);
+                    this.put(BlockEntityType.getKey(BlockEntityType.BEEHIVE).getPath(), 15);
+                    this.put(BlockEntityType.getKey(BlockEntityType.MOB_SPAWNER).getPath(), 100);
+                    this.put(EntityType.getKey(EntityType.PLAYER).getPath(), 15);
+                    this.put(EntityType.getKey(EntityType.FALLING_BLOCK).getPath(), 10);
+                    this.put(EntityType.getKey(EntityType.ZOMBIE).getPath(), 4);
+                    this.put(EntityType.getKey(EntityType.ZOMBIE_VILLAGER).getPath(), 8);
+                    this.put(EntityType.getKey(EntityType.ZOMBIFIED_PIGLIN).getPath(), 5);
+                    this.put(EntityType.getKey(EntityType.ZOGLIN).getPath(), 8);
+                    this.put(EntityType.getKey(EntityType.PILLAGER).getPath(), 10);
+                    this.put(EntityType.getKey(EntityType.RAVAGER).getPath(), 4);
+                    this.put(EntityType.getKey(EntityType.EVOKER).getPath(), 5);
+                    this.put(EntityType.getKey(EntityType.VEX).getPath(), 5);
+                    this.put(EntityType.getKey(EntityType.PIGLIN).getPath(), 2);
+                    this.put(EntityType.getKey(EntityType.DROWNED).getPath(), 2);
+                    this.put(EntityType.getKey(EntityType.GUARDIAN).getPath(), 6);
+                    this.put(EntityType.getKey(EntityType.SPIDER).getPath(), 2);
+                    this.put(EntityType.getKey(EntityType.SKELETON).getPath(), 2);
+                    this.put(EntityType.getKey(EntityType.CREEPER).getPath(), 3);
+                    this.put(EntityType.getKey(EntityType.ENDERMITE).getPath(), 5);
+                    this.put(EntityType.getKey(EntityType.ENDERMAN).getPath(), 4);
+                    this.put(EntityType.getKey(EntityType.WITHER).getPath(), 55);
+                    this.put(EntityType.getKey(EntityType.VILLAGER).getPath(), 25);
+                    this.put(EntityType.getKey(EntityType.SHEEP).getPath(), 5);
+                    this.put(EntityType.getKey(EntityType.COW).getPath(), 3);
+                    this.put(EntityType.getKey(EntityType.MOOSHROOM).getPath(), 3);
+                    this.put(EntityType.getKey(EntityType.CHICKEN).getPath(), 3);
+                    this.put(EntityType.getKey(EntityType.PANDA).getPath(), 5);
+                    this.put(EntityType.getKey(EntityType.WOLF).getPath(), 8);
+                    this.put(EntityType.getKey(EntityType.CAT).getPath(), 8);
+                    this.put(EntityType.getKey(EntityType.BEE).getPath(), 15);
+                    this.put(EntityType.getKey(EntityType.BOAT).getPath(), 5);
+                    this.put(EntityType.getKey(EntityType.CHEST_BOAT).getPath(), 5);
+                    this.put(EntityType.getKey(EntityType.ITEM_FRAME).getPath(), 3);
+                    this.put(EntityType.getKey(EntityType.GLOW_ITEM_FRAME).getPath(), 3);
+                    this.put(EntityType.getKey(EntityType.ARMOR_STAND).getPath(), 10);
+                    this.put(EntityType.getKey(EntityType.ITEM).getPath(), 2);
+                    this.put(EntityType.getKey(EntityType.EXPERIENCE_ORB).getPath(), 3);
+                    this.put(EntityType.getKey(EntityType.TNT).getPath(), 70);
+                    this.put(EntityType.getKey(EntityType.HOPPER_MINECART).getPath(), 20);
                 }
             };
         }

@@ -7,18 +7,18 @@ import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.SimpleRegistry;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.MappedRegistry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionOptions;
-import net.minecraft.world.level.storage.LevelStorage;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.dimension.LevelStem;
+import net.minecraft.world.level.storage.LevelStorageSource;
+import net.minecraft.world.phys.Vec3;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import java.util.Set;
 
 public class ResourceWorldManager {
 
-    private static final Set<ServerWorld> deletionQueue = new ReferenceOpenHashSet<>();
+    private static final Set<ServerLevel> deletionQueue = new ReferenceOpenHashSet<>();
 
     static {
         ServerTickEvents.START_SERVER_TICK.register(server -> {
@@ -35,7 +35,7 @@ public class ResourceWorldManager {
         });
     }
 
-    public static void enqueueWorldDeletion(ServerWorld world) {
+    public static void enqueueWorldDeletion(ServerLevel world) {
         MinecraftServer server = world.getServer();
         server.submit(() -> {
             deletionQueue.add(world);
@@ -48,7 +48,7 @@ public class ResourceWorldManager {
         }
     }
 
-    private static boolean tickDeleteWorld(ServerWorld world) {
+    private static boolean tickDeleteWorld(ServerLevel world) {
         if (isWorldUnloaded(world)) {
             delete(world);
             return true;
@@ -58,43 +58,43 @@ public class ResourceWorldManager {
         }
     }
 
-    private static void kickPlayers(ServerWorld world) {
-        if (world.getPlayers().isEmpty()) {
+    private static void kickPlayers(ServerLevel world) {
+        if (world.players().isEmpty()) {
             return;
         }
 
-        ServerWorld overworld = world.getServer().getOverworld();
-        BlockPos spawnPos = overworld.getSpawnPos();
+        ServerLevel overworld = world.getServer().overworld();
+        BlockPos spawnPos = overworld.getSharedSpawnPos();
 
-        List<ServerPlayerEntity> players = new ArrayList<>(world.getPlayers());
-        for (ServerPlayerEntity player : players) {
+        List<ServerPlayer> players = new ArrayList<>(world.players());
+        for (ServerPlayer player : players) {
             // fix: if the player is inside resource-world while resetting the worlds, then resource worlds will delay its deletion until the player left the resource-world.
-            TeleportWarmupModule.tickets.put(player, new TeleportTicket(player, overworld, player.getPos(), new Vec3d(spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5), 0, 0, true));
-            player.teleport(overworld, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, overworld.getSpawnAngle(), 0.0F);
+            TeleportWarmupModule.tickets.put(player, new TeleportTicket(player, overworld, player.position(), new Vec3(spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5), 0, 0, true));
+            player.teleportTo(overworld, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, overworld.getSharedSpawnAngle(), 0.0F);
         }
     }
 
-    private static boolean isWorldUnloaded(ServerWorld world) {
-        return world.getPlayers().isEmpty() && world.getChunkManager().getLoadedChunkCount() <= 0;
+    private static boolean isWorldUnloaded(ServerLevel world) {
+        return world.players().isEmpty() && world.getChunkSource().getLoadedChunksCount() <= 0;
     }
 
-    private static SimpleRegistry<DimensionOptions> getDimensionsRegistry(MinecraftServer server) {
-        DynamicRegistryManager registryManager = server.getCombinedDynamicRegistries().getCombinedRegistryManager();
-        return (SimpleRegistry<DimensionOptions>) registryManager.get(RegistryKeys.DIMENSION);
+    private static MappedRegistry<LevelStem> getDimensionsRegistry(MinecraftServer server) {
+        RegistryAccess registryManager = server.registries().compositeAccess();
+        return (MappedRegistry<LevelStem>) registryManager.registryOrThrow(Registries.LEVEL_STEM);
     }
 
-    private static void delete(ServerWorld world) {
+    private static void delete(ServerLevel world) {
         MinecraftServer server = world.getServer();
         MinecraftServerAccessor serverAccess = (MinecraftServerAccessor) server;
 
-        RegistryKey<World> dimensionKey = world.getRegistryKey();
+        ResourceKey<Level> dimensionKey = world.dimension();
 
-        if (serverAccess.getWorlds().remove(dimensionKey, world)) {
+        if (serverAccess.getLevels().remove(dimensionKey, world)) {
             ServerWorldEvents.UNLOAD.invoker().onWorldUnload(server, world);
-            SimpleRegistry<DimensionOptions> dimensionsRegistry = getDimensionsRegistry(server);
-            SimpleRegistryMixinInterface.remove(dimensionsRegistry, dimensionKey.getValue());
-            LevelStorage.Session session = serverAccess.getSession();
-            File worldDirectory = session.getWorldDirectory(dimensionKey).toFile();
+            MappedRegistry<LevelStem> dimensionsRegistry = getDimensionsRegistry(server);
+            SimpleRegistryMixinInterface.remove(dimensionsRegistry, dimensionKey.location());
+            LevelStorageSource.LevelStorageAccess session = serverAccess.getStorageSource();
+            File worldDirectory = session.getDimensionPath(dimensionKey).toFile();
             cleanFiles(worldDirectory);
         }
     }
