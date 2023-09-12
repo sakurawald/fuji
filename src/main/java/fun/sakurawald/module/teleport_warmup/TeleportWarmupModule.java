@@ -25,7 +25,6 @@ public class TeleportWarmupModule {
         CompletableFuture.runAsync(() -> {
             Iterator<Map.Entry<ServerPlayer, TeleportTicket>> iterator = tickets.entrySet().iterator();
             while (iterator.hasNext()) {
-
                 Map.Entry<ServerPlayer, TeleportTicket> pair = iterator.next();
                 ServerBossEvent bossbar = pair.getValue().bossbar;
                 bossbar.setProgress(bossbar.getProgress() + DELFA_PERCENT);
@@ -50,6 +49,7 @@ public class TeleportWarmupModule {
                 if (bossbar.getProgress() >= 1.0F) {
                     bossbar.setVisible(false);
 
+                    // don't change the order of the following two lines.
                     teleportTicket.ready = true;
                     player.teleportTo(teleportTicket.world, teleportTicket.destination.x, teleportTicket.destination.y, teleportTicket.destination.z, teleportTicket.yaw, teleportTicket.pitch);
                     iterator.remove();

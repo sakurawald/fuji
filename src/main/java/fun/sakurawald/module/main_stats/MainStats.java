@@ -85,7 +85,7 @@ public class MainStats {
         return count;
     }
 
-    public void update(ServerPlayer player) {
+    public MainStats update(ServerPlayer player) {
         this.playtime = player.getStats().getValue((Stats.CUSTOM.get(Stats.PLAY_TIME))) / GT_TO_H_DIVISOR;
         this.killed = player.getStats().getValue(Stats.CUSTOM.get(Stats.MOB_KILLS));
         ServerStatsCounter statHandler = player.getStats();
@@ -104,6 +104,7 @@ public class MainStats {
                 + statHandler.getValue(Stats.CUSTOM.get(Stats.AVIATE_ONE_CM))
                 + statHandler.getValue(Stats.CUSTOM.get(Stats.SWIM_ONE_CM))
                 + statHandler.getValue(Stats.CUSTOM.get(Stats.STRIDER_ONE_CM))) / CM_TO_KM_DIVISOR;
+        return this;
     }
 
     public String resolve(String str) {

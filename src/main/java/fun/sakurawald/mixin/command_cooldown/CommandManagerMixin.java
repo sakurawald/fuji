@@ -21,9 +21,9 @@ public class CommandManagerMixin {
         ServerPlayer player = parseResults.getContext().getSource().getPlayer();
         if (player == null) return;
 
-        long cooldown = CommandCooldownModule.isCommandCooldown(player, commandLine);
+        long cooldown = CommandCooldownModule.calculateCommandCooldown(player, commandLine);
         if (cooldown > 0) {
-            MessageUtil.message(player, Component.literal("This command is being cooled down (%d sec)".formatted(cooldown / 1000)).withStyle(ChatFormatting.YELLOW), true);
+            MessageUtil.message(player, Component.literal("wait %d s".formatted(cooldown / 1000)).withStyle(ChatFormatting.YELLOW), true);
             cir.setReturnValue(0);
         }
     }

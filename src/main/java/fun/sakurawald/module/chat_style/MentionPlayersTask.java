@@ -25,8 +25,7 @@ public class MentionPlayersTask implements Runnable {
 
     @Override
     public void run() {
-        current++;
-        if (current > limit) {
+        if (++current > limit) {
             scheduledFuture.cancel(true);
             return;
         }

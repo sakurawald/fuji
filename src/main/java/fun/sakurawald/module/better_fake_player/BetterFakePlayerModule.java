@@ -85,6 +85,7 @@ public class BetterFakePlayerModule {
     }
 
     public static boolean canManipulateFakePlayer(ServerPlayer player, String fakePlayer) {
+        // skip check for op
         if (ModMain.SERVER.getPlayerList().isOp(player.getGameProfile())) return true;
 
         ArrayList<String> myFakePlayers = BetterFakePlayerModule.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), new ArrayList<>());
@@ -114,8 +115,7 @@ public class BetterFakePlayerModule {
 
     public static GameProfile createOfflineGameProfile(String fakePlayerName) {
         UUID offlinePlayerUUID = UUIDUtil.createOfflinePlayerUUID(fakePlayerName);
-        GameProfile gameProfile = new GameProfile(offlinePlayerUUID, fakePlayerName);
-        return gameProfile;
+        return new GameProfile(offlinePlayerUUID, fakePlayerName);
     }
 
     private static void checkFakePlayerLimit() {

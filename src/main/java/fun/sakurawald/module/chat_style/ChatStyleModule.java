@@ -1,5 +1,6 @@
 package fun.sakurawald.module.chat_style;
 
+import com.google.common.collect.EvictingQueue;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -7,7 +8,6 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import fun.sakurawald.ModMain;
 import fun.sakurawald.config.ConfigGSON;
 import fun.sakurawald.config.ConfigManager;
-import fun.sakurawald.module.chat_history.ChatHistoryModule;
 import fun.sakurawald.module.main_stats.MainStats;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
@@ -21,20 +21,24 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Queue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import static net.minecraft.commands.Commands.argument;
+import static net.minecraft.commands.Commands.literal;
 
 @SuppressWarnings("resource")
 public class ChatStyleModule {
+
+    @SuppressWarnings("UnstableApiUsage")
+    public static final Queue<Component> CHAT_HISTORY = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.chat_style.history.cache_size);
     private static final MiniMessage miniMessage = MiniMessage.builder().build();
 
     private static final ScheduledExecutorService mentionExecutor = Executors.newScheduledThreadPool(1);
@@ -42,9 +46,10 @@ public class ChatStyleModule {
     public static LiteralCommandNode<CommandSourceStack> registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         return dispatcher.register(
                 Commands.literal("chat")
-                        .then(argument("format", StringArgumentType.greedyString())
-                                .executes(ChatStyleModule::setChatFormat)
-                        ));
+                        .then(literal("format")
+                                .then(argument("format", StringArgumentType.greedyString())
+                                        .executes(ChatStyleModule::setChatFormat)
+                                )));
     }
 
     private static int setChatFormat(CommandContext<CommandSourceStack> ctx) {
@@ -53,9 +58,8 @@ public class ChatStyleModule {
 
         String name = player.getGameProfile().getName();
         String format = StringArgumentType.getString(ctx, "format");
-        ConfigManager.chatWrapper.instance().player2format.put(name, format);
+        ConfigManager.chatWrapper.instance().format.player2format.put(name, format);
         ConfigManager.chatWrapper.saveToDisk();
-
         return 1;
     }
 
@@ -67,9 +71,8 @@ public class ChatStyleModule {
     }
 
     private static Component resolveItemTag(ServerPlayer source, Component component) {
-        ItemStack itemStack = source.getMainHandItem();
         Component replacement =
-                itemStack.getDisplayName().asComponent().hoverEvent(source.getMainHandItem().asHoverEvent());
+                source.getMainHandItem().getDisplayName().asComponent().hoverEvent(source.getMainHandItem().asHoverEvent());
         return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)item(?=\\s|$)").replacement(replacement).build());
     }
 
@@ -79,6 +82,7 @@ public class ChatStyleModule {
         ArrayList<ServerPlayer> mentionedPlayers = new ArrayList<>();
         for (ServerPlayer player : ModMain.SERVER.getPlayerList().getPlayers()) {
             String name = player.getGameProfile().getName();
+            // here we must continue so that mentionPlayers will not be added
             if (!str.contains(name)) continue;
 
             str = str.replace(name, "<aqua>%s</aqua>".formatted(name));
@@ -98,25 +102,24 @@ public class ChatStyleModule {
 
     public static void handleChatMessage(ServerPlayer source, String message) {
         /* resolve format */
-        message = ConfigManager.chatWrapper.instance().player2format.getOrDefault(source.getGameProfile().getName(), message)
+        message = ConfigManager.chatWrapper.instance().format.player2format.getOrDefault(source.getGameProfile().getName(), message)
                 .replace("%message%", message);
+        message = resolveMentionTag(source, message);
 
         /* resolve stats */
-        String input = ConfigManager.configWrapper.instance().modules.chat_style.format;
-        message = resolveMentionTag(source, message);
-        input = input.replace("%message%", message);
-        input = input.replace("%player%", source.getGameProfile().getName());
+        String format = ConfigManager.configWrapper.instance().modules.chat_style.format;
+        format = format.replace("%message%", message);
+        format = format.replace("%player%", source.getGameProfile().getName());
         MainStats stats = MainStats.uuid2stats.getOrDefault(source.getUUID().toString(), new MainStats());
-        stats.update(source);
-        input = stats.resolve(input);
+        format = stats.update(source).resolve(format);
 
         /* resolve tags */
-        Component component = miniMessage.deserialize(input, Formatter.date("date", LocalDateTime.now(ZoneId.systemDefault()))).asComponent();
+        Component component = miniMessage.deserialize(format, Formatter.date("date", LocalDateTime.now(ZoneId.systemDefault()))).asComponent();
         component = resolveItemTag(source, component);
         component = resolvePositionTag(source, component);
-        ChatHistoryModule.CACHE.add(component);
-        ModMain.LOGGER.info(PlainTextComponentSerializer.plainText().serialize(component));
+        CHAT_HISTORY.add(component);
         // info so that it can be seen in the console
+        ModMain.LOGGER.info(PlainTextComponentSerializer.plainText().serialize(component));
         for (ServerPlayer player : ModMain.SERVER.getPlayerList().getPlayers()) {
             player.sendMessage(component);
         }

@@ -1,4 +1,4 @@
-package fun.sakurawald.mixin.chat_style;
+package fun.sakurawald.mixin.main_stats;
 
 
 import fun.sakurawald.module.main_stats.MainStats;

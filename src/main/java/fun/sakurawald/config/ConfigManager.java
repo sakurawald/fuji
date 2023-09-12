@@ -8,6 +8,6 @@ public class ConfigManager {
      **/
     public static final ConfigWrapper<ConfigGSON> configWrapper = new ConfigWrapper<>("sakurawald.json", ConfigGSON.class);
 
-    public static final ConfigWrapper<ChatGson> chatWrapper = new ConfigWrapper<>("chat.json", ChatGson.class);
+    public static final ConfigWrapper<ChatGSON> chatWrapper = new ConfigWrapper<>("chat.json", ChatGSON.class);
 
 }

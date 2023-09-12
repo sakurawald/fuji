@@ -35,7 +35,7 @@ public class TopChunksModule {
     }
 
     private static int chunks(CommandContext<CommandSourceStack> ctx) {
-        CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+        CompletableFuture.runAsync(() -> {
             PriorityQueue<ChunkScore> PQ = new PriorityQueue<>();
             /* iter worlds */
             MinecraftServer server = ctx.getSource().getServer();

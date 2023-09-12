@@ -1,8 +1,6 @@
-package fun.sakurawald.mixin.chat_history;
+package fun.sakurawald.mixin.main_stats;
 
-import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
-import fun.sakurawald.module.chat_history.ChatHistoryModule;
-import net.kyori.adventure.text.Component;
+import fun.sakurawald.module.main_stats.MainStats;
 import net.minecraft.network.Connection;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
@@ -16,10 +14,8 @@ public abstract class PlayerListMixin {
 
     @Inject(at = @At(value = "TAIL"), method = "placeNewPlayer")
     private void $placeNewPlayer(Connection connection, ServerPlayer player, CallbackInfo info) {
-        if (BetterFakePlayerModule.isFakePlayer(player)) return;
-
-        for (Component component : ChatHistoryModule.CACHE) {
-            player.sendMessage(component);
-        }
+        String uuid = player.getUUID().toString();
+        MainStats stats = MainStats.calculatePlayerMainStats(uuid);
+        MainStats.uuid2stats.put(uuid, stats);
     }
 }

@@ -1,6 +1,7 @@
 package fun.sakurawald.mixin.chat_style;
 
-import fun.sakurawald.module.main_stats.MainStats;
+import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
+import fun.sakurawald.module.chat_style.ChatStyleModule;
 import net.minecraft.network.Connection;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
@@ -14,8 +15,7 @@ public abstract class PlayerListMixin {
 
     @Inject(at = @At(value = "TAIL"), method = "placeNewPlayer")
     private void $placeNewPlayer(Connection connection, ServerPlayer player, CallbackInfo info) {
-        String uuid = player.getUUID().toString();
-        MainStats stats = MainStats.calculatePlayerMainStats(uuid);
-        MainStats.uuid2stats.put(uuid, stats);
+        if (BetterFakePlayerModule.isFakePlayer(player)) return;
+        ChatStyleModule.CHAT_HISTORY.forEach(player::sendMessage);
     }
 }

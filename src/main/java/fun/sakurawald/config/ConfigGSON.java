@@ -18,8 +18,7 @@ public class ConfigGSON {
         public ResourceWorld resource_world = new ResourceWorld();
         public NewbieWelcome newbie_welcome = new NewbieWelcome();
         public TeleportWarmup teleport_warmup = new TeleportWarmup();
-        public CustomStats custom_stats = new CustomStats();
-        public ChatHistory chat_history = new ChatHistory();
+        public MainStats main_stats = new MainStats();
         public BetterFakePlayer better_fake_player = new BetterFakePlayer();
         public CommandCooldown command_cooldown = new CommandCooldown();
         public TopChunks top_chunks = new TopChunks();
@@ -29,7 +28,7 @@ public class ConfigGSON {
             public long seed = 0L;
         }
 
-        public class CustomStats {
+        public class MainStats {
             public String dynamic_motd = "\u00a7l  \u00a72   Pure Survival 1.20.1 \u00a7c\u2764 \u00a76QQ Group 912363929\n    §b%playtime%\uD83D\uDD25 %mined%⛏ %placed%\uD83D\uDD33 %killed%\uD83D\uDDE1 %moved%\uD83C\uDF0D";
         }
 
@@ -49,12 +48,9 @@ public class ConfigGSON {
             public double interrupt_distance = 1d;
             public String bossbar_name = "Teleport";
             public String in_progress_message = "§bYou have a teleportation in progress.";
-            public String in_combat_message = "§bYou can't teleport while in combat.";
+            public String in_combat_message = "§bIn combat!";
         }
 
-        public class ChatHistory {
-            public int max_history = 30;
-        }
 
         public class BetterFakePlayer {
             public ArrayList<Pair<Integer, Integer>> time2limit = new ArrayList<Pair<Integer, Integer>>() {
@@ -140,6 +136,12 @@ public class ConfigGSON {
         public class ChatStyle {
             public String format = "<#B1B2FF>[%playtime%\uD83D\uDD25 %mined%⛏ %placed%\uD83D\uDD33 %killed%\uD83D\uDDE1 %moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:/msg %player% ><hover:show_text:\"Time: <date:'yyyy-MM-dd HH:mm:ss'><newline><italic>Click to Message\">%player%</hover></click></dark_green>> %message%";
             public MentionPlayer mention_player = new MentionPlayer();
+
+            public History history = new History();
+
+            public class History {
+                public int cache_size = 30;
+            }
 
             public class MentionPlayer {
                 public String sound = "entity.experience_orb.pickup";

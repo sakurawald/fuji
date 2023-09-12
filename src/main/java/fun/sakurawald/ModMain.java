@@ -30,50 +30,39 @@ public class ModMain implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        LOGGER.info("Loading sakurawald...");
+        LOGGER.info("onInitialize()");
 
-        /* server */
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-            SERVER = server;
-        });
+        /* server instance */
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> SERVER = server);
 
         /* config */
+        PvpWhitelist.create(new File("pvp_whitelist.json"));
         ConfigManager.configWrapper.loadFromDisk();
         ConfigManager.chatWrapper.loadFromDisk();
+
+        /* register commands */
         CommandRegistrationCallback.EVENT.register(ConfigModule::registerCommand);
-
-        /* pvp toggle */
-        PvpWhitelist.create(new File("pvp_whitelist.json"));
         CommandRegistrationCallback.EVENT.register(PvpModule::registerCommand);
-
-        /* resource world */
         CommandRegistrationCallback.EVENT.register(ResourceWorldModule::registerCommand);
-        ServerLifecycleEvents.SERVER_STARTED.register(ResourceWorldModule::loadWorlds);
-        ServerWorldEvents.UNLOAD.register(ResourceWorldModule::onWorldUnload);
-        ServerLifecycleEvents.SERVER_STARTED.register(ResourceWorldModule::registerScheduleTask);
-
-        /* main stats */
-        ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
-            CustomStatisticsModule.updateMOTD();
-            CustomStatisticsModule.registerScheduleTask(server);
-        });
-
-        /* teleport warmup */
-        ServerTickEvents.START_SERVER_TICK.register(TeleportWarmupModule::onServerTick);
-
-        /* zero command permission */
-        ServerLifecycleEvents.SERVER_STARTED.register(ZeroCommandPermissionModule::alterCommandPermission);
-
-        /* top chunks */
         CommandRegistrationCallback.EVENT.register(TopChunksModule::registerCommand);
-
-        /* better fake-player */
         CommandRegistrationCallback.EVENT.register(BetterFakePlayerModule::registerCommand);
-        ServerLifecycleEvents.SERVER_STARTED.register(BetterFakePlayerModule::registerScheduleTask);
-
-
-        /* chat style */
         CommandRegistrationCallback.EVENT.register(ChatStyleModule::registerCommand);
 
+        /* register events */
+        ServerWorldEvents.UNLOAD.register(ResourceWorldModule::onWorldUnload);
+        ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
+                    ResourceWorldModule.loadWorlds(server);
+                    ResourceWorldModule.registerScheduleTask(server);
+
+                    CustomStatisticsModule.updateMOTD();
+                    CustomStatisticsModule.registerScheduleTask(server);
+
+                    ZeroCommandPermissionModule.alterCommandPermission(server);
+
+                    BetterFakePlayerModule.registerScheduleTask(server);
+                }
+        );
+
+        ServerTickEvents.START_SERVER_TICK.register(TeleportWarmupModule::onServerTick);
     }
 }

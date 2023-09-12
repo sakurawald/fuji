@@ -12,7 +12,7 @@ public class CustomStatisticsModule {
     private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
     public static void updateMOTD() {
-        String motd = MainStats.calculateServerMainStats().resolve(ConfigManager.configWrapper.instance().modules.custom_stats.dynamic_motd);
+        String motd = MainStats.calculateServerMainStats().resolve(ConfigManager.configWrapper.instance().modules.main_stats.dynamic_motd);
         ModMain.SERVER.setMotd(motd);
     }
 
