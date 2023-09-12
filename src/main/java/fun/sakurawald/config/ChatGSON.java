@@ -10,7 +10,7 @@ public class ChatGSON {
     public class Format {
         public HashMap<String, String> player2format = new HashMap<>() {
             {
-                this.put("SakuraWald", "<rainbow>%message%");
+                this.put("SakuraWald", "<#FFC7EA>%message%");
             }
         };
     }
