@@ -8,6 +8,7 @@ import fun.sakurawald.module.main_stats.CustomStatisticsModule;
 import fun.sakurawald.module.pvp_toggle.PvpModule;
 import fun.sakurawald.module.pvp_toggle.PvpWhitelist;
 import fun.sakurawald.module.resource_world.ResourceWorldModule;
+import fun.sakurawald.module.skin.command.SkinModule;
 import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
 import fun.sakurawald.module.top_chunks.TopChunksModule;
 import fun.sakurawald.module.zero_command_permission.ZeroCommandPermissionModule;
@@ -47,6 +48,7 @@ public class ModMain implements ModInitializer {
         CommandRegistrationCallback.EVENT.register(TopChunksModule::registerCommand);
         CommandRegistrationCallback.EVENT.register(BetterFakePlayerModule::registerCommand);
         CommandRegistrationCallback.EVENT.register(ChatStyleModule::registerCommand);
+        CommandRegistrationCallback.EVENT.register(SkinModule::registerCommand);
 
         /* register events */
         ServerWorldEvents.UNLOAD.register(ResourceWorldModule::onWorldUnload);

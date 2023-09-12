@@ -3,7 +3,6 @@ package fun.sakurawald.module.zero_command_permission;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.CommandNode;
 import fun.sakurawald.mixin.zero_command_permission.CommandNodeAccessor;
-import fun.sakurawald.util.CommandUtil;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.commands.CommandSourceStack;
@@ -18,9 +17,14 @@ public class ZeroCommandPermissionModule {
         alterCommandNode(dispatcher, dispatcher.getRoot());
     }
 
+    private static String buildCommandNodePath(CommandDispatcher<CommandSourceStack> dispatcher, CommandNode<CommandSourceStack> node) {
+        String[] array = dispatcher.getPath(node).toArray(new String[]{});
+        return String.join(".", array);
+    }
+
     @SuppressWarnings("unchecked")
     private static void alterCommandNode(CommandDispatcher<CommandSourceStack> dispatcher, CommandNode<CommandSourceStack> node) {
-        var commandPath = CommandUtil.buildCommandNodePath(dispatcher, node);
+        var commandPath = buildCommandNodePath(dispatcher, node);
         for (CommandNode<CommandSourceStack> child : node.getChildren()) {
             alterCommandNode(dispatcher, child);
         }

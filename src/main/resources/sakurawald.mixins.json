@@ -24,6 +24,8 @@
     "resource_world.registry.DimensionOptionsMixin",
     "resource_world.registry.DimensionOptionsRegistryHolderMixin",
     "resource_world.registry.SimpleRegistryMixin",
+    "skin.PlayerListMixin",
+    "skin.ServerLoginNetworkHandlerMixin",
     "teleport_warmup.ServerPlayerMixin",
     "top_chunks.ThreadedAnvilChunkStorageMixin",
     "whitelist_fix.WhitelistMixin",
