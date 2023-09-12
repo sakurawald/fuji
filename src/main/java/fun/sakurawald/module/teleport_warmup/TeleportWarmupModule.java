@@ -46,6 +46,7 @@ public class TeleportWarmupModule {
                     continue;
                 }
 
+                // even the ServerPlayer is disconnected, the bossbar will still be ticked.
                 if (bossbar.getProgress() >= 1.0F) {
                     bossbar.setVisible(false);
 

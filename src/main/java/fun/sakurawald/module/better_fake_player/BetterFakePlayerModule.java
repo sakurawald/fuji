@@ -1,36 +1,89 @@
 package fun.sakurawald.module.better_fake_player;
 
-import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.tree.LiteralCommandNode;
 import fun.sakurawald.ModMain;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.util.MessageUtil;
 import net.fabricmc.tinyremapper.extension.mixin.common.data.Pair;
 import net.minecraft.ChatFormatting;
+import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.players.PlayerList;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 public class BetterFakePlayerModule {
     private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+    private static final HashMap<String, ArrayList<String>> player2fakePlayers = new HashMap<>();
 
-    public static String getDecoratedString(final CommandContext<CommandSourceStack> context, final String name) {
-        String spawnPlayerName = StringArgumentType.getString(context, name);
+    public static LiteralCommandNode<CommandSourceStack> registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+        return dispatcher.register(
+                Commands.literal("player").then(
+                        Commands.literal("who").executes(BetterFakePlayerModule::who)
+                )
+        );
+    }
 
-        ServerPlayer player = context.getSource().getPlayer();
-        if (player == null) return spawnPlayerName;
-        String sourcePlayerName = player.getGameProfile().getName();
-        return sourcePlayerName + "_" + spawnPlayerName;
+    private static int who(CommandContext<CommandSourceStack> context) {
+        /* validate */
+        validateFakePlayers();
+
+        /* output */
+        StringBuilder builder = new StringBuilder();
+        builder.append("--- Fake Players ---\n");
+        for (String player : player2fakePlayers.keySet()) {
+            builder.append(player).append(": ");
+            for (String fakePlayer : player2fakePlayers.get(player)) {
+                builder.append(fakePlayer).append(" ");
+            }
+            builder.append("\n");
+        }
+        MessageUtil.feedback(context.getSource(), builder.toString());
+        return 1;
+    }
+
+    public static void validateFakePlayers() {
+        ModMain.SERVER.getPlayerList().getPlayers().forEach(BetterFakePlayerModule::validateFakePlayers);
+    }
+
+    public static void validateFakePlayers(ServerPlayer player) {
+        if (!player2fakePlayers.containsKey(player.getGameProfile().getName())) return;
+        ArrayList<String> fakePlayers = player2fakePlayers.get(player.getGameProfile().getName());
+        fakePlayers.removeIf(name -> {
+            ServerPlayer fakePlayer = ModMain.SERVER.getPlayerList().getPlayerByName(name);
+            return fakePlayer == null || fakePlayer.isRemoved();
+        });
+        if (fakePlayers.isEmpty()) {
+            player2fakePlayers.remove(player.getGameProfile().getName());
+        }
+    }
+
+    public static boolean canSpawnFakePlayer(ServerPlayer player) {
+        /* validate */
+        validateFakePlayers(player);
+
+        /* check */
+        int limit = BetterFakePlayerModule.getCurrentAmountLimit();
+        int current = BetterFakePlayerModule.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), new ArrayList<>()).size();
+        return current < limit;
+    }
+
+    public static void addFakePlayer(ServerPlayer player, String fakePlayer) {
+        BetterFakePlayerModule.player2fakePlayers.computeIfAbsent(player.getGameProfile().getName(), k -> new ArrayList<>()).add(fakePlayer);
+    }
+
+    public static boolean canManipulateFakePlayer(ServerPlayer player, String fakePlayer) {
+        ArrayList<String> myFakePlayers = BetterFakePlayerModule.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), new ArrayList<>());
+        return myFakePlayers.contains(fakePlayer);
     }
 
     public static int getCurrentAmountLimit() {
@@ -49,40 +102,24 @@ public class BetterFakePlayerModule {
         executorService.scheduleAtFixedRate(BetterFakePlayerModule::checkFakePlayerLimit, 0, 1, TimeUnit.MINUTES);
     }
 
-    private static List<ServerPlayer> getFakePlayers() {
-        PlayerList playerList = ModMain.SERVER.getPlayerList();
-        return playerList.getPlayers().stream().filter(p -> !playerList.isWhiteListed(p.getGameProfile())).collect(Collectors.toList());
+    public static boolean isFakePlayer(ServerPlayer player) {
+        return !ModMain.SERVER.getPlayerList().isWhiteListed(player.getGameProfile())
+                || player2fakePlayers.values().stream().anyMatch(fakePlayers -> fakePlayers.contains(player.getGameProfile().getName()));
     }
 
     private static void checkFakePlayerLimit() {
-        /* get sorted fake player list */
-        List<ServerPlayer> fakePlayers = getFakePlayers();
-        fakePlayers.sort((o1, o2) -> {
-            String name1 = o1.getGameProfile().getName();
-            String name2 = o2.getGameProfile().getName();
-            return name1.compareTo(name2);
-        });
-
-        /* calculate key2players */
-        HashMap<String, ArrayList<ServerPlayer>> key2players = new HashMap<>();
-        for (ServerPlayer fakePlayer : fakePlayers) {
-            String name = fakePlayer.getGameProfile().getName();
-            int i = name.indexOf("_");
-            if (i == -1) continue;
-            String key = name.substring(0, i);
-
-            key2players.putIfAbsent(key, new ArrayList<>());
-            key2players.get(key).add(fakePlayer);
-        }
+        /* validate */
+        validateFakePlayers();
 
         /* check for limits */
         int limit = getCurrentAmountLimit();
-        for (String key : key2players.keySet()) {
-            ArrayList<ServerPlayer> players = key2players.get(key);
-            for (int i = players.size() - 1; i >= limit; i--) {
-                ServerPlayer player = players.get(i);
-                player.kill();
-                MessageUtil.broadcast("Kick fake-player %s for limit.".formatted(player.getGameProfile().getName()), ChatFormatting.GREEN);
+        for (String player : player2fakePlayers.keySet()) {
+            ArrayList<String> fakePlayers = player2fakePlayers.getOrDefault(player, new ArrayList<>());
+            for (int i = fakePlayers.size() - 1; i >= limit; i--) {
+                ServerPlayer fakePlayer = ModMain.SERVER.getPlayerList().getPlayerByName(fakePlayers.get(i));
+                if (fakePlayer == null) continue;
+                fakePlayer.kill();
+                MessageUtil.broadcast("Kick fake-player %s for limit.".formatted(fakePlayer.getGameProfile().getName()), ChatFormatting.GREEN);
             }
         }
 

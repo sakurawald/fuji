@@ -1,7 +1,7 @@
 package fun.sakurawald.mixin.chat_history;
 
+import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
 import fun.sakurawald.module.chat_history.ChatHistoryModule;
-import fun.sakurawald.util.CarpetUtil;
 import net.kyori.adventure.text.Component;
 import net.minecraft.network.Connection;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,7 +16,7 @@ public abstract class PlayerListMixin {
 
     @Inject(at = @At(value = "TAIL"), method = "placeNewPlayer")
     private void $placeNewPlayer(Connection connection, ServerPlayer player, CallbackInfo info) {
-        if (CarpetUtil.isFakePlayer(player)) return;
+        if (BetterFakePlayerModule.isFakePlayer(player)) return;
 
         for (Component component : ChatHistoryModule.CACHE) {
             player.sendMessage(component);

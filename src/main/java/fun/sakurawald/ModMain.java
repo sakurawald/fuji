@@ -66,7 +66,7 @@ public class ModMain implements ModInitializer {
         CommandRegistrationCallback.EVENT.register(TopChunksModule::registerCommand);
 
         /* better fake-player */
+        CommandRegistrationCallback.EVENT.register(BetterFakePlayerModule::registerCommand);
         ServerLifecycleEvents.SERVER_STARTED.register(BetterFakePlayerModule::registerScheduleTask);
     }
-
 }

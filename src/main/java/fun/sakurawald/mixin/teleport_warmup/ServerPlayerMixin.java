@@ -1,10 +1,10 @@
 package fun.sakurawald.mixin.teleport_warmup;
 
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
 import fun.sakurawald.module.teleport_warmup.ServerPlayerAccessor;
 import fun.sakurawald.module.teleport_warmup.TeleportTicket;
 import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
-import fun.sakurawald.util.CarpetUtil;
 import fun.sakurawald.util.MessageUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,7 +26,7 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
     @Inject(method = "teleportTo(Lnet/minecraft/server/level/ServerLevel;DDDFF)V", at = @At("HEAD"), cancellable = true)
     public void $teleportTo(ServerLevel targetWorld, double x, double y, double z, float yaw, float pitch, CallbackInfo ci) {
         ServerPlayer player = (ServerPlayer) (Object) this;
-        if (CarpetUtil.isFakePlayer(player)) return;
+        if (BetterFakePlayerModule.isFakePlayer(player)) return;
 
         if (!TeleportWarmupModule.tickets.containsKey(player)) {
             TeleportWarmupModule.tickets.put(player, new TeleportTicket(player, targetWorld, player.position(), new Vec3(x, y, z), yaw, pitch, false));

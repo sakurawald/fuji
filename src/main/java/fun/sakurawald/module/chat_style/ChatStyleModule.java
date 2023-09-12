@@ -62,8 +62,8 @@ public class ChatStyleModule {
     public static void handleChatMessage(ServerPlayer source, String message) {
         /* resolve stats */
         String input = ConfigManager.configWrapper.instance().modules.chat_style.format;
+        message = resolveMentionTag(source, message);
         input = input.replace("%message%", message);
-        input = resolveMentionTag(source, input);
         input = input.replace("%player%", source.getGameProfile().getName());
         MainStats stats = MainStats.uuid2stats.getOrDefault(source.getUUID().toString(), new MainStats());
         stats.update(source);
