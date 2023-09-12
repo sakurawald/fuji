@@ -82,6 +82,8 @@ public class BetterFakePlayerModule {
     }
 
     public static boolean canManipulateFakePlayer(ServerPlayer player, String fakePlayer) {
+        if (ModMain.SERVER.getPlayerList().isOp(player.getGameProfile())) return true;
+
         ArrayList<String> myFakePlayers = BetterFakePlayerModule.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), new ArrayList<>());
         return myFakePlayers.contains(fakePlayer);
     }
