@@ -47,7 +47,7 @@ public class ChatStyleModule {
             String name = player.getGameProfile().getName();
             if (!str.contains(name)) continue;
 
-            str = str.replace(name, "<aqua>%s<aqua>".formatted(name));
+            str = str.replace(name, "<aqua>%s<aqua><reset>".formatted(name));
             mentionedPlayers.add(player);
         }
 
