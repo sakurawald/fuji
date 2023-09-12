@@ -1,4 +1,4 @@
-package fun.sakurawald.config.configs;
+package fun.sakurawald.config;
 
 
 import net.fabricmc.tinyremapper.extension.mixin.common.data.Pair;
@@ -60,7 +60,8 @@ public class ConfigGSON {
             public ArrayList<Pair<Integer, Integer>> time2limit = new ArrayList<Pair<Integer, Integer>>() {
                 {
                     this.add(Pair.of(0, 2));
-                    this.add(Pair.of(840, 0));
+                    this.add(Pair.of(840, 1));
+                    this.add(Pair.of(1080, 0));
                     this.add(Pair.of(1260, 2));
                 }
             };
@@ -138,6 +139,16 @@ public class ConfigGSON {
 
         public class ChatStyle {
             public String format = "<#B1B2FF>[%playtime%\uD83D\uDD25 %mined%⛏ %placed%\uD83D\uDD33 %killed%\uD83D\uDDE1 %moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:/msg %player% ><hover:show_text:\"Time: <date:'yyyy-MM-dd HH:mm:ss'><newline><italic>Click to Message\">%player%</hover></click></dark_green>> %message%";
+            public MentionPlayer mention_player = new MentionPlayer();
+
+            public class MentionPlayer {
+                public String sound = "entity.experience_orb.pickup";
+                public float volume = 100f;
+                public float pitch = 1f;
+
+                public int limit = 5;
+                public int interval = 1000;
+            }
         }
     }
 }

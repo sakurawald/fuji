@@ -21,7 +21,7 @@ public class ConfigWrapper<T> {
     }
 
     public ConfigWrapper(String child, Class<T> configClass) {
-        this.file = new File("config" + File.separator + child);
+        this.file = new File("config" + File.separator + "sakurawald" + File.separator + child);
         this.configClass = configClass;
     }
 

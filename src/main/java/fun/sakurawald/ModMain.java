@@ -2,6 +2,7 @@ package fun.sakurawald;
 
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
+import fun.sakurawald.module.chat_style.ChatStyleModule;
 import fun.sakurawald.module.config.ConfigModule;
 import fun.sakurawald.module.main_stats.CustomStatisticsModule;
 import fun.sakurawald.module.pvp_toggle.PvpModule;
@@ -21,8 +22,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
-// TODO: simple chat
-// TODO: xht bug
+// TODO: res -> xht bug
+// TODO: res -> teleport to home first
 public class ModMain implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("SakuraWald");
     public static MinecraftServer SERVER;
@@ -38,6 +39,7 @@ public class ModMain implements ModInitializer {
 
         /* config */
         ConfigManager.configWrapper.loadFromDisk();
+        ConfigManager.chatWrapper.loadFromDisk();
         CommandRegistrationCallback.EVENT.register(ConfigModule::registerCommand);
 
         /* pvp toggle */
@@ -68,5 +70,10 @@ public class ModMain implements ModInitializer {
         /* better fake-player */
         CommandRegistrationCallback.EVENT.register(BetterFakePlayerModule::registerCommand);
         ServerLifecycleEvents.SERVER_STARTED.register(BetterFakePlayerModule::registerScheduleTask);
+
+
+        /* chat style */
+        CommandRegistrationCallback.EVENT.register(ChatStyleModule::registerCommand);
+
     }
 }

@@ -21,6 +21,7 @@ public class ConfigModule {
 
     private static int reload(CommandContext<CommandSourceStack> ctx) {
         ConfigManager.configWrapper.loadFromDisk();
+        ConfigManager.chatWrapper.loadFromDisk();
         MessageUtil.feedback(ctx.getSource(), "Reload successfully.");
         return 1;
     }

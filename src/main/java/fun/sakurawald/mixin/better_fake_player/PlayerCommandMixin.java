@@ -3,6 +3,7 @@ package fun.sakurawald.mixin.better_fake_player;
 import carpet.commands.PlayerCommand;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import fun.sakurawald.ModMain;
 import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
 import fun.sakurawald.util.MessageUtil;
 import net.minecraft.commands.CommandSourceStack;
@@ -25,6 +26,10 @@ public abstract class PlayerCommandMixin {
             MessageUtil.message(player, "You have reach current fake-player limit.", false);
             cir.setReturnValue(0);
         }
+
+        /* fix fake-player auth network laggy */
+        String fakePlayerName = StringArgumentType.getString(context, "player");
+        ModMain.SERVER.getProfileCache().add(BetterFakePlayerModule.createOfflineGameProfile(fakePlayerName));
     }
 
     @Inject(method = "spawn", at = @At("TAIL"), remap = false)

@@ -1,5 +1,6 @@
 package fun.sakurawald.module.better_fake_player;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
@@ -11,12 +12,14 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -109,6 +112,12 @@ public class BetterFakePlayerModule {
                 || player2fakePlayers.values().stream().anyMatch(fakePlayers -> fakePlayers.contains(player.getGameProfile().getName()));
     }
 
+    public static GameProfile createOfflineGameProfile(String fakePlayerName) {
+        UUID offlinePlayerUUID = UUIDUtil.createOfflinePlayerUUID(fakePlayerName);
+        GameProfile gameProfile = new GameProfile(offlinePlayerUUID, fakePlayerName);
+        return gameProfile;
+    }
+
     private static void checkFakePlayerLimit() {
         /* validate */
         validateFakePlayers();
@@ -124,6 +133,5 @@ public class BetterFakePlayerModule {
                 MessageUtil.broadcast("Kick fake-player %s for limit.".formatted(fakePlayer.getGameProfile().getName()), ChatFormatting.GREEN);
             }
         }
-
     }
 }
