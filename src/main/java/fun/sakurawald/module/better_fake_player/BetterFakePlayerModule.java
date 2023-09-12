@@ -51,11 +51,11 @@ public class BetterFakePlayerModule {
         return 1;
     }
 
-    public static void validateFakePlayers() {
+    private static void validateFakePlayers() {
         ModMain.SERVER.getPlayerList().getPlayers().forEach(BetterFakePlayerModule::validateFakePlayers);
     }
 
-    public static void validateFakePlayers(ServerPlayer player) {
+    private static void validateFakePlayers(ServerPlayer player) {
         if (!player2fakePlayers.containsKey(player.getGameProfile().getName())) return;
         ArrayList<String> fakePlayers = player2fakePlayers.get(player.getGameProfile().getName());
         fakePlayers.removeIf(name -> {
@@ -88,7 +88,7 @@ public class BetterFakePlayerModule {
         return myFakePlayers.contains(fakePlayer);
     }
 
-    public static int getCurrentAmountLimit() {
+    private static int getCurrentAmountLimit() {
         ArrayList<Pair<Integer, Integer>> time2limit = ConfigManager.configWrapper.instance().modules.better_fake_player.time2limit;
         LocalTime currentTime = LocalTime.now();
         int current = currentTime.getHour() * 60 + currentTime.getMinute();

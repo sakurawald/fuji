@@ -9,6 +9,7 @@ import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 
@@ -74,6 +75,8 @@ public class ChatStyleModule {
         component = resolveItemTag(source, component);
         component = resolvePositionTag(source, component);
         ChatHistoryModule.CACHE.add(component);
+        ModMain.LOGGER.info(PlainTextComponentSerializer.plainText().serialize(component));
+        // info so that it can be seen in the console
         for (ServerPlayer player : ModMain.SERVER.getPlayerList().getPlayers()) {
             player.sendMessage(component);
         }
