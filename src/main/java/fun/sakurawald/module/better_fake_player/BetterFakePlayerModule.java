@@ -7,7 +7,6 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import fun.sakurawald.ModMain;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.util.MessageUtil;
-import net.fabricmc.tinyremapper.extension.mixin.common.data.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -16,10 +15,9 @@ import net.minecraft.core.UUIDUtil;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -55,24 +53,21 @@ public class BetterFakePlayerModule {
     }
 
     private static void validateFakePlayers() {
-        ModMain.SERVER.getPlayerList().getPlayers().forEach(BetterFakePlayerModule::validateFakePlayers);
-    }
-
-    private static void validateFakePlayers(ServerPlayer player) {
-        if (!player2fakePlayers.containsKey(player.getGameProfile().getName())) return;
-        ArrayList<String> fakePlayers = player2fakePlayers.get(player.getGameProfile().getName());
-        fakePlayers.removeIf(name -> {
-            ServerPlayer fakePlayer = ModMain.SERVER.getPlayerList().getPlayerByName(name);
-            return fakePlayer == null || fakePlayer.isRemoved();
-        });
-        if (fakePlayers.isEmpty()) {
-            player2fakePlayers.remove(player.getGameProfile().getName());
+        for (Map.Entry<String, ArrayList<String>> entry : player2fakePlayers.entrySet()) {
+            ArrayList<String> fakePlayers = entry.getValue();
+            fakePlayers.removeIf(name -> {
+                ServerPlayer fakePlayer = ModMain.SERVER.getPlayerList().getPlayerByName(name);
+                return fakePlayer == null || fakePlayer.isRemoved();
+            });
+            if (fakePlayers.isEmpty()) {
+                player2fakePlayers.remove(entry.getKey());
+            }
         }
     }
 
     public static boolean canSpawnFakePlayer(ServerPlayer player) {
         /* validate */
-        validateFakePlayers(player);
+        validateFakePlayers();
 
         /* check */
         int limit = BetterFakePlayerModule.getCurrentAmountLimit();
@@ -93,15 +88,15 @@ public class BetterFakePlayerModule {
     }
 
     private static int getCurrentAmountLimit() {
-        ArrayList<Pair<Integer, Integer>> time2limit = ConfigManager.configWrapper.instance().modules.better_fake_player.time2limit;
+        ArrayList<List<Integer>> rules = ConfigManager.configWrapper.instance().modules.better_fake_player.limit_rule;
+        LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
-        int current = currentTime.getHour() * 60 + currentTime.getMinute();
-        int limit = 0;
-        for (Pair<Integer, Integer> pair : time2limit) {
-            if (current < pair.first()) break;
-            limit = pair.second();
+        int currentDays = currentDate.getDayOfWeek().getValue();
+        int currentMinutes = currentTime.getHour() * 60 + currentTime.getMinute();
+        for (List<Integer> rule : rules) {
+            if (currentDays >= rule.get(0) && currentMinutes >= rule.get(1)) return rule.get(2);
         }
-        return limit;
+        return -1;
     }
 
     public static void registerScheduleTask(MinecraftServer server) {
