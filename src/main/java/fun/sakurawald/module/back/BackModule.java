@@ -1,8 +1,8 @@
 package fun.sakurawald.module.back;
 
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.module.teleport_warmup.Position;
 import fun.sakurawald.util.MessageUtil;
@@ -20,8 +20,8 @@ public class BackModule {
     @Getter
     private static final HashMap<String, Position> player2lastPos = new HashMap<>();
 
-    public static LiteralCommandNode<CommandSourceStack> registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
-        return dispatcher.register(Commands.literal("back").executes(BackModule::$back));
+    public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+        dispatcher.register(Commands.literal("back").executes(BackModule::$back));
     }
 
     private static int $back(CommandContext<CommandSourceStack> ctx) {
@@ -31,11 +31,11 @@ public class BackModule {
         Position lastPos = player2lastPos.get(player.getName().getString());
         if (lastPos == null) {
             MessageUtil.message(player, "No previous position.", true);
-            return 1;
+            return Command.SINGLE_SUCCESS;
         }
 
         player.teleportTo((ServerLevel) lastPos.getLevel(), lastPos.getX(), lastPos.getY(), lastPos.getZ(), lastPos.getYaw(), lastPos.getPitch());
-        return 1;
+        return Command.SINGLE_SUCCESS;
     }
 
     public static void updatePlayer(ServerPlayer player) {

@@ -1,9 +1,9 @@
 package fun.sakurawald.module.resource_world;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.mojang.serialization.Lifecycle;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.mixin.resource_world.MinecraftServerAccessor;
@@ -68,8 +68,8 @@ public class ResourceWorldModule {
         }, initialDelay, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS);
     }
 
-    public static LiteralCommandNode<CommandSourceStack> registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
-        return dispatcher.register(
+    public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+        dispatcher.register(
                 Commands.literal("rw")
                         .then(literal("reset").requires(source -> source.hasPermission(4)).executes(ResourceWorldModule::$reset))
                         .then(literal("delete").requires(source -> source.hasPermission(4)).then(literal(DEFAULT_OVERWORLD_PATH).executes(ResourceWorldModule::$delete))
@@ -84,7 +84,7 @@ public class ResourceWorldModule {
 
     private static int $reset(CommandContext<CommandSourceStack> ctx) {
         resetWorlds(ctx.getSource().getServer());
-        return 1;
+        return Command.SINGLE_SUCCESS;
     }
 
     private static void resetWorlds(MinecraftServer server) {
@@ -222,7 +222,7 @@ public class ResourceWorldModule {
             RandomTeleport.randomTeleport(player, world, false);
         }
 
-        return 1;
+        return Command.SINGLE_SUCCESS;
     }
 
 
@@ -237,7 +237,7 @@ public class ResourceWorldModule {
     private static int $delete(CommandContext<CommandSourceStack> ctx) {
         String path = ctx.getNodes().get(2).getNode().getName();
         deleteWorld(ctx.getSource().getServer(), path);
-        return 1;
+        return Command.SINGLE_SUCCESS;
     }
 
     public static void onWorldUnload(MinecraftServer server, ServerLevel world) {

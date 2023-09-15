@@ -13,6 +13,7 @@ import fun.sakurawald.module.resource_world.ResourceWorldModule;
 import fun.sakurawald.module.skin.command.SkinModule;
 import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
 import fun.sakurawald.module.top_chunks.TopChunksModule;
+import fun.sakurawald.module.tpa.TpaModule;
 import fun.sakurawald.module.zero_command_permission.ZeroCommandPermissionModule;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.api.ModInitializer;
@@ -29,6 +30,7 @@ import java.nio.file.Path;
 // TODO: res -> xht bug
 // TODO: res -> teleport to home first
 // TODO: res -> stop getSmallestEnclosure
+// TODO: /tpa command
 @Slf4j
 public class ModMain implements ModInitializer {
     public static final Path CONFIG_PATH = Path.of(FabricLoader.getInstance().getConfigDir().resolve("sakurawald").toString());
@@ -56,6 +58,7 @@ public class ModMain implements ModInitializer {
         CommandRegistrationCallback.EVENT.register(SkinModule::registerCommand);
         CommandRegistrationCallback.EVENT.register(DeathLogModule::registerCommand);
         CommandRegistrationCallback.EVENT.register(BackModule::registerCommand);
+        CommandRegistrationCallback.EVENT.register(TpaModule::registerCommand);
 
         /* register events */
         ServerWorldEvents.UNLOAD.register(ResourceWorldModule::onWorldUnload);

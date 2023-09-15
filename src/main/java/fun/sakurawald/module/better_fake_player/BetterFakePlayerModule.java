@@ -1,9 +1,9 @@
 package fun.sakurawald.module.better_fake_player;
 
 import com.mojang.authlib.GameProfile;
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import fun.sakurawald.ModMain;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.util.MessageUtil;
@@ -26,8 +26,8 @@ public class BetterFakePlayerModule {
     private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
     private static final HashMap<String, ArrayList<String>> player2fakePlayers = new HashMap<>();
 
-    public static LiteralCommandNode<CommandSourceStack> registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
-        return dispatcher.register(
+    public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+        dispatcher.register(
                 Commands.literal("player").then(
                         Commands.literal("who").executes(BetterFakePlayerModule::$who)
                 )
@@ -49,7 +49,7 @@ public class BetterFakePlayerModule {
             builder.append("\n");
         }
         MessageUtil.feedback(context.getSource(), builder.toString());
-        return 1;
+        return Command.SINGLE_SUCCESS;
     }
 
     private static void validateFakePlayers() {

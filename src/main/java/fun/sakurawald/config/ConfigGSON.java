@@ -26,13 +26,14 @@ public class ConfigGSON {
         public ChatStyle chat_style = new ChatStyle();
         public Skin skin = new Skin();
         public Back back = new Back();
+        public Tpa tpa = new Tpa();
 
         public class ResourceWorld {
             public long seed = 0L;
         }
 
         public class MainStats {
-            public String dynamic_motd = "\u00a7l  \u00a72   Pure Survival 1.20.1 \u00a7c\u2764 \u00a76QQ Group 912363929\n    §b%playtime%\uD83D\uDD25 %mined%⛏ %placed%\uD83D\uDD33 %killed%\uD83D\uDDE1 %moved%\uD83C\uDF0D";
+            public String dynamic_motd = "§2Pure Survival 1.20.1 / Up %uptime%H §c\u2764 §6QQ Group 912363929\n§b%playtime%\uD83D\uDD25 %mined%⛏ %placed%\uD83D\uDD33 %killed%\uD83D\uDDE1 %moved%\uD83C\uDF0D";
         }
 
         public class NewbieWelcome {
@@ -186,8 +187,11 @@ public class ConfigGSON {
         }
 
         public class Back {
-
             public double ignore_distance = 32d;
+        }
+
+        public class Tpa {
+            public int timeout = 120;
         }
     }
 }

@@ -1,8 +1,8 @@
 package fun.sakurawald.module.top_chunks;
 
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import fun.sakurawald.config.ConfigGSON;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.mixin.top_chunks.ThreadedAnvilChunkStorageMixin;
@@ -28,8 +28,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class TopChunksModule {
 
-    public static LiteralCommandNode<CommandSourceStack> registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
-        return dispatcher.register(
+    public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+        dispatcher.register(
                 Commands.literal("chunks").executes(TopChunksModule::$chunks)
         );
     }
@@ -88,7 +88,7 @@ public class TopChunksModule {
             ctx.getSource().sendMessage(textComponentBuilder.asComponent());
         });
 
-        return 1;
+        return Command.SINGLE_SUCCESS;
     }
 
     private static void calculateNearestPlayer(PriorityQueue<ChunkScore> PQ, int limit) {

@@ -1,10 +1,10 @@
 package fun.sakurawald.module.chat_style;
 
 import com.google.common.collect.EvictingQueue;
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import fun.sakurawald.ModMain;
 import fun.sakurawald.config.ConfigGSON;
 import fun.sakurawald.config.ConfigManager;
@@ -47,8 +47,8 @@ public class ChatStyleModule {
 
     private static final ScheduledExecutorService mentionExecutor = Executors.newScheduledThreadPool(1);
 
-    public static LiteralCommandNode<CommandSourceStack> registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
-        return dispatcher.register(
+    public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+        dispatcher.register(
                 Commands.literal("chat")
                         .then(literal("format")
                                 .then(argument("format", StringArgumentType.greedyString())
@@ -64,7 +64,7 @@ public class ChatStyleModule {
         String format = StringArgumentType.getString(ctx, "format");
         ConfigManager.chatWrapper.instance().format.player2format.put(name, format);
         ConfigManager.chatWrapper.saveToDisk();
-        return 1;
+        return Command.SINGLE_SUCCESS;
     }
 
 

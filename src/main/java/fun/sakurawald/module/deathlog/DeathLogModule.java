@@ -1,10 +1,10 @@
 package fun.sakurawald.module.deathlog;
 
+import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import fun.sakurawald.ModMain;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +16,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -61,14 +62,14 @@ public class DeathLogModule {
     }
 
     @SuppressWarnings("UnusedReturnValue")
-    public static LiteralCommandNode<CommandSourceStack> registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
-        return dispatcher.register(
+    public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+        dispatcher.register(
                 Commands.literal("deathlog").requires(s -> s.hasPermission(4))
                         .then(Commands.literal("view").then(argument("from", word()).executes(DeathLogModule::$view)))
                         .then(Commands.literal("restore")
                                 .then(argument("from", word())
                                         .then(argument("index", IntegerArgumentType.integer())
-                                                .then(argument("to", word()).executes(DeathLogModule::$restore))))
+                                                .then(argument("to", EntityArgument.player()).executes(DeathLogModule::$restore))))
                         ));
     }
 
@@ -78,7 +79,7 @@ public class DeathLogModule {
         CommandSourceStack source = ctx.getSource();
         String from = StringArgumentType.getString(ctx, "from");
         int index = IntegerArgumentType.getInteger(ctx, "index");
-        String to = StringArgumentType.getString(ctx, "to");
+        ServerPlayer to = EntityArgument.getPlayer(ctx, "to");
 
         File file = STORAGE_PATH.resolve(getStorageFileName(from)).toFile();
         CompoundTag rootTag;
@@ -99,33 +100,27 @@ public class DeathLogModule {
         List<ItemStack> armor = readSlotsTag((ListTag) inventoryTag.get(ARMOR));
         List<ItemStack> offhand = readSlotsTag((ListTag) inventoryTag.get(OFFHAND));
 
-        ServerPlayer toPlayer = ModMain.SERVER.getPlayerList().getPlayerByName(to);
-        if (toPlayer == null) {
-            source.sendMessage(Component.text("To player not found."));
-            return 0;
-        }
-
         // check to player's inventory for safety
-        if (!toPlayer.getInventory().isEmpty() && !ModMain.SERVER.getPlayerList().isOp(toPlayer.getGameProfile())) {
+        if (!to.getInventory().isEmpty() && !ModMain.SERVER.getPlayerList().isOp(to.getGameProfile())) {
             source.sendMessage(Component.text("To player's inventory is not empty!"));
-            return 1;
+            return Command.SINGLE_SUCCESS;
         }
 
         /* restore inventory */
         for (int i = 0; i < item.size(); i++) {
-            toPlayer.getInventory().items.set(i, item.get(i));
+            to.getInventory().items.set(i, item.get(i));
         }
         for (int i = 0; i < armor.size(); i++) {
-            toPlayer.getInventory().armor.set(i, armor.get(i));
+            to.getInventory().armor.set(i, armor.get(i));
         }
         for (int i = 0; i < offhand.size(); i++) {
-            toPlayer.getInventory().offhand.set(i, offhand.get(i));
+            to.getInventory().offhand.set(i, offhand.get(i));
         }
-        toPlayer.setScore(inventoryTag.getInt(SCORE));
-        toPlayer.experienceLevel = inventoryTag.getInt(XP_LEVEL);
-        toPlayer.experienceProgress = inventoryTag.getFloat(XP_PROGRESS);
-        source.sendMessage(Component.text("Restore %s's death log %d for %s".formatted(from, index, to)));
-        return 1;
+        to.setScore(inventoryTag.getInt(SCORE));
+        to.experienceLevel = inventoryTag.getInt(XP_LEVEL);
+        to.experienceProgress = inventoryTag.getFloat(XP_PROGRESS);
+        source.sendMessage(Component.text("Restore %s's death log %d for %s".formatted(from, index, to.getGameProfile().getName())));
+        return Command.SINGLE_SUCCESS;
     }
 
     private static String getStorageFileName(String playerName) {
@@ -154,7 +149,7 @@ public class DeathLogModule {
         }
 
         ctx.getSource().sendMessage(builder.asComponent());
-        return 1;
+        return Command.SINGLE_SUCCESS;
     }
 
     private static Component asViewComponent(CompoundTag deathTag, String from, int index, String to) {
