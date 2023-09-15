@@ -4,10 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import fun.sakurawald.ModMain;
 import fun.sakurawald.module.skin.io.SkinIO;
 import fun.sakurawald.module.skin.io.SkinStorage;
 import it.unimi.dsi.fastutil.Pair;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,7 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -29,7 +28,7 @@ public class SkinRestorer {
 
     public static final Logger LOGGER = LoggerFactory.getLogger("SkinRestorer");
     private static final Gson gson = new Gson();
-    private static final SkinStorage skinStorage = new SkinStorage(new SkinIO(Path.of(FabricLoader.getInstance().getConfigDir().resolve("sakurawald").toString(), "skin")));
+    private static final SkinStorage skinStorage = new SkinStorage(new SkinIO(ModMain.CONFIG_PATH.resolve("skin")));
 
 
     public static SkinStorage getSkinStorage() {

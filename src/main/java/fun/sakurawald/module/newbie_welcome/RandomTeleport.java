@@ -1,8 +1,8 @@
 package fun.sakurawald.module.newbie_welcome;
 
 import com.google.common.base.Stopwatch;
-import fun.sakurawald.ModMain;
 import fun.sakurawald.config.ConfigManager;
+import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
@@ -20,10 +20,11 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 // Thanks to https://github.com/John-Paul-R/Essential-Commands
+@Slf4j
 public class RandomTeleport {
 
     private static final Thread.UncaughtExceptionHandler exceptionHandler = (thread, throwable) -> {
-        ModMain.LOGGER.error("Exception in RTP calculator thread", throwable);
+        log.error("Exception in RTP calculator thread", throwable);
     };
     private static final Executor threadExecutor = Executors.newCachedThreadPool(runnable -> {
         var thread = new Thread(runnable, "RTP Location Calculator Thread");
@@ -33,7 +34,7 @@ public class RandomTeleport {
 
     public static void randomTeleport(ServerPlayer player, ServerLevel world, boolean shouldSetSpawnPoint) {
         threadExecutor.execute(() -> {
-            ModMain.LOGGER.info(
+            log.info(
                     String.format(
                             "Starting RTP location search for %s",
                             player.getGameProfile().getName()
@@ -41,7 +42,7 @@ public class RandomTeleport {
             Stopwatch timer = Stopwatch.createStarted();
             exec(player, world, shouldSetSpawnPoint);
             var totalTime = timer.stop();
-            ModMain.LOGGER.info(
+            log.info(
                     String.format(
                             "Total RTP Time: %s",
                             totalTime

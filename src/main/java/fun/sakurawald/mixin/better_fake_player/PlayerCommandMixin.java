@@ -6,6 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.ModMain;
 import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
 import fun.sakurawald.util.MessageUtil;
+import net.kyori.adventure.text.Component;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -41,10 +42,9 @@ public abstract class PlayerCommandMixin {
 
     @Inject(method = "cantManipulate", at = @At("HEAD"), remap = false, cancellable = true)
     private static void $cantManipulate(CommandContext<CommandSourceStack> context, CallbackInfoReturnable<Boolean> cir) {
-        ServerPlayer sourcePlayer = context.getSource().getPlayer();
-        String targetPlayerName = StringArgumentType.getString(context, "player");
-        if (!BetterFakePlayerModule.canManipulateFakePlayer(sourcePlayer, targetPlayerName)) {
-            MessageUtil.message(sourcePlayer, "You can't manipulate this player", false);
+        String fakePlayerName = StringArgumentType.getString(context, "player");
+        if (!BetterFakePlayerModule.canManipulateFakePlayer(context, fakePlayerName)) {
+            context.getSource().sendMessage(Component.text("You can't manipulate this player"));
             cir.setReturnValue(true);
         }
     }

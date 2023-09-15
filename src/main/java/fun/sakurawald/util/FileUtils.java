@@ -1,8 +1,11 @@
 package fun.sakurawald.util;
 
+import lombok.experimental.UtilityClass;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
+@UtilityClass
 public class FileUtils {
 
     public static String readFile(File file) {

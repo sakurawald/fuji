@@ -1,5 +1,7 @@
 package fun.sakurawald.util;
 
+import lombok.experimental.UtilityClass;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
+@UtilityClass
 public class WebUtils {
 
     public static String POSTRequest(URL url, String userAgent, String contentType, String responseType, String input) throws IOException {

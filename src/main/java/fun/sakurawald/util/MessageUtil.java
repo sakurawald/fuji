@@ -1,11 +1,13 @@
 package fun.sakurawald.util;
 
 import fun.sakurawald.ModMain;
+import lombok.experimental.UtilityClass;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
+@UtilityClass
 public class MessageUtil {
 
     public static String resolve(String str, ServerPlayer player) {

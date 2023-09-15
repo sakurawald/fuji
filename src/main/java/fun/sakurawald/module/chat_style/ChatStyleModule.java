@@ -9,6 +9,8 @@ import fun.sakurawald.ModMain;
 import fun.sakurawald.config.ConfigGSON;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.module.main_stats.MainStats;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
@@ -35,10 +37,12 @@ import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
 @SuppressWarnings("resource")
+@Slf4j
 public class ChatStyleModule {
 
     @SuppressWarnings("UnstableApiUsage")
-    public static final Queue<Component> CHAT_HISTORY = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.chat_style.history.cache_size);
+    @Getter
+    private static final Queue<Component> chatHistory = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.chat_style.history.cache_size);
     private static final MiniMessage miniMessage = MiniMessage.builder().build();
 
     private static final ScheduledExecutorService mentionExecutor = Executors.newScheduledThreadPool(1);
@@ -48,11 +52,11 @@ public class ChatStyleModule {
                 Commands.literal("chat")
                         .then(literal("format")
                                 .then(argument("format", StringArgumentType.greedyString())
-                                        .executes(ChatStyleModule::setChatFormat)
+                                        .executes(ChatStyleModule::$format)
                                 )));
     }
 
-    private static int setChatFormat(CommandContext<CommandSourceStack> ctx) {
+    private static int $format(CommandContext<CommandSourceStack> ctx) {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return 0;
 
@@ -117,9 +121,9 @@ public class ChatStyleModule {
         Component component = miniMessage.deserialize(format, Formatter.date("date", LocalDateTime.now(ZoneId.systemDefault()))).asComponent();
         component = resolveItemTag(source, component);
         component = resolvePositionTag(source, component);
-        CHAT_HISTORY.add(component);
+        chatHistory.add(component);
         // info so that it can be seen in the console
-        ModMain.LOGGER.info(PlainTextComponentSerializer.plainText().serialize(component));
+        log.info(PlainTextComponentSerializer.plainText().serialize(component));
         for (ServerPlayer player : ModMain.SERVER.getPlayerList().getPlayers()) {
             player.sendMessage(component);
         }

@@ -34,7 +34,7 @@ public class SkinModule {
                                         .executes(context ->
                                                 skinAction(context.getSource(),
                                                         () -> MojangSkinProvider.getSkin(StringArgumentType.getString(context, "skin_name"))))
-                                        .then(argument("targets", GameProfileArgument.gameProfile()).requires(source -> source.hasPermission(3))
+                                        .then(argument("targets", GameProfileArgument.gameProfile()).requires(source -> source.hasPermission(4))
                                                 .executes(context ->
                                                         skinAction(context.getSource(), GameProfileArgument.getGameProfiles(context, "targets"), true,
                                                                 () -> MojangSkinProvider.getSkin(StringArgumentType.getString(context, "skin_name")))))))
@@ -44,7 +44,7 @@ public class SkinModule {
                                                 .executes(context ->
                                                         skinAction(context.getSource(),
                                                                 () -> MineSkinSkinProvider.getSkin(StringArgumentType.getString(context, "url"), SkinVariant.CLASSIC)))
-                                                .then(argument("targets", GameProfileArgument.gameProfile()).requires(source -> source.hasPermission(3))
+                                                .then(argument("targets", GameProfileArgument.gameProfile()).requires(source -> source.hasPermission(4))
                                                         .executes(context ->
                                                                 skinAction(context.getSource(), GameProfileArgument.getGameProfiles(context, "targets"), true,
                                                                         () -> MineSkinSkinProvider.getSkin(StringArgumentType.getString(context, "url"), SkinVariant.CLASSIC))))))
@@ -53,7 +53,7 @@ public class SkinModule {
                                                 .executes(context ->
                                                         skinAction(context.getSource(),
                                                                 () -> MineSkinSkinProvider.getSkin(StringArgumentType.getString(context, "url"), SkinVariant.SLIM)))
-                                                .then(argument("targets", GameProfileArgument.gameProfile()).requires(source -> source.hasPermission(3))
+                                                .then(argument("targets", GameProfileArgument.gameProfile()).requires(source -> source.hasPermission(4))
                                                         .executes(context ->
                                                                 skinAction(context.getSource(), GameProfileArgument.getGameProfiles(context, "targets"), true,
                                                                         () -> MineSkinSkinProvider.getSkin(StringArgumentType.getString(context, "url"), SkinVariant.SLIM))))))))
@@ -66,7 +66,6 @@ public class SkinModule {
                                         () -> DEFAULT_SKIN))))
         );
     }
-
 
     private static int skinAction(CommandSourceStack src, Collection<GameProfile> targets, boolean setByOperator, Supplier<Property> skinSupplier) {
         SkinRestorer.setSkinAsync(src.getServer(), targets, skinSupplier).thenAccept(pair -> {

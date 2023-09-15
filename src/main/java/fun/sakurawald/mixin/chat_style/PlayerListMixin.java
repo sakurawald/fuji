@@ -16,6 +16,6 @@ public abstract class PlayerListMixin {
     @Inject(at = @At(value = "TAIL"), method = "placeNewPlayer")
     private void $placeNewPlayer(Connection connection, ServerPlayer player, CallbackInfo info) {
         if (BetterFakePlayerModule.isFakePlayer(player)) return;
-        ChatStyleModule.CHAT_HISTORY.forEach(player::sendMessage);
+        ChatStyleModule.getChatHistory().forEach(player::sendMessage);
     }
 }

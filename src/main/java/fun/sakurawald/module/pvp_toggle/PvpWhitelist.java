@@ -1,12 +1,13 @@
 package fun.sakurawald.module.pvp_toggle;
 
 import com.mojang.authlib.GameProfile;
-import fun.sakurawald.ModMain;
+import lombok.extern.slf4j.Slf4j;
 import net.minecraft.server.players.UserWhiteList;
 import net.minecraft.server.players.UserWhiteListEntry;
 
 import java.io.File;
 
+@Slf4j
 public class PvpWhitelist {
     private static UserWhiteList pvpWhitelist;
 
@@ -19,7 +20,7 @@ public class PvpWhitelist {
         try {
             pvpWhitelist.load();
         } catch (Exception error) {
-            ModMain.LOGGER.error("Failed to load pvp whitelist: ", error);
+            log.error("Failed to load pvp whitelist: ", error);
         }
     }
 

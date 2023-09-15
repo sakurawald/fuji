@@ -30,11 +30,11 @@ public class TopChunksModule {
 
     public static LiteralCommandNode<CommandSourceStack> registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         return dispatcher.register(
-                Commands.literal("chunks").executes(TopChunksModule::chunks)
+                Commands.literal("chunks").executes(TopChunksModule::$chunks)
         );
     }
 
-    private static int chunks(CommandContext<CommandSourceStack> ctx) {
+    private static int $chunks(CommandContext<CommandSourceStack> ctx) {
         CompletableFuture.runAsync(() -> {
             PriorityQueue<ChunkScore> PQ = new PriorityQueue<>();
             /* iter worlds */

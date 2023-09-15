@@ -3,6 +3,7 @@ package fun.sakurawald.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonWriter;
+import fun.sakurawald.ModMain;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -21,7 +22,7 @@ public class ConfigWrapper<T> {
     }
 
     public ConfigWrapper(String child, Class<T> configClass) {
-        this.file = new File("config" + File.separator + "sakurawald" + File.separator + child);
+        this.file = new File(ModMain.CONFIG_PATH.toString(), child);
         this.configClass = configClass;
     }
 

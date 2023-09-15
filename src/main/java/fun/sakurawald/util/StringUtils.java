@@ -1,8 +1,11 @@
 package fun.sakurawald.util;
 
+import lombok.experimental.UtilityClass;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 
+@UtilityClass
 public class StringUtils {
 
     public static String readString(BufferedReader reader) throws IOException {

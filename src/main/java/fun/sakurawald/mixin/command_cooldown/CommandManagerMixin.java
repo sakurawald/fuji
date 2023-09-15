@@ -23,7 +23,7 @@ public class CommandManagerMixin {
 
         long cooldown = CommandCooldownModule.calculateCommandCooldown(player, commandLine);
         if (cooldown > 0) {
-            MessageUtil.message(player, Component.literal("wait %d s".formatted(cooldown / 1000)).withStyle(ChatFormatting.YELLOW), true);
+            MessageUtil.message(player, Component.literal("%d s".formatted(cooldown / 1000)).withStyle(ChatFormatting.YELLOW), true);
             cir.setReturnValue(0);
         }
     }

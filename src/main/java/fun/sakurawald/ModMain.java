@@ -4,6 +4,7 @@ import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
 import fun.sakurawald.module.chat_style.ChatStyleModule;
 import fun.sakurawald.module.config.ConfigModule;
+import fun.sakurawald.module.deathlog.DeathLogModule;
 import fun.sakurawald.module.main_stats.CustomStatisticsModule;
 import fun.sakurawald.module.pvp_toggle.PvpModule;
 import fun.sakurawald.module.pvp_toggle.PvpWhitelist;
@@ -12,32 +13,34 @@ import fun.sakurawald.module.skin.command.SkinModule;
 import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
 import fun.sakurawald.module.top_chunks.TopChunksModule;
 import fun.sakurawald.module.zero_command_permission.ZeroCommandPermissionModule;
+import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.nio.file.Path;
 
 // TODO: res -> xht bug
 // TODO: res -> teleport to home first
+@Slf4j
 public class ModMain implements ModInitializer {
-    public static final Logger LOGGER = LoggerFactory.getLogger("SakuraWald");
+    public static final Path CONFIG_PATH = Path.of(FabricLoader.getInstance().getConfigDir().resolve("sakurawald").toString());
     public static MinecraftServer SERVER;
 
     @Override
     public void onInitialize() {
-        LOGGER.info("onInitialize()");
+        log.info("onInitialize()");
 
         /* server instance */
         ServerLifecycleEvents.SERVER_STARTED.register(server -> SERVER = server);
 
         /* config */
-        PvpWhitelist.create(new File("pvp_whitelist.json"));
+        PvpWhitelist.create(new File(CONFIG_PATH.toString(), "pvp.json"));
         ConfigManager.configWrapper.loadFromDisk();
         ConfigManager.chatWrapper.loadFromDisk();
 
@@ -49,6 +52,7 @@ public class ModMain implements ModInitializer {
         CommandRegistrationCallback.EVENT.register(BetterFakePlayerModule::registerCommand);
         CommandRegistrationCallback.EVENT.register(ChatStyleModule::registerCommand);
         CommandRegistrationCallback.EVENT.register(SkinModule::registerCommand);
+        CommandRegistrationCallback.EVENT.register(DeathLogModule::registerCommand);
 
         /* register events */
         ServerWorldEvents.UNLOAD.register(ResourceWorldModule::onWorldUnload);

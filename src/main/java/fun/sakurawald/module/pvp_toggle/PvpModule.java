@@ -18,24 +18,24 @@ public class PvpModule {
                 Commands.literal("pvp")
                         .then(
                                 Commands.literal("on")
-                                        .executes(PvpModule::enablePvp)
+                                        .executes(PvpModule::$on)
                         )
                         .then(
                                 Commands.literal("off")
-                                        .executes(PvpModule::disablePvp)
+                                        .executes(PvpModule::$off)
                         )
                         .then(
                                 Commands.literal("list")
-                                        .executes(PvpModule::listPlayers)
+                                        .executes(PvpModule::$list)
                         )
                         .then(
                                 Commands.literal("status")
-                                        .executes(PvpModule::pvpStatus)
+                                        .executes(PvpModule::$status)
                         )
         );
     }
 
-    private static int enablePvp(CommandContext<CommandSourceStack> ctx) {
+    private static int $on(CommandContext<CommandSourceStack> ctx) {
         CommandSourceStack source = ctx.getSource();
         GameProfile player = Objects.requireNonNull(source.getPlayer()).getGameProfile();
 
@@ -50,7 +50,7 @@ public class PvpModule {
         return 0;
     }
 
-    private static int disablePvp(CommandContext<CommandSourceStack> ctx) {
+    private static int $off(CommandContext<CommandSourceStack> ctx) {
         CommandSourceStack source = ctx.getSource();
         GameProfile player = Objects.requireNonNull(source.getPlayer()).getGameProfile();
 
@@ -65,14 +65,14 @@ public class PvpModule {
     }
 
 
-    private static int pvpStatus(CommandContext<CommandSourceStack> ctx) {
+    private static int $status(CommandContext<CommandSourceStack> ctx) {
         CommandSourceStack source = ctx.getSource();
         GameProfile player = Objects.requireNonNull(source.getPlayer()).getGameProfile();
         MessageUtil.feedback(source, "PvP for you is " + (PvpWhitelist.contains(player) ? "on" : "off"), ChatFormatting.DARK_AQUA);
         return 1;
     }
 
-    private static int listPlayers(CommandContext<CommandSourceStack> ctx) {
+    private static int $list(CommandContext<CommandSourceStack> ctx) {
         MessageUtil.feedback(ctx.getSource(), "Players with PvP on: " + String.join(", ", PvpWhitelist.getPlayers()), ChatFormatting.DARK_AQUA);
         return 1;
     }

@@ -5,13 +5,13 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.mojang.serialization.Lifecycle;
-import fun.sakurawald.ModMain;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.mixin.resource_world.MinecraftServerAccessor;
 import fun.sakurawald.module.newbie_welcome.RandomTeleport;
 import fun.sakurawald.module.resource_world.interfaces.DimensionOptionsMixinInterface;
 import fun.sakurawald.module.resource_world.interfaces.SimpleRegistryMixinInterface;
 import fun.sakurawald.util.MessageUtil;
+import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
@@ -46,9 +46,10 @@ import java.util.concurrent.TimeUnit;
 
 import static net.minecraft.commands.Commands.literal;
 
+@Slf4j
 public class ResourceWorldModule {
 
-    private static final String DEFAULT_WORLD_PREFIX = "resource_world";
+    private static final String DEFAULT_RESOURCE_WORLD_NAMESPACE = "resource_world";
     private static final String DEFAULT_THE_NETHER_PATH = "the_nether";
     private static final String DEFAULT_THE_END_PATH = "the_end";
     private static final String DEFAULT_OVERWORLD_PATH = "overworld";
@@ -62,7 +63,7 @@ public class ResourceWorldModule {
             initialDelay += TimeUnit.DAYS.toSeconds(1);
         }
         executorService.scheduleAtFixedRate(() -> {
-            ModMain.LOGGER.info("Start to reset resource worlds.");
+            log.info("Start to reset resource worlds.");
             server.execute(() -> ResourceWorldModule.resetWorlds(server));
         }, initialDelay, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS);
     }
@@ -70,18 +71,18 @@ public class ResourceWorldModule {
     public static LiteralCommandNode<CommandSourceStack> registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         return dispatcher.register(
                 Commands.literal("rw")
-                        .then(literal("reset").requires(source -> source.hasPermission(4)).executes(ResourceWorldModule::resetWorlds))
-                        .then(literal("delete").requires(source -> source.hasPermission(4)).then(literal(DEFAULT_OVERWORLD_PATH).executes(ResourceWorldModule::deleteWorld))
-                                .then(literal(DEFAULT_THE_NETHER_PATH).executes(ResourceWorldModule::deleteWorld))
-                                .then(literal(DEFAULT_THE_END_PATH).executes(ResourceWorldModule::deleteWorld)))
-                        .then(literal("tp").then(literal(DEFAULT_OVERWORLD_PATH).executes(ResourceWorldModule::teleportWorld))
-                                .then(literal(DEFAULT_THE_NETHER_PATH).executes(ResourceWorldModule::teleportWorld))
-                                .then(literal(DEFAULT_THE_END_PATH).executes(ResourceWorldModule::teleportWorld))
+                        .then(literal("reset").requires(source -> source.hasPermission(4)).executes(ResourceWorldModule::$reset))
+                        .then(literal("delete").requires(source -> source.hasPermission(4)).then(literal(DEFAULT_OVERWORLD_PATH).executes(ResourceWorldModule::$delete))
+                                .then(literal(DEFAULT_THE_NETHER_PATH).executes(ResourceWorldModule::$delete))
+                                .then(literal(DEFAULT_THE_END_PATH).executes(ResourceWorldModule::$delete)))
+                        .then(literal("tp").then(literal(DEFAULT_OVERWORLD_PATH).executes(ResourceWorldModule::$tp))
+                                .then(literal(DEFAULT_THE_NETHER_PATH).executes(ResourceWorldModule::$tp))
+                                .then(literal(DEFAULT_THE_END_PATH).executes(ResourceWorldModule::$tp))
                         )
         );
     }
 
-    private static int resetWorlds(CommandContext<CommandSourceStack> ctx) {
+    private static int $reset(CommandContext<CommandSourceStack> ctx) {
         resetWorlds(ctx.getSource().getServer());
         return 1;
     }
@@ -139,10 +140,10 @@ public class ResourceWorldModule {
         return (MappedRegistry<LevelStem>) registryManager.registryOrThrow(Registries.LEVEL_STEM);
     }
 
-    public static void createWorld(MinecraftServer server, ResourceKey<DimensionType> dimensionTypeRegistryKey, String path, long seed) {
+    private static void createWorld(MinecraftServer server, ResourceKey<DimensionType> dimensionTypeRegistryKey, String path, long seed) {
         /* create the world */
         ResourceWorldProperties resourceWorldProperties = new ResourceWorldProperties(server.getWorldData(), seed);
-        ResourceKey<Level> worldRegistryKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(DEFAULT_WORLD_PREFIX, path));
+        ResourceKey<Level> worldRegistryKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(DEFAULT_RESOURCE_WORLD_NAMESPACE, path));
         LevelStem dimensionOptions = createDimensionOptions(server, dimensionTypeRegistryKey);
         ServerLevel world = new ResourceWorld(server,
                 Util.backgroundExecutor(),
@@ -181,7 +182,7 @@ public class ResourceWorldModule {
     }
 
     private static ServerLevel getResourceWorldByPath(MinecraftServer server, String path) {
-        ResourceKey<Level> worldKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(DEFAULT_WORLD_PREFIX, path));
+        ResourceKey<Level> worldKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(DEFAULT_RESOURCE_WORLD_NAMESPACE, path));
         return server.getLevel(worldKey);
     }
 
@@ -201,7 +202,10 @@ public class ResourceWorldModule {
         }
     }
 
-    private static int teleportWorld(CommandContext<CommandSourceStack> ctx) {
+    private static int $tp(CommandContext<CommandSourceStack> ctx) {
+        ServerPlayer player = ctx.getSource().getPlayer();
+        if (player == null) return 0;
+
         String path = ctx.getNodes().get(2).getNode().getName();
         ServerLevel world = getResourceWorldByPath(ctx.getSource().getServer(), path);
         if (world == null) {
@@ -209,15 +213,12 @@ public class ResourceWorldModule {
             return 0;
         }
 
-        ServerPlayer player = ctx.getSource().getPlayer();
-        if (player == null) return 0;
-
         if (world.dimensionTypeId() == BuiltinDimensionTypes.END) {
             ServerLevel.makeObsidianPlatform(world);
             BlockPos endSpawnPos = ServerLevel.END_SPAWN_POINT;
             player.teleportTo(world, endSpawnPos.getX() + 0.5, endSpawnPos.getY(), endSpawnPos.getZ() + 0.5, 90, 0);
         } else {
-            MessageUtil.message(player, Component.literal("Looking for a safe location... (don't move)").withStyle(ChatFormatting.GOLD), true);
+            MessageUtil.message(player, Component.literal("Search for a safe location... (don't move)").withStyle(ChatFormatting.GOLD), true);
             RandomTeleport.randomTeleport(player, world, false);
         }
 
@@ -225,7 +226,7 @@ public class ResourceWorldModule {
     }
 
 
-    public static void deleteWorld(MinecraftServer server, String path) {
+    private static void deleteWorld(MinecraftServer server, String path) {
         ServerLevel world = getResourceWorldByPath(server, path);
         if (world == null) return;
 
@@ -233,28 +234,20 @@ public class ResourceWorldModule {
         MessageUtil.broadcast(String.format("Delete resource world %s done.", path), ChatFormatting.GOLD);
     }
 
-
-    private static int deleteWorld(CommandContext<CommandSourceStack> ctx) {
+    private static int $delete(CommandContext<CommandSourceStack> ctx) {
         String path = ctx.getNodes().get(2).getNode().getName();
-        ServerLevel world = getResourceWorldByPath(ctx.getSource().getServer(), path);
-        if (world == null) {
-            MessageUtil.feedback(ctx.getSource(), String.format("Target resource world %s doesn't exist.", path), ChatFormatting.RED);
-            return 0;
-        }
-
         deleteWorld(ctx.getSource().getServer(), path);
         return 1;
     }
-
 
     public static void onWorldUnload(MinecraftServer server, ServerLevel world) {
         if (server.isRunning()) {
             String namespace = world.dimension().location().getNamespace();
             String path = world.dimension().location().getPath();
-            // Important: only delete the world if it's a resource world
-            if (!namespace.equals(DEFAULT_WORLD_PREFIX)) return;
+            // IMPORTANT: only delete the world if it's a resource world
+            if (!namespace.equals(DEFAULT_RESOURCE_WORLD_NAMESPACE)) return;
 
-            ModMain.LOGGER.info(String.format("Creating world %s ...", path));
+            log.info(String.format("Creating world %s ...", path));
             long seed = ConfigManager.configWrapper.instance().modules.resource_world.seed;
             ResourceWorldModule.createWorld(server, ResourceWorldModule.getDimensionTypeRegistryKeyByPath(path), path, seed);
         }

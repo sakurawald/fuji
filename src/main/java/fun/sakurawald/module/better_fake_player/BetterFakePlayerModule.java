@@ -29,12 +29,12 @@ public class BetterFakePlayerModule {
     public static LiteralCommandNode<CommandSourceStack> registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         return dispatcher.register(
                 Commands.literal("player").then(
-                        Commands.literal("who").executes(BetterFakePlayerModule::who)
+                        Commands.literal("who").executes(BetterFakePlayerModule::$who)
                 )
         );
     }
 
-    private static int who(CommandContext<CommandSourceStack> context) {
+    private static int $who(CommandContext<CommandSourceStack> context) {
         /* validate */
         validateFakePlayers();
 
@@ -54,12 +54,12 @@ public class BetterFakePlayerModule {
 
     private static void validateFakePlayers() {
         for (Map.Entry<String, ArrayList<String>> entry : player2fakePlayers.entrySet()) {
-            ArrayList<String> fakePlayers = entry.getValue();
-            fakePlayers.removeIf(name -> {
+            ArrayList<String> myFakePlayers = entry.getValue();
+            myFakePlayers.removeIf(name -> {
                 ServerPlayer fakePlayer = ModMain.SERVER.getPlayerList().getPlayerByName(name);
                 return fakePlayer == null || fakePlayer.isRemoved();
             });
-            if (fakePlayers.isEmpty()) {
+            if (myFakePlayers.isEmpty()) {
                 player2fakePlayers.remove(entry.getKey());
             }
         }
@@ -79,8 +79,15 @@ public class BetterFakePlayerModule {
         BetterFakePlayerModule.player2fakePlayers.computeIfAbsent(player.getGameProfile().getName(), k -> new ArrayList<>()).add(fakePlayer);
     }
 
-    public static boolean canManipulateFakePlayer(ServerPlayer player, String fakePlayer) {
-        // skip check for op
+    public static boolean canManipulateFakePlayer(CommandContext<CommandSourceStack> ctx, String fakePlayer) {
+        // bypass: console
+        ServerPlayer player = ctx.getSource().getPlayer();
+        if (player == null) return true;
+
+        // IMPORTANT: disable /player ... shadow command for online-player
+        if (player.getGameProfile().getName().equals(fakePlayer)) return false;
+
+        // bypass: op
         if (ModMain.SERVER.getPlayerList().isOp(player.getGameProfile())) return true;
 
         ArrayList<String> myFakePlayers = BetterFakePlayerModule.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), new ArrayList<>());
@@ -104,8 +111,7 @@ public class BetterFakePlayerModule {
     }
 
     public static boolean isFakePlayer(ServerPlayer player) {
-        return !ModMain.SERVER.getPlayerList().isWhiteListed(player.getGameProfile())
-                || player2fakePlayers.values().stream().anyMatch(fakePlayers -> fakePlayers.contains(player.getGameProfile().getName()));
+        return player.getClass() != ServerPlayer.class;
     }
 
     public static GameProfile createOfflineGameProfile(String fakePlayerName) {
@@ -125,7 +131,7 @@ public class BetterFakePlayerModule {
                 ServerPlayer fakePlayer = ModMain.SERVER.getPlayerList().getPlayerByName(fakePlayers.get(i));
                 if (fakePlayer == null) continue;
                 fakePlayer.kill();
-                MessageUtil.broadcast("Kick fake-player %s for limit.".formatted(fakePlayer.getGameProfile().getName()), ChatFormatting.GREEN);
+                MessageUtil.broadcast("Kick fake-player %s for the limit.".formatted(fakePlayer.getGameProfile().getName()), ChatFormatting.GREEN);
             }
         }
     }

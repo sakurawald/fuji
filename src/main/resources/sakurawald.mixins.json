@@ -10,6 +10,7 @@
     "chat_style.PlayerListMixin",
     "chat_style.ServerGamePacketListenerImplMixin",
     "command_cooldown.CommandManagerMixin",
+    "deathlog.ServerPlayerMixin",
     "main_stats.BlockMixin",
     "main_stats.PlayerListMixin",
     "main_stats.ServerPlayNetworkHandlerMixin",
