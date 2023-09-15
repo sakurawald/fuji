@@ -12,6 +12,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -71,7 +72,6 @@ public class DeathLogModule {
                         ));
     }
 
-    @SuppressWarnings("DataFlowIssue")
     @SneakyThrows
     private static int $restore(CommandContext<CommandSourceStack> ctx) {
         /* read from file */
@@ -89,6 +89,10 @@ public class DeathLogModule {
         }
 
         ListTag deathsTag = (ListTag) rootTag.get(DEATHS);
+        if (index >= deathsTag.size()) {
+            source.sendMessage(Component.text("Index out of bound."));
+            return 0;
+        }
         CompoundTag deathTag = deathsTag.getCompound(index);
         CompoundTag inventoryTag = deathTag.getCompound(INVENTORY);
         List<ItemStack> item = readSlotsTag((ListTag) inventoryTag.get(ITEM));
@@ -155,7 +159,7 @@ public class DeathLogModule {
 
     private static Component asViewComponent(CompoundTag deathTag, String from, int index, String to) {
         CompoundTag remarkTag = deathTag.getCompound(REMARK);
-        Component hover = Component.empty()
+        Component hover = Component.empty().color(NamedTextColor.DARK_GREEN)
                 .append(Component.text("Time: " + remarkTag.getString(TIME)))
                 .appendNewline()
                 .append(Component.text("Reason: " + remarkTag.getString(REASON)))
@@ -167,7 +171,7 @@ public class DeathLogModule {
                         remarkTag.getDouble(Y),
                         remarkTag.getDouble(Z)
                 )));
-        return Component.empty()
+        return Component.empty().color(NamedTextColor.RED)
                 .append(Component.text(index)).appendSpace()
                 .clickEvent(ClickEvent.runCommand("/deathlog restore %s %d %s".formatted(from, index, to)))
                 .hoverEvent(HoverEvent.showText(hover));

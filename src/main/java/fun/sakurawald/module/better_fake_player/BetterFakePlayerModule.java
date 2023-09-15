@@ -80,12 +80,13 @@ public class BetterFakePlayerModule {
     }
 
     public static boolean canManipulateFakePlayer(CommandContext<CommandSourceStack> ctx, String fakePlayer) {
+        // IMPORTANT: disable /player ... shadow command for online-player
+        if (ctx.getNodes().get(2).getNode().getName().equals("shadow")) return false;
+
         // bypass: console
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return true;
 
-        // IMPORTANT: disable /player ... shadow command for online-player
-        if (player.getGameProfile().getName().equals(fakePlayer)) return false;
 
         // bypass: op
         if (ModMain.SERVER.getPlayerList().isOp(player.getGameProfile())) return true;
