@@ -1,6 +1,7 @@
 package fun.sakurawald;
 
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.back.BackModule;
 import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
 import fun.sakurawald.module.chat_style.ChatStyleModule;
 import fun.sakurawald.module.config.ConfigModule;
@@ -27,6 +28,7 @@ import java.nio.file.Path;
 
 // TODO: res -> xht bug
 // TODO: res -> teleport to home first
+// TODO: res -> stop getSmallestEnclosure
 @Slf4j
 public class ModMain implements ModInitializer {
     public static final Path CONFIG_PATH = Path.of(FabricLoader.getInstance().getConfigDir().resolve("sakurawald").toString());
@@ -53,6 +55,7 @@ public class ModMain implements ModInitializer {
         CommandRegistrationCallback.EVENT.register(ChatStyleModule::registerCommand);
         CommandRegistrationCallback.EVENT.register(SkinModule::registerCommand);
         CommandRegistrationCallback.EVENT.register(DeathLogModule::registerCommand);
+        CommandRegistrationCallback.EVENT.register(BackModule::registerCommand);
 
         /* register events */
         ServerWorldEvents.UNLOAD.register(ResourceWorldModule::onWorldUnload);

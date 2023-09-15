@@ -4,6 +4,7 @@ import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.util.MessageUtil;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.HashMap;
@@ -39,7 +40,7 @@ public class TeleportWarmupModule {
                     continue;
                 }
 
-                if (player.position().distanceTo(teleportTicket.source) >= INTERRUPT_DISTANCE) {
+                if (player.position().distanceToSqr(teleportTicket.source.getX(), teleportTicket.source.getY(), teleportTicket.source.getZ()) >= INTERRUPT_DISTANCE) {
                     bossbar.setVisible(false);
                     iterator.remove();
                     continue;
@@ -51,7 +52,7 @@ public class TeleportWarmupModule {
 
                     // don't change the order of the following two lines.
                     teleportTicket.ready = true;
-                    player.teleportTo(teleportTicket.world, teleportTicket.destination.x, teleportTicket.destination.y, teleportTicket.destination.z, teleportTicket.yaw, teleportTicket.pitch);
+                    player.teleportTo((ServerLevel) teleportTicket.destination.getLevel(), teleportTicket.destination.getX(), teleportTicket.destination.getY(), teleportTicket.destination.getZ(), teleportTicket.destination.getYaw(), teleportTicket.destination.getPitch());
                     iterator.remove();
                 }
             }

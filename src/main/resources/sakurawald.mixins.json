@@ -3,6 +3,7 @@
   "package": "fun.sakurawald.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "back.ServerPlayerMixin",
     "better_fake_player.PlayerCommandMixin",
     "bypass_things.chat_speed.ServerGamePacketListenerImplMixin",
     "bypass_things.move_speed.ServerGamePacketListenerImplMixin",

@@ -1,7 +1,9 @@
 package fun.sakurawald.mixin.teleport_warmup;
 
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.back.BackModule;
 import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
+import fun.sakurawald.module.teleport_warmup.Position;
 import fun.sakurawald.module.teleport_warmup.ServerPlayerAccessor;
 import fun.sakurawald.module.teleport_warmup.TeleportTicket;
 import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
@@ -9,7 +11,6 @@ import fun.sakurawald.util.MessageUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,7 +32,10 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
         if (BetterFakePlayerModule.isFakePlayer(player)) return;
 
         if (!TeleportWarmupModule.tickets.containsKey(player)) {
-            TeleportWarmupModule.tickets.put(player, new TeleportTicket(player, targetWorld, player.position(), new Vec3(x, y, z), yaw, pitch, false));
+            TeleportWarmupModule.tickets.put(player,
+                    new TeleportTicket(player
+                            , new Position(player.level(), player.position().x, player.position().y, player.position().z, player.getYRot(), player.getXRot())
+                            , new Position(targetWorld, x, y, z, yaw, pitch), false));
             ci.cancel();
         } else {
             TeleportTicket ticket = TeleportWarmupModule.tickets.get(player);
@@ -40,6 +44,9 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
                 ci.cancel();
             }
         }
+
+        // let's do teleport now.
+        BackModule.updatePlayer(player);
     }
 
     @Inject(method = "hurt", at = @At("RETURN"))

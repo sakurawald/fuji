@@ -25,6 +25,7 @@ public class ConfigGSON {
         public TopChunks top_chunks = new TopChunks();
         public ChatStyle chat_style = new ChatStyle();
         public Skin skin = new Skin();
+        public Back back = new Back();
 
         public class ResourceWorld {
             public long seed = 0L;
@@ -182,6 +183,11 @@ public class ConfigGSON {
                     this.add(new Property("textures", "ewogICJ0aW1lc3RhbXAiIDogMTY3MjcyNzk5MDgyNywKICAicHJvZmlsZUlkIiA6ICI3YmRhNDBlM2E1YjU0YzE0YWJmZGYzNGMyODY2NjQ0NiIsCiAgInByb2ZpbGVOYW1lIiA6ICJfRWdvcl9wbGF5XyIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9hYjk0YjBlMjY2YjM5YTM3ODQ4OTI3NzhiZTg5YTFkNmIzYjIxZGFjZDc1NDMxZjRkMDVlYTI0ZjE0OTcwMmQ4IgogICAgfQogIH0KfQ==", "USwVBGfqtLBXEeAqAMaqB/l+ND4Qo3DlcglcTxDU1u+c8Ps1fp8gGWiXMtr5Tvep6nsqJin0JOeBuRj6RJDlP8txORrbW+C4c2BVNHZdCO8L0sQ/QISG5f8qBM4YU+8G5gIHMPDva5rVPmgj2hsgPDUyZimETXw2Hs6oyphit0r/fWnbURjfBOm4rpKzlKSpyLncxWFI2SmKl2+xLs8w/0oCv0X9vbVdWVjIzmi48/w3DOpIGkmqCzRvr1YHa5kpf80CNGWq/8KMngWlzA0LfILSGzkfWxxTBMSs2L/SoWnOuvwqRLkVZtZ15yNnkuDhI93BnT/k9+fwXaLs/6aqvmWmGh+s7D+JjI07SPSfcasO7c1jb8atA1cqsujuNzWj7JywZDJNRfWnCqbapwLFbllLvvkZL7QV13k7POcLoy71SRI0DRD9mDR9GWYVcxuBCTseIz3Cb1Bo0W+TXXF31RIJSHlF+Bz0Wy4IKfEt9y+LbKiUIqhq7LzppxZ386hmaM1uCoj7L1/JMlJZlro85jo1+ryN78b29qcpm9cTjZd8N48Etz+OM4bLv5ihmSQHgxnhFodY3oVC/VnCYFoQtdciZDOBiM1kAKIy7jokEJWbjvWz0hTSYJFJjrkwWmeeP3IQjr9Y4oc3pUzRFYdR93rwMFQERmskst5DP38cy0k="));
                 }
             };
+        }
+
+        public class Back {
+
+            public double ignore_distance = 32d;
         }
     }
 }
