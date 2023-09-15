@@ -58,7 +58,7 @@ public class ModMain implements ModInitializer {
         CommandRegistrationCallback.EVENT.register(SkinModule::registerCommand);
         CommandRegistrationCallback.EVENT.register(DeathLogModule::registerCommand);
         CommandRegistrationCallback.EVENT.register(BackModule::registerCommand);
-        CommandRegistrationCallback.EVENT.register(TpaModule::registerCommand);
+//        CommandRegistrationCallback.EVENT.register(TpaModule::registerCommand);
 
         /* register events */
         ServerWorldEvents.UNLOAD.register(ResourceWorldModule::onWorldUnload);

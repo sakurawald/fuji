@@ -1,6 +1,7 @@
 package fun.sakurawald.module.main_stats;
 
 import fun.sakurawald.ModMain;
+import fun.sakurawald.config.ConfigGSON;
 import fun.sakurawald.config.ConfigManager;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.server.MinecraftServer;
@@ -20,20 +21,21 @@ public class CustomStatisticsModule {
     private static final String NEWLINE = "\n";
 
     public static void updateMOTD() {
-        String motd = MainStats.calculateServerMainStats().resolve(ConfigManager.configWrapper.instance().modules.main_stats.dynamic_motd);
+        ConfigGSON.Modules.MainStats main_stats = ConfigManager.configWrapper.instance().modules.main_stats;
+        String motd = MainStats.calculateServerMainStats().resolve(main_stats.dynamic_motd);
         int i = motd.indexOf(NEWLINE);
         if (i == -1) {
-            motd = centerText(motd, MOTD_LINE_LENGTH);
+            motd = centerText(motd, MOTD_LINE_LENGTH, main_stats.length_delta.line_one);
         } else {
-            String line1 = centerText(motd.substring(0, i), MOTD_LINE_LENGTH);
-            String line2 = centerText(motd.substring(i + NEWLINE.length()), MOTD_LINE_LENGTH);
+            String line1 = centerText(motd.substring(0, i), MOTD_LINE_LENGTH, main_stats.length_delta.line_one);
+            String line2 = centerText(motd.substring(i + NEWLINE.length()), MOTD_LINE_LENGTH, main_stats.length_delta.line_two);
             motd = line1 + "\n" + line2;
         }
         ModMain.SERVER.setMotd(motd);
     }
 
     @SuppressWarnings("SameParameterValue")
-    private static String centerText(String text, int lineLength) {
+    private static String centerText(String text, int lineLength, int lengthDelta) {
         /* calc length */
         char[] chars = text.toCharArray();
         double length = 0;
@@ -52,6 +54,9 @@ public class CustomStatisticsModule {
                 length += (chars[i] == ' ' ? 1 : (bold ? 1.1555555555555556 : 1));
             }
         }
+
+        /* add length delta */
+        length += lengthDelta;
 
         /* build spaces */
         double spaces = (lineLength - length) / 2;

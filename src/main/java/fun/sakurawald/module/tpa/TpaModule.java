@@ -70,8 +70,8 @@ public class TpaModule {
         TpaRequest request = new TpaRequest(source, player, false);
         requests.add(request);
 
-        request.getSender().sendMessage(request.asSenderComponent$Sent());
         request.getReceiver().sendMessage(request.asReceiverComponent$Sent());
+        request.getSender().sendMessage(request.asSenderComponent$Sent());
         return Command.SINGLE_SUCCESS;
     }
 }
