@@ -17,24 +17,14 @@ public class CustomStatisticsModule {
     private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
     private static final List<Character> colors = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
-    private static final int MOTD_LINE_LENGTH = 69;
-    private static final String NEWLINE = "\n";
 
     public static void updateMOTD() {
         ConfigGSON.Modules.MainStats main_stats = ConfigManager.configWrapper.instance().modules.main_stats;
         String motd = MainStats.calculateServerMainStats().resolve(main_stats.dynamic_motd);
-        int i = motd.indexOf(NEWLINE);
-        if (i == -1) {
-            motd = centerText(motd, MOTD_LINE_LENGTH, main_stats.length_delta.line_one);
-        } else {
-            String line1 = centerText(motd.substring(0, i), MOTD_LINE_LENGTH, main_stats.length_delta.line_one);
-            String line2 = centerText(motd.substring(i + NEWLINE.length()), MOTD_LINE_LENGTH, main_stats.length_delta.line_two);
-            motd = line1 + "\n" + line2;
-        }
         ModMain.SERVER.setMotd(motd);
     }
 
-    @SuppressWarnings("SameParameterValue")
+    @SuppressWarnings({"SameParameterValue", "unused"})
     private static String centerText(String text, int lineLength, int lengthDelta) {
         /* calc length */
         char[] chars = text.toCharArray();

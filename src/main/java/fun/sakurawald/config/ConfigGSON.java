@@ -33,13 +33,8 @@ public class ConfigGSON {
         }
 
         public class MainStats {
-            public String dynamic_motd = "§2Pure Survival 1.20.1 / Up %uptime%H §c\u2764 §6QQ Group 912363929\n§b%playtime%\uD83D\uDD25 %mined%⛏ %placed%\uD83D\uDD33 %killed%\uD83D\uDDE1 %moved%\uD83C\uDF0D";
+            public String dynamic_motd = "§2Pure Survival 1.20.1 / Up %uptime%H §c\u2764 §6Group 912363929\n§b%playtime%\uD83D\uDD25 %mined%⛏ %placed%\uD83D\uDD33 %killed%\uD83D\uDDE1 %moved%\uD83C\uDF0D";
 
-            public LengthDelta length_delta = new LengthDelta();
-            public class LengthDelta {
-                public int line_one = 0;
-                public int line_two = 0;
-            }
         }
 
         public class NewbieWelcome {
