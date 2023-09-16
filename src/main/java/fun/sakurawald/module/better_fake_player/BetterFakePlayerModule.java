@@ -110,6 +110,7 @@ public class BetterFakePlayerModule {
         return -1;
     }
 
+    @SuppressWarnings("unused")
     public static void registerScheduleTask(MinecraftServer server) {
         executorService.scheduleAtFixedRate(BetterFakePlayerModule::checkFakePlayerLimit, 0, 1, TimeUnit.MINUTES);
     }

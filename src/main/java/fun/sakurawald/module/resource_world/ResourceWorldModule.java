@@ -139,6 +139,7 @@ public class ResourceWorldModule {
         return (MappedRegistry<LevelStem>) registryManager.registryOrThrow(Registries.LEVEL_STEM);
     }
 
+    @SuppressWarnings("deprecation")
     private static void createWorld(MinecraftServer server, ResourceKey<DimensionType> dimensionTypeRegistryKey, String path, long seed) {
         /* create the world */
         ResourceWorldProperties resourceWorldProperties = new ResourceWorldProperties(server.getWorldData(), seed);
@@ -184,6 +185,7 @@ public class ResourceWorldModule {
         return server.getLevel(worldKey);
     }
 
+    @SuppressWarnings("unused")
     private static void createSafePlatform(ServerLevel world, BlockPos pos) {
         BlockPos origin = pos.offset(-2, -1, -2);
         for (int i = 0; i < 5; i++) {

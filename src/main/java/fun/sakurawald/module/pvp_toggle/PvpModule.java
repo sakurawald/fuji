@@ -65,6 +65,7 @@ public class PvpModule {
         return 0;
     }
 
+    @SuppressWarnings("SameReturnValue")
     private static int $status(CommandContext<CommandSourceStack> ctx) {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return Command.SINGLE_SUCCESS;
