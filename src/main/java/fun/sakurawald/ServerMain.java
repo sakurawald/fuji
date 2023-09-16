@@ -26,11 +26,11 @@ import net.minecraft.server.MinecraftServer;
 import java.nio.file.Path;
 
 // TODO: res -> xht bug
+// TODO: teleport from rw world
 // TODO: res -> teleport to home first
 // TODO: res -> stop getSmallestEnclosure
-// TODO: /tpa command
 @Slf4j
-public class ModMain implements ModInitializer {
+public class ServerMain implements ModInitializer {
     public static final Path CONFIG_PATH = Path.of(FabricLoader.getInstance().getConfigDir().resolve("sakurawald").toString());
     public static MinecraftServer SERVER;
 

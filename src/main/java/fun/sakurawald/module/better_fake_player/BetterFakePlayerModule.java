@@ -4,7 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import fun.sakurawald.ModMain;
+import fun.sakurawald.ServerMain;
 import fun.sakurawald.config.ConfigManager;
 import net.kyori.adventure.text.Component;
 import net.minecraft.commands.CommandBuildContext;
@@ -59,7 +59,7 @@ public class BetterFakePlayerModule {
         for (Map.Entry<String, ArrayList<String>> entry : player2fakePlayers.entrySet()) {
             ArrayList<String> myFakePlayers = entry.getValue();
             myFakePlayers.removeIf(name -> {
-                ServerPlayer fakePlayer = ModMain.SERVER.getPlayerList().getPlayerByName(name);
+                ServerPlayer fakePlayer = ServerMain.SERVER.getPlayerList().getPlayerByName(name);
                 return fakePlayer == null || fakePlayer.isRemoved();
             });
             if (myFakePlayers.isEmpty()) {
@@ -92,7 +92,7 @@ public class BetterFakePlayerModule {
 
 
         // bypass: op
-        if (ModMain.SERVER.getPlayerList().isOp(player.getGameProfile())) return true;
+        if (ServerMain.SERVER.getPlayerList().isOp(player.getGameProfile())) return true;
 
         ArrayList<String> myFakePlayers = BetterFakePlayerModule.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), new ArrayList<>());
         return myFakePlayers.contains(fakePlayer);
@@ -133,7 +133,7 @@ public class BetterFakePlayerModule {
         for (String player : player2fakePlayers.keySet()) {
             ArrayList<String> fakePlayers = player2fakePlayers.getOrDefault(player, new ArrayList<>());
             for (int i = fakePlayers.size() - 1; i >= limit; i--) {
-                ServerPlayer fakePlayer = ModMain.SERVER.getPlayerList().getPlayerByName(fakePlayers.get(i));
+                ServerPlayer fakePlayer = ServerMain.SERVER.getPlayerList().getPlayerByName(fakePlayers.get(i));
                 if (fakePlayer == null) continue;
                 fakePlayer.kill();
 

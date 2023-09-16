@@ -5,7 +5,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import fun.sakurawald.ModMain;
+import fun.sakurawald.ServerMain;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.Component;
@@ -38,9 +38,10 @@ import java.util.Objects;
 import static com.mojang.brigadier.arguments.StringArgumentType.word;
 import static net.minecraft.commands.Commands.argument;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 @Slf4j
 public class DeathLogModule {
-    private static final Path STORAGE_PATH = ModMain.CONFIG_PATH.resolve("deathlog");
+    private static final Path STORAGE_PATH = ServerMain.CONFIG_PATH.resolve("deathlog");
     private static final String DEATHS = "Deaths";
     private static final String TIME = "time";
     private static final String REASON = "reason";
@@ -61,7 +62,7 @@ public class DeathLogModule {
         STORAGE_PATH.toFile().mkdirs();
     }
 
-    @SuppressWarnings("UnusedReturnValue")
+    @SuppressWarnings({"UnusedReturnValue", "unused"})
     public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("deathlog").requires(s -> s.hasPermission(4))
@@ -73,6 +74,7 @@ public class DeathLogModule {
                         ));
     }
 
+    @SuppressWarnings("DataFlowIssue")
     @SneakyThrows
     private static int $restore(CommandContext<CommandSourceStack> ctx) {
         /* read from file */
@@ -101,7 +103,7 @@ public class DeathLogModule {
         List<ItemStack> offhand = readSlotsTag((ListTag) inventoryTag.get(OFFHAND));
 
         // check to player's inventory for safety
-        if (!to.getInventory().isEmpty() && !ModMain.SERVER.getPlayerList().isOp(to.getGameProfile())) {
+        if (!to.getInventory().isEmpty() && !ServerMain.SERVER.getPlayerList().isOp(to.getGameProfile())) {
             source.sendMessage(Component.text("To player's inventory is not empty!"));
             return Command.SINGLE_SUCCESS;
         }

@@ -1,7 +1,7 @@
 package fun.sakurawald.mixin.op_protect;
 
 
-import fun.sakurawald.ModMain;
+import fun.sakurawald.ServerMain;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,9 +21,9 @@ public class ServerPlayNetworkHandlerMixin {
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;disconnect()V"), method = "onDisconnect")
     private void $disconnect(Component reason, CallbackInfo info) {
-        if (ModMain.SERVER.getPlayerList().isOp(player.getGameProfile())) {
+        if (ServerMain.SERVER.getPlayerList().isOp(player.getGameProfile())) {
             log.info("[Op Protect] deop " + player.getGameProfile());
-            ModMain.SERVER.getPlayerList().deop(player.getGameProfile());
+            ServerMain.SERVER.getPlayerList().deop(player.getGameProfile());
         }
     }
 }

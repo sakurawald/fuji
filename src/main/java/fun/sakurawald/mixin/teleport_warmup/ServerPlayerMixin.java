@@ -6,6 +6,7 @@ import fun.sakurawald.module.teleport_warmup.Position;
 import fun.sakurawald.module.teleport_warmup.ServerPlayerAccessor;
 import fun.sakurawald.module.teleport_warmup.TeleportTicket;
 import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
+import lombok.extern.slf4j.Slf4j;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -20,6 +21,7 @@ import static fun.sakurawald.util.MessageUtil.sendActionBar;
 
 
 @Mixin(ServerPlayer.class)
+@Slf4j
 public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
 
     @Unique

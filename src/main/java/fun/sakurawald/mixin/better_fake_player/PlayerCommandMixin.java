@@ -3,7 +3,7 @@ package fun.sakurawald.mixin.better_fake_player;
 import carpet.commands.PlayerCommand;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import fun.sakurawald.ModMain;
+import fun.sakurawald.ServerMain;
 import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.level.ServerPlayer;
@@ -30,7 +30,7 @@ public abstract class PlayerCommandMixin {
 
         /* fix fake-player auth network laggy */
         String fakePlayerName = StringArgumentType.getString(context, "player");
-        ModMain.SERVER.getProfileCache().add(BetterFakePlayerModule.createOfflineGameProfile(fakePlayerName));
+        ServerMain.SERVER.getProfileCache().add(BetterFakePlayerModule.createOfflineGameProfile(fakePlayerName));
     }
 
     @Inject(method = "spawn", at = @At("TAIL"), remap = false)

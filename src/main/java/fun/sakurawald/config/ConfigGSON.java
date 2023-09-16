@@ -67,6 +67,7 @@ public class ConfigGSON {
             public HashMap<String, Long> command_regex_2_cooldown_ms = new HashMap<>() {
                 {
                     this.put("rw tp (overworld|the_nether|the_end)", 120 * 1000L);
+                    this.put("chunks\\s*", 60 * 1000L);
                 }
             };
         }
@@ -188,7 +189,7 @@ public class ConfigGSON {
         }
 
         public class Tpa {
-            public int timeout = 120;
+            public int timeout = 300;
         }
     }
 }

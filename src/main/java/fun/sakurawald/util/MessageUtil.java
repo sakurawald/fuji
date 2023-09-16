@@ -4,7 +4,7 @@ import assets.sakurawald.ResourceLoader;
 import carpet.script.external.Vanilla;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import fun.sakurawald.ModMain;
+import fun.sakurawald.ServerMain;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.audience.Audience;
@@ -66,7 +66,7 @@ public class MessageUtil {
     }
 
     public static void sendBroadcast(String key, Object... args) {
-        for (ServerPlayer player : ModMain.SERVER.getPlayerList().getPlayers()) {
+        for (ServerPlayer player : ServerMain.SERVER.getPlayerList().getPlayers()) {
             sendMessage(player, key, args);
         }
     }

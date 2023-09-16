@@ -3,7 +3,7 @@ package fun.sakurawald.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonWriter;
-import fun.sakurawald.ModMain;
+import fun.sakurawald.ServerMain;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -16,13 +16,14 @@ public class ConfigWrapper<T> {
     private final Class<T> configClass;
     private T configInstance;
 
+    @SuppressWarnings("unused")
     public ConfigWrapper(File file, Class<T> configClass) {
         this.file = file;
         this.configClass = configClass;
     }
 
     public ConfigWrapper(String child, Class<T> configClass) {
-        this.file = new File(ModMain.CONFIG_PATH.toString(), child);
+        this.file = new File(ServerMain.CONFIG_PATH.toString(), child);
         this.configClass = configClass;
     }
 

@@ -5,7 +5,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import fun.sakurawald.ModMain;
+import fun.sakurawald.ServerMain;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.module.main_stats.MainStats;
 import lombok.Getter;
@@ -29,7 +29,6 @@ import java.util.Queue;
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
-@SuppressWarnings("resource")
 @Slf4j
 public class ChatStyleModule {
 
@@ -39,6 +38,7 @@ public class ChatStyleModule {
     private static final MiniMessage miniMessage = MiniMessage.builder().build();
 
 
+    @SuppressWarnings("unused")
     public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("chat")
@@ -72,11 +72,11 @@ public class ChatStyleModule {
         return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)item(?=\\s|$)").replacement(replacement).build());
     }
 
-    @SuppressWarnings("PatternValidation")
+    @SuppressWarnings("unused")
     private static String resolveMentionTag(ServerPlayer source, String str) {
         /* resolve player tag */
         ArrayList<ServerPlayer> mentionedPlayers = new ArrayList<>();
-        for (ServerPlayer player : ModMain.SERVER.getPlayerList().getPlayers()) {
+        for (ServerPlayer player : ServerMain.SERVER.getPlayerList().getPlayers()) {
             String name = player.getGameProfile().getName();
             // here we must continue so that mentionPlayers will not be added
             if (!str.contains(name)) continue;
@@ -110,7 +110,7 @@ public class ChatStyleModule {
         chatHistory.add(component);
         // info so that it can be seen in the console
         log.info(PlainTextComponentSerializer.plainText().serialize(component));
-        for (ServerPlayer player : ModMain.SERVER.getPlayerList().getPlayers()) {
+        for (ServerPlayer player : ServerMain.SERVER.getPlayerList().getPlayers()) {
             player.sendMessage(component);
         }
     }

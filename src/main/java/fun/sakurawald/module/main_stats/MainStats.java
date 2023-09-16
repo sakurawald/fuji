@@ -3,7 +3,7 @@ package fun.sakurawald.module.main_stats;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import fun.sakurawald.ModMain;
+import fun.sakurawald.ServerMain;
 import lombok.ToString;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.ServerStatsCounter;
@@ -114,7 +114,7 @@ public class MainStats {
                 .replace("%placed%", String.valueOf(placed))
                 .replace("%killed%", String.valueOf(killed))
                 .replace("%moved%", String.valueOf(moved))
-                .replace("%uptime%", String.valueOf(ModMain.SERVER.getTickCount() / GT_TO_H_DIVISOR));
+                .replace("%uptime%", String.valueOf(ServerMain.SERVER.getTickCount() / GT_TO_H_DIVISOR));
     }
 
     public void add(MainStats other) {

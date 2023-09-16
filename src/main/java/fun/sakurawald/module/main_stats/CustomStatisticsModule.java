@@ -1,6 +1,6 @@
 package fun.sakurawald.module.main_stats;
 
-import fun.sakurawald.ModMain;
+import fun.sakurawald.ServerMain;
 import fun.sakurawald.config.ConfigGSON;
 import fun.sakurawald.config.ConfigManager;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ public class CustomStatisticsModule {
     public static void updateMOTD() {
         ConfigGSON.Modules.MainStats main_stats = ConfigManager.configWrapper.instance().modules.main_stats;
         String motd = MainStats.calculateServerMainStats().resolve(main_stats.dynamic_motd);
-        ModMain.SERVER.setMotd(motd);
+        ServerMain.SERVER.setMotd(motd);
     }
 
     @SuppressWarnings({"SameParameterValue", "unused"})
@@ -62,9 +62,7 @@ public class CustomStatisticsModule {
         // async task
         executorService.scheduleAtFixedRate(() -> {
             // save all online-player 's stats
-            server.getPlayerList().getPlayers().forEach((p) -> {
-                p.getStats().save();
-            });
+            server.getPlayerList().getPlayers().forEach((p) -> p.getStats().save());
 
             // update motd
             updateMOTD();

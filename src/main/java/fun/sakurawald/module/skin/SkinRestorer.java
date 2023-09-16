@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import fun.sakurawald.ModMain;
+import fun.sakurawald.ServerMain;
 import fun.sakurawald.module.skin.io.SkinIO;
 import fun.sakurawald.module.skin.io.SkinStorage;
 import it.unimi.dsi.fastutil.Pair;
@@ -28,7 +28,7 @@ public class SkinRestorer {
 
     public static final Logger LOGGER = LoggerFactory.getLogger("SkinRestorer");
     private static final Gson gson = new Gson();
-    private static final SkinStorage skinStorage = new SkinStorage(new SkinIO(ModMain.CONFIG_PATH.resolve("skin")));
+    private static final SkinStorage skinStorage = new SkinStorage(new SkinIO(ServerMain.CONFIG_PATH.resolve("skin")));
 
 
     public static SkinStorage getSkinStorage() {
