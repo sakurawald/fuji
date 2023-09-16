@@ -1,15 +1,16 @@
 package fun.sakurawald.module.pvp_toggle;
 
-import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.util.MessageUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class PvpModule {
@@ -25,10 +26,12 @@ public class PvpModule {
 
     private static int $on(CommandContext<CommandSourceStack> ctx) {
         CommandSourceStack source = ctx.getSource();
-        GameProfile player = Objects.requireNonNull(source.getPlayer()).getGameProfile();
+        String player = Objects.requireNonNull(source.getPlayer()).getGameProfile().getName();
 
-        if (!PvpWhitelist.contains(player)) {
-            PvpWhitelist.addPlayer(player);
+        ArrayList<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
+        if (!whitelist.contains(player)) {
+            whitelist.add(player);
+            ConfigManager.pvpWrapper.saveToDisk();
 
             MessageUtil.feedback(source, "PvP for you is now on.", ChatFormatting.DARK_AQUA);
             return Command.SINGLE_SUCCESS;
@@ -40,10 +43,13 @@ public class PvpModule {
 
     private static int $off(CommandContext<CommandSourceStack> ctx) {
         CommandSourceStack source = ctx.getSource();
-        GameProfile player = Objects.requireNonNull(source.getPlayer()).getGameProfile();
+        String player = Objects.requireNonNull(source.getPlayer()).getGameProfile().getName();
 
-        if (PvpWhitelist.contains(player)) {
-            PvpWhitelist.removePlayer(player);
+        ArrayList<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
+        if (whitelist.contains(player)) {
+            whitelist.remove(player);
+            ConfigManager.pvpWrapper.saveToDisk();
+
             MessageUtil.feedback(source, "PvP for you is now off.", ChatFormatting.DARK_AQUA);
             return Command.SINGLE_SUCCESS;
         }
@@ -52,16 +58,22 @@ public class PvpModule {
         return 0;
     }
 
-
     private static int $status(CommandContext<CommandSourceStack> ctx) {
         CommandSourceStack source = ctx.getSource();
-        GameProfile player = Objects.requireNonNull(source.getPlayer()).getGameProfile();
-        MessageUtil.feedback(source, "PvP for you is " + (PvpWhitelist.contains(player) ? "on" : "off"), ChatFormatting.DARK_AQUA);
+        String player = Objects.requireNonNull(source.getPlayer()).getGameProfile().getName();
+        ArrayList<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
+        MessageUtil.feedback(source, "PvP for you is " + (whitelist.contains(player) ? "on" : "off"), ChatFormatting.DARK_AQUA);
         return Command.SINGLE_SUCCESS;
     }
 
     private static int $list(CommandContext<CommandSourceStack> ctx) {
-        MessageUtil.feedback(ctx.getSource(), "Players with PvP on: " + String.join(", ", PvpWhitelist.getPlayers()), ChatFormatting.DARK_AQUA);
+        ArrayList<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
+        MessageUtil.feedback(ctx.getSource(), "Players with PvP on: " + whitelist, ChatFormatting.DARK_AQUA);
         return Command.SINGLE_SUCCESS;
+    }
+
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public static boolean contains(String name) {
+        return ConfigManager.pvpWrapper.instance().whitelist.contains(name);
     }
 }

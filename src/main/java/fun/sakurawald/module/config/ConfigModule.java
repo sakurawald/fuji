@@ -22,6 +22,7 @@ public class ConfigModule {
     private static int $reload(CommandContext<CommandSourceStack> ctx) {
         ConfigManager.configWrapper.loadFromDisk();
         ConfigManager.chatWrapper.loadFromDisk();
+        ConfigManager.pvpWrapper.loadFromDisk();
         MessageUtil.feedback(ctx.getSource(), "Reload successfully.");
         return Command.SINGLE_SUCCESS;
     }

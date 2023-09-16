@@ -4,6 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import fun.sakurawald.module.chat_style.MentionPlayersTask;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.Component;
@@ -92,16 +93,17 @@ public class TpaModule {
         TpaRequest request = requestOptional.get();
         if (status == ResponseStatus.ACCEPT) {
             request.getSender().sendActionBar(request.asSenderComponent$Accepted());
-            request.getReceiver().sendActionBar(request.asReceiverComponent$Accepted());
+            request.getReceiver().sendMessage(request.asReceiverComponent$Accepted());
             ServerPlayer who = request.getTeleportWho();
             ServerPlayer to = request.getTeleportTo();
+            new MentionPlayersTask(who).startTask();
             who.teleportTo((ServerLevel) to.level(), to.getX(), to.getY(), to.getZ(), to.getYRot(), to.getXRot());
         } else if (status == ResponseStatus.DENY) {
             request.getSender().sendActionBar(request.asSenderComponent$Denied());
-            request.getReceiver().sendActionBar(request.asReceiverComponent$Denied());
+            request.getReceiver().sendMessage(request.asReceiverComponent$Denied());
         } else if (status == ResponseStatus.CANCEL) {
-            request.getSender().sendActionBar(request.asSenderComponent$Cancelled());
-            request.getReceiver().sendActionBar(request.asReceiverComponent$Cancelled());
+            request.getSender().sendMessage(request.asSenderComponent$Cancelled());
+            request.getReceiver().sendMessage(request.asReceiverComponent$Cancelled());
         }
 
         request.cancelTimeout();
@@ -135,11 +137,12 @@ public class TpaModule {
             return Command.SINGLE_SUCCESS;
         }
 
-        request.startTimeout();
         requests.add(request);
+        request.startTimeout();
 
         /* feedback */
         request.getReceiver().sendMessage(request.asReceiverComponent$Sent());
+        new MentionPlayersTask(request.getReceiver()).startTask();
         request.getSender().sendMessage(request.asSenderComponent$Sent());
         return Command.SINGLE_SUCCESS;
     }

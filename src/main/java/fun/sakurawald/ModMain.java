@@ -8,7 +8,6 @@ import fun.sakurawald.module.config.ConfigModule;
 import fun.sakurawald.module.deathlog.DeathLogModule;
 import fun.sakurawald.module.main_stats.CustomStatisticsModule;
 import fun.sakurawald.module.pvp_toggle.PvpModule;
-import fun.sakurawald.module.pvp_toggle.PvpWhitelist;
 import fun.sakurawald.module.resource_world.ResourceWorldModule;
 import fun.sakurawald.module.skin.command.SkinModule;
 import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
@@ -24,7 +23,6 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 
-import java.io.File;
 import java.nio.file.Path;
 
 // TODO: res -> xht bug
@@ -44,9 +42,9 @@ public class ModMain implements ModInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> SERVER = server);
 
         /* config */
-        PvpWhitelist.create(new File(CONFIG_PATH.toString(), "pvp.json"));
         ConfigManager.configWrapper.loadFromDisk();
         ConfigManager.chatWrapper.loadFromDisk();
+        ConfigManager.pvpWrapper.loadFromDisk();
 
         /* register commands */
         CommandRegistrationCallback.EVENT.register(ConfigModule::registerCommand);

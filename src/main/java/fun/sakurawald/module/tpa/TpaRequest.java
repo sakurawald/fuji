@@ -8,6 +8,7 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Timer;
@@ -16,6 +17,7 @@ import java.util.TimerTask;
 @ToString
 public class TpaRequest {
 
+    private static final String CIRCLE = "●";
     private static final String TICK = "[✔]";
     private static final String CROSS = "[❌]";
     @Getter
@@ -65,6 +67,9 @@ public class TpaRequest {
         timer.cancel();
     }
 
+    public Component asSenderComponent$Description() {
+        return Component.text(tpahere ? "%s --> You".formatted(receiver.getGameProfile().getName()) : "You --> %s".formatted(receiver.getGameProfile().getName())).color(NamedTextColor.YELLOW);
+    }
 
     public Component asSenderComponent$Sent() {
         TextComponent cancelComponent = Component
@@ -72,50 +77,50 @@ public class TpaRequest {
                 .hoverEvent(HoverEvent.showText(Component.text("Cancel", NamedTextColor.RED)))
                 .clickEvent(ClickEvent.runCommand("/tpacancel %s".formatted(getReceiver().getGameProfile().getName())));
 
-        return Component.text("Sent a request to %s".formatted(getReceiver().getGameProfile().getName())).color(NamedTextColor.YELLOW)
+        return asSenderComponent$Description()
                 .appendSpace()
                 .append(cancelComponent);
     }
 
+    public Component asReceiverComponent$Description() {
+        return Component.text(tpahere ? "You --> %s".formatted(sender.getGameProfile().getName()) : "%s --> You".formatted(sender.getGameProfile().getName())).color(NamedTextColor.YELLOW);
+    }
+
     public Component asReceiverComponent$Sent() {
-        String sender = this.sender.getName().getString();
-        Component description = (tpahere ? Component
-                .text("You --> %s".formatted(sender)) : Component.text("%s --> You".formatted(sender)))
-                .color(NamedTextColor.YELLOW);
-        Component ret = Component.empty()
-                .append(description
-                        .appendSpace()
-                        .append(Component.text(TICK).color(NamedTextColor.GREEN)
-                                .hoverEvent(HoverEvent.showText(Component.text("Accept this request", NamedTextColor.GREEN)))
-                                .clickEvent(ClickEvent.runCommand("/tpaaccept %s".formatted(sender))))
-                        .appendSpace()
-                        .append(Component.text(CROSS).color(NamedTextColor.RED)
-                                .hoverEvent(HoverEvent.showText(Component.text("Deny this request", NamedTextColor.RED))))
-                        .clickEvent(ClickEvent.runCommand("/tpadeny %s".formatted(sender))));
-        return ret;
+        Component acceptComponent = Component.text(TICK).color(NamedTextColor.GREEN)
+                .hoverEvent(HoverEvent.showText(Component.text("Accept", NamedTextColor.GREEN)))
+                .clickEvent(ClickEvent.runCommand("/tpaaccept %s".formatted(sender.getGameProfile().getName())));
+        Component denyComponent = Component.text(CROSS).color(NamedTextColor.RED)
+                .hoverEvent(HoverEvent.showText(Component.text("Deny", NamedTextColor.RED)))
+                .clickEvent(ClickEvent.runCommand("/tpadeny %s".formatted(sender.getGameProfile().getName())));
+        return asReceiverComponent$Description()
+                .appendSpace()
+                .append(acceptComponent)
+                .appendSpace()
+                .append(denyComponent);
     }
 
     public Component asSenderComponent$Accepted() {
-        return Component.text("%s has accepted your request".formatted(getReceiver().getGameProfile().getName()), NamedTextColor.YELLOW);
+        return asSenderComponent$Description().appendSpace().append(Component.text(CIRCLE, NamedTextColor.GREEN));
     }
 
     public Component asReceiverComponent$Accepted() {
-        return Component.text("Accepted the request from %s".formatted(getSender().getGameProfile().getName()), NamedTextColor.YELLOW);
+        return asReceiverComponent$Description().appendSpace().append(Component.text(CIRCLE, NamedTextColor.GREEN));
     }
 
     public Component asSenderComponent$Denied() {
-        return Component.text("%s has denied your request".formatted(getReceiver().getGameProfile().getName()), NamedTextColor.YELLOW);
+        return asSenderComponent$Description().appendSpace().append(Component.text(CIRCLE, NamedTextColor.RED));
     }
 
     public Component asReceiverComponent$Denied() {
-        return Component.text("Denied the request from %s".formatted(getSender().getGameProfile().getName()), NamedTextColor.YELLOW);
+        return asReceiverComponent$Description().appendSpace().append(Component.text(CIRCLE, NamedTextColor.RED));
     }
 
     public Component asSenderComponent$Cancelled() {
-        return Component.text("Cancelled the request to %s".formatted(getReceiver().getGameProfile().getName()), NamedTextColor.YELLOW);
+        return asSenderComponent$Description().decoration(TextDecoration.STRIKETHROUGH, true);
     }
 
     public Component asReceiverComponent$Cancelled() {
-        return Component.text("Request from %s has been canceled".formatted(getSender().getGameProfile().getName()), NamedTextColor.YELLOW);
+        return asReceiverComponent$Description().decoration(TextDecoration.STRIKETHROUGH, true);
     }
 }

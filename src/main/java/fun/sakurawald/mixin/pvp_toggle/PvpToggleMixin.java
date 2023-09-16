@@ -1,7 +1,7 @@
 package fun.sakurawald.mixin.pvp_toggle;
 
 import com.mojang.authlib.GameProfile;
-import fun.sakurawald.module.pvp_toggle.PvpWhitelist;
+import fun.sakurawald.module.pvp_toggle.PvpModule;
 import fun.sakurawald.util.MessageUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -29,13 +29,13 @@ public abstract class PvpToggleMixin extends Player {
     public void $canHarmPlayer(Player sourcePlayer, CallbackInfoReturnable<Boolean> cir) {
         if (this == sourcePlayer) return;
 
-        if (!PvpWhitelist.contains(sourcePlayer.getGameProfile())) {
+        if (!PvpModule.contains(sourcePlayer.getGameProfile().getName())) {
             MessageUtil.feedback(sourcePlayer.createCommandSourceStack(), "PvP for you is now off!", ChatFormatting.DARK_AQUA);
             cir.setReturnValue(false);
             return;
         }
 
-        if (!PvpWhitelist.contains(this.getGameProfile())) {
+        if (!PvpModule.contains(this.getGameProfile().getName())) {
             MessageUtil.feedback(sourcePlayer.createCommandSourceStack(), String.format("PvP for %s is now off!", this.getGameProfile().getName()), ChatFormatting.DARK_AQUA);
             cir.setReturnValue(false);
         }

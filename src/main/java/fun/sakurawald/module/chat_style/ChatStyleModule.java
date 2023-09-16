@@ -6,13 +6,10 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.ModMain;
-import fun.sakurawald.config.ConfigGSON;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.module.main_stats.MainStats;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -28,10 +25,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Queue;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
@@ -45,7 +38,6 @@ public class ChatStyleModule {
     private static final Queue<Component> chatHistory = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.chat_style.history.cache_size);
     private static final MiniMessage miniMessage = MiniMessage.builder().build();
 
-    private static final ScheduledExecutorService mentionExecutor = Executors.newScheduledThreadPool(1);
 
     public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
@@ -94,13 +86,7 @@ public class ChatStyleModule {
         }
 
         /* run mention player task */
-        ConfigGSON.Modules.ChatStyle.MentionPlayer mentionPlayer = ConfigManager.configWrapper.instance().modules.chat_style.mention_player;
-        Sound sound = Sound.sound(Key.key(mentionPlayer.sound), Sound.Source.MUSIC, mentionPlayer.volume, mentionPlayer.pitch);
-        int limit = mentionPlayer.limit;
-        MentionPlayersTask mentionPlayersTask = new MentionPlayersTask(mentionedPlayers, sound, limit);
-        ScheduledFuture<?> scheduledFuture = mentionExecutor.scheduleAtFixedRate(mentionPlayersTask, 0, mentionPlayer.interval, TimeUnit.MILLISECONDS);
-        mentionPlayersTask.setScheduledFuture(scheduledFuture);
-
+        new MentionPlayersTask(mentionedPlayers).startTask();
         return str;
     }
 
