@@ -6,14 +6,12 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import fun.sakurawald.module.skin.SkinRestorer;
 import fun.sakurawald.module.skin.enums.SkinVariant;
-import fun.sakurawald.module.skin.lang.LanguageUtils;
 import fun.sakurawald.module.skin.provider.MineSkinSkinProvider;
 import fun.sakurawald.module.skin.provider.MojangSkinProvider;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.GameProfileArgument;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Collection;
@@ -21,6 +19,7 @@ import java.util.Collections;
 import java.util.function.Supplier;
 
 import static fun.sakurawald.module.skin.io.SkinStorage.DEFAULT_SKIN;
+import static fun.sakurawald.util.MessageUtil.sendMessage;
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
@@ -72,20 +71,16 @@ public class SkinModule {
             Collection<GameProfile> profiles = pair.right();
             Collection<ServerPlayer> players = pair.left();
             if (profiles.size() == 0) {
-                src.sendFailure(Component.nullToEmpty(LanguageUtils.translation.skinActionFailed));
+                sendMessage(src, "skin.action.failed");
                 return;
             }
             if (setByOperator) {
-                src.sendSuccess(() -> Component.nullToEmpty(
-                        String.format(LanguageUtils.translation.skinActionAffectedProfile,
-                                String.join(", ", profiles.stream().map(GameProfile::getName).toList()))), true);
+                sendMessage(src, "skin.action.affected_profile", String.join(", ", profiles.stream().map(GameProfile::getName).toList()));
                 if (players.size() != 0) {
-                    src.sendSuccess(() -> Component.nullToEmpty(
-                            String.format(LanguageUtils.translation.skinActionAffectedPlayer,
-                                    String.join(", ", players.stream().map(p -> p.getGameProfile().getName()).toList()))), true);
+                    sendMessage(src, "skin.action.affected_player", String.join(", ", players.stream().map(p -> p.getGameProfile().getName()).toList()));
                 }
             } else {
-                src.sendSuccess(() -> Component.nullToEmpty(LanguageUtils.translation.skinActionOk), true);
+                sendMessage(src, "skin.action.ok");
             }
         });
         return targets.size();

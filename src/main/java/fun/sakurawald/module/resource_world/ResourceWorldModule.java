@@ -10,10 +10,8 @@ import fun.sakurawald.mixin.resource_world.MinecraftServerAccessor;
 import fun.sakurawald.module.newbie_welcome.RandomTeleport;
 import fun.sakurawald.module.resource_world.interfaces.DimensionOptionsMixinInterface;
 import fun.sakurawald.module.resource_world.interfaces.SimpleRegistryMixinInterface;
-import fun.sakurawald.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
-import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -23,7 +21,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -44,6 +41,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static fun.sakurawald.util.MessageUtil.*;
 import static net.minecraft.commands.Commands.literal;
 
 @Slf4j
@@ -68,6 +66,7 @@ public class ResourceWorldModule {
         }, initialDelay, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS);
     }
 
+    @SuppressWarnings("unused")
     public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("rw")
@@ -88,7 +87,7 @@ public class ResourceWorldModule {
     }
 
     private static void resetWorlds(MinecraftServer server) {
-        MessageUtil.broadcast("Start to reset resource worlds...", ChatFormatting.GOLD);
+        sendBroadcast("resource_world.world.reset");
         ConfigManager.configWrapper.instance().modules.resource_world.seed = RandomSupport.generateUniqueSeed();
         ConfigManager.configWrapper.saveToDisk();
         deleteWorld(server, DEFAULT_OVERWORLD_PATH);
@@ -177,8 +176,7 @@ public class ResourceWorldModule {
         ((MinecraftServerAccessor) server).getLevels().put(world.dimension(), world);
         ServerWorldEvents.LOAD.invoker().onWorldLoad(server, world);
         world.tick(() -> true);
-
-        MessageUtil.broadcast(String.format("Create resource world %s done.", path), ChatFormatting.GOLD);
+        sendBroadcast("resource_world.world.created", path);
     }
 
     private static ServerLevel getResourceWorldByPath(MinecraftServer server, String path) {
@@ -209,7 +207,7 @@ public class ResourceWorldModule {
         String path = ctx.getNodes().get(2).getNode().getName();
         ServerLevel world = getResourceWorldByPath(ctx.getSource().getServer(), path);
         if (world == null) {
-            MessageUtil.feedback(ctx.getSource(), String.format("Target resource world %s doesn't exist.", path), ChatFormatting.RED);
+            sendMessage(ctx.getSource(), "resource_world.world.not_found", path);
             return 0;
         }
 
@@ -218,7 +216,7 @@ public class ResourceWorldModule {
             BlockPos endSpawnPos = ServerLevel.END_SPAWN_POINT;
             player.teleportTo(world, endSpawnPos.getX() + 0.5, endSpawnPos.getY(), endSpawnPos.getZ() + 0.5, 90, 0);
         } else {
-            MessageUtil.message(player, Component.literal("Search for a safe location... (don't move)").withStyle(ChatFormatting.GOLD), true);
+            sendActionBar(player, "resource_world.world.tp.tip");
             RandomTeleport.randomTeleport(player, world, false);
         }
 
@@ -231,7 +229,7 @@ public class ResourceWorldModule {
         if (world == null) return;
 
         ResourceWorldManager.enqueueWorldDeletion(world);
-        MessageUtil.broadcast(String.format("Delete resource world %s done.", path), ChatFormatting.GOLD);
+        sendBroadcast("resource_world.world.deleted", path);
     }
 
     private static int $delete(CommandContext<CommandSourceStack> ctx) {

@@ -1,13 +1,11 @@
 package fun.sakurawald.mixin.teleport_warmup;
 
-import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.module.back.BackModule;
 import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
 import fun.sakurawald.module.teleport_warmup.Position;
 import fun.sakurawald.module.teleport_warmup.ServerPlayerAccessor;
 import fun.sakurawald.module.teleport_warmup.TeleportTicket;
 import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
-import fun.sakurawald.util.MessageUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -17,6 +15,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import static fun.sakurawald.util.MessageUtil.sendActionBar;
+
 
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
@@ -40,7 +41,7 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
         } else {
             TeleportTicket ticket = TeleportWarmupModule.tickets.get(player);
             if (!ticket.ready) {
-                MessageUtil.message(player, ConfigManager.configWrapper.instance().modules.teleport_warmup.in_progress_message, true);
+                sendActionBar(player, "teleport_warmup.another_teleportation_in_progress");
                 ci.cancel();
             }
         }
@@ -55,7 +56,7 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
         if (cir.getReturnValue()) {
             ServerPlayer player = (ServerPlayer) (Object) this;
             if (TeleportWarmupModule.tickets.containsKey(player)) {
-                TeleportWarmupModule.tickets.get(player).bossbar.setVisible(false);
+                TeleportWarmupModule.tickets.get(player).bossbar.removeViewer(player);
                 TeleportWarmupModule.tickets.remove(player);
             }
         }

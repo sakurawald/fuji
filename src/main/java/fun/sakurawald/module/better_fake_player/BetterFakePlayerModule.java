@@ -6,8 +6,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.ModMain;
 import fun.sakurawald.config.ConfigManager;
-import fun.sakurawald.util.MessageUtil;
-import net.minecraft.ChatFormatting;
+import net.kyori.adventure.text.Component;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -22,10 +21,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static fun.sakurawald.util.MessageUtil.resolve;
+import static fun.sakurawald.util.MessageUtil.sendBroadcast;
+
 public class BetterFakePlayerModule {
     private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
     private static final HashMap<String, ArrayList<String>> player2fakePlayers = new HashMap<>();
 
+    @SuppressWarnings("unused")
     public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("player").then(
@@ -40,7 +43,6 @@ public class BetterFakePlayerModule {
 
         /* output */
         StringBuilder builder = new StringBuilder();
-        builder.append("--- Fake Players ---\n");
         for (String player : player2fakePlayers.keySet()) {
             builder.append(player).append(": ");
             for (String fakePlayer : player2fakePlayers.get(player)) {
@@ -48,7 +50,8 @@ public class BetterFakePlayerModule {
             }
             builder.append("\n");
         }
-        MessageUtil.feedback(context.getSource(), builder.toString());
+        CommandSourceStack source = context.getSource();
+        source.sendMessage(resolve(source, "better_fake_player.who.header").append(Component.text(builder.toString())));
         return Command.SINGLE_SUCCESS;
     }
 
@@ -132,7 +135,8 @@ public class BetterFakePlayerModule {
                 ServerPlayer fakePlayer = ModMain.SERVER.getPlayerList().getPlayerByName(fakePlayers.get(i));
                 if (fakePlayer == null) continue;
                 fakePlayer.kill();
-                MessageUtil.broadcast("Kick fake-player %s for the limit.".formatted(fakePlayer.getGameProfile().getName()), ChatFormatting.GREEN);
+
+                sendBroadcast("better_fake_player.kick_for_limit", fakePlayer.getGameProfile().getName());
             }
         }
     }

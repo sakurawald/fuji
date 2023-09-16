@@ -7,8 +7,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import fun.sakurawald.module.chat_style.MentionPlayersTask;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -19,6 +17,7 @@ import net.minecraft.server.level.ServerPlayer;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static fun.sakurawald.util.MessageUtil.sendActionBar;
 import static net.minecraft.commands.Commands.argument;
 
 @Slf4j
@@ -27,6 +26,7 @@ public class TpaModule {
     @Getter
     private static final ArrayList<TpaRequest> requests = new ArrayList<>();
 
+    @SuppressWarnings("unused")
     public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("tpa").then(argument("player", EntityArgument.player()).executes(TpaModule::$tpa))
@@ -74,7 +74,7 @@ public class TpaModule {
         try {
             player = EntityArgument.getPlayer(ctx, "player");
         } catch (CommandSyntaxException e) {
-            source.sendActionBar(Component.text("Player not found", NamedTextColor.RED));
+            sendActionBar(source, "tpa.player_not_found");
             return Command.SINGLE_SUCCESS;
         }
 
@@ -86,7 +86,7 @@ public class TpaModule {
                                 : (request.getSender().equals(player) && request.getReceiver().equals(source)))
                 .findFirst();
         if (requestOptional.isEmpty()) {
-            source.sendActionBar(Component.text("No relative request.", NamedTextColor.RED));
+            sendActionBar(source, "tpa.no_relative_ticket");
             return Command.SINGLE_SUCCESS;
         }
 
@@ -119,7 +119,7 @@ public class TpaModule {
         try {
             player = EntityArgument.getPlayer(ctx, "player");
         } catch (CommandSyntaxException e) {
-            source.sendActionBar(Component.text("Player not found", NamedTextColor.RED));
+            sendActionBar(source, "tpa.player_not_found");
             return Command.SINGLE_SUCCESS;
         }
 
@@ -128,12 +128,13 @@ public class TpaModule {
 
         /* has similar request ? */
         if (request.getSender().equals(request.getReceiver())) {
-            request.getSender().sendActionBar(Component.text("You can't send a request to yourself.", NamedTextColor.RED));
+            sendActionBar(request.getSender(), "tpa.request_to_self");
+
             return Command.SINGLE_SUCCESS;
         }
 
         if (requests.stream().anyMatch(request::similarTo)) {
-            request.getSender().sendActionBar(Component.text("A similar request already exists.", NamedTextColor.RED));
+            sendActionBar(request.getSender(), "tpa.similar_request_exists");
             return Command.SINGLE_SUCCESS;
         }
 

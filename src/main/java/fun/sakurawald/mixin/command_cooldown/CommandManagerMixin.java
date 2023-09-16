@@ -2,16 +2,15 @@ package fun.sakurawald.mixin.command_cooldown;
 
 import com.mojang.brigadier.ParseResults;
 import fun.sakurawald.module.command_cooldown.CommandCooldownModule;
-import fun.sakurawald.util.MessageUtil;
-import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import static fun.sakurawald.util.MessageUtil.sendActionBar;
 
 @Mixin(Commands.class)
 public class CommandManagerMixin {
@@ -23,7 +22,7 @@ public class CommandManagerMixin {
 
         long cooldown = CommandCooldownModule.calculateCommandCooldown(player, commandLine);
         if (cooldown > 0) {
-            MessageUtil.message(player, Component.literal("%d s".formatted(cooldown / 1000)).withStyle(ChatFormatting.YELLOW), true);
+            sendActionBar(player, "command_cooldown.cooldown", cooldown / 1000);
             cir.setReturnValue(0);
         }
     }

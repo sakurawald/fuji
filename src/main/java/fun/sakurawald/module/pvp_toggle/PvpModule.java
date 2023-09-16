@@ -4,16 +4,22 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.config.ConfigManager;
-import fun.sakurawald.util.MessageUtil;
-import net.minecraft.ChatFormatting;
+import lombok.extern.slf4j.Slf4j;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.server.level.ServerPlayer;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static fun.sakurawald.util.MessageUtil.resolve;
+import static fun.sakurawald.util.MessageUtil.sendMessage;
+
+
+@Slf4j
 public class PvpModule {
+    @SuppressWarnings("unused")
     public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("pvp")
@@ -33,11 +39,12 @@ public class PvpModule {
             whitelist.add(player);
             ConfigManager.pvpWrapper.saveToDisk();
 
-            MessageUtil.feedback(source, "PvP for you is now on.", ChatFormatting.DARK_AQUA);
+            sendMessage(source, "pvp_toggle.on");
+
             return Command.SINGLE_SUCCESS;
         }
 
-        MessageUtil.feedback(source, "You already have PvP on!", ChatFormatting.DARK_AQUA);
+        sendMessage(source, "pvp_toggle.on.already");
         return 0;
     }
 
@@ -50,25 +57,27 @@ public class PvpModule {
             whitelist.remove(player);
             ConfigManager.pvpWrapper.saveToDisk();
 
-            MessageUtil.feedback(source, "PvP for you is now off.", ChatFormatting.DARK_AQUA);
+            sendMessage(source, "pvp_toggle.off");
             return Command.SINGLE_SUCCESS;
         }
 
-        MessageUtil.feedback(source, "You already have PvP off!", ChatFormatting.DARK_AQUA);
+        sendMessage(source, "pvp_toggle.off.already");
         return 0;
     }
 
     private static int $status(CommandContext<CommandSourceStack> ctx) {
-        CommandSourceStack source = ctx.getSource();
-        String player = Objects.requireNonNull(source.getPlayer()).getGameProfile().getName();
+        ServerPlayer player = ctx.getSource().getPlayer();
+        if (player == null) return Command.SINGLE_SUCCESS;
+
         ArrayList<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
-        MessageUtil.feedback(source, "PvP for you is " + (whitelist.contains(player) ? "on" : "off"), ChatFormatting.DARK_AQUA);
+        player.sendMessage(resolve(player, "pvp_toggle.status")
+                .append(whitelist.contains(player.getGameProfile().getName()) ? resolve(player, "on") : resolve(player, "off")));
         return Command.SINGLE_SUCCESS;
     }
 
     private static int $list(CommandContext<CommandSourceStack> ctx) {
         ArrayList<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
-        MessageUtil.feedback(ctx.getSource(), "Players with PvP on: " + whitelist, ChatFormatting.DARK_AQUA);
+        sendMessage(ctx.getSource(), "pvp_toggle.list", whitelist);
         return Command.SINGLE_SUCCESS;
     }
 

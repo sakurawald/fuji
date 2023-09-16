@@ -5,14 +5,14 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.ModMain;
 import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
-import fun.sakurawald.util.MessageUtil;
-import net.kyori.adventure.text.Component;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import static fun.sakurawald.util.MessageUtil.sendMessage;
 
 @SuppressWarnings("DataFlowIssue")
 @Mixin(PlayerCommand.class)
@@ -24,7 +24,7 @@ public abstract class PlayerCommandMixin {
         if (player == null) return;
 
         if (!BetterFakePlayerModule.canSpawnFakePlayer(player)) {
-            MessageUtil.message(player, "You have reach current fake-player limit.", false);
+            sendMessage(player, "better_fake_player.spawn.limit_exceed");
             cir.setReturnValue(0);
         }
 
@@ -44,7 +44,7 @@ public abstract class PlayerCommandMixin {
     private static void $cantManipulate(CommandContext<CommandSourceStack> context, CallbackInfoReturnable<Boolean> cir) {
         String fakePlayerName = StringArgumentType.getString(context, "player");
         if (!BetterFakePlayerModule.canManipulateFakePlayer(context, fakePlayerName)) {
-            context.getSource().sendMessage(Component.text("You can't manipulate this player"));
+            sendMessage(context.getSource(), "better_fake_player.manipulate.forbidden");
             cir.setReturnValue(true);
         }
     }

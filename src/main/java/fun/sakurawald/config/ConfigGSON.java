@@ -38,7 +38,6 @@ public class ConfigGSON {
         }
 
         public class NewbieWelcome {
-            public String welcome_message = "§dWelcome new player %player% to join us!";
             public RandomTeleport random_teleport = new RandomTeleport();
 
             public class RandomTeleport {
@@ -51,9 +50,6 @@ public class ConfigGSON {
         public class TeleportWarmup {
             public int warmup_second = 3;
             public double interrupt_distance = 1d;
-            public String bossbar_name = "Teleport";
-            public String in_progress_message = "§bYou have another teleportation in progress.";
-            public String in_combat_message = "§bIn combat!";
         }
 
         public class BetterFakePlayer {

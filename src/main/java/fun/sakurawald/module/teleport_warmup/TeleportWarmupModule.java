@@ -1,9 +1,9 @@
 package fun.sakurawald.module.teleport_warmup;
 
 import fun.sakurawald.config.ConfigManager;
-import fun.sakurawald.util.MessageUtil;
+import lombok.extern.slf4j.Slf4j;
+import net.kyori.adventure.bossbar.BossBar;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -12,6 +12,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import static fun.sakurawald.util.MessageUtil.sendActionBar;
+
+
+@Slf4j
 public class TeleportWarmupModule {
 
     public static final HashMap<ServerPlayer, TeleportTicket> tickets = new HashMap<>();
@@ -19,6 +23,7 @@ public class TeleportWarmupModule {
     private static final float DELFA_PERCENT = 1F / MAX_VALUE;
     private static final double INTERRUPT_DISTANCE = ConfigManager.configWrapper.instance().modules.teleport_warmup.interrupt_distance;
 
+    @SuppressWarnings("unused")
     public static void onServerTick(MinecraftServer server) {
 
         if (tickets.isEmpty()) return;
@@ -27,32 +32,32 @@ public class TeleportWarmupModule {
             Iterator<Map.Entry<ServerPlayer, TeleportTicket>> iterator = tickets.entrySet().iterator();
             while (iterator.hasNext()) {
                 Map.Entry<ServerPlayer, TeleportTicket> pair = iterator.next();
-                ServerBossEvent bossbar = pair.getValue().bossbar;
-                bossbar.setProgress(bossbar.getProgress() + DELFA_PERCENT);
+                TeleportTicket ticket = pair.getValue();
+                BossBar bossbar = ticket.bossbar;
+                bossbar.progress(bossbar.progress() + DELFA_PERCENT);
 
-                ServerPlayer player = (ServerPlayer) bossbar.getPlayers().toArray()[0];
-                TeleportTicket teleportTicket = TeleportWarmupModule.tickets.get(player);
-
+                ServerPlayer player = ticket.player;
                 if (((ServerPlayerAccessor) player).sakurawald$inCombat()) {
-                    bossbar.setVisible(false);
+                    bossbar.removeViewer(player);
                     iterator.remove();
-                    MessageUtil.message(player, ConfigManager.configWrapper.instance().modules.teleport_warmup.in_combat_message, true);
+                    sendActionBar(player, "teleport_warmup.in_combat");
+
                     continue;
                 }
 
-                if (player.position().distanceToSqr(teleportTicket.source.getX(), teleportTicket.source.getY(), teleportTicket.source.getZ()) >= INTERRUPT_DISTANCE) {
-                    bossbar.setVisible(false);
+                if (player.position().distanceToSqr(ticket.source.getX(), ticket.source.getY(), ticket.source.getZ()) >= INTERRUPT_DISTANCE) {
+                    bossbar.removeViewer(player);
                     iterator.remove();
                     continue;
                 }
 
                 // even the ServerPlayer is disconnected, the bossbar will still be ticked.
-                if (bossbar.getProgress() >= 1.0F) {
-                    bossbar.setVisible(false);
+                if (bossbar.progress() >= (1.0F - 0.01F)) {
+                    bossbar.removeViewer(player);
 
                     // don't change the order of the following two lines.
-                    teleportTicket.ready = true;
-                    player.teleportTo((ServerLevel) teleportTicket.destination.getLevel(), teleportTicket.destination.getX(), teleportTicket.destination.getY(), teleportTicket.destination.getZ(), teleportTicket.destination.getYaw(), teleportTicket.destination.getPitch());
+                    ticket.ready = true;
+                    player.teleportTo((ServerLevel) ticket.destination.getLevel(), ticket.destination.getX(), ticket.destination.getY(), ticket.destination.getZ(), ticket.destination.getYaw(), ticket.destination.getPitch());
                     iterator.remove();
                 }
             }

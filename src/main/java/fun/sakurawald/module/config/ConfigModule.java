@@ -4,13 +4,16 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.config.ConfigManager;
-import fun.sakurawald.util.MessageUtil;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 
+import static fun.sakurawald.util.MessageUtil.sendMessage;
+
+
 public class ConfigModule {
 
+    @SuppressWarnings("unused")
     public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("sw").requires(source -> source.hasPermission(4)).then(
@@ -23,7 +26,7 @@ public class ConfigModule {
         ConfigManager.configWrapper.loadFromDisk();
         ConfigManager.chatWrapper.loadFromDisk();
         ConfigManager.pvpWrapper.loadFromDisk();
-        MessageUtil.feedback(ctx.getSource(), "Reload successfully.");
+        sendMessage(ctx.getSource(), "reload");
         return Command.SINGLE_SUCCESS;
     }
 

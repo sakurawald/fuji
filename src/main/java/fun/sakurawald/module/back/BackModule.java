@@ -5,7 +5,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.module.teleport_warmup.Position;
-import fun.sakurawald.util.MessageUtil;
 import lombok.Getter;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -15,11 +14,14 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.HashMap;
 
+import static fun.sakurawald.util.MessageUtil.sendActionBar;
+
 public class BackModule {
 
     @Getter
     private static final HashMap<String, Position> player2lastPos = new HashMap<>();
 
+    @SuppressWarnings("unused")
     public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(Commands.literal("back").executes(BackModule::$back));
     }
@@ -30,7 +32,7 @@ public class BackModule {
 
         Position lastPos = player2lastPos.get(player.getName().getString());
         if (lastPos == null) {
-            MessageUtil.message(player, "No previous position.", true);
+            sendActionBar(player, "back.no_previous_position");
             return Command.SINGLE_SUCCESS;
         }
 
