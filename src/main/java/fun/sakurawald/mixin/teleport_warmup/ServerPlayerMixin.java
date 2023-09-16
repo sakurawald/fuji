@@ -9,8 +9,11 @@ import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,12 +27,15 @@ import static fun.sakurawald.util.MessageUtil.sendActionBar;
 @Slf4j
 public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
 
+    @Shadow public abstract void playNotifySound(SoundEvent soundEvent, SoundSource soundSource, float f, float g);
+
     @Unique
     public boolean sakurawald$inCombat;
 
     @Inject(method = "teleportTo(Lnet/minecraft/server/level/ServerLevel;DDDFF)V", at = @At("HEAD"), cancellable = true)
     public void $teleportTo(ServerLevel targetWorld, double x, double y, double z, float yaw, float pitch, CallbackInfo ci) {
         ServerPlayer player = (ServerPlayer) (Object) this;
+
         // If we try to spawn a fake-player in end or nether, the fake-player will initially spawn in overworld
         // and teleport to the target world. This will cause the teleport warmup to be triggered.
         if (BetterFakePlayerModule.isFakePlayer(player)) return;
