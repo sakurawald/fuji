@@ -34,14 +34,15 @@ public class TeleportWarmupModule {
                 Map.Entry<ServerPlayer, TeleportTicket> pair = iterator.next();
                 TeleportTicket ticket = pair.getValue();
                 BossBar bossbar = ticket.bossbar;
-                bossbar.progress(bossbar.progress() + DELFA_PERCENT);
+
+                // fix: bossbar.progress() may be greater than 1.0F and throw an IllegalArgumentException.
+                bossbar.progress(Math.min(1f, bossbar.progress() + DELFA_PERCENT));
 
                 ServerPlayer player = ticket.player;
                 if (((ServerPlayerAccessor) player).sakurawald$inCombat()) {
                     bossbar.removeViewer(player);
                     iterator.remove();
                     sendActionBar(player, "teleport_warmup.in_combat");
-
                     continue;
                 }
 
@@ -52,7 +53,7 @@ public class TeleportWarmupModule {
                 }
 
                 // even the ServerPlayer is disconnected, the bossbar will still be ticked.
-                if (bossbar.progress() >= (1.0F - 0.01F)) {
+                if (Float.compare(bossbar.progress(), 1f) == 0) {
                     bossbar.removeViewer(player);
 
                     // don't change the order of the following two lines.
