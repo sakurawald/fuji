@@ -25,6 +25,8 @@ import net.minecraft.server.MinecraftServer;
 
 import java.nio.file.Path;
 
+
+// TODO: enderman crash the server
 @Slf4j
 public class ServerMain implements ModInitializer {
     public static final Path CONFIG_PATH = Path.of(FabricLoader.getInstance().getConfigDir().resolve("sakurawald").toString());
