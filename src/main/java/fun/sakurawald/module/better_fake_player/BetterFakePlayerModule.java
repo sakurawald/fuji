@@ -90,7 +90,6 @@ public class BetterFakePlayerModule {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return true;
 
-
         // bypass: op
         if (ServerMain.SERVER.getPlayerList().isOp(player.getGameProfile())) return true;
 

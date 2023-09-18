@@ -13,7 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-public class CustomStatisticsModule {
+public class MainStatsModule {
     private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
     private static final List<Character> colors = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');

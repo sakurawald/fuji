@@ -28,6 +28,7 @@
     "resource_world.registry.SimpleRegistryMixin",
     "skin.PlayerListMixin",
     "skin.ServerLoginNetworkHandlerMixin",
+    "stronger_player_list.PlayerListMixin",
     "teleport_warmup.ServerPlayerMixin",
     "top_chunks.ThreadedAnvilChunkStorageMixin",
     "whitelist_fix.WhitelistMixin",

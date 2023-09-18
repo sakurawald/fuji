@@ -6,10 +6,11 @@ import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
 import fun.sakurawald.module.chat_style.ChatStyleModule;
 import fun.sakurawald.module.config.ConfigModule;
 import fun.sakurawald.module.deathlog.DeathLogModule;
-import fun.sakurawald.module.main_stats.CustomStatisticsModule;
+import fun.sakurawald.module.main_stats.MainStatsModule;
 import fun.sakurawald.module.pvp_toggle.PvpModule;
 import fun.sakurawald.module.resource_world.ResourceWorldModule;
 import fun.sakurawald.module.skin.command.SkinModule;
+import fun.sakurawald.module.stronger_player_list.PlayerListAccessor;
 import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
 import fun.sakurawald.module.top_chunks.TopChunksModule;
 import fun.sakurawald.module.tpa.TpaModule;
@@ -25,8 +26,6 @@ import net.minecraft.server.MinecraftServer;
 
 import java.nio.file.Path;
 
-
-// TODO: enderman crash the server
 @Slf4j
 public class ServerMain implements ModInitializer {
     public static final Path CONFIG_PATH = Path.of(FabricLoader.getInstance().getConfigDir().resolve("sakurawald").toString());
@@ -59,11 +58,14 @@ public class ServerMain implements ModInitializer {
         /* register events */
         ServerWorldEvents.UNLOAD.register(ResourceWorldModule::onWorldUnload);
         ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
+                    // fix: PlayerList CME BUG
+                    ((PlayerListAccessor) server.getPlayerList()).patchStrongerPlayerList();
+
                     ResourceWorldModule.loadWorlds(server);
                     ResourceWorldModule.registerScheduleTask(server);
 
-                    CustomStatisticsModule.updateMOTD();
-                    CustomStatisticsModule.registerScheduleTask(server);
+                    MainStatsModule.updateMOTD();
+                    MainStatsModule.registerScheduleTask(server);
 
                     ZeroCommandPermissionModule.alterCommandPermission(server);
 
