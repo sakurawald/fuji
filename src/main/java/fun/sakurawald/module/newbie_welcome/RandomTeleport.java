@@ -34,23 +34,14 @@ public class RandomTeleport {
 
     public static void randomTeleport(ServerPlayer player, ServerLevel world, boolean shouldSetSpawnPoint) {
         threadExecutor.execute(() -> {
-            log.info(
-                    String.format(
-                            "Starting RTP location search for %s",
-                            player.getGameProfile().getName()
-                    ));
-            Stopwatch timer = Stopwatch.createStarted();
             exec(player, world, shouldSetSpawnPoint);
-            var totalTime = timer.stop();
-            log.info(
-                    String.format(
-                            "Total RTP Time: %s",
-                            totalTime
-                    ));
         });
     }
 
     private static void exec(ServerPlayer player, ServerLevel world, boolean shouldSetSpawnPoint) {
+        log.info("Starting RTP location search for {}", player.getGameProfile().getName());
+        Stopwatch timer = Stopwatch.createStarted();
+
         var centerOpt = getRtpCenter(player);
         if (centerOpt.isEmpty()) {
             return;
@@ -78,6 +69,9 @@ public class RandomTeleport {
 
         // teleport the player
         player.teleportTo(world, pos.get().getX() + 0.5, pos.get().getY(), pos.get().getZ() + 0.5, 0, 0);
+
+        var cost = timer.stop();
+        log.info("RTP: {} has been teleported to {} {} (cost = {})", player.getGameProfile().getName(), world.dimensionTypeId().location(), pos.get(), cost);
     }
 
     private static Optional<Vec3i> getRtpCenter(ServerPlayer player) {
