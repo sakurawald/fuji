@@ -46,7 +46,7 @@ public class MessageUtil {
     public static Component resolve(Audience audience, String key, Object... args) {
         JsonObject lang;
         if (audience instanceof ServerPlayer player) {
-            lang = lang2json.getOrDefault(player2lang.getOrDefault(player.getGameProfile().getName(),DEFAULT_LANG), lang2json.get(DEFAULT_LANG));
+            lang = lang2json.getOrDefault(player2lang.getOrDefault(player.getGameProfile().getName(), DEFAULT_LANG), lang2json.get(DEFAULT_LANG));
         } else if (audience instanceof CommandSourceStack source && source.getPlayer() != null) {
             lang = lang2json.getOrDefault(player2lang.getOrDefault(source.getPlayer().getGameProfile().getName(), DEFAULT_LANG), lang2json.get(DEFAULT_LANG));
         } else {
