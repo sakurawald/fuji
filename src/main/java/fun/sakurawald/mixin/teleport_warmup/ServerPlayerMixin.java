@@ -13,6 +13,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -49,11 +50,13 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
                             , new Position(player.level(), player.position().x, player.position().y, player.position().z, player.getYRot(), player.getXRot())
                             , new Position(targetWorld, x, y, z, yaw, pitch), false));
             ci.cancel();
+            return;
         } else {
             TeleportTicket ticket = TeleportWarmupModule.tickets.get(player);
             if (!ticket.ready) {
                 sendActionBar(player, "teleport_warmup.another_teleportation_in_progress");
                 ci.cancel();
+                return;
             }
         }
 
