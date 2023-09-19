@@ -71,7 +71,7 @@ public class RandomTeleport {
         player.teleportTo(world, pos.get().getX() + 0.5, pos.get().getY(), pos.get().getZ() + 0.5, 0, 0);
 
         var cost = timer.stop();
-        log.info("RTP: {} has been teleported to {} {} (cost = {})", player.getGameProfile().getName(), world.dimensionTypeId().location(), pos.get(), cost);
+        log.info("RTP: {} has been teleported to {} {} (cost = {})", player.getGameProfile().getName(), world.dimension().location(), pos.get(), cost);
     }
 
     private static Optional<Vec3i> getRtpCenter(ServerPlayer player) {

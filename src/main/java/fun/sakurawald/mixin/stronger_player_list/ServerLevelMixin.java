@@ -28,7 +28,7 @@ public abstract class ServerLevelMixin {
         ServerLevel that = (ServerLevel) (Object) this;
         players = new CopyOnWriteArrayList<>() {
             {
-                log.warn("Patch stronger player list for {}", that.dimensionTypeId().location());
+                log.warn("Patch stronger player list for {}", that.dimension().location());
             }
         };
     }

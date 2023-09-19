@@ -86,7 +86,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
         }
 
         Component hoverTextComponent = Component.text().color(NamedTextColor.GOLD)
-                .append(Component.text(String.format("World: %s", this.world.dimensionTypeId().location())))
+                .append(Component.text(String.format("World: %s", this.world.dimension().location())))
                 .append(Component.newline())
                 .append(Component.text("Chunk: " + chunkLocation))
                 .append(Component.newline())

@@ -61,7 +61,7 @@ public class ChatStyleModule {
 
 
     private static Component resolvePositionTag(ServerPlayer source, Component component) {
-        Component replacement = Component.text("%s (%d %d %d) %s".formatted(source.level().dimensionTypeId().location(),
+        Component replacement = Component.text("%s (%d %d %d) %s".formatted(source.serverLevel().dimension().location(),
                 source.getBlockX(), source.getBlockY(), source.getBlockZ(), source.chunkPosition().toString())).color(NamedTextColor.GOLD);
         return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)pos(?=\\s|$)").replacement(replacement).build());
     }
