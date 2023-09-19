@@ -73,6 +73,7 @@ public enum HeightFindingStrategy implements HeightFinder {
         return OptionalInt.empty();
     }
 
+    @SuppressWarnings("deprecation")
     private static OptionalInt findYBottomUp(ChunkAccess chunk, int x, int z) {
         final int topY = getChunkHighestNonEmptySectionYOffsetOrTopY(chunk);
         final int bottomY = chunk.getMinBuildHeight();

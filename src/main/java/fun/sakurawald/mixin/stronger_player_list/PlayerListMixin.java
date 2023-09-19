@@ -25,7 +25,7 @@ public abstract class PlayerListMixin implements PlayerListAccessor {
     public void patchStrongerPlayerList() {
         players = new CopyOnWriteArrayList<>() {
             {
-                log.warn("Patch stronger player list.");
+                log.warn("Patch stronger player list for Server#PlayerList");
             }
         };
     }
