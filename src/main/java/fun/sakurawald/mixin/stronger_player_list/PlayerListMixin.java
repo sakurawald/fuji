@@ -27,7 +27,7 @@ public abstract class PlayerListMixin {
     private void $init(CallbackInfo ci) {
         players = new CopyOnWriteArrayList<>() {
             {
-                log.warn("Patch stronger player list for Server#PlayerList");
+                log.info("Patch stronger player list for Server#PlayerList");
             }
         };
     }
