@@ -1,6 +1,5 @@
 package fun.sakurawald.mixin.stronger_player_list;
 
-import fun.sakurawald.module.stronger_player_list.ServerLevelAccessor;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,25 +16,19 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 @Mixin(ServerLevel.class)
 @Slf4j
-public abstract class ServerLevelMixin extends LevelMixin implements ServerLevelAccessor {
-
+public abstract class ServerLevelMixin {
 
     @Mutable
     @Final
     @Shadow
     List<ServerPlayer> players;
 
-
     @Inject(method = "<init>", at = @At("TAIL"), require = 1)
-    private void injected(CallbackInfo ci) {
-        patchStrongerPlayerList();
-    }
-
-    @SuppressWarnings("AddedMixinMembersNamePattern")
-    public void patchStrongerPlayerList() {
+    private void $init(CallbackInfo ci) {
+        ServerLevel that = (ServerLevel) (Object) this;
         players = new CopyOnWriteArrayList<>() {
             {
-                log.warn("Patch stronger player list for {}", dimensionTypeId().location());
+                log.warn("Patch stronger player list for {}", that.dimensionTypeId().location());
             }
         };
     }

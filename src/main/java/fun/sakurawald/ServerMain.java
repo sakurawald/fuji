@@ -10,7 +10,6 @@ import fun.sakurawald.module.main_stats.MainStatsModule;
 import fun.sakurawald.module.pvp_toggle.PvpModule;
 import fun.sakurawald.module.resource_world.ResourceWorldModule;
 import fun.sakurawald.module.skin.command.SkinModule;
-import fun.sakurawald.module.stronger_player_list.PlayerListAccessor;
 import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
 import fun.sakurawald.module.top_chunks.TopChunksModule;
 import fun.sakurawald.module.tpa.TpaModule;
@@ -28,7 +27,6 @@ import java.nio.file.Path;
 
 
 // TODO: resource world -> other worlds will teleport to overworld#spawn
-// TODO: change world -> tick entity crash
 @Slf4j
 public class ServerMain implements ModInitializer {
     public static final Path CONFIG_PATH = Path.of(FabricLoader.getInstance().getConfigDir().resolve("sakurawald").toString());
@@ -61,9 +59,6 @@ public class ServerMain implements ModInitializer {
         /* register events */
         ServerWorldEvents.UNLOAD.register(ResourceWorldModule::onWorldUnload);
         ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
-                    // fix: PlayerList CME BUG
-                    ((PlayerListAccessor) server.getPlayerList()).patchStrongerPlayerList();
-
                     ResourceWorldModule.loadWorlds(server);
                     ResourceWorldModule.registerScheduleTask(server);
 
