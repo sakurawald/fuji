@@ -1,9 +1,10 @@
 package fun.sakurawald.config;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class PvPGSON {
 
-    public ArrayList<String> whitelist = new ArrayList<>();
+    public HashSet<String> whitelist = new HashSet<>();
 
 }

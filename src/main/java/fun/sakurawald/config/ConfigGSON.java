@@ -2,6 +2,7 @@ package fun.sakurawald.config;
 
 
 import com.mojang.authlib.properties.Property;
+import fun.sakurawald.module.works.WorksModule;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
@@ -191,5 +192,6 @@ public class ConfigGSON {
         public class Tpa {
             public int timeout = 300;
         }
+
     }
 }

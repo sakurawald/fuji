@@ -11,6 +11,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
 
 import static fun.sakurawald.util.MessageUtil.resolve;
@@ -34,7 +35,7 @@ public class PvpModule {
         CommandSourceStack source = ctx.getSource();
         String player = Objects.requireNonNull(source.getPlayer()).getGameProfile().getName();
 
-        ArrayList<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
+        HashSet<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
         if (!whitelist.contains(player)) {
             whitelist.add(player);
             ConfigManager.pvpWrapper.saveToDisk();
@@ -52,7 +53,7 @@ public class PvpModule {
         CommandSourceStack source = ctx.getSource();
         String player = Objects.requireNonNull(source.getPlayer()).getGameProfile().getName();
 
-        ArrayList<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
+        HashSet<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
         if (whitelist.contains(player)) {
             whitelist.remove(player);
             ConfigManager.pvpWrapper.saveToDisk();
@@ -70,14 +71,14 @@ public class PvpModule {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return Command.SINGLE_SUCCESS;
 
-        ArrayList<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
+        HashSet<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
         player.sendMessage(resolve(player, "pvp_toggle.status")
                 .append(whitelist.contains(player.getGameProfile().getName()) ? resolve(player, "on") : resolve(player, "off")));
         return Command.SINGLE_SUCCESS;
     }
 
     private static int $list(CommandContext<CommandSourceStack> ctx) {
-        ArrayList<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
+        HashSet<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
         sendMessage(ctx.getSource(), "pvp_toggle.list", whitelist);
         return Command.SINGLE_SUCCESS;
     }

@@ -13,6 +13,7 @@ import fun.sakurawald.module.skin.command.SkinModule;
 import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
 import fun.sakurawald.module.top_chunks.TopChunksModule;
 import fun.sakurawald.module.tpa.TpaModule;
+import fun.sakurawald.module.works.WorksModule;
 import fun.sakurawald.module.zero_command_permission.ZeroCommandPermissionModule;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.api.ModInitializer;
@@ -43,6 +44,7 @@ public class ServerMain implements ModInitializer {
         ConfigManager.configWrapper.loadFromDisk();
         ConfigManager.chatWrapper.loadFromDisk();
         ConfigManager.pvpWrapper.loadFromDisk();
+        ConfigManager.worksWrapper.loadFromDisk();
 
         /* register commands */
         CommandRegistrationCallback.EVENT.register(ConfigModule::registerCommand);
@@ -55,6 +57,7 @@ public class ServerMain implements ModInitializer {
         CommandRegistrationCallback.EVENT.register(DeathLogModule::registerCommand);
         CommandRegistrationCallback.EVENT.register(BackModule::registerCommand);
         CommandRegistrationCallback.EVENT.register(TpaModule::registerCommand);
+        CommandRegistrationCallback.EVENT.register(WorksModule::registerCommand);
 
         /* register events */
         ServerWorldEvents.UNLOAD.register(ResourceWorldModule::onWorldUnload);
@@ -68,6 +71,8 @@ public class ServerMain implements ModInitializer {
                     ZeroCommandPermissionModule.alterCommandPermission(server);
 
                     BetterFakePlayerModule.registerScheduleTask(server);
+
+                    WorksModule.registerScheduleTask(server);
                 }
         );
 

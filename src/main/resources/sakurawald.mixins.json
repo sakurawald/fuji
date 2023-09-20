@@ -33,6 +33,7 @@
     "teleport_warmup.ServerPlayerMixin",
     "top_chunks.ThreadedAnvilChunkStorageMixin",
     "whitelist_fix.WhitelistMixin",
+    "works.HopperBlockEntityMixin",
     "zero_command_permission.CommandNodeAccessor"
   ],
   "injectors": {

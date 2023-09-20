@@ -26,6 +26,7 @@ public class ConfigModule {
         ConfigManager.configWrapper.loadFromDisk();
         ConfigManager.chatWrapper.loadFromDisk();
         ConfigManager.pvpWrapper.loadFromDisk();
+        ConfigManager.worksWrapper.loadFromDisk();
         sendMessage(ctx.getSource(), "reload");
         return Command.SINGLE_SUCCESS;
     }
