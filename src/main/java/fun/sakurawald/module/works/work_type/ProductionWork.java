@@ -66,6 +66,12 @@ public class ProductionWork extends Work implements ScheduleMethod {
 
     @Override
     public List<Component> asLore(ServerPlayer player) {
+        /* trim counter */
+        if (this.sample.sampleCounter.size() > ConfigManager.configWrapper.instance().modules.works.sampleCounterTopN) {
+            trimCounter();
+        }
+
+        /* construct lore */
         List<Component> ret = super.asLore(player);
         if (this.sample.sampleStartTimeMS == 0) {
             ret.add((ofVomponent(player, "works.production_work.sample.not_exists")));
