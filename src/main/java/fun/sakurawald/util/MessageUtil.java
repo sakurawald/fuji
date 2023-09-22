@@ -11,6 +11,7 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.fabric.FabricServerAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -52,6 +53,7 @@ public class MessageUtil {
         } else if (audience instanceof CommandSourceStack source && source.getPlayer() != null) {
             lang = lang2json.getOrDefault(player2lang.getOrDefault(source.getPlayer().getGameProfile().getName(), DEFAULT_LANG), lang2json.get(DEFAULT_LANG));
         } else {
+            // null audience will return this
             lang = lang2json.get(DEFAULT_LANG);
         }
 
@@ -100,6 +102,9 @@ public class MessageUtil {
     }
 
     public static void sendBroadcast(String key, Object... args) {
+        // fix: log broadcast for console
+        log.info(PlainTextComponentSerializer.plainText().serialize(ofComponent(null, key, args)));
+
         for (ServerPlayer player : ServerMain.SERVER.getPlayerList().getPlayers()) {
             sendMessage(player, key, args);
         }
