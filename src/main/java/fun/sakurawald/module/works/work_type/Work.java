@@ -14,7 +14,6 @@ import fun.sakurawald.util.MessageUtil;
 import fun.sakurawald.util.TimeUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -29,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static fun.sakurawald.util.MessageUtil.ofString;
+import static fun.sakurawald.util.MessageUtil.ofVomponent;
 
 @Data
 @Slf4j
@@ -49,6 +48,7 @@ public abstract class Work {
     public float pitch;
     public String icon;
 
+    @SuppressWarnings("unused")
     public Work() {
         // for gson
     }
@@ -103,10 +103,10 @@ public abstract class Work {
         Work work = this;
         final SimpleGui gui = new SimpleGui(MenuType.GENERIC_9x1, player, false);
         gui.setLockPlayerInventory(true);
-        gui.setTitle(net.minecraft.network.chat.Component.literal(ofString(player, "works.work.set.general_settings.title")));
+        gui.setTitle(ofVomponent(player, "works.work.set.general_settings.title"));
         gui.addSlot(new GuiElementBuilder()
                 .setItem(Items.NAME_TAG)
-                .setName(net.minecraft.network.chat.Component.literal(ofString(player, "works.work.set.target.name")))
+                .setName(ofVomponent(player, "works.work.set.target.name"))
                 .setCallback(() -> new InputSignGui(player, null) {
                     @Override
                     public void onClose() {
@@ -117,18 +117,18 @@ public abstract class Work {
         );
         gui.addSlot(new GuiElementBuilder()
                 .setItem(Items.CHERRY_HANGING_SIGN)
-                .setName(net.minecraft.network.chat.Component.literal(ofString(player, "works.work.set.target.introduction")))
+                .setName(ofVomponent(player, "works.work.set.target.introduction"))
                 .setCallback(() -> new InputSignGui(player, null) {
                     @Override
                     public void onClose() {
-                        work.introduction = this.combineAllLines();
+                        work.introduction = this.combineAllLinesReturnNull();
                         MessageUtil.sendMessage(player, "works.work.set.done", work.introduction);
                     }
                 }.open())
         );
         gui.addSlot(new GuiElementBuilder()
                 .setItem(Items.END_PORTAL_FRAME)
-                .setName(net.minecraft.network.chat.Component.literal(ofString(player, "works.work.set.target.position")))
+                .setName(ofVomponent(player, "works.work.set.target.position"))
                 .setCallback(() -> {
                     work.level = player.serverLevel().dimension().location().toString();
                     work.x = player.position().x;
@@ -140,7 +140,7 @@ public abstract class Work {
         );
         gui.addSlot(new GuiElementBuilder()
                 .setItem(Items.PAINTING)
-                .setName(net.minecraft.network.chat.Component.literal(ofString(player, "works.work.set.target.icon")))
+                .setName(ofVomponent(player, "works.work.set.target.icon"))
                 .setCallback(() -> {
                     ItemStack mainHandItem = player.getMainHandItem();
                     if (mainHandItem.isEmpty()) {
@@ -156,7 +156,7 @@ public abstract class Work {
 
         gui.addSlot(new GuiElementBuilder()
                 .setItem(Items.BARRIER)
-                .setName(net.minecraft.network.chat.Component.literal(ofString(player, "works.work.set.target.delete")))
+                .setName(ofVomponent(player, "works.work.set.target.delete"))
                 .setCallback(() -> new ConfirmGui(player) {
                     @Override
                     public void onConfirm() {
@@ -170,7 +170,7 @@ public abstract class Work {
         gui.setSlot(8, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
                 .setSkullOwner(WorksModule.PREVIOUS_PAGE_ICON)
-                .setName(net.minecraft.network.chat.Component.literal(ofString(player, "works.list.back")))
+                .setName(ofVomponent(player, "works.list.back"))
                 .setCallback(parentGui::open)
         );
 
@@ -187,13 +187,12 @@ public abstract class Work {
 
     public List<Component> asLore(ServerPlayer player) {
         ArrayList<Component> ret = new ArrayList<>();
-        ret.add(Component.literal("%s: %s".formatted(ofString(player, "works.work.prop.creator"), this.creator)).withStyle(ChatFormatting.GOLD));
-        ret.add(Component.literal("%s: %s".formatted(ofString(player, "works.work.prop.time"), TimeUtil.getFormattedDate(this.createTimeMS))).withStyle(ChatFormatting.GRAY));
-        ret.add(Component.literal("%s: %s".formatted(ofString(player, "works.work.prop.id"), this.id)).withStyle(ChatFormatting.GRAY));
-        ret.add(Component.literal("%s: %s".formatted(ofString(player, "works.work.prop.dimension"), this.level)).withStyle(ChatFormatting.GRAY));
-        ret.add(Component.literal("%s: %.3f %.3f %.3f".formatted(ofString(player, "works.work.prop.coordinate"), this.x, this.y, this.z)).withStyle(ChatFormatting.GRAY));
+        ret.add(ofVomponent(player, "works.work.prop.creator", this.creator));
         if (this.introduction != null)
-            ret.add(Component.literal("%s: ".formatted(ofString(player, "works.work.prop.introduction")) + this.introduction).withStyle(ChatFormatting.GOLD));
+            ret.add(ofVomponent(player, "works.work.prop.introduction", this.introduction));
+        ret.add(ofVomponent(player, "works.work.prop.time", TimeUtil.getFormattedDate(this.createTimeMS)));
+        ret.add(ofVomponent(player, "works.work.prop.dimension", this.level));
+        ret.add(ofVomponent(player, "works.work.prop.coordinate", this.x, this.y, this.z));
         return ret;
     }
 

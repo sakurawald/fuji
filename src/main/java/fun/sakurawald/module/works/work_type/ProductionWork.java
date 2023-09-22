@@ -12,10 +12,9 @@ import fun.sakurawald.module.works.gui.InputSignGui;
 import fun.sakurawald.util.MessageUtil;
 import fun.sakurawald.util.TimeUtil;
 import lombok.NoArgsConstructor;
-import net.minecraft.ChatFormatting;
+import net.kyori.adventure.text.TextReplacementConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ChunkHolder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -32,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static fun.sakurawald.util.MessageUtil.ofString;
+import static fun.sakurawald.util.MessageUtil.*;
 
 @NoArgsConstructor
 public class ProductionWork extends Work implements ScheduleMethod {
@@ -48,23 +47,19 @@ public class ProductionWork extends Work implements ScheduleMethod {
         return WorkTypeAdapter.WorkType.ProductionWork.name();
     }
 
-    private List<Component> formatSampleCounter() {
+    private List<Component> formatSampleCounter(ServerPlayer player) {
         List<Component> ret = new ArrayList<>();
         long currentTimeMS = System.currentTimeMillis();
 
         for (Map.Entry<String, Long> entry : this.sample.sampleCounter.entrySet()) {
             String key = entry.getKey();
             double rate = entry.getValue() * ((double) (3600 * 1000) / ((Math.min(this.sample.sampleEndTimeMS, currentTimeMS)) - this.sample.sampleStartTimeMS));
-
-            MutableComponent line = Component.literal(" - ")
-                    .append(Component.translatable(key))
-                    .append(Component.literal(" * " + entry.getValue()))
-                    .append(Component.literal(" (%.1f/h)".formatted(rate)))
-                    .withStyle(ChatFormatting.RED);
-            ret.add(line);
+            net.kyori.adventure.text.Component component = ofComponent(player, "works.production_work.prop.sample_counter.entry", entry.getValue(), rate)
+                    .replaceText(TextReplacementConfig.builder().matchLiteral("[item]").replacement(Component.translatable(key)).build());
+            ret.add(toVomponent(component));
         }
         if (ret.isEmpty()) {
-            ret.add(Component.literal(" - None").withStyle(ChatFormatting.RED));
+            ret.add(ofVomponent(player, "works.production_work.prop.sample_counter.empty"));
         }
         return ret;
     }
@@ -73,19 +68,20 @@ public class ProductionWork extends Work implements ScheduleMethod {
     public List<Component> asLore(ServerPlayer player) {
         List<Component> ret = super.asLore(player);
         if (this.sample.sampleStartTimeMS == 0) {
-            ret.add(Component.literal(ofString(player, "works.production_work.sample.not_exists")).withStyle(ChatFormatting.RED));
+            ret.add((ofVomponent(player, "works.production_work.sample.not_exists")));
             return ret;
         }
 
-        ret.add(Component.literal("%s: %s".formatted(ofString(player, "works.production_work.prop.sample_start_time"), TimeUtil.getFormattedDate(this.sample.sampleStartTimeMS))).withStyle(ChatFormatting.RED));
-        ret.add(Component.literal("%s: %s".formatted(ofString(player, "works.production_work.prop.sample_end_time"), TimeUtil.getFormattedDate(this.sample.sampleEndTimeMS))).withStyle(ChatFormatting.RED));
-        ret.add(Component.literal("%s: %s".formatted(ofString(player, "works.production_work.prop.sample_dimension"), this.sample.sampleDimension)).withStyle(ChatFormatting.RED));
-        ret.add(Component.literal("%s: %.3f %.3f %.3f".formatted(ofString(player, "works.production_work.prop.sample_coordinate"), this.sample.sampleX, this.sample.sampleY, this.sample.sampleZ)).withStyle(ChatFormatting.RED));
-        ret.add(Component.literal("%s: %d".formatted(ofString(player, "works.production_work.prop.sample_distance"), this.sample.sampleDistance)).withStyle(ChatFormatting.RED));
+        ret.add(ofVomponent(player, "works.production_work.prop.sample_start_time", TimeUtil.getFormattedDate(this.sample.sampleStartTimeMS)));
+        ret.add(ofVomponent(player, "works.production_work.prop.sample_end_time", TimeUtil.getFormattedDate(this.sample.sampleEndTimeMS)));
+        ret.add(ofVomponent(player, "works.production_work.prop.sample_dimension", this.sample.sampleDimension));
+        ret.add(ofVomponent(player, "works.production_work.prop.sample_coordinate", this.sample.sampleX, this.sample.sampleY, this.sample.sampleZ));
+        ret.add(ofVomponent(player, "works.production_work.prop.sample_distance", this.sample.sampleDistance));
+
         // check npe to avoid broken
         if (this.sample.sampleCounter != null) {
-            ret.add(Component.literal("%s: ".formatted(ofString(player, "works.production_work.prop.sample_counter"))).withStyle(ChatFormatting.RED));
-            ret.addAll(formatSampleCounter());
+            ret.add(ofVomponent(player, "works.production_work.prop.sample_counter"));
+            ret.addAll(formatSampleCounter(player));
         }
         return ret;
     }
@@ -128,11 +124,11 @@ public class ProductionWork extends Work implements ScheduleMethod {
     @Override
     public void openSpecializedSettingsGui(ServerPlayer player, SimpleGui parentGui) {
         final SimpleGui gui = new SimpleGui(MenuType.GENERIC_9x1, player, false);
-        gui.setTitle(net.minecraft.network.chat.Component.literal(ofString(player, "works.work.set.specialized_settings.title")));
+        gui.setTitle(ofVomponent(player, "works.work.set.specialized_settings.title"));
         gui.setLockPlayerInventory(true);
         gui.addSlot(new GuiElementBuilder()
                 .setItem(Items.CLOCK)
-                .setName(net.minecraft.network.chat.Component.literal(ofString(player, "works.production_work.set.sample")))
+                .setName(ofVomponent(player, "works.production_work.set.sample"))
                 .setCallback(() -> new ConfirmGui(player) {
                             @Override
                             public void onConfirm() {
@@ -144,7 +140,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
         gui.setSlot(8, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
                 .setSkullOwner(WorksModule.PREVIOUS_PAGE_ICON)
-                .setName(net.minecraft.network.chat.Component.literal(ofString(player, "back")))
+                .setName(ofVomponent(player, "back"))
                 .setCallback(parentGui::open)
         );
 

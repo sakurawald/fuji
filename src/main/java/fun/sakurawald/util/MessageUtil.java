@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.platform.fabric.FabricServerAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.minecraft.commands.CommandSourceStack;
@@ -22,11 +23,10 @@ import java.util.List;
 @UtilityClass
 @Slf4j
 public class MessageUtil {
-
+    private static final FabricServerAudiences adventure = FabricServerAudiences.of(ServerMain.SERVER);
     private static final HashMap<String, JsonObject> lang2json = new HashMap<>();
     @Getter
     private static final HashMap<String, String> player2lang = new HashMap<>();
-
     private static final String DEFAULT_LANG = "en_us";
     private static final MiniMessage miniMessage = MiniMessage.builder().build();
 
@@ -44,7 +44,6 @@ public class MessageUtil {
         JsonObject jsonObject = JsonParser.parseReader(new InputStreamReader(input)).getAsJsonObject();
         lang2json.put(lang, jsonObject);
     }
-
 
     public static String ofString(Audience audience, String key, Object... args) {
         JsonObject lang;
@@ -64,7 +63,32 @@ public class MessageUtil {
     }
 
     public static Component ofComponent(Audience audience, String key, Object... args) {
-        return miniMessage.deserialize(MessageUtil.ofString(audience, key, args));
+        return ofComponentFromMiniMessage(ofString(audience, key, args));
+    }
+
+    public static Component ofComponentFromMiniMessage(String str) {
+        return miniMessage.deserialize(str);
+    }
+
+    public static net.minecraft.network.chat.Component ofVomponentFromMiniMessage(String str) {
+        return toVomponent(ofComponentFromMiniMessage(str));
+    }
+
+    public static net.minecraft.network.chat.Component ofVomponent(Audience audience, String key, Object... args) {
+        return adventure.toNative(ofComponent(audience, key, args));
+    }
+
+    public static net.minecraft.network.chat.Component toVomponent(Component component) {
+        return adventure.toNative(component);
+    }
+
+    public static List<net.minecraft.network.chat.Component> ofVomponents(Audience audience, String key, Object... args) {
+        String lines = ofString(audience, key, args);
+        List<net.minecraft.network.chat.Component> ret = new ArrayList<>();
+        for (String line : lines.split("\n")) {
+            ret.add(adventure.toNative(miniMessage.deserialize(line)));
+        }
+        return ret;
     }
 
     public static void sendMessage(Audience audience, String key, Object... args) {
@@ -81,11 +105,4 @@ public class MessageUtil {
         }
     }
 
-    public static List<net.minecraft.network.chat.Component> buildComponents(String str) {
-        List<net.minecraft.network.chat.Component> ret = new ArrayList<>();
-        for (String s : str.split("\n")) {
-            ret.add(net.minecraft.network.chat.Component.literal(s));
-        }
-        return ret;
-    }
 }

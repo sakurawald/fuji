@@ -31,8 +31,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static fun.sakurawald.util.MessageUtil.buildComponents;
-import static fun.sakurawald.util.MessageUtil.ofString;
+import static fun.sakurawald.util.MessageUtil.*;
 
 @SuppressWarnings("SameReturnValue")
 @Slf4j
@@ -47,6 +46,7 @@ public class WorksModule {
     private static final int PAGE_SIZE = 9 * 5;
     private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
+    @SuppressWarnings("unused")
     public static void registerScheduleTask(MinecraftServer server) {
         executorService.scheduleAtFixedRate(() -> {
             // save current works data
@@ -55,18 +55,16 @@ public class WorksModule {
             }
 
             // run schedule method
-            BlockPosCache.getBlockpos2works().values().forEach(v -> {
-                v.forEach(w -> {
-                    if (w instanceof ScheduleMethod sm) sm.onSchedule();
-                });
-            });
+            BlockPosCache.getBlockpos2works().values().forEach(v -> v.forEach(w -> {
+                if (w instanceof ScheduleMethod sm) sm.onSchedule();
+            }));
         }, 30, 60, TimeUnit.SECONDS);
     }
 
+    @SuppressWarnings("unused")
     public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(Commands.literal("works").executes(WorksModule::$works));
     }
-
 
     private static void $addWork(ServerPlayer player) {
         new InputSignGui(player, ofString(player, "works.work.create.prompt.input.name")) {
@@ -83,18 +81,18 @@ public class WorksModule {
                 /* input type */
                 SimpleGui selectWorkTypeGui = new SimpleGui(MenuType.GENERIC_9x3, player, false);
                 selectWorkTypeGui.setLockPlayerInventory(true);
-                selectWorkTypeGui.setTitle(net.minecraft.network.chat.Component.literal(ofString(player, "works.work.create.prompt.input.work_type")));
+                selectWorkTypeGui.setTitle(ofVomponent(player, "works.work.create.select_work_type.title"));
                 for (int i = 0; i < 27; i++) {
                     selectWorkTypeGui.setSlot(i, new GuiElementBuilder().setItem(Items.PINK_STAINED_GLASS_PANE));
                 }
-                selectWorkTypeGui.setSlot(11, new GuiElementBuilder().setItem(Items.GUNPOWDER).setName(net.minecraft.network.chat.Component.literal(ofString(player, "works.non_production_work.name"))).setCallback(() -> {
+                selectWorkTypeGui.setSlot(11, new GuiElementBuilder().setItem(Items.GUNPOWDER).setName(ofVomponent(player, "works.non_production_work.name")).setCallback(() -> {
                     // add
                     ConfigManager.worksWrapper.instance().works.add(0, new NonProductionWork(player, name));
                     MessageUtil.sendActionBar(player, "works.work.create.done");
                     MessageUtil.sendBroadcast("works.work.create.broadcast", player.getGameProfile().getName(), name);
                     selectWorkTypeGui.close();
                 }));
-                selectWorkTypeGui.setSlot(15, new GuiElementBuilder().setItem(Items.REDSTONE).setName(net.minecraft.network.chat.Component.literal(ofString(player, "works.production_work.name"))).setCallback(() -> {
+                selectWorkTypeGui.setSlot(15, new GuiElementBuilder().setItem(Items.REDSTONE).setName(ofVomponent(player, "works.production_work.name")).setCallback(() -> {
                     // add
                     ProductionWork work = new ProductionWork(player, name);
                     ConfigManager.worksWrapper.instance().works.add(0, work);
@@ -123,7 +121,7 @@ public class WorksModule {
 
         final SimpleGui gui = new SimpleGui(MenuType.GENERIC_9x6, player, false);
         gui.setLockPlayerInventory(true);
-        gui.setTitle(net.minecraft.network.chat.Component.literal(ofString(player, "works.list.title", page + 1)));
+        gui.setTitle(ofVomponent(player, "works.list.title", page + 1));
 
         /* draw content */
         for (int slotIndex = 0; slotIndex < PAGE_SIZE; slotIndex++) {
@@ -132,7 +130,7 @@ public class WorksModule {
             Work work = source.get(workIndex);
             gui.setSlot(slotIndex, new GuiElementBuilder()
                     .setItem(work.asItem())
-                    .setName(net.minecraft.network.chat.Component.literal(work.name))
+                    .setName(ofVomponentFromMiniMessage(work.name))
                     .setLore(work.asLore(player))
                     .setCallback((index, clickType, actionType) -> {
                         /* left click -> visit */
@@ -173,7 +171,7 @@ public class WorksModule {
         List<Work> finalSource = source;
         gui.setSlot(45, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(net.minecraft.network.chat.Component.literal(ofString(player, "previous_page")))
+                .setName(ofVomponent(player, "previous_page"))
                 .setSkullOwner(PREVIOUS_PAGE_ICON)
                 .setCallback(() -> {
                     if (page == 0) return;
@@ -181,33 +179,33 @@ public class WorksModule {
                 }));
         gui.setSlot(48, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(net.minecraft.network.chat.Component.literal(ofString(player, "works.list.add")))
+                .setName(ofVomponent(player, "works.list.add"))
                 .setSkullOwner(PLUS_ICON)
                 .setCallback(() -> $addWork(player))
         );
         if (source == ConfigManager.worksWrapper.instance().works) {
             gui.setSlot(49, new GuiElementBuilder()
                     .setItem(Items.PLAYER_HEAD)
-                    .setName(net.minecraft.network.chat.Component.literal(ofString(player, "works.list.my_works")))
+                    .setName(ofVomponent(player, "works.list.my_works"))
                     .setSkullOwner(HEART_ICON)
                     .setCallback(() -> $myWorks(player))
             );
         } else {
             gui.setSlot(49, new GuiElementBuilder()
                     .setItem(Items.PLAYER_HEAD)
-                    .setName(net.minecraft.network.chat.Component.literal(ofString(player, "works.list.all_works")))
+                    .setName(ofVomponent(player, "works.list.all_works"))
                     .setSkullOwner(A_ICON)
                     .setCallback(() -> $listWorks(player, null, 0))
             );
         }
         gui.setSlot(50, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(net.minecraft.network.chat.Component.literal(ofString(player, "works.list.help")))
+                .setName(ofVomponent(player, "works.list.help"))
                 .setSkullOwner(QUESTION_MARK_ICON)
-                .setLore(buildComponents(ofString(player, "works.list.help.lore"))));
+                .setLore(ofVomponents(player, "works.list.help.lore")));
         gui.setSlot(53, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(net.minecraft.network.chat.Component.literal(ofString(player, "next_page")))
+                .setName(ofVomponent(player, "next_page"))
                 .setSkullOwner(NEXT_PAGE_ICON)
                 .setCallback(() -> {
                     if ((page + 1) * PAGE_SIZE >= finalSource.size()) return;
