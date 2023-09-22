@@ -17,15 +17,12 @@ import net.minecraft.server.level.ServerPlayer;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import static fun.sakurawald.util.MessageUtil.ofComponent;
 import static fun.sakurawald.util.MessageUtil.sendBroadcast;
 
 public class BetterFakePlayerModule {
-    private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
     private static final HashMap<String, ArrayList<String>> player2fakePlayers = new HashMap<>();
 
     @SuppressWarnings("unused")
@@ -111,7 +108,7 @@ public class BetterFakePlayerModule {
 
     @SuppressWarnings("unused")
     public static void registerScheduleTask(MinecraftServer server) {
-        executorService.scheduleAtFixedRate(BetterFakePlayerModule::checkFakePlayerLimit, 0, 1, TimeUnit.MINUTES);
+        ServerMain.getScheduledExecutor().scheduleAtFixedRate(BetterFakePlayerModule::checkFakePlayerLimit, 0, 1, TimeUnit.MINUTES);
     }
 
     public static boolean isFakePlayer(ServerPlayer player) {

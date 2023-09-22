@@ -110,7 +110,12 @@ public abstract class Work {
                 .setCallback(() -> new InputSignGui(player, null) {
                     @Override
                     public void onClose() {
-                        work.name = this.combineAllLines();
+                        String newValue = this.combineAllLinesReturnNull();
+                        if (newValue == null) {
+                            MessageUtil.sendActionBar(player, "works.work.add.empty_name");
+                            return;
+                        }
+                        work.name = newValue;
                         MessageUtil.sendMessage(player, "works.work.set.done", work.name);
                     }
                 }.open())

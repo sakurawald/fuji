@@ -25,13 +25,23 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 
 import java.nio.file.Path;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 // TODO: resource world -> other worlds will teleport to overworld#spawn
-// TODO: aysnc thread block the server shutdown
 @Slf4j
 public class ServerMain implements ModInitializer {
     public static final Path CONFIG_PATH = Path.of(FabricLoader.getInstance().getConfigDir().resolve("sakurawald").toString());
+    private static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor(runnable -> {
+        var thread = new Thread(runnable, "SakuraWald Schedule Thread");
+        thread.setUncaughtExceptionHandler((t, e) -> log.error("Exception in sakurawald schedule thread", e));
+        return thread;
+    });
     public static MinecraftServer SERVER;
+
+    public static ScheduledExecutorService getScheduledExecutor() {
+        return SCHEDULED_EXECUTOR_SERVICE;
+    }
 
     @Override
     public void onInitialize() {
@@ -75,6 +85,7 @@ public class ServerMain implements ModInitializer {
                     WorksModule.registerScheduleTask(server);
                 }
         );
+        ServerLifecycleEvents.SERVER_STOPPING.register((server) -> getScheduledExecutor().shutdown());
 
         ServerTickEvents.START_SERVER_TICK.register(TeleportWarmupModule::onServerTick);
     }

@@ -1,5 +1,6 @@
 package fun.sakurawald.module.chat_style;
 
+import fun.sakurawald.ServerMain;
 import fun.sakurawald.config.ConfigGSON;
 import fun.sakurawald.config.ConfigManager;
 import lombok.Setter;
@@ -9,13 +10,11 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+@SuppressWarnings("PatternValidation")
 public class MentionPlayersTask implements Runnable {
-    private static final ScheduledExecutorService mentionExecutor = Executors.newScheduledThreadPool(1);
 
     private final ArrayList<ServerPlayer> players;
     private final Sound sound;
@@ -40,7 +39,7 @@ public class MentionPlayersTask implements Runnable {
     }
 
     public void startTask() {
-        ScheduledFuture<?> scheduledFuture = mentionExecutor.scheduleAtFixedRate(this, 0, this.interval, TimeUnit.MILLISECONDS);
+        ScheduledFuture<?> scheduledFuture = ServerMain.getScheduledExecutor().scheduleAtFixedRate(this, 0, this.interval, TimeUnit.MILLISECONDS);
         this.setScheduledFuture(scheduledFuture);
     }
 

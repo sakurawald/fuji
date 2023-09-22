@@ -8,13 +8,10 @@ import net.minecraft.server.MinecraftServer;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class MainStatsModule {
-    private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
     private static final List<Character> colors = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
 
@@ -60,13 +57,13 @@ public class MainStatsModule {
 
     public static void registerScheduleTask(MinecraftServer server) {
         // async task
-        executorService.scheduleAtFixedRate(() -> {
+        ServerMain.getScheduledExecutor().scheduleAtFixedRate(() -> {
             // save all online-player 's stats
             server.getPlayerList().getPlayers().forEach((p) -> p.getStats().save());
 
             // update motd
             updateMOTD();
-        }, 60, 60, TimeUnit.SECONDS);
+        }, 10, 60, TimeUnit.SECONDS);
     }
 
 }

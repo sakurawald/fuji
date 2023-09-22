@@ -27,8 +27,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import static fun.sakurawald.util.MessageUtil.*;
@@ -44,11 +42,10 @@ public class WorksModule {
     public static final String QUESTION_MARK_ICON = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGNlYzg1YmM4MDYxYmRhM2UxZDQ5Zjc1NDQ2NDllNjVjODI3MmNhNTZmNzJkODM4Y2FmMmNjNDgxNmI2OSJ9fX0=";
     public static final String NEXT_PAGE_ICON = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWE0ZjY4YzhmYjI3OWU1MGFiNzg2ZjlmYTU0Yzg4Y2E0ZWNmZTFlYjVmZDVmMGMzOGM1NGM5YjFjNzIwM2Q3YSJ9fX0=";
     private static final int PAGE_SIZE = 9 * 5;
-    private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
     @SuppressWarnings("unused")
     public static void registerScheduleTask(MinecraftServer server) {
-        executorService.scheduleAtFixedRate(() -> {
+        ServerMain.getScheduledExecutor().scheduleAtFixedRate(() -> {
             // save current works data
             if (ServerMain.SERVER.isRunning()) {
                 ConfigManager.worksWrapper.saveToDisk();
@@ -58,7 +55,7 @@ public class WorksModule {
             BlockPosCache.getBlockpos2works().values().forEach(v -> v.forEach(w -> {
                 if (w instanceof ScheduleMethod sm) sm.onSchedule();
             }));
-        }, 30, 60, TimeUnit.SECONDS);
+        }, 20, 60, TimeUnit.SECONDS);
     }
 
     @SuppressWarnings("unused")
@@ -67,36 +64,36 @@ public class WorksModule {
     }
 
     private static void $addWork(ServerPlayer player) {
-        new InputSignGui(player, ofString(player, "works.work.create.prompt.input.name")) {
+        new InputSignGui(player, ofString(player, "works.work.add.prompt.input.name")) {
             @Override
             public void onClose() {
                 /* input name */
                 String name = this.getLine(0).getString().trim();
                 if (name.isBlank()) {
-                    MessageUtil.sendActionBar(player, "works.work.create.empty_name");
+                    MessageUtil.sendActionBar(player, "works.work.add.empty_name");
                     return;
                 }
 
                 /* input type */
                 SimpleGui selectWorkTypeGui = new SimpleGui(MenuType.GENERIC_9x3, player, false);
                 selectWorkTypeGui.setLockPlayerInventory(true);
-                selectWorkTypeGui.setTitle(ofVomponent(player, "works.work.create.select_work_type.title"));
+                selectWorkTypeGui.setTitle(ofVomponent(player, "works.work.add.select_work_type.title"));
                 for (int i = 0; i < 27; i++) {
                     selectWorkTypeGui.setSlot(i, new GuiElementBuilder().setItem(Items.PINK_STAINED_GLASS_PANE));
                 }
                 selectWorkTypeGui.setSlot(11, new GuiElementBuilder().setItem(Items.GUNPOWDER).setName(ofVomponent(player, "works.non_production_work.name")).setCallback(() -> {
                     // add
                     ConfigManager.worksWrapper.instance().works.add(0, new NonProductionWork(player, name));
-                    MessageUtil.sendActionBar(player, "works.work.create.done");
-                    MessageUtil.sendBroadcast("works.work.create.broadcast", player.getGameProfile().getName(), name);
+                    MessageUtil.sendActionBar(player, "works.work.add.done");
+                    MessageUtil.sendBroadcast("works.work.add.broadcast", player.getGameProfile().getName(), name);
                     selectWorkTypeGui.close();
                 }));
                 selectWorkTypeGui.setSlot(15, new GuiElementBuilder().setItem(Items.REDSTONE).setName(ofVomponent(player, "works.production_work.name")).setCallback(() -> {
                     // add
                     ProductionWork work = new ProductionWork(player, name);
                     ConfigManager.worksWrapper.instance().works.add(0, work);
-                    MessageUtil.sendActionBar(player, "works.work.create.done");
-                    MessageUtil.sendBroadcast("works.work.create.broadcast", player.getGameProfile().getName(), name);
+                    MessageUtil.sendActionBar(player, "works.work.add.done");
+                    MessageUtil.sendBroadcast("works.work.add.broadcast", player.getGameProfile().getName(), name);
                     selectWorkTypeGui.close();
 
                     // input sample distance

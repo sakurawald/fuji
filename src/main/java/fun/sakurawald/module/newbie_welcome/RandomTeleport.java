@@ -22,27 +22,21 @@ import java.util.concurrent.Executors;
 // Thanks to https://github.com/John-Paul-R/Essential-Commands
 @Slf4j
 public class RandomTeleport {
-
-    private static final Thread.UncaughtExceptionHandler exceptionHandler = (thread, throwable) -> {
-        log.error("Exception in RTP calculator thread", throwable);
-    };
     private static final Executor threadExecutor = Executors.newCachedThreadPool(runnable -> {
         var thread = new Thread(runnable, "RTP Location Calculator Thread");
-        thread.setUncaughtExceptionHandler(exceptionHandler);
+        thread.setUncaughtExceptionHandler((t, e) -> log.error("Exception in RTP calculator thread", e));
         return thread;
     });
 
     public static void randomTeleport(ServerPlayer player, ServerLevel world, boolean shouldSetSpawnPoint) {
-        threadExecutor.execute(() -> {
-            exec(player, world, shouldSetSpawnPoint);
-        });
+        threadExecutor.execute(() -> exec(player, world, shouldSetSpawnPoint));
     }
 
     private static void exec(ServerPlayer player, ServerLevel world, boolean shouldSetSpawnPoint) {
         log.info("Starting RTP location search for {}", player.getGameProfile().getName());
         Stopwatch timer = Stopwatch.createStarted();
 
-        var centerOpt = getRtpCenter(player);
+        var centerOpt = getRtpCenter();
         if (centerOpt.isEmpty()) {
             return;
         }
@@ -74,7 +68,7 @@ public class RandomTeleport {
         log.info("RTP: {} has been teleported to ({} {} {} {}) (cost = {})", player.getGameProfile().getName(), world.dimension().location(), pos.get().getX(), pos.get().getY(), pos.get().getZ(), cost);
     }
 
-    private static Optional<Vec3i> getRtpCenter(ServerPlayer player) {
+    private static Optional<Vec3i> getRtpCenter() {
         return Optional.of(new Vec3i(0, 0, 0));
     }
 

@@ -5,6 +5,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.serialization.Lifecycle;
+import fun.sakurawald.ServerMain;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.mixin.resource_world.MinecraftServerAccessor;
 import fun.sakurawald.module.newbie_welcome.RandomTeleport;
@@ -37,8 +38,6 @@ import net.minecraft.world.level.dimension.end.EndDragonFight;
 import net.minecraft.world.level.levelgen.RandomSupport;
 
 import java.time.LocalTime;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import static fun.sakurawald.util.MessageUtil.*;
@@ -51,8 +50,6 @@ public class ResourceWorldModule {
     private static final String DEFAULT_THE_NETHER_PATH = "the_nether";
     private static final String DEFAULT_THE_END_PATH = "the_end";
     private static final String DEFAULT_OVERWORLD_PATH = "overworld";
-    private static final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
-
 
     public static void registerScheduleTask(MinecraftServer server) {
         LocalTime now = LocalTime.now();
@@ -60,7 +57,7 @@ public class ResourceWorldModule {
         if (initialDelay < 0) {
             initialDelay += TimeUnit.DAYS.toSeconds(1);
         }
-        executorService.scheduleAtFixedRate(() -> {
+        ServerMain.getScheduledExecutor().scheduleAtFixedRate(() -> {
             log.info("Start to reset resource worlds.");
             server.execute(() -> ResourceWorldModule.resetWorlds(server));
         }, initialDelay, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS);
