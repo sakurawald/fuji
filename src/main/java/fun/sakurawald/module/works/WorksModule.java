@@ -71,7 +71,6 @@ public class WorksModule {
             @Override
             public void onClose() {
                 /* input name */
-                String creator = player.getGameProfile().getName();
                 String name = this.getLine(0).getString().trim();
                 if (name.isBlank()) {
                     MessageUtil.sendActionBar(player, "works.work.create.empty_name");
