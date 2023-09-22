@@ -66,11 +66,6 @@ public class ProductionWork extends Work implements ScheduleMethod {
 
     @Override
     public List<Component> asLore(ServerPlayer player) {
-        /* trim counter */
-        if (this.sample.sampleCounter.size() > ConfigManager.configWrapper.instance().modules.works.sampleCounterTopN) {
-            trimCounter();
-        }
-
         /* construct lore */
         List<Component> ret = super.asLore(player);
         if (this.sample.sampleStartTimeMS == 0) {
@@ -86,6 +81,10 @@ public class ProductionWork extends Work implements ScheduleMethod {
 
         // check npe to avoid broken
         if (this.sample.sampleCounter != null) {
+            // trim counter
+            if (this.sample.sampleCounter.size() > ConfigManager.configWrapper.instance().modules.works.sampleCounterTopN) {
+                trimCounter();
+            }
             ret.add(ofVomponent(player, "works.production_work.prop.sample_counter"));
             ret.addAll(formatSampleCounter(player));
         }
