@@ -15,7 +15,9 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @UtilityClass
 @Slf4j
@@ -43,7 +45,8 @@ public class MessageUtil {
         lang2json.put(lang, jsonObject);
     }
 
-    public static Component resolve(Audience audience, String key, Object... args) {
+
+    public static String ofString(Audience audience, String key, Object... args) {
         JsonObject lang;
         if (audience instanceof ServerPlayer player) {
             lang = lang2json.getOrDefault(player2lang.getOrDefault(player.getGameProfile().getName(), DEFAULT_LANG), lang2json.get(DEFAULT_LANG));
@@ -57,20 +60,32 @@ public class MessageUtil {
         if (args.length > 0) {
             value = String.format(value, args);
         }
-        return miniMessage.deserialize(value);
+        return value;
+    }
+
+    public static Component ofComponent(Audience audience, String key, Object... args) {
+        return miniMessage.deserialize(MessageUtil.ofString(audience, key, args));
     }
 
     public static void sendMessage(Audience audience, String key, Object... args) {
-        audience.sendMessage(resolve(audience, key, args));
+        audience.sendMessage(ofComponent(audience, key, args));
     }
 
     public static void sendActionBar(Audience audience, String key, Object... args) {
-        audience.sendActionBar(resolve(audience, key, args));
+        audience.sendActionBar(ofComponent(audience, key, args));
     }
 
     public static void sendBroadcast(String key, Object... args) {
         for (ServerPlayer player : ServerMain.SERVER.getPlayerList().getPlayers()) {
             sendMessage(player, key, args);
         }
+    }
+
+    public static List<net.minecraft.network.chat.Component> buildComponents(String str) {
+        List<net.minecraft.network.chat.Component> ret = new ArrayList<>();
+        for (String s : str.split("\n")) {
+            ret.add(net.minecraft.network.chat.Component.literal(s));
+        }
+        return ret;
     }
 }

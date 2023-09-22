@@ -10,7 +10,6 @@ import net.minecraft.server.level.ServerPlayer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 import static fun.sakurawald.util.MessageUtil.sendActionBar;
 
@@ -28,41 +27,39 @@ public class TeleportWarmupModule {
 
         if (tickets.isEmpty()) return;
 
-        CompletableFuture.runAsync(() -> {
-            Iterator<Map.Entry<ServerPlayer, TeleportTicket>> iterator = tickets.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<ServerPlayer, TeleportTicket> pair = iterator.next();
-                TeleportTicket ticket = pair.getValue();
-                BossBar bossbar = ticket.bossbar;
+        Iterator<Map.Entry<ServerPlayer, TeleportTicket>> iterator = tickets.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<ServerPlayer, TeleportTicket> pair = iterator.next();
+            TeleportTicket ticket = pair.getValue();
+            BossBar bossbar = ticket.bossbar;
 
-                // fix: bossbar.progress() may be greater than 1.0F and throw an IllegalArgumentException.
-                bossbar.progress(Math.min(1f, bossbar.progress() + DELFA_PERCENT));
+            // fix: bossbar.progress() may be greater than 1.0F and throw an IllegalArgumentException.
+            bossbar.progress(Math.min(1f, bossbar.progress() + DELFA_PERCENT));
 
-                ServerPlayer player = ticket.player;
-                if (((ServerPlayerAccessor) player).sakurawald$inCombat()) {
-                    bossbar.removeViewer(player);
-                    iterator.remove();
-                    sendActionBar(player, "teleport_warmup.in_combat");
-                    continue;
-                }
-
-                if (player.position().distanceToSqr(ticket.source.getX(), ticket.source.getY(), ticket.source.getZ()) >= INTERRUPT_DISTANCE) {
-                    bossbar.removeViewer(player);
-                    iterator.remove();
-                    continue;
-                }
-
-                // even the ServerPlayer is disconnected, the bossbar will still be ticked.
-                if (Float.compare(bossbar.progress(), 1f) == 0) {
-                    bossbar.removeViewer(player);
-
-                    // don't change the order of the following two lines.
-                    ticket.ready = true;
-                    player.teleportTo((ServerLevel) ticket.destination.getLevel(), ticket.destination.getX(), ticket.destination.getY(), ticket.destination.getZ(), ticket.destination.getYaw(), ticket.destination.getPitch());
-                    iterator.remove();
-                }
+            ServerPlayer player = ticket.player;
+            if (((ServerPlayerAccessor) player).sakurawald$inCombat()) {
+                bossbar.removeViewer(player);
+                iterator.remove();
+                sendActionBar(player, "teleport_warmup.in_combat");
+                continue;
             }
-        });
+
+            if (player.position().distanceToSqr(ticket.source.getX(), ticket.source.getY(), ticket.source.getZ()) >= INTERRUPT_DISTANCE) {
+                bossbar.removeViewer(player);
+                iterator.remove();
+                continue;
+            }
+
+            // even the ServerPlayer is disconnected, the bossbar will still be ticked.
+            if (Float.compare(bossbar.progress(), 1f) == 0) {
+                bossbar.removeViewer(player);
+
+                // don't change the order of the following two lines.
+                ticket.ready = true;
+                player.teleportTo((ServerLevel) ticket.destination.getLevel(), ticket.destination.getX(), ticket.destination.getY(), ticket.destination.getZ(), ticket.destination.getYaw(), ticket.destination.getPitch());
+                iterator.remove();
+            }
+        }
 
     }
 }

@@ -10,11 +10,10 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 
-import static fun.sakurawald.util.MessageUtil.resolve;
+import static fun.sakurawald.util.MessageUtil.ofComponent;
 import static fun.sakurawald.util.MessageUtil.sendMessage;
 
 
@@ -72,8 +71,8 @@ public class PvpModule {
         if (player == null) return Command.SINGLE_SUCCESS;
 
         HashSet<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
-        player.sendMessage(resolve(player, "pvp_toggle.status")
-                .append(whitelist.contains(player.getGameProfile().getName()) ? resolve(player, "on") : resolve(player, "off")));
+        player.sendMessage(ofComponent(player, "pvp_toggle.status")
+                .append(whitelist.contains(player.getGameProfile().getName()) ? ofComponent(player, "on") : ofComponent(player, "off")));
         return Command.SINGLE_SUCCESS;
     }
 

@@ -2,7 +2,7 @@ package fun.sakurawald.config;
 
 
 import com.mojang.authlib.properties.Property;
-import fun.sakurawald.module.works.WorksModule;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
@@ -28,6 +28,7 @@ public class ConfigGSON {
         public Skin skin = new Skin();
         public Back back = new Back();
         public Tpa tpa = new Tpa();
+        public Works works = new Works();
 
         public class ResourceWorld {
             public long seed = 0L;
@@ -193,5 +194,11 @@ public class ConfigGSON {
             public int timeout = 300;
         }
 
+        public class Works {
+
+            public int sampleTimeMS = FabricLoader.getInstance().isDevelopmentEnvironment() ? 60 * 1000 : 60 * 1000 * 60;
+            public int sampleDistanceLimit = 256;
+            public int sampleCounterTopN = 15;
+        }
     }
 }

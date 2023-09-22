@@ -17,7 +17,7 @@ public class TeleportTicket {
         this.source = source;
         this.destination = destination;
         this.ready = ready;
-        this.bossbar = BossBar.bossBar(MessageUtil.resolve(player, "teleport_warmup.bossbar.name"), 0f, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS);
+        this.bossbar = BossBar.bossBar(MessageUtil.ofComponent(player, "teleport_warmup.bossbar.name"), 0f, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS);
         bossbar.addViewer(player);
     }
 

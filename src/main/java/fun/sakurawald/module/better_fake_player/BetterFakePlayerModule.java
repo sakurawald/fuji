@@ -21,7 +21,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static fun.sakurawald.util.MessageUtil.resolve;
+import static fun.sakurawald.util.MessageUtil.ofComponent;
 import static fun.sakurawald.util.MessageUtil.sendBroadcast;
 
 public class BetterFakePlayerModule {
@@ -51,7 +51,7 @@ public class BetterFakePlayerModule {
             builder.append("\n");
         }
         CommandSourceStack source = context.getSource();
-        source.sendMessage(resolve(source, "better_fake_player.who.header").append(Component.text(builder.toString())));
+        source.sendMessage(ofComponent(source, "better_fake_player.who.header").append(Component.text(builder.toString())));
         return Command.SINGLE_SUCCESS;
     }
 
