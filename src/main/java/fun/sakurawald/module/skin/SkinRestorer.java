@@ -8,6 +8,7 @@ import fun.sakurawald.ServerMain;
 import fun.sakurawald.module.skin.io.SkinIO;
 import fun.sakurawald.module.skin.io.SkinStorage;
 import it.unimi.dsi.fastutil.Pair;
+import lombok.extern.slf4j.Slf4j;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,8 +16,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.biome.BiomeManager;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -24,9 +23,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
+@Slf4j
 public class SkinRestorer {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger("SkinRestorer");
     private static final Gson gson = new Gson();
     private static final SkinStorage skinStorage = new SkinStorage(new SkinIO(ServerMain.CONFIG_PATH.resolve("skin")));
 
@@ -40,7 +39,7 @@ public class SkinRestorer {
             HashSet<GameProfile> acceptedProfiles = new HashSet<>();
             Property skin = skinSupplier.get();
             if (skin == null) {
-                SkinRestorer.LOGGER.error("Cannot get the skin for {}", targets.stream().findFirst().orElseThrow());
+                log.error("Cannot get the skin for {}", targets.stream().findFirst().orElseThrow());
                 return Pair.of(null, Collections.emptySet());
             }
 
@@ -120,7 +119,7 @@ public class SkinRestorer {
             jy.remove("timestamp");
             return x.equals(jy);
         } catch (Exception ex) {
-            SkinRestorer.LOGGER.info("Can not compare skin", ex);
+            log.info("Can not compare skin", ex);
             return false;
         }
     }

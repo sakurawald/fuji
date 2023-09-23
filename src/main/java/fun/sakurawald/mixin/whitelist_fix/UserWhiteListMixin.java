@@ -1,6 +1,7 @@
 package fun.sakurawald.mixin.whitelist_fix;
 
 import com.mojang.authlib.GameProfile;
+import lombok.extern.slf4j.Slf4j;
 import net.minecraft.network.Connection;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.UserWhiteList;
@@ -10,7 +11,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(UserWhiteList.class)
-public class WhitelistMixin {
+@Slf4j
+public class UserWhiteListMixin {
 
     /**
      * Once an offline-player join the server, then the offline-uuid will be added to usercache.json.
@@ -30,6 +32,8 @@ public class WhitelistMixin {
      **/
     @Inject(method = "getKeyForUser*", at = @At("HEAD"), cancellable = true)
     void $getKeyForUser(GameProfile gameProfile, CallbackInfoReturnable<String> ci) {
-        ci.setReturnValue(gameProfile.getName());
+        String ret = gameProfile.getName();
+        log.info("UserWhiteListMixin: set return value -> " + ret);
+        ci.setReturnValue(ret);
     }
 }

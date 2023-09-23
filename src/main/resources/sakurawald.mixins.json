@@ -32,7 +32,7 @@
     "stronger_player_list.ServerLevelMixin",
     "teleport_warmup.ServerPlayerMixin",
     "top_chunks.ThreadedAnvilChunkStorageMixin",
-    "whitelist_fix.WhitelistMixin",
+    "whitelist_fix.UserWhiteListMixin",
     "works.HopperBlockEntityMixin",
     "zero_command_permission.CommandNodeAccessor"
   ],

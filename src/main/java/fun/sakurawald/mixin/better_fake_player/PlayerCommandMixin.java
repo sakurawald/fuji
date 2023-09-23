@@ -28,7 +28,7 @@ public abstract class PlayerCommandMixin {
             cir.setReturnValue(0);
         }
 
-        /* fix fake-player auth network laggy */
+        /* fix: fake-player auth network laggy */
         String fakePlayerName = StringArgumentType.getString(context, "player");
         ServerMain.SERVER.getProfileCache().add(BetterFakePlayerModule.createOfflineGameProfile(fakePlayerName));
     }

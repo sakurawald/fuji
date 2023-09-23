@@ -34,7 +34,13 @@ public class TeleportWarmupModule {
             BossBar bossbar = ticket.bossbar;
 
             // fix: bossbar.progress() may be greater than 1.0F and throw an IllegalArgumentException.
-            bossbar.progress(Math.min(1f, bossbar.progress() + DELFA_PERCENT));
+            try {
+                bossbar.progress(Math.min(1f, bossbar.progress() + DELFA_PERCENT));
+            } catch (Exception e) {
+                // fix: if the player is disconnected, the bossbar.progress() will be throw.
+                iterator.remove();
+                return;
+            }
 
             ServerPlayer player = ticket.player;
             if (((ServerPlayerAccessor) player).sakurawald$inCombat()) {

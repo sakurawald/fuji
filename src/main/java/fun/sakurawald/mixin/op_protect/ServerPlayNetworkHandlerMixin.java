@@ -22,7 +22,7 @@ public class ServerPlayNetworkHandlerMixin {
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;disconnect()V"), method = "onDisconnect")
     private void $disconnect(Component reason, CallbackInfo info) {
         if (ServerMain.SERVER.getPlayerList().isOp(player.getGameProfile())) {
-            log.info("[Op Protect] deop " + player.getGameProfile());
+            log.info("op protect -> deop " + player.getGameProfile());
             ServerMain.SERVER.getPlayerList().deop(player.getGameProfile());
         }
     }

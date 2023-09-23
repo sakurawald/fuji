@@ -39,14 +39,18 @@ public abstract class ServerLoginNetworkHandlerMixin {
     public void waitForSkin(CallbackInfo ci) {
         if (pendingSkins == null) {
             pendingSkins = CompletableFuture.supplyAsync(() -> {
-                LOGGER.debug("Fetching {}'s skin", gameProfile.getName());
-                if (SkinRestorer.getSkinStorage().getSkin(gameProfile.getId()) == SkinStorage.DEFAULT_SKIN)
+                // the first time the player join, his skin is DEFAULT_SKIN (see #applyRestoredSkinHook)
+                // then we try to get skin from mojang-server. if this failed, then set his skin to DEFAULT_SKIN
+                // note: a fake-player will not trigger waitForSkin()
+                LOGGER.info("Fetch skin for {}", gameProfile.getName());
+                if (SkinRestorer.getSkinStorage().getSkin(gameProfile.getId()) == SkinStorage.DEFAULT_SKIN) {
                     SkinRestorer.getSkinStorage().setSkin(gameProfile.getId(), MojangSkinProvider.getSkin(gameProfile.getName()));
-
+                }
                 return SkinRestorer.getSkinStorage().getSkin(gameProfile.getId());
             });
         }
 
+        // cancel the player's login until we finish fetching his skin
         if (!pendingSkins.isDone()) {
             ci.cancel();
         }
