@@ -53,17 +53,20 @@ public class BetterFakePlayerModule {
     }
 
     private static void validateFakePlayers() {
-        for (Map.Entry<String, ArrayList<String>> entry : player2fakePlayers.entrySet()) {
+        Iterator<Map.Entry<String, ArrayList<String>>> it = player2fakePlayers.entrySet().iterator(); it.hasNext();
+        while (it.hasNext()) {
+            Map.Entry<String, ArrayList<String>> entry = it.next();
+
             ArrayList<String> myFakePlayers = entry.getValue();
             // fix: NPE
-            if (myFakePlayers == null || myFakePlayers.isEmpty()) {
-                player2fakePlayers.remove(entry.getKey());
-                continue;
-            }
+            if (myFakePlayers == null) continue;
             myFakePlayers.removeIf(name -> {
                 ServerPlayer fakePlayer = ServerMain.SERVER.getPlayerList().getPlayerByName(name);
                 return fakePlayer == null || fakePlayer.isRemoved();
             });
+            if (myFakePlayers.isEmpty()) {
+                it.remove();
+            }
         }
     }
 
