@@ -29,6 +29,7 @@ public class ConfigGSON {
         public Back back = new Back();
         public Tpa tpa = new Tpa();
         public Works works = new Works();
+        public WorldDownloader world_downloader = new WorldDownloader();
 
         public class ResourceWorld {
             public long seed = 0L;
@@ -199,6 +200,12 @@ public class ConfigGSON {
             public int sampleTimeMS = FabricLoader.getInstance().isDevelopmentEnvironment() ? 60 * 1000 : 60 * 1000 * 60;
             public int sampleDistanceLimit = 256;
             public int sampleCounterTopN = 15;
+        }
+
+        public class WorldDownloader {
+            public int port = 22222;
+            public int bytes_per_second_limit = 128 * 1000;
+            public int context_cache_size = 5;
         }
     }
 }

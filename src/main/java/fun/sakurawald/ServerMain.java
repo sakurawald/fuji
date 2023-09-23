@@ -14,6 +14,7 @@ import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
 import fun.sakurawald.module.top_chunks.TopChunksModule;
 import fun.sakurawald.module.tpa.TpaModule;
 import fun.sakurawald.module.works.WorksModule;
+import fun.sakurawald.module.world_downloader.WorldDownloaderModule;
 import fun.sakurawald.module.zero_command_permission.ZeroCommandPermissionModule;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.api.ModInitializer;
@@ -29,6 +30,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 // TODO: resource world -> other worlds will teleport to overworld#spawn
+// TODO: mojang auth server error -> lag
 @Slf4j
 public class ServerMain implements ModInitializer {
     public static final Path CONFIG_PATH = Path.of(FabricLoader.getInstance().getConfigDir().resolve("sakurawald").toString());
@@ -68,6 +70,7 @@ public class ServerMain implements ModInitializer {
         CommandRegistrationCallback.EVENT.register(BackModule::registerCommand);
         CommandRegistrationCallback.EVENT.register(TpaModule::registerCommand);
         CommandRegistrationCallback.EVENT.register(WorksModule::registerCommand);
+        CommandRegistrationCallback.EVENT.register(WorldDownloaderModule::registerCommand);
 
         /* register events */
         ServerWorldEvents.UNLOAD.register(ResourceWorldModule::onWorldUnload);

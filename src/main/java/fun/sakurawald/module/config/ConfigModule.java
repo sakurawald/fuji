@@ -4,6 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.world_downloader.WorldDownloaderModule;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -27,6 +28,7 @@ public class ConfigModule {
         ConfigManager.chatWrapper.loadFromDisk();
         ConfigManager.pvpWrapper.loadFromDisk();
         ConfigManager.worksWrapper.loadFromDisk();
+        WorldDownloaderModule.initServer();
         sendMessage(ctx.getSource(), "reload");
         return Command.SINGLE_SUCCESS;
     }
