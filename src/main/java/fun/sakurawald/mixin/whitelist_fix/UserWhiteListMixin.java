@@ -33,7 +33,6 @@ public class UserWhiteListMixin {
     @Inject(method = "getKeyForUser*", at = @At("HEAD"), cancellable = true)
     void $getKeyForUser(GameProfile gameProfile, CallbackInfoReturnable<String> ci) {
         String ret = gameProfile.getName();
-        log.info("UserWhiteListMixin: set return value -> " + ret);
         ci.setReturnValue(ret);
     }
 }

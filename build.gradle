@@ -55,7 +55,7 @@ dependencies {
     implementation "net.kyori:adventure-text-minimessage:${project.adventure_api_version}"
     implementation "net.kyori:adventure-text-serializer-plain:${project.adventure_api_version}"
 
-    implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.24.0'
+    include(implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.24.0')
 
     modImplementation include("eu.pb4:sgui:${project.sgui_version}")
 //    Set<String> apiModules = [
