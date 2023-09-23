@@ -41,8 +41,10 @@ public class BetterFakePlayerModule {
         /* output */
         StringBuilder builder = new StringBuilder();
         for (String player : player2fakePlayers.keySet()) {
+            ArrayList<String> fakePlayers = player2fakePlayers.get(player);
+            if (fakePlayers.isEmpty()) continue;
             builder.append(player).append(": ");
-            for (String fakePlayer : player2fakePlayers.get(player)) {
+            for (String fakePlayer : fakePlayers) {
                 builder.append(fakePlayer).append(" ");
             }
             builder.append("\n");
@@ -54,7 +56,6 @@ public class BetterFakePlayerModule {
 
     private static void validateFakePlayers() {
         Iterator<Map.Entry<String, ArrayList<String>>> it = player2fakePlayers.entrySet().iterator();
-        it.hasNext();
         while (it.hasNext()) {
             Map.Entry<String, ArrayList<String>> entry = it.next();
 
