@@ -15,6 +15,7 @@
     "main_stats.BlockMixin",
     "main_stats.PlayerListMixin",
     "main_stats.ServerPlayNetworkHandlerMixin",
+    "multi_obsidian_platform.EntityMixin",
     "newbie_welcome.PlayerListMixin",
     "op_protect.ServerPlayNetworkHandlerMixin",
     "pvp_toggle.PvpToggleMixin",

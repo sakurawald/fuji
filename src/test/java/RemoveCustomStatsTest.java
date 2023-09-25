@@ -1,6 +1,7 @@
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileReader;
@@ -8,9 +9,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 
+@Slf4j
 public class RemoveCustomStatsTest {
 
     public static void main(String[] args) {
+        log.info("{}", 0 / 8);
+        log.info("{}", -2 / 8);
+        log.info("{}", -6 / 8);
+        log.info("{}", -9 / 8);
+    }
+
+    void removeStats() {
         File file = new File("run/world/stats/");
         File[] files = file.listFiles();
         if (files == null) return;
