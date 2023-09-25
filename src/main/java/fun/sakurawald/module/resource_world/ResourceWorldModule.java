@@ -57,7 +57,7 @@ public class ResourceWorldModule {
         if (initialDelay < 0) {
             initialDelay += TimeUnit.DAYS.toSeconds(1);
         }
-        ServerMain.getScheduledExecutor().scheduleAtFixedRate(() -> {
+        ServerMain.getSCHEDULED_EXECUTOR_SERVICE().scheduleAtFixedRate(() -> {
             log.info("Start to reset resource worlds.");
             server.execute(() -> ResourceWorldModule.resetWorlds(server));
         }, initialDelay, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS);

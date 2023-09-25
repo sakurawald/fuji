@@ -115,7 +115,7 @@ public class BetterFakePlayerModule {
 
     @SuppressWarnings("unused")
     public static void registerScheduleTask(MinecraftServer server) {
-        ServerMain.getScheduledExecutor().scheduleAtFixedRate(BetterFakePlayerModule::checkFakePlayerLimit, 0, 1, TimeUnit.MINUTES);
+        ServerMain.getSCHEDULED_EXECUTOR_SERVICE().scheduleAtFixedRate(BetterFakePlayerModule::checkFakePlayerLimit, 0, 1, TimeUnit.MINUTES);
     }
 
     public static boolean isFakePlayer(ServerPlayer player) {

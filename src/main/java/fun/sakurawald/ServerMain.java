@@ -16,6 +16,7 @@ import fun.sakurawald.module.tpa.TpaModule;
 import fun.sakurawald.module.works.WorksModule;
 import fun.sakurawald.module.world_downloader.WorldDownloaderModule;
 import fun.sakurawald.module.zero_command_permission.ZeroCommandPermissionModule;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -29,20 +30,16 @@ import java.nio.file.Path;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-// TODO: resource world -> other worlds will teleport to overworld#spawn
 @Slf4j
 public class ServerMain implements ModInitializer {
     public static final Path CONFIG_PATH = Path.of(FabricLoader.getInstance().getConfigDir().resolve("sakurawald").toString());
+    @Getter
     private static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor(runnable -> {
         var thread = new Thread(runnable, "SakuraWald Schedule Thread");
         thread.setUncaughtExceptionHandler((t, e) -> log.error("Exception in sakurawald schedule thread", e));
         return thread;
     });
     public static MinecraftServer SERVER;
-
-    public static ScheduledExecutorService getScheduledExecutor() {
-        return SCHEDULED_EXECUTOR_SERVICE;
-    }
 
     @Override
     public void onInitialize() {
@@ -87,7 +84,7 @@ public class ServerMain implements ModInitializer {
                     WorksModule.registerScheduleTask(server);
                 }
         );
-        ServerLifecycleEvents.SERVER_STOPPING.register((server) -> getScheduledExecutor().shutdown());
+        ServerLifecycleEvents.SERVER_STOPPING.register((server) -> getSCHEDULED_EXECUTOR_SERVICE().shutdown());
 
         ServerTickEvents.START_SERVER_TICK.register(TeleportWarmupModule::onServerTick);
     }

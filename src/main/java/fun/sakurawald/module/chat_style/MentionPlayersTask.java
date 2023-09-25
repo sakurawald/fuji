@@ -39,7 +39,7 @@ public class MentionPlayersTask implements Runnable {
     }
 
     public void startTask() {
-        ScheduledFuture<?> scheduledFuture = ServerMain.getScheduledExecutor().scheduleAtFixedRate(this, 0, this.interval, TimeUnit.MILLISECONDS);
+        ScheduledFuture<?> scheduledFuture = ServerMain.getSCHEDULED_EXECUTOR_SERVICE().scheduleAtFixedRate(this, 0, this.interval, TimeUnit.MILLISECONDS);
         this.setScheduledFuture(scheduledFuture);
     }
 

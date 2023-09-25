@@ -46,7 +46,7 @@ public class WorksModule {
 
     @SuppressWarnings("unused")
     public static void registerScheduleTask(MinecraftServer server) {
-        ServerMain.getScheduledExecutor().scheduleAtFixedRate(() -> {
+        ServerMain.getSCHEDULED_EXECUTOR_SERVICE().scheduleAtFixedRate(() -> {
             // save current works data
             if (ServerMain.SERVER.isRunning()) {
                 ConfigManager.worksWrapper.saveToDisk();

@@ -57,7 +57,7 @@ public class MainStatsModule {
 
     public static void registerScheduleTask(MinecraftServer server) {
         // async task
-        ServerMain.getScheduledExecutor().scheduleAtFixedRate(() -> {
+        ServerMain.getSCHEDULED_EXECUTOR_SERVICE().scheduleAtFixedRate(() -> {
             // save all online-player 's stats
             server.getPlayerList().getPlayers().forEach((p) -> p.getStats().save());
 
