@@ -29,7 +29,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.BiomeManager;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.dimension.DimensionType;
@@ -180,23 +179,6 @@ public class ResourceWorldModule {
     private static ServerLevel getResourceWorldByPath(MinecraftServer server, String path) {
         ResourceKey<Level> worldKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(DEFAULT_RESOURCE_WORLD_NAMESPACE, path));
         return server.getLevel(worldKey);
-    }
-
-    @SuppressWarnings("unused")
-    private static void createSafePlatform(ServerLevel world, BlockPos pos) {
-        BlockPos origin = pos.offset(-2, -1, -2);
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                for (int k = 0; k < 5; k++) {
-                    BlockPos blockPos = origin.offset(i, k, j);
-                    if (k == 0 || k == 4) {
-                        world.setBlockAndUpdate(blockPos, Blocks.OBSIDIAN.defaultBlockState());
-                    } else {
-                        world.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
-                    }
-                }
-            }
-        }
     }
 
     private static int $tp(CommandContext<CommandSourceStack> ctx) {

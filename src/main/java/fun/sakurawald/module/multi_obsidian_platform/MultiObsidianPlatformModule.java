@@ -1,8 +1,11 @@
 package fun.sakurawald.module.multi_obsidian_platform;
 
+import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
+
+@Slf4j
 
 public class MultiObsidianPlatformModule {
 
