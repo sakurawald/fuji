@@ -92,7 +92,6 @@ public class ResourceWorldManager {
         MinecraftServerAccessor serverAccess = (MinecraftServerAccessor) server;
 
         ResourceKey<Level> dimensionKey = world.dimension();
-
         if (serverAccess.getLevels().remove(dimensionKey, world)) {
             ServerWorldEvents.UNLOAD.invoker().onWorldUnload(server, world);
             MappedRegistry<LevelStem> dimensionsRegistry = getDimensionsRegistry(server);

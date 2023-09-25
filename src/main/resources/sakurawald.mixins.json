@@ -19,7 +19,6 @@
     "newbie_welcome.PlayerListMixin",
     "op_protect.ServerPlayNetworkHandlerMixin",
     "pvp_toggle.PvpToggleMixin",
-    "resource_world.EndGatewayBlockEntityAccessor",
     "resource_world.EndGatewayBlockEntityMixin",
     "resource_world.MinecraftServerAccessor",
     "resource_world.MinecraftServerMixin",
