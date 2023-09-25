@@ -6,6 +6,7 @@
   "cancel": "<red>Cancel",
   "previous_page": "<#FFA1F5>Previous Page",
   "next_page": "<#FFA1F5>Next Page",
+  "search": "<#FFA1F5>Search",
   "back": "<#FFA1F5>Back",
   "empty": "<#FFA1F5>Empty",
   "input.syntax.error": "<red>Input Syntax Error",

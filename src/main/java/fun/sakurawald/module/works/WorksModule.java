@@ -25,6 +25,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -110,7 +111,7 @@ public class WorksModule {
         return player.getGameProfile().getName().equals(work.creator) || player.hasPermissions(4);
     }
 
-    private static void $listWorks(ServerPlayer player, List<Work> source, int page) {
+    private static void $listWorks(ServerPlayer player, @Nullable List<Work> source, int page) {
         if (source == null) {
             source = ConfigManager.worksWrapper.instance().works;
         }
@@ -199,6 +200,11 @@ public class WorksModule {
                 .setName(ofVomponent(player, "works.list.help"))
                 .setSkullOwner(QUESTION_MARK_ICON)
                 .setLore(ofVomponents(player, "works.list.help.lore")));
+        gui.setSlot(52, new GuiElementBuilder()
+                .setItem(Items.COMPASS)
+                .setName(ofVomponent(player, "search"))
+                .setCallback(() -> $searchWorks(player, finalSource))
+        );
         gui.setSlot(53, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
                 .setName(ofVomponent(player, "next_page"))
@@ -209,6 +215,28 @@ public class WorksModule {
                 })
         );
         gui.open();
+    }
+
+    private static void $searchWorks(ServerPlayer player, List<Work> source) {
+        /* input keywords */
+        new InputSignGui(player, null) {
+            @Override
+            public void onClose() {
+                List<Work> filterWorks = null;
+                String key = combineAllLinesReturnNull();
+                if (key != null) {
+                    filterWorks = source.stream().filter(w ->
+                            w.creator.contains(key)
+                                    || w.name.contains(key)
+                                    || (w.introduction != null && w.introduction.contains(key))
+                                    || w.level.contains(key)
+                                    || (w instanceof ProductionWork pw && pw.sample != null && pw.sample.sampleCounter != null && pw.sample.sampleCounter.keySet().stream().anyMatch(k -> k.contains(key)))
+                    ).toList();
+                }
+                $listWorks(player, filterWorks, 0);
+            }
+        }.open();
+
     }
 
     private static void $myWorks(ServerPlayer player) {

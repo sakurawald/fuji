@@ -6,6 +6,7 @@
   "cancel": "<red>取消",
   "previous_page": "<#FFA1F5>上一页",
   "next_page": "<#FFA1F5>下一页",
+  "search": "<#FFA1F5>搜索",
   "back": "<#FFA1F5>返回",
   "empty": "<#FFA1F5>空",
   "input.syntax.error": "<red>输入的格式错误",
