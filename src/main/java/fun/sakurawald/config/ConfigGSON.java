@@ -20,7 +20,7 @@ public class ConfigGSON {
         public ResourceWorld resource_world = new ResourceWorld();
         public NewbieWelcome newbie_welcome = new NewbieWelcome();
         public TeleportWarmup teleport_warmup = new TeleportWarmup();
-        public MainStats main_stats = new MainStats();
+        public DynamicMOTD dynamic_motd = new DynamicMOTD();
         public BetterFakePlayer better_fake_player = new BetterFakePlayer();
         public CommandCooldown command_cooldown = new CommandCooldown();
         public TopChunks top_chunks = new TopChunks();
@@ -35,9 +35,12 @@ public class ConfigGSON {
             public long seed = 0L;
         }
 
-        public class MainStats {
-            public String dynamic_motd = "§2Pure Survival 1.20.1 / Up %uptime%H §c\u2764 §6Group 912363929\n§b%playtime%\uD83D\uDD25 %mined%⛏ %placed%\uD83D\uDD33 %killed%\uD83D\uDDE1 %moved%\uD83C\uDF0D";
-
+        public class DynamicMOTD {
+            public List<String> descriptions = new ArrayList<>() {
+                {
+                    this.add("<dark_green>Pure Survival 1.20.1 / Up %uptime%H <red>❤ <yellow>Group 912363929<newline><aqua>%playtime%🔥 %mined%⛏ %placed%🔳 %killed%🗡 %moved%🌍");
+                }
+            };
         }
 
         public class NewbieWelcome {
@@ -58,7 +61,9 @@ public class ConfigGSON {
         public class BetterFakePlayer {
             public ArrayList<List<Integer>> limit_rule = new ArrayList<>() {
                 {
+                    this.add(List.of(5, 0, 2));
                     this.add(List.of(5, 840, 1));
+                    this.add(List.of(5, 1260, 2));
                     this.add(List.of(1, 0, 2));
                     this.add(List.of(1, 840, 2));
                     this.add(List.of(1, 1260, 2));

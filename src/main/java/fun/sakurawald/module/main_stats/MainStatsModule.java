@@ -3,9 +3,11 @@ package fun.sakurawald.module.main_stats;
 import fun.sakurawald.ServerMain;
 import fun.sakurawald.config.ConfigGSON;
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.motd.MotdModule;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.server.MinecraftServer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -15,10 +17,14 @@ public class MainStatsModule {
 
     private static final List<Character> colors = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
 
-    public static void updateMOTD() {
-        ConfigGSON.Modules.MainStats main_stats = ConfigManager.configWrapper.instance().modules.main_stats;
-        String motd = MainStats.calculateServerMainStats().resolve(main_stats.dynamic_motd);
-        ServerMain.SERVER.setMotd(motd);
+
+    public static void updateMainStats() {
+        MainStats serverMainStats = MainStats.calculateServerMainStats();
+
+        ConfigGSON.Modules.DynamicMOTD dynamic_motd = ConfigManager.configWrapper.instance().modules.dynamic_motd;
+        ArrayList<String> descriptions = new ArrayList<>();
+        dynamic_motd.descriptions.forEach(description -> descriptions.add(serverMainStats.resolve(description)));
+        MotdModule.updateDescriptions(descriptions);
     }
 
     @SuppressWarnings({"SameParameterValue", "unused"})
@@ -62,7 +68,7 @@ public class MainStatsModule {
             server.getPlayerList().getPlayers().forEach((p) -> p.getStats().save());
 
             // update motd
-            updateMOTD();
+            updateMainStats();
         }, 10, 60, TimeUnit.SECONDS);
     }
 

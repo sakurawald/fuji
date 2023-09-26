@@ -75,7 +75,7 @@ public class ServerMain implements ModInitializer {
                     ResourceWorldModule.loadWorlds(server);
                     ResourceWorldModule.registerScheduleTask(server);
 
-                    MainStatsModule.updateMOTD();
+                    MainStatsModule.updateMainStats();
                     MainStatsModule.registerScheduleTask(server);
 
                     ZeroCommandPermissionModule.alterCommandPermission(server);

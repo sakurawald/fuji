@@ -34,7 +34,7 @@ public abstract class EntityMixin {
         return getTransformedEndSpawnPoint();
     }
 
-    /* This method will NOT be called when a player jump into overworld's ender-portal-frame */
+    /* This method will NOT be called when a PLAYER jump into overworld's ender-portal-frame */
     @Redirect(method = "changeDimension", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;makeObsidianPlatform(Lnet/minecraft/server/level/ServerLevel;)V"))
     public void $changeDimension(ServerLevel toLevel) {
         // modify: resource_world:overworld -> minecraft:the_end (default obsidian platform)
