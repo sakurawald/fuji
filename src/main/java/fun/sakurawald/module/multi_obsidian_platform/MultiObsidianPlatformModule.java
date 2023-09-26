@@ -40,7 +40,7 @@ public class MultiObsidianPlatformModule {
 
     public static BlockPos transform(BlockPos bp) {
         bp = findCenterEndPortalBlock(bp);
-        int factor = 5;
+        int factor = 4;
         return new BlockPos(bp.getX() / factor, 50, bp.getZ() / factor);
     }
 
