@@ -6,6 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.config.ConfigGSON;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.mixin.top_chunks.ThreadedAnvilChunkStorageMixin;
+import fun.sakurawald.util.MessageUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.minecraft.commands.CommandBuildContext;
@@ -73,14 +74,14 @@ public class TopChunksModule {
 
             /* send output */
             ConfigGSON.Modules.TopChunks topChunks = ConfigManager.configWrapper.instance().modules.top_chunks;
-            calculateNearestPlayer(PQ, topChunks.rows * topChunks.columns);
+            calculateNearestPlayer(ctx.getSource(), PQ, topChunks.rows * topChunks.columns);
 
             TextComponent.Builder textComponentBuilder = Component.text();
             outer:
             for (int j = 0; j < topChunks.rows; j++) {
                 for (int i = 0; i < topChunks.columns; i++) {
                     if (PQ.isEmpty()) break outer;
-                    textComponentBuilder.append(PQ.poll().asComponent(ctx.getSource())).append(Component.text(" "));
+                    textComponentBuilder.append(PQ.poll().asComponent(ctx.getSource())).appendSpace();
                 }
                 textComponentBuilder.append(Component.newline());
             }
@@ -91,17 +92,17 @@ public class TopChunksModule {
         return Command.SINGLE_SUCCESS;
     }
 
-    private static void calculateNearestPlayer(PriorityQueue<ChunkScore> PQ, int limit) {
+    private static void calculateNearestPlayer(CommandSourceStack source, PriorityQueue<ChunkScore> PQ, int limit) {
         int count = 0;
         for (ChunkScore chunkScore : PQ) {
             if (count++ >= limit) break;
 
-            Level world = chunkScore.getWorld();
+            Level world = chunkScore.getDimension();
             ChunkPos chunkPos = chunkScore.getChunkPos();
             BlockPos blockPos = chunkPos.getWorldPosition();
             Player nearestPlayer = world.getNearestPlayer(blockPos.getX(), blockPos.getY(), blockPos.getZ(), ConfigManager.configWrapper.instance().modules.top_chunks.nearest_distance, false);
             if (nearestPlayer != null) {
-                chunkScore.getPlayers().add(nearestPlayer.getGameProfile().getName() + " (nearest)");
+                chunkScore.getPlayers().add(MessageUtil.ofString(source, "top_chunks.prop.players.nearest", nearestPlayer.getGameProfile().getName()));
             }
         }
     }

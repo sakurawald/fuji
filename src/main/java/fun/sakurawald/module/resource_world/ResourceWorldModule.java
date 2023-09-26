@@ -226,7 +226,7 @@ public class ResourceWorldModule {
             // IMPORTANT: only delete the world if it's a resource world
             if (!namespace.equals(DEFAULT_RESOURCE_WORLD_NAMESPACE)) return;
 
-            log.info(String.format("Creating world %s ...", path));
+            log.info("onWorldUnload() -> Creating world {} ...", path);
             long seed = ConfigManager.configWrapper.instance().modules.resource_world.seed;
             ResourceWorldModule.createWorld(server, ResourceWorldModule.getDimensionTypeRegistryKeyByPath(path), path, seed);
         }
