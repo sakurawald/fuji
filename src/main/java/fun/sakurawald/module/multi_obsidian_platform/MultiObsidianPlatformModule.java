@@ -11,22 +11,20 @@ public class MultiObsidianPlatformModule {
 
     private static BlockPos findCenterEndPortalBlock(BlockPos bp) {
         ServerLevel overworld = ServerMain.SERVER.overworld();
-        if (overworld.getBlockState(bp.north()) != Blocks.END_PORTAL.defaultBlockState() && overworld.getBlockState(bp.west()) != Blocks.END_PORTAL.defaultBlockState()) {
-            return bp.south().east();
-        }
-        if (overworld.getBlockState(bp.north()) != Blocks.END_PORTAL.defaultBlockState() && overworld.getBlockState(bp.east()) != Blocks.END_PORTAL.defaultBlockState()) {
-            return bp.south().west();
-        }
-        if (overworld.getBlockState(bp.south()) != Blocks.END_PORTAL.defaultBlockState() && overworld.getBlockState(bp.west()) != Blocks.END_PORTAL.defaultBlockState()) {
-            return bp.north().east();
-        }
-        if (overworld.getBlockState(bp.south()) != Blocks.END_PORTAL.defaultBlockState() && overworld.getBlockState(bp.east()) != Blocks.END_PORTAL.defaultBlockState()) {
-            return bp.north().west();
-        }
         if (overworld.getBlockState(bp.north()) != Blocks.END_PORTAL.defaultBlockState()) {
+            if (overworld.getBlockState(bp.west()) != Blocks.END_PORTAL.defaultBlockState()) {
+                return bp.south().east();
+            } else if (overworld.getBlockState(bp.east()) != Blocks.END_PORTAL.defaultBlockState()) {
+                return bp.south().west();
+            }
             return bp.south();
         }
         if (overworld.getBlockState(bp.south()) != Blocks.END_PORTAL.defaultBlockState()) {
+            if (overworld.getBlockState(bp.west()) != Blocks.END_PORTAL.defaultBlockState()) {
+                return bp.north().east();
+            } else if (overworld.getBlockState(bp.east()) != Blocks.END_PORTAL.defaultBlockState()) {
+                return bp.north().west();
+            }
             return bp.north();
         }
         if (overworld.getBlockState(bp.west()) != Blocks.END_PORTAL.defaultBlockState()) {
@@ -35,6 +33,7 @@ public class MultiObsidianPlatformModule {
         if (overworld.getBlockState(bp.east()) != Blocks.END_PORTAL.defaultBlockState()) {
             return bp.west();
         }
+        // This is the center block.
         return bp;
     }
 
