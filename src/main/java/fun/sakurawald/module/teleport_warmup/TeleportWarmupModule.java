@@ -18,13 +18,9 @@ import static fun.sakurawald.util.MessageUtil.sendActionBar;
 public class TeleportWarmupModule {
 
     public static final HashMap<ServerPlayer, TeleportTicket> tickets = new HashMap<>();
-    private static final float MAX_VALUE = 20 * ConfigManager.configWrapper.instance().modules.teleport_warmup.warmup_second;
-    private static final float DELFA_PERCENT = 1F / MAX_VALUE;
-    private static final double INTERRUPT_DISTANCE = ConfigManager.configWrapper.instance().modules.teleport_warmup.interrupt_distance;
 
     @SuppressWarnings("unused")
     public static void onServerTick(MinecraftServer server) {
-
         if (tickets.isEmpty()) return;
 
         Iterator<Map.Entry<ServerPlayer, TeleportTicket>> iterator = tickets.entrySet().iterator();
@@ -34,6 +30,8 @@ public class TeleportWarmupModule {
             BossBar bossbar = ticket.bossbar;
 
             // fix: bossbar.progress() may be greater than 1.0F and throw an IllegalArgumentException.
+            final float MAX_VALUE = 20 * ConfigManager.configWrapper.instance().modules.teleport_warmup.warmup_second;
+            final float DELFA_PERCENT = 1F / MAX_VALUE;
             try {
                 bossbar.progress(Math.min(1f, bossbar.progress() + DELFA_PERCENT));
             } catch (Exception e) {
@@ -50,6 +48,7 @@ public class TeleportWarmupModule {
                 continue;
             }
 
+            final double INTERRUPT_DISTANCE = ConfigManager.configWrapper.instance().modules.teleport_warmup.interrupt_distance;
             if (player.position().distanceToSqr(ticket.source.getX(), ticket.source.getY(), ticket.source.getZ()) >= INTERRUPT_DISTANCE) {
                 bossbar.removeViewer(player);
                 iterator.remove();
