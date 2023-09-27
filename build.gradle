@@ -21,7 +21,7 @@ repositories {
     maven { url "https://jitpack.io" }
     maven { url 'https://masa.dy.fi/maven' }
     maven { url 'https://maven.nucleoid.xyz' }
-
+    maven { url 'https://projectlombok.org/edge-releases' }
 }
 
 loom {
@@ -78,7 +78,7 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release.set(17)
+    it.options.release.set(21)
 }
 
 java {
@@ -87,8 +87,8 @@ java {
     // If you remove this line, sources will not be generated.
     withSourcesJar()
 
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 jar {

@@ -48,7 +48,6 @@ public class MultiObsidianPlatformModule {
         x -= x_offset;
         z -= z_offset;
         x += 100;
-        z += 0;
         return new BlockPos(x, y, z);
     }
 
