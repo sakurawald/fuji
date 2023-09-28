@@ -30,7 +30,7 @@ public abstract class EntityMixin {
     BlockPos $findDimensionEntryPoint(ServerLevel toLevel) {
         // modify: resource_world:overworld -> minecraft:the_end (default obsidian platform)
         // feature: https://bugs.mojang.com/browse/MC-252361
-        if (getEntityCurrentLevel().dimension() != Level.OVERWORLD) return new BlockPos(100, 50, 0);
+        if (getEntityCurrentLevel().dimension() != Level.OVERWORLD) return ServerLevel.END_SPAWN_POINT;
         return getTransformedEndSpawnPoint();
     }
 

@@ -5,9 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
+import java.util.HashMap;
 
 @Slf4j
 public class MultiObsidianPlatformModule {
+
+    private static final HashMap<BlockPos, BlockPos> TRANSFORM_CACHE = new HashMap<>();
 
     private static BlockPos findCenterEndPortalBlock(BlockPos bp) {
         ServerLevel overworld = ServerMain.SERVER.overworld();
@@ -38,6 +41,9 @@ public class MultiObsidianPlatformModule {
     }
 
     public static BlockPos transform(BlockPos bp) {
+        if (TRANSFORM_CACHE.containsKey(bp)) {
+            return TRANSFORM_CACHE.get(bp);
+        }
         bp = findCenterEndPortalBlock(bp);
         int factor = 4;
         int x = bp.getX() / factor;
@@ -48,7 +54,8 @@ public class MultiObsidianPlatformModule {
         x -= x_offset;
         z -= z_offset;
         x += 100;
-        return new BlockPos(x, y, z);
+        TRANSFORM_CACHE.put(bp, new BlockPos(x, y, z));
+        return TRANSFORM_CACHE.get(bp);
     }
 
     public static void makeObsidianPlatform(ServerLevel serverLevel, BlockPos centerBlockPos) {
