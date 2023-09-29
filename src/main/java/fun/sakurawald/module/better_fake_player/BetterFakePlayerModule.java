@@ -69,6 +69,10 @@ public class BetterFakePlayerModule {
         return Command.SINGLE_SUCCESS;
     }
 
+    public static boolean hasFakePlayers(ServerPlayer player) {
+        return player2fakePlayers.containsKey(player.getGameProfile().getName());
+    }
+
     public static void renewFakePlayers(ServerPlayer player) {
         String name = player.getGameProfile().getName();
         int duration = ConfigManager.configWrapper.instance().modules.better_fake_player.renew_duration_ms;

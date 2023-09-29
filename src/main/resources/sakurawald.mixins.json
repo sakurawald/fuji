@@ -5,6 +5,7 @@
   "mixins": [
     "back.ServerPlayerMixin",
     "better_fake_player.PlayerCommandMixin",
+    "better_fake_player.PlayerListMixin",
     "bypass_things.chat_speed.ServerGamePacketListenerImplMixin",
     "bypass_things.move_speed.ServerGamePacketListenerImplMixin",
     "bypass_things.player_limit.DedicatedPlayerManagerMixin",
