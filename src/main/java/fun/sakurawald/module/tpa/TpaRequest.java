@@ -26,6 +26,7 @@ public class TpaRequest {
     private final ServerPlayer sender;
     @Getter
     private final ServerPlayer receiver;
+    @Getter
     private final boolean tpahere;
     private Timer timer;
 

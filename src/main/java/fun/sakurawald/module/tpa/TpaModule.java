@@ -94,9 +94,10 @@ public class TpaModule {
         if (status == ResponseStatus.ACCEPT) {
             request.getSender().sendActionBar(request.asSenderComponent$Accepted());
             request.getReceiver().sendMessage(request.asReceiverComponent$Accepted());
+
             ServerPlayer who = request.getTeleportWho();
             ServerPlayer to = request.getTeleportTo();
-            new MentionPlayersTask(who).startTask();
+            new MentionPlayersTask(request.isTpahere() ? to : who).startTask();
             who.teleportTo((ServerLevel) to.level(), to.getX(), to.getY(), to.getZ(), to.getYRot(), to.getXRot());
         } else if (status == ResponseStatus.DENY) {
             request.getSender().sendActionBar(request.asSenderComponent$Denied());
