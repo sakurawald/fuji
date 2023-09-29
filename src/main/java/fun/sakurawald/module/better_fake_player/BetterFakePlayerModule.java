@@ -6,6 +6,8 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.ServerMain;
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.util.MessageUtil;
+import fun.sakurawald.util.TimeUtil;
 import net.kyori.adventure.text.Component;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -24,15 +26,28 @@ import static fun.sakurawald.util.MessageUtil.sendBroadcast;
 
 public class BetterFakePlayerModule {
     private static final HashMap<String, ArrayList<String>> player2fakePlayers = new HashMap<>();
+    private static final HashMap<String, Long> player2expiration = new HashMap<>();
 
     @SuppressWarnings("unused")
     public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("player").then(
                         Commands.literal("who").executes(BetterFakePlayerModule::$who)
+                ).then(
+                        Commands.literal("renew").executes(BetterFakePlayerModule::$renew)
                 )
         );
     }
+
+    @SuppressWarnings("SameReturnValue")
+    private static int $renew(CommandContext<CommandSourceStack> context) {
+        ServerPlayer player = context.getSource().getPlayer();
+        if (player == null) return Command.SINGLE_SUCCESS;
+
+        renewFakePlayers(player);
+        return Command.SINGLE_SUCCESS;
+    }
+
 
     private static int $who(CommandContext<CommandSourceStack> context) {
         /* validate */
@@ -52,6 +67,14 @@ public class BetterFakePlayerModule {
         CommandSourceStack source = context.getSource();
         source.sendMessage(ofComponent(source, "better_fake_player.who.header").append(Component.text(builder.toString())));
         return Command.SINGLE_SUCCESS;
+    }
+
+    public static void renewFakePlayers(ServerPlayer player) {
+        String name = player.getGameProfile().getName();
+        int duration = ConfigManager.configWrapper.instance().modules.better_fake_player.renew_duration_ms;
+        long newTime = System.currentTimeMillis() + duration;
+        player2expiration.put(name, newTime);
+        MessageUtil.sendMessage(player, "better_fake_player.renew.success", TimeUtil.getFormattedDate(newTime));
     }
 
     private static void validateFakePlayers() {
@@ -115,7 +138,7 @@ public class BetterFakePlayerModule {
 
     @SuppressWarnings("unused")
     public static void registerScheduleTask(MinecraftServer server) {
-        ServerMain.getSCHEDULED_EXECUTOR_SERVICE().scheduleAtFixedRate(BetterFakePlayerModule::checkFakePlayerLimit, 0, 1, TimeUnit.MINUTES);
+        ServerMain.getSCHEDULED_EXECUTOR_SERVICE().scheduleAtFixedRate(BetterFakePlayerModule::manageFakePlayers, 0, 1, TimeUnit.MINUTES);
     }
 
     public static boolean isFakePlayer(ServerPlayer player) {
@@ -127,20 +150,37 @@ public class BetterFakePlayerModule {
         return new GameProfile(offlinePlayerUUID, fakePlayerName);
     }
 
-    private static void checkFakePlayerLimit() {
+    private static void manageFakePlayers() {
         /* validate */
         validateFakePlayers();
 
-        /* check for limits */
         int limit = getCurrentAmountLimit();
+        long currentTimeMS = System.currentTimeMillis();
         for (String player : player2fakePlayers.keySet()) {
+            /* check for renew limits */
+            long expiration = player2expiration.getOrDefault(player, 0L);
             ArrayList<String> fakePlayers = player2fakePlayers.getOrDefault(player, new ArrayList<>());
+            if (expiration <= currentTimeMS) {
+                for (String fakePlayerName : fakePlayers) {
+                    ServerPlayer fakePlayer = ServerMain.SERVER.getPlayerList().getPlayerByName(fakePlayerName);
+                    if (fakePlayer == null) return;
+                    fakePlayer.kill();
+                    sendBroadcast("better_fake_player.kick_for_expiration", fakePlayer.getGameProfile().getName(), player);
+                }
+                // remove entry
+                player2expiration.remove(player);
+
+                // we'll kick all fake players, so we don't need to check for amount limits
+                continue;
+            }
+
+            /* check for amount limits */
             for (int i = fakePlayers.size() - 1; i >= limit; i--) {
                 ServerPlayer fakePlayer = ServerMain.SERVER.getPlayerList().getPlayerByName(fakePlayers.get(i));
                 if (fakePlayer == null) continue;
                 fakePlayer.kill();
 
-                sendBroadcast("better_fake_player.kick_for_limit", fakePlayer.getGameProfile().getName());
+                sendBroadcast("better_fake_player.kick_for_amount", fakePlayer.getGameProfile().getName(), player);
             }
         }
     }

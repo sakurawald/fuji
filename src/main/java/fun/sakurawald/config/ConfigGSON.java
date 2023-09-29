@@ -69,6 +69,8 @@ public class ConfigGSON {
                     this.add(List.of(1, 1260, 2));
                 }
             };
+
+            public int renew_duration_ms = 1000 * 60 * 60 * 12;
         }
 
         public class CommandCooldown {

@@ -38,6 +38,7 @@ public abstract class PlayerCommandMixin {
         ServerPlayer player = context.getSource().getPlayer();
         String spawnPlayerName = StringArgumentType.getString(context, "player");
         BetterFakePlayerModule.addFakePlayer(player, spawnPlayerName);
+        BetterFakePlayerModule.renewFakePlayers(player);
     }
 
     @Inject(method = "cantManipulate", at = @At("HEAD"), remap = false, cancellable = true)
