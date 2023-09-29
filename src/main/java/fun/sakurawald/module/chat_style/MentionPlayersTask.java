@@ -51,6 +51,7 @@ public class MentionPlayersTask implements Runnable {
         }
 
         for (ServerPlayer player : players) {
+            if (player == null) continue;
             player.playSound(sound);
         }
     }

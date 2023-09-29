@@ -24,6 +24,8 @@ import net.minecraft.server.level.ServerPlayer;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Queue;
 
 import static net.minecraft.commands.Commands.argument;
@@ -76,17 +78,22 @@ public class ChatStyleModule {
     private static String resolveMentionTag(ServerPlayer source, String str) {
         /* resolve player tag */
         ArrayList<ServerPlayer> mentionedPlayers = new ArrayList<>();
-        for (ServerPlayer player : ServerMain.SERVER.getPlayerList().getPlayers()) {
-            String name = player.getGameProfile().getName();
-            // here we must continue so that mentionPlayers will not be added
-            if (!str.contains(name)) continue;
 
-            str = str.replace(name, "<aqua>%s</aqua>".formatted(name));
-            mentionedPlayers.add(player);
+        String[] playerNames = ServerMain.SERVER.getPlayerNames();
+        // fix: mention the longest name first
+        Arrays.sort(playerNames, Comparator.comparingInt(String::length).reversed());
+
+        for (String playerName : playerNames) {
+            // here we must continue so that mentionPlayers will not be added
+            if (!str.contains(playerName)) continue;
+            str = str.replace(playerName, "<aqua>%s</aqua>".formatted(playerName));
+            mentionedPlayers.add(ServerMain.SERVER.getPlayerList().getPlayerByName(playerName));
         }
 
         /* run mention player task */
-        new MentionPlayersTask(mentionedPlayers).startTask();
+        if (!mentionedPlayers.isEmpty()) {
+            new MentionPlayersTask(mentionedPlayers).startTask();
+        }
         return str;
     }
 
