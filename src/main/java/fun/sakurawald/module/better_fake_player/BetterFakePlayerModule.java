@@ -156,19 +156,26 @@ public class BetterFakePlayerModule {
 
         int limit = getCurrentAmountLimit();
         long currentTimeMS = System.currentTimeMillis();
-        for (String player : player2fakePlayers.keySet()) {
+        for (String playerName : player2fakePlayers.keySet()) {
             /* check for renew limits */
-            long expiration = player2expiration.getOrDefault(player, 0L);
-            ArrayList<String> fakePlayers = player2fakePlayers.getOrDefault(player, new ArrayList<>());
+            long expiration = player2expiration.getOrDefault(playerName, 0L);
+            ArrayList<String> fakePlayers = player2fakePlayers.getOrDefault(playerName, new ArrayList<>());
             if (expiration <= currentTimeMS) {
+                /* auto-renew for online-playerName */
+                ServerPlayer playerByName = ServerMain.SERVER.getPlayerList().getPlayerByName(playerName);
+                if (playerByName != null) {
+                    renewFakePlayers(playerByName);
+                    continue;
+                }
+
                 for (String fakePlayerName : fakePlayers) {
                     ServerPlayer fakePlayer = ServerMain.SERVER.getPlayerList().getPlayerByName(fakePlayerName);
                     if (fakePlayer == null) return;
                     fakePlayer.kill();
-                    sendBroadcast("better_fake_player.kick_for_expiration", fakePlayer.getGameProfile().getName(), player);
+                    sendBroadcast("better_fake_player.kick_for_expiration", fakePlayer.getGameProfile().getName(), playerName);
                 }
                 // remove entry
-                player2expiration.remove(player);
+                player2expiration.remove(playerName);
 
                 // we'll kick all fake players, so we don't need to check for amount limits
                 continue;
@@ -180,7 +187,7 @@ public class BetterFakePlayerModule {
                 if (fakePlayer == null) continue;
                 fakePlayer.kill();
 
-                sendBroadcast("better_fake_player.kick_for_amount", fakePlayer.getGameProfile().getName(), player);
+                sendBroadcast("better_fake_player.kick_for_amount", fakePlayer.getGameProfile().getName(), playerName);
             }
         }
     }

@@ -61,12 +61,7 @@ public class ConfigGSON {
         public class BetterFakePlayer {
             public ArrayList<List<Integer>> limit_rule = new ArrayList<>() {
                 {
-                    this.add(List.of(5, 0, 2));
-                    this.add(List.of(5, 840, 1));
-                    this.add(List.of(5, 1260, 2));
                     this.add(List.of(1, 0, 2));
-                    this.add(List.of(1, 840, 2));
-                    this.add(List.of(1, 1260, 2));
                 }
             };
 
