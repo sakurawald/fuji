@@ -211,7 +211,7 @@ public class ConfigGSON {
 
             public int sampleTimeMS = FabricLoader.getInstance().isDevelopmentEnvironment() ? 60 * 1000 : 60 * 1000 * 60;
             public int sampleDistanceLimit = 256;
-            public int sampleCounterTopN = 15;
+            public int sampleCounterTopN = 20;
         }
 
         public class WorldDownloader {

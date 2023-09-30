@@ -4,20 +4,23 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.mixin.top_chunks.ThreadedAnvilChunkStorageMixin;
-import fun.sakurawald.module.works.BlockPosCache;
 import fun.sakurawald.module.works.ScheduleMethod;
+import fun.sakurawald.module.works.WorksCache;
 import fun.sakurawald.module.works.WorksModule;
 import fun.sakurawald.module.works.gui.ConfirmGui;
 import fun.sakurawald.module.works.gui.InputSignGui;
 import fun.sakurawald.util.MessageUtil;
 import fun.sakurawald.util.TimeUtil;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ChunkHolder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.vehicle.MinecartHopper;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -34,6 +37,7 @@ import java.util.Map;
 import static fun.sakurawald.util.MessageUtil.*;
 
 @NoArgsConstructor
+@Slf4j
 public class ProductionWork extends Work implements ScheduleMethod {
 
     public Sample sample = new Sample();
@@ -178,7 +182,12 @@ public class ProductionWork extends Work implements ScheduleMethod {
     }
 
     public int resolveHoppers(ServerPlayer player) {
-        int hoppers = 0;
+        // clear cache entry
+        WorksCache.unbind(this);
+
+        // add cache entry
+        int hopperBlockCount = 0;
+        int minecartHopperCount = 0;
         ServerLevel world = player.serverLevel();
         ThreadedAnvilChunkStorageMixin threadedAnvilChunkStorage = (ThreadedAnvilChunkStorageMixin) world.getChunkSource().chunkMap;
         Iterable<ChunkHolder> chunkHolders = threadedAnvilChunkStorage.$getChunks();
@@ -190,18 +199,23 @@ public class ProductionWork extends Work implements ScheduleMethod {
                 // improve: check type first for performance
                 if (blockEntity instanceof HopperBlockEntity) {
                     if (insideSampleDistance(player.blockPosition(), blockEntity.getBlockPos())) {
-                        // add cache entry
-                        BlockPosCache.bind(blockEntity.getBlockPos(), this);
-
-                        // count hoppers
-                        hoppers++;
+                        WorksCache.bind(blockEntity.getBlockPos(), this);
+                        hopperBlockCount++;
                     }
                 }
             }
         }
+        for (Entity entity : world.getAllEntities()) {
+            if (entity instanceof MinecartHopper) {
+                if (insideSampleDistance(player.blockPosition(), entity.blockPosition())) {
+                    WorksCache.bind(entity.getId(), this);
+                    minecartHopperCount++;
+                }
+            }
+        }
 
-        MessageUtil.sendMessage(player, "works.production_work.sample.resolve_hoppers.response", hoppers);
-        return hoppers;
+        MessageUtil.sendMessage(player, "works.production_work.sample.resolve_hoppers.response", hopperBlockCount, minecartHopperCount);
+        return hopperBlockCount + minecartHopperCount;
     }
 
     @Override
@@ -229,7 +243,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
 
     public void endSample() {
         // unbind all block pos
-        BlockPosCache.unbind(this);
+        WorksCache.unbind(this);
         MessageUtil.sendBroadcast("works.production_work.sample.end", this.name, this.creator);
 
         // trim counter to avoid spam
@@ -252,7 +266,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
     public void addCounter(ItemStack itemStack) {
         HashMap<String, Long> counter = this.sample.sampleCounter;
         String key = itemStack.getDescriptionId();
-        counter.put(key, counter.getOrDefault(key, 0L) + 1);
+        counter.put(key, counter.getOrDefault(key, 0L) + itemStack.getCount());
     }
 
     public static class Sample {

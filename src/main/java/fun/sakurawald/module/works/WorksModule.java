@@ -27,6 +27,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -53,9 +54,12 @@ public class WorksModule {
             }
 
             // run schedule method
-            BlockPosCache.getBlockpos2works().values().forEach(v -> v.forEach(w -> {
-                if (w instanceof ScheduleMethod sm) sm.onSchedule();
-            }));
+            HashSet<Work> works = new HashSet<>();
+            WorksCache.getBlockpos2works().values().forEach(works::addAll);
+            WorksCache.getEntity2works().values().forEach(works::addAll);
+            works.forEach(work -> {
+                if (work instanceof ScheduleMethod sm) sm.onSchedule();
+            });
         }, 20, 60, TimeUnit.SECONDS);
     }
 
@@ -138,8 +142,8 @@ public class WorksModule {
                             gui.close();
                             return;
                         }
-                        /* middle click -> specialized settings */
-                        if (clickType.isMiddle) {
+                        /* shift + right click -> specialized settings */
+                        if (clickType.isRight && clickType.shift) {
                             if (!hasPermission(player, work)) {
                                 MessageUtil.sendActionBar(player, "works.work.set.no_perm");
                                 return;
