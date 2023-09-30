@@ -167,9 +167,9 @@ public class ProductionWork extends Work implements ScheduleMethod {
     }
 
     private boolean insideSampleDistance(BlockPos position, BlockPos blockPos) {
-        float x = Math.abs(blockPos.getX() - position.getX());
-        float z = Math.abs(blockPos.getZ() - position.getZ());
-        return x <= this.sample.sampleDistance && z <= this.sample.sampleDistance;
+        float deltaX = Math.abs(blockPos.getX() - position.getX());
+        float deltaZ = Math.abs(blockPos.getZ() - position.getZ());
+        return deltaX <= this.sample.sampleDistance && deltaZ <= this.sample.sampleDistance;
     }
 
     @SuppressWarnings("unused")
