@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.HashSet;
 
 // the priority of carpet's is 1000
-@Mixin(value = HopperBlockEntity.class, priority = 999)
+@Mixin(value = HopperBlockEntity.class, priority = 1001)
 @Slf4j
 public abstract class HopperBlockEntityMixin extends RandomizableContainerBlockEntity {
 
