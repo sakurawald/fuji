@@ -72,7 +72,7 @@
   "works.production_work.prop.sample_counter.entry": "<#A076F9> - [item] * %d (%.1f/h)",
   "works.production_work.prop.sample_counter.empty": "<#A076F9> - 无任何物品",
   "works.production_work.set.sample": "<#FFA1F5>采样",
-  "works.production_work.set.sample.lore": "<#A076F9>采样教程: \n<#A076F9>1. 确定圆心: 玩家当前所站位置\n<#A076F9>2. 确定半径: 点击该按钮, 以输入半径\n<#A076F9>3. 采样区域为圆柱体, 该圆柱体内的漏斗和漏斗矿车会被自动解析",
+  "works.production_work.set.sample.lore": "<#A076F9>采样教程: \n<#A076F9>1. 确定圆心: 玩家当前所站位置即为圆心\n<#A076F9>2. 确定半径: 点击该按钮, 以输入半径\n<#A076F9>3. 采样区域为圆柱体, 该圆柱体内的漏斗和漏斗矿车会被自动解析",
   "works.production_work.prompt.input.sample_distance": "输入采样距离",
   "works.work.add.empty_name": "<#FFA1F5>作品的名称不能为空",
   "works.work.add.prompt.input.name": "输入作品名称",
