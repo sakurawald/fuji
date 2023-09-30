@@ -66,6 +66,7 @@ public class ConfigGSON {
             };
 
             public int renew_duration_ms = 1000 * 60 * 60 * 12;
+            public String transform_name = "fake_%name%";
         }
 
         public class CommandCooldown {
@@ -210,7 +211,7 @@ public class ConfigGSON {
         public class Works {
 
             public int sampleTimeMS = FabricLoader.getInstance().isDevelopmentEnvironment() ? 60 * 1000 : 60 * 1000 * 60;
-            public int sampleDistanceLimit = 256;
+            public int sampleDistanceLimit = 512;
             public int sampleCounterTopN = 20;
         }
 

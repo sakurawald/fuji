@@ -4,12 +4,15 @@ import carpet.commands.PlayerCommand;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.ServerMain;
+import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static fun.sakurawald.util.MessageUtil.sendMessage;
@@ -17,6 +20,19 @@ import static fun.sakurawald.util.MessageUtil.sendMessage;
 @SuppressWarnings("DataFlowIssue")
 @Mixin(PlayerCommand.class)
 public abstract class PlayerCommandMixin {
+
+    @Unique
+    private static String transformFakePlayerName(String fakePlayerName) {
+        return ConfigManager.configWrapper.instance().modules.better_fake_player.transform_name.replace("%name%", fakePlayerName);
+    }
+
+    @Redirect(method = "spawn", at = @At(
+            value = "INVOKE",
+            target = "Lcom/mojang/brigadier/arguments/StringArgumentType;getString(Lcom/mojang/brigadier/context/CommandContext;Ljava/lang/String;)Ljava/lang/String;"
+    ), remap = false)
+    private static String $spawn(final CommandContext<?> context, final String name) {
+        return transformFakePlayerName(StringArgumentType.getString(context, name));
+    }
 
     @Inject(method = "spawn", at = @At("HEAD"), remap = false, cancellable = true)
     private static void $spawn_head(CommandContext<CommandSourceStack> context, CallbackInfoReturnable<Integer> cir) {
@@ -30,14 +46,16 @@ public abstract class PlayerCommandMixin {
 
         /* fix: fake-player auth network laggy */
         String fakePlayerName = StringArgumentType.getString(context, "player");
+        fakePlayerName = transformFakePlayerName(fakePlayerName);
         ServerMain.SERVER.getProfileCache().add(BetterFakePlayerModule.createOfflineGameProfile(fakePlayerName));
     }
 
     @Inject(method = "spawn", at = @At("TAIL"), remap = false)
     private static void $spawn_tail(CommandContext<CommandSourceStack> context, CallbackInfoReturnable<Integer> cir) {
         ServerPlayer player = context.getSource().getPlayer();
-        String spawnPlayerName = StringArgumentType.getString(context, "player");
-        BetterFakePlayerModule.addFakePlayer(player, spawnPlayerName);
+        String fakePlayerName = StringArgumentType.getString(context, "player");
+        fakePlayerName = transformFakePlayerName(fakePlayerName);
+        BetterFakePlayerModule.addFakePlayer(player, fakePlayerName);
         BetterFakePlayerModule.renewFakePlayers(player);
     }
 
