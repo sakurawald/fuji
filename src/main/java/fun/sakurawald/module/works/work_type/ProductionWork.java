@@ -69,7 +69,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
         /* construct lore */
         List<Component> ret = super.asLore(player);
         if (this.sample.sampleStartTimeMS == 0) {
-            ret.add((ofVomponent(player, "works.production_work.sample.not_exists")));
+            ret.addAll((ofVomponents(player, "works.production_work.sample.not_exists")));
             return ret;
         }
 
@@ -134,6 +134,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
         gui.addSlot(new GuiElementBuilder()
                 .setItem(Items.CLOCK)
                 .setName(ofVomponent(player, "works.production_work.set.sample"))
+                .setLore(ofVomponents(player, "works.production_work.set.sample.lore"))
                 .setCallback(() -> new ConfirmGui(player) {
                             @Override
                             public void onConfirm() {

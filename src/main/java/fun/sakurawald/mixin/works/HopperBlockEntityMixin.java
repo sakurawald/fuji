@@ -26,7 +26,7 @@ import java.util.HashSet;
 public abstract class HopperBlockEntityMixin {
 
     @Inject(method = "ejectItems", at = @At(value = "HEAD"), cancellable = true)
-    private static void onInsert(Level world, BlockPos blockPos, BlockState blockState, Container inventory, CallbackInfoReturnable<Boolean> cir) {
+    private static void ejectItems(Level world, BlockPos blockPos, BlockState blockState, Container inventory, CallbackInfoReturnable<Boolean> cir) {
         // If this hopper is a works hopper, then we exclude it from carpet hoppers
         HashSet<Work> works = BlockPosCache.getBlockpos2works().get(blockPos);
         if (works == null) return;

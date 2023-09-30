@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(PlayerList.class)
+@Mixin(value = PlayerList.class, priority = 999)
 public abstract class PlayerListMixin {
 
     @Inject(at = @At(value = "TAIL"), method = "placeNewPlayer")
