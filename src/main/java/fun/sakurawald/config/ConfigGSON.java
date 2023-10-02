@@ -39,7 +39,7 @@ public class ConfigGSON {
         public class DynamicMOTD {
             public List<String> descriptions = new ArrayList<>() {
                 {
-                    this.add("<dark_green>Pure Survival 1.20.1 / Up %uptime%H <red>❤ <yellow>Group 912363929<newline><aqua>%playtime%🔥 %mined%⛏ %placed%🔳 %killed%🗡 %moved%🌍");
+                    this.add("<dark_green>Pure Survival 1.20.1 / Up %uptime%H <red>❤ <yellow>QQ Group 912363929<newline><aqua>%playtime%🔥 %mined%⛏ %placed%🔳 %killed%🗡 %moved%🌍");
                 }
             };
         }
