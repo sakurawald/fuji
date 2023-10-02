@@ -15,6 +15,7 @@ import java.util.concurrent.ScheduledExecutorService;
 @Slf4j
 public class ServerMain implements ModInitializer {
     public static final Path CONFIG_PATH = Path.of(FabricLoader.getInstance().getConfigDir().resolve("sakurawald").toString());
+    public static final String MOD_ID = "sakurawald";
     @Getter
     private static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor(runnable -> {
         var thread = new Thread(runnable, "SakuraWald Schedule Thread");

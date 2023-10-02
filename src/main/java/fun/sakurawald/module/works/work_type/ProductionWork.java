@@ -6,9 +6,9 @@ import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.mixin.top_chunks.ThreadedAnvilChunkStorageMixin;
 import fun.sakurawald.module.works.ScheduleMethod;
 import fun.sakurawald.module.works.WorksCache;
-import fun.sakurawald.module.works.WorksModule;
 import fun.sakurawald.module.works.gui.ConfirmGui;
 import fun.sakurawald.module.works.gui.InputSignGui;
+import fun.sakurawald.util.GuiUtil;
 import fun.sakurawald.util.MessageUtil;
 import fun.sakurawald.util.TimeUtil;
 import lombok.NoArgsConstructor;
@@ -149,7 +149,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
         );
         gui.setSlot(8, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setSkullOwner(WorksModule.PREVIOUS_PAGE_ICON)
+                .setSkullOwner(GuiUtil.PREVIOUS_PAGE_ICON)
                 .setName(ofVomponent(player, "back"))
                 .setCallback(parentGui::open)
         );

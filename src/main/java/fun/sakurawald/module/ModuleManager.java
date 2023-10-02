@@ -7,6 +7,7 @@ import fun.sakurawald.module.command_cooldown.CommandCooldownModule;
 import fun.sakurawald.module.config.ConfigModule;
 import fun.sakurawald.module.deathlog.DeathLogModule;
 import fun.sakurawald.module.display.DisplayModule;
+import fun.sakurawald.module.head.HeadModule;
 import fun.sakurawald.module.main_stats.MainStatsModule;
 import fun.sakurawald.module.motd.MotdModule;
 import fun.sakurawald.module.newbie_welcome.NewbieWelcomeModule;
@@ -47,6 +48,7 @@ public class ModuleManager {
         getOrNewInstance(NewbieWelcomeModule.class);
         getOrNewInstance(CommandCooldownModule.class);
         getOrNewInstance(MotdModule.class);
+        getOrNewInstance(HeadModule.class);
         getOrNewInstance(ZeroCommandPermissionModule.class);
     }
 

@@ -12,6 +12,7 @@ import fun.sakurawald.module.works.gui.InputSignGui;
 import fun.sakurawald.module.works.work_type.NonProductionWork;
 import fun.sakurawald.module.works.work_type.ProductionWork;
 import fun.sakurawald.module.works.work_type.Work;
+import fun.sakurawald.util.GuiUtil;
 import fun.sakurawald.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -40,12 +41,6 @@ import static fun.sakurawald.util.MessageUtil.*;
 @Slf4j
 public class WorksModule extends AbstractModule {
 
-    public static final String PREVIOUS_PAGE_ICON = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzM3NjQ4YWU3YTU2NGE1Mjg3NzkyYjA1ZmFjNzljNmI2YmQ0N2Y2MTZhNTU5Y2U4YjU0M2U2OTQ3MjM1YmNlIn19fQ==";
-    public static final String PLUS_ICON = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkZDIwYmU5MzUyMDk0OWU2Y2U3ODlkYzRmNDNlZmFlYjI4YzcxN2VlNmJmY2JiZTAyNzgwMTQyZjcxNiJ9fX0=";
-    public static final String HEART_ICON = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzM2ZmViZWNhN2M0ODhhNjY3MWRjMDcxNjU1ZGRlMmExYjY1YzNjY2IyMGI2ZThlYWY5YmZiMDhlNjRiODAifX19";
-    public static final String A_ICON = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTY3ZDgxM2FlN2ZmZTViZTk1MWE0ZjQxZjJhYTYxOWE1ZTM4OTRlODVlYTVkNDk4NmY4NDk0OWM2M2Q3NjcyZSJ9fX0=";
-    public static final String QUESTION_MARK_ICON = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGNlYzg1YmM4MDYxYmRhM2UxZDQ5Zjc1NDQ2NDllNjVjODI3MmNhNTZmNzJkODM4Y2FmMmNjNDgxNmI2OSJ9fX0=";
-    public static final String NEXT_PAGE_ICON = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWE0ZjY4YzhmYjI3OWU1MGFiNzg2ZjlmYTU0Yzg4Y2E0ZWNmZTFlYjVmZDVmMGMzOGM1NGM5YjFjNzIwM2Q3YSJ9fX0=";
     private static final int PAGE_SIZE = 9 * 5;
 
     @Override
@@ -182,7 +177,7 @@ public class WorksModule extends AbstractModule {
         gui.setSlot(45, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
                 .setName(ofVomponent(player, "previous_page"))
-                .setSkullOwner(PREVIOUS_PAGE_ICON)
+                .setSkullOwner(GuiUtil.PREVIOUS_PAGE_ICON)
                 .setCallback(() -> {
                     if (page == 0) return;
                     $listWorks(player, finalSource, page - 1);
@@ -190,28 +185,28 @@ public class WorksModule extends AbstractModule {
         gui.setSlot(48, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
                 .setName(ofVomponent(player, "works.list.add"))
-                .setSkullOwner(PLUS_ICON)
+                .setSkullOwner(GuiUtil.PLUS_ICON)
                 .setCallback(() -> $addWork(player))
         );
         if (source == ConfigManager.worksWrapper.instance().works) {
             gui.setSlot(49, new GuiElementBuilder()
                     .setItem(Items.PLAYER_HEAD)
                     .setName(ofVomponent(player, "works.list.my_works"))
-                    .setSkullOwner(HEART_ICON)
+                    .setSkullOwner(GuiUtil.HEART_ICON)
                     .setCallback(() -> $myWorks(player))
             );
         } else {
             gui.setSlot(49, new GuiElementBuilder()
                     .setItem(Items.PLAYER_HEAD)
                     .setName(ofVomponent(player, "works.list.all_works"))
-                    .setSkullOwner(A_ICON)
+                    .setSkullOwner(GuiUtil.A_ICON)
                     .setCallback(() -> $listWorks(player, null, 0))
             );
         }
         gui.setSlot(50, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
                 .setName(ofVomponent(player, "works.list.help"))
-                .setSkullOwner(QUESTION_MARK_ICON)
+                .setSkullOwner(GuiUtil.QUESTION_MARK_ICON)
                 .setLore(ofVomponents(player, "works.list.help.lore")));
         gui.setSlot(52, new GuiElementBuilder()
                 .setItem(Items.COMPASS)
@@ -221,7 +216,7 @@ public class WorksModule extends AbstractModule {
         gui.setSlot(53, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
                 .setName(ofVomponent(player, "next_page"))
-                .setSkullOwner(NEXT_PAGE_ICON)
+                .setSkullOwner(GuiUtil.NEXT_PAGE_ICON)
                 .setCallback(() -> {
                     if ((page + 1) * PAGE_SIZE >= finalSource.size()) return;
                     $listWorks(player, finalSource, page + 1);

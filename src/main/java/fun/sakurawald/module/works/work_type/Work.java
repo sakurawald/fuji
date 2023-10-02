@@ -7,9 +7,9 @@ import com.google.gson.JsonParseException;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import fun.sakurawald.config.ConfigManager;
-import fun.sakurawald.module.works.WorksModule;
 import fun.sakurawald.module.works.gui.ConfirmGui;
 import fun.sakurawald.module.works.gui.InputSignGui;
+import fun.sakurawald.util.GuiUtil;
 import fun.sakurawald.util.MessageUtil;
 import fun.sakurawald.util.TimeUtil;
 import lombok.Data;
@@ -174,7 +174,7 @@ public abstract class Work {
 
         gui.setSlot(8, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setSkullOwner(WorksModule.PREVIOUS_PAGE_ICON)
+                .setSkullOwner(GuiUtil.PREVIOUS_PAGE_ICON)
                 .setName(ofVomponent(player, "works.list.back"))
                 .setCallback(parentGui::open)
         );

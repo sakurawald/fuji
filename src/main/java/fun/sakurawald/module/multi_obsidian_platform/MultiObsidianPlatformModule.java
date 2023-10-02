@@ -14,6 +14,28 @@ public class MultiObsidianPlatformModule extends AbstractModule {
 
     private final HashMap<BlockPos, BlockPos> TRANSFORM_CACHE = new HashMap<>();
 
+    /* this method is used to fix Entity#position() async */
+    private BlockPos findNearbyEndPortalBlock(BlockPos bp) {
+        ServerLevel overworld = ServerMain.SERVER.overworld();
+
+        // should we find nearby END_PORTAL block ?
+        if (overworld.getBlockState(bp) == Blocks.END_PORTAL.defaultBlockState()) return bp;
+
+        // let's find nearby END_PORTAL block
+        int radius = 3;
+        for (int x = 0; x < radius; x++) {
+            for (int z = 0; z < radius; z++) {
+                for (int y = 0; y < radius; y++) {
+                    BlockPos test = bp.offset(x, y, z);
+                    if (overworld.getBlockState(test) == Blocks.END_PORTAL.defaultBlockState()) return test;
+                }
+            }
+        }
+
+        log.warn("BlockPos {} is not END_PORTAL and we can't find a nearby END_PORTAL block !", bp);
+        return bp;
+    }
+
     private BlockPos findCenterEndPortalBlock(BlockPos bp) {
         ServerLevel overworld = ServerMain.SERVER.overworld();
         if (overworld.getBlockState(bp.north()) != Blocks.END_PORTAL.defaultBlockState()) {
@@ -43,6 +65,7 @@ public class MultiObsidianPlatformModule extends AbstractModule {
     }
 
     public BlockPos transform(BlockPos bp) {
+        bp = findNearbyEndPortalBlock(bp);
         if (TRANSFORM_CACHE.containsKey(bp)) {
             return TRANSFORM_CACHE.get(bp);
         }

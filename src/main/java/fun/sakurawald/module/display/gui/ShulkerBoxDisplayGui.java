@@ -2,6 +2,7 @@ package fun.sakurawald.module.display.gui;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
+import fun.sakurawald.util.GuiUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -12,7 +13,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-import static fun.sakurawald.module.works.WorksModule.PREVIOUS_PAGE_ICON;
 import static fun.sakurawald.util.MessageUtil.ofVomponent;
 
 @Slf4j
@@ -43,7 +43,7 @@ public class ShulkerBoxDisplayGui extends DisplayGuiBuilder {
             gui.setSlot(LINE_SIZE - 1, new GuiElementBuilder()
                     .setItem(Items.PLAYER_HEAD)
                     .setName(ofVomponent(player, "back"))
-                    .setSkullOwner(PREVIOUS_PAGE_ICON)
+                    .setSkullOwner(GuiUtil.PREVIOUS_PAGE_ICON)
                     .setCallback(parentGui::open));
         }
 

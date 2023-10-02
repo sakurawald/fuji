@@ -31,10 +31,8 @@ public class ConfigModule extends AbstractModule {
     }
 
     private int $reload(CommandContext<CommandSourceStack> ctx) {
-        ConfigManager.configWrapper.loadFromDisk();
-        ConfigManager.chatWrapper.loadFromDisk();
-        ConfigManager.pvpWrapper.loadFromDisk();
-        ConfigManager.worksWrapper.loadFromDisk();
+        // reload configs
+        ConfigManager.loadConfigsFromDisk();
         // reload modules
         ModuleManager.reloadModules();
         sendMessage(ctx.getSource(), "reload");
