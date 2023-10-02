@@ -33,7 +33,7 @@ public class ServerMain implements ModInitializer {
         /* modules */
         ModuleManager.initializeModules();
 
-        /* register events */
+        /* scheduler */
         ServerLifecycleEvents.SERVER_STOPPING.register((server) -> getSCHEDULED_EXECUTOR_SERVICE().shutdown());
     }
 }
