@@ -5,6 +5,7 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import eu.pb4.sgui.api.gui.SlotGuiInterface;
+import fun.sakurawald.module.display.DisplayModule;
 import fun.sakurawald.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.NonNullList;
@@ -12,10 +13,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.ShulkerBoxBlock;
 
 @Slf4j
 public class InventoryDisplayGui extends DisplayGuiBuilder {
@@ -31,6 +30,14 @@ public class InventoryDisplayGui extends DisplayGuiBuilder {
         inventory.armor.forEach(itemStack -> armor.add(itemStack.copy()));
         inventory.offhand.forEach(itemStack -> offhand.add(itemStack.copy()));
         inventory.items.forEach(itemStack -> items.add(itemStack.copy()));
+    }
+
+    private static void $setSlot(SimpleGui gui, int i, ItemStack itemStack, MySlotClickCallback mySlotClickCallback, ServerPlayer player) {
+        GuiElementBuilder guiElementBuilder = GuiElementBuilder.from(itemStack).setCallback(mySlotClickCallback);
+        if (DisplayModule.isShulkerBox(itemStack)) {
+            guiElementBuilder.addLoreLine(MessageUtil.ofVomponent(player, "display.inventory.prompt"));
+        }
+        gui.setSlot(i, guiElementBuilder.build());
     }
 
     @Override
@@ -55,10 +62,12 @@ public class InventoryDisplayGui extends DisplayGuiBuilder {
 
         /* construct items */
         for (int i = LINE_SIZE * 5; i < LINE_SIZE * 6; i++) {
-            gui.setSlot(i, items.get(i - LINE_SIZE * 5), mySlotClickCallback);
+            ItemStack itemStack = items.get(i - LINE_SIZE * 5);
+            $setSlot(gui, i, itemStack, mySlotClickCallback, player);
         }
         for (int i = LINE_SIZE * 2; i < LINE_SIZE * 5; i++) {
-            gui.setSlot(i, items.get(i - LINE_SIZE), mySlotClickCallback);
+            ItemStack itemStack = items.get(i - LINE_SIZE);
+            $setSlot(gui, i, itemStack, mySlotClickCallback, player);
         }
         return gui;
     }
@@ -68,7 +77,7 @@ public class InventoryDisplayGui extends DisplayGuiBuilder {
         @Override
         public void click(int i, ClickType clickType, net.minecraft.world.inventory.ClickType clickType1, SlotGuiInterface slotGuiInterface) {
             ItemStack itemStack = slotGuiInterface.getSlot(i).getItemStack();
-            if (itemStack.getItem() instanceof BlockItem bi && bi.getBlock() instanceof ShulkerBoxBlock) {
+            if (DisplayModule.isShulkerBox(itemStack)) {
                 ShulkerBoxDisplayGui shulkerBoxDisplayGui = new ShulkerBoxDisplayGui(MessageUtil.ofVomponent(player, "display.gui.title", player.getGameProfile().getName()), itemStack, parentGui);
                 shulkerBoxDisplayGui.build(player).open();
             }

@@ -14,7 +14,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -28,16 +27,13 @@ import static fun.sakurawald.util.MessageUtil.sendActionBar;
 @Slf4j
 public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
     @Unique
-    public boolean sakurawald$inCombat;
-
-    @Unique
     private static final BetterFakePlayerModule betterFakePlayerModule = ModuleManager.getOrNewInstance(BetterFakePlayerModule.class);
-
     @Unique
     private static final BackModule backModule = ModuleManager.getOrNewInstance(BackModule.class);
-
     @Unique
     private static final TeleportWarmupModule module = ModuleManager.getOrNewInstance(TeleportWarmupModule.class);
+    @Unique
+    public boolean sakurawald$inCombat;
 
     @Inject(method = "updateOptions", at = @At("HEAD"))
     public void updateOptions(ServerboundClientInformationPacket serverboundClientInformationPacket, CallbackInfo ci) {

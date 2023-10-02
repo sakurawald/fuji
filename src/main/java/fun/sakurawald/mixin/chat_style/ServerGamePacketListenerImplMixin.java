@@ -14,15 +14,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = ServerGamePacketListenerImpl.class, priority = 1001)
 public abstract class ServerGamePacketListenerImplMixin {
+    @Unique
+    private static final ChatStyleModule module = ModuleManager.getOrNewInstance(ChatStyleModule.class);
     @Shadow
     public ServerPlayer player;
 
-    @Unique
-    private static final ChatStyleModule module = ModuleManager.getOrNewInstance(ChatStyleModule.class);
-
     @Inject(method = "broadcastChatMessage", at = @At(value = "HEAD"), cancellable = true)
     public void handleChat(PlayerChatMessage playerChatMessage, CallbackInfo ci) {
-        module.handleChatMessage(player, playerChatMessage.decoratedContent().getString());
+        module.broadcastChatMessage(player, playerChatMessage.decoratedContent().getString());
         ci.cancel();
     }
 }

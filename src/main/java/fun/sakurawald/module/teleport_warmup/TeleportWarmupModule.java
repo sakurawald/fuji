@@ -20,6 +20,7 @@ import static fun.sakurawald.util.MessageUtil.sendActionBar;
 public class TeleportWarmupModule extends AbstractModule {
 
     public final HashMap<ServerPlayer, TeleportTicket> tickets = new HashMap<>();
+
     @Override
     public void onInitialize() {
         ServerTickEvents.START_SERVER_TICK.register(this::onServerTick);

@@ -20,6 +20,10 @@ public class DisplayModule extends AbstractModule {
 
     private final SoftReferenceMap<String, DisplayGuiBuilder> uuid2gui = new SoftReferenceMap<>();
 
+    public static boolean isShulkerBox(ItemStack itemStack) {
+        return itemStack.getItem() instanceof BlockItem bi && bi.getBlock() instanceof ShulkerBoxBlock;
+    }
+
     public String createInventoryDisplay(@NotNull ServerPlayer player) {
         Component title = MessageUtil.ofVomponent(player, "display.gui.title", player.getGameProfile().getName());
         InventoryDisplayGui inventoryDisplayGui = new InventoryDisplayGui(title, player);
@@ -33,7 +37,7 @@ public class DisplayModule extends AbstractModule {
         DisplayGuiBuilder displayGuiBuilder;
         Component title = MessageUtil.ofVomponent(player, "display.gui.title", player.getGameProfile().getName());
         ItemStack itemStack = player.getMainHandItem().copy();
-        if (itemStack.getItem() instanceof BlockItem bi && bi.getBlock() instanceof ShulkerBoxBlock) {
+        if (isShulkerBox(itemStack)) {
             // shulker-box item
             displayGuiBuilder = new ShulkerBoxDisplayGui(title, itemStack, null);
         } else {

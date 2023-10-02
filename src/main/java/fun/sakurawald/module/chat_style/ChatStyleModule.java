@@ -46,10 +46,9 @@ import static net.minecraft.commands.Commands.literal;
 public class ChatStyleModule extends AbstractModule {
 
     private static final DisplayModule displayModule = ModuleManager.getOrNewInstance(DisplayModule.class);
-
+    private final MiniMessage miniMessage = MiniMessage.builder().build();
     @Getter
     private Queue<Component> chatHistory;
-    private final MiniMessage miniMessage = MiniMessage.builder().build();
 
     @Override
     public void onInitialize() {
@@ -141,7 +140,7 @@ public class ChatStyleModule extends AbstractModule {
         return str;
     }
 
-    public void handleChatMessage(ServerPlayer player, String message) {
+    public void broadcastChatMessage(ServerPlayer player, String message) {
         /* resolve format */
         message = ConfigManager.chatWrapper.instance().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
                 .replace("%message%", message);
