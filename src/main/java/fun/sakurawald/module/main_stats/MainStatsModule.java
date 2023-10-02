@@ -3,8 +3,11 @@ package fun.sakurawald.module.main_stats;
 import fun.sakurawald.ServerMain;
 import fun.sakurawald.config.ConfigGSON;
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.AbstractModule;
+import fun.sakurawald.module.ModuleManager;
 import fun.sakurawald.module.motd.MotdModule;
 import lombok.extern.slf4j.Slf4j;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
 
 import java.util.ArrayList;
@@ -13,22 +16,30 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-public class MainStatsModule {
+public class MainStatsModule extends AbstractModule {
 
     private static final List<Character> colors = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+    private static final MotdModule motdModule = ModuleManager.getOrNewInstance(MotdModule.class);
 
+    @Override
+    public void onInitialize() {
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+            this.updateMainStats();
+            this.registerScheduleTask(server);
+        });
+    }
 
-    public static void updateMainStats() {
+    public void updateMainStats() {
         MainStats serverMainStats = MainStats.calculateServerMainStats();
 
         ConfigGSON.Modules.DynamicMOTD dynamic_motd = ConfigManager.configWrapper.instance().modules.dynamic_motd;
         ArrayList<String> descriptions = new ArrayList<>();
         dynamic_motd.descriptions.forEach(description -> descriptions.add(serverMainStats.resolve(description)));
-        MotdModule.updateDescriptions(descriptions);
+        motdModule.updateDescriptions(descriptions);
     }
 
     @SuppressWarnings({"SameParameterValue", "unused"})
-    private static String centerText(String text, int lineLength, int lengthDelta) {
+    private String centerText(String text, int lineLength, int lengthDelta) {
         /* calc length */
         char[] chars = text.toCharArray();
         double length = 0;
@@ -61,7 +72,7 @@ public class MainStatsModule {
         return builder.toString();
     }
 
-    public static void registerScheduleTask(MinecraftServer server) {
+    public void registerScheduleTask(MinecraftServer server) {
         // async task
         ServerMain.getSCHEDULED_EXECUTOR_SERVICE().scheduleAtFixedRate(() -> {
             // save all online-player 's stats

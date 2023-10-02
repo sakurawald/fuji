@@ -7,11 +7,14 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.ServerMain;
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.AbstractModule;
+import fun.sakurawald.module.ModuleManager;
 import fun.sakurawald.module.display.DisplayModule;
 import fun.sakurawald.module.main_stats.MainStats;
 import fun.sakurawald.util.MessageUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.ClickCallback;
@@ -38,25 +41,38 @@ import java.util.Queue;
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
+@SuppressWarnings("UnstableApiUsage")
 @Slf4j
-public class ChatStyleModule {
+public class ChatStyleModule extends AbstractModule {
 
-    @SuppressWarnings("UnstableApiUsage")
+    private static final DisplayModule displayModule = ModuleManager.getOrNewInstance(DisplayModule.class);
+
     @Getter
-    private static final Queue<Component> chatHistory = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.chat_style.history.cache_size);
-    private static final MiniMessage miniMessage = MiniMessage.builder().build();
+    private Queue<Component> chatHistory;
+    private final MiniMessage miniMessage = MiniMessage.builder().build();
+
+    @Override
+    public void onInitialize() {
+        chatHistory = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.chat_style.history.cache_size);
+        CommandRegistrationCallback.EVENT.register(this::registerCommand);
+    }
+
+    @Override
+    public void onReload() {
+        chatHistory = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.chat_style.history.cache_size);
+    }
 
     @SuppressWarnings("unused")
-    public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+    public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("chat")
                         .then(literal("format")
                                 .then(argument("format", StringArgumentType.greedyString())
-                                        .executes(ChatStyleModule::$format)
+                                        .executes(this::$format)
                                 )));
     }
 
-    private static int $format(CommandContext<CommandSourceStack> ctx) {
+    private int $format(CommandContext<CommandSourceStack> ctx) {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return 0;
 
@@ -68,14 +84,14 @@ public class ChatStyleModule {
     }
 
 
-    private static Component resolvePositionTag(ServerPlayer player, Component component) {
+    private Component resolvePositionTag(ServerPlayer player, Component component) {
         Component replacement = Component.text("%s (%d %d %d) %s".formatted(player.serverLevel().dimension().location(),
                 player.getBlockX(), player.getBlockY(), player.getBlockZ(), player.chunkPosition().toString())).color(NamedTextColor.GOLD);
         return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)pos(?=\\s|$)").replacement(replacement).build());
     }
 
-    private static Component resolveItemTag(ServerPlayer player, Component component) {
-        String displayUUID = DisplayModule.createItemDisplay(player);
+    private Component resolveItemTag(ServerPlayer player, Component component) {
+        String displayUUID = displayModule.createItemDisplay(player);
         Component replacement =
                 player.getMainHandItem().getDisplayName().asComponent()
                         .hoverEvent(MessageUtil.ofComponent(player, "display.inventory.prompt"))
@@ -83,8 +99,8 @@ public class ChatStyleModule {
         return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)item(?=\\s|$)").replacement(replacement).build());
     }
 
-    private static Component resolveInvTag(ServerPlayer player, Component component) {
-        String displayUUID = DisplayModule.createInventoryDisplay(player);
+    private Component resolveInvTag(ServerPlayer player, Component component) {
+        String displayUUID = displayModule.createInventoryDisplay(player);
         Component replacement =
                 MessageUtil.ofComponent(player, "display.inventory.text")
                         .hoverEvent(MessageUtil.ofComponent(player, "display.inventory.prompt"))
@@ -93,17 +109,17 @@ public class ChatStyleModule {
     }
 
     @NotNull
-    private static ClickEvent displayCallback(String displayUUID) {
+    private ClickEvent displayCallback(String displayUUID) {
         return ClickEvent.callback(audience -> {
             if (audience instanceof CommandSourceStack css && css.getPlayer() != null) {
-                DisplayModule.viewDisplay(css.getPlayer(), displayUUID);
+                displayModule.viewDisplay(css.getPlayer(), displayUUID);
             }
         }, ClickCallback.Options.builder().lifetime(Duration.of(ConfigManager.configWrapper.instance().modules.display.expiration_duration_s, ChronoUnit.SECONDS))
                 .uses(Integer.MAX_VALUE).build());
     }
 
     @SuppressWarnings("unused")
-    private static String resolveMentionTag(ServerPlayer player, String str) {
+    private String resolveMentionTag(ServerPlayer player, String str) {
         /* resolve player tag */
         ArrayList<ServerPlayer> mentionedPlayers = new ArrayList<>();
 
@@ -125,7 +141,7 @@ public class ChatStyleModule {
         return str;
     }
 
-    public static void handleChatMessage(ServerPlayer player, String message) {
+    public void handleChatMessage(ServerPlayer player, String message) {
         /* resolve format */
         message = ConfigManager.chatWrapper.instance().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
                 .replace("%message%", message);

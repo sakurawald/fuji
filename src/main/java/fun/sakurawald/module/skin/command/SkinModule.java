@@ -4,10 +4,12 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import fun.sakurawald.module.AbstractModule;
 import fun.sakurawald.module.skin.SkinRestorer;
 import fun.sakurawald.module.skin.enums.SkinVariant;
 import fun.sakurawald.module.skin.provider.MineSkinSkinProvider;
 import fun.sakurawald.module.skin.provider.MojangSkinProvider;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -23,9 +25,15 @@ import static fun.sakurawald.util.MessageUtil.sendMessage;
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
-public class SkinModule {
+public class SkinModule extends AbstractModule {
+    @Override
+    public void onInitialize() {
+        CommandRegistrationCallback.EVENT.register(this::registerCommand);
+
+    }
+
     @SuppressWarnings("unused")
-    public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext commandBuildContext, Commands.CommandSelection commandSelection) {
+    public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext commandBuildContext, Commands.CommandSelection commandSelection) {
         dispatcher.register(literal("skin")
                 .then(literal("set")
                         .then(literal("mojang")
@@ -66,17 +74,17 @@ public class SkinModule {
         );
     }
 
-    private static int skinAction(CommandSourceStack src, Collection<GameProfile> targets, boolean setByOperator, Supplier<Property> skinSupplier) {
+    private int skinAction(CommandSourceStack src, Collection<GameProfile> targets, boolean setByOperator, Supplier<Property> skinSupplier) {
         SkinRestorer.setSkinAsync(src.getServer(), targets, skinSupplier).thenAccept(pair -> {
             Collection<GameProfile> profiles = pair.right();
             Collection<ServerPlayer> players = pair.left();
-            if (profiles.size() == 0) {
+            if (profiles.isEmpty()) {
                 sendMessage(src, "skin.action.failed");
                 return;
             }
             if (setByOperator) {
                 sendMessage(src, "skin.action.affected_profile", String.join(", ", profiles.stream().map(GameProfile::getName).toList()));
-                if (players.size() != 0) {
+                if (!players.isEmpty()) {
                     sendMessage(src, "skin.action.affected_player", String.join(", ", players.stream().map(p -> p.getGameProfile().getName()).toList()));
                 }
             } else {
@@ -86,7 +94,7 @@ public class SkinModule {
         return targets.size();
     }
 
-    private static int skinAction(CommandSourceStack src, Supplier<Property> skinSupplier) {
+    private int skinAction(CommandSourceStack src, Supplier<Property> skinSupplier) {
         if (src.getPlayer() == null)
             return 0;
 

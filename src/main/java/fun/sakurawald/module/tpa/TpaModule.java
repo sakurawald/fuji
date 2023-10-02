@@ -4,9 +4,11 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import fun.sakurawald.module.AbstractModule;
 import fun.sakurawald.module.chat_style.MentionPlayersTask;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -21,52 +23,57 @@ import static fun.sakurawald.util.MessageUtil.sendActionBar;
 import static net.minecraft.commands.Commands.argument;
 
 @Slf4j
-public class TpaModule {
+public class TpaModule extends AbstractModule {
 
     @Getter
-    private static final ArrayList<TpaRequest> requests = new ArrayList<>();
+    private final ArrayList<TpaRequest> requests = new ArrayList<>();
+
+    @Override
+    public void onInitialize() {
+        CommandRegistrationCallback.EVENT.register(this::registerCommand);
+    }
 
     @SuppressWarnings("unused")
-    public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+    public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
-                Commands.literal("tpa").then(argument("player", EntityArgument.player()).executes(TpaModule::$tpa))
+                Commands.literal("tpa").then(argument("player", EntityArgument.player()).executes(this::$tpa))
         );
         dispatcher.register(
-                Commands.literal("tpahere").then(argument("player", EntityArgument.player()).executes(TpaModule::$tpahere))
+                Commands.literal("tpahere").then(argument("player", EntityArgument.player()).executes(this::$tpahere))
         );
         dispatcher.register(
-                Commands.literal("tpaaccept").then(argument("player", EntityArgument.player()).executes(TpaModule::$tpaaccept))
+                Commands.literal("tpaaccept").then(argument("player", EntityArgument.player()).executes(this::$tpaaccept))
         );
         dispatcher.register(
-                Commands.literal("tpadeny").then(argument("player", EntityArgument.player()).executes(TpaModule::$tpadeny))
+                Commands.literal("tpadeny").then(argument("player", EntityArgument.player()).executes(this::$tpadeny))
         );
         dispatcher.register(
-                Commands.literal("tpacancel").then(argument("player", EntityArgument.player()).executes(TpaModule::$tpacancel))
+                Commands.literal("tpacancel").then(argument("player", EntityArgument.player()).executes(this::$tpacancel))
         );
     }
 
-    private static int $tpa(CommandContext<CommandSourceStack> ctx) {
+    private int $tpa(CommandContext<CommandSourceStack> ctx) {
         return doRequest(ctx, false);
     }
 
-    private static int $tpahere(CommandContext<CommandSourceStack> ctx) {
+    private int $tpahere(CommandContext<CommandSourceStack> ctx) {
         return doRequest(ctx, true);
     }
 
-    private static int $tpaaccept(CommandContext<CommandSourceStack> ctx) {
+    private int $tpaaccept(CommandContext<CommandSourceStack> ctx) {
         return doResponse(ctx, ResponseStatus.ACCEPT);
     }
 
-    private static int $tpadeny(CommandContext<CommandSourceStack> ctx) {
+    private int $tpadeny(CommandContext<CommandSourceStack> ctx) {
         return doResponse(ctx, ResponseStatus.DENY);
     }
 
-    private static int $tpacancel(CommandContext<CommandSourceStack> ctx) {
+    private int $tpacancel(CommandContext<CommandSourceStack> ctx) {
         return doResponse(ctx, ResponseStatus.CANCEL);
     }
 
     @SuppressWarnings("SameReturnValue")
-    private static int doResponse(CommandContext<CommandSourceStack> ctx, ResponseStatus status) {
+    private int doResponse(CommandContext<CommandSourceStack> ctx, ResponseStatus status) {
         ServerPlayer source = ctx.getSource().getPlayer();
         if (source == null) return Command.SINGLE_SUCCESS;
 
@@ -113,7 +120,7 @@ public class TpaModule {
     }
 
     @SuppressWarnings("SameReturnValue")
-    private static int doRequest(CommandContext<CommandSourceStack> ctx, boolean tpahere) {
+    private int doRequest(CommandContext<CommandSourceStack> ctx, boolean tpahere) {
         ServerPlayer source = ctx.getSource().getPlayer();
         if (source == null) return Command.SINGLE_SUCCESS;
         ServerPlayer player;
@@ -148,6 +155,7 @@ public class TpaModule {
         request.getSender().sendMessage(request.asSenderComponent$Sent());
         return Command.SINGLE_SUCCESS;
     }
+
 
     private enum ResponseStatus {ACCEPT, DENY, CANCEL}
 }

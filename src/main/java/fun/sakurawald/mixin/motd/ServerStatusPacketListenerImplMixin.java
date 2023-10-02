@@ -24,11 +24,13 @@
 package fun.sakurawald.mixin.motd;
 
 import fun.sakurawald.ServerMain;
+import fun.sakurawald.module.ModuleManager;
 import fun.sakurawald.module.motd.MotdModule;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.network.protocol.status.ServerStatus;
 import net.minecraft.server.network.ServerStatusPacketListenerImpl;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
@@ -38,13 +40,16 @@ import java.util.Optional;
 @Slf4j
 abstract class ServerStatusPacketListenerImplMixin {
 
+    @Unique
+    private static final MotdModule module = ModuleManager.getOrNewInstance(MotdModule.class);
+
     @Redirect(method = "handleStatusRequest", at = @At(value = "FIELD", target = "Lnet/minecraft/server/network/ServerStatusPacketListenerImpl;status:Lnet/minecraft/network/protocol/status/ServerStatus;"))
     public ServerStatus $handleStatusRequest(final ServerStatusPacketListenerImpl instance) {
         ServerStatus vanillaStatus = ServerMain.SERVER.getStatus();
         if (vanillaStatus == null) {
             log.warn("ServerStatus is null, use default.");
-            return new ServerStatus(MotdModule.getRandomDescription(), Optional.empty(), Optional.empty(), MotdModule.getRandomIcon(), false);
+            return new ServerStatus(module.getRandomDescription(), Optional.empty(), Optional.empty(), module.getRandomIcon(), false);
         }
-        return new ServerStatus(MotdModule.getRandomDescription(), vanillaStatus.players(), vanillaStatus.version(), MotdModule.getRandomIcon(), vanillaStatus.enforcesSecureChat());
+        return new ServerStatus(module.getRandomDescription(), vanillaStatus.players(), vanillaStatus.version(), module.getRandomIcon(), vanillaStatus.enforcesSecureChat());
     }
 }

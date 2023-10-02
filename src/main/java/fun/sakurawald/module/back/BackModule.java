@@ -4,8 +4,10 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.AbstractModule;
 import fun.sakurawald.module.teleport_warmup.Position;
 import lombok.Getter;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -16,17 +18,22 @@ import java.util.HashMap;
 
 import static fun.sakurawald.util.MessageUtil.sendActionBar;
 
-public class BackModule {
+public class BackModule extends AbstractModule {
 
     @Getter
-    private static final HashMap<String, Position> player2lastPos = new HashMap<>();
+    private final HashMap<String, Position> player2lastPos = new HashMap<>();
 
     @SuppressWarnings("unused")
-    public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
-        dispatcher.register(Commands.literal("back").executes(BackModule::$back));
+    public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+        dispatcher.register(Commands.literal("back").executes(this::$back));
     }
 
-    private static int $back(CommandContext<CommandSourceStack> ctx) {
+    @Override
+    public void onInitialize() {
+        CommandRegistrationCallback.EVENT.register(this::registerCommand);
+    }
+
+    private int $back(CommandContext<CommandSourceStack> ctx) {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return 0;
 
@@ -40,7 +47,7 @@ public class BackModule {
         return Command.SINGLE_SUCCESS;
     }
 
-    public static void updatePlayer(ServerPlayer player) {
+    public void updatePlayer(ServerPlayer player) {
         Position lastPos = player2lastPos.get(player.getGameProfile().getName());
         double ignoreDistance = ConfigManager.configWrapper.instance().modules.back.ignore_distance;
         if (lastPos == null
@@ -51,4 +58,5 @@ public class BackModule {
                     new Position(player.level(), player.position().x, player.position().y, player.position().z, player.getYRot(), player.getXRot()));
         }
     }
+
 }

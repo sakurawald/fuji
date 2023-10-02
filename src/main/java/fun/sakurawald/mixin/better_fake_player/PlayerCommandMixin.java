@@ -5,6 +5,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.ServerMain;
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.ModuleManager;
 import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,6 +21,9 @@ import static fun.sakurawald.util.MessageUtil.sendMessage;
 @SuppressWarnings("DataFlowIssue")
 @Mixin(PlayerCommand.class)
 public abstract class PlayerCommandMixin {
+
+    @Unique
+    private static final BetterFakePlayerModule module = ModuleManager.getOrNewInstance(BetterFakePlayerModule.class);
 
     @Unique
     private static String transformFakePlayerName(String fakePlayerName) {
@@ -39,7 +43,7 @@ public abstract class PlayerCommandMixin {
         ServerPlayer player = context.getSource().getPlayer();
         if (player == null) return;
 
-        if (!BetterFakePlayerModule.canSpawnFakePlayer(player)) {
+        if (!module.canSpawnFakePlayer(player)) {
             sendMessage(player, "better_fake_player.spawn.limit_exceed");
             cir.setReturnValue(0);
         }
@@ -47,7 +51,7 @@ public abstract class PlayerCommandMixin {
         /* fix: fake-player auth network laggy */
         String fakePlayerName = StringArgumentType.getString(context, "player");
         fakePlayerName = transformFakePlayerName(fakePlayerName);
-        ServerMain.SERVER.getProfileCache().add(BetterFakePlayerModule.createOfflineGameProfile(fakePlayerName));
+        ServerMain.SERVER.getProfileCache().add(module.createOfflineGameProfile(fakePlayerName));
     }
 
     @Inject(method = "spawn", at = @At("TAIL"), remap = false)
@@ -55,14 +59,14 @@ public abstract class PlayerCommandMixin {
         ServerPlayer player = context.getSource().getPlayer();
         String fakePlayerName = StringArgumentType.getString(context, "player");
         fakePlayerName = transformFakePlayerName(fakePlayerName);
-        BetterFakePlayerModule.addFakePlayer(player, fakePlayerName);
-        BetterFakePlayerModule.renewFakePlayers(player);
+        module.addFakePlayer(player, fakePlayerName);
+        module.renewFakePlayers(player);
     }
 
     @Inject(method = "cantManipulate", at = @At("HEAD"), remap = false, cancellable = true)
     private static void $cantManipulate(CommandContext<CommandSourceStack> context, CallbackInfoReturnable<Boolean> cir) {
         String fakePlayerName = StringArgumentType.getString(context, "player");
-        if (!BetterFakePlayerModule.canManipulateFakePlayer(context, fakePlayerName)) {
+        if (!module.canManipulateFakePlayer(context, fakePlayerName)) {
             sendMessage(context.getSource(), "better_fake_player.manipulate.forbidden");
             cir.setReturnValue(true);
         }

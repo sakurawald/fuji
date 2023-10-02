@@ -1,6 +1,7 @@
 package fun.sakurawald.mixin.pvp_toggle;
 
 import com.mojang.authlib.GameProfile;
+import fun.sakurawald.module.ModuleManager;
 import fun.sakurawald.module.pvp_toggle.PvpModule;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -10,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -18,6 +20,8 @@ import static fun.sakurawald.util.MessageUtil.sendMessage;
 
 @Mixin(ServerPlayer.class)
 public abstract class PvpToggleMixin extends Player {
+    @Unique
+    private static final PvpModule module = ModuleManager.getOrNewInstance(PvpModule.class);
 
     public PvpToggleMixin(Level world, BlockPos pos, float yaw, GameProfile gameProfile) {
         super(world, pos, yaw, gameProfile);
@@ -33,13 +37,13 @@ public abstract class PvpToggleMixin extends Player {
         ServerPlayer player = sourcePlayer.createCommandSourceStack().getPlayer();
         if (player == null) return;
 
-        if (!PvpModule.contains(sourcePlayer.getGameProfile().getName())) {
+        if (!module.contains(sourcePlayer.getGameProfile().getName())) {
             sendMessage(player, "pvp_toggle.check.off.me");
             cir.setReturnValue(false);
             return;
         }
 
-        if (!PvpModule.contains(this.getGameProfile().getName())) {
+        if (!module.contains(this.getGameProfile().getName())) {
             sendMessage(player, "pvp_toggle.check.off.others", this.getGameProfile().getName());
             cir.setReturnValue(false);
         }

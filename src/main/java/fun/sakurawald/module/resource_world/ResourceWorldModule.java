@@ -8,10 +8,13 @@ import com.mojang.serialization.Lifecycle;
 import fun.sakurawald.ServerMain;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.mixin.resource_world.MinecraftServerAccessor;
+import fun.sakurawald.module.AbstractModule;
 import fun.sakurawald.module.newbie_welcome.RandomTeleport;
 import fun.sakurawald.module.resource_world.interfaces.DimensionOptionsMixinInterface;
 import fun.sakurawald.module.resource_world.interfaces.SimpleRegistryMixinInterface;
 import lombok.extern.slf4j.Slf4j;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.Util;
 import net.minecraft.commands.CommandBuildContext;
@@ -43,14 +46,24 @@ import static fun.sakurawald.util.MessageUtil.*;
 import static net.minecraft.commands.Commands.literal;
 
 @Slf4j
-public class ResourceWorldModule {
+public class ResourceWorldModule extends AbstractModule {
 
     private static final String DEFAULT_RESOURCE_WORLD_NAMESPACE = "resource_world";
     private static final String DEFAULT_THE_NETHER_PATH = "the_nether";
     private static final String DEFAULT_THE_END_PATH = "the_end";
     private static final String DEFAULT_OVERWORLD_PATH = "overworld";
 
-    public static void registerScheduleTask(MinecraftServer server) {
+    @Override
+    public void onInitialize() {
+        CommandRegistrationCallback.EVENT.register(this::registerCommand);
+        ServerWorldEvents.UNLOAD.register(this::onWorldUnload);
+        ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
+            this.loadWorlds(server);
+            this.registerScheduleTask(server);
+        });
+    }
+
+    public void registerScheduleTask(MinecraftServer server) {
         LocalTime now = LocalTime.now();
         long initialDelay = LocalTime.of(20, 0).toSecondOfDay() - now.toSecondOfDay();
         if (initialDelay < 0) {
@@ -58,31 +71,31 @@ public class ResourceWorldModule {
         }
         ServerMain.getSCHEDULED_EXECUTOR_SERVICE().scheduleAtFixedRate(() -> {
             log.info("Start to reset resource worlds.");
-            server.execute(() -> ResourceWorldModule.resetWorlds(server));
+            server.execute(() -> this.resetWorlds(server));
         }, initialDelay, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS);
     }
 
     @SuppressWarnings("unused")
-    public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+    public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("rw")
-                        .then(literal("reset").requires(source -> source.hasPermission(4)).executes(ResourceWorldModule::$reset))
-                        .then(literal("delete").requires(source -> source.hasPermission(4)).then(literal(DEFAULT_OVERWORLD_PATH).executes(ResourceWorldModule::$delete))
-                                .then(literal(DEFAULT_THE_NETHER_PATH).executes(ResourceWorldModule::$delete))
-                                .then(literal(DEFAULT_THE_END_PATH).executes(ResourceWorldModule::$delete)))
-                        .then(literal("tp").then(literal(DEFAULT_OVERWORLD_PATH).executes(ResourceWorldModule::$tp))
-                                .then(literal(DEFAULT_THE_NETHER_PATH).executes(ResourceWorldModule::$tp))
-                                .then(literal(DEFAULT_THE_END_PATH).executes(ResourceWorldModule::$tp))
+                        .then(literal("reset").requires(source -> source.hasPermission(4)).executes(this::$reset))
+                        .then(literal("delete").requires(source -> source.hasPermission(4)).then(literal(DEFAULT_OVERWORLD_PATH).executes(this::$delete))
+                                .then(literal(DEFAULT_THE_NETHER_PATH).executes(this::$delete))
+                                .then(literal(DEFAULT_THE_END_PATH).executes(this::$delete)))
+                        .then(literal("tp").then(literal(DEFAULT_OVERWORLD_PATH).executes(this::$tp))
+                                .then(literal(DEFAULT_THE_NETHER_PATH).executes(this::$tp))
+                                .then(literal(DEFAULT_THE_END_PATH).executes(this::$tp))
                         )
         );
     }
 
-    private static int $reset(CommandContext<CommandSourceStack> ctx) {
+    private int $reset(CommandContext<CommandSourceStack> ctx) {
         resetWorlds(ctx.getSource().getServer());
         return Command.SINGLE_SUCCESS;
     }
 
-    private static void resetWorlds(MinecraftServer server) {
+    private void resetWorlds(MinecraftServer server) {
         sendBroadcast("resource_world.world.reset");
         ConfigManager.configWrapper.instance().modules.resource_world.seed = RandomSupport.generateUniqueSeed();
         ConfigManager.configWrapper.saveToDisk();
@@ -91,7 +104,7 @@ public class ResourceWorldModule {
         deleteWorld(server, DEFAULT_THE_END_PATH);
     }
 
-    public static void loadWorlds(MinecraftServer server) {
+    public void loadWorlds(MinecraftServer server) {
         long seed = ConfigManager.configWrapper.instance().modules.resource_world.seed;
         createWorld(server, BuiltinDimensionTypes.OVERWORLD, DEFAULT_OVERWORLD_PATH, seed);
         createWorld(server, BuiltinDimensionTypes.NETHER, DEFAULT_THE_NETHER_PATH, seed);
@@ -99,7 +112,7 @@ public class ResourceWorldModule {
     }
 
     @SuppressWarnings("DataFlowIssue")
-    private static ChunkGenerator getChunkGenerator(MinecraftServer server, ResourceKey<DimensionType> dimensionTypeRegistryKey) {
+    private ChunkGenerator getChunkGenerator(MinecraftServer server, ResourceKey<DimensionType> dimensionTypeRegistryKey) {
         if (dimensionTypeRegistryKey == BuiltinDimensionTypes.OVERWORLD) {
             return server.getLevel(Level.OVERWORLD).getChunkSource().getGenerator();
         }
@@ -112,17 +125,17 @@ public class ResourceWorldModule {
         return null;
     }
 
-    private static LevelStem createDimensionOptions(MinecraftServer server, ResourceKey<DimensionType> dimensionTypeRegistryKey) {
+    private LevelStem createDimensionOptions(MinecraftServer server, ResourceKey<DimensionType> dimensionTypeRegistryKey) {
         Holder<DimensionType> dimensionTypeRegistryEntry = getDimensionTypeRegistryEntry(server, dimensionTypeRegistryKey);
         ChunkGenerator chunkGenerator = getChunkGenerator(server, dimensionTypeRegistryKey);
         return new LevelStem(dimensionTypeRegistryEntry, chunkGenerator);
     }
 
-    private static Holder<DimensionType> getDimensionTypeRegistryEntry(MinecraftServer server, ResourceKey<DimensionType> dimensionTypeRegistryKey) {
+    private Holder<DimensionType> getDimensionTypeRegistryEntry(MinecraftServer server, ResourceKey<DimensionType> dimensionTypeRegistryKey) {
         return server.registryAccess().registryOrThrow(Registries.DIMENSION_TYPE).getHolder(dimensionTypeRegistryKey).orElse(null);
     }
 
-    private static ResourceKey<DimensionType> getDimensionTypeRegistryKeyByPath(String path) {
+    private ResourceKey<DimensionType> getDimensionTypeRegistryKeyByPath(String path) {
         if (path.equals(DEFAULT_OVERWORLD_PATH)) return BuiltinDimensionTypes.OVERWORLD;
         if (path.equals(DEFAULT_THE_NETHER_PATH)) return BuiltinDimensionTypes.NETHER;
         if (path.equals(DEFAULT_THE_END_PATH)) return BuiltinDimensionTypes.END;
@@ -130,13 +143,13 @@ public class ResourceWorldModule {
     }
 
 
-    private static MappedRegistry<LevelStem> getDimensionOptionsRegistry(MinecraftServer server) {
+    private MappedRegistry<LevelStem> getDimensionOptionsRegistry(MinecraftServer server) {
         RegistryAccess registryManager = server.registries().compositeAccess();
         return (MappedRegistry<LevelStem>) registryManager.registryOrThrow(Registries.LEVEL_STEM);
     }
 
     @SuppressWarnings("deprecation")
-    private static void createWorld(MinecraftServer server, ResourceKey<DimensionType> dimensionTypeRegistryKey, String path, long seed) {
+    private void createWorld(MinecraftServer server, ResourceKey<DimensionType> dimensionTypeRegistryKey, String path, long seed) {
         /* create the world */
         ResourceWorldProperties resourceWorldProperties = new ResourceWorldProperties(server.getWorldData(), seed);
         ResourceKey<Level> worldRegistryKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(DEFAULT_RESOURCE_WORLD_NAMESPACE, path));
@@ -176,12 +189,12 @@ public class ResourceWorldModule {
         sendBroadcast("resource_world.world.created", path);
     }
 
-    private static ServerLevel getResourceWorldByPath(MinecraftServer server, String path) {
+    private ServerLevel getResourceWorldByPath(MinecraftServer server, String path) {
         ResourceKey<Level> worldKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(DEFAULT_RESOURCE_WORLD_NAMESPACE, path));
         return server.getLevel(worldKey);
     }
 
-    private static int $tp(CommandContext<CommandSourceStack> ctx) {
+    private int $tp(CommandContext<CommandSourceStack> ctx) {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return 0;
 
@@ -205,7 +218,7 @@ public class ResourceWorldModule {
     }
 
 
-    private static void deleteWorld(MinecraftServer server, String path) {
+    private void deleteWorld(MinecraftServer server, String path) {
         ServerLevel world = getResourceWorldByPath(server, path);
         if (world == null) return;
 
@@ -213,13 +226,13 @@ public class ResourceWorldModule {
         sendBroadcast("resource_world.world.deleted", path);
     }
 
-    private static int $delete(CommandContext<CommandSourceStack> ctx) {
+    private int $delete(CommandContext<CommandSourceStack> ctx) {
         String path = ctx.getNodes().get(2).getNode().getName();
         deleteWorld(ctx.getSource().getServer(), path);
         return Command.SINGLE_SUCCESS;
     }
 
-    public static void onWorldUnload(MinecraftServer server, ServerLevel world) {
+    public void onWorldUnload(MinecraftServer server, ServerLevel world) {
         if (server.isRunning()) {
             String namespace = world.dimension().location().getNamespace();
             String path = world.dimension().location().getPath();
@@ -228,7 +241,8 @@ public class ResourceWorldModule {
 
             log.info("onWorldUnload() -> Creating world {} ...", path);
             long seed = ConfigManager.configWrapper.instance().modules.resource_world.seed;
-            ResourceWorldModule.createWorld(server, ResourceWorldModule.getDimensionTypeRegistryKeyByPath(path), path, seed);
+            this.createWorld(server, this.getDimensionTypeRegistryKeyByPath(path), path, seed);
         }
     }
+
 }

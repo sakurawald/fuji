@@ -1,5 +1,6 @@
 package fun.sakurawald.module.display;
 
+import fun.sakurawald.module.AbstractModule;
 import fun.sakurawald.module.display.gui.DisplayGuiBuilder;
 import fun.sakurawald.module.display.gui.InventoryDisplayGui;
 import fun.sakurawald.module.display.gui.ItemDisplayGui;
@@ -15,11 +16,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 @SuppressWarnings({"SameReturnValue"})
-public class DisplayModule {
+public class DisplayModule extends AbstractModule {
 
-    private static final SoftReferenceMap<String, DisplayGuiBuilder> uuid2gui = new SoftReferenceMap<>();
+    private final SoftReferenceMap<String, DisplayGuiBuilder> uuid2gui = new SoftReferenceMap<>();
 
-    public static String createInventoryDisplay(@NotNull ServerPlayer player) {
+    public String createInventoryDisplay(@NotNull ServerPlayer player) {
         Component title = MessageUtil.ofVomponent(player, "display.gui.title", player.getGameProfile().getName());
         InventoryDisplayGui inventoryDisplayGui = new InventoryDisplayGui(title, player);
         String uuid = UUID.randomUUID().toString();
@@ -27,7 +28,7 @@ public class DisplayModule {
         return uuid;
     }
 
-    public static String createItemDisplay(@NotNull ServerPlayer player) {
+    public String createItemDisplay(@NotNull ServerPlayer player) {
         /* new object */
         DisplayGuiBuilder displayGuiBuilder;
         Component title = MessageUtil.ofVomponent(player, "display.gui.title", player.getGameProfile().getName());
@@ -46,7 +47,7 @@ public class DisplayModule {
         return uuid;
     }
 
-    public static void viewDisplay(@NotNull ServerPlayer player, String displayUUID) {
+    public void viewDisplay(@NotNull ServerPlayer player, String displayUUID) {
         DisplayGuiBuilder displayGuiBuilder = uuid2gui.get(displayUUID);
         if (displayGuiBuilder == null) {
             MessageUtil.sendMessage(player, "display.invalid");

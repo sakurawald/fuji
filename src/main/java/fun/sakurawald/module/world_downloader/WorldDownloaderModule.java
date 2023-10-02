@@ -8,9 +8,11 @@ import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.mixin.resource_world.MinecraftServerAccessor;
+import fun.sakurawald.module.AbstractModule;
 import fun.sakurawald.util.MessageUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -36,13 +38,24 @@ import java.util.UUID;
 
 @SuppressWarnings("UnstableApiUsage")
 @Slf4j
-public class WorldDownloaderModule {
+public class WorldDownloaderModule extends AbstractModule {
 
     private static final double BYTE_TO_MEGABYTE = 1.0 * 1024 * 1024;
-    private static final EvictingQueue<String> CONTEXT_QUEUE = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.world_downloader.context_cache_size);
-    private static HttpServer server;
+    private EvictingQueue<String> contextQueue;
+    private HttpServer server;
 
-    public static void initServer() {
+    @Override
+    public void onInitialize() {
+        CommandRegistrationCallback.EVENT.register(this::registerCommand);
+        contextQueue = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.world_downloader.context_cache_size);
+    }
+
+    @Override
+    public void onReload() {
+        this.initServer();
+    }
+
+    public void initServer() {
         if (server != null) {
             server.stop(0);
         }
@@ -56,25 +69,25 @@ public class WorldDownloaderModule {
     }
 
     @SuppressWarnings("unused")
-    public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
-        dispatcher.register(Commands.literal("download").executes(WorldDownloaderModule::$download));
+    public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+        dispatcher.register(Commands.literal("download").executes(this::$download));
     }
 
-    public static void safelyRemoveContext(String path) {
+    public void safelyRemoveContext(String path) {
         try {
-            WorldDownloaderModule.server.removeContext(path);
+            this.server.removeContext(path);
         } catch (IllegalArgumentException e) {
             // do nothing
         }
     }
 
-    public static void safelyRemoveContext(HttpContext httpContext) {
+    public void safelyRemoveContext(HttpContext httpContext) {
         safelyRemoveContext(httpContext.getPath());
     }
 
     @SuppressWarnings("SameReturnValue")
     @SneakyThrows
-    private static int $download(CommandContext<CommandSourceStack> ctx) {
+    private int $download(CommandContext<CommandSourceStack> ctx) {
 
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) {
@@ -87,22 +100,22 @@ public class WorldDownloaderModule {
         }
 
         /* remove redundant contexts */
-        if (CONTEXT_QUEUE.remainingCapacity() == 0) {
-            log.info("contexts is full, remove the oldest context. {}", CONTEXT_QUEUE.peek());
-            safelyRemoveContext(CONTEXT_QUEUE.poll());
+        if (contextQueue.remainingCapacity() == 0) {
+            log.info("contexts is full, remove the oldest context. {}", contextQueue.peek());
+            safelyRemoveContext(contextQueue.poll());
         }
 
         /* create context */
         String path = "/download/" + UUID.randomUUID();
-        CONTEXT_QUEUE.add(path);
+        contextQueue.add(path);
         File file = compressRegionFile(player);
         MessageUtil.sendBroadcast("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
-        server.createContext(path, new FileDownloadHandler(file, ConfigManager.configWrapper.instance().modules.world_downloader.bytes_per_second_limit));
+        server.createContext(path, new FileDownloadHandler(this, file, ConfigManager.configWrapper.instance().modules.world_downloader.bytes_per_second_limit));
         MessageUtil.sendMessage(player, "world_downloader.response", path);
         return Command.SINGLE_SUCCESS;
     }
 
-    public static File compressRegionFile(ServerPlayer player) {
+    public File compressRegionFile(ServerPlayer player) {
         /* get region location */
         ChunkPos chunkPos = player.chunkPosition();
         int regionX = chunkPos.getRegionX();
@@ -135,7 +148,7 @@ public class WorldDownloaderModule {
     }
 
     @SneakyThrows
-    public static void compressFiles(File[] input, File output) {
+    public void compressFiles(File[] input, File output) {
         try (FileOutputStream fos = new FileOutputStream(output);
              ArchiveOutputStream archiveOut = new ZipArchiveOutputStream(fos)) {
             for (File file : input) {
@@ -155,7 +168,8 @@ public class WorldDownloaderModule {
         }
     }
 
-    private static String getEntryName(File file) {
+    private String getEntryName(File file) {
         return file.getParentFile().getName() + File.separator + file.getName();
     }
+
 }

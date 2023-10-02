@@ -6,8 +6,10 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.ServerMain;
+import fun.sakurawald.module.AbstractModule;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -40,7 +42,7 @@ import static net.minecraft.commands.Commands.argument;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 @Slf4j
-public class DeathLogModule {
+public class DeathLogModule extends AbstractModule {
     private static final Path STORAGE_PATH = ServerMain.CONFIG_PATH.resolve("deathlog");
     private static final String DEATHS = "Deaths";
     private static final String TIME = "time";
@@ -58,25 +60,27 @@ public class DeathLogModule {
     private static final String XP_PROGRESS = "xp_progress";
     private static final String INVENTORY = "inventory";
 
-    static {
+    @Override
+    public void onInitialize() {
         STORAGE_PATH.toFile().mkdirs();
+        CommandRegistrationCallback.EVENT.register(this::registerCommand);
     }
 
     @SuppressWarnings({"UnusedReturnValue", "unused"})
-    public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+    public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("deathlog").requires(s -> s.hasPermission(4))
-                        .then(Commands.literal("view").then(argument("from", word()).executes(DeathLogModule::$view)))
+                        .then(Commands.literal("view").then(argument("from", word()).executes(this::$view)))
                         .then(Commands.literal("restore")
                                 .then(argument("from", word())
                                         .then(argument("index", IntegerArgumentType.integer())
-                                                .then(argument("to", EntityArgument.player()).executes(DeathLogModule::$restore))))
+                                                .then(argument("to", EntityArgument.player()).executes(this::$restore))))
                         ));
     }
 
     @SuppressWarnings("DataFlowIssue")
     @SneakyThrows
-    private static int $restore(CommandContext<CommandSourceStack> ctx) {
+    private int $restore(CommandContext<CommandSourceStack> ctx) {
         /* read from file */
         CommandSourceStack source = ctx.getSource();
         String from = StringArgumentType.getString(ctx, "from");
@@ -125,13 +129,13 @@ public class DeathLogModule {
         return Command.SINGLE_SUCCESS;
     }
 
-    private static String getStorageFileName(String playerName) {
+    private String getStorageFileName(String playerName) {
         return UUIDUtil.createOfflinePlayerUUID(playerName) + ".dat";
     }
 
     @SuppressWarnings("DataFlowIssue")
     @SneakyThrows
-    private static int $view(CommandContext<CommandSourceStack> ctx) {
+    private int $view(CommandContext<CommandSourceStack> ctx) {
         String from = StringArgumentType.getString(ctx, "from");
 
         File file = STORAGE_PATH.resolve(getStorageFileName(from)).toFile();
@@ -154,7 +158,7 @@ public class DeathLogModule {
         return Command.SINGLE_SUCCESS;
     }
 
-    private static Component asViewComponent(CompoundTag deathTag, String from, int index, String to) {
+    private Component asViewComponent(CompoundTag deathTag, String from, int index, String to) {
         CompoundTag remarkTag = deathTag.getCompound(REMARK);
         Component hover = Component.empty().color(NamedTextColor.DARK_GREEN)
                 .append(Component.text("Time: " + remarkTag.getString(TIME)))
@@ -177,7 +181,7 @@ public class DeathLogModule {
 
     @SuppressWarnings("DataFlowIssue")
     @SneakyThrows
-    public static void store(ServerPlayer player) {
+    public void store(ServerPlayer player) {
         File file = new File(STORAGE_PATH.toString(), getStorageFileName(player.getGameProfile().getName()));
 
         CompoundTag rootTag;
@@ -201,7 +205,7 @@ public class DeathLogModule {
         NbtIo.write(rootTag, file);
     }
 
-    private static void writeRemarkTag(CompoundTag deathTag, ServerPlayer player) {
+    private void writeRemarkTag(CompoundTag deathTag, ServerPlayer player) {
         String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String reason = player.getCombatTracker().getDeathMessage().getString();
         String dimension = player.level().dimension().location().toString();
@@ -217,7 +221,7 @@ public class DeathLogModule {
         deathTag.put(REMARK, remarkTag);
     }
 
-    private static void writeInventoryTag(CompoundTag deathTag, ServerPlayer player) {
+    private void writeInventoryTag(CompoundTag deathTag, ServerPlayer player) {
         Inventory inventory = player.getInventory();
         NonNullList<ItemStack> armor = inventory.armor;
         NonNullList<ItemStack> offhand = inventory.offhand;
@@ -234,14 +238,14 @@ public class DeathLogModule {
         deathTag.put(INVENTORY, inventoryTag);
     }
 
-    private static ListTag writeSlotsTag(ListTag slotsTag, NonNullList<ItemStack> itemStackList) {
+    private ListTag writeSlotsTag(ListTag slotsTag, NonNullList<ItemStack> itemStackList) {
         for (ItemStack item : itemStackList) {
             slotsTag.add(item.save(new CompoundTag()));
         }
         return slotsTag;
     }
 
-    private static List<ItemStack> readSlotsTag(ListTag slotsTag) {
+    private List<ItemStack> readSlotsTag(ListTag slotsTag) {
         ArrayList<ItemStack> ret = new ArrayList<>();
         for (int i = 0; i < slotsTag.size(); i++) {
             ret.add(ItemStack.of(slotsTag.getCompound(i)));

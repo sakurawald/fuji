@@ -4,7 +4,9 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.config.ConfigManager;
-import fun.sakurawald.module.world_downloader.WorldDownloaderModule;
+import fun.sakurawald.module.AbstractModule;
+import fun.sakurawald.module.ModuleManager;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -12,23 +14,29 @@ import net.minecraft.commands.Commands;
 import static fun.sakurawald.util.MessageUtil.sendMessage;
 
 
-public class ConfigModule {
+public class ConfigModule extends AbstractModule {
+
+    @Override
+    public void onInitialize() {
+        CommandRegistrationCallback.EVENT.register(this::registerCommand);
+    }
 
     @SuppressWarnings("unused")
-    public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+    public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("sw").requires(source -> source.hasPermission(4)).then(
-                        Commands.literal("reload").executes(ConfigModule::$reload)
+                        Commands.literal("reload").executes(this::$reload)
                 )
         );
     }
 
-    private static int $reload(CommandContext<CommandSourceStack> ctx) {
+    private int $reload(CommandContext<CommandSourceStack> ctx) {
         ConfigManager.configWrapper.loadFromDisk();
         ConfigManager.chatWrapper.loadFromDisk();
         ConfigManager.pvpWrapper.loadFromDisk();
         ConfigManager.worksWrapper.loadFromDisk();
-        WorldDownloaderModule.initServer();
+        // reload modules
+        ModuleManager.reloadModules();
         sendMessage(ctx.getSource(), "reload");
         return Command.SINGLE_SUCCESS;
     }

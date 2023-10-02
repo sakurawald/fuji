@@ -2,6 +2,7 @@ package fun.sakurawald.module.motd;
 
 import com.google.common.base.Preconditions;
 import fun.sakurawald.ServerMain;
+import fun.sakurawald.module.AbstractModule;
 import fun.sakurawald.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.network.chat.Component;
@@ -18,17 +19,17 @@ import java.util.Optional;
 import java.util.Random;
 
 @Slf4j
-public class MotdModule {
+public class MotdModule extends AbstractModule {
     private static final File ICON_FOLDER = ServerMain.CONFIG_PATH.resolve("icon").toFile();
 
-    private static List<String> descriptions = new ArrayList<>();
+    private List<String> descriptions = new ArrayList<>();
 
-    public static void updateDescriptions(ArrayList<String> descriptions) {
-        MotdModule.descriptions = descriptions;
+    public void updateDescriptions(ArrayList<String> descriptions) {
+        this.descriptions = descriptions;
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static Optional<ServerStatus.Favicon> getRandomIcon() {
+    public Optional<ServerStatus.Favicon> getRandomIcon() {
         ICON_FOLDER.mkdirs();
         File[] icons = ICON_FOLDER.listFiles();
         if (icons == null || icons.length == 0) {
@@ -50,7 +51,7 @@ public class MotdModule {
         return Optional.of(new ServerStatus.Favicon(byteArrayOutputStream.toByteArray()));
     }
 
-    public static Component getRandomDescription() {
+    public Component getRandomDescription() {
         return MessageUtil.ofVomponentFromMiniMessage(descriptions.get(new Random().nextInt(descriptions.size())));
     }
 

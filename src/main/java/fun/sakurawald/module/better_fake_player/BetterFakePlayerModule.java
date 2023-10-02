@@ -6,8 +6,11 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.ServerMain;
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.AbstractModule;
 import fun.sakurawald.util.MessageUtil;
 import fun.sakurawald.util.TimeUtil;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.kyori.adventure.text.Component;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -24,23 +27,29 @@ import java.util.concurrent.TimeUnit;
 import static fun.sakurawald.util.MessageUtil.ofComponent;
 import static fun.sakurawald.util.MessageUtil.sendBroadcast;
 
-public class BetterFakePlayerModule {
-    private static final HashMap<String, ArrayList<String>> player2fakePlayers = new HashMap<>();
-    private static final HashMap<String, Long> player2expiration = new HashMap<>();
+public class BetterFakePlayerModule extends AbstractModule {
+    private final HashMap<String, ArrayList<String>> player2fakePlayers = new HashMap<>();
+    private final HashMap<String, Long> player2expiration = new HashMap<>();
+
+    @Override
+    public void onInitialize() {
+        CommandRegistrationCallback.EVENT.register(this::registerCommand);
+        ServerLifecycleEvents.SERVER_STARTED.register(this::registerScheduleTask);
+    }
 
     @SuppressWarnings("unused")
-    public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+    public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("player").then(
-                        Commands.literal("who").executes(BetterFakePlayerModule::$who)
+                        Commands.literal("who").executes(this::$who)
                 ).then(
-                        Commands.literal("renew").executes(BetterFakePlayerModule::$renew)
+                        Commands.literal("renew").executes(this::$renew)
                 )
         );
     }
 
     @SuppressWarnings("SameReturnValue")
-    private static int $renew(CommandContext<CommandSourceStack> context) {
+    private int $renew(CommandContext<CommandSourceStack> context) {
         ServerPlayer player = context.getSource().getPlayer();
         if (player == null) return Command.SINGLE_SUCCESS;
 
@@ -49,7 +58,7 @@ public class BetterFakePlayerModule {
     }
 
 
-    private static int $who(CommandContext<CommandSourceStack> context) {
+    private int $who(CommandContext<CommandSourceStack> context) {
         /* validate */
         validateFakePlayers();
 
@@ -69,11 +78,11 @@ public class BetterFakePlayerModule {
         return Command.SINGLE_SUCCESS;
     }
 
-    public static boolean hasFakePlayers(ServerPlayer player) {
+    public boolean hasFakePlayers(ServerPlayer player) {
         return player2fakePlayers.containsKey(player.getGameProfile().getName());
     }
 
-    public static void renewFakePlayers(ServerPlayer player) {
+    public void renewFakePlayers(ServerPlayer player) {
         String name = player.getGameProfile().getName();
         int duration = ConfigManager.configWrapper.instance().modules.better_fake_player.renew_duration_ms;
         long newTime = System.currentTimeMillis() + duration;
@@ -81,7 +90,7 @@ public class BetterFakePlayerModule {
         MessageUtil.sendMessage(player, "better_fake_player.renew.success", TimeUtil.getFormattedDate(newTime));
     }
 
-    private static void validateFakePlayers() {
+    private void validateFakePlayers() {
         Iterator<Map.Entry<String, ArrayList<String>>> it = player2fakePlayers.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<String, ArrayList<String>> entry = it.next();
@@ -99,21 +108,21 @@ public class BetterFakePlayerModule {
         }
     }
 
-    public static boolean canSpawnFakePlayer(ServerPlayer player) {
+    public boolean canSpawnFakePlayer(ServerPlayer player) {
         /* validate */
         validateFakePlayers();
 
         /* check */
-        int limit = BetterFakePlayerModule.getCurrentAmountLimit();
-        int current = BetterFakePlayerModule.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), new ArrayList<>()).size();
+        int limit = this.getCurrentAmountLimit();
+        int current = this.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), new ArrayList<>()).size();
         return current < limit;
     }
 
-    public static void addFakePlayer(ServerPlayer player, String fakePlayer) {
-        BetterFakePlayerModule.player2fakePlayers.computeIfAbsent(player.getGameProfile().getName(), k -> new ArrayList<>()).add(fakePlayer);
+    public void addFakePlayer(ServerPlayer player, String fakePlayer) {
+        this.player2fakePlayers.computeIfAbsent(player.getGameProfile().getName(), k -> new ArrayList<>()).add(fakePlayer);
     }
 
-    public static boolean canManipulateFakePlayer(CommandContext<CommandSourceStack> ctx, String fakePlayer) {
+    public boolean canManipulateFakePlayer(CommandContext<CommandSourceStack> ctx, String fakePlayer) {
         // IMPORTANT: disable /player ... shadow command for online-player
         if (ctx.getNodes().get(2).getNode().getName().equals("shadow")) return false;
 
@@ -124,11 +133,11 @@ public class BetterFakePlayerModule {
         // bypass: op
         if (ServerMain.SERVER.getPlayerList().isOp(player.getGameProfile())) return true;
 
-        ArrayList<String> myFakePlayers = BetterFakePlayerModule.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), new ArrayList<>());
+        ArrayList<String> myFakePlayers = this.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), new ArrayList<>());
         return myFakePlayers.contains(fakePlayer);
     }
 
-    private static int getCurrentAmountLimit() {
+    private int getCurrentAmountLimit() {
         ArrayList<List<Integer>> rules = ConfigManager.configWrapper.instance().modules.better_fake_player.limit_rule;
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
@@ -141,20 +150,20 @@ public class BetterFakePlayerModule {
     }
 
     @SuppressWarnings("unused")
-    public static void registerScheduleTask(MinecraftServer server) {
-        ServerMain.getSCHEDULED_EXECUTOR_SERVICE().scheduleAtFixedRate(BetterFakePlayerModule::manageFakePlayers, 0, 1, TimeUnit.MINUTES);
+    public void registerScheduleTask(MinecraftServer server) {
+        ServerMain.getSCHEDULED_EXECUTOR_SERVICE().scheduleAtFixedRate(this::manageFakePlayers, 0, 1, TimeUnit.MINUTES);
     }
 
-    public static boolean isFakePlayer(ServerPlayer player) {
+    public boolean isFakePlayer(ServerPlayer player) {
         return player.getClass() != ServerPlayer.class;
     }
 
-    public static GameProfile createOfflineGameProfile(String fakePlayerName) {
+    public GameProfile createOfflineGameProfile(String fakePlayerName) {
         UUID offlinePlayerUUID = UUIDUtil.createOfflinePlayerUUID(fakePlayerName);
         return new GameProfile(offlinePlayerUUID, fakePlayerName);
     }
 
-    private static void manageFakePlayers() {
+    private void manageFakePlayers() {
         /* validate */
         validateFakePlayers();
 
@@ -195,4 +204,5 @@ public class BetterFakePlayerModule {
             }
         }
     }
+
 }

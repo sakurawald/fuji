@@ -1,6 +1,7 @@
 package fun.sakurawald.module.tpa;
 
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.ModuleManager;
 import lombok.Getter;
 import lombok.ToString;
 import net.kyori.adventure.text.Component;
@@ -22,6 +23,7 @@ public class TpaRequest {
     private static final String CIRCLE = "●";
     private static final String TICK = "[✔]";
     private static final String CROSS = "[❌]";
+    private static final TpaModule module = ModuleManager.getOrNewInstance(TpaModule.class);
     @Getter
     private final ServerPlayer sender;
     @Getter
@@ -59,7 +61,7 @@ public class TpaRequest {
                         getSender().sendMessage(asSenderComponent$Cancelled());
                         getReceiver().sendMessage(asReceiverComponent$Cancelled());
                         // don't forget to remove this request
-                        TpaModule.getRequests().remove(that);
+                        module.getRequests().remove(that);
                     }
                 },
                 ConfigManager.configWrapper.instance().modules.tpa.timeout * 1000L

@@ -7,12 +7,15 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import fun.sakurawald.ServerMain;
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.AbstractModule;
 import fun.sakurawald.module.works.gui.InputSignGui;
 import fun.sakurawald.module.works.work_type.NonProductionWork;
 import fun.sakurawald.module.works.work_type.ProductionWork;
 import fun.sakurawald.module.works.work_type.Work;
 import fun.sakurawald.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -35,7 +38,7 @@ import static fun.sakurawald.util.MessageUtil.*;
 
 @SuppressWarnings("SameReturnValue")
 @Slf4j
-public class WorksModule {
+public class WorksModule extends AbstractModule {
 
     public static final String PREVIOUS_PAGE_ICON = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzM3NjQ4YWU3YTU2NGE1Mjg3NzkyYjA1ZmFjNzljNmI2YmQ0N2Y2MTZhNTU5Y2U4YjU0M2U2OTQ3MjM1YmNlIn19fQ==";
     public static final String PLUS_ICON = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2VkZDIwYmU5MzUyMDk0OWU2Y2U3ODlkYzRmNDNlZmFlYjI4YzcxN2VlNmJmY2JiZTAyNzgwMTQyZjcxNiJ9fX0=";
@@ -45,8 +48,14 @@ public class WorksModule {
     public static final String NEXT_PAGE_ICON = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWE0ZjY4YzhmYjI3OWU1MGFiNzg2ZjlmYTU0Yzg4Y2E0ZWNmZTFlYjVmZDVmMGMzOGM1NGM5YjFjNzIwM2Q3YSJ9fX0=";
     private static final int PAGE_SIZE = 9 * 5;
 
+    @Override
+    public void onInitialize() {
+        CommandRegistrationCallback.EVENT.register(this::registerCommand);
+        ServerLifecycleEvents.SERVER_STARTED.register(this::registerScheduleTask);
+    }
+
     @SuppressWarnings("unused")
-    public static void registerScheduleTask(MinecraftServer server) {
+    public void registerScheduleTask(MinecraftServer server) {
         ServerMain.getSCHEDULED_EXECUTOR_SERVICE().scheduleAtFixedRate(() -> {
             // save current works data
             if (ServerMain.SERVER.isRunning()) {
@@ -64,11 +73,11 @@ public class WorksModule {
     }
 
     @SuppressWarnings("unused")
-    public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
-        dispatcher.register(Commands.literal("works").executes(WorksModule::$works));
+    public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+        dispatcher.register(Commands.literal("works").executes(this::$works));
     }
 
-    private static void $addWork(ServerPlayer player) {
+    private void $addWork(ServerPlayer player) {
         new InputSignGui(player, ofString(player, "works.work.add.prompt.input.name")) {
             @Override
             public void onClose() {
@@ -111,11 +120,11 @@ public class WorksModule {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private static boolean hasPermission(ServerPlayer player, Work work) {
+    private boolean hasPermission(ServerPlayer player, Work work) {
         return player.getGameProfile().getName().equals(work.creator) || player.hasPermissions(4);
     }
 
-    private static void $listWorks(ServerPlayer player, @Nullable List<Work> source, int page) {
+    private void $listWorks(ServerPlayer player, @Nullable List<Work> source, int page) {
         if (source == null) {
             source = ConfigManager.worksWrapper.instance().works;
         }
@@ -221,7 +230,7 @@ public class WorksModule {
         gui.open();
     }
 
-    private static void $searchWorks(ServerPlayer player, List<Work> source) {
+    private void $searchWorks(ServerPlayer player, List<Work> source) {
         /* input keywords */
         new InputSignGui(player, null) {
             @Override
@@ -243,18 +252,19 @@ public class WorksModule {
 
     }
 
-    private static void $myWorks(ServerPlayer player) {
+    private void $myWorks(ServerPlayer player) {
         List<Work> works = ConfigManager.worksWrapper.instance().works;
         List<Work> myWorks = works.stream().filter(w -> w.creator.equals(player.getGameProfile().getName())).toList();
         $listWorks(player, myWorks, 0);
     }
 
-    private static int $works(CommandContext<CommandSourceStack> ctx) {
+    private int $works(CommandContext<CommandSourceStack> ctx) {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return Command.SINGLE_SUCCESS;
 
         $listWorks(player, null, 0);
         return Command.SINGLE_SUCCESS;
     }
+
 }
 

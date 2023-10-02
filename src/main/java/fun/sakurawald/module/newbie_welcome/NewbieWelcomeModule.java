@@ -1,12 +1,14 @@
 package fun.sakurawald.module.newbie_welcome;
 
+import fun.sakurawald.module.AbstractModule;
 import net.minecraft.server.level.ServerPlayer;
 
 import static fun.sakurawald.util.MessageUtil.sendBroadcast;
 
 
-public class NewbieWelcomeModule {
-    public static void welcomeNewbiePlayer(ServerPlayer player) {
+public class NewbieWelcomeModule extends AbstractModule {
+
+    public void welcomeNewbiePlayer(ServerPlayer player) {
         /* welcome message */
         sendBroadcast("newbie_welcome.welcome_message", player.getGameProfile().getName());
 

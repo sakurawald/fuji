@@ -1,6 +1,7 @@
 package fun.sakurawald.module.resource_world;
 
 import fun.sakurawald.mixin.resource_world.MinecraftServerAccessor;
+import fun.sakurawald.module.ModuleManager;
 import fun.sakurawald.module.resource_world.interfaces.SimpleRegistryMixinInterface;
 import fun.sakurawald.module.teleport_warmup.Position;
 import fun.sakurawald.module.teleport_warmup.TeleportTicket;
@@ -27,6 +28,7 @@ import java.util.Set;
 
 public class ResourceWorldManager {
 
+    private static final TeleportWarmupModule teleportWarmupModule = ModuleManager.getOrNewInstance(TeleportWarmupModule.class);
     private static final Set<ServerLevel> deletionQueue = new ReferenceOpenHashSet<>();
 
     static {
@@ -69,7 +71,7 @@ public class ResourceWorldManager {
         List<ServerPlayer> players = new ArrayList<>(world.players());
         for (ServerPlayer player : players) {
             // fix: if the player is inside resource-world while resetting the worlds, then resource worlds will delay its deletion until the player left the resource-world.
-            TeleportWarmupModule.tickets.put(player,
+            teleportWarmupModule.tickets.put(player,
                     new TeleportTicket(player
                             , new Position(world, player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot())
                             , new Position(overworld, spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5, 0, 0)

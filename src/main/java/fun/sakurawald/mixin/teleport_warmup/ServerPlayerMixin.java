@@ -1,5 +1,6 @@
 package fun.sakurawald.mixin.teleport_warmup;
 
+import fun.sakurawald.module.ModuleManager;
 import fun.sakurawald.module.back.BackModule;
 import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
 import fun.sakurawald.module.teleport_warmup.Position;
@@ -13,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,9 +27,17 @@ import static fun.sakurawald.util.MessageUtil.sendActionBar;
 @Mixin(ServerPlayer.class)
 @Slf4j
 public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
-
     @Unique
     public boolean sakurawald$inCombat;
+
+    @Unique
+    private static final BetterFakePlayerModule betterFakePlayerModule = ModuleManager.getOrNewInstance(BetterFakePlayerModule.class);
+
+    @Unique
+    private static final BackModule backModule = ModuleManager.getOrNewInstance(BackModule.class);
+
+    @Unique
+    private static final TeleportWarmupModule module = ModuleManager.getOrNewInstance(TeleportWarmupModule.class);
 
     @Inject(method = "updateOptions", at = @At("HEAD"))
     public void updateOptions(ServerboundClientInformationPacket serverboundClientInformationPacket, CallbackInfo ci) {
@@ -41,17 +51,17 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
 
         // If we try to spawn a fake-player in end or nether, the fake-player will initially spawn in overworld
         // and teleport to the target world. This will cause the teleport warmup to be triggered.
-        if (BetterFakePlayerModule.isFakePlayer(player)) return;
+        if (betterFakePlayerModule.isFakePlayer(player)) return;
 
-        if (!TeleportWarmupModule.tickets.containsKey(player)) {
-            TeleportWarmupModule.tickets.put(player,
+        if (!module.tickets.containsKey(player)) {
+            module.tickets.put(player,
                     new TeleportTicket(player
                             , new Position(player.level(), player.position().x, player.position().y, player.position().z, player.getYRot(), player.getXRot())
                             , new Position(targetWorld, x, y, z, yaw, pitch), false));
             ci.cancel();
             return;
         } else {
-            TeleportTicket ticket = TeleportWarmupModule.tickets.get(player);
+            TeleportTicket ticket = module.tickets.get(player);
             if (!ticket.ready) {
                 sendActionBar(player, "teleport_warmup.another_teleportation_in_progress");
                 ci.cancel();
@@ -60,7 +70,7 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
         }
 
         // let's do teleport now.
-        BackModule.updatePlayer(player);
+        backModule.updatePlayer(player);
     }
 
     @Inject(method = "hurt", at = @At("RETURN"))
@@ -68,9 +78,9 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
         // If damage was actually applied...
         if (cir.getReturnValue()) {
             ServerPlayer player = (ServerPlayer) (Object) this;
-            if (TeleportWarmupModule.tickets.containsKey(player)) {
-                TeleportWarmupModule.tickets.get(player).bossbar.removeViewer(player);
-                TeleportWarmupModule.tickets.remove(player);
+            if (module.tickets.containsKey(player)) {
+                module.tickets.get(player).bossbar.removeViewer(player);
+                module.tickets.remove(player);
             }
         }
     }

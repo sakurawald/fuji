@@ -1,12 +1,15 @@
 package fun.sakurawald.mixin.multi_obsidian_platform;
 
+import fun.sakurawald.module.ModuleManager;
 import fun.sakurawald.module.multi_obsidian_platform.MultiObsidianPlatformModule;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -14,10 +17,13 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(Entity.class)
 @Slf4j
 public abstract class EntityMixin {
+
+    @Unique
+    private static final MultiObsidianPlatformModule module = ModuleManager.getOrNewInstance(MultiObsidianPlatformModule.class);
     @Unique
     BlockPos getTransformedEndSpawnPoint() {
         Entity entity = (Entity) (Object) this;
-        return MultiObsidianPlatformModule.transform(entity.blockPosition());
+        return module.transform(entity.blockPosition());
     }
 
     @Unique
@@ -42,6 +48,6 @@ public abstract class EntityMixin {
             ServerLevel.makeObsidianPlatform(toLevel);
             return;
         }
-        MultiObsidianPlatformModule.makeObsidianPlatform(toLevel, getTransformedEndSpawnPoint());
+        module.makeObsidianPlatform(toLevel, getTransformedEndSpawnPoint());
     }
 }

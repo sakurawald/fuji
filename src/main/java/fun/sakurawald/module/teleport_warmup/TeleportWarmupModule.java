@@ -1,7 +1,9 @@
 package fun.sakurawald.module.teleport_warmup;
 
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.AbstractModule;
 import lombok.extern.slf4j.Slf4j;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.kyori.adventure.bossbar.BossBar;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -15,12 +17,16 @@ import static fun.sakurawald.util.MessageUtil.sendActionBar;
 
 
 @Slf4j
-public class TeleportWarmupModule {
+public class TeleportWarmupModule extends AbstractModule {
 
-    public static final HashMap<ServerPlayer, TeleportTicket> tickets = new HashMap<>();
+    public final HashMap<ServerPlayer, TeleportTicket> tickets = new HashMap<>();
+    @Override
+    public void onInitialize() {
+        ServerTickEvents.START_SERVER_TICK.register(this::onServerTick);
+    }
 
     @SuppressWarnings("unused")
-    public static void onServerTick(MinecraftServer server) {
+    public void onServerTick(MinecraftServer server) {
         if (tickets.isEmpty()) return;
 
         Iterator<Map.Entry<ServerPlayer, TeleportTicket>> iterator = tickets.entrySet().iterator();
@@ -67,4 +73,5 @@ public class TeleportWarmupModule {
         }
 
     }
+
 }

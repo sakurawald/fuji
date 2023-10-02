@@ -1,12 +1,15 @@
 package fun.sakurawald.mixin.command_cooldown;
 
 import com.mojang.brigadier.ParseResults;
+import fun.sakurawald.module.ModuleManager;
 import fun.sakurawald.module.command_cooldown.CommandCooldownModule;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
+import org.lwjgl.opengl.NVVertexArrayRange;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -16,6 +19,10 @@ import static fun.sakurawald.util.MessageUtil.sendActionBar;
 @Mixin(Commands.class)
 @Slf4j
 public class CommandManagerMixin {
+
+    @Unique
+    private static final CommandCooldownModule module = ModuleManager.getOrNewInstance(CommandCooldownModule.class);
+
     // If you issue "///abcdefg", then commandLine = "//abcdefg"
     @Inject(method = "performCommand", at = @At("HEAD"), cancellable = true)
     public void $performCommand(ParseResults<CommandSourceStack> parseResults, String commandLine, CallbackInfoReturnable<Integer> cir) {
@@ -25,7 +32,7 @@ public class CommandManagerMixin {
         // fix: fabric console will not log the command issue
         log.info("{} issued server command: {}", player.getGameProfile().getName(), commandLine);
 
-        long cooldown = CommandCooldownModule.calculateCommandCooldown(player, commandLine);
+        long cooldown = module.calculateCommandCooldown(player, commandLine);
         if (cooldown > 0) {
             sendActionBar(player, "command_cooldown.cooldown", cooldown / 1000);
             cir.setReturnValue(0);

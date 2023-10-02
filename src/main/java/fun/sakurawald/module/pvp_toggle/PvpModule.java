@@ -4,7 +4,9 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.AbstractModule;
 import lombok.extern.slf4j.Slf4j;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -18,19 +20,25 @@ import static fun.sakurawald.util.MessageUtil.sendMessage;
 
 
 @Slf4j
-public class PvpModule {
+public class PvpModule extends AbstractModule {
+
+    @Override
+    public void onInitialize() {
+        CommandRegistrationCallback.EVENT.register(this::registerCommand);
+    }
+
     @SuppressWarnings("unused")
-    public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+    public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("pvp")
-                        .then(Commands.literal("on").executes(PvpModule::$on))
-                        .then(Commands.literal("off").executes(PvpModule::$off))
-                        .then(Commands.literal("list").executes(PvpModule::$list))
-                        .then(Commands.literal("status").executes(PvpModule::$status))
+                        .then(Commands.literal("on").executes(this::$on))
+                        .then(Commands.literal("off").executes(this::$off))
+                        .then(Commands.literal("list").executes(this::$list))
+                        .then(Commands.literal("status").executes(this::$status))
         );
     }
 
-    private static int $on(CommandContext<CommandSourceStack> ctx) {
+    private int $on(CommandContext<CommandSourceStack> ctx) {
         CommandSourceStack source = ctx.getSource();
         String player = Objects.requireNonNull(source.getPlayer()).getGameProfile().getName();
 
@@ -48,7 +56,7 @@ public class PvpModule {
         return 0;
     }
 
-    private static int $off(CommandContext<CommandSourceStack> ctx) {
+    private int $off(CommandContext<CommandSourceStack> ctx) {
         CommandSourceStack source = ctx.getSource();
         String player = Objects.requireNonNull(source.getPlayer()).getGameProfile().getName();
 
@@ -66,7 +74,7 @@ public class PvpModule {
     }
 
     @SuppressWarnings("SameReturnValue")
-    private static int $status(CommandContext<CommandSourceStack> ctx) {
+    private int $status(CommandContext<CommandSourceStack> ctx) {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return Command.SINGLE_SUCCESS;
 
@@ -76,14 +84,15 @@ public class PvpModule {
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int $list(CommandContext<CommandSourceStack> ctx) {
+    private int $list(CommandContext<CommandSourceStack> ctx) {
         HashSet<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
         sendMessage(ctx.getSource(), "pvp_toggle.list", whitelist);
         return Command.SINGLE_SUCCESS;
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean contains(String name) {
+    public boolean contains(String name) {
         return ConfigManager.pvpWrapper.instance().whitelist.contains(name);
     }
+
 }

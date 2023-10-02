@@ -1,6 +1,7 @@
 package fun.sakurawald.module.multi_obsidian_platform;
 
 import fun.sakurawald.ServerMain;
+import fun.sakurawald.module.AbstractModule;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -9,11 +10,11 @@ import net.minecraft.world.level.block.Blocks;
 import java.util.HashMap;
 
 @Slf4j
-public class MultiObsidianPlatformModule {
+public class MultiObsidianPlatformModule extends AbstractModule {
 
-    private static final HashMap<BlockPos, BlockPos> TRANSFORM_CACHE = new HashMap<>();
+    private final HashMap<BlockPos, BlockPos> TRANSFORM_CACHE = new HashMap<>();
 
-    private static BlockPos findCenterEndPortalBlock(BlockPos bp) {
+    private BlockPos findCenterEndPortalBlock(BlockPos bp) {
         ServerLevel overworld = ServerMain.SERVER.overworld();
         if (overworld.getBlockState(bp.north()) != Blocks.END_PORTAL.defaultBlockState()) {
             if (overworld.getBlockState(bp.west()) != Blocks.END_PORTAL.defaultBlockState()) {
@@ -41,7 +42,7 @@ public class MultiObsidianPlatformModule {
         return bp;
     }
 
-    public static BlockPos transform(BlockPos bp) {
+    public BlockPos transform(BlockPos bp) {
         if (TRANSFORM_CACHE.containsKey(bp)) {
             return TRANSFORM_CACHE.get(bp);
         }
@@ -59,7 +60,7 @@ public class MultiObsidianPlatformModule {
         return TRANSFORM_CACHE.get(bp);
     }
 
-    public static void makeObsidianPlatform(ServerLevel serverLevel, BlockPos centerBlockPos) {
+    public void makeObsidianPlatform(ServerLevel serverLevel, BlockPos centerBlockPos) {
         int i = centerBlockPos.getX();
         int j = centerBlockPos.getY() - 2;
         int k = centerBlockPos.getZ();

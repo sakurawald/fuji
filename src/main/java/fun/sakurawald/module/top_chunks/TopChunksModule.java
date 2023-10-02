@@ -6,7 +6,9 @@ import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.config.ConfigGSON;
 import fun.sakurawald.config.ConfigManager;
 import fun.sakurawald.mixin.top_chunks.ThreadedAnvilChunkStorageMixin;
+import fun.sakurawald.module.AbstractModule;
 import fun.sakurawald.util.MessageUtil;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.minecraft.commands.CommandBuildContext;
@@ -27,15 +29,20 @@ import java.util.HashMap;
 import java.util.PriorityQueue;
 import java.util.concurrent.CompletableFuture;
 
-public class TopChunksModule {
+public class TopChunksModule extends AbstractModule {
 
-    public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+    @Override
+    public void onInitialize() {
+        CommandRegistrationCallback.EVENT.register(this::registerCommand);
+    }
+
+    public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
-                Commands.literal("chunks").executes(TopChunksModule::$chunks)
+                Commands.literal("chunks").executes(this::$chunks)
         );
     }
 
-    private static int $chunks(CommandContext<CommandSourceStack> ctx) {
+    private int $chunks(CommandContext<CommandSourceStack> ctx) {
         CompletableFuture.runAsync(() -> {
             PriorityQueue<ChunkScore> PQ = new PriorityQueue<>();
             /* iter worlds */
@@ -92,7 +99,7 @@ public class TopChunksModule {
         return Command.SINGLE_SUCCESS;
     }
 
-    private static void calculateNearestPlayer(CommandSourceStack source, PriorityQueue<ChunkScore> PQ, int limit) {
+    private void calculateNearestPlayer(CommandSourceStack source, PriorityQueue<ChunkScore> PQ, int limit) {
         int count = 0;
         for (ChunkScore chunkScore : PQ) {
             if (count++ >= limit) break;
@@ -106,4 +113,5 @@ public class TopChunksModule {
             }
         }
     }
+
 }

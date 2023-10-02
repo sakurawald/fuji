@@ -1,15 +1,17 @@
 package fun.sakurawald.module.command_cooldown;
 
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.AbstractModule;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommandCooldownModule {
-    private static final HashMap<ServerPlayer, HashMap<String, Long>> map = new HashMap<>();
+public class CommandCooldownModule extends AbstractModule {
 
-    public static long calculateCommandCooldown(ServerPlayer player, String commandLine) {
+    private final HashMap<ServerPlayer, HashMap<String, Long>> map = new HashMap<>();
+
+    public long calculateCommandCooldown(ServerPlayer player, String commandLine) {
 
         // find the matched cooldown-entry
         HashMap<String, Long> commandRegex2LastExecutedTimeMS = map.computeIfAbsent(player, k -> new HashMap<>());
@@ -29,4 +31,5 @@ public class CommandCooldownModule {
 
         return leftTime;
     }
+
 }
