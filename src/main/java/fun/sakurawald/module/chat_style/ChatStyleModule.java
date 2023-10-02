@@ -7,11 +7,15 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.ServerMain;
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.module.display.DisplayModule;
 import fun.sakurawald.module.main_stats.MainStats;
+import fun.sakurawald.util.MessageUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
+import net.kyori.adventure.text.event.ClickCallback;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
@@ -20,9 +24,12 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
+import org.jetbrains.annotations.NotNull;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -38,7 +45,6 @@ public class ChatStyleModule {
     @Getter
     private static final Queue<Component> chatHistory = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.chat_style.history.cache_size);
     private static final MiniMessage miniMessage = MiniMessage.builder().build();
-
 
     @SuppressWarnings("unused")
     public static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
@@ -62,20 +68,42 @@ public class ChatStyleModule {
     }
 
 
-    private static Component resolvePositionTag(ServerPlayer source, Component component) {
-        Component replacement = Component.text("%s (%d %d %d) %s".formatted(source.serverLevel().dimension().location(),
-                source.getBlockX(), source.getBlockY(), source.getBlockZ(), source.chunkPosition().toString())).color(NamedTextColor.GOLD);
+    private static Component resolvePositionTag(ServerPlayer player, Component component) {
+        Component replacement = Component.text("%s (%d %d %d) %s".formatted(player.serverLevel().dimension().location(),
+                player.getBlockX(), player.getBlockY(), player.getBlockZ(), player.chunkPosition().toString())).color(NamedTextColor.GOLD);
         return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)pos(?=\\s|$)").replacement(replacement).build());
     }
 
-    private static Component resolveItemTag(ServerPlayer source, Component component) {
+    private static Component resolveItemTag(ServerPlayer player, Component component) {
+        String displayUUID = DisplayModule.createItemDisplay(player);
         Component replacement =
-                source.getMainHandItem().getDisplayName().asComponent().hoverEvent(source.getMainHandItem().asHoverEvent());
+                player.getMainHandItem().getDisplayName().asComponent()
+                        .hoverEvent(MessageUtil.ofComponent(player, "display.inventory.prompt"))
+                        .clickEvent(displayCallback(displayUUID));
         return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)item(?=\\s|$)").replacement(replacement).build());
     }
 
+    private static Component resolveInvTag(ServerPlayer player, Component component) {
+        String displayUUID = DisplayModule.createInventoryDisplay(player);
+        Component replacement =
+                MessageUtil.ofComponent(player, "display.inventory.text")
+                        .hoverEvent(MessageUtil.ofComponent(player, "display.inventory.prompt"))
+                        .clickEvent(displayCallback(displayUUID));
+        return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)inv(?=\\s|$)").replacement(replacement).build());
+    }
+
+    @NotNull
+    private static ClickEvent displayCallback(String displayUUID) {
+        return ClickEvent.callback(audience -> {
+            if (audience instanceof CommandSourceStack css && css.getPlayer() != null) {
+                DisplayModule.viewDisplay(css.getPlayer(), displayUUID);
+            }
+        }, ClickCallback.Options.builder().lifetime(Duration.of(ConfigManager.configWrapper.instance().modules.display.expiration_duration_s, ChronoUnit.SECONDS))
+                .uses(Integer.MAX_VALUE).build());
+    }
+
     @SuppressWarnings("unused")
-    private static String resolveMentionTag(ServerPlayer source, String str) {
+    private static String resolveMentionTag(ServerPlayer player, String str) {
         /* resolve player tag */
         ArrayList<ServerPlayer> mentionedPlayers = new ArrayList<>();
 
@@ -97,28 +125,29 @@ public class ChatStyleModule {
         return str;
     }
 
-    public static void handleChatMessage(ServerPlayer source, String message) {
+    public static void handleChatMessage(ServerPlayer player, String message) {
         /* resolve format */
-        message = ConfigManager.chatWrapper.instance().format.player2format.getOrDefault(source.getGameProfile().getName(), message)
+        message = ConfigManager.chatWrapper.instance().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
                 .replace("%message%", message);
-        message = resolveMentionTag(source, message);
+        message = resolveMentionTag(player, message);
 
         /* resolve stats */
         String format = ConfigManager.configWrapper.instance().modules.chat_style.format;
         format = format.replace("%message%", message);
-        format = format.replace("%player%", source.getGameProfile().getName());
-        MainStats stats = MainStats.uuid2stats.getOrDefault(source.getUUID().toString(), new MainStats());
-        format = stats.update(source).resolve(format);
+        format = format.replace("%player%", player.getGameProfile().getName());
+        MainStats stats = MainStats.uuid2stats.getOrDefault(player.getUUID().toString(), new MainStats());
+        format = stats.update(player).resolve(format);
 
         /* resolve tags */
         Component component = miniMessage.deserialize(format, Formatter.date("date", LocalDateTime.now(ZoneId.systemDefault()))).asComponent();
-        component = resolveItemTag(source, component);
-        component = resolvePositionTag(source, component);
+        component = resolveItemTag(player, component);
+        component = resolveInvTag(player, component);
+        component = resolvePositionTag(player, component);
         chatHistory.add(component);
         // info so that it can be seen in the console
         log.info(PlainTextComponentSerializer.plainText().serialize(component));
-        for (ServerPlayer player : ServerMain.SERVER.getPlayerList().getPlayers()) {
-            player.sendMessage(component);
+        for (ServerPlayer receiver : ServerMain.SERVER.getPlayerList().getPlayers()) {
+            receiver.sendMessage(component);
         }
     }
 

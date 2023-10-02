@@ -30,6 +30,7 @@ public class ConfigGSON {
         public Tpa tpa = new Tpa();
         public Works works = new Works();
         public WorldDownloader world_downloader = new WorldDownloader();
+        public Display display = new Display();
 
         public class ResourceWorld {
             public long seed = 0L;
@@ -66,7 +67,7 @@ public class ConfigGSON {
             };
 
             public int renew_duration_ms = 1000 * 60 * 60 * 12;
-            public String transform_name = "fake_%name%";
+            public String transform_name = "_fake_%name%";
         }
 
         public class CommandCooldown {
@@ -157,7 +158,7 @@ public class ConfigGSON {
             public History history = new History();
 
             public class History {
-                public int cache_size = 30;
+                public int cache_size = 50;
             }
 
             public class MentionPlayer {
@@ -220,5 +221,10 @@ public class ConfigGSON {
             public int bytes_per_second_limit = 128 * 1000;
             public int context_cache_size = 5;
         }
+
+        public class Display {
+            public int expiration_duration_s = 600;
+        }
+
     }
 }

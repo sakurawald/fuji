@@ -106,5 +106,9 @@
   "top_chunks.prop.types": "类型: ",
   "top_chunks.prop.types.entry": "[type]=%d ",
   "top_chunks.prop.hidden": "隐藏",
-  "top_chunks.prop.hidden.bypass": "%s (隐藏-绕过)"
+  "top_chunks.prop.hidden.bypass": "%s (隐藏-绕过)",
+  "display.gui.title": "玩家 %s 的展示",
+  "display.invalid": "该展示已失效",
+  "display.inventory.text": "<#D2E0FB>[物品栏展示]",
+  "display.inventory.prompt": "<#D2E0FB>点击查看该展示"
 }

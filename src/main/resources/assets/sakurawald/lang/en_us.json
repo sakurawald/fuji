@@ -106,5 +106,9 @@
   "top_chunks.prop.types": "Types: ",
   "top_chunks.prop.types.entry": "[type]=%d ",
   "top_chunks.prop.hidden": "hidden",
-  "top_chunks.prop.hidden.bypass": "%s (bypass-hidden)"
+  "top_chunks.prop.hidden.bypass": "%s (bypass-hidden)",
+  "display.gui.title": "Player %s 's Display",
+  "display.invalid": "This display is invalid",
+  "display.inventory.text": "<#D2E0FB>[Inventory Display]",
+  "display.inventory.prompt": "<#D2E0FB>Click to view this display"
 }
