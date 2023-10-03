@@ -23,9 +23,9 @@ public class MultiObsidianPlatformModule extends AbstractModule {
 
         // let's find nearby END_PORTAL block
         int radius = 3;
-        for (int x = 0; x < radius; x++) {
-            for (int z = 0; z < radius; z++) {
-                for (int y = 0; y < radius; y++) {
+        for (int y = -radius; y < radius; y++) {
+            for (int x = -radius; x < radius; x++) {
+                for (int z = -radius; z < radius; z++) {
                     BlockPos test = bp.offset(x, y, z);
                     if (overworld.getBlockState(test) == Blocks.END_PORTAL.defaultBlockState()) return test;
                 }
@@ -65,10 +65,11 @@ public class MultiObsidianPlatformModule extends AbstractModule {
     }
 
     public BlockPos transform(BlockPos bp) {
-        bp = findNearbyEndPortalBlock(bp);
         if (TRANSFORM_CACHE.containsKey(bp)) {
             return TRANSFORM_CACHE.get(bp);
         }
+        // fix: for sand-dupe, the blockpos (x, ?, z) of sand may differ +1 or -1
+        bp = findNearbyEndPortalBlock(bp);
         bp = findCenterEndPortalBlock(bp);
         int factor = 4;
         int x = bp.getX() / factor;
