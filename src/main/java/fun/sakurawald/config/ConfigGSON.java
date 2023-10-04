@@ -39,7 +39,7 @@ public class ConfigGSON {
         public class DynamicMOTD {
             public List<String> descriptions = new ArrayList<>() {
                 {
-                    this.add("<dark_green>Pure Survival 1.20.1 / Up %uptime%H <red>❤ <yellow>QQ Group 912363929<newline><aqua>%playtime%🔥 %mined%⛏ %placed%🔳 %killed%🗡 %moved%🌍");
+                    this.add("<gradient:#FF66B2:#FFB5CC>Pure Survival 1.20.1 / Up %uptime%H ❤ QQ Group 912363929</gradient><newline><gradient:#99CCFF:#BBDFFF>%playtime%🔥 %mined%⛏ %placed%🔳 %killed%🗡 %moved%🌍");
                 }
             };
         }
@@ -223,7 +223,7 @@ public class ConfigGSON {
         }
 
         public class Display {
-            public int expiration_duration_s = 600;
+            public int expiration_duration_s = 3600;
         }
 
     }
