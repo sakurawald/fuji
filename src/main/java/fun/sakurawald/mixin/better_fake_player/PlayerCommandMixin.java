@@ -30,6 +30,14 @@ public abstract class PlayerCommandMixin {
         return ConfigManager.configWrapper.instance().modules.better_fake_player.transform_name.replace("%name%", fakePlayerName);
     }
 
+    @Redirect(method = "cantSpawn", at = @At(
+            value = "INVOKE",
+            target = "Lcom/mojang/brigadier/arguments/StringArgumentType;getString(Lcom/mojang/brigadier/context/CommandContext;Ljava/lang/String;)Ljava/lang/String;"
+    ), remap = false)
+    private static String $canSpawn(final CommandContext<?> context, final String name) {
+        return transformFakePlayerName(StringArgumentType.getString(context, name));
+    }
+
     @Redirect(method = "spawn", at = @At(
             value = "INVOKE",
             target = "Lcom/mojang/brigadier/arguments/StringArgumentType;getString(Lcom/mojang/brigadier/context/CommandContext;Ljava/lang/String;)Ljava/lang/String;"

@@ -12,6 +12,14 @@ import java.nio.file.Path;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+
+// https://github.com/astei/krypton
+// https://github.com/RelativityMC/VMP-fabric
+// https://github.com/RelativityMC/C2ME-fabric
+// https://github.com/embeddedt/ModernFix
+// https://modrinth.com/mod/servercore
+// https://www.curseforge.com/minecraft/mc-mods/starlight
+
 @Slf4j
 public class ServerMain implements ModInitializer {
     public static final Path CONFIG_PATH = Path.of(FabricLoader.getInstance().getConfigDir().resolve("sakurawald").toString());
