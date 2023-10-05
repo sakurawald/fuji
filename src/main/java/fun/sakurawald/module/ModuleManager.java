@@ -15,6 +15,7 @@ import fun.sakurawald.module.pvp_toggle.PvpModule;
 import fun.sakurawald.module.resource_world.ResourceWorldModule;
 import fun.sakurawald.module.skin.command.SkinModule;
 import fun.sakurawald.module.teleport_warmup.TeleportWarmupModule;
+import fun.sakurawald.module.test.TestModule;
 import fun.sakurawald.module.top_chunks.TopChunksModule;
 import fun.sakurawald.module.tpa.TpaModule;
 import fun.sakurawald.module.works.WorksModule;
@@ -49,6 +50,7 @@ public class ModuleManager {
         getOrNewInstance(CommandCooldownModule.class);
         getOrNewInstance(MotdModule.class);
         getOrNewInstance(HeadModule.class);
+        getOrNewInstance(TestModule.class);
         getOrNewInstance(ZeroCommandPermissionModule.class);
     }
 
