@@ -34,13 +34,13 @@ public class ProfilerModule extends AbstractModule {
     public static String formatBytes(long bytes) {
         if (bytes == -1) return "N/A";
         if (bytes < 1024) {
-            return bytes + " B";
+            return bytes + "B";
         } else if (bytes < 1024 * 1024) {
-            return String.format("%.2f KB", (double) bytes / 1024);
+            return String.format("%.2fKB", (double) bytes / 1024);
         } else if (bytes < 1024 * 1024 * 1024) {
-            return String.format("%.2f MB", (double) bytes / (1024 * 1024));
+            return String.format("%.2fMB", (double) bytes / (1024 * 1024));
         } else {
-            return String.format("%.2f GB", (double) bytes / (1024 * 1024 * 1024));
+            return String.format("%.2fGB", (double) bytes / (1024 * 1024 * 1024));
         }
     }
 
