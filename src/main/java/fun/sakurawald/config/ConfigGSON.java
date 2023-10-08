@@ -62,7 +62,7 @@ public class ConfigGSON {
         public class BetterFakePlayer {
             public ArrayList<List<Integer>> limit_rule = new ArrayList<>() {
                 {
-                    this.add(List.of(1, 0, 2));
+                    this.add(List.of(1, 0, FabricLoader.getInstance().isDevelopmentEnvironment() ? 9999 : 2));
                 }
             };
 
@@ -225,6 +225,5 @@ public class ConfigGSON {
         public class Display {
             public int expiration_duration_s = 3600;
         }
-
     }
 }

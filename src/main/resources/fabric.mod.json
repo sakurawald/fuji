@@ -18,6 +18,7 @@
       "fun.sakurawald.ServerMain"
     ]
   },
+  "accessWidener": "sakurawald.accesswidener",
   "mixins": [
     "sakurawald.mixins.json"
   ],

@@ -27,6 +27,8 @@ repositories {
 loom {
 //    splitEnvironmentSourceSets()
 
+    accessWidenerPath = file("src/main/resources/sakurawald.accesswidener")
+
     mods {
         "sakurawald" {
             sourceSet sourceSets.main

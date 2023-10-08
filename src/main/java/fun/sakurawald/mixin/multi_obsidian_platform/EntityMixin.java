@@ -31,7 +31,7 @@ public abstract class EntityMixin {
         return entity.level();
     }
 
-    @Redirect(method = "findDimensionEntryPoint", at = @At(value = "FIELD", target = "Lnet/minecraft/server/level/ServerLevel;END_SPAWN_POINT:Lnet/minecraft/core/BlockPos;"))
+    @Redirect(method = "findDimensionEntryPoint", at = @At(value = "FIELD", target = "Lnet/minecraft/server/level/ServerLevel;END_SPAWN_POINT:Lnet/minecraft/core/BlockPos;"), require = 1)
     BlockPos $findDimensionEntryPoint(ServerLevel toLevel) {
         // modify: resource_world:overworld -> minecraft:the_end (default obsidian platform)
         // feature: https://bugs.mojang.com/browse/MC-252361
@@ -40,7 +40,7 @@ public abstract class EntityMixin {
     }
 
     /* This method will NOT be called when a PLAYER jump into overworld's ender-portal-frame */
-    @Redirect(method = "changeDimension", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;makeObsidianPlatform(Lnet/minecraft/server/level/ServerLevel;)V"))
+    @Redirect(method = "changeDimension", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;makeObsidianPlatform(Lnet/minecraft/server/level/ServerLevel;)V"), require = 1)
     public void $changeDimension(ServerLevel toLevel) {
         // modify: resource_world:overworld -> minecraft:the_end (default obsidian platform)
         if (getEntityCurrentLevel().dimension() != Level.OVERWORLD) {
