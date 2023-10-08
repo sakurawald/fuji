@@ -11,6 +11,7 @@ import fun.sakurawald.module.head.HeadModule;
 import fun.sakurawald.module.main_stats.MainStatsModule;
 import fun.sakurawald.module.motd.MotdModule;
 import fun.sakurawald.module.newbie_welcome.NewbieWelcomeModule;
+import fun.sakurawald.module.profiler.ProfilerModule;
 import fun.sakurawald.module.pvp_toggle.PvpModule;
 import fun.sakurawald.module.resource_world.ResourceWorldModule;
 import fun.sakurawald.module.skin.command.SkinModule;
@@ -51,6 +52,7 @@ public class ModuleManager {
         getOrNewInstance(MotdModule.class);
         getOrNewInstance(HeadModule.class);
         getOrNewInstance(TestModule.class);
+        getOrNewInstance(ProfilerModule.class);
         getOrNewInstance(ZeroCommandPermissionModule.class);
     }
 

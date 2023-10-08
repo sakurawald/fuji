@@ -66,6 +66,8 @@ dependencies {
     include(implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.24.0')
 
     modImplementation include("eu.pb4:sgui:${project.sgui_version}")
+
+    compileOnly "me.lucko:spark-api:0.1-SNAPSHOT"
 //    Set<String> apiModules = [
 //            'fabric-api-base',
 //            'fabric-command-api-v2',
