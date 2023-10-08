@@ -14,7 +14,6 @@ public class OptimizationGSON {
 
         public static class Chunk {
             public boolean fastTickChunk = true;
-            public int interval_ticks = 20;
         }
     }
 }

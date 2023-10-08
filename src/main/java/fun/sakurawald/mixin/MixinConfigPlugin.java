@@ -38,6 +38,7 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
                 || mixinClassName.equals(PACKAGE_PREFIX + "tick_chunk_cache.ChunkMapMixin")) {
             return optimizationWrapper.instance().optimization.chunk.fastTickChunk;
         }
+
         return true;
     }
 
