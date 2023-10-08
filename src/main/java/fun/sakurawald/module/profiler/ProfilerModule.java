@@ -36,11 +36,11 @@ public class ProfilerModule extends AbstractModule {
         if (bytes < 1024) {
             return bytes + "B";
         } else if (bytes < 1024 * 1024) {
-            return String.format("%.2fKB", (double) bytes / 1024);
+            return String.format("%.2fK", (double) bytes / 1024);
         } else if (bytes < 1024 * 1024 * 1024) {
-            return String.format("%.2fMB", (double) bytes / (1024 * 1024));
+            return String.format("%.2fM", (double) bytes / (1024 * 1024));
         } else {
-            return String.format("%.2fGB", (double) bytes / (1024 * 1024 * 1024));
+            return String.format("%.2fG", (double) bytes / (1024 * 1024 * 1024));
         }
     }
 
