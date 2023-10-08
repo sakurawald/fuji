@@ -33,6 +33,8 @@ public class ChunkScore implements Comparable<ChunkScore> {
             this.put("block.minecraft.brushable_block", "block.minecraft.suspicious_sand");
             this.put("block.minecraft.sign", "block.minecraft.oak_sign");
             this.put("block.minecraft.bed", "block.minecraft.white_bed");
+            this.put("block.minecraft.skull", "block.minecraft.player_head");
+            this.put("block.minecraft.banner", "block.minecraft.banner.base.white");
         }
     };
 

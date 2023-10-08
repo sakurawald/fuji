@@ -58,7 +58,7 @@ public class InventoryDisplayGui extends DisplayGuiBuilder {
 
         /* construct offhand */
         MySlotClickCallback mySlotClickCallback = new MySlotClickCallback(gui, player);
-        gui.setSlot(7, offhand.getFirst(), mySlotClickCallback);
+        gui.setSlot(7, offhand.get(0), mySlotClickCallback);
 
         /* construct items */
         for (int i = LINE_SIZE * 5; i < LINE_SIZE * 6; i++) {

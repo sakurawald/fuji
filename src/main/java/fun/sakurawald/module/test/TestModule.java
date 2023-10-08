@@ -17,14 +17,12 @@ public class TestModule extends AbstractModule {
 
     @Override
     public void onInitialize() {
-        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-            CommandRegistrationCallback.EVENT.register(this::registerCommand);
-        }
+        CommandRegistrationCallback.EVENT.register(this::registerCommand);
     }
 
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
-                Commands.literal("test")
+                Commands.literal("test").requires(s -> s.hasPermission(4))
                         .then(Commands.literal("fake-players").executes(TestModule::fakePlayers))
                         .then(Commands.literal("simulate-lag").executes(TestModule::simulateLag))
         );
@@ -32,6 +30,7 @@ public class TestModule extends AbstractModule {
 
     @SneakyThrows
     private static int simulateLag(CommandContext<CommandSourceStack> ctx) {
+        // TODO: test carpet
         ServerMain.SERVER.getCommands().getDispatcher().execute("execute in minecraft:overworld run test fake-players", ctx.getSource());
         ServerMain.SERVER.getCommands().getDispatcher().execute("execute in minecraft:overworld run time set midnight", ctx.getSource());
         ServerMain.SERVER.getCommands().getDispatcher().execute("execute in minecraft:the_nether run test fake-players", ctx.getSource());
