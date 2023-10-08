@@ -4,6 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import fun.sakurawald.config.ConfigManager;
+import fun.sakurawald.mixin.MixinConfigPlugin;
 import fun.sakurawald.module.AbstractModule;
 import fun.sakurawald.module.ModuleManager;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -35,6 +36,8 @@ public class ConfigModule extends AbstractModule {
         ConfigManager.loadConfigsFromDisk();
         // reload modules
         ModuleManager.reloadModules();
+        // reload mixins
+        MixinConfigPlugin.optimizationWrapper.loadFromDisk();
         sendMessage(ctx.getSource(), "reload");
         return Command.SINGLE_SUCCESS;
     }

@@ -10,6 +10,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+/*
+ * Carpet Mod also includes some optimization for entity-spawn, please enable lagFreeSpawn in carpet
+ * */
 @Mixin(NaturalSpawner.class)
 public abstract class NaturalSpawnerMixin {
     @Redirect(
