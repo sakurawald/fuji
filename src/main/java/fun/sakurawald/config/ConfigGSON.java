@@ -116,10 +116,11 @@ public class ConfigGSON {
                     this.put(EntityType.getKey(EntityType.ZOMBIE_VILLAGER).toLanguageKey(), 8);
                     this.put(EntityType.getKey(EntityType.ZOMBIFIED_PIGLIN).toLanguageKey(), 5);
                     this.put(EntityType.getKey(EntityType.ZOGLIN).toLanguageKey(), 8);
-                    this.put(EntityType.getKey(EntityType.PILLAGER).toLanguageKey(), 10);
-                    this.put(EntityType.getKey(EntityType.RAVAGER).toLanguageKey(), 4);
-                    this.put(EntityType.getKey(EntityType.EVOKER).toLanguageKey(), 5);
-                    this.put(EntityType.getKey(EntityType.VEX).toLanguageKey(), 5);
+                    this.put(EntityType.getKey(EntityType.RAVAGER).toLanguageKey(), 80);
+                    this.put(EntityType.getKey(EntityType.PILLAGER).toLanguageKey(), 20);
+                    this.put(EntityType.getKey(EntityType.EVOKER).toLanguageKey(), 20);
+                    this.put(EntityType.getKey(EntityType.VINDICATOR).toLanguageKey(), 20);
+                    this.put(EntityType.getKey(EntityType.VEX).toLanguageKey(), 20);
                     this.put(EntityType.getKey(EntityType.PIGLIN).toLanguageKey(), 2);
                     this.put(EntityType.getKey(EntityType.DROWNED).toLanguageKey(), 2);
                     this.put(EntityType.getKey(EntityType.GUARDIAN).toLanguageKey(), 6);
