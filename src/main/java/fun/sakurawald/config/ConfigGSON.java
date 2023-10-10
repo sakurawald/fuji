@@ -75,7 +75,7 @@ public class ConfigGSON {
                 {
                     this.put("rw tp (overworld|the_nether|the_end)", 120 * 1000L);
                     this.put("chunks\\s*", 60 * 1000L);
-                    this.put("download\\s*", 300 * 1000L);
+                    this.put("download\\s*", 120 * 1000L);
                 }
             };
         }
