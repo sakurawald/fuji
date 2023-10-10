@@ -238,7 +238,7 @@ public class WorksModule extends AbstractModule {
                                     || w.name.contains(key)
                                     || (w.introduction != null && w.introduction.contains(key))
                                     || w.level.contains(key)
-                                    || w.icon.contains(key)
+                                    || w.getIcon().contains(key)
                                     || (w instanceof ProductionWork pw && pw.sample != null && pw.sample.sampleCounter != null && pw.sample.sampleCounter.keySet().stream().anyMatch(k -> k.contains(key)))
                     ).toList();
                 }

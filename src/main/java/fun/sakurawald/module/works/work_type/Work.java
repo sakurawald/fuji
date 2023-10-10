@@ -185,9 +185,13 @@ public abstract class Work {
 
     public Item asItem() {
         CompoundTag rootTag = new CompoundTag();
-        rootTag.putString("id", this.icon == null ? getDefaultIcon() : this.icon);
+        rootTag.putString("id", this.getIcon());
         rootTag.putInt("Count", 1);
         return ItemStack.of(rootTag).getItem();
+    }
+
+    public String getIcon() {
+        return this.icon == null ? getDefaultIcon() : this.icon;
     }
 
     public List<Component> asLore(ServerPlayer player) {
