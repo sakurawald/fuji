@@ -52,17 +52,17 @@ public class ChatStyleModule extends AbstractModule {
 
     @Override
     public void onInitialize() {
-        EvictingQueue<Component> newQueue = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.chat_style.history.cache_size);
-        newQueue.addAll(chatHistory);
-        chatHistory.clear();
-        chatHistory = newQueue;
+        chatHistory = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.chat_style.history.cache_size);
 
         CommandRegistrationCallback.EVENT.register(this::registerCommand);
     }
 
     @Override
     public void onReload() {
-        chatHistory = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.chat_style.history.cache_size);
+        EvictingQueue<Component> newQueue = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.chat_style.history.cache_size);
+        newQueue.addAll(chatHistory);
+        chatHistory.clear();
+        chatHistory = newQueue;
     }
 
     @SuppressWarnings("unused")
