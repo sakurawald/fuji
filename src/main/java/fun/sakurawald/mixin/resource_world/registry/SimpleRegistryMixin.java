@@ -4,6 +4,7 @@ import com.mojang.serialization.Lifecycle;
 import fun.sakurawald.module.resource_world.interfaces.SimpleRegistryMixinInterface;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.ObjectList;
+import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.Holder;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.resources.ResourceKey;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 @SuppressWarnings("unused")
 @Mixin(MappedRegistry.class)
+@Slf4j
 public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInterface<T> {
 
     @Shadow
@@ -73,7 +75,7 @@ public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInter
 
             return true;
         } catch (Throwable e) {
-            e.printStackTrace();
+            log.error("Failed to remove entry: " + entry.toString());
             return false;
         }
     }

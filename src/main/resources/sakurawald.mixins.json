@@ -7,6 +7,7 @@
     "back.ServerPlayerMixin",
     "better_fake_player.PlayerCommandMixin",
     "better_fake_player.PlayerListMixin",
+    "better_fake_player.PlayerMixin",
     "biome_lookup_cache.NaturalSpawnerMixin",
     "bypass_things.chat_speed.ServerGamePacketListenerImplMixin",
     "bypass_things.move_speed.ServerGamePacketListenerImplMixin",

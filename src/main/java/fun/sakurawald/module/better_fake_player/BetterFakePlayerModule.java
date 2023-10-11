@@ -28,6 +28,7 @@ import static fun.sakurawald.util.MessageUtil.ofComponent;
 import static fun.sakurawald.util.MessageUtil.sendBroadcast;
 
 public class BetterFakePlayerModule extends AbstractModule {
+    private static final ArrayList<String> CONSTANT_EMPTY_LIST = new ArrayList<>();
     private final HashMap<String, ArrayList<String>> player2fakePlayers = new HashMap<>();
     private final HashMap<String, Long> player2expiration = new HashMap<>();
 
@@ -114,7 +115,7 @@ public class BetterFakePlayerModule extends AbstractModule {
 
         /* check */
         int limit = this.getCurrentAmountLimit();
-        int current = this.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), new ArrayList<>()).size();
+        int current = this.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), CONSTANT_EMPTY_LIST).size();
         return current < limit;
     }
 
@@ -133,7 +134,7 @@ public class BetterFakePlayerModule extends AbstractModule {
         // bypass: op
         if (ServerMain.SERVER.getPlayerList().isOp(player.getGameProfile())) return true;
 
-        ArrayList<String> myFakePlayers = this.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), new ArrayList<>());
+        ArrayList<String> myFakePlayers = this.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), CONSTANT_EMPTY_LIST);
         return myFakePlayers.contains(fakePlayer);
     }
 
@@ -158,6 +159,10 @@ public class BetterFakePlayerModule extends AbstractModule {
         return player.getClass() != ServerPlayer.class;
     }
 
+    public boolean isMyFakePlayer(ServerPlayer player, ServerPlayer fakePlayer) {
+        return player2fakePlayers.getOrDefault(player.getGameProfile().getName(), CONSTANT_EMPTY_LIST).contains(fakePlayer.getGameProfile().getName());
+    }
+
     public GameProfile createOfflineGameProfile(String fakePlayerName) {
         UUID offlinePlayerUUID = UUIDUtil.createOfflinePlayerUUID(fakePlayerName);
         return new GameProfile(offlinePlayerUUID, fakePlayerName);
@@ -172,7 +177,7 @@ public class BetterFakePlayerModule extends AbstractModule {
         for (String playerName : player2fakePlayers.keySet()) {
             /* check for renew limits */
             long expiration = player2expiration.getOrDefault(playerName, 0L);
-            ArrayList<String> fakePlayers = player2fakePlayers.getOrDefault(playerName, new ArrayList<>());
+            ArrayList<String> fakePlayers = player2fakePlayers.getOrDefault(playerName, CONSTANT_EMPTY_LIST);
             if (expiration <= currentTimeMS) {
                 /* auto-renew for online-playerName */
                 ServerPlayer playerByName = ServerMain.SERVER.getPlayerList().getPlayerByName(playerName);
