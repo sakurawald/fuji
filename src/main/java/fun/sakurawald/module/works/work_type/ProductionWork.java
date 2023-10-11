@@ -28,6 +28,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +41,7 @@ import static fun.sakurawald.util.MessageUtil.*;
 @Slf4j
 public class ProductionWork extends Work implements ScheduleMethod {
 
-    public Sample sample = new Sample();
+    public @NotNull Sample sample = new Sample();
 
     public ProductionWork(ServerPlayer player, String name) {
         super(player, name);
@@ -72,6 +73,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
     public List<Component> asLore(ServerPlayer player) {
         /* construct lore */
         List<Component> ret = super.asLore(player);
+        // note: hide sample info in lore if sample not exists
         if (this.sample.sampleStartTimeMS == 0) {
             ret.addAll((ofVomponents(player, "works.production_work.sample.not_exists")));
             return ret;

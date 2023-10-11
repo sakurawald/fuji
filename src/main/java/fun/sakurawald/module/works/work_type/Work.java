@@ -22,6 +22,8 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -39,14 +41,14 @@ public abstract class Work {
     public long createTimeMS;
     public String creator;
     public String name;
-    public String introduction;
+    public @Nullable String introduction;
     public String level;
     public double x;
     public double y;
     public double z;
     public float yaw;
     public float pitch;
-    public String icon;
+    public @Nullable String icon;
 
     @SuppressWarnings("unused")
     public Work() {
@@ -190,7 +192,7 @@ public abstract class Work {
         return ItemStack.of(rootTag).getItem();
     }
 
-    public String getIcon() {
+    public @NotNull String getIcon() {
         return this.icon == null ? getDefaultIcon() : this.icon;
     }
 
