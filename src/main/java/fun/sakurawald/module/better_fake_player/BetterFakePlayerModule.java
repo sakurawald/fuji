@@ -80,6 +80,7 @@ public class BetterFakePlayerModule extends AbstractModule {
     }
 
     public boolean hasFakePlayers(ServerPlayer player) {
+        validateFakePlayers();
         return player2fakePlayers.containsKey(player.getGameProfile().getName());
     }
 
