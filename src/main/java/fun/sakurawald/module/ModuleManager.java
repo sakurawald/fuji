@@ -2,6 +2,7 @@ package fun.sakurawald.module;
 
 import fun.sakurawald.module.back.BackModule;
 import fun.sakurawald.module.better_fake_player.BetterFakePlayerModule;
+import fun.sakurawald.module.better_info.BetterInfoModule;
 import fun.sakurawald.module.chat_style.ChatStyleModule;
 import fun.sakurawald.module.command_cooldown.CommandCooldownModule;
 import fun.sakurawald.module.config.ConfigModule;
@@ -53,6 +54,7 @@ public class ModuleManager {
         getOrNewInstance(HeadModule.class);
         getOrNewInstance(TestModule.class);
         getOrNewInstance(ProfilerModule.class);
+        getOrNewInstance(BetterInfoModule.class);
         getOrNewInstance(ZeroCommandPermissionModule.class);
     }
 

@@ -1,6 +1,6 @@
 package fun.sakurawald.mixin.biome_lookup_cache;
 
-import fun.sakurawald.module.biome_lookup_cache_module.ChunkManager;
+import fun.sakurawald.module.biome_lookup_cache.ChunkManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;

@@ -1,4 +1,4 @@
-package fun.sakurawald.module.biome_lookup_cache_module;
+package fun.sakurawald.module.biome_lookup_cache;
 
 import com.mojang.datafixers.util.Either;
 import net.minecraft.core.BlockPos;
