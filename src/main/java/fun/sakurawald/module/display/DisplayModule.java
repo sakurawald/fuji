@@ -1,16 +1,11 @@
 package fun.sakurawald.module.display;
 
 import fun.sakurawald.module.AbstractModule;
-import fun.sakurawald.module.display.gui.DisplayGuiBuilder;
-import fun.sakurawald.module.display.gui.InventoryDisplayGui;
-import fun.sakurawald.module.display.gui.ItemDisplayGui;
-import fun.sakurawald.module.display.gui.ShulkerBoxDisplayGui;
+import fun.sakurawald.module.display.gui.*;
 import fun.sakurawald.util.MessageUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.ShulkerBoxBlock;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
@@ -20,15 +15,17 @@ public class DisplayModule extends AbstractModule {
 
     private final SoftReferenceMap<String, DisplayGuiBuilder> uuid2gui = new SoftReferenceMap<>();
 
-    public static boolean isShulkerBox(ItemStack itemStack) {
-        return itemStack.getItem() instanceof BlockItem bi && bi.getBlock() instanceof ShulkerBoxBlock;
-    }
-
     public String createInventoryDisplay(@NotNull ServerPlayer player) {
         Component title = MessageUtil.ofVomponent(player, "display.gui.title", player.getGameProfile().getName());
-        InventoryDisplayGui inventoryDisplayGui = new InventoryDisplayGui(title, player);
         String uuid = UUID.randomUUID().toString();
-        uuid2gui.put(uuid, inventoryDisplayGui);
+        uuid2gui.put(uuid, new InventoryDisplayGui(title, player));
+        return uuid;
+    }
+
+    public String createEnderChestDisplay(@NotNull ServerPlayer player) {
+        Component title = MessageUtil.ofVomponent(player, "display.gui.title", player.getGameProfile().getName());
+        String uuid = UUID.randomUUID().toString();
+        uuid2gui.put(uuid, new EnderChestDisplayGui(title, player));
         return uuid;
     }
 
@@ -37,7 +34,7 @@ public class DisplayModule extends AbstractModule {
         DisplayGuiBuilder displayGuiBuilder;
         Component title = MessageUtil.ofVomponent(player, "display.gui.title", player.getGameProfile().getName());
         ItemStack itemStack = player.getMainHandItem().copy();
-        if (isShulkerBox(itemStack)) {
+        if (DisplayGuiBuilder.isShulkerBox(itemStack)) {
             // shulker-box item
             displayGuiBuilder = new ShulkerBoxDisplayGui(title, itemStack, null);
         } else {

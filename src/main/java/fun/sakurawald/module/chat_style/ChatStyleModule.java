@@ -106,9 +106,18 @@ public class ChatStyleModule extends AbstractModule {
         String displayUUID = displayModule.createInventoryDisplay(player);
         Component replacement =
                 MessageUtil.ofComponent(player, "display.inventory.text")
-                        .hoverEvent(MessageUtil.ofComponent(player, "display.inventory.prompt"))
+                        .hoverEvent(MessageUtil.ofComponent(player, "display.click.prompt"))
                         .clickEvent(displayCallback(displayUUID));
         return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)inv(?=\\s|$)").replacement(replacement).build());
+    }
+
+    private Component resolveEnderTag(ServerPlayer player, Component component) {
+        String displayUUID = displayModule.createEnderChestDisplay(player);
+        Component replacement =
+                MessageUtil.ofComponent(player, "display.ender_chest.text")
+                        .hoverEvent(MessageUtil.ofComponent(player, "display.click.prompt"))
+                        .clickEvent(displayCallback(displayUUID));
+        return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)ender(?=\\s|$)").replacement(replacement).build());
     }
 
     @NotNull
@@ -161,6 +170,7 @@ public class ChatStyleModule extends AbstractModule {
         Component component = miniMessage.deserialize(format, Formatter.date("date", LocalDateTime.now(ZoneId.systemDefault()))).asComponent();
         component = resolveItemTag(player, component);
         component = resolveInvTag(player, component);
+        component = resolveEnderTag(player, component);
         component = resolvePositionTag(player, component);
         chatHistory.add(component);
         // info so that it can be seen in the console
