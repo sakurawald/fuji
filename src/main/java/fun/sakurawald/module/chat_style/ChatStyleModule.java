@@ -97,7 +97,7 @@ public class ChatStyleModule extends AbstractModule {
         String displayUUID = displayModule.createItemDisplay(player);
         Component replacement =
                 player.getMainHandItem().getDisplayName().asComponent()
-                        .hoverEvent(MessageUtil.ofComponent(player, "display.inventory.prompt"))
+                        .hoverEvent(MessageUtil.ofComponent(player, "display.click.prompt"))
                         .clickEvent(displayCallback(displayUUID));
         return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)item(?=\\s|$)").replacement(replacement).build());
     }
