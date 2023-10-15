@@ -98,7 +98,7 @@
   "works.work.prop.coordinate": "<grey>坐标: %.3f %.3f %.3f",
   "works.work.prop.introduction": "<#FFA1F5>简介: %s",
   "world_downloader.request": "<#8DDFCB>玩家 %s 刚刚向世界下载器递交下载请求 (总大小: %.2f MB)",
-  "world_downloader.response": "<#8DDFCB>已生成下载链接: <hover:show_text:'<green>打开该链接'><click:open_url:'http://103.219.30.65:22222%s'><green>[打开]</click></hover>",
+  "world_downloader.response": "<#8DDFCB>已生成下载链接: <hover:show_text:'<green>打开该链接'><click:open_url:'http://103.205.253.194:22222%s'><green>[打开]</click></hover>",
   "top_chunks.prop.dimension": "维度: %s",
   "top_chunks.prop.chunk": "区块: %s",
   "top_chunks.prop.score": "分数: %d",

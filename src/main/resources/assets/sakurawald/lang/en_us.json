@@ -98,7 +98,7 @@
   "works.work.prop.coordinate": "<grey>Coordinate: %.3f %.3f %.3f",
   "works.work.prop.introduction": "<#FFA1F5>Introduction: %s",
   "world_downloader.request": "<#8DDFCB>Player %s just requested to download world file (Size: %.2f MB)",
-  "world_downloader.response": "<#8DDFCB>Download link generated: <hover:show_text:'<green>Open this link'><click:open_url:'http://103.219.30.65:22222%s'><green>[OPEN]</click></hover>",
+  "world_downloader.response": "<#8DDFCB>Download link generated: <hover:show_text:'<green>Open this link'><click:open_url:'http://103.205.253.194:22222%s'><green>[OPEN]</click></hover>",
   "top_chunks.prop.dimension": "Dimension: %s",
   "top_chunks.prop.chunk": "Chunk: %s",
   "top_chunks.prop.score": "Score: %d",

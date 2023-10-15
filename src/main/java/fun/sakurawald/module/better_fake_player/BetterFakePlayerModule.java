@@ -93,6 +93,7 @@ public class BetterFakePlayerModule extends AbstractModule {
     }
 
     private void validateFakePlayers() {
+        /* remove invalid fake-player */
         Iterator<Map.Entry<String, ArrayList<String>>> it = player2fakePlayers.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<String, ArrayList<String>> entry = it.next();
