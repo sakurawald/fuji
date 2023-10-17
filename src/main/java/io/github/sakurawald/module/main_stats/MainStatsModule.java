@@ -30,17 +30,17 @@ public class MainStatsModule extends AbstractModule {
     @Override
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-            this.updateMainStats();
+            this.updateMainStats(server);
             this.registerScheduleTask(server);
         });
     }
 
-    public void updateMainStats() {
+    public void updateMainStats(MinecraftServer server) {
         MainStats serverMainStats = MainStats.calculateServerMainStats();
 
         ConfigGSON.Modules.DynamicMOTD dynamic_motd = ConfigManager.configWrapper.instance().modules.dynamic_motd;
         ArrayList<String> descriptions = new ArrayList<>();
-        dynamic_motd.descriptions.forEach(description -> descriptions.add(serverMainStats.resolve(description)));
+        dynamic_motd.descriptions.forEach(description -> descriptions.add(serverMainStats.resolve(server, description)));
 
         if (dynamic_motd_module != null) {
             dynamic_motd_module.updateDescriptions(descriptions);
@@ -88,7 +88,7 @@ public class MainStatsModule extends AbstractModule {
             server.getPlayerList().getPlayers().forEach((p) -> p.getStats().save());
 
             // update dynamic_motd
-            updateMainStats();
+            updateMainStats(server);
         }, 10, 60, TimeUnit.SECONDS);
     }
 

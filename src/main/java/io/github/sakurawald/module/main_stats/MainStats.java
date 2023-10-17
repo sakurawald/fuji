@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.github.sakurawald.ServerMain;
 import lombok.ToString;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.ServerStatsCounter;
 import net.minecraft.stats.Stats;
@@ -108,13 +109,13 @@ public class MainStats {
         return this;
     }
 
-    public String resolve(String str) {
+    public String resolve(MinecraftServer server, String str) {
         return str.replace("%playtime%", String.valueOf(playtime))
                 .replace("%mined%", String.valueOf(mined))
                 .replace("%placed%", String.valueOf(placed))
                 .replace("%killed%", String.valueOf(killed))
                 .replace("%moved%", String.valueOf(moved))
-                .replace("%uptime%", String.valueOf(ServerMain.SERVER.getTickCount() / GT_TO_H_DIVISOR));
+                .replace("%uptime%", String.valueOf(server.getTickCount() / GT_TO_H_DIVISOR));
     }
 
     public void add(MainStats other) {

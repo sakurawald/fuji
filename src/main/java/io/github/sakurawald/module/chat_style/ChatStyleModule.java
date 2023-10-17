@@ -174,7 +174,7 @@ public class ChatStyleModule extends AbstractModule {
         /* resolve stats */
         if (mainStatsModule != null) {
             MainStats stats = MainStats.uuid2stats.getOrDefault(player.getUUID().toString(), new MainStats());
-            format = stats.update(player).resolve(format);
+            format = stats.update(player).resolve(ServerMain.SERVER, format);
         }
 
         /* resolve tags */
