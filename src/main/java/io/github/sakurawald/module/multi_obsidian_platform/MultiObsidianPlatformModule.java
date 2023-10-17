@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.multi_obsidian_platform;
 
 import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.BlockPos;
@@ -72,10 +73,10 @@ public class MultiObsidianPlatformModule extends AbstractModule {
         // fix: for sand-dupe, the blockpos (x, ?, z) of sand may differ +1 or -1
         bp = findNearbyEndPortalBlock(bp);
         bp = findCenterEndPortalBlock(bp);
-        int factor = 4;
-        int x = bp.getX() / factor;
+        double factor = ConfigManager.configWrapper.instance().modules.multi_obsidian_platform.factor;
+        int x = (int) (bp.getX() / factor);
         int y = 50;
-        int z = bp.getZ() / factor;
+        int z = (int) (bp.getZ() / factor);
         int x_offset = x % 16;
         int z_offset = z % 16;
         x -= x_offset;

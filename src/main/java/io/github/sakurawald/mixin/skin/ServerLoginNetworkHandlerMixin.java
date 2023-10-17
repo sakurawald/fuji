@@ -3,7 +3,6 @@ package io.github.sakurawald.mixin.skin;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.module.skin.SkinRestorer;
-import io.github.sakurawald.module.skin.io.SkinStorage;
 import io.github.sakurawald.module.skin.provider.MojangSkinProvider;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerLoginPacketListenerImpl;
@@ -43,7 +42,8 @@ public abstract class ServerLoginNetworkHandlerMixin {
                 // then we try to get skin from mojang-server. if this failed, then set his skin to DEFAULT_SKIN
                 // note: a fake-player will not trigger waitForSkin()
                 LOGGER.info("Fetch skin for {}", gameProfile.getName());
-                if (SkinRestorer.getSkinStorage().getSkin(gameProfile.getId()) == SkinStorage.DEFAULT_SKIN) {
+
+                if (SkinRestorer.getSkinStorage().getSkin(gameProfile.getId()) == SkinRestorer.getSkinStorage().getDefaultSkin()) {
                     SkinRestorer.getSkinStorage().setSkin(gameProfile.getId(), MojangSkinProvider.getSkin(gameProfile.getName()));
                 }
                 return SkinRestorer.getSkinStorage().getSkin(gameProfile.getId());
@@ -59,6 +59,6 @@ public abstract class ServerLoginNetworkHandlerMixin {
     @Inject(method = "placeNewPlayer", at = @At("HEAD"))
     public void applyRestoredSkinHook(ServerPlayer player, CallbackInfo ci) {
         if (pendingSkins != null)
-            applyRestoredSkin(player, pendingSkins.getNow(SkinStorage.DEFAULT_SKIN));
+            applyRestoredSkin(player, pendingSkins.getNow(SkinRestorer.getSkinStorage().getDefaultSkin()));
     }
 }

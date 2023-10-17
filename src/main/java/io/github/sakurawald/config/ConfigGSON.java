@@ -91,6 +91,7 @@ public class ConfigGSON {
 
             public int renew_duration_ms = 1000 * 60 * 60 * 12;
             public String transform_name = "_fake_%name%";
+            public boolean use_local_random_skins_for_fake_player = true;
         }
 
         public class BetterInfo {
@@ -207,7 +208,10 @@ public class ConfigGSON {
         public class Skin {
             public boolean enable = true;
 
-            public ArrayList<Property> default_skins = new ArrayList<>() {
+            public Property default_skin = new Property("textures", "eyJ0aW1lc3RhbXAiOjE1ODYzMjc4ODA1NjYsInByb2ZpbGVJZCI6ImI3MzY3YzA2MjYxYzRlYjBiN2Y3OGY3YzUxNzBiNzQ4IiwicHJvZmlsZU5hbWUiOiJFbXB0eUlyb255Iiwic2lnbmF0dXJlUmVxdWlyZWQiOnRydWUsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS84NWZmZjI1ZDY2NzIwNmYyZTQ2ZDQ0MmNmMzU4YjNmMWVjMzYxMzgzOTE3NTFiYTZlZGY5NjVmZmM4M2I4NjAzIiwibWV0YWRhdGEiOnsibW9kZWwiOiJzbGltIn19fX0=",
+                    "PoUf4TsNx6SVHTWZJ6Iwk3acWyiDk84VeKBVcOeqimaSBAGYKfeuXRTFV8c9IBE9cjsRAVaTGC/mwRfHlcD/rmxeDDOkhsFVidr8UL+91afIO8d+EnyoBghmnbZonqpcjCv+nkxQ5SP93qTDelD3jd8xF1FAU97BBvrx0yK+QNn5rPg2RUGGoUZUg75KlEJds1dNftpHc8IyAHz/FQIywlkohu26ghOqFStjok4WPHD3ok0z7Kwcjk7u58PYf67TkEGnGbmxTUDlNbLmxUqjxCr4NshS+e3y3jRfJN0nP82dbYh/NP2Fx8m7pSMsQtm/Ta2MN7JC0Pm2yvZB/APNoNHVSZZ2SOITbPF/yAkIdHrk+ieCKqDbeuc8TFs2n+6FktYdwPXcqrK266CzlSTPycVZQeyrgrOI+fqU1HwCz+MgdlcsAdAoyuFlFPaVqDesI46YPsSJzA3C3CNhjvuebOn357U9Po82eSFAPYbtBPVNjiNgiqn5l+1x8ZVHImwpGv/toa5/fUyfMmlxijwG/C9gQ4mE+buutMn9nfE1y/AisU/2DWeFBESw3eRAICcmVVi875N8kT+Wja8WsbpDCw+pV2wZC3x3nEdOceAdXtDEb0oy3bQPW3TSZ+Wnp68qwSxjI/aDosqVuyyqqlm+w/irUmNHGL+t7g/kD932g0Q=");
+
+            public ArrayList<Property> random_skins = new ArrayList<>() {
                 {
                     this.add(new Property("textures", "eyJ0aW1lc3RhbXAiOjE1ODYzMjc4ODA1NjYsInByb2ZpbGVJZCI6ImI3MzY3YzA2MjYxYzRlYjBiN2Y3OGY3YzUxNzBiNzQ4IiwicHJvZmlsZU5hbWUiOiJFbXB0eUlyb255Iiwic2lnbmF0dXJlUmVxdWlyZWQiOnRydWUsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS84NWZmZjI1ZDY2NzIwNmYyZTQ2ZDQ0MmNmMzU4YjNmMWVjMzYxMzgzOTE3NTFiYTZlZGY5NjVmZmM4M2I4NjAzIiwibWV0YWRhdGEiOnsibW9kZWwiOiJzbGltIn19fX0=", "PoUf4TsNx6SVHTWZJ6Iwk3acWyiDk84VeKBVcOeqimaSBAGYKfeuXRTFV8c9IBE9cjsRAVaTGC/mwRfHlcD/rmxeDDOkhsFVidr8UL+91afIO8d+EnyoBghmnbZonqpcjCv+nkxQ5SP93qTDelD3jd8xF1FAU97BBvrx0yK+QNn5rPg2RUGGoUZUg75KlEJds1dNftpHc8IyAHz/FQIywlkohu26ghOqFStjok4WPHD3ok0z7Kwcjk7u58PYf67TkEGnGbmxTUDlNbLmxUqjxCr4NshS+e3y3jRfJN0nP82dbYh/NP2Fx8m7pSMsQtm/Ta2MN7JC0Pm2yvZB/APNoNHVSZZ2SOITbPF/yAkIdHrk+ieCKqDbeuc8TFs2n+6FktYdwPXcqrK266CzlSTPycVZQeyrgrOI+fqU1HwCz+MgdlcsAdAoyuFlFPaVqDesI46YPsSJzA3C3CNhjvuebOn357U9Po82eSFAPYbtBPVNjiNgiqn5l+1x8ZVHImwpGv/toa5/fUyfMmlxijwG/C9gQ4mE+buutMn9nfE1y/AisU/2DWeFBESw3eRAICcmVVi875N8kT+Wja8WsbpDCw+pV2wZC3x3nEdOceAdXtDEb0oy3bQPW3TSZ+Wnp68qwSxjI/aDosqVuyyqqlm+w/irUmNHGL+t7g/kD932g0Q="));
                     this.add(new Property("textures", "ewogICJ0aW1lc3RhbXAiIDogMTYyMTcyMTI4NjI0OCwKICAicHJvZmlsZUlkIiA6ICJiYzRlZGZiNWYzNmM0OGE3YWM5ZjFhMzlkYzIzZjRmOCIsCiAgInByb2ZpbGVOYW1lIiA6ICI4YWNhNjgwYjIyNDYxMzQwIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzQwNGRjZDdhODFiNzllMGRkODUyMzE4ZDUxMDRmMThhNDA2MDdlODA1NjM5OWZkYzUxNTU5ZjhmN2M4ZWRiOWEiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ==", "AiHSx+/7R5CjzeKxfYRnBMu0XW4uWGbSW30WqEC9q2GEV8aacMTJRPg5HNWXneCHJ1CNdiXBgs9meaw+uffKxm05KvrN5DwgQbU3yhf+g3megmN/qk1fmIgsMBEncD+NEcyMF7WQQ4GZCrnyfHbvCFetmgwkJr4On8vlnkGxiUuRuq+6FmntsVII5pS7Vyv8hrv0YDOs5amaggtlh5L8RGbRp10JSMSsno3fF2oPFUmwnyQKEIQnzhRbO9Fi+KtKF3nQyQG0N/I+BsBtVYcuoX/UQ+rjGDWxNiwgELuUrx3bFTiUBDGEgRMFP1JrWe9LPtkhcGfF6hBHL3vJyim3wvGU5L3S3x+aXr8Tv/sR0BVppeu4pSEZV+FgXeDKMWWHzNd2NvhnxpbVUttTycKSuAQHV4cc9AL32Oq15Oo3lBtvtspIa/y+VF9nesO5d+K4Ys6fW3pvNfFK473JmFRl3LFwdCbhBKsLDerBKm/UL51d/aT0xpqSSYKumjDgWaS6wQVhTqICf1UZjQp2OM9Oo/bo74e+exUGsJsQiaSqGF9YuR5yAqosj1wsFfaV/kPQO2rDH7Yj3aEkQEmLubukLGiBbXADSDG23ZzQkDDreznlGmHeYhSf7XGh/LNE45Dtd2iG5FHr8DAmqm+ipQ6xkw7/SNmqDJr+6JgCFNSzVIg="));
@@ -292,8 +296,8 @@ public class ConfigGSON {
         }
 
         public class MultiObsidianPlatform {
-
             public boolean enable = true;
+            public double factor = 4;
         }
 
         public class OpProtect {

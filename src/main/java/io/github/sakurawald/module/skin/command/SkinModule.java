@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.function.Supplier;
 
-import static io.github.sakurawald.module.skin.io.SkinStorage.DEFAULT_SKIN;
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
@@ -74,10 +73,10 @@ public class SkinModule extends AbstractModule {
                 .then(literal("clear")
                         .executes(context ->
                                 skinAction(context.getSource(),
-                                        () -> DEFAULT_SKIN))
+                                        () -> SkinRestorer.getSkinStorage().getDefaultSkin()))
                         .then(argument("targets", GameProfileArgument.gameProfile()).executes(context ->
                                 skinAction(context.getSource(), GameProfileArgument.getGameProfiles(context, "targets"), true,
-                                        () -> DEFAULT_SKIN))))
+                                        () -> SkinRestorer.getSkinStorage().getDefaultSkin()))))
         );
     }
 

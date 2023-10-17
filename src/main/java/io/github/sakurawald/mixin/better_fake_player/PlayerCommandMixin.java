@@ -56,9 +56,11 @@ public abstract class PlayerCommandMixin {
         }
 
         /* fix: fake-player auth network laggy */
-        String fakePlayerName = StringArgumentType.getString(context, "player");
-        fakePlayerName = transformFakePlayerName(fakePlayerName);
-        ServerMain.SERVER.getProfileCache().add(module.createOfflineGameProfile(fakePlayerName));
+        if (ConfigManager.configWrapper.instance().modules.better_fake_player.use_local_random_skins_for_fake_player) {
+            String fakePlayerName = StringArgumentType.getString(context, "player");
+            fakePlayerName = transformFakePlayerName(fakePlayerName);
+            ServerMain.SERVER.getProfileCache().add(module.createOfflineGameProfile(fakePlayerName));
+        }
     }
 
     @Inject(method = "spawn", at = @At("TAIL"), remap = false)
