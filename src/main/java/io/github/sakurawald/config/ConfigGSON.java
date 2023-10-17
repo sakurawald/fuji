@@ -42,7 +42,7 @@ public class ConfigGSON {
 
         public class ResourceWorld {
             public boolean enable = true;
-            public String auto_reset_cron = "0 * * ? * *";
+            public String auto_reset_cron = "0 0 20 * * ?";
             public long seed = 0L;
         }
 
