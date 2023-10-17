@@ -8,7 +8,7 @@ import com.mojang.serialization.Lifecycle;
 import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.mixin.resource_world.MinecraftServerAccessor;
 import io.github.sakurawald.module.AbstractModule;
-import io.github.sakurawald.module.newbie_welcome.RandomTeleport;
+import io.github.sakurawald.module.newbie_welcome.random_teleport.RandomTeleport;
 import io.github.sakurawald.module.resource_world.interfaces.DimensionOptionsMixinInterface;
 import io.github.sakurawald.module.resource_world.interfaces.SimpleRegistryMixinInterface;
 import io.github.sakurawald.util.MessageUtil;
@@ -156,6 +156,7 @@ public class ResourceWorldModule extends AbstractModule {
     @SuppressWarnings("deprecation")
     private void createWorld(MinecraftServer server, ResourceKey<DimensionType> dimensionTypeRegistryKey, String path, long seed) {
         /* create the world */
+        // note: we use the same WorldData from OVERWORLD
         ResourceWorldProperties resourceWorldProperties = new ResourceWorldProperties(server.getWorldData(), seed);
         ResourceKey<Level> worldRegistryKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(DEFAULT_RESOURCE_WORLD_NAMESPACE, path));
         LevelStem dimensionOptions = createDimensionOptions(server, dimensionTypeRegistryKey);

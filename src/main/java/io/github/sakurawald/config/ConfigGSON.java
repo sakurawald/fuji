@@ -74,9 +74,9 @@ public class ConfigGSON {
 
         public class BetterFakePlayer {
             public boolean enable = true;
-            public ArrayList<List<Integer>> limit_rule = new ArrayList<>() {
+            public ArrayList<List<Integer>> caps_limit_rule = new ArrayList<>() {
                 {
-                    this.add(List.of(1, 0, FabricLoader.getInstance().isDevelopmentEnvironment() ? 9999 : 2));
+                    this.add(List.of(1, 0, 2));
                 }
             };
 
@@ -127,44 +127,44 @@ public class ConfigGSON {
                     this.put("block.minecraft.daylight_detector", 25);
                     this.put("block.minecraft.beehive", 15);
                     this.put("block.minecraft.mob_spawner", 100);
-                    this.put("minecraft.player", 15);
-                    this.put("minecraft.falling_block", 10);
-                    this.put("minecraft.zombie", 4);
-                    this.put("minecraft.zombie_villager", 8);
-                    this.put("minecraft.zombified_piglin", 5);
-                    this.put("minecraft.zoglin", 8);
-                    this.put("minecraft.ravager", 80);
-                    this.put("minecraft.pillager", 20);
-                    this.put("minecraft.evoker", 20);
-                    this.put("minecraft.vindicator", 20);
-                    this.put("minecraft.vex", 20);
-                    this.put("minecraft.piglin", 2);
-                    this.put("minecraft.drowned", 2);
-                    this.put("minecraft.guardian", 6);
-                    this.put("minecraft.spider", 2);
-                    this.put("minecraft.skeleton", 2);
-                    this.put("minecraft.creeper", 3);
-                    this.put("minecraft.endermite", 5);
-                    this.put("minecraft.enderman", 4);
-                    this.put("minecraft.wither", 55);
-                    this.put("minecraft.villager", 25);
-                    this.put("minecraft.sheep", 5);
-                    this.put("minecraft.cow", 3);
-                    this.put("minecraft.mooshroom", 3);
-                    this.put("minecraft.chicken", 3);
-                    this.put("minecraft.panda", 5);
-                    this.put("minecraft.wolf", 8);
-                    this.put("minecraft.cat", 8);
-                    this.put("minecraft.bee", 15);
-                    this.put("minecraft.boat", 5);
-                    this.put("minecraft.chest_boat", 5);
-                    this.put("minecraft.item_frame", 3);
-                    this.put("minecraft.glow_item_frame", 3);
-                    this.put("minecraft.armor_stand", 10);
-                    this.put("minecraft.item", 10);
-                    this.put("minecraft.experience_orb", 3);
-                    this.put("minecraft.tnt", 70);
-                    this.put("minecraft.hopper_minecart", 20);
+                    this.put("entity.minecraft.player", 15);
+                    this.put("entity.minecraft.falling_block", 10);
+                    this.put("entity.minecraft.zombie", 4);
+                    this.put("entity.minecraft.zombie_villager", 8);
+                    this.put("entity.minecraft.zombified_piglin", 5);
+                    this.put("entity.minecraft.zoglin", 8);
+                    this.put("entity.minecraft.ravager", 80);
+                    this.put("entity.minecraft.pillager", 20);
+                    this.put("entity.minecraft.evoker", 20);
+                    this.put("entity.minecraft.vindicator", 20);
+                    this.put("entity.minecraft.vex", 20);
+                    this.put("entity.minecraft.piglin", 2);
+                    this.put("entity.minecraft.drowned", 2);
+                    this.put("entity.minecraft.guardian", 6);
+                    this.put("entity.minecraft.spider", 2);
+                    this.put("entity.minecraft.skeleton", 2);
+                    this.put("entity.minecraft.creeper", 3);
+                    this.put("entity.minecraft.endermite", 5);
+                    this.put("entity.minecraft.enderman", 4);
+                    this.put("entity.minecraft.wither", 55);
+                    this.put("entity.minecraft.villager", 25);
+                    this.put("entity.minecraft.sheep", 5);
+                    this.put("entity.minecraft.cow", 3);
+                    this.put("entity.minecraft.mooshroom", 3);
+                    this.put("entity.minecraft.chicken", 3);
+                    this.put("entity.minecraft.panda", 5);
+                    this.put("entity.minecraft.wolf", 8);
+                    this.put("entity.minecraft.cat", 8);
+                    this.put("entity.minecraft.bee", 15);
+                    this.put("entity.minecraft.boat", 5);
+                    this.put("entity.minecraft.chest_boat", 5);
+                    this.put("entity.minecraft.item_frame", 3);
+                    this.put("entity.minecraft.glow_item_frame", 3);
+                    this.put("entity.minecraft.armor_stand", 10);
+                    this.put("entity.minecraft.item", 10);
+                    this.put("entity.minecraft.experience_orb", 3);
+                    this.put("entity.minecraft.tnt", 70);
+                    this.put("entity.minecraft.hopper_minecart", 20);
                 }
             };
         }

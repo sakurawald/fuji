@@ -148,7 +148,7 @@ public class BetterFakePlayerModule extends AbstractModule {
     }
 
     private int getCurrentAmountLimit() {
-        ArrayList<List<Integer>> rules = ConfigManager.configWrapper.instance().modules.better_fake_player.limit_rule;
+        ArrayList<List<Integer>> rules = ConfigManager.configWrapper.instance().modules.better_fake_player.caps_limit_rule;
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
         int currentDays = currentDate.getDayOfWeek().getValue();
@@ -180,7 +180,7 @@ public class BetterFakePlayerModule extends AbstractModule {
     public static class ManageFakePlayersJob implements Job {
 
         @Override
-        public void execute(JobExecutionContext context) throws JobExecutionException {
+        public void execute(JobExecutionContext context) {
             /* validate */
             BetterFakePlayerModule module = (BetterFakePlayerModule) context.getJobDetail().getJobDataMap().get(BetterFakePlayerModule.class.getName());
             module.validateFakePlayers();

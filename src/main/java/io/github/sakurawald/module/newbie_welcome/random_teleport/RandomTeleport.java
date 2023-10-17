@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.newbie_welcome;
+package io.github.sakurawald.module.newbie_welcome.random_teleport;
 
 import com.google.common.base.Stopwatch;
 import io.github.sakurawald.config.ConfigManager;

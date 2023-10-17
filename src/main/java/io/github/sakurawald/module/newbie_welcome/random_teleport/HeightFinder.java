@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.newbie_welcome;
+package io.github.sakurawald.module.newbie_welcome.random_teleport;
 
 import net.minecraft.world.level.chunk.ChunkAccess;
 
