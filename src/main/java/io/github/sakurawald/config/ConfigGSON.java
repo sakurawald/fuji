@@ -30,7 +30,7 @@ public class ConfigGSON {
         public WorldDownloader world_downloader = new WorldDownloader();
         public BypassThings bypass_things = new BypassThings();
         public DeathLog death_log = new DeathLog();
-        public MainStats mainStats = new MainStats();
+        public MainStats main_stats = new MainStats();
         public MultiObsidianPlatform multi_obsidian_platform = new MultiObsidianPlatform();
         public OpProtect op_protect = new OpProtect();
         public PvpToggle pvp_toggle = new PvpToggle();
@@ -240,9 +240,9 @@ public class ConfigGSON {
         public class Works {
             public boolean enable = true;
 
-            public int sampleTimeMS = FabricLoader.getInstance().isDevelopmentEnvironment() ? 60 * 1000 : 60 * 1000 * 60;
-            public int sampleDistanceLimit = 512;
-            public int sampleCounterTopN = 20;
+            public int sample_time_ms = FabricLoader.getInstance().isDevelopmentEnvironment() ? 60 * 1000 : 60 * 1000 * 60;
+            public int sample_distance_limit = 512;
+            public int sample_counter_top_n = 20;
         }
 
         public class WorldDownloader {

@@ -35,7 +35,7 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
             this.put("command_cooldown", () -> ConfigManager.configWrapper.instance().modules.command_cooldown.enable);
             this.put("deathlog", () -> ConfigManager.configWrapper.instance().modules.death_log.enable);
             this.put("dynamic_motd", () -> ConfigManager.configWrapper.instance().modules.dynamic_motd.enable);
-            this.put("main_stats", () -> ConfigManager.configWrapper.instance().modules.mainStats.enable);
+            this.put("main_stats", () -> ConfigManager.configWrapper.instance().modules.main_stats.enable);
             this.put("multi_obsidian_platform", () -> ConfigManager.configWrapper.instance().modules.multi_obsidian_platform.enable);
             this.put("newbie_welcome", () -> ConfigManager.configWrapper.instance().modules.newbie_welcome.enable);
             this.put("op_protect", () -> ConfigManager.configWrapper.instance().modules.op_protect.enable);

@@ -86,7 +86,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
         // check npe to avoid broken
         if (this.sample.sampleCounter != null) {
             // trim counter
-            if (this.sample.sampleCounter.size() > ConfigManager.configWrapper.instance().modules.works.sampleCounterTopN) {
+            if (this.sample.sampleCounter.size() > ConfigManager.configWrapper.instance().modules.works.sample_counter_top_n) {
                 trimCounter();
             }
             ret.add(MessageUtil.ofVomponent(player, "works.production_work.prop.sample_counter"));
@@ -104,7 +104,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
         new InputSignGui(player, MessageUtil.ofString(player, "works.production_work.prompt.input.sample_distance")) {
             @Override
             public void onClose() {
-                int limit = ConfigManager.configWrapper.instance().modules.works.sampleDistanceLimit;
+                int limit = ConfigManager.configWrapper.instance().modules.works.sample_distance_limit;
                 int current;
                 try {
                     current = Integer.parseInt(this.getLine(0).getString());
@@ -227,7 +227,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
 
     public void startSample(ServerPlayer player) {
         this.sample.sampleStartTimeMS = System.currentTimeMillis();
-        this.sample.sampleEndTimeMS = this.sample.sampleStartTimeMS + ConfigManager.configWrapper.instance().modules.works.sampleTimeMS;
+        this.sample.sampleEndTimeMS = this.sample.sampleStartTimeMS + ConfigManager.configWrapper.instance().modules.works.sample_time_ms;
         this.sample.sampleDimension = player.serverLevel().dimension().location().toString();
         this.sample.sampleX = player.getX();
         this.sample.sampleY = player.getY();
@@ -256,7 +256,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
                 .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
                 .toList();
 
-        int N = ConfigManager.configWrapper.instance().modules.works.sampleCounterTopN;
+        int N = ConfigManager.configWrapper.instance().modules.works.sample_counter_top_n;
         this.sample.sampleCounter.clear();
         for (int i = 0; i < N && i < sortedEntries.size(); i++) {
             this.sample.sampleCounter.put(sortedEntries.get(i).getKey(), sortedEntries.get(i).getValue());

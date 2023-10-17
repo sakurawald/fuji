@@ -8,9 +8,11 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
+import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.chat_style.display.DisplayHelper;
 import io.github.sakurawald.module.chat_style.mention.MentionPlayersTask;
 import io.github.sakurawald.module.main_stats.MainStats;
+import io.github.sakurawald.module.main_stats.MainStatsModule;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +52,7 @@ public class ChatStyleModule extends AbstractModule {
     @Getter
     private Queue<Component> chatHistory;
 
+    private final MainStatsModule mainStatsModule = ModuleManager.getOrNewInstance(MainStatsModule.class);
 
     @Override
     public Supplier<Boolean> enableModule() {
@@ -164,13 +167,15 @@ public class ChatStyleModule extends AbstractModule {
         message = ConfigManager.chatWrapper.instance().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
                 .replace("%message%", message);
         message = resolveMentionTag(player, message);
-
-        /* resolve stats */
         String format = ConfigManager.configWrapper.instance().modules.chat_style.format;
         format = format.replace("%message%", message);
         format = format.replace("%player%", player.getGameProfile().getName());
-        MainStats stats = MainStats.uuid2stats.getOrDefault(player.getUUID().toString(), new MainStats());
-        format = stats.update(player).resolve(format);
+
+        /* resolve stats */
+        if (mainStatsModule != null) {
+            MainStats stats = MainStats.uuid2stats.getOrDefault(player.getUUID().toString(), new MainStats());
+            format = stats.update(player).resolve(format);
+        }
 
         /* resolve tags */
         Component component = miniMessage.deserialize(format, Formatter.date("date", LocalDateTime.now(ZoneId.systemDefault()))).asComponent();

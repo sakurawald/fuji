@@ -24,7 +24,7 @@ public class MainStatsModule extends AbstractModule {
 
     @Override
     public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.mainStats.enable;
+        return () -> ConfigManager.configWrapper.instance().modules.main_stats.enable;
     }
 
     @Override
