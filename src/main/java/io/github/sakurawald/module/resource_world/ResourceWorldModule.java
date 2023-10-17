@@ -49,10 +49,10 @@ import static net.minecraft.commands.Commands.literal;
 @Slf4j
 public class ResourceWorldModule extends AbstractModule {
 
-    private static final String DEFAULT_RESOURCE_WORLD_NAMESPACE = "resource_world";
-    private static final String DEFAULT_THE_NETHER_PATH = "the_nether";
-    private static final String DEFAULT_THE_END_PATH = "the_end";
-    private static final String DEFAULT_OVERWORLD_PATH = "overworld";
+    private final String DEFAULT_RESOURCE_WORLD_NAMESPACE = "resource_world";
+    private final String DEFAULT_THE_NETHER_PATH = "the_nether";
+    private final String DEFAULT_THE_END_PATH = "the_end";
+    private final String DEFAULT_OVERWORLD_PATH = "overworld";
 
 
     @Override

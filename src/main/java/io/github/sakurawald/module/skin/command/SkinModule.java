@@ -28,7 +28,6 @@ import static net.minecraft.commands.Commands.literal;
 
 public class SkinModule extends AbstractModule {
 
-
     @Override
     public Supplier<Boolean> enableModule() {
         return () -> ConfigManager.configWrapper.instance().modules.skin.enable;

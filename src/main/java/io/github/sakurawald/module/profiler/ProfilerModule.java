@@ -31,7 +31,7 @@ import java.util.function.Supplier;
 
 @Slf4j
 public class ProfilerModule extends AbstractModule {
-    public static String formatBytes(long bytes) {
+    public String formatBytes(long bytes) {
         if (bytes == -1) return "N/A";
         if (bytes < 1024) {
             return bytes + "B";

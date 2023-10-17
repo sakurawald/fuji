@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.newbie_welcome;
 
+import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,6 +20,6 @@ public class NewbieWelcomeModule extends AbstractModule {
 
     @Override
     public Supplier<Boolean> enableModule() {
-        return () -> true;
+        return () -> ConfigManager.configWrapper.instance().modules.newbie_welcome.enable;
     }
 }

@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.chat_style;
+package io.github.sakurawald.module.chat_style.mention;
 
 import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.config.ConfigGSON;

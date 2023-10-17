@@ -7,7 +7,6 @@ import io.github.sakurawald.util.WebUtils;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
 import java.util.UUID;
 
 public class MojangSkinProvider {

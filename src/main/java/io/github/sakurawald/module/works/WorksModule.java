@@ -40,7 +40,7 @@ import java.util.function.Supplier;
 @Slf4j
 public class WorksModule extends AbstractModule {
 
-    private static final int PAGE_SIZE = 9 * 5;
+    private final int PAGE_SIZE = 9 * 5;
 
 
     @Override

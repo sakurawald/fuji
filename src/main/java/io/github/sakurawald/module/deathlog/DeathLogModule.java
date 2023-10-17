@@ -45,22 +45,22 @@ import static net.minecraft.commands.Commands.argument;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 @Slf4j
 public class DeathLogModule extends AbstractModule {
-    private static final Path STORAGE_PATH = ServerMain.CONFIG_PATH.resolve("deathlog");
-    private static final String DEATHS = "Deaths";
-    private static final String TIME = "time";
-    private static final String REASON = "reason";
-    private static final String DIMENSION = "dimension";
-    private static final String X = "x";
-    private static final String Y = "y";
-    private static final String Z = "z";
-    private static final String REMARK = "remark";
-    private static final String ARMOR = "armor";
-    private static final String OFFHAND = "offhand";
-    private static final String ITEM = "item";
-    private static final String SCORE = "score";
-    private static final String XP_LEVEL = "xp_level";
-    private static final String XP_PROGRESS = "xp_progress";
-    private static final String INVENTORY = "inventory";
+    private final Path STORAGE_PATH = ServerMain.CONFIG_PATH.resolve("deathlog");
+    private final String DEATHS = "Deaths";
+    private final String TIME = "time";
+    private final String REASON = "reason";
+    private final String DIMENSION = "dimension";
+    private final String X = "x";
+    private final String Y = "y";
+    private final String Z = "z";
+    private final String REMARK = "remark";
+    private final String ARMOR = "armor";
+    private final String OFFHAND = "offhand";
+    private final String ITEM = "item";
+    private final String SCORE = "score";
+    private final String XP_LEVEL = "xp_level";
+    private final String XP_PROGRESS = "xp_progress";
+    private final String INVENTORY = "inventory";
 
 
     @Override

@@ -28,7 +28,6 @@ public class ConfigGSON {
         public Tpa tpa = new Tpa();
         public Works works = new Works();
         public WorldDownloader world_downloader = new WorldDownloader();
-        public Display display = new Display();
         public BypassThings bypass_things = new BypassThings();
         public DeathLog death_log = new DeathLog();
         public MainStats mainStats = new MainStats();
@@ -175,6 +174,7 @@ public class ConfigGSON {
             public MentionPlayer mention_player = new MentionPlayer();
 
             public History history = new History();
+            public Display display = new Display();
 
             public class History {
                 public int cache_size = 50;
@@ -187,6 +187,11 @@ public class ConfigGSON {
 
                 public int limit = 3;
                 public int interval = 1000;
+            }
+
+            public class Display {
+
+                public int expiration_duration_s = 3600;
             }
         }
 
@@ -247,9 +252,6 @@ public class ConfigGSON {
             public int context_cache_size = 5;
         }
 
-        public class Display {
-            public int expiration_duration_s = 3600;
-        }
 
         public class BypassThings {
 

@@ -7,6 +7,7 @@ import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.module.AbstractModule;
 import lombok.SneakyThrows;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -44,7 +45,7 @@ public class TestModule extends AbstractModule {
 
     @Override
     public Supplier<Boolean> enableModule() {
-        return () -> true;
+        return () -> FabricLoader.getInstance().isDevelopmentEnvironment();
     }
 
     @Override

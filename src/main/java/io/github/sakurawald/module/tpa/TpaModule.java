@@ -6,7 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
-import io.github.sakurawald.module.chat_style.MentionPlayersTask;
+import io.github.sakurawald.module.chat_style.mention.MentionPlayersTask;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

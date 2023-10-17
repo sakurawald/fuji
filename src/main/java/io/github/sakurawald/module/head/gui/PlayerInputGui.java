@@ -6,6 +6,7 @@ import com.mojang.authlib.minecraft.MinecraftSessionService;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.AnvilInputGui;
 import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.head.HeadModule;
 import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.nbt.CompoundTag;
@@ -23,9 +24,9 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 class PlayerInputGui extends AnvilInputGui {
+    final HeadModule module = ModuleManager.getOrNewInstance(HeadModule.class);
     private final HeadGui parentGui;
     private final ItemStack outputStack = Items.PLAYER_HEAD.getDefaultInstance();
-
     private long apiDebounce = 0;
 
     public PlayerInputGui(HeadGui parentGui) {
@@ -82,11 +83,11 @@ class PlayerInputGui extends AnvilInputGui {
                 var builder = GuiElementBuilder.from(outputStack);
                 if (ConfigManager.headWrapper.instance().economyType != HeadModule.EconomyType.FREE) {
                     builder.addLoreLine(Component.empty());
-                    builder.addLoreLine(MessageUtil.ofVomponent(player, "head.price").copy().append(HeadModule.getCost()));
+                    builder.addLoreLine(MessageUtil.ofVomponent(player, "head.price").copy().append(module.getCost()));
                 }
 
                 this.setSlot(2, builder.asStack(), (index, type, action, gui) ->
-                        HeadModule.tryPurchase(player, 1, () -> {
+                        module.tryPurchase(player, 1, () -> {
                             var cursorStack = getPlayer().containerMenu.getCarried();
                             if (player.containerMenu.getCarried().isEmpty()) {
                                 player.containerMenu.setCarried(outputStack.copy());

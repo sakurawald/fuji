@@ -32,7 +32,6 @@ import java.util.function.Supplier;
 
 public class TopChunksModule extends AbstractModule {
 
-
     @Override
     public Supplier<Boolean> enableModule() {
         return () -> ConfigManager.configWrapper.instance().modules.top_chunks.enable;

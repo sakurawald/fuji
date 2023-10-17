@@ -7,7 +7,6 @@ import io.github.sakurawald.module.chat_style.ChatStyleModule;
 import io.github.sakurawald.module.command_cooldown.CommandCooldownModule;
 import io.github.sakurawald.module.config.ConfigModule;
 import io.github.sakurawald.module.deathlog.DeathLogModule;
-import io.github.sakurawald.module.display.DisplayModule;
 import io.github.sakurawald.module.head.HeadModule;
 import io.github.sakurawald.module.main_stats.MainStatsModule;
 import io.github.sakurawald.module.motd.DynamicMotdModule;
@@ -47,7 +46,6 @@ public class ModuleManager {
         getOrNewInstance(WorksModule.class);
         getOrNewInstance(WorldDownloaderModule.class);
         getOrNewInstance(MainStatsModule.class);
-        getOrNewInstance(DisplayModule.class);
         getOrNewInstance(NewbieWelcomeModule.class);
         getOrNewInstance(CommandCooldownModule.class);
         getOrNewInstance(DynamicMotdModule.class);

@@ -2,6 +2,7 @@ package io.github.sakurawald.module.head.gui;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
+import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.head.HeadModule;
 import io.github.sakurawald.module.head.api.Category;
 import io.github.sakurawald.util.MessageUtil;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 
 public class HeadGui extends SimpleGui {
     protected final ServerPlayer player;
+    final HeadModule module = ModuleManager.getOrNewInstance(HeadModule.class);
 
     public HeadGui(ServerPlayer player) {
         super(MenuType.GENERIC_9x2, player, false);
@@ -37,7 +39,7 @@ public class HeadGui extends SimpleGui {
 
     private void addCategoryButton(int index, Category category) {
         this.setSlot(index, category.of(player), (i, type, action, gui) -> {
-            var headsGui = new PagedHeadsGui(this, new ArrayList<>(HeadModule.heads.get(category)));
+            var headsGui = new PagedHeadsGui(this, new ArrayList<>(module.heads.get(category)));
             headsGui.setTitle(category.getDisplayName(player));
             headsGui.open();
         });

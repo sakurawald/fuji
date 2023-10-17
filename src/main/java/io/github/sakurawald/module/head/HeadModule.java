@@ -29,11 +29,11 @@ import java.util.function.Supplier;
 
 public class HeadModule extends AbstractModule {
 
-    public static final HeadDatabaseAPI HEAD_DATABASE = new HeadDatabaseAPI();
-    public static Multimap<Category, Head> heads = HashMultimap.create();
+    public final HeadDatabaseAPI HEAD_DATABASE = new HeadDatabaseAPI();
+    public Multimap<Category, Head> heads = HashMultimap.create();
 
     @SuppressWarnings("UnstableApiUsage")
-    public static void tryPurchase(ServerPlayer player, int amount, Runnable onPurchase) {
+    public void tryPurchase(ServerPlayer player, int amount, Runnable onPurchase) {
         int trueAmount = amount * ConfigManager.headWrapper.instance().costAmount;
         switch (ConfigManager.headWrapper.instance().economyType) {
             case FREE -> onPurchase.run();
@@ -49,7 +49,7 @@ public class HeadModule extends AbstractModule {
         }
     }
 
-    public static Component getCost() {
+    public Component getCost() {
         return switch (ConfigManager.headWrapper.instance().economyType) {
             case ITEM ->
                     Component.empty().append(getCostItem().getDescription()).append(Component.nullToEmpty(" × " + ConfigManager.headWrapper.instance().costAmount));
@@ -57,7 +57,7 @@ public class HeadModule extends AbstractModule {
         };
     }
 
-    public static Item getCostItem() {
+    public Item getCostItem() {
         return BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(ConfigManager.headWrapper.instance().costType));
     }
 

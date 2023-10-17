@@ -8,8 +8,8 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
-import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.display.DisplayModule;
+import io.github.sakurawald.module.chat_style.display.DisplayHelper;
+import io.github.sakurawald.module.chat_style.mention.MentionPlayersTask;
 import io.github.sakurawald.module.main_stats.MainStats;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;
@@ -46,7 +46,6 @@ import static net.minecraft.commands.Commands.literal;
 @Slf4j
 public class ChatStyleModule extends AbstractModule {
 
-    private static final DisplayModule displayModule = ModuleManager.getOrNewInstance(DisplayModule.class);
     private final MiniMessage miniMessage = MiniMessage.builder().build();
     @Getter
     private Queue<Component> chatHistory;
@@ -101,7 +100,7 @@ public class ChatStyleModule extends AbstractModule {
     }
 
     private Component resolveItemTag(ServerPlayer player, Component component) {
-        String displayUUID = displayModule.createItemDisplay(player);
+        String displayUUID = DisplayHelper.createItemDisplay(player);
         Component replacement =
                 player.getMainHandItem().getDisplayName().asComponent()
                         .hoverEvent(MessageUtil.ofComponent(player, "display.click.prompt"))
@@ -110,7 +109,7 @@ public class ChatStyleModule extends AbstractModule {
     }
 
     private Component resolveInvTag(ServerPlayer player, Component component) {
-        String displayUUID = displayModule.createInventoryDisplay(player);
+        String displayUUID = DisplayHelper.createInventoryDisplay(player);
         Component replacement =
                 MessageUtil.ofComponent(player, "display.inventory.text")
                         .hoverEvent(MessageUtil.ofComponent(player, "display.click.prompt"))
@@ -119,7 +118,7 @@ public class ChatStyleModule extends AbstractModule {
     }
 
     private Component resolveEnderTag(ServerPlayer player, Component component) {
-        String displayUUID = displayModule.createEnderChestDisplay(player);
+        String displayUUID = DisplayHelper.createEnderChestDisplay(player);
         Component replacement =
                 MessageUtil.ofComponent(player, "display.ender_chest.text")
                         .hoverEvent(MessageUtil.ofComponent(player, "display.click.prompt"))
@@ -131,9 +130,9 @@ public class ChatStyleModule extends AbstractModule {
     private ClickEvent displayCallback(String displayUUID) {
         return ClickEvent.callback(audience -> {
             if (audience instanceof CommandSourceStack css && css.getPlayer() != null) {
-                displayModule.viewDisplay(css.getPlayer(), displayUUID);
+                DisplayHelper.viewDisplay(css.getPlayer(), displayUUID);
             }
-        }, ClickCallback.Options.builder().lifetime(Duration.of(ConfigManager.configWrapper.instance().modules.display.expiration_duration_s, ChronoUnit.SECONDS))
+        }, ClickCallback.Options.builder().lifetime(Duration.of(ConfigManager.configWrapper.instance().modules.chat_style.display.expiration_duration_s, ChronoUnit.SECONDS))
                 .uses(Integer.MAX_VALUE).build());
     }
 

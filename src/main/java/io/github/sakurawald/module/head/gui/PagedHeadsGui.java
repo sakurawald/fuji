@@ -6,6 +6,7 @@ import eu.pb4.sgui.api.gui.GuiInterface;
 import eu.pb4.sgui.api.gui.layered.Layer;
 import eu.pb4.sgui.api.gui.layered.LayeredGui;
 import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.head.HeadModule;
 import io.github.sakurawald.module.head.api.Head;
 import io.github.sakurawald.util.GuiUtil;
@@ -23,6 +24,7 @@ public class PagedHeadsGui extends LayeredGui {
     final GuiInterface parent;
     final Layer contentLayer;
     final Layer navigationLayer;
+    final HeadModule module = ModuleManager.getOrNewInstance(HeadModule.class);
     public int page = 0;
 
     public PagedHeadsGui(GuiInterface parent, List<Head> heads) {
@@ -88,7 +90,7 @@ public class PagedHeadsGui extends LayeredGui {
                 var builder = GuiElementBuilder.from(head.of());
                 if (ConfigManager.headWrapper.instance().economyType != HeadModule.EconomyType.FREE) {
                     builder.addLoreLine(Component.empty());
-                    builder.addLoreLine(MessageUtil.ofVomponent(parent.getPlayer(), "head.price").copy().append(HeadModule.getCost()));
+                    builder.addLoreLine(MessageUtil.ofVomponent(parent.getPlayer(), "head.price").copy().append(module.getCost()));
                 }
 
                 contentLayer.setSlot(i, builder.asStack(), (index, type, action) -> processHeadClick(head, type));
@@ -106,27 +108,27 @@ public class PagedHeadsGui extends LayeredGui {
 
         if (cursorStack.isEmpty()) {
             if (type.shift) {
-                HeadModule.tryPurchase(player, 1, () -> player.getInventory().add(headStack));
+                module.tryPurchase(player, 1, () -> player.getInventory().add(headStack));
             } else if (type.isMiddle) {
-                HeadModule.tryPurchase(player, headStack.getMaxStackSize(), () -> {
+                module.tryPurchase(player, headStack.getMaxStackSize(), () -> {
                     headStack.setCount(headStack.getMaxStackSize());
                     player.containerMenu.setCarried(headStack);
                 });
             } else {
-                HeadModule.tryPurchase(player, 1, () -> player.containerMenu.setCarried(headStack));
+                module.tryPurchase(player, 1, () -> player.containerMenu.setCarried(headStack));
             }
         } else if (cursorStack.getMaxStackSize() <= cursorStack.getCount()) {
             //noinspection UnnecessaryReturnStatement
             return;
         } else if (ItemStack.isSameItemSameTags(headStack, cursorStack)) {
             if (type.isLeft) {
-                HeadModule.tryPurchase(player, 1, () -> cursorStack.grow(1));
+                module.tryPurchase(player, 1, () -> cursorStack.grow(1));
             } else if (type.isRight) {
                 if (ConfigManager.headWrapper.instance().economyType == HeadModule.EconomyType.FREE)
                     cursorStack.shrink(1);
             } else if (type.isMiddle) {
                 var amount = headStack.getMaxStackSize() - cursorStack.getCount();
-                HeadModule.tryPurchase(player, amount, () -> {
+                module.tryPurchase(player, amount, () -> {
                     headStack.setCount(headStack.getMaxStackSize());
                     player.containerMenu.setCarried(headStack);
                 });

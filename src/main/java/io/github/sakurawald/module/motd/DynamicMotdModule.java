@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 
 @Slf4j
 public class DynamicMotdModule extends AbstractModule {
-    private static final File ICON_FOLDER = ServerMain.CONFIG_PATH.resolve("icon").toFile();
+    private final File ICON_FOLDER = ServerMain.CONFIG_PATH.resolve("icon").toFile();
 
     private List<String> descriptions = new ArrayList<>();
 

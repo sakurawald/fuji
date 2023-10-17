@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 public class BetterFakePlayerModule extends AbstractModule {
-    private static final ArrayList<String> CONSTANT_EMPTY_LIST = new ArrayList<>();
+    private final ArrayList<String> CONSTANT_EMPTY_LIST = new ArrayList<>();
     private final HashMap<String, ArrayList<String>> player2fakePlayers = new HashMap<>();
     private final HashMap<String, Long> player2expiration = new HashMap<>();
 

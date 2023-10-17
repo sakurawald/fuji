@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.display.gui;
+package io.github.sakurawald.module.chat_style.display.gui;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;

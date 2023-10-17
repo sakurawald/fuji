@@ -41,7 +41,6 @@ import java.util.function.Supplier;
 @Slf4j
 public class WorldDownloaderModule extends AbstractModule {
 
-    private static final double BYTE_TO_MEGABYTE = 1.0 * 1024 * 1024;
     private EvictingQueue<String> contextQueue;
     private HttpServer server;
 
@@ -116,6 +115,7 @@ public class WorldDownloaderModule extends AbstractModule {
         String path = "/download/" + UUID.randomUUID();
         contextQueue.add(path);
         File file = compressRegionFile(player);
+        double BYTE_TO_MEGABYTE = 1.0 * 1024 * 1024;
         MessageUtil.sendBroadcast("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
         server.createContext(path, new FileDownloadHandler(this, file, ConfigManager.configWrapper.instance().modules.world_downloader.bytes_per_second_limit));
         MessageUtil.sendMessage(player, "world_downloader.response", path);

@@ -15,7 +15,6 @@ import java.util.function.Supplier;
 @Slf4j
 public class BetterInfoModule extends AbstractModule {
 
-
     @Override
     public Supplier<Boolean> enableModule() {
         return () -> ConfigManager.configWrapper.instance().modules.better_info.enable;
