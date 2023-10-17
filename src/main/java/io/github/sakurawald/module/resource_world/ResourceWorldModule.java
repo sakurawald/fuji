@@ -5,6 +5,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.serialization.Lifecycle;
+import io.github.sakurawald.config.ConfigGSON;
 import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.mixin.resource_world.MinecraftServerAccessor;
 import io.github.sakurawald.module.AbstractModule;
@@ -111,9 +112,17 @@ public class ResourceWorldModule extends AbstractModule {
 
     public void loadWorlds(MinecraftServer server) {
         long seed = ConfigManager.configWrapper.instance().modules.resource_world.seed;
-        createWorld(server, BuiltinDimensionTypes.OVERWORLD, DEFAULT_OVERWORLD_PATH, seed);
-        createWorld(server, BuiltinDimensionTypes.NETHER, DEFAULT_THE_NETHER_PATH, seed);
-        createWorld(server, BuiltinDimensionTypes.END, DEFAULT_THE_END_PATH, seed);
+
+        ConfigGSON.Modules.ResourceWorld.ResourceWorlds resourceWorlds = ConfigManager.configWrapper.instance().modules.resource_world.resource_worlds;
+        if (resourceWorlds.enable_overworld) {
+            createWorld(server, BuiltinDimensionTypes.OVERWORLD, DEFAULT_OVERWORLD_PATH, seed);
+        }
+        if (resourceWorlds.enable_the_nether) {
+            createWorld(server, BuiltinDimensionTypes.NETHER, DEFAULT_THE_NETHER_PATH, seed);
+        }
+        if (resourceWorlds.enable_the_end) {
+            createWorld(server, BuiltinDimensionTypes.END, DEFAULT_THE_END_PATH, seed);
+        }
     }
 
     @SuppressWarnings("DataFlowIssue")

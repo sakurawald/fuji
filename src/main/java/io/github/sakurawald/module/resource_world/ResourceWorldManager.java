@@ -70,7 +70,7 @@ public class ResourceWorldManager {
         for (ServerPlayer player : players) {
             // fix: if the player is inside resource-world while resetting the worlds, then resource worlds will delay its deletion until the player left the resource-world.
             if (teleportWarmupModule != null) {
-                teleportWarmupModule.tickets.put(player,
+                teleportWarmupModule.tickets.put(player.getGameProfile().getName(),
                         new TeleportTicket(player
                                 , new Position(world, player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot())
                                 , new Position(overworld, spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5, 0, 0)

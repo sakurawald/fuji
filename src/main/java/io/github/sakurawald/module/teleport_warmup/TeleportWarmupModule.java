@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 @Slf4j
 public class TeleportWarmupModule extends AbstractModule {
 
-    public final HashMap<ServerPlayer, TeleportTicket> tickets = new HashMap<>();
+    public final HashMap<String, TeleportTicket> tickets = new HashMap<>();
 
 
     @Override
@@ -36,9 +36,9 @@ public class TeleportWarmupModule extends AbstractModule {
     public void onServerTick(MinecraftServer server) {
         if (tickets.isEmpty()) return;
 
-        Iterator<Map.Entry<ServerPlayer, TeleportTicket>> iterator = tickets.entrySet().iterator();
+        Iterator<Map.Entry<String, TeleportTicket>> iterator = tickets.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<ServerPlayer, TeleportTicket> pair = iterator.next();
+            Map.Entry<String, TeleportTicket> pair = iterator.next();
             TeleportTicket ticket = pair.getValue();
             BossBar bossbar = ticket.bossbar;
 

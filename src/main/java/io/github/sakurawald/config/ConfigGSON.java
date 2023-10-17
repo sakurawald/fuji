@@ -42,8 +42,17 @@ public class ConfigGSON {
 
         public class ResourceWorld {
             public boolean enable = true;
+
+            public ResourceWorlds resource_worlds = new ResourceWorlds();
             public String auto_reset_cron = "0 0 20 * * ?";
             public long seed = 0L;
+
+            public class ResourceWorlds {
+                public boolean enable_overworld = true;
+                public boolean enable_the_nether = true;
+                public boolean enable_the_end = true;
+            }
+
         }
 
         public class DynamicMOTD {

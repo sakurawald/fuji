@@ -38,15 +38,16 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
         // and teleport to the target world. This will cause the teleport warmup to be triggered.
         if (CarpetUtil.isFakePlayer(player)) return;
 
-        if (!module.tickets.containsKey(player)) {
-            module.tickets.put(player,
+        String playerName = player.getGameProfile().getName();
+        if (!module.tickets.containsKey(playerName)) {
+            module.tickets.put(playerName,
                     new TeleportTicket(player
                             , new Position(player.level(), player.position().x, player.position().y, player.position().z, player.getYRot(), player.getXRot())
                             , new Position(targetWorld, x, y, z, yaw, pitch), false));
             ci.cancel();
             return;
         } else {
-            TeleportTicket ticket = module.tickets.get(player);
+            TeleportTicket ticket = module.tickets.get(playerName);
             if (!ticket.ready) {
                 MessageUtil.sendActionBar(player, "teleport_warmup.another_teleportation_in_progress");
                 ci.cancel();
@@ -65,9 +66,10 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
         // If damage was actually applied...
         if (cir.getReturnValue()) {
             ServerPlayer player = (ServerPlayer) (Object) this;
-            if (module.tickets.containsKey(player)) {
-                module.tickets.get(player).bossbar.removeViewer(player);
-                module.tickets.remove(player);
+            String playerName = player.getGameProfile().getName();
+            if (module.tickets.containsKey(playerName)) {
+                module.tickets.get(playerName).bossbar.removeViewer(player);
+                module.tickets.remove(playerName);
             }
         }
     }

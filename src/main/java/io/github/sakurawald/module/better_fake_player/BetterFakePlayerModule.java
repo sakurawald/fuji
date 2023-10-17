@@ -22,7 +22,6 @@ import net.minecraft.server.level.ServerPlayer;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
