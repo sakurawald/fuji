@@ -5,7 +5,6 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.serialization.Lifecycle;
-import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.mixin.resource_world.MinecraftServerAccessor;
 import io.github.sakurawald.module.AbstractModule;
@@ -13,6 +12,7 @@ import io.github.sakurawald.module.newbie_welcome.RandomTeleport;
 import io.github.sakurawald.module.resource_world.interfaces.DimensionOptionsMixinInterface;
 import io.github.sakurawald.module.resource_world.interfaces.SimpleRegistryMixinInterface;
 import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.ScheduleUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -39,9 +39,10 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.dimension.end.EndDragonFight;
 import net.minecraft.world.level.levelgen.RandomSupport;
+import org.quartz.Job;
+import org.quartz.JobDataMap;
+import org.quartz.JobExecutionContext;
 
-import java.time.LocalTime;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 import static net.minecraft.commands.Commands.literal;
@@ -71,15 +72,12 @@ public class ResourceWorldModule extends AbstractModule {
     }
 
     public void registerScheduleTask(MinecraftServer server) {
-        LocalTime now = LocalTime.now();
-        long initialDelay = LocalTime.of(20, 0).toSecondOfDay() - now.toSecondOfDay();
-        if (initialDelay < 0) {
-            initialDelay += TimeUnit.DAYS.toSeconds(1);
-        }
-        ServerMain.getSCHEDULED_EXECUTOR_SERVICE().scheduleAtFixedRate(() -> {
-            log.info("Start to reset resource worlds.");
-            server.execute(() -> this.resetWorlds(server));
-        }, initialDelay, TimeUnit.DAYS.toSeconds(1), TimeUnit.SECONDS);
+        ScheduleUtil.addJob(ResourceWorldAutoResetJob.class, ConfigManager.configWrapper.instance().modules.resource_world.auto_reset_cron, new JobDataMap() {
+            {
+                this.put(MinecraftServer.class.getName(), server);
+                this.put(ResourceWorldModule.class.getName(), ResourceWorldModule.this);
+            }
+        });
     }
 
     @SuppressWarnings("unused")
@@ -252,4 +250,14 @@ public class ResourceWorldModule extends AbstractModule {
         }
     }
 
+    public static class ResourceWorldAutoResetJob implements Job {
+
+        @Override
+        public void execute(JobExecutionContext context) {
+            log.info("Start to reset resource worlds.");
+            MinecraftServer server = (MinecraftServer) context.getJobDetail().getJobDataMap().get(MinecraftServer.class.getName());
+            ResourceWorldModule module = (ResourceWorldModule) context.getJobDetail().getJobDataMap().get(ResourceWorldModule.class.getName());
+            server.execute(() -> module.resetWorlds(server));
+        }
+    }
 }

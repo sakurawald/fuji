@@ -1,19 +1,22 @@
 package io.github.sakurawald.module.main_stats;
 
-import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.config.ConfigGSON;
 import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.motd.DynamicMotdModule;
+import io.github.sakurawald.util.ScheduleUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
+import org.quartz.Job;
+import org.quartz.JobDataMap;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 @Slf4j
@@ -83,13 +86,26 @@ public class MainStatsModule extends AbstractModule {
 
     public void registerScheduleTask(MinecraftServer server) {
         // async task
-        ServerMain.getSCHEDULED_EXECUTOR_SERVICE().scheduleAtFixedRate(() -> {
+        ScheduleUtil.addJob(UpdateMainStatsJob.class, "0 * * ? * *", new JobDataMap() {
+            {
+                this.put(MinecraftServer.class.getName(), server);
+                this.put(MainStatsModule.class.getName(), MainStatsModule.this);
+            }
+        });
+    }
+
+    public static class UpdateMainStatsJob implements Job {
+
+        @Override
+        public void execute(JobExecutionContext context) throws JobExecutionException {
             // save all online-player 's stats
+            MinecraftServer server = (MinecraftServer) context.getJobDetail().getJobDataMap().get(MinecraftServer.class.getName());
             server.getPlayerList().getPlayers().forEach((p) -> p.getStats().save());
 
             // update dynamic_motd
-            updateMainStats(server);
-        }, 10, 60, TimeUnit.SECONDS);
-    }
+            MainStatsModule module = (MainStatsModule) context.getJobDetail().getJobDataMap().get(MainStatsModule.class.getName());
+            module.updateMainStats(server);
 
+        }
+    }
 }

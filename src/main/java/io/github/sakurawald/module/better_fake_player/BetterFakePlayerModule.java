@@ -8,6 +8,7 @@ import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.ScheduleUtil;
 import io.github.sakurawald.util.TimeUtil;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -18,11 +19,14 @@ import net.minecraft.commands.Commands;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import org.quartz.Job;
+import org.quartz.JobDataMap;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 public class BetterFakePlayerModule extends AbstractModule {
@@ -157,7 +161,11 @@ public class BetterFakePlayerModule extends AbstractModule {
 
     @SuppressWarnings("unused")
     public void registerScheduleTask(MinecraftServer server) {
-        ServerMain.getSCHEDULED_EXECUTOR_SERVICE().scheduleAtFixedRate(this::manageFakePlayers, 0, 1, TimeUnit.MINUTES);
+        ScheduleUtil.addJob(ManageFakePlayersJob.class, "0 * * ? * *", new JobDataMap() {
+            {
+                this.put(BetterFakePlayerModule.class.getName(), BetterFakePlayerModule.this);
+            }
+        });
     }
 
     public boolean isMyFakePlayer(ServerPlayer player, ServerPlayer fakePlayer) {
@@ -169,46 +177,50 @@ public class BetterFakePlayerModule extends AbstractModule {
         return new GameProfile(offlinePlayerUUID, fakePlayerName);
     }
 
-    private void manageFakePlayers() {
-        /* validate */
-        validateFakePlayers();
+    public static class ManageFakePlayersJob implements Job {
 
-        int limit = getCurrentAmountLimit();
-        long currentTimeMS = System.currentTimeMillis();
-        for (String playerName : player2fakePlayers.keySet()) {
-            /* check for renew limits */
-            long expiration = player2expiration.getOrDefault(playerName, 0L);
-            ArrayList<String> fakePlayers = player2fakePlayers.getOrDefault(playerName, CONSTANT_EMPTY_LIST);
-            if (expiration <= currentTimeMS) {
-                /* auto-renew for online-playerName */
-                ServerPlayer playerByName = ServerMain.SERVER.getPlayerList().getPlayerByName(playerName);
-                if (playerByName != null) {
-                    renewFakePlayers(playerByName);
+        @Override
+        public void execute(JobExecutionContext context) throws JobExecutionException {
+            /* validate */
+            BetterFakePlayerModule module = (BetterFakePlayerModule) context.getJobDetail().getJobDataMap().get(BetterFakePlayerModule.class.getName());
+            module.validateFakePlayers();
+
+            int limit = module.getCurrentAmountLimit();
+            long currentTimeMS = System.currentTimeMillis();
+            for (String playerName : module.player2fakePlayers.keySet()) {
+                /* check for renew limits */
+                long expiration = module.player2expiration.getOrDefault(playerName, 0L);
+                ArrayList<String> fakePlayers = module.player2fakePlayers.getOrDefault(playerName, module.CONSTANT_EMPTY_LIST);
+                if (expiration <= currentTimeMS) {
+                    /* auto-renew for online-playerName */
+                    ServerPlayer playerByName = ServerMain.SERVER.getPlayerList().getPlayerByName(playerName);
+                    if (playerByName != null) {
+                        module.renewFakePlayers(playerByName);
+                        continue;
+                    }
+
+                    for (String fakePlayerName : fakePlayers) {
+                        ServerPlayer fakePlayer = ServerMain.SERVER.getPlayerList().getPlayerByName(fakePlayerName);
+                        if (fakePlayer == null) return;
+                        fakePlayer.kill();
+                        MessageUtil.sendBroadcast("better_fake_player.kick_for_expiration", fakePlayer.getGameProfile().getName(), playerName);
+                    }
+                    // remove entry
+                    module.player2expiration.remove(playerName);
+
+                    // we'll kick all fake players, so we don't need to check for amount limits
                     continue;
                 }
 
-                for (String fakePlayerName : fakePlayers) {
-                    ServerPlayer fakePlayer = ServerMain.SERVER.getPlayerList().getPlayerByName(fakePlayerName);
-                    if (fakePlayer == null) return;
+                /* check for amount limits */
+                for (int i = fakePlayers.size() - 1; i >= limit; i--) {
+                    ServerPlayer fakePlayer = ServerMain.SERVER.getPlayerList().getPlayerByName(fakePlayers.get(i));
+                    if (fakePlayer == null) continue;
                     fakePlayer.kill();
-                    MessageUtil.sendBroadcast("better_fake_player.kick_for_expiration", fakePlayer.getGameProfile().getName(), playerName);
+
+                    MessageUtil.sendBroadcast("better_fake_player.kick_for_amount", fakePlayer.getGameProfile().getName(), playerName);
                 }
-                // remove entry
-                player2expiration.remove(playerName);
-
-                // we'll kick all fake players, so we don't need to check for amount limits
-                continue;
-            }
-
-            /* check for amount limits */
-            for (int i = fakePlayers.size() - 1; i >= limit; i--) {
-                ServerPlayer fakePlayer = ServerMain.SERVER.getPlayerList().getPlayerByName(fakePlayers.get(i));
-                if (fakePlayer == null) continue;
-                fakePlayer.kill();
-
-                MessageUtil.sendBroadcast("better_fake_player.kick_for_amount", fakePlayer.getGameProfile().getName(), playerName);
             }
         }
     }
-
 }

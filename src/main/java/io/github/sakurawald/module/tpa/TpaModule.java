@@ -6,7 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
-import io.github.sakurawald.module.chat_style.mention.MentionPlayersTask;
+import io.github.sakurawald.module.chat_style.mention.MentionPlayersJob;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -113,7 +113,7 @@ public class TpaModule extends AbstractModule {
 
             ServerPlayer who = request.getTeleportWho();
             ServerPlayer to = request.getTeleportTo();
-            new MentionPlayersTask(request.isTpahere() ? to : who).startTask();
+            MentionPlayersJob.scheduleJob(request.isTpahere() ? to : who);
             who.teleportTo((ServerLevel) to.level(), to.getX(), to.getY(), to.getZ(), to.getYRot(), to.getXRot());
         } else if (status == ResponseStatus.DENY) {
             request.getSender().sendActionBar(request.asSenderComponent$Denied());
@@ -160,7 +160,7 @@ public class TpaModule extends AbstractModule {
 
         /* feedback */
         request.getReceiver().sendMessage(request.asReceiverComponent$Sent());
-        new MentionPlayersTask(request.getReceiver()).startTask();
+        MentionPlayersJob.scheduleJob(request.getReceiver());
         request.getSender().sendMessage(request.asSenderComponent$Sent());
         return Command.SINGLE_SUCCESS;
     }

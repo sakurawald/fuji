@@ -14,6 +14,7 @@ import io.github.sakurawald.module.works.work_type.ProductionWork;
 import io.github.sakurawald.module.works.work_type.Work;
 import io.github.sakurawald.util.GuiUtil;
 import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.ScheduleUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -30,10 +31,13 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+import org.quartz.Job;
+import org.quartz.JobDataMap;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 @SuppressWarnings("SameReturnValue")
@@ -56,20 +60,11 @@ public class WorksModule extends AbstractModule {
 
     @SuppressWarnings("unused")
     public void registerScheduleTask(MinecraftServer server) {
-        ServerMain.getSCHEDULED_EXECUTOR_SERVICE().scheduleAtFixedRate(() -> {
-            // save current works data
-            if (ServerMain.SERVER.isRunning()) {
-                ConfigManager.worksWrapper.saveToDisk();
+        ScheduleUtil.addJob(WorksScheduleJob.class, "0 * * ? * *", new JobDataMap() {
+            {
+                this.put(MinecraftServer.class.getName(), server);
             }
-
-            // run schedule method
-            HashSet<Work> works = new HashSet<>();
-            WorksCache.getBlockpos2works().values().forEach(works::addAll);
-            WorksCache.getEntity2works().values().forEach(works::addAll);
-            works.forEach(work -> {
-                if (work instanceof ScheduleMethod sm) sm.onSchedule();
-            });
-        }, 20, 60, TimeUnit.SECONDS);
+        });
     }
 
     @SuppressWarnings("unused")
@@ -267,5 +262,24 @@ public class WorksModule extends AbstractModule {
         return Command.SINGLE_SUCCESS;
     }
 
+    public static class WorksScheduleJob implements Job {
+
+        @Override
+        public void execute(JobExecutionContext context) throws JobExecutionException {
+            // save current works data
+            MinecraftServer server = (MinecraftServer) context.getJobDetail().getJobDataMap().get(MinecraftServer.class.getName());
+            if (server.isRunning()) {
+                ConfigManager.worksWrapper.saveToDisk();
+            }
+
+            // run schedule method
+            HashSet<Work> works = new HashSet<>();
+            WorksCache.getBlockpos2works().values().forEach(works::addAll);
+            WorksCache.getEntity2works().values().forEach(works::addAll);
+            works.forEach(work -> {
+                if (work instanceof ScheduleMethod sm) sm.onSchedule();
+            });
+        }
+    }
 }
 

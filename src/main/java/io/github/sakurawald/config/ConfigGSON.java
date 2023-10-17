@@ -42,6 +42,7 @@ public class ConfigGSON {
 
         public class ResourceWorld {
             public boolean enable = true;
+            public String auto_reset_cron = "0 * * ? * *";
             public long seed = 0L;
         }
 
@@ -184,9 +185,8 @@ public class ConfigGSON {
                 public String sound = "entity.experience_orb.pickup";
                 public float volume = 100f;
                 public float pitch = 1f;
-
-                public int limit = 3;
-                public int interval = 1000;
+                public int repeat_count = 3;
+                public int interval_ms = 1000;
             }
 
             public class Display {
@@ -247,6 +247,7 @@ public class ConfigGSON {
 
         public class WorldDownloader {
             public boolean enable = true;
+            public String url_format = "http://103.205.253.194:%port%%path%";
             public int port = 22222;
             public int bytes_per_second_limit = 128 * 1000;
             public int context_cache_size = 5;

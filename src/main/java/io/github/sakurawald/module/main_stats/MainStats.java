@@ -3,7 +3,6 @@ package io.github.sakurawald.module.main_stats;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.github.sakurawald.ServerMain;
 import lombok.ToString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;

@@ -10,7 +10,7 @@ import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.chat_style.display.DisplayHelper;
-import io.github.sakurawald.module.chat_style.mention.MentionPlayersTask;
+import io.github.sakurawald.module.chat_style.mention.MentionPlayersJob;
 import io.github.sakurawald.module.main_stats.MainStats;
 import io.github.sakurawald.module.main_stats.MainStatsModule;
 import io.github.sakurawald.util.MessageUtil;
@@ -49,10 +49,9 @@ import static net.minecraft.commands.Commands.literal;
 public class ChatStyleModule extends AbstractModule {
 
     private final MiniMessage miniMessage = MiniMessage.builder().build();
+    private final MainStatsModule mainStatsModule = ModuleManager.getOrNewInstance(MainStatsModule.class);
     @Getter
     private Queue<Component> chatHistory;
-
-    private final MainStatsModule mainStatsModule = ModuleManager.getOrNewInstance(MainStatsModule.class);
 
     @Override
     public Supplier<Boolean> enableModule() {
@@ -157,7 +156,7 @@ public class ChatStyleModule extends AbstractModule {
 
         /* run mention player task */
         if (!mentionedPlayers.isEmpty()) {
-            new MentionPlayersTask(mentionedPlayers).startTask();
+            MentionPlayersJob.scheduleJob(mentionedPlayers);
         }
         return str;
     }
