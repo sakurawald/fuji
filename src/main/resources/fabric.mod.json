@@ -15,7 +15,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "fun.sakurawald.ServerMain"
+      "io.github.sakurawald.ServerMain"
     ]
   },
   "accessWidener": "sakurawald.accesswidener",
