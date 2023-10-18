@@ -49,6 +49,7 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
             this.put("whitelist_fix", () -> ConfigManager.configWrapper.instance().modules.whitelist_fix.enable);
             this.put("works", () -> ConfigManager.configWrapper.instance().modules.works.enable);
             this.put("zero_command_permission", () -> ConfigManager.configWrapper.instance().modules.zero_command_permission.enable);
+            this.put("command_spy", () -> ConfigManager.configWrapper.instance().modules.command_spy.enable);
         }
     };
 

@@ -24,6 +24,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
+// Thanks to: https://modrinth.com/mod/skinrestorer
 @Slf4j
 public class SkinRestorer {
 

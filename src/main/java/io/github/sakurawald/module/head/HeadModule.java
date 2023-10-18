@@ -27,6 +27,7 @@ import net.minecraft.world.item.Item;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
+// Thanks to: https://modrinth.com/mod/headindex
 public class HeadModule extends AbstractModule {
 
     public final HeadDatabaseAPI HEAD_DATABASE = new HeadDatabaseAPI();

@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "sakurawald",
   "version": "${version}",
-  "name": "sakurawald",
-  "description": "A mod for play.sakurawald.fun",
+  "name": "SakuraWald",
+  "description": "A mod that provides many essential and useful modules for vanilla survival.",
   "authors": [
     "SakuraWald"
   ],
@@ -27,8 +27,5 @@
     "minecraft": "~1.20.1",
     "java": ">=17",
     "fabric-api": "*"
-  },
-  "suggests": {
-    "another-mod": "*"
   }
 }

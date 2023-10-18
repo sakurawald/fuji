@@ -39,6 +39,7 @@ public class ConfigGSON {
         public ZeroCommandPermission zero_command_permission = new ZeroCommandPermission();
         public Head head = new Head();
         public Profiler profiler = new Profiler();
+        public CommandSpy command_spy = new CommandSpy();
 
         public class ResourceWorld {
             public boolean enable = true;
@@ -266,7 +267,6 @@ public class ConfigGSON {
             public int context_cache_size = 5;
         }
 
-
         public class BypassThings {
 
 
@@ -328,6 +328,10 @@ public class ConfigGSON {
 
         public class Profiler {
 
+            public boolean enable = true;
+        }
+
+        public class CommandSpy {
             public boolean enable = true;
         }
     }
