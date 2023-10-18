@@ -1,5 +1,5 @@
 # SakuraWald-Fabric
-<img src="src/main/resources/assets/sakurawald/icon.png" width="128">
+<img src="src/main/resources/assets/sakurawald/icon.png" width="256" alt="mod icon">
 
 This is a minecraft mod that provides many essential and elementary modules for vanilla survival.
 
