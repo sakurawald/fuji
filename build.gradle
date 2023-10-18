@@ -25,10 +25,10 @@ repositories {
 }
 
 loom {
+// fix: adventure mod error in runServer()
 //    splitEnvironmentSourceSets()
 
     accessWidenerPath = file("src/main/resources/sakurawald.accesswidener")
-
     mods {
         "sakurawald" {
             sourceSet sourceSets.main
@@ -56,7 +56,9 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:${project.lombok_version}"
 
     implementation group: 'com.google.code.gson', name: 'gson', version: "${project.gson_version}"
+
     include(implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras_version}")))
+
     modImplementation("carpet:fabric-carpet:${project.carpet_core_version}")
 
     modImplementation include("me.lucko:fabric-permissions-api:${project.fabric_permissions_version}")
@@ -71,20 +73,10 @@ dependencies {
     modImplementation include("eu.pb4:sgui:${project.sgui_version}")
 
     compileOnly "me.lucko:spark-api:0.1-SNAPSHOT"
-//    Set<String> apiModules = [
-//            'fabric-api-base',
-//            'fabric-command-api-v2',
-//            'fabric-lifecycle-events-v1',
-//            'fabric-networking-api-v1'
-//    ]
-//    apiModules.forEach {
-//        modImplementation(fabricApi.module(it, '0.83.1+1.20.1'))
-//    }
 }
 
 processResources {
     inputs.property "version", project.version
-
     filesMatching("fabric.mod.json") {
         expand "version": project.version
     }
@@ -99,7 +91,6 @@ java {
     // if it is present.
     // If you remove this line, sources will not be generated.
     withSourcesJar()
-
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
@@ -127,3 +118,27 @@ publishing {
     }
 }
 
+var magicSourceDir = "build/magic-source/main/java"
+tasks.register('filterMagicValues', Copy) {
+    doFirst {
+        delete magicSourceDir
+    }
+    Properties magic = new Properties()
+    magic.load(project.rootProject.file('local.properties').newDataInputStream())
+    def tokens = ['magic_ip', 'magic_motd']
+    from("src/main/java") {
+        filter { line ->
+            tokens.each { token ->
+                line = line.replace("@${token}@", magic.getProperty(token))
+            }
+            return line
+        }
+    }
+    into(magicSourceDir)
+}
+
+compileJava {
+    dependsOn filterMagicValues
+    source = magicSourceDir
+    exclude("src/main/java")
+}

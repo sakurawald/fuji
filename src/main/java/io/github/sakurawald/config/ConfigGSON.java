@@ -59,7 +59,7 @@ public class ConfigGSON {
             public boolean enable = true;
             public List<String> descriptions = new ArrayList<>() {
                 {
-                    this.add("<gradient:#FF66B2:#FFB5CC>Pure Survival 1.20.1 / Up %uptime%H ❤ QQ Group 912363929</gradient><newline><gradient:#99CCFF:#BBDFFF>%playtime%🔥 %mined%⛏ %placed%🔳 %killed%🗡 %moved%🌍");
+                    this.add("@magic_motd@");
                 }
             };
         }
@@ -260,7 +260,7 @@ public class ConfigGSON {
 
         public class WorldDownloader {
             public boolean enable = true;
-            public String url_format = "http://103.205.253.194:%port%%path%";
+            public String url_format = "http://@magic_ip@:%port%%path%";
             public int port = 22222;
             public int bytes_per_second_limit = 128 * 1000;
             public int context_cache_size = 5;
