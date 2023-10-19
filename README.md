@@ -13,8 +13,11 @@ This is a minecraft mod that provides many essential and elementary modules for 
 
 # Modules
 - **PvpToggleModule**: provides a command to toggle the pvp status. (/pvp [on/off/status/list])
+<img src="https://github.com/SakuraWald/sakurawald-fabric/raw/master/.github/images/pvp-toggle.gif" alt="module presentation gif">
 - **ResourceWorldModule**: create and manage auto-reset resource world for overworld, the_nether and the_end.  (/rw [tp/delete/reset])
+<img src="https://github.com/SakuraWald/sakurawald-fabric/raw/master/.github/images/resource-world.gif" alt="module presentation gif">
 - **ChatStyleModule**: A simple chat style system which supports mini-message based parser, mention players, message format settings, chat-history remember and display ("item" -> item-display/shulker-box-display, "inv" -> inventory-display, "ender" -> enderchest-display). (/chat)
+<img src="https://github.com/SakuraWald/sakurawald-fabric/raw/master/.github/images/chat-style.gif" alt="module presentation gif">
 - **TopChunksModule**: Provides a command /chunks to show the most laggy chunks in the server.
 - **BetterFakePlayerModule**: provides some management for fake-player like: player can only manipulate their own fake-player, and the fake-player spawn-caps per player (caps can be set to change dynamically) and the renew-time for fake-player (e.g. every fake-player only live for 12 hrs, until you renew it).
 - **BetterInfoModule**: provides /info entity and add nbt-query for /info block
