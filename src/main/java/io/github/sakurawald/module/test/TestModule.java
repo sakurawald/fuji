@@ -8,6 +8,7 @@ import io.github.sakurawald.module.AbstractModule;
 import lombok.SneakyThrows;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.loader.api.FabricLoader;
+import net.kyori.adventure.text.Component;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -58,6 +59,14 @@ public class TestModule extends AbstractModule {
                 Commands.literal("test").requires(s -> s.hasPermission(4))
                         .then(Commands.literal("fake-players").executes(TestModule::fakePlayers))
                         .then(Commands.literal("simulate-lag").executes(TestModule::simulateLag))
+                        .then(Commands.literal("clear-chat").executes(TestModule::clearChat))
         );
+    }
+
+    private static int clearChat(CommandContext<CommandSourceStack> ctx) {
+        for (int i = 0; i < 50; i++) {
+            ctx.getSource().sendMessage(Component.empty());
+        }
+        return Command.SINGLE_SUCCESS;
     }
 }
