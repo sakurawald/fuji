@@ -71,6 +71,12 @@ public class HeadModule extends AbstractModule {
     public void onInitialize() {
         CommandRegistrationCallback.EVENT.register(this::registerCommand);
         CompletableFuture.runAsync(() -> heads = HEAD_DATABASE.getHeads());
+        ConfigManager.headWrapper.loadFromDisk();
+    }
+
+    @Override
+    public void onReload() {
+        ConfigManager.headWrapper.loadFromDisk();
     }
 
     @SuppressWarnings("unused")

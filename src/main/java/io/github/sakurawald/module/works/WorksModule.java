@@ -34,7 +34,6 @@ import org.jetbrains.annotations.Nullable;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.HashSet;
 import java.util.List;
@@ -54,8 +53,14 @@ public class WorksModule extends AbstractModule {
 
     @Override
     public void onInitialize() {
+        ConfigManager.worksWrapper.loadFromDisk();
         CommandRegistrationCallback.EVENT.register(this::registerCommand);
         ServerLifecycleEvents.SERVER_STARTED.register(this::registerScheduleTask);
+    }
+
+    @Override
+    public void onReload() {
+        ConfigManager.worksWrapper.loadFromDisk();
     }
 
     @SuppressWarnings("unused")
@@ -265,7 +270,7 @@ public class WorksModule extends AbstractModule {
     public static class WorksScheduleJob implements Job {
 
         @Override
-        public void execute(JobExecutionContext context) throws JobExecutionException {
+        public void execute(JobExecutionContext context) {
             // save current works data
             MinecraftServer server = (MinecraftServer) context.getJobDetail().getJobDataMap().get(MinecraftServer.class.getName());
             if (server.isRunning()) {

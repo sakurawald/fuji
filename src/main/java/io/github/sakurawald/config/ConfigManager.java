@@ -16,19 +16,4 @@ public class ConfigManager {
     public static final ConfigWrapper<WorksGSON> worksWrapper = new ConfigWrapper<>("works.json", WorksGSON.class);
     public static final ConfigWrapper<HeadGSON> headWrapper = new ConfigWrapper<>("head.json", HeadGSON.class);
 
-    static {
-        loadConfigsFromDisk();
-    }
-
-    public static void tryInitialization() {
-        // no-op
-    }
-
-    public static void loadConfigsFromDisk() {
-        ConfigManager.configWrapper.loadFromDisk();
-        ConfigManager.chatWrapper.loadFromDisk();
-        ConfigManager.pvpWrapper.loadFromDisk();
-        ConfigManager.worksWrapper.loadFromDisk();
-        ConfigManager.headWrapper.loadFromDisk();
-    }
 }

@@ -28,7 +28,13 @@ public class PvpModule extends AbstractModule {
 
     @Override
     public void onInitialize() {
+        ConfigManager.pvpWrapper.loadFromDisk();
         CommandRegistrationCallback.EVENT.register(this::registerCommand);
+    }
+
+    @Override
+    public void onReload() {
+        ConfigManager.pvpWrapper.loadFromDisk();
     }
 
     @SuppressWarnings("unused")

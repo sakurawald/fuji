@@ -18,7 +18,7 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
     public static final ConfigWrapper<OptimizationGSON> optimizationWrapper = new ConfigWrapper<>("optimization.json", OptimizationGSON.class);
 
     static {
-        ConfigManager.tryInitialization();
+        ConfigManager.configWrapper.loadFromDisk();
     }
 
     private final int MIXIN_PACKAGE_NAME_LEFT = this.getClass().getPackageName().length() + 1;
