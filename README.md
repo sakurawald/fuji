@@ -1,7 +1,7 @@
 # SakuraWald-Fabric
 <img src="https://github.com/SakuraWald/sakurawald-fabric/raw/master/src/main/resources/assets/sakurawald/icon.png" width="128" alt="mod icon">
 
-This is a minecraft mod that provides many essential and elementary modules for vanilla survival.
+This is a minecraft mod that provides many essential and useful modules for vanilla survival.
 
 # Feature
 1. **Vanilla-Respect**: all the modules does the least change to the vanilla game (Never modify the game-logic).
