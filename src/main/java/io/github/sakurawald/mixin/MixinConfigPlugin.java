@@ -1,8 +1,6 @@
 package io.github.sakurawald.mixin;
 
 import io.github.sakurawald.config.ConfigManager;
-import io.github.sakurawald.config.ConfigWrapper;
-import io.github.sakurawald.config.OptimizationGSON;
 import lombok.extern.slf4j.Slf4j;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -15,7 +13,6 @@ import java.util.function.Supplier;
 
 @Slf4j
 public class MixinConfigPlugin implements IMixinConfigPlugin {
-    public static final ConfigWrapper<OptimizationGSON> optimizationWrapper = new ConfigWrapper<>("optimization.json", OptimizationGSON.class);
 
     static {
         ConfigManager.configWrapper.loadFromDisk();
@@ -27,7 +24,7 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
             this.put("back", () -> ConfigManager.configWrapper.instance().modules.back.enable);
             this.put("better_fake_player", () -> ConfigManager.configWrapper.instance().modules.better_fake_player.enable);
             this.put("better_info", () -> ConfigManager.configWrapper.instance().modules.better_info.enable);
-            this.put("biome_lookup_cache", () -> optimizationWrapper.instance().optimization.spawn.fastBiomeLookup);
+            this.put("biome_lookup_cache", () -> ConfigManager.optimizationWrapper.instance().optimization.spawn.fastBiomeLookup);
             this.put("bypass_things.chat_speed", () -> ConfigManager.configWrapper.instance().modules.bypass_things.bypass_chat_speed.enable);
             this.put("bypass_things.move_speed", () -> ConfigManager.configWrapper.instance().modules.bypass_things.bypass_move_speed.enable);
             this.put("bypass_things.player_limit", () -> ConfigManager.configWrapper.instance().modules.bypass_things.bypass_player_limit.enable);
@@ -44,7 +41,7 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
             this.put("skin", () -> ConfigManager.configWrapper.instance().modules.skin.enable);
             this.put("stronger_player_list", () -> ConfigManager.configWrapper.instance().modules.stronger_player_list.enable);
             this.put("teleport_warmup", () -> ConfigManager.configWrapper.instance().modules.teleport_warmup.enable);
-            this.put("tick_chunk_cache", () -> optimizationWrapper.instance().optimization.chunk.fastTickChunk);
+            this.put("tick_chunk_cache", () -> ConfigManager.optimizationWrapper.instance().optimization.chunk.fastTickChunk);
             this.put("top_chunks", () -> ConfigManager.configWrapper.instance().modules.top_chunks.enable);
             this.put("whitelist_fix", () -> ConfigManager.configWrapper.instance().modules.whitelist_fix.enable);
             this.put("works", () -> ConfigManager.configWrapper.instance().modules.works.enable);
@@ -56,7 +53,7 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
     @Override
     public void onLoad(String mixinPackage) {
         // note: this method is called before the mixin config is read
-        optimizationWrapper.loadFromDisk();
+        ConfigManager.optimizationWrapper.loadFromDisk();
     }
 
     @Override

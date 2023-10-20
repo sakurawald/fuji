@@ -10,6 +10,7 @@ import io.github.sakurawald.module.deathlog.DeathLogModule;
 import io.github.sakurawald.module.head.HeadModule;
 import io.github.sakurawald.module.main_stats.MainStatsModule;
 import io.github.sakurawald.module.motd.DynamicMotdModule;
+import io.github.sakurawald.module.multi_obsidian_platform.MultiObsidianPlatformModule;
 import io.github.sakurawald.module.newbie_welcome.NewbieWelcomeModule;
 import io.github.sakurawald.module.profiler.ProfilerModule;
 import io.github.sakurawald.module.pvp_toggle.PvpModule;
@@ -48,11 +49,21 @@ public class ModuleManager {
         getOrNewInstance(MainStatsModule.class);
         getOrNewInstance(NewbieWelcomeModule.class);
         getOrNewInstance(CommandCooldownModule.class);
+        getOrNewInstance(CommandSpyModule.class);
         getOrNewInstance(DynamicMotdModule.class);
         getOrNewInstance(HeadModule.class);
         getOrNewInstance(TestModule.class);
         getOrNewInstance(ProfilerModule.class);
         getOrNewInstance(BetterInfoModule.class);
+        getOrNewInstance(BiomeLookupCacheModule.class);
+        getOrNewInstance(TickChunkCacheModule.class);
+        getOrNewInstance(MultiObsidianPlatformModule.class);
+        getOrNewInstance(BypassThingsChatSpeedModule.class);
+        getOrNewInstance(BypassThingsMoveSpeedModule.class);
+        getOrNewInstance(BypassThingsPlayerLimitModule.class);
+        getOrNewInstance(OpProtectModule.class);
+        getOrNewInstance(StrongerPlayerListModule.class);
+        getOrNewInstance(WhitelistFixModule.class);
         getOrNewInstance(ZeroCommandPermissionModule.class);
     }
 

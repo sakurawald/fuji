@@ -60,7 +60,7 @@ public class ConfigGSON {
             public boolean enable = true;
             public List<String> descriptions = new ArrayList<>() {
                 {
-                    this.add("@magic_motd@");
+                    this.add("<gradient:#FF66B2:#FFB5CC>Pure Survival %version% / Up %uptime%H ❤ Discord Group Uv5X8amt</gradient><newline><gradient:#99CCFF:#BBDFFF>%playtime%\uD83D\uDD25 %mined%⛏ %placed%\uD83D\uDD33 %killed%\uD83D\uDDE1 %moved%\uD83C\uDF0D");
                 }
             };
         }
@@ -261,7 +261,7 @@ public class ConfigGSON {
 
         public class WorldDownloader {
             public boolean enable = true;
-            public String url_format = "http://@magic_ip@:%port%%path%";
+            public String url_format = "http://example.com:%port%%path%";
             public int port = 22222;
             public int bytes_per_second_limit = 128 * 1000;
             public int context_cache_size = 5;

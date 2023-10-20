@@ -19,8 +19,6 @@ public class ServerMain implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        log.info("Initialize -> SakuraWald");
-
         /* server instance */
         ServerLifecycleEvents.SERVER_STARTED.register(server -> SERVER = server);
 

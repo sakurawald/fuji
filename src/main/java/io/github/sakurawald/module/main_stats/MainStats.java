@@ -114,7 +114,8 @@ public class MainStats {
                 .replace("%placed%", String.valueOf(placed))
                 .replace("%killed%", String.valueOf(killed))
                 .replace("%moved%", String.valueOf(moved))
-                .replace("%uptime%", String.valueOf(server.getTickCount() / GT_TO_H_DIVISOR));
+                .replace("%uptime%", String.valueOf(server.getTickCount() / GT_TO_H_DIVISOR))
+                .replace("%version%", server.getServerVersion());
     }
 
     public void add(MainStats other) {
