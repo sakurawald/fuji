@@ -1,6 +1,7 @@
-package io.github.sakurawald.module;
+package io.github.sakurawald.module.whitelist_fix;
 
 import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.module.AbstractModule;
 
 import java.util.function.Supplier;
 
