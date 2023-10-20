@@ -21,9 +21,9 @@ This is a minecraft mod that provides many essential and elementary modules for 
 <img src="https://github.com/SakuraWald/sakurawald-fabric/raw/master/.github/images/display.gif" alt="module presentation gif">
 - **TopChunksModule**: Provides a command /chunks to show the most laggy chunks in the server.
 <img src="https://github.com/SakuraWald/sakurawald-fabric/raw/master/.github/images/top-chunks.gif" alt="module presentation gif">
-- **BetterFakePlayerModule**: provides some management for fake-player like: player can only manipulate their own fake-player, and the fake-player spawn-caps per player (caps can be set to change dynamically) and the renew-time for fake-player (e.g. every fake-player only live for 12 hrs, until you renew it).
+- **BetterFakePlayerModule**: (Carpet needed) provides some management for fake-player like: player can only manipulate their own fake-player, and the fake-player spawn-caps per player (caps can be set to change dynamically) and the renew-time for fake-player (e.g. every fake-player only live for 12 hrs, until you renew it).
 <img src="https://github.com/SakuraWald/sakurawald-fabric/raw/master/.github/images/better-fake-player.gif" alt="module presentation gif">
-- **BetterInfoModule**: provides /info entity and add nbt-query for /info block
+- **BetterInfoModule**: (Carpet needed) provides /info entity and add nbt-query for /info block
 <img src="https://github.com/SakuraWald/sakurawald-fabric/raw/master/.github/images/better-info.gif" alt="module presentation gif">
 - **TeleportWarmupModule**: provides a teleport warmup for all player-teleport to avoid the abuse of teleport (Including damage-cancel, combat-cancel, distance-cancel)
 <img src="https://github.com/SakuraWald/sakurawald-fabric/raw/master/.github/images/teleport-warmup.gif" alt="module presentation gif">

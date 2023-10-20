@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @NoArgsConstructor
 @Slf4j
@@ -54,13 +55,16 @@ public class ProductionWork extends Work implements ScheduleMethod {
         List<Component> ret = new ArrayList<>();
         long currentTimeMS = System.currentTimeMillis();
 
-        for (Map.Entry<String, Long> entry : this.sample.sampleCounter.entrySet()) {
+        Stream<Map.Entry<String, Long>> sortedStream = this.sample.sampleCounter.entrySet().stream().sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()));
+
+        sortedStream.forEach(entry -> {
             String key = entry.getKey();
             double rate = entry.getValue() * ((double) (3600 * 1000) / ((Math.min(this.sample.sampleEndTimeMS, currentTimeMS)) - this.sample.sampleStartTimeMS));
             net.kyori.adventure.text.Component component = MessageUtil.ofComponent(player, "works.production_work.prop.sample_counter.entry", entry.getValue(), rate)
                     .replaceText(TextReplacementConfig.builder().matchLiteral("[item]").replacement(Component.translatable(key)).build());
             ret.add(MessageUtil.toVomponent(component));
-        }
+        });
+
         if (ret.isEmpty()) {
             ret.add(MessageUtil.ofVomponent(player, "works.production_work.prop.sample_counter.empty"));
         }

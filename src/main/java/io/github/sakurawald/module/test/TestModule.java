@@ -43,6 +43,12 @@ public class TestModule extends AbstractModule {
         return Command.SINGLE_SUCCESS;
     }
 
+    private static int clearChat(CommandContext<CommandSourceStack> ctx) {
+        for (int i = 0; i < 50; i++) {
+            ctx.getSource().sendMessage(Component.empty());
+        }
+        return Command.SINGLE_SUCCESS;
+    }
 
     @Override
     public Supplier<Boolean> enableModule() {
@@ -61,12 +67,5 @@ public class TestModule extends AbstractModule {
                         .then(Commands.literal("simulate-lag").executes(TestModule::simulateLag))
                         .then(Commands.literal("clear-chat").executes(TestModule::clearChat))
         );
-    }
-
-    private static int clearChat(CommandContext<CommandSourceStack> ctx) {
-        for (int i = 0; i < 50; i++) {
-            ctx.getSource().sendMessage(Component.empty());
-        }
-        return Command.SINGLE_SUCCESS;
     }
 }

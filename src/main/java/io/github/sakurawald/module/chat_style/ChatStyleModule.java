@@ -67,7 +67,6 @@ public class ChatStyleModule extends AbstractModule {
     }
 
 
-
     @Override
     public void onReload() {
         ConfigManager.chatWrapper.loadFromDisk();

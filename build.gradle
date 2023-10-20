@@ -118,29 +118,29 @@ publishing {
 
 Properties magic = new Properties()
 magic.load(project.rootProject.file('local.properties').newDataInputStream())
+//
+//var magicSourceDir = "build/magic-source/main/java"
+//tasks.register('filterMagicValues', Copy) {
+//    doFirst {
+//        delete magicSourceDir
+//    }
+//    def tokens = ['magic_ip', 'magic_motd']
+//    from("src/main/java") {
+//        filter { line ->
+//            tokens.each { token ->
+//                line = line.replace("@${token}@", magic.getProperty(token))
+//            }
+//            return line
+//        }
+//    }
+//    into(magicSourceDir)
+//}
 
-var magicSourceDir = "build/magic-source/main/java"
-tasks.register('filterMagicValues', Copy) {
-    doFirst {
-        delete magicSourceDir
-    }
-    def tokens = ['magic_ip', 'magic_motd']
-    from("src/main/java") {
-        filter { line ->
-            tokens.each { token ->
-                line = line.replace("@${token}@", magic.getProperty(token))
-            }
-            return line
-        }
-    }
-    into(magicSourceDir)
-}
-
-compileJava {
-    dependsOn filterMagicValues
-    source = magicSourceDir
-    exclude("src/main/java")
-}
+//compileJava {
+//    dependsOn filterMagicValues
+//    source = magicSourceDir
+//    exclude("src/main/java")
+//}
 
 // build.gradle
 modrinth {

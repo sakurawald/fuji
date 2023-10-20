@@ -97,7 +97,7 @@ public class MultiObsidianPlatformModule extends AbstractModule {
 
     @Override
     public Supplier<Boolean> enableModule() {
-        return () -> true;
+        return () -> ConfigManager.configWrapper.instance().modules.multi_obsidian_platform.enable;
     }
 
 }
