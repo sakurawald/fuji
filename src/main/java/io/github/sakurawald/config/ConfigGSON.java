@@ -40,6 +40,7 @@ public class ConfigGSON {
         public Head head = new Head();
         public Profiler profiler = new Profiler();
         public CommandSpy command_spy = new CommandSpy();
+        public Scheduler scheduler = new Scheduler();
 
         public class ResourceWorld {
             public boolean enable = true;
@@ -332,6 +333,10 @@ public class ConfigGSON {
         }
 
         public class CommandSpy {
+            public boolean enable = true;
+        }
+
+        public class Scheduler {
             public boolean enable = true;
         }
     }

@@ -72,6 +72,8 @@ dependencies {
     modImplementation include("eu.pb4:sgui:${project.sgui_version}")
 
     compileOnly "me.lucko:spark-api:0.1-SNAPSHOT"
+    
+    implementation 'org.reflections:reflections:0.10.2'
 }
 
 processResources {
