@@ -27,7 +27,7 @@ public class ModuleManager {
     }
 
     /**
-     * if a module is disabled, then this method will return null
+     * @return if a module is disabled, then this method will return null
      */
     public static <T extends AbstractModule> T getOrNewInstance(Class<T> clazz) {
         if (!instances.containsKey(clazz)) {
@@ -42,9 +42,8 @@ public class ModuleManager {
                 } else {
                     log.warn("Skip-Initialize module -> {}", moduleName);
                 }
-
             } catch (Exception e) {
-                log.warn(e.toString());
+                log.error(e.toString());
             }
         }
         return clazz.cast(instances.get(clazz));

@@ -29,6 +29,14 @@ public class ScheduleUtil {
         }
     }
 
+    public static void removeJobs(String name) {
+        try {
+            scheduler.deleteJob(new JobKey(name));
+        } catch (SchedulerException e) {
+            log.error("Exception in ScheduleUtil.removeJobs", e);
+        }
+    }
+
     public static void addJob(Class<? extends Job> jobClass, int intervalMs, int repeatCount, JobDataMap jobDataMap) {
         String name = jobClass.getName();
 
