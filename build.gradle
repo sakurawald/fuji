@@ -65,13 +65,13 @@ dependencies {
     implementation "net.kyori:adventure-text-minimessage:${project.adventure_api_version}"
     implementation "net.kyori:adventure-text-serializer-plain:${project.adventure_api_version}"
 
-    include(implementation group: 'org.apache.commons', name: 'commons-compress', version: "${project.spark_version}")
+    include(implementation group: 'org.apache.commons', name: 'commons-compress', version: "${project.apache_commons_version}")
 
     include(implementation group: 'org.quartz-scheduler', name: 'quartz', version: "${project.quartz_version}")
 
     modImplementation include("eu.pb4:sgui:${project.sgui_version}")
 
-    compileOnly "me.lucko:spark-api:0.1-SNAPSHOT"
+    compileOnly "me.lucko:spark-api:${project.spark_version}"
     
     implementation 'org.reflections:reflections:0.10.2'
 }
@@ -128,8 +128,9 @@ modrinth {
     gameVersions = ["1.20.1"]
     loaders = ["fabric"]
     dependencies {
-        required.project "fabric-api" // Creates a new required dependency on Fabric API
-        required.project "carpet" // Creates a new required dependency on Fabric API
+        required.project "fabric-api"
+        required.project "carpet"
+        required.project "spark"
     }
     syncBodyFrom = rootProject.file("README.md").text
 }

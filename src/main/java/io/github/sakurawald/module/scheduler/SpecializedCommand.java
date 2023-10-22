@@ -10,8 +10,10 @@ import java.util.Random;
 @Slf4j
 public class SpecializedCommand {
 
-    private static final String RANDOM_PLAYER = "[random_player]";
-    private static final String ALL_PLAYER = "[all_player]";
+    // TODO: a language parser is needed here
+
+    private static final String RANDOM_PLAYER = "!random_player!";
+    private static final String ALL_PLAYER = "!all_player!";
 
     public static void runSpecializedCommands(MinecraftServer server, List<String> commands) {
 

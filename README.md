@@ -3,8 +3,6 @@
 
 This is a minecraft mod that provides many essential and useful modules for vanilla survival.
 
-**Any essential and useful module feature request is welcome, you can create feature-request in github**
-
 # Feature
 1. **Vanilla-Respect**: all the modules does the least change to the vanilla game (Never modify the game-logic).
 2. **Fully-Modular**: you can disable any module completely if you don't like it (Including disabling the commands and
