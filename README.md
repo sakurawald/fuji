@@ -63,4 +63,4 @@ This mod use a low-level permission system, which means that most of the admin c
 
 # Config
 All the config files are inside `config/sakurawald/` directory.
-If you want to update this mod, please delete the old config files first, and then use the newer version to generate a new config file.
+Normally, the newer version will generate missing configuration keys automatically, but if this doesn't work, you can delete the old config file and restart the server to let the newer version generate the default config file.

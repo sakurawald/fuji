@@ -44,7 +44,6 @@ public class ProfilerModule extends AbstractModule {
         }
     }
 
-
     @Override
     public Supplier<Boolean> enableModule() {
         return () -> ConfigManager.configWrapper.instance().modules.profiler.enable;
