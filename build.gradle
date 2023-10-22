@@ -71,7 +71,7 @@ dependencies {
 
     modImplementation include("eu.pb4:sgui:${project.sgui_version}")
 
-    compileOnly "me.lucko:spark-api:${project.spark_version}"
+    implementation "me.lucko:spark-api:${project.spark_version}"
     
     implementation 'org.reflections:reflections:0.10.2'
 }
