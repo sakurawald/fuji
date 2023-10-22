@@ -1,18 +1,28 @@
 package io.github.sakurawald.module.scheduler;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.github.sakurawald.ServerMain;
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.ScheduleUtil;
 import lombok.extern.slf4j.Slf4j;
-import net.minecraft.server.MinecraftServer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.commands.CommandBuildContext;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
-import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
+
+import static net.minecraft.commands.Commands.argument;
 
 @Slf4j
 public class SchedulerModule extends AbstractModule {
@@ -23,17 +33,16 @@ public class SchedulerModule extends AbstractModule {
     }
 
     private void updateJobs() {
-        ScheduleUtil.removeJobs(ScheduleJob.class.getName());
+        ScheduleUtil.removeJobs(ScheduleJobJob.class.getName());
 
         ConfigManager.schedulerWrapper.instance().scheduleJobs.forEach(scheduleJob -> {
 
             if (scheduleJob.enable) {
-                ScheduleUtil.addJob(ScheduleJob.class, scheduleJob.cron, new JobDataMap() {
+                scheduleJob.crons.forEach(cron -> ScheduleUtil.addJob(ScheduleJobJob.class, cron, new JobDataMap() {
                     {
-                        this.put("name", scheduleJob.name);
-                        this.put("commands", scheduleJob.commands);
+                        this.put("job", scheduleJob);
                     }
-                });
+                }));
                 log.info("SchedulerModule: Add ScheduleJob {}", scheduleJob);
             }
         });
@@ -43,6 +52,8 @@ public class SchedulerModule extends AbstractModule {
     public void onInitialize() {
         ConfigManager.schedulerWrapper.loadFromDisk();
         updateJobs();
+
+        CommandRegistrationCallback.EVENT.register(this::registerCommand);
     }
 
     @Override
@@ -51,27 +62,38 @@ public class SchedulerModule extends AbstractModule {
         updateJobs();
     }
 
+    public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
+        dispatcher.register(Commands.literal("scheduler_trigger").requires(s -> s.hasPermission(4))
+                .then(argument("name", StringArgumentType.word()).suggests(new SchedulerJobSuggestionProvider()).executes(this::$scheduler_trigger)));
+    }
 
-    public static class ScheduleJob implements Job {
+    private int $scheduler_trigger(CommandContext<CommandSourceStack> ctx) {
+        String name = StringArgumentType.getString(ctx, "name");
 
-        @SuppressWarnings("unchecked")
+        ConfigManager.schedulerWrapper.instance().scheduleJobs.forEach(job -> {
+            if (job.name.equals(name)) {
+                job.trigger();
+            }
+        });
+        return Command.SINGLE_SUCCESS;
+    }
+
+
+    private static class SchedulerJobSuggestionProvider implements SuggestionProvider<CommandSourceStack> {
+
+        @Override
+        public CompletableFuture<Suggestions> getSuggestions(CommandContext context, SuggestionsBuilder builder) {
+            ConfigManager.schedulerWrapper.instance().scheduleJobs.forEach(job -> builder.suggest(job.name));
+            return builder.buildFuture();
+        }
+    }
+
+    public static class ScheduleJobJob implements Job {
+
         @Override
         public void execute(JobExecutionContext context) {
-
-            String name = (String) context.getJobDetail().getJobDataMap().get("name");
-            List<String> commands = (List<String>) context.getJobDetail().getJobDataMap().get("commands");
-
-            log.info("SchedulerModule: Execute ScheduleJob [name = " + name + ", commands = " + commands + "].");
-
-            for (String command : commands) {
-
-                MinecraftServer server = ServerMain.SERVER;
-                try {
-                    server.getCommands().getDispatcher().execute(command, server.createCommandSourceStack());
-                } catch (CommandSyntaxException e) {
-                    log.error("SchedulerModule: Execute ScheduleJob [name = " + name + ", commands = " + commands + "] failed.", e);
-                }
-            }
+            ScheduleJob job = (ScheduleJob) context.getJobDetail().getJobDataMap().get("job");
+            job.trigger();
         }
     }
 }
