@@ -1,6 +1,6 @@
-package io.github.sakurawald.module.chat_style.display;
+package io.github.sakurawald.module.chat.display;
 
-import io.github.sakurawald.module.chat_style.display.gui.*;
+import io.github.sakurawald.module.chat.display.gui.*;
 import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;

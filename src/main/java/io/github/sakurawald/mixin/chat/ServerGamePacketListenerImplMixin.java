@@ -1,7 +1,7 @@
-package io.github.sakurawald.mixin.chat_style;
+package io.github.sakurawald.mixin.chat;
 
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.chat_style.ChatStyleModule;
+import io.github.sakurawald.module.chat.ChatStyleModule;
 import net.minecraft.network.chat.PlayerChatMessage;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;

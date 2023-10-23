@@ -22,7 +22,7 @@ public class ConfigGSON {
         public BetterInfo better_info = new BetterInfo();
         public CommandCooldown command_cooldown = new CommandCooldown();
         public TopChunks top_chunks = new TopChunks();
-        public ChatStyle chat_style = new ChatStyle();
+        public Chat chat = new Chat();
         public Skin skin = new Skin();
         public Back back = new Back();
         public Tpa tpa = new Tpa();
@@ -187,7 +187,7 @@ public class ConfigGSON {
             };
         }
 
-        public class ChatStyle {
+        public class Chat {
             public boolean enable = true;
             public String format = "<#B1B2FF>[%playtime%\uD83D\uDD25 %mined%⛏ %placed%\uD83D\uDD33 %killed%\uD83D\uDDE1 %moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:/msg %player% ><hover:show_text:\"Time: <date:'yyyy-MM-dd HH:mm:ss'><newline><italic>Click to Message\">%player%</hover></click></dark_green>> %message%";
             public MentionPlayer mention_player = new MentionPlayer();
@@ -339,11 +339,11 @@ public class ConfigGSON {
         }
 
         public class BiomeLookupCache {
-            public boolean enable = true;
+            public boolean enable = false;
         }
 
         public class TickChunkCache {
-            public boolean enable = true;
+            public boolean enable = false;
         }
 
         public class Config {

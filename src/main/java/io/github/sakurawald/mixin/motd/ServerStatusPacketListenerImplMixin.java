@@ -25,7 +25,7 @@ package io.github.sakurawald.mixin.motd;
 
 import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.motd.DynamicMotdModule;
+import io.github.sakurawald.module.motd.MotdModule;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.network.protocol.status.ServerStatus;
 import net.minecraft.server.network.ServerStatusPacketListenerImpl;
@@ -41,7 +41,7 @@ import java.util.Optional;
 abstract class ServerStatusPacketListenerImplMixin {
 
     @Unique
-    private static final DynamicMotdModule module = ModuleManager.getOrNewInstance(DynamicMotdModule.class);
+    private static final MotdModule module = ModuleManager.getOrNewInstance(MotdModule.class);
 
     @Redirect(method = "handleStatusRequest", at = @At(value = "FIELD", target = "Lnet/minecraft/server/network/ServerStatusPacketListenerImpl;status:Lnet/minecraft/network/protocol/status/ServerStatus;"))
     public ServerStatus $handleStatusRequest(final ServerStatusPacketListenerImpl instance) {

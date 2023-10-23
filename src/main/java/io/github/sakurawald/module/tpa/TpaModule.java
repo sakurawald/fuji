@@ -5,7 +5,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.module.AbstractModule;
-import io.github.sakurawald.module.chat_style.mention.MentionPlayersJob;
+import io.github.sakurawald.module.chat.mention.MentionPlayersJob;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

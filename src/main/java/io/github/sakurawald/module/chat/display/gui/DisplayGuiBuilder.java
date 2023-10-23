@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.chat_style.display.gui;
+package io.github.sakurawald.module.chat.display.gui;
 
 import eu.pb4.sgui.api.ClickType;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;

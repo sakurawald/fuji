@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.chat_style;
+package io.github.sakurawald.module.chat;
 
 import com.google.common.collect.EvictingQueue;
 import com.mojang.brigadier.Command;
@@ -9,8 +9,8 @@ import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.chat_style.display.DisplayHelper;
-import io.github.sakurawald.module.chat_style.mention.MentionPlayersJob;
+import io.github.sakurawald.module.chat.display.DisplayHelper;
+import io.github.sakurawald.module.chat.mention.MentionPlayersJob;
 import io.github.sakurawald.module.main_stats.MainStats;
 import io.github.sakurawald.module.main_stats.MainStatsModule;
 import io.github.sakurawald.util.MessageUtil;
@@ -56,7 +56,7 @@ public class ChatStyleModule extends AbstractModule {
     public void onInitialize() {
         ConfigManager.chatWrapper.loadFromDisk();
 
-        chatHistory = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.chat_style.history.cache_size);
+        chatHistory = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.chat.history.cache_size);
         CommandRegistrationCallback.EVENT.register(this::registerCommand);
     }
 
@@ -65,7 +65,7 @@ public class ChatStyleModule extends AbstractModule {
     public void onReload() {
         ConfigManager.chatWrapper.loadFromDisk();
 
-        EvictingQueue<Component> newQueue = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.chat_style.history.cache_size);
+        EvictingQueue<Component> newQueue = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.chat.history.cache_size);
         newQueue.addAll(chatHistory);
         chatHistory.clear();
         chatHistory = newQueue;
@@ -132,7 +132,7 @@ public class ChatStyleModule extends AbstractModule {
             if (audience instanceof CommandSourceStack css && css.getPlayer() != null) {
                 DisplayHelper.viewDisplay(css.getPlayer(), displayUUID);
             }
-        }, ClickCallback.Options.builder().lifetime(Duration.of(ConfigManager.configWrapper.instance().modules.chat_style.display.expiration_duration_s, ChronoUnit.SECONDS))
+        }, ClickCallback.Options.builder().lifetime(Duration.of(ConfigManager.configWrapper.instance().modules.chat.display.expiration_duration_s, ChronoUnit.SECONDS))
                 .uses(Integer.MAX_VALUE).build());
     }
 
@@ -164,7 +164,7 @@ public class ChatStyleModule extends AbstractModule {
         message = ConfigManager.chatWrapper.instance().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
                 .replace("%message%", message);
         message = resolveMentionTag(player, message);
-        String format = ConfigManager.configWrapper.instance().modules.chat_style.format;
+        String format = ConfigManager.configWrapper.instance().modules.chat.format;
         format = format.replace("%message%", message);
         format = format.replace("%player%", player.getGameProfile().getName());
 

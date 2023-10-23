@@ -32,12 +32,11 @@ public class ModuleManager {
      */
     public static <T extends AbstractModule> T getOrNewInstance(Class<T> clazz) {
         JsonElement config = ConfigManager.configWrapper.toJsonElement();
-
         if (!instances.containsKey(clazz)) {
             String basePackageName = calculateBasePackageName(ModuleManager.class, clazz.getName());
             String moduleName = clazz.getSimpleName();
             if (enableModule(config, basePackageName)) {
-                log.info("Enable module -> {}", moduleName);
+                log.info("+ {}", moduleName);
                 try {
                     AbstractModule abstractModule = clazz.getDeclaredConstructor().newInstance();
                     abstractModule.onInitialize();
@@ -46,7 +45,7 @@ public class ModuleManager {
                     log.error(e.toString());
                 }
             } else {
-                log.info("Disable module {}", moduleName);
+                log.info("- {}", moduleName);
 
             }
         }

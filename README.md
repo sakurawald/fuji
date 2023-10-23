@@ -21,8 +21,8 @@ provides a command to toggle the pvp status. (/pvp [on/off/status/list])
 create and manage auto-reset resource world for overworld, the_nether and the_end.  (/rw [tp/delete/reset])
 <img src="https://github.com/SakuraWald/sakurawald-fabric/raw/master/.github/images/resource-world.gif" alt="module presentation gif">
 
-#### ChatStyleModule
-A simple chat style system.
+#### ChatModule
+A simple chat system.
   
 > - Support mini-message based parser
 > - Support mention players
@@ -97,7 +97,7 @@ This module broadcasts a welcome-message and random teleport the new player and 
 #### CommandCooldownModule
 Yeah, you know what this module does. (Use this module to avoid some heavy-command abuse)
 
-#### DynamicMOTDModule
+#### MotdModule
 A simple MOTD that supports fancy and random motd, and supports some placeholders like MainStats
 
 #### HeadModule
@@ -153,6 +153,12 @@ an optimization for iterating chunks, use event-based chunk-list constructor to 
 
 #### SchedulerModule
 where you can add schedule jobs by cron expression, set the random command-list to be executed.
+
+#### ConfigModule
+provides `/sakurawald reload` to reload configs.
+
+#### TestModule
+provides `/test` command only for test purpose. (Disable this by default, and you don't need to enable this unless you know what you are doing)
 
 # Commands
 Different modules provide different commands, but it's easy to guess what commands the module provides.

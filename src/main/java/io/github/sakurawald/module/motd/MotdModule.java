@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.Random;
 
 @Slf4j
-public class DynamicMotdModule extends AbstractModule {
+public class MotdModule extends AbstractModule {
     private final File ICON_FOLDER = ServerMain.CONFIG_PATH.resolve("icon").toFile();
 
     private List<String> descriptions = new ArrayList<>();

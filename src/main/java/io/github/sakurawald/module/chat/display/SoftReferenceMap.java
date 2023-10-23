@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.chat_style.display;
+package io.github.sakurawald.module.chat.display;
 
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
