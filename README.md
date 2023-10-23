@@ -44,7 +44,7 @@ Provides a command /chunks to show the most laggy chunks in the server.
 <img src="https://github.com/SakuraWald/sakurawald-fabric/raw/master/.github/images/top-chunks.gif" alt="module presentation gif">
 
 #### BetterFakePlayerModule
-(Carpet needed) provides some management for fake-player.
+(Carpet required) provides some management for fake-player.
 
 > - FakePlayerNameSuffixAndPrefix
 > - FakePlayerManipulateLimit
@@ -58,7 +58,7 @@ Provides a command /chunks to show the most laggy chunks in the server.
 <img src="https://github.com/SakuraWald/sakurawald-fabric/raw/master/.github/images/better-fake-player.gif" alt="module presentation gif">
 
 #### BetterInfoModule
-(Carpet needed) provides /info entity and add nbt-query for /info block
+(Carpet required) provides /info entity and add nbt-query for /info block
 <img src="https://github.com/SakuraWald/sakurawald-fabric/raw/master/.github/images/better-info.gif" alt="module presentation gif">
 
 #### TeleportWarmupModule

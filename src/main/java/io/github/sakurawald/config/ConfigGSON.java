@@ -49,7 +49,7 @@ public class ConfigGSON {
         public Test test = new Test();
 
         public class ResourceWorld {
-            public boolean enable = true;
+            public boolean enable = false;
 
             public ResourceWorlds resource_worlds = new ResourceWorlds();
             public String auto_reset_cron = "0 0 20 * * ?";
@@ -64,7 +64,7 @@ public class ConfigGSON {
         }
 
         public class MOTD {
-            public boolean enable = true;
+            public boolean enable = false;
             public List<String> descriptions = new ArrayList<>() {
                 {
                     this.add("<gradient:#FF66B2:#FFB5CC>Pure Survival %version% / Up %uptime%H ❤ Discord Group Uv5X8amt</gradient><newline><gradient:#99CCFF:#BBDFFF>%playtime%\uD83D\uDD25 %mined%⛏ %placed%\uD83D\uDD33 %killed%\uD83D\uDDE1 %moved%\uD83C\uDF0D");
@@ -73,7 +73,7 @@ public class ConfigGSON {
         }
 
         public class NewbieWelcome {
-            public boolean enable = true;
+            public boolean enable = false;
             public RandomTeleport random_teleport = new RandomTeleport();
 
             public class RandomTeleport {
@@ -84,13 +84,13 @@ public class ConfigGSON {
         }
 
         public class TeleportWarmup {
-            public boolean enable = true;
+            public boolean enable = false;
             public int warmup_second = 3;
             public double interrupt_distance = 1d;
         }
 
         public class BetterFakePlayer {
-            public boolean enable = true;
+            public boolean enable = false;
             public ArrayList<List<Integer>> caps_limit_rule = new ArrayList<>() {
                 {
                     this.add(List.of(1, 0, 2));
@@ -103,11 +103,11 @@ public class ConfigGSON {
         }
 
         public class BetterInfo {
-            public boolean enable = true;
+            public boolean enable = false;
         }
 
         public class CommandCooldown {
-            public boolean enable = true;
+            public boolean enable = false;
             public HashMap<String, Long> command_regex_2_cooldown_ms = new HashMap<>() {
                 {
                     this.put("rw tp (overworld|the_nether|the_end)", 120 * 1000L);
@@ -118,7 +118,7 @@ public class ConfigGSON {
         }
 
         public class TopChunks {
-            public boolean enable = true;
+            public boolean enable = false;
 
             public int rows = 10;
             public int columns = 10;
@@ -188,7 +188,7 @@ public class ConfigGSON {
         }
 
         public class Chat {
-            public boolean enable = true;
+            public boolean enable = false;
             public String format = "<#B1B2FF>[%playtime%\uD83D\uDD25 %mined%⛏ %placed%\uD83D\uDD33 %killed%\uD83D\uDDE1 %moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:/msg %player% ><hover:show_text:\"Time: <date:'yyyy-MM-dd HH:mm:ss'><newline><italic>Click to Message\">%player%</hover></click></dark_green>> %message%";
             public MentionPlayer mention_player = new MentionPlayer();
 
@@ -214,7 +214,7 @@ public class ConfigGSON {
         }
 
         public class Skin {
-            public boolean enable = true;
+            public boolean enable = false;
 
             public Property default_skin = new Property("textures", "eyJ0aW1lc3RhbXAiOjE1ODYzMjc4ODA1NjYsInByb2ZpbGVJZCI6ImI3MzY3YzA2MjYxYzRlYjBiN2Y3OGY3YzUxNzBiNzQ4IiwicHJvZmlsZU5hbWUiOiJFbXB0eUlyb255Iiwic2lnbmF0dXJlUmVxdWlyZWQiOnRydWUsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS84NWZmZjI1ZDY2NzIwNmYyZTQ2ZDQ0MmNmMzU4YjNmMWVjMzYxMzgzOTE3NTFiYTZlZGY5NjVmZmM4M2I4NjAzIiwibWV0YWRhdGEiOnsibW9kZWwiOiJzbGltIn19fX0=",
                     "PoUf4TsNx6SVHTWZJ6Iwk3acWyiDk84VeKBVcOeqimaSBAGYKfeuXRTFV8c9IBE9cjsRAVaTGC/mwRfHlcD/rmxeDDOkhsFVidr8UL+91afIO8d+EnyoBghmnbZonqpcjCv+nkxQ5SP93qTDelD3jd8xF1FAU97BBvrx0yK+QNn5rPg2RUGGoUZUg75KlEJds1dNftpHc8IyAHz/FQIywlkohu26ghOqFStjok4WPHD3ok0z7Kwcjk7u58PYf67TkEGnGbmxTUDlNbLmxUqjxCr4NshS+e3y3jRfJN0nP82dbYh/NP2Fx8m7pSMsQtm/Ta2MN7JC0Pm2yvZB/APNoNHVSZZ2SOITbPF/yAkIdHrk+ieCKqDbeuc8TFs2n+6FktYdwPXcqrK266CzlSTPycVZQeyrgrOI+fqU1HwCz+MgdlcsAdAoyuFlFPaVqDesI46YPsSJzA3C3CNhjvuebOn357U9Po82eSFAPYbtBPVNjiNgiqn5l+1x8ZVHImwpGv/toa5/fUyfMmlxijwG/C9gQ4mE+buutMn9nfE1y/AisU/2DWeFBESw3eRAICcmVVi875N8kT+Wja8WsbpDCw+pV2wZC3x3nEdOceAdXtDEb0oy3bQPW3TSZ+Wnp68qwSxjI/aDosqVuyyqqlm+w/irUmNHGL+t7g/kD932g0Q=");
@@ -248,18 +248,18 @@ public class ConfigGSON {
         }
 
         public class Back {
-            public boolean enable = true;
+            public boolean enable = false;
             public double ignore_distance = 32d;
         }
 
         public class Tpa {
-            public boolean enable = true;
+            public boolean enable = false;
             public int timeout = 300;
 
         }
 
         public class Works {
-            public boolean enable = true;
+            public boolean enable = false;
 
             public int sample_time_ms = FabricLoader.getInstance().isDevelopmentEnvironment() ? 60 * 1000 : 60 * 1000 * 60;
             public int sample_distance_limit = 512;
@@ -267,7 +267,7 @@ public class ConfigGSON {
         }
 
         public class WorldDownloader {
-            public boolean enable = true;
+            public boolean enable = false;
             public String url_format = "http://example.com:%port%%path%";
             public int port = 22222;
             public int bytes_per_second_limit = 128 * 1000;
@@ -275,67 +275,67 @@ public class ConfigGSON {
         }
 
         public class BypassChatSpeed {
-            public boolean enable = true;
+            public boolean enable = false;
         }
 
         public class BypassMoveSpeed {
-            public boolean enable = true;
+            public boolean enable = false;
         }
 
         public class BypassMaxPlayerLimit {
-            public boolean enable = true;
+            public boolean enable = false;
         }
 
         public class DeathLog {
-            public boolean enable = true;
+            public boolean enable = false;
         }
 
         public class MainStats {
-            public boolean enable = true;
+            public boolean enable = false;
         }
 
         public class MultiObsidianPlatform {
-            public boolean enable = true;
+            public boolean enable = false;
             public double factor = 4;
         }
 
         public class OpProtect {
-            public boolean enable = true;
+            public boolean enable = false;
         }
 
         public class PvpToggle {
-            public boolean enable = true;
+            public boolean enable = false;
         }
 
         public class StrongerPlayerList {
-            public boolean enable = true;
+            public boolean enable = false;
         }
 
         public class WhitelistFix {
 
-            public boolean enable = true;
+            public boolean enable = false;
         }
 
         public class ZeroCommandPermission {
-            public boolean enable = true;
+            public boolean enable = false;
         }
 
         public class Head {
 
-            public boolean enable = true;
+            public boolean enable = false;
         }
 
         public class Profiler {
 
-            public boolean enable = true;
+            public boolean enable = false;
         }
 
         public class CommandSpy {
-            public boolean enable = true;
+            public boolean enable = false;
         }
 
         public class Scheduler {
-            public boolean enable = true;
+            public boolean enable = false;
         }
 
         public class BiomeLookupCache {

@@ -13,7 +13,8 @@ import java.nio.file.Path;
 
 @Slf4j
 // TODO: server language system
-// TODO: /rtp
+// TODO: /rtp module
+// TODO: command alias module (test proiority with ZeroPermissionModule)
 public class ServerMain implements ModInitializer {
     public static final Path CONFIG_PATH = Path.of(FabricLoader.getInstance().getConfigDir().resolve("sakurawald").toString());
     public static final String MOD_ID = "sakurawald";

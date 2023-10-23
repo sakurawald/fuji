@@ -11,9 +11,9 @@ public class SchedulerGSON {
         {
             this.add(new ScheduleJob("example_job", false, List.of("0 0 * ? * *"),
                     List.of(
-                            List.of("say Nobody gets the gift!"),
-                            List.of("say All players get the gift!", "give !all_player! minecraft:diamond 1"),
-                            List.of("say player !random_player! get the gift!", "give !random_player! minecraft:diamond 1")
+                            List.of("tellraw @p [{\"text\":\"Nobody gets the gift!\",\"color\":\"aqua\",\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false}]"),
+                            List.of("title @a title \"All players get the gift!\"", "give !all_player! minecraft:diamond 1"),
+                            List.of("title @a title \"player !random_player! get the gift!\"", "give !random_player! minecraft:diamond 1")
                     )));
         }
     };
