@@ -61,7 +61,6 @@ public class ModuleManager {
             log.error("The enable-supplier key '{}' is missing -> force enable this module", "modules.%s.enable".formatted(basePackageName));
             return true;
         }
-
         return enable;
     }
 
