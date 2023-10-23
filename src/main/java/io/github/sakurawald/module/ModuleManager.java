@@ -11,7 +11,6 @@ import java.util.Set;
 public class ModuleManager {
     private static final Map<Class<? extends AbstractModule>, AbstractModule> instances = new HashMap<>();
 
-
     @SuppressWarnings("SameParameterValue")
     private static Set<Class<? extends AbstractModule>> scanModules(String packageName) {
         Reflections reflections = new Reflections(packageName);
@@ -39,8 +38,6 @@ public class ModuleManager {
                     // initialize module here.
                     abstractModule.onInitialize();
                     instances.put(clazz, abstractModule);
-                } else {
-                    log.warn("Skip-Initialize module -> {}", moduleName);
                 }
             } catch (Exception e) {
                 log.error(e.toString());

@@ -72,7 +72,7 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
                 mixinPackageName = key;
             } else mixinPackageName += "." + key;
 
-            // note: if there is no config for this mixin, then we enable this mixin by default
+            // note: if there is no config for this mixin, then we ENABLE this mixin by default
             if (this.mixinConfig.getOrDefault(mixinPackageName, () -> true).get()) return true;
         }
 

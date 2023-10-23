@@ -4,7 +4,9 @@ import com.google.gson.*;
 import com.google.gson.stream.JsonWriter;
 import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.module.works.work_type.Work;
+import lombok.AccessLevel;
 import lombok.Cleanup;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
@@ -15,19 +17,20 @@ import java.util.Map;
 import java.util.Set;
 
 @Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ConfigWrapper<T> {
 
-    private static final Gson gson = new GsonBuilder()
+    static final Gson gson = new GsonBuilder()
             .setPrettyPrinting()
             .disableHtmlEscaping()
             .serializeNulls()
             .registerTypeAdapter(Work.class, new Work.WorkTypeAdapter())
             .create();
 
-    private final File file;
-    private final Class<T> configClass;
-    private T configInstance;
-    private boolean merged = false;
+    final File file;
+    final Class<T> configClass;
+    T configInstance;
+    boolean merged = false;
 
     @SuppressWarnings("unused")
     public ConfigWrapper(File file, Class<T> configClass) {
@@ -41,7 +44,7 @@ public class ConfigWrapper<T> {
     }
 
     public void loadFromDisk() {
-        // Does the file exists ?
+        // Does the file exist?
         try {
             if (!file.exists()) {
                 saveToDisk();

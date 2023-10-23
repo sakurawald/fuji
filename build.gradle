@@ -130,7 +130,6 @@ modrinth {
     dependencies {
         required.project "fabric-api"
         required.project "carpet"
-        required.project "spark"
     }
     syncBodyFrom = rootProject.file("README.md").text
 }
