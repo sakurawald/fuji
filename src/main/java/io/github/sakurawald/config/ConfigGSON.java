@@ -17,7 +17,7 @@ public class ConfigGSON {
         public ResourceWorld resource_world = new ResourceWorld();
         public NewbieWelcome newbie_welcome = new NewbieWelcome();
         public TeleportWarmup teleport_warmup = new TeleportWarmup();
-        public DynamicMOTD dynamic_motd = new DynamicMOTD();
+        public MOTD motd = new MOTD();
         public BetterFakePlayer better_fake_player = new BetterFakePlayer();
         public BetterInfo better_info = new BetterInfo();
         public CommandCooldown command_cooldown = new CommandCooldown();
@@ -28,8 +28,7 @@ public class ConfigGSON {
         public Tpa tpa = new Tpa();
         public Works works = new Works();
         public WorldDownloader world_downloader = new WorldDownloader();
-        public BypassThings bypass_things = new BypassThings();
-        public DeathLog death_log = new DeathLog();
+        public DeathLog deathlog = new DeathLog();
         public MainStats main_stats = new MainStats();
         public MultiObsidianPlatform multi_obsidian_platform = new MultiObsidianPlatform();
         public OpProtect op_protect = new OpProtect();
@@ -41,6 +40,13 @@ public class ConfigGSON {
         public Profiler profiler = new Profiler();
         public CommandSpy command_spy = new CommandSpy();
         public Scheduler scheduler = new Scheduler();
+        public BypassChatSpeed bypass_chat_speed = new BypassChatSpeed();
+        public BypassMoveSpeed bypass_move_speed = new BypassMoveSpeed();
+        public BypassMaxPlayerLimit bypass_max_player_limit = new BypassMaxPlayerLimit();
+        public BiomeLookupCache biome_lookup_cache = new BiomeLookupCache();
+        public TickChunkCache tick_chunk_cache = new TickChunkCache();
+        public Config config = new Config();
+        public Test test = new Test();
 
         public class ResourceWorld {
             public boolean enable = true;
@@ -57,7 +63,7 @@ public class ConfigGSON {
 
         }
 
-        public class DynamicMOTD {
+        public class MOTD {
             public boolean enable = true;
             public List<String> descriptions = new ArrayList<>() {
                 {
@@ -268,24 +274,16 @@ public class ConfigGSON {
             public int context_cache_size = 5;
         }
 
-        public class BypassThings {
+        public class BypassChatSpeed {
+            public boolean enable = true;
+        }
 
+        public class BypassMoveSpeed {
+            public boolean enable = true;
+        }
 
-            public BypassChatSpeed bypass_chat_speed = new BypassChatSpeed();
-            public BypassMoveSpeed bypass_move_speed = new BypassMoveSpeed();
-            public BypassPlayerLimit bypass_player_limit = new BypassPlayerLimit();
-
-            public class BypassChatSpeed {
-                public boolean enable = true;
-            }
-
-            public class BypassMoveSpeed {
-                public boolean enable = true;
-            }
-
-            public class BypassPlayerLimit {
-                public boolean enable = true;
-            }
+        public class BypassMaxPlayerLimit {
+            public boolean enable = true;
         }
 
         public class DeathLog {
@@ -338,6 +336,23 @@ public class ConfigGSON {
 
         public class Scheduler {
             public boolean enable = true;
+        }
+
+        public class BiomeLookupCache {
+            public boolean enable = true;
+        }
+
+        public class TickChunkCache {
+            public boolean enable = true;
+        }
+
+        public class Config {
+            public boolean enable = true;
+        }
+
+        public class Test {
+            // disable TestModule by default
+            public boolean enable = false;
         }
     }
 }

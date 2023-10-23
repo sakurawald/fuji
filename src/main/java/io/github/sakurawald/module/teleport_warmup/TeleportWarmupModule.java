@@ -13,7 +13,6 @@ import net.minecraft.server.level.ServerPlayer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.function.Supplier;
 
 
 @Slf4j
@@ -21,11 +20,6 @@ public class TeleportWarmupModule extends AbstractModule {
 
     public final HashMap<String, TeleportTicket> tickets = new HashMap<>();
 
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.teleport_warmup.enable;
-    }
 
     @Override
     public void onInitialize() {

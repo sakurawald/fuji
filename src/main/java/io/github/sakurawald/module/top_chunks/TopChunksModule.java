@@ -8,6 +8,7 @@ import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.mixin.top_chunks.ThreadedAnvilChunkStorageMixin;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.MessageUtil;
+import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -28,14 +29,9 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 
+@Slf4j
 public class TopChunksModule extends AbstractModule {
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.top_chunks.enable;
-    }
 
     @Override
     public void onInitialize() {

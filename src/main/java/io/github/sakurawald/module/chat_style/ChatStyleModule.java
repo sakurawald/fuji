@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Queue;
-import java.util.function.Supplier;
 
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
@@ -52,11 +51,6 @@ public class ChatStyleModule extends AbstractModule {
     private final MainStatsModule mainStatsModule = ModuleManager.getOrNewInstance(MainStatsModule.class);
     @Getter
     private Queue<Component> chatHistory;
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.chat_style.enable;
-    }
 
     @Override
     public void onInitialize() {

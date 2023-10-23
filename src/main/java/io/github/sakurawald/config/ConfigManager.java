@@ -12,7 +12,5 @@ public class ConfigManager {
     public static final ConfigWrapper<WorksGSON> worksWrapper = new ConfigWrapper<>("works.json", WorksGSON.class);
     public static final ConfigWrapper<HeadGSON> headWrapper = new ConfigWrapper<>("head.json", HeadGSON.class);
 
-    public static final ConfigWrapper<OptimizationGSON> optimizationWrapper = new ConfigWrapper<>("optimization.json", OptimizationGSON.class);
-
     public static final ConfigWrapper<SchedulerGSON> schedulerWrapper = new ConfigWrapper<>("scheduler.json", SchedulerGSON.class);
 }

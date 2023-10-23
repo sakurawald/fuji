@@ -9,7 +9,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 
 import java.util.HashMap;
-import java.util.function.Supplier;
 
 @Slf4j
 public class MultiObsidianPlatformModule extends AbstractModule {
@@ -94,10 +93,5 @@ public class MultiObsidianPlatformModule extends AbstractModule {
         BlockPos.betweenClosed(i - 2, j, k - 2, i + 2, j, k + 2).forEach(blockPos -> serverLevel.setBlockAndUpdate(blockPos, Blocks.OBSIDIAN.defaultBlockState()));
     }
 
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.multi_obsidian_platform.enable;
-    }
 
 }

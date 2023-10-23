@@ -26,17 +26,11 @@ import org.quartz.JobExecutionContext;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.function.Supplier;
 
 public class BetterFakePlayerModule extends AbstractModule {
     private final ArrayList<String> CONSTANT_EMPTY_LIST = new ArrayList<>();
     private final HashMap<String, ArrayList<String>> player2fakePlayers = new HashMap<>();
     private final HashMap<String, Long> player2expiration = new HashMap<>();
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.better_fake_player.enable;
-    }
 
     @Override
     public void onInitialize() {

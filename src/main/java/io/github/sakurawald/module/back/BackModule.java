@@ -16,7 +16,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.HashMap;
-import java.util.function.Supplier;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
 public class BackModule extends AbstractModule {
@@ -27,11 +26,6 @@ public class BackModule extends AbstractModule {
     @SuppressWarnings("unused")
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(Commands.literal("back").executes(this::$back));
-    }
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.back.enable;
     }
 
     @Override

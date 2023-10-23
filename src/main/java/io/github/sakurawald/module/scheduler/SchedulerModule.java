@@ -20,17 +20,11 @@ import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 
 import static net.minecraft.commands.Commands.argument;
 
 @Slf4j
 public class SchedulerModule extends AbstractModule {
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.scheduler.enable;
-    }
 
     private void updateJobs() {
         ScheduleUtil.removeJobs(ScheduleJobJob.class.getName());

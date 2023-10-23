@@ -4,13 +4,13 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.module.skin.SkinRestorer;
 import io.github.sakurawald.module.skin.enums.SkinVariant;
 import io.github.sakurawald.module.skin.provider.MineSkinSkinProvider;
 import io.github.sakurawald.module.skin.provider.MojangSkinProvider;
 import io.github.sakurawald.util.MessageUtil;
+import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -25,12 +25,8 @@ import java.util.function.Supplier;
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
+@Slf4j
 public class SkinModule extends AbstractModule {
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.skin.enable;
-    }
 
     @Override
     public void onInitialize() {

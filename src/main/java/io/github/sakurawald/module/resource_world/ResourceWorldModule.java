@@ -44,8 +44,6 @@ import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
-import java.util.function.Supplier;
-
 import static net.minecraft.commands.Commands.literal;
 
 @Slf4j
@@ -55,12 +53,6 @@ public class ResourceWorldModule extends AbstractModule {
     private final String DEFAULT_THE_NETHER_PATH = "the_nether";
     private final String DEFAULT_THE_END_PATH = "the_end";
     private final String DEFAULT_OVERWORLD_PATH = "overworld";
-
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.resource_world.enable;
-    }
 
     @Override
     public void onInitialize() {
@@ -142,6 +134,7 @@ public class ResourceWorldModule extends AbstractModule {
     private LevelStem createDimensionOptions(MinecraftServer server, ResourceKey<DimensionType> dimensionTypeRegistryKey) {
         Holder<DimensionType> dimensionTypeRegistryEntry = getDimensionTypeRegistryEntry(server, dimensionTypeRegistryKey);
         ChunkGenerator chunkGenerator = getChunkGenerator(server, dimensionTypeRegistryKey);
+        //noinspection DataFlowIssue
         return new LevelStem(dimensionTypeRegistryEntry, chunkGenerator);
     }
 
@@ -169,9 +162,10 @@ public class ResourceWorldModule extends AbstractModule {
         ResourceWorldProperties resourceWorldProperties = new ResourceWorldProperties(server.getWorldData(), seed);
         ResourceKey<Level> worldRegistryKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(DEFAULT_RESOURCE_WORLD_NAMESPACE, path));
         LevelStem dimensionOptions = createDimensionOptions(server, dimensionTypeRegistryKey);
+        MinecraftServerAccessor serverAccessor = (MinecraftServerAccessor) server;
         ServerLevel world = new ResourceWorld(server,
                 Util.backgroundExecutor(),
-                ((MinecraftServerAccessor) server).getStorageSource(),
+                serverAccessor.getStorageSource(),
                 resourceWorldProperties,
                 worldRegistryKey,
                 dimensionOptions,
@@ -198,7 +192,7 @@ public class ResourceWorldModule extends AbstractModule {
         }
         ((SimpleRegistryMixinInterface<?>) dimensionsRegistry).sakurawald$setFrozen(isFrozen);
 
-        ((MinecraftServerAccessor) server).getLevels().put(world.dimension(), world);
+        serverAccessor.getLevels().put(world.dimension(), world);
         ServerWorldEvents.LOAD.invoker().onWorldLoad(server, world);
         world.tick(() -> true);
         MessageUtil.sendBroadcast("resource_world.world.created", path);

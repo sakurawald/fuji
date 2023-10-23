@@ -12,23 +12,16 @@ import net.minecraft.server.MinecraftServer;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Supplier;
 
 @Slf4j
 public class MainStatsModule extends AbstractModule {
 
     private final List<Character> colors = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
     private final DynamicMotdModule dynamic_motd_module = ModuleManager.getOrNewInstance(DynamicMotdModule.class);
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.main_stats.enable;
-    }
 
     @Override
     public void onInitialize() {
@@ -41,7 +34,7 @@ public class MainStatsModule extends AbstractModule {
     public void updateMainStats(MinecraftServer server) {
         MainStats serverMainStats = MainStats.calculateServerMainStats();
 
-        ConfigGSON.Modules.DynamicMOTD dynamic_motd = ConfigManager.configWrapper.instance().modules.dynamic_motd;
+        ConfigGSON.Modules.MOTD dynamic_motd = ConfigManager.configWrapper.instance().modules.motd;
         ArrayList<String> descriptions = new ArrayList<>();
         dynamic_motd.descriptions.forEach(description -> descriptions.add(serverMainStats.resolve(server, description)));
 
@@ -97,12 +90,12 @@ public class MainStatsModule extends AbstractModule {
     public static class UpdateMainStatsJob implements Job {
 
         @Override
-        public void execute(JobExecutionContext context) throws JobExecutionException {
+        public void execute(JobExecutionContext context) {
             // save all online-player 's stats
             MinecraftServer server = (MinecraftServer) context.getJobDetail().getJobDataMap().get(MinecraftServer.class.getName());
             server.getPlayerList().getPlayers().forEach((p) -> p.getStats().save());
 
-            // update dynamic_motd
+            // update motd
             MainStatsModule module = (MainStatsModule) context.getJobDetail().getJobDataMap().get(MainStatsModule.class.getName());
             module.updateMainStats(server);
 

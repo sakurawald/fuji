@@ -6,17 +6,11 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public class CommandCooldownModule extends AbstractModule {
 
     private final HashMap<ServerPlayer, HashMap<String, Long>> map = new HashMap<>();
 
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.command_cooldown.enable;
-    }
 
     public long calculateCommandCooldown(ServerPlayer player, String commandLine) {
 

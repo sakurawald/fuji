@@ -4,7 +4,6 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.module.chat_style.mention.MentionPlayersJob;
 import io.github.sakurawald.util.MessageUtil;
@@ -20,7 +19,6 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 import static net.minecraft.commands.Commands.argument;
 
@@ -31,11 +29,6 @@ public class TpaModule extends AbstractModule {
     @Getter
     private final ArrayList<TpaRequest> requests = new ArrayList<>();
 
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.tpa.enable;
-    }
 
     @Override
     public void onInitialize() {

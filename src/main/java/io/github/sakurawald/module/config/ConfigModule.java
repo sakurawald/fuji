@@ -6,20 +6,15 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.util.MessageUtil;
+import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 
-import java.util.function.Supplier;
 
-
+@Slf4j
 public class ConfigModule extends AbstractModule {
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> true;
-    }
 
     @Override
     public void onInitialize() {

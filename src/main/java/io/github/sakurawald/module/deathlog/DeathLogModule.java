@@ -6,7 +6,6 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.ServerMain;
-import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +36,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 import static com.mojang.brigadier.arguments.StringArgumentType.word;
 import static net.minecraft.commands.Commands.argument;
@@ -62,11 +60,6 @@ public class DeathLogModule extends AbstractModule {
     private final String XP_PROGRESS = "xp_progress";
     private final String INVENTORY = "inventory";
 
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.death_log.enable;
-    }
 
     @Override
     public void onInitialize() {
@@ -114,7 +107,7 @@ public class DeathLogModule extends AbstractModule {
         List<ItemStack> armor = readSlotsTag((ListTag) inventoryTag.get(ARMOR));
         List<ItemStack> offhand = readSlotsTag((ListTag) inventoryTag.get(OFFHAND));
 
-        // check to player's inventory for safety
+        // check the player's inventory for safety
         if (!to.getInventory().isEmpty() && !ServerMain.SERVER.getPlayerList().isOp(to.getGameProfile())) {
             source.sendMessage(Component.text("To player's inventory is not empty!"));
             return Command.SINGLE_SUCCESS;

@@ -37,7 +37,6 @@ import org.quartz.JobExecutionContext;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.function.Supplier;
 
 @SuppressWarnings("SameReturnValue")
 @Slf4j
@@ -45,11 +44,6 @@ public class WorksModule extends AbstractModule {
 
     private final int PAGE_SIZE = 9 * 5;
 
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.works.enable;
-    }
 
     @Override
     public void onInitialize() {
@@ -147,6 +141,7 @@ public class WorksModule extends AbstractModule {
                         if (clickType.isLeft) {
                             ResourceKey<Level> worldKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(work.level));
                             ServerLevel level = ServerMain.SERVER.getLevel(worldKey);
+                            //noinspection DataFlowIssue
                             player.teleportTo(level, work.x, work.y, work.z, work.yaw, work.pitch);
                             gui.close();
                             return;

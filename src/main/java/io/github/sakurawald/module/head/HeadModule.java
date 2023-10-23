@@ -25,7 +25,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 
 // Thanks to: https://modrinth.com/mod/headindex
 public class HeadModule extends AbstractModule {
@@ -60,11 +59,6 @@ public class HeadModule extends AbstractModule {
 
     public Item getCostItem() {
         return BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(ConfigManager.headWrapper.instance().costType));
-    }
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.head.enable;
     }
 
     @Override

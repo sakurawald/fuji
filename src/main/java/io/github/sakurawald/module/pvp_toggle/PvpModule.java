@@ -15,16 +15,10 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 
 @Slf4j
 public class PvpModule extends AbstractModule {
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.pvp_toggle.enable;
-    }
 
     @Override
     public void onInitialize() {

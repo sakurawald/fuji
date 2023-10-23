@@ -1,5 +1,7 @@
 package io.github.sakurawald.module;
 
+import com.google.gson.JsonElement;
+import io.github.sakurawald.config.ConfigManager;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 
@@ -29,20 +31,46 @@ public class ModuleManager {
      * @return if a module is disabled, then this method will return null
      */
     public static <T extends AbstractModule> T getOrNewInstance(Class<T> clazz) {
+        JsonElement config = ConfigManager.configWrapper.toJsonElement();
+
         if (!instances.containsKey(clazz)) {
+            String basePackageName = calculateBasePackageName(ModuleManager.class, clazz.getName());
             String moduleName = clazz.getSimpleName();
-            try {
-                AbstractModule abstractModule = clazz.getDeclaredConstructor().newInstance();
-                if (abstractModule.enableModule().get()) {
-                    log.info("Initialize module -> {}", moduleName);
-                    // initialize module here.
+            if (enableModule(config, basePackageName)) {
+                log.info("Enable module -> {}", moduleName);
+                try {
+                    AbstractModule abstractModule = clazz.getDeclaredConstructor().newInstance();
                     abstractModule.onInitialize();
                     instances.put(clazz, abstractModule);
+                } catch (Exception e) {
+                    log.error(e.toString());
                 }
-            } catch (Exception e) {
-                log.error(e.toString());
+            } else {
+                log.info("Disable module {}", moduleName);
+
             }
         }
         return clazz.cast(instances.get(clazz));
+    }
+
+    public static boolean enableModule(JsonElement config, String basePackageName) {
+        boolean enable;
+        try {
+            enable = config.getAsJsonObject().get("modules").getAsJsonObject().get(basePackageName).getAsJsonObject().get("enable").getAsBoolean();
+        } catch (Exception e) {
+            log.error("The enable-supplier key '{}' is missing -> force enable this module", "modules.%s.enable".formatted(basePackageName));
+            return true;
+        }
+
+        return enable;
+    }
+
+    public static String calculateBasePackageName(Class<?> packageRootClass, String className) {
+        String basePackageName;
+        int left = packageRootClass.getPackageName().length() + 1;
+        basePackageName = className.substring(left);
+        int right = basePackageName.indexOf(".");
+        basePackageName = basePackageName.substring(0, right);
+        return basePackageName;
     }
 }

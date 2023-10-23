@@ -35,7 +35,6 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.file.Files;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 @SuppressWarnings("UnstableApiUsage")
 @Slf4j
@@ -44,11 +43,6 @@ public class WorldDownloaderModule extends AbstractModule {
     private EvictingQueue<String> contextQueue;
     private HttpServer server;
 
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.world_downloader.enable;
-    }
 
     @Override
     public void onInitialize() {

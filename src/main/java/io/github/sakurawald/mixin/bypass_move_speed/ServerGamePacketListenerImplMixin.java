@@ -1,4 +1,4 @@
-package io.github.sakurawald.mixin.bypass_things.move_speed;
+package io.github.sakurawald.mixin.bypass_move_speed;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.server.level.ServerPlayer;

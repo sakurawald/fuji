@@ -1,4 +1,4 @@
-package io.github.sakurawald.mixin.bypass_things.chat_speed;
+package io.github.sakurawald.mixin.bypass_chat_speed;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;

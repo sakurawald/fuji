@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package io.github.sakurawald.mixin.dynamic_motd;
+package io.github.sakurawald.mixin.motd;
 
 import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.module.ModuleManager;

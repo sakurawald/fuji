@@ -2,7 +2,6 @@ package io.github.sakurawald.module.motd;
 
 import com.google.common.base.Preconditions;
 import io.github.sakurawald.ServerMain;
-import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import java.util.function.Supplier;
 
 @Slf4j
 public class DynamicMotdModule extends AbstractModule {
@@ -57,10 +55,5 @@ public class DynamicMotdModule extends AbstractModule {
         return MessageUtil.ofVomponentFromMiniMessage(descriptions.get(new Random().nextInt(descriptions.size())));
     }
 
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.dynamic_motd.enable;
-    }
 
 }

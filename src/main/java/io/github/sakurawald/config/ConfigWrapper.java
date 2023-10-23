@@ -19,7 +19,6 @@ import java.util.Set;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ConfigWrapper<T> {
-
     static final Gson gson = new GsonBuilder()
             .setPrettyPrinting()
             .disableHtmlEscaping()
@@ -30,6 +29,7 @@ public class ConfigWrapper<T> {
     final File file;
     final Class<T> configClass;
     T configInstance;
+
     boolean merged = false;
 
     @SuppressWarnings("unused")
@@ -63,6 +63,7 @@ public class ConfigWrapper<T> {
 
                 // read merged json
                 configInstance = gson.fromJson(olderJsonElement, configClass);
+
                 this.saveToDisk();
             }
 
@@ -70,6 +71,10 @@ public class ConfigWrapper<T> {
                  InvocationTargetException e) {
             log.error("Load config failed: " + e.getMessage());
         }
+    }
+
+    public JsonElement toJsonElement() {
+        return gson.toJsonTree(this.configInstance, this.configClass);
     }
 
     @SuppressWarnings("unused")

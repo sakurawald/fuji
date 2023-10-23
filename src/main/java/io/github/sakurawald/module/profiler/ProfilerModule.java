@@ -3,7 +3,6 @@ package io.github.sakurawald.module.profiler;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +26,6 @@ import java.lang.management.MemoryUsage;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 
 @Slf4j
 public class ProfilerModule extends AbstractModule {
@@ -42,11 +40,6 @@ public class ProfilerModule extends AbstractModule {
         } else {
             return String.format("%.2fG", (double) bytes / (1024 * 1024 * 1024));
         }
-    }
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.profiler.enable;
     }
 
     @Override

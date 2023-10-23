@@ -2,9 +2,9 @@ package io.github.sakurawald.module.zero_command_permission;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.CommandNode;
-import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.mixin.zero_command_permission.CommandNodeAccessor;
 import io.github.sakurawald.module.AbstractModule;
+import lombok.extern.slf4j.Slf4j;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.util.TriState;
@@ -12,14 +12,9 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.MinecraftServer;
 
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
+@Slf4j
 public class ZeroCommandPermissionModule extends AbstractModule {
-
-    @Override
-    public Supplier<Boolean> enableModule() {
-        return () -> ConfigManager.configWrapper.instance().modules.zero_command_permission.enable;
-    }
 
     @Override
     public void onInitialize() {
@@ -48,7 +43,7 @@ public class ZeroCommandPermissionModule extends AbstractModule {
 
     private Predicate<CommandSourceStack> createZeroPermission(String commandPath, Predicate<CommandSourceStack> original) {
         return source -> {
-            // ignore non-player command source
+            // ignore the non-player command source
             if (source.getPlayer() == null) return original.test(source);
 
             try {
