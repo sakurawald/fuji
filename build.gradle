@@ -57,8 +57,8 @@ dependencies {
 
     modImplementation include("me.lucko:fabric-permissions-api:${project.fabric_permissions_version}")
     modImplementation include("net.kyori:adventure-platform-fabric:${project.adventure_platform_fabric_version}")
-    implementation "net.kyori:adventure-text-minimessage:${project.adventure_api_version}"
-    implementation "net.kyori:adventure-text-serializer-plain:${project.adventure_api_version}"
+    include(implementation "net.kyori:adventure-text-minimessage:${project.adventure_api_version}")
+    include(implementation "net.kyori:adventure-text-serializer-plain:${project.adventure_api_version}")
 
     include(implementation group: 'org.apache.commons', name: 'commons-compress', version: "${project.apache_commons_version}")
 
@@ -68,7 +68,8 @@ dependencies {
 
     implementation "me.lucko:spark-api:${project.spark_version}"
     
-    implementation 'org.reflections:reflections:0.10.2'
+    include(implementation "org.reflections:reflections:${project.reflections_version}")
+    include(implementation "org.javassist:javassist:${project.javaassist_version}")
 }
 
 processResources {
@@ -124,7 +125,8 @@ modrinth {
     loaders = ["fabric"]
     dependencies {
         required.project "fabric-api"
-        required.project "carpet"
+        optional.project "carpet"
+        optional.project "spark"
     }
  syncBodyFrom = rootProject.file("README.md").text
 }
