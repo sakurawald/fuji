@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.scheduler;
 
 import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.config.ConfigManager;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -14,13 +15,21 @@ import java.util.Random;
 public class ScheduleJob {
     String name;
     boolean enable;
+    int left_trigger_times;
     List<String> crons;
     List<List<String>> commands_list;
 
-    // todo: add onlyTriggerOnce
-
     public void trigger() {
         log.info("Trigger ScheduleJob {}", this);
+
+        if (left_trigger_times > 0) {
+            left_trigger_times--;
+            if (left_trigger_times == 0) {
+                this.enable = false;
+            }
+            ConfigManager.schedulerWrapper.saveToDisk();
+        }
+
         List<String> commands = this.commands_list.get(new Random().nextInt(this.commands_list.size()));
         SpecializedCommand.runSpecializedCommands(ServerMain.SERVER, commands);
     }
