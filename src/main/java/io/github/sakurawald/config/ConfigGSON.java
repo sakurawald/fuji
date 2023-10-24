@@ -47,6 +47,7 @@ public class ConfigGSON {
         public TickChunkCache tick_chunk_cache = new TickChunkCache();
         public Config config = new Config();
         public Test test = new Test();
+        public Hat hat = new Hat();
 
         public class ResourceWorld {
             public boolean enable = false;
@@ -352,6 +353,10 @@ public class ConfigGSON {
 
         public class Test {
             // disable TestModule by default
+            public boolean enable = false;
+        }
+
+        public class Hat {
             public boolean enable = false;
         }
     }

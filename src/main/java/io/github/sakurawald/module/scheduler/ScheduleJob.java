@@ -17,6 +17,8 @@ public class ScheduleJob {
     List<String> crons;
     List<List<String>> commands_list;
 
+    // todo: add onlyTriggerOnce
+
     public void trigger() {
         log.info("Trigger ScheduleJob {}", this);
         List<String> commands = this.commands_list.get(new Random().nextInt(this.commands_list.size()));

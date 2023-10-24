@@ -10,7 +10,7 @@ import java.util.Random;
 @Slf4j
 public class SpecializedCommand {
 
-    // TODO: a language parser is needed here
+    // TODO: a language parser is needed here (supports some expressions solver)
 
     private static final String RANDOM_PLAYER = "!random_player!";
     private static final String ALL_PLAYER = "!all_player!";

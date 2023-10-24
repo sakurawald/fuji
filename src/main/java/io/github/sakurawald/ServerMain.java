@@ -12,9 +12,19 @@ import java.nio.file.Path;
 
 
 @Slf4j
-// TODO: server language system
-// TODO: /rtp module
-// TODO: command alias module (test proiority with ZeroPermissionModule)
+// TODO: server language system module
+// TODO: /tppos module
+// TODO: /reply module
+// TODO: /hat module
+// TODO: /sudo module
+// TODO: /afk module
+// TODO: command alias module (test priority with ZeroPermissionModule)
+// TODO: playtime(every/for) rewards and rank like module
+// TODO: kit module
+// TODO: luckperms context calculate module
+// TODO: placeholder module
+// TODO: warmup module
+// TODO: interactive command (sign)
 public class ServerMain implements ModInitializer {
     public static final Path CONFIG_PATH = Path.of(FabricLoader.getInstance().getConfigDir().resolve("sakurawald").toString());
     public static final String MOD_ID = "sakurawald";

@@ -3,6 +3,10 @@
 
 This is a minecraft mod that provides many essential and useful modules for vanilla survival.
 
+**_Just feel freeeeeee to create feature-request and report bugs in github_!**
+
+**~~Currently, we are working hard to copy ideas from CMI plugin~~**
+
 # Feature
 1. Vanilla-Respect: all the modules do the least change to the vanilla game (Never modify the game-logic).
 2. Fully-Modular: you can disable any module completely if you don't like it (Including disabling the commands and
