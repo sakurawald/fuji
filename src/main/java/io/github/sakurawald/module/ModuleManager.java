@@ -44,9 +44,6 @@ public class ModuleManager {
                 } catch (Exception e) {
                     log.error(e.toString());
                 }
-            } else {
-                log.info("- {}", moduleName);
-
             }
         }
         return clazz.cast(instances.get(clazz));

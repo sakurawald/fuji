@@ -17,6 +17,8 @@ This is a minecraft mod that provides many essential and useful modules for vani
 
 # Modules
 
+> _**By default, all the modules are disabled, and this mod does nothing to the vanilla game.**_
+
 #### PvpToggleModule
 provides a command to toggle the pvp status. (/pvp [on/off/status/list])
 <img src="https://github.com/SakuraWald/sakurawald-fabric/raw/master/.github/images/pvp-toggle.gif" alt="module presentation gif">
@@ -165,6 +167,15 @@ provides `/sakurawald reload` to reload configs.
 
 #### TestModule
 provides `/test` command only for test purpose. (Disable this by default, and you don't need to enable this unless you know what you are doing)
+
+#### HatModule
+provides `/hat` command
+
+#### FlyModule
+provides `/fly` command
+
+#### GodModule
+provides `/god` command
 
 # Commands
 Different modules provide different commands, but it's easy to guess what commands the module provides.
