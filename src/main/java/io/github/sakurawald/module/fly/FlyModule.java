@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.hat;
+package io.github.sakurawald.module.fly;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
@@ -11,12 +11,9 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ItemStack;
 
 @Slf4j
-public class HatModule extends AbstractModule {
+public class FlyModule extends AbstractModule {
 
     @Override
     public void onInitialize() {
@@ -24,20 +21,24 @@ public class HatModule extends AbstractModule {
     }
 
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
-        dispatcher.register(Commands.literal("hat").executes(this::$hat));
+        dispatcher.register(Commands.literal("fly").executes(this::fly));
     }
 
     @SuppressWarnings("SameReturnValue")
-    private int $hat(CommandContext<CommandSourceStack> ctx) {
+    private int fly(CommandContext<CommandSourceStack> ctx) {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return Command.SINGLE_SUCCESS;
 
-        ItemStack mainHandItem = player.getMainHandItem();
-        ItemStack headSlotItem = player.getItemBySlot(EquipmentSlot.HEAD);
+        boolean flag = player.getAbilities().mayfly;
+        player.getAbilities().mayfly = !flag;
+        if (flag) {
+            player.getAbilities().flying = false;
+            MessageUtil.sendMessage(player, "fly.off");
+        } else {
+            MessageUtil.sendMessage(player, "fly.on");
+        }
 
-        player.setItemSlot(EquipmentSlot.HEAD, mainHandItem);
-        player.setItemInHand(InteractionHand.MAIN_HAND, headSlotItem);
-        MessageUtil.sendMessage(player, "hat.success");
+        player.onUpdateAbilities();
         return Command.SINGLE_SUCCESS;
     }
 

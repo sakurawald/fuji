@@ -5,7 +5,7 @@ This is a minecraft mod that provides many essential and useful modules for vani
 
 **_Just feel freeeeeee to create feature-request and report bugs in github_!**
 
-**~~Currently, we are working hard to copy ideas from CMI plugin~~**
+**~~Currently, we are working hard to steal ideas from CMI plugin~~**
 
 # Feature
 1. Vanilla-Respect: all the modules do the least change to the vanilla game (Never modify the game-logic).
@@ -157,6 +157,8 @@ an optimization for iterating chunks, use event-based chunk-list constructor to 
 
 #### SchedulerModule
 where you can add schedule jobs by cron expression, set the random command-list to be executed.
+
+> If `left_trigger_times` < 0, then it means infinity times.
 
 #### ConfigModule
 provides `/sakurawald reload` to reload configs.

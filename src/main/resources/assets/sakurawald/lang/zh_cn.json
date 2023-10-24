@@ -135,5 +135,10 @@
   "profiler.format.mem.last": "<grey> └─ %s (%s): <green>%s<grey> ≤ <green>(%s<grey>/<green>%s)<grey> ≤ <green>%s<grey>",
   "profiler.format.gc.head": "<grey>GC - AvgFreq, AvgTime, TotColl, TotTime<newline>",
   "profiler.format.gc.no_last": "<grey> ├─ %s: <green>%.2f<grey> s, <green>%.2f<grey> ms, <green>%d<grey> x, <green>%d<grey> ms<newline>",
-  "profiler.format.gc.last": "<grey> └─ %s: <green>%.2f<grey> s, <green>%.2f<grey> ms, <green>%d<grey> x, <green>%d<grey> ms"
+  "profiler.format.gc.last": "<grey> └─ %s: <green>%.2f<grey> s, <green>%.2f<grey> ms, <green>%d<grey> x, <green>%d<grey> ms",
+  "hat.success": "<gold>享受你的新帽子!",
+  "fly.on": "<gold>飞行模式: 启用",
+  "fly.off": "<gold>飞行模式: 禁用",
+  "god.on": "<gold>上帝模式: 启用",
+  "god.off": "<gold>上帝模式: 禁用"
 }

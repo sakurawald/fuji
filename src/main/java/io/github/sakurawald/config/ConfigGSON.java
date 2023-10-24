@@ -48,6 +48,8 @@ public class ConfigGSON {
         public Config config = new Config();
         public Test test = new Test();
         public Hat hat = new Hat();
+        public Fly fly = new Fly();
+        public God god = new God();
 
         public class ResourceWorld {
             public boolean enable = false;
@@ -357,6 +359,14 @@ public class ConfigGSON {
         }
 
         public class Hat {
+            public boolean enable = false;
+        }
+
+        public class Fly {
+            public boolean enable = false;
+        }
+
+        public class God {
             public boolean enable = false;
         }
     }

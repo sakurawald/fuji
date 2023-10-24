@@ -15,7 +15,6 @@ import java.nio.file.Path;
 // TODO: server language system module
 // TODO: /tppos module
 // TODO: /reply module
-// TODO: /hat module
 // TODO: /sudo module
 // TODO: /afk module
 // TODO: command alias module (test priority with ZeroPermissionModule)
@@ -25,6 +24,7 @@ import java.nio.file.Path;
 // TODO: placeholder module
 // TODO: warmup module
 // TODO: interactive command (sign)
+// TODO: wastebin module
 public class ServerMain implements ModInitializer {
     public static final Path CONFIG_PATH = Path.of(FabricLoader.getInstance().getConfigDir().resolve("sakurawald").toString());
     public static final String MOD_ID = "sakurawald";
