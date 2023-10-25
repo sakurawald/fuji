@@ -52,7 +52,7 @@ public class MotdModule extends AbstractModule {
     }
 
     public Component getRandomDescription() {
-        return MessageUtil.ofVomponentFromMiniMessage(descriptions.get(new Random().nextInt(descriptions.size())));
+        return MessageUtil.ofVomponent(descriptions.get(new Random().nextInt(descriptions.size())));
     }
 
 

@@ -61,6 +61,7 @@ public class ConfigGSON {
         public Hat hat = new Hat();
         public Fly fly = new Fly();
         public God god = new God();
+        public Language language = new Language();
 
         public class ResourceWorld {
             public boolean enable = false;
@@ -381,7 +382,6 @@ public class ConfigGSON {
             public boolean enable = false;
         }
 
-        public Language language = new Language();
         public class Language {
             public boolean enable = false;
         }

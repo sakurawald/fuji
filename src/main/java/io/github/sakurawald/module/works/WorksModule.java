@@ -134,7 +134,7 @@ public class WorksModule extends AbstractModule {
             Work work = source.get(workIndex);
             gui.setSlot(slotIndex, new GuiElementBuilder()
                     .setItem(work.asItem())
-                    .setName(MessageUtil.ofVomponentFromMiniMessage(work.name))
+                    .setName(MessageUtil.ofVomponent(work.name))
                     .setLore(work.asLore(player))
                     .setCallback((index, clickType, actionType) -> {
                         /* left click -> visit */
