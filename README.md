@@ -177,6 +177,14 @@ provides `/fly` command
 #### GodModule
 provides `/god` command
 
+#### LanguageModule
+provides multi-language support for your players.
+(Disable this module will force all the players to use the default language)
+
+> - The default language is en_us
+> - LanguageModule respects the player's client-side language-setting
+> - If the player's client-side language-setting is not supported, then use the default language
+
 # Commands
 Different modules provide different commands, but it's easy to guess what commands the module provides.
 
