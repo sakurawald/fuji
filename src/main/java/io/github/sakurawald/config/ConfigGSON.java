@@ -11,7 +11,18 @@ import java.util.List;
 @SuppressWarnings("ALL")
 public class ConfigGSON {
 
+    public Common common = new Common();
     public Modules modules = new Modules();
+
+    public class Common {
+
+        public Quartz quartz = new Quartz();
+
+        public class Quartz {
+            public String logger_level = "WARN";
+        }
+
+    }
 
     public class Modules {
         public ResourceWorld resource_world = new ResourceWorld();
@@ -350,7 +361,7 @@ public class ConfigGSON {
         }
 
         public class Config {
-            public boolean enable = true;
+            public boolean enable = false;
         }
 
         public class Test {
@@ -367,6 +378,11 @@ public class ConfigGSON {
         }
 
         public class God {
+            public boolean enable = false;
+        }
+
+        public Language language = new Language();
+        public class Language {
             public boolean enable = false;
         }
     }

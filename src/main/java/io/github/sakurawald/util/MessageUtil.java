@@ -1,6 +1,5 @@
 package io.github.sakurawald.util;
 
-import assets.sakurawald.ResourceLoader;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.github.sakurawald.ServerMain;
@@ -14,9 +13,13 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.level.ServerPlayer;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,25 +28,40 @@ import java.util.List;
 @Slf4j
 public class MessageUtil {
     private static final FabricServerAudiences adventure = FabricServerAudiences.of(ServerMain.SERVER);
-    private static final HashMap<String, JsonObject> lang2json = new HashMap<>();
     @Getter
     private static final HashMap<String, String> player2lang = new HashMap<>();
+    private static final HashMap<String, JsonObject> lang2json = new HashMap<>();
     private static final String DEFAULT_LANG = "en_us";
     private static final MiniMessage miniMessage = MiniMessage.builder().build();
+    private static final Path LANGUAGE_PATH = ServerMain.CONFIG_PATH.resolve("language");
 
     static {
-        addLanguage("en_us");
-        addLanguage("zh_cn");
+        loadLanguages();
     }
 
-    private static void addLanguage(String lang) {
-        InputStream input = ResourceLoader.class.getResourceAsStream("lang/%s.json".formatted(lang));
-        if (input == null) {
-            log.warn("Language File Not Found: %s.json".formatted(lang));
+    public static void loadLanguages() {
+        File[] languages = LANGUAGE_PATH.toFile().listFiles();
+        if (languages == null) {
+            log.error("Failed to load languages");
             return;
         }
-        JsonObject jsonObject = JsonParser.parseReader(new InputStreamReader(input)).getAsJsonObject();
-        lang2json.put(lang, jsonObject);
+        for (File language : languages) {
+            log.info("Loading Language File: %s".formatted(language.getName()));
+            addLanguage(language.getName());
+        }
+
+    }
+
+    private static void addLanguage(String fileName) {
+        InputStream input;
+        try {
+            input = FileUtils.openInputStream(LANGUAGE_PATH.resolve(fileName).toFile());
+            JsonObject jsonObject = JsonParser.parseReader(new InputStreamReader(input)).getAsJsonObject();
+            lang2json.put(fileName.replace(".json", ""), jsonObject);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public static String ofString(Audience audience, String key, Object... args) {

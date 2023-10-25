@@ -1,7 +1,10 @@
 package io.github.sakurawald.util;
 
 
+import io.github.sakurawald.config.ConfigManager;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.config.Configurator;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
@@ -10,6 +13,11 @@ public class ScheduleUtil {
     private static final Scheduler scheduler;
 
     static {
+        /* set logger level for quartz */
+        Level level = Level.getLevel(ConfigManager.configWrapper.instance().common.quartz.logger_level);
+        Configurator.setAllLevels("org.quartz", level);
+
+        /* new scheduler */
         try {
             scheduler = new StdSchedulerFactory().getScheduler();
         } catch (SchedulerException e) {

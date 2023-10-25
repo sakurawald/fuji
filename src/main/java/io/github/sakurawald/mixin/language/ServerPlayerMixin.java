@@ -1,4 +1,4 @@
-package io.github.sakurawald.mixin.config;
+package io.github.sakurawald.mixin.language;
 
 import io.github.sakurawald.module.teleport_warmup.ServerPlayerAccessor;
 import io.github.sakurawald.util.MessageUtil;

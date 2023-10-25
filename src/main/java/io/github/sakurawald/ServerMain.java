@@ -38,6 +38,9 @@ public class ServerMain implements ModInitializer {
         /* modules */
         ModuleManager.initializeModules();
 
+        /* server instance */
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> SERVER = server);
+
         /* scheduler */
         ServerLifecycleEvents.SERVER_STARTED.register(server -> ScheduleUtil.startScheduler());
         ServerLifecycleEvents.SERVER_STOPPING.register((server) -> ScheduleUtil.shutdownScheduler());
