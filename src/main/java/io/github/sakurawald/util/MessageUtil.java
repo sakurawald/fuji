@@ -48,10 +48,15 @@ public class MessageUtil {
             log.info("Create language folder.");
             try {
                 Files.createDirectories(STORAGE_PATH);
-                io.github.sakurawald.util.FileUtils.copyDirectory(
-                        FabricLoader.getInstance().getModContainer(ServerMain.MOD_ID).flatMap(modContainer -> modContainer.findPath("assets/sakurawald/lang")).get(),
-                        STORAGE_PATH
+                Files.copy(
+                        FabricLoader.getInstance().getModContainer(ServerMain.MOD_ID).flatMap(modContainer -> modContainer.findPath("assets/sakurawald/lang/en_us.json")).get(),
+                        STORAGE_PATH.resolve("en_us.json")
                 );
+                Files.copy(
+                        FabricLoader.getInstance().getModContainer(ServerMain.MOD_ID).flatMap(modContainer -> modContainer.findPath("assets/sakurawald/lang/zh_cn.json")).get(),
+                        STORAGE_PATH.resolve("zh_cn.json")
+                );
+
             } catch (IOException e) {
                 log.warn("Failed to create language folder -> {}", e.getMessage());
             }
