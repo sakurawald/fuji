@@ -385,5 +385,10 @@ public class ConfigGSON {
         public class Language {
             public boolean enable = false;
         }
+
+        public Reply reply = new Reply();
+        public class Reply {
+            public boolean enable = false;
+        }
     }
 }

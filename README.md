@@ -181,11 +181,14 @@ provides `/god` command
 provides multi-language support for your players.
 (Disable this module will force all the players to use the default language)
 
-> - The default language is en_us.
-> - LanguageModule respects the player's client-side language-setting.
-> - If the player's client-side language-setting is not supported, then use the default language.
-> - Lazy-load support, which means if a language is not required, then it will not be loaded.
-> - Dynamic-reload support, you need to enable `ConfigModule` to use reload command.
+- The default language is en_us.
+- Respect the player's client-side language-setting.
+- If the player's client-side language-setting is not supported, then use the default language.
+- Lazy-load support, which means if a language is not required, then it will not be loaded.
+- Dynamic-reload support, you need to enable `ConfigModule` to use reload command.
+
+#### ReplyModule
+provides `/reply` command to quickly reply messages to the player who recently `/msg` you! 
 
 # Commands
 Different modules provide different commands, but it's easy to guess what commands the module provides.

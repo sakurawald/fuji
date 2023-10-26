@@ -12,10 +12,7 @@ import java.nio.file.Path;
 
 
 @Slf4j
-// TODO: server language system module
 // TODO: /tppos module
-// TODO: /reply module
-// TODO: /sudo module
 // TODO: /afk module
 // TODO: command alias module (test priority with ZeroPermissionModule)
 // TODO: playtime(every/for) rewards and rank like module
@@ -32,9 +29,6 @@ public class ServerMain implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        /* server instance */
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> SERVER = server);
-
         /* modules */
         ModuleManager.initializeModules();
 
@@ -43,6 +37,6 @@ public class ServerMain implements ModInitializer {
 
         /* scheduler */
         ServerLifecycleEvents.SERVER_STARTED.register(server -> ScheduleUtil.startScheduler());
-        ServerLifecycleEvents.SERVER_STOPPING.register((server) -> ScheduleUtil.shutdownScheduler());
+        ServerLifecycleEvents.SERVER_STOPPING.register(server -> ScheduleUtil.shutdownScheduler());
     }
 }
