@@ -141,6 +141,7 @@
   "fly.off": "<gold>Fly mode: off",
   "god.on": "<gold>God mode: on",
   "god.off": "<gold>God mode: off",
+  "reply.no_target": "<red>No reply target",
   "afk.on": "<gold>Afk mode: on",
   "afk.on.broadcast": "<gold>Player %s is now afk",
   "afk.off.broadcast": "<gold>Player %s is no longer afk",

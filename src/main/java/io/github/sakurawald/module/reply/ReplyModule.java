@@ -7,6 +7,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.module.AbstractModule;
+import io.github.sakurawald.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
@@ -47,7 +48,7 @@ public class ReplyModule extends AbstractModule {
         try {
             ServerMain.SERVER.getCommands().getDispatcher().execute("msg %s %s".formatted(target, message), player.createCommandSourceStack());
         } catch (CommandSyntaxException e) {
-            log.error(e.getMessage());
+            MessageUtil.sendMessage(player, "reply.error");
         }
 
         return Command.SINGLE_SUCCESS;

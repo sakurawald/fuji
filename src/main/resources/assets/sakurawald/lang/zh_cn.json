@@ -141,6 +141,7 @@
   "fly.off": "<gold>飞行模式: 禁用",
   "god.on": "<gold>上帝模式: 启用",
   "god.off": "<gold>上帝模式: 禁用",
+  "reply.no_target": "<red>无可回复的目标",
   "afk.on": "<gold>闲置模式: 启用",
   "afk.on.broadcast": "<gold>玩家 %s 暂时离开了",
   "afk.off.broadcast": "<gold>玩家 %s 回来了",
