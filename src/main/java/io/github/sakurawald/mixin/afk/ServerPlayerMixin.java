@@ -56,7 +56,6 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor_afk {
     public void resetLastActionTime(CallbackInfo ci) {
         if (sakurawald$isAfk()) {
             sakurawald$setAfk(false);
-            MessageUtil.sendBroadcast("afk.off.broadcast", player.getGameProfile().getName());
         }
     }
 
@@ -64,6 +63,7 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor_afk {
     public void sakurawald$setAfk(boolean flag) {
         this.afk = flag;
         this.server.getPlayerList().broadcastAll(new ClientboundPlayerInfoUpdatePacket(ClientboundPlayerInfoUpdatePacket.Action.UPDATE_DISPLAY_NAME, (ServerPlayer) (Object) this));
+        MessageUtil.sendMessage(player, this.afk ? "afk.on" : "afk.off");
     }
 
     @Override

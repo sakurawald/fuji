@@ -76,7 +76,6 @@ public class AfkModule extends AbstractModule {
                     if (afk_player.sakurawald$isAfk()) continue;
 
                     afk_player.sakurawald$setAfk(true);
-                    MessageUtil.sendBroadcast("afk.on.broadcast", player.getGameProfile().getName());
                     if (ConfigManager.configWrapper.instance().modules.afk.afk_checker.kick_player) {
                         player.connection.disconnect(MessageUtil.ofVomponent(player, "afk.kick"));
                     }
