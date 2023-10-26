@@ -404,5 +404,11 @@ public class ConfigGSON {
                 public boolean kick_player = false;
             }
         }
+
+        public Suicide suicide = new Suicide();
+        public class Suicide {
+
+            public boolean enable = false;
+        }
     }
 }

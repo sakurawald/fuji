@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "io.github.sakurawald.mixin.MixinConfigPlugin",
   "mixins": [
+    "afk.PlayerListMixin",
     "afk.ServerPlayerMixin",
     "back.ServerPlayerMixin",
     "better_fake_player.PlayerCommandMixin",
