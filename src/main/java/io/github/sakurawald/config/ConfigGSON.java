@@ -400,7 +400,7 @@ public class ConfigGSON {
             public AfkChecker afk_checker = new AfkChecker();
 
             public class AfkChecker {
-                public String cron = "* 0 0 ? * * *";
+                public String cron = "0 0/5 * ? * *";
                 public boolean kick_player = false;
             }
         }

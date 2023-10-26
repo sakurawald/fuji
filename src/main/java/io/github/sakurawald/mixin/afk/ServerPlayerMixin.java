@@ -31,6 +31,7 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor_afk {
     @Shadow
     @Final
     public MinecraftServer server;
+    @Shadow private long lastActionTime;
     @Unique
     private boolean afk = false;
 
@@ -54,6 +55,9 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor_afk {
 
     @Inject(method = "resetLastActionTime", at = @At("HEAD"))
     public void resetLastActionTime(CallbackInfo ci) {
+        // note: update lastLastActionTime here
+        sakurawald$setLastLastActionTime(this.lastActionTime);
+
         if (sakurawald$isAfk()) {
             sakurawald$setAfk(false);
             MessageUtil.sendBroadcast("afk.off.broadcast", player.getGameProfile().getName());

@@ -61,6 +61,8 @@ public class MessageUtil {
                 log.warn("Failed to create language folder -> {}", e.getMessage());
             }
         }
+
+        // todo: auto add keys in language
     }
 
     public static void loadLanguageIfAbsent(String lang) {
@@ -125,7 +127,6 @@ public class MessageUtil {
         return miniMessage.deserialize(str);
     }
 
-    // todo: auto add keys in language
     public static net.minecraft.network.chat.Component ofVomponent(String str) {
         return toVomponent(ofComponent(str));
     }
