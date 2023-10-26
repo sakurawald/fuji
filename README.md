@@ -4,11 +4,10 @@
 This is a minecraft mod that provides many essential and useful modules for vanilla survival.
 
 # Feature
-1. Vanilla-Respect: all the modules do the least change to the vanilla game (Never modify the game-logic).
-2. Fully-Modular: you can disable any module completely if you don't like it (Including disabling the commands and
-   mixins the module provides).
+1. Vanilla-Respect: all the modules do the least change to the vanilla game (Never touch the game-logic).
+2. Fully-Modular: you can disable any module completely if you don't like it (The commands and events will all be disabled, just like the code never exists, without any performance issue).
 3. High-Performance: all the codes are optimized for performance, and the modules are designed to be as lightweight as
-   possible (In some heavy jobs, cache is used to significantly improve the performance).
+   possible (From data-structure, algorithm, lazy-load and cache to improve performance greatly).
 4. Easy-to-Use: all the modules are designed to be easy to use, and the commands are designed to be easy to remember, even the language file is designed to be easy to understand.
 
 # Modules
