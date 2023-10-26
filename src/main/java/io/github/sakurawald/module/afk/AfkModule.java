@@ -14,7 +14,6 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
@@ -27,7 +26,17 @@ public class AfkModule extends AbstractModule {
     @Override
     public void onInitialize() {
         CommandRegistrationCallback.EVENT.register(this::registerCommand);
-        ServerLifecycleEvents.SERVER_STARTED.register(this::registerScheduleTask);
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> updateJobs());
+    }
+
+    @Override
+    public void onReload() {
+        updateJobs();
+    }
+
+    public void updateJobs() {
+        ScheduleUtil.removeJobs(AfkCheckerJob.class);
+        ScheduleUtil.addJob(AfkCheckerJob.class, ConfigManager.configWrapper.instance().modules.afk.afk_checker.cron, new JobDataMap());
     }
 
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
@@ -43,10 +52,6 @@ public class AfkModule extends AbstractModule {
         ((ServerPlayerAccessor_afk) player).sakurawald$setAfk(true);
         MessageUtil.sendMessage(player, "afk.on");
         return Command.SINGLE_SUCCESS;
-    }
-
-    public void registerScheduleTask(MinecraftServer server) {
-        ScheduleUtil.addJob(AfkCheckerJob.class, ConfigManager.configWrapper.instance().modules.afk.afk_checker.cron, new JobDataMap());
     }
 
     public static class AfkCheckerJob implements Job {

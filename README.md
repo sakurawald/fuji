@@ -190,6 +190,12 @@ provides multi-language support for your players.
 #### ReplyModule
 provides `/reply` command to quickly reply messages to the player who recently `/msg` you! 
 
+#### AfkModule
+provides `/afk` command to set your afk status and auto-afk
+
+#### SuicideModule
+provides `/suicide` command.
+
 # Commands
 Different modules provide different commands, but it's easy to guess what commands the module provides.
 

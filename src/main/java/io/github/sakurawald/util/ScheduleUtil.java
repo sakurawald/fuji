@@ -37,6 +37,10 @@ public class ScheduleUtil {
         }
     }
 
+    public static void removeJobs(Class<?> clazz) {
+        removeJobs(clazz.getName());
+    }
+
     public static void removeJobs(String name) {
         try {
             scheduler.deleteJob(new JobKey(name));

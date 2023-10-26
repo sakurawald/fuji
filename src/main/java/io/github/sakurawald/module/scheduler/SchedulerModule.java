@@ -27,7 +27,7 @@ import static net.minecraft.commands.Commands.argument;
 public class SchedulerModule extends AbstractModule {
 
     private void updateJobs() {
-        ScheduleUtil.removeJobs(ScheduleJobJob.class.getName());
+        ScheduleUtil.removeJobs(ScheduleJobJob.class);
 
         ConfigManager.schedulerWrapper.instance().scheduleJobs.forEach(scheduleJob -> {
 
