@@ -125,6 +125,7 @@ public class MessageUtil {
         return miniMessage.deserialize(str);
     }
 
+    // todo: auto add keys in language
     public static net.minecraft.network.chat.Component ofVomponent(String str) {
         return toVomponent(ofComponent(str));
     }

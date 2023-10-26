@@ -45,7 +45,7 @@ import static net.minecraft.commands.Commands.literal;
 
 @SuppressWarnings("UnstableApiUsage")
 @Slf4j
-public class ChatStyleModule extends AbstractModule {
+public class ChatModule extends AbstractModule {
 
     private final MiniMessage miniMessage = MiniMessage.builder().build();
     private final MainStatsModule mainStatsModule = ModuleManager.getOrNewInstance(MainStatsModule.class);

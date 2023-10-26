@@ -62,6 +62,8 @@ public class ConfigGSON {
         public Fly fly = new Fly();
         public God god = new God();
         public Language language = new Language();
+        public Reply reply = new Reply();
+        public Afk afk = new Afk();
 
         public class ResourceWorld {
             public boolean enable = false;
@@ -386,9 +388,21 @@ public class ConfigGSON {
             public boolean enable = false;
         }
 
-        public Reply reply = new Reply();
         public class Reply {
             public boolean enable = false;
+        }
+
+        public class Afk {
+
+            public boolean enable = false;
+            public String format = "<gray>[AFK] <reset>%player_display_name%";
+
+            public AfkChecker afk_checker = new AfkChecker();
+
+            public class AfkChecker {
+                public String cron = "* 0 0 ? * * *";
+                public boolean kick_player = false;
+            }
         }
     }
 }

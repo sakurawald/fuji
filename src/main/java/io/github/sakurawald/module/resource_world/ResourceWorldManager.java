@@ -72,8 +72,7 @@ public class ResourceWorldManager {
             if (teleportWarmupModule != null) {
                 teleportWarmupModule.tickets.put(player.getGameProfile().getName(),
                         new TeleportTicket(player
-                                , new Position(world, player.getX(), player.getY(), player.getZ(), player.getYRot(), player.getXRot())
-                                , new Position(overworld, spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5, 0, 0)
+                                , Position.of(player), new Position(overworld, spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5, 0, 0)
                                 , true));
             }
             player.teleportTo(overworld, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, overworld.getSharedSpawnAngle(), 0.0F);

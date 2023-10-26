@@ -42,8 +42,7 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
         if (!module.tickets.containsKey(playerName)) {
             module.tickets.put(playerName,
                     new TeleportTicket(player
-                            , new Position(player.level(), player.position().x, player.position().y, player.position().z, player.getYRot(), player.getXRot())
-                            , new Position(targetWorld, x, y, z, yaw, pitch), false));
+                            , Position.of(player), new Position(targetWorld, x, y, z, yaw, pitch), false));
             ci.cancel();
             return;
         } else {

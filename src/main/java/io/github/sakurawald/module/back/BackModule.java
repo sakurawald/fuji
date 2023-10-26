@@ -55,7 +55,7 @@ public class BackModule extends AbstractModule {
                 || (player.level() == lastPos.getLevel() && player.position().distanceToSqr(lastPos.getX(), lastPos.getY(), lastPos.getZ()) > ignoreDistance * ignoreDistance)
         ) {
             player2lastPos.put(player.getGameProfile().getName(),
-                    new Position(player.level(), player.position().x, player.position().y, player.position().z, player.getYRot(), player.getXRot()));
+                    Position.of(player));
         }
     }
 

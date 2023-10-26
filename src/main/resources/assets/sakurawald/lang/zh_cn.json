@@ -140,5 +140,10 @@
   "fly.on": "<gold>飞行模式: 启用",
   "fly.off": "<gold>飞行模式: 禁用",
   "god.on": "<gold>上帝模式: 启用",
-  "god.off": "<gold>上帝模式: 禁用"
+  "god.off": "<gold>上帝模式: 禁用",
+  "afk.on": "<gold>闲置模式: 启用",
+  "afk.off": "<gold>闲置模式: 禁用",
+  "afk.on.broadcast": "<gold>玩家 %s 暂时离开了",
+  "afk.off.broadcast": "<gold>玩家 %s 回来了",
+  "afk.kick": "<red>您已因长时间离开而被踢出"
 }

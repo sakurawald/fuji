@@ -140,5 +140,10 @@
   "fly.on": "<gold>Fly mode: on",
   "fly.off": "<gold>Fly mode: off",
   "god.on": "<gold>God mode: on",
-  "god.off": "<gold>God mode: off"
+  "god.off": "<gold>God mode: off",
+  "afk.on": "<gold>Afk mode: on",
+  "afk.off": "<gold>Afk mode: off",
+  "afk.on.broadcast": "<gold>Player %s is now afk",
+  "afk.off.broadcast": "<gold>Player %s is no longer afk",
+  "afk.kick": "<red>You have been kicked for being afk."
 }

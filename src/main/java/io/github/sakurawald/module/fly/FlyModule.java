@@ -29,16 +29,15 @@ public class FlyModule extends AbstractModule {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return Command.SINGLE_SUCCESS;
 
-        boolean flag = player.getAbilities().mayfly;
-        player.getAbilities().mayfly = !flag;
-        if (flag) {
+        boolean flag = !player.getAbilities().mayfly;
+        player.getAbilities().mayfly = flag;
+        player.onUpdateAbilities();
+
+        if (!flag) {
             player.getAbilities().flying = false;
-            MessageUtil.sendMessage(player, "fly.off");
-        } else {
-            MessageUtil.sendMessage(player, "fly.on");
         }
 
-        player.onUpdateAbilities();
+        MessageUtil.sendMessage(player, flag ? "fly.on" : "fly.off");
         return Command.SINGLE_SUCCESS;
     }
 

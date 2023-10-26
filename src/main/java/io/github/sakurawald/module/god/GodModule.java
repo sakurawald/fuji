@@ -29,16 +29,11 @@ public class GodModule extends AbstractModule {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return Command.SINGLE_SUCCESS;
 
-        boolean flag = player.getAbilities().invulnerable;
-        player.getAbilities().invulnerable = !flag;
-
-        if (flag) {
-            MessageUtil.sendMessage(player, "god.off");
-        } else {
-            MessageUtil.sendMessage(player, "god.on");
-        }
-
+        boolean flag = !player.getAbilities().invulnerable;
+        player.getAbilities().invulnerable = flag;
         player.onUpdateAbilities();
+
+        MessageUtil.sendMessage(player, flag ? "god.on" : "god.off");
         return Command.SINGLE_SUCCESS;
     }
 

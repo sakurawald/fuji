@@ -1,7 +1,7 @@
 package io.github.sakurawald.mixin.chat;
 
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.chat.ChatStyleModule;
+import io.github.sakurawald.module.chat.ChatModule;
 import net.minecraft.network.chat.PlayerChatMessage;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = ServerGamePacketListenerImpl.class, priority = 1001)
 public abstract class ServerGamePacketListenerImplMixin {
     @Unique
-    private static final ChatStyleModule module = ModuleManager.getOrNewInstance(ChatStyleModule.class);
+    private static final ChatModule module = ModuleManager.getOrNewInstance(ChatModule.class);
     @Shadow
     public ServerPlayer player;
 
