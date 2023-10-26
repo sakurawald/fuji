@@ -48,7 +48,7 @@ public class ReplyModule extends AbstractModule {
         try {
             ServerMain.SERVER.getCommands().getDispatcher().execute("msg %s %s".formatted(target, message), player.createCommandSourceStack());
         } catch (CommandSyntaxException e) {
-            MessageUtil.sendMessage(player, "reply.error");
+            MessageUtil.sendMessage(player, "reply.no_target");
         }
 
         return Command.SINGLE_SUCCESS;
