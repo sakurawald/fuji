@@ -39,10 +39,9 @@ public class AfkModule extends AbstractModule {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return Command.SINGLE_SUCCESS;
 
-        boolean flag = !((ServerPlayerAccessor_afk) player).sakurawald$isAfk();
-        ((ServerPlayerAccessor_afk) player).sakurawald$setAfk(flag);
-
-        MessageUtil.sendMessage(player, flag ? "afk.on" : "afk.off");
+        // note: issue command will update lastLastActionTime, so it's impossible to use /afk to disable afk
+        ((ServerPlayerAccessor_afk) player).sakurawald$setAfk(true);
+        MessageUtil.sendMessage(player, "afk.on");
         return Command.SINGLE_SUCCESS;
     }
 
