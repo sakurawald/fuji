@@ -18,6 +18,7 @@ public class SuicideModule extends AbstractModule {
     public void onInitialize() {
         CommandRegistrationCallback.EVENT.register(this::registerCommand);
     }
+
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(Commands.literal("suicide").executes(this::$suicide));
     }

@@ -1,6 +1,6 @@
 package io.github.sakurawald.mixin.afk;
 
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.afk.ServerPlayerAccessor_afk;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;

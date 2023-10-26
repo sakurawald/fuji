@@ -5,7 +5,7 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.GuiInterface;
 import eu.pb4.sgui.api.gui.layered.Layer;
 import eu.pb4.sgui.api.gui.layered.LayeredGui;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.head.HeadModule;
 import io.github.sakurawald.module.head.api.Head;

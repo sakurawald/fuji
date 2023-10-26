@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.newbie_welcome.random_teleport;
 
 import com.google.common.base.Stopwatch;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.base.ConfigManager;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;

@@ -3,10 +3,10 @@ package io.github.sakurawald.util;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.config.base.ResourceConfigWrapper;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import net.fabricmc.loader.api.FabricLoader;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.fabric.FabricServerAudiences;
 import net.kyori.adventure.text.Component;
@@ -19,7 +19,6 @@ import org.apache.commons.io.FileUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,34 +34,15 @@ public class MessageUtil {
     private static final HashMap<String, JsonObject> lang2json = new HashMap<>();
     private static final String DEFAULT_LANG = "en_us";
     private static final MiniMessage miniMessage = MiniMessage.builder().build();
-    private static final Path LANGUAGE_PATH = ServerMain.CONFIG_PATH.resolve("language");
+    private static final Path LANGUAGE_PATH = ServerMain.CONFIG_PATH.resolve("lang");
 
     static {
         copyLanguageFiles();
     }
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public static void copyLanguageFiles() {
-        Path STORAGE_PATH = ServerMain.CONFIG_PATH.resolve("language").toAbsolutePath();
-        if (!Files.exists(STORAGE_PATH)) {
-            log.info("Create language folder.");
-            try {
-                Files.createDirectories(STORAGE_PATH);
-                Files.copy(
-                        FabricLoader.getInstance().getModContainer(ServerMain.MOD_ID).flatMap(modContainer -> modContainer.findPath("assets/sakurawald/lang/en_us.json")).get(),
-                        STORAGE_PATH.resolve("en_us.json")
-                );
-                Files.copy(
-                        FabricLoader.getInstance().getModContainer(ServerMain.MOD_ID).flatMap(modContainer -> modContainer.findPath("assets/sakurawald/lang/zh_cn.json")).get(),
-                        STORAGE_PATH.resolve("zh_cn.json")
-                );
-
-            } catch (IOException e) {
-                log.warn("Failed to create language folder -> {}", e.getMessage());
-            }
-        }
-
-        // todo: auto add keys in language
+        new ResourceConfigWrapper("lang/en_us.json").loadFromDisk();
+        new ResourceConfigWrapper("lang/zh_cn.json").loadFromDisk();
     }
 
     public static void loadLanguageIfAbsent(String lang) {

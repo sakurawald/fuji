@@ -3,10 +3,6 @@
 
 This is a minecraft mod that provides many essential and useful modules for vanilla survival.
 
-**_Just feel freeeeeee to create feature-request and report bugs in github_!**
-
-**~~Currently, we are working hard to steal ideas from CMI plugin~~**
-
 # Feature
 1. Vanilla-Respect: all the modules do the least change to the vanilla game (Never modify the game-logic).
 2. Fully-Modular: you can disable any module completely if you don't like it (Including disabling the commands and
@@ -19,7 +15,7 @@ This is a minecraft mod that provides many essential and useful modules for vani
 
 > _**By default, all the modules are disabled, and this mod does nothing to the vanilla game.**_
 
-#### PvpToggleModule
+#### PvpModule
 provides a command to toggle the pvp status. (/pvp [on/off/status/list])
 <img src="https://github.com/SakuraWald/sakurawald-fabric/raw/master/.github/images/pvp-toggle.gif" alt="module presentation gif">
 
@@ -29,7 +25,7 @@ create and manage auto-reset resource world for overworld, the_nether and the_en
 
 #### ChatModule
 A simple chat system.
-  
+
 > - Support mini-message based parser
 > - Support mention players
 > - Support chat-history -> new joined player can see the chat-history
@@ -86,7 +82,7 @@ provides /tpa and /tpahere (Full gui support, and easy to understand messages).
 <img src="https://github.com/SakuraWald/sakurawald-fabric/raw/master/.github/images/tpa.gif" alt="module presentation gif">
 
 #### WorksModule
-provides /work command, some bit like /warp but this module provides a very powerful hopper and minecart-hopper counter for every technical player to sample their contraption.
+provides /works command, some bit like /warp but this module provides a very powerful hopper and minecart-hopper counter for every technical player to sample their contraption.
 <img src="https://github.com/SakuraWald/sakurawald-fabric/raw/master/.github/images/works.gif" alt="module presentation gif">
 
 #### WorldDownloaderModule

@@ -4,6 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.config.base.ConfigWrapper;
 import io.github.sakurawald.module.AbstractModule;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +50,15 @@ public class TestModule extends AbstractModule {
         return Command.SINGLE_SUCCESS;
     }
 
+    private static int copyConfig(CommandContext<CommandSourceStack> ctx) {
+
+
+        ConfigWrapper.getJsonElement("lang/en_us.json");
+
+
+        return 1;
+    }
+
     @Override
     public void onInitialize() {
         CommandRegistrationCallback.EVENT.register(this::registerCommand);
@@ -60,6 +70,7 @@ public class TestModule extends AbstractModule {
                         .then(Commands.literal("fake-players").executes(TestModule::fakePlayers))
                         .then(Commands.literal("simulate-lag").executes(TestModule::simulateLag))
                         .then(Commands.literal("clear-chat").executes(TestModule::clearChat))
+                        .then(Commands.literal("copy-config").executes(TestModule::copyConfig))
         );
     }
 }

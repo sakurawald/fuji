@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.scheduler;
 
 import io.github.sakurawald.ServerMain;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.base.ConfigManager;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

@@ -43,7 +43,7 @@ public class ConfigGSON {
         public MainStats main_stats = new MainStats();
         public MultiObsidianPlatform multi_obsidian_platform = new MultiObsidianPlatform();
         public OpProtect op_protect = new OpProtect();
-        public PvpToggle pvp_toggle = new PvpToggle();
+        public Pvp pvp = new Pvp();
         public StrongerPlayerList stronger_player_list = new StrongerPlayerList();
         public WhitelistFix whitelist_fix = new WhitelistFix();
         public ZeroCommandPermission zero_command_permission = new ZeroCommandPermission();
@@ -64,6 +64,7 @@ public class ConfigGSON {
         public Language language = new Language();
         public Reply reply = new Reply();
         public Afk afk = new Afk();
+        public Suicide suicide = new Suicide();
 
         public class ResourceWorld {
             public boolean enable = false;
@@ -320,7 +321,7 @@ public class ConfigGSON {
             public boolean enable = false;
         }
 
-        public class PvpToggle {
+        public class Pvp {
             public boolean enable = false;
         }
 
@@ -405,7 +406,6 @@ public class ConfigGSON {
             }
         }
 
-        public Suicide suicide = new Suicide();
         public class Suicide {
 
             public boolean enable = false;

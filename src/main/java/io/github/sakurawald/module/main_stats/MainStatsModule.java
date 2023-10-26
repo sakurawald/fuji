@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.main_stats;
 
 import io.github.sakurawald.config.ConfigGSON;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.motd.MotdModule;

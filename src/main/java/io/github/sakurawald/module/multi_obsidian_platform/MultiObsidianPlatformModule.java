@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.multi_obsidian_platform;
 
 import io.github.sakurawald.ServerMain;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.BlockPos;

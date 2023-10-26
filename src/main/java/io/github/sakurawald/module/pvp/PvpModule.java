@@ -1,9 +1,9 @@
-package io.github.sakurawald.module.pvp_toggle;
+package io.github.sakurawald.module.pvp;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -51,12 +51,12 @@ public class PvpModule extends AbstractModule {
             whitelist.add(player);
             ConfigManager.pvpWrapper.saveToDisk();
 
-            MessageUtil.sendMessage(source, "pvp_toggle.on");
+            MessageUtil.sendMessage(source, "pvp.on");
 
             return Command.SINGLE_SUCCESS;
         }
 
-        MessageUtil.sendMessage(source, "pvp_toggle.on.already");
+        MessageUtil.sendMessage(source, "pvp.on.already");
         return 0;
     }
 
@@ -69,11 +69,11 @@ public class PvpModule extends AbstractModule {
             whitelist.remove(player);
             ConfigManager.pvpWrapper.saveToDisk();
 
-            MessageUtil.sendMessage(source, "pvp_toggle.off");
+            MessageUtil.sendMessage(source, "pvp.off");
             return Command.SINGLE_SUCCESS;
         }
 
-        MessageUtil.sendMessage(source, "pvp_toggle.off.already");
+        MessageUtil.sendMessage(source, "pvp.off.already");
         return 0;
     }
 
@@ -83,14 +83,14 @@ public class PvpModule extends AbstractModule {
         if (player == null) return Command.SINGLE_SUCCESS;
 
         HashSet<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
-        player.sendMessage(MessageUtil.ofComponent(player, "pvp_toggle.status")
+        player.sendMessage(MessageUtil.ofComponent(player, "pvp.status")
                 .append(whitelist.contains(player.getGameProfile().getName()) ? MessageUtil.ofComponent(player, "on") : MessageUtil.ofComponent(player, "off")));
         return Command.SINGLE_SUCCESS;
     }
 
     private int $list(CommandContext<CommandSourceStack> ctx) {
         HashSet<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
-        MessageUtil.sendMessage(ctx.getSource(), "pvp_toggle.list", whitelist);
+        MessageUtil.sendMessage(ctx.getSource(), "pvp.list", whitelist);
         return Command.SINGLE_SUCCESS;
     }
 

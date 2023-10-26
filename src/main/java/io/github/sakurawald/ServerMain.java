@@ -13,7 +13,6 @@ import java.nio.file.Path;
 
 @Slf4j
 // TODO: /tppos module
-// TODO: /afk module
 // TODO: command alias module (test priority with ZeroPermissionModule)
 // TODO: playtime(every/for) rewards and rank like module
 // TODO: kit module
@@ -23,17 +22,17 @@ import java.nio.file.Path;
 // TODO: interactive command (sign)
 // TODO: wastebin module
 public class ServerMain implements ModInitializer {
-    public static final Path CONFIG_PATH = Path.of(FabricLoader.getInstance().getConfigDir().resolve("sakurawald").toString());
     public static final String MOD_ID = "sakurawald";
+    public static final Path CONFIG_PATH = Path.of(FabricLoader.getInstance().getConfigDir().resolve(MOD_ID).toString());
     public static MinecraftServer SERVER;
 
     @Override
     public void onInitialize() {
+        /* set server: set first because server started event priority */
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> SERVER = server);
+
         /* modules */
         ModuleManager.initializeModules();
-
-        /* server instance */
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> SERVER = server);
 
         /* scheduler */
         ServerLifecycleEvents.SERVER_STARTED.register(server -> ScheduleUtil.startScheduler());

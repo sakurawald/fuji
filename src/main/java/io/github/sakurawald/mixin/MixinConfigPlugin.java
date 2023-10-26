@@ -1,7 +1,7 @@
 package io.github.sakurawald.mixin;
 
 import com.google.gson.JsonElement;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.ModuleManager;
 import lombok.extern.slf4j.Slf4j;
 import org.objectweb.asm.tree.ClassNode;

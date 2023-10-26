@@ -2,7 +2,7 @@ package io.github.sakurawald.module.works.work_type;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.mixin.top_chunks.ThreadedAnvilChunkStorageMixin;
 import io.github.sakurawald.module.works.ScheduleMethod;
 import io.github.sakurawald.module.works.WorksCache;

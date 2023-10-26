@@ -28,7 +28,7 @@
     "multi_obsidian_platform.EntityMixin",
     "newbie_welcome.PlayerListMixin",
     "op_protect.ServerPlayNetworkHandlerMixin",
-    "pvp_toggle.PvpToggleMixin",
+    "pvp.PvpToggleMixin",
     "reply.MsgCommandMixin",
     "resource_world.EndGatewayBlockEntityMixin",
     "resource_world.MinecraftServerAccessor",
