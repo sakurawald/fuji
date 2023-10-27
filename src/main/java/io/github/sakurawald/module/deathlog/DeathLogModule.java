@@ -7,6 +7,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.module.AbstractModule;
+import io.github.sakurawald.util.CommandUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -37,7 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.mojang.brigadier.arguments.StringArgumentType.word;
 import static net.minecraft.commands.Commands.argument;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -71,9 +71,9 @@ public class DeathLogModule extends AbstractModule {
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("deathlog").requires(s -> s.hasPermission(4))
-                        .then(Commands.literal("view").then(argument("from", word()).executes(this::$view)))
+                        .then(Commands.literal("view").then(CommandUtil.offlinePlayerArgument("from").executes(this::$view)))
                         .then(Commands.literal("restore")
-                                .then(argument("from", word())
+                                .then(CommandUtil.offlinePlayerArgument("from")
                                         .then(argument("index", IntegerArgumentType.integer())
                                                 .then(argument("to", EntityArgument.player()).executes(this::$restore))))
                         ));

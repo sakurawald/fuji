@@ -69,6 +69,7 @@ public class ConfigGSON {
         public Heal heal = new Heal();
         public Feed feed = new Feed();
         public Repair repair = new Repair();
+        public Seen seen = new Seen();
 
         public class ResourceWorld {
             public boolean enable = false;
@@ -434,8 +435,6 @@ public class ConfigGSON {
             public boolean enable = false;
 
         }
-
-        public Seen seen = new Seen();
 
         public class Seen {
             public boolean enable = false;
