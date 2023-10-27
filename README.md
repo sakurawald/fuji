@@ -199,6 +199,9 @@ provides interactive sign command. You can insert `//` plus commands in any sign
 - You can use all the four lines to insert `//` (Every `//` means one command)
 - Placeholder `@u` means the user of this sign
 
+#### SeenModule
+provides `/seen` command.
+
 # Config
 All the config files are inside `config/sakurawald/` directory.
 Normally, the newer version will generate missing configuration keys automatically, but if this doesn't work, you can delete the old config file and restart the server to let the newer version generate the default config file.
