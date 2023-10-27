@@ -65,6 +65,7 @@ public class ConfigGSON {
         public Reply reply = new Reply();
         public Afk afk = new Afk();
         public Suicide suicide = new Suicide();
+        public CommandInteractive command_interactive = new CommandInteractive();
 
         public class ResourceWorld {
             public boolean enable = false;
@@ -409,6 +410,13 @@ public class ConfigGSON {
         public class Suicide {
 
             public boolean enable = false;
+        }
+
+        public class CommandInteractive {
+
+            public boolean enable = false;
+            public boolean log_use = true;
+
         }
     }
 }

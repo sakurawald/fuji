@@ -12,13 +12,12 @@ import java.nio.file.Path;
 
 
 @Slf4j
-// TODO: interactive command (sign)
+// TODO: placeholder module
 // TODO: /tppos module
 // TODO: command alias module (test priority with ZeroPermissionModule)
 // TODO: playtime(every/for) rewards and rank like module
 // TODO: kit module
 // TODO: luckperms context calculate module
-// TODO: placeholder module
 // TODO: warmup module
 // TODO: wastebin module
 public class ServerMain implements ModInitializer {

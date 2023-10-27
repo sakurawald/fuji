@@ -18,6 +18,7 @@
     "chat.PlayerListMixin",
     "chat.ServerGamePacketListenerImplMixin",
     "command_cooldown.CommandsMixin",
+    "command_interactive.SignBlockMixin",
     "command_spy.CommandsMixin",
     "deathlog.ServerPlayerMixin",
     "language.ServerPlayerMixin",

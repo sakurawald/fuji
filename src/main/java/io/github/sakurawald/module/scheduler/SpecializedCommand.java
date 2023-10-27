@@ -1,8 +1,12 @@
 package io.github.sakurawald.module.scheduler;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import io.github.sakurawald.ServerMain;
 import lombok.extern.slf4j.Slf4j;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 
 import java.util.List;
 import java.util.Random;
@@ -31,7 +35,7 @@ public class SpecializedCommand {
                 command = command.replace(RANDOM_PLAYER, randomPlayer);
             }
 
-            /* resolve all player */
+            /* resolve all players */
             if (command.contains(ALL_PLAYER)) {
                 for (String onlinePlayer : onlinePlayers) {
                     executeCommand(server, command.replace(ALL_PLAYER, onlinePlayer));
@@ -47,6 +51,18 @@ public class SpecializedCommand {
             server.getCommands().getDispatcher().execute(command, server.createCommandSourceStack());
         } catch (CommandSyntaxException e) {
             log.error(e.toString());
+        }
+    }
+
+    public static void executeCommands(ServerPlayer player, List<String> commands) {
+        commands.forEach(command -> executeCommand(player, command));
+    }
+
+    public static void executeCommand(ServerPlayer player, String command) {
+        try {
+            ServerMain.SERVER.getCommands().getDispatcher().execute(command, player.createCommandSourceStack());
+        } catch (CommandSyntaxException e) {
+            player.sendMessage(Component.text(e.getMessage()).color(NamedTextColor.RED));
         }
     }
 

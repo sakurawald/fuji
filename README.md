@@ -4,11 +4,11 @@
 This is a minecraft mod that provides many essential and useful modules for vanilla survival.
 
 # Feature
-1. Vanilla-Respect: all the modules do the least change to the vanilla game (Never touch the game-logic).
-2. Fully-Modular: you can disable any module completely if you don't like it (The commands and events will all be disabled, just like the code never exists, without any performance issue).
-3. High-Performance: all the codes are optimized for performance, and the modules are designed to be as lightweight as
+1. **Vanilla-Respect**: all the modules do the least change to the vanilla game (Never touch the game-logic).
+2. **Fully-Modular**: you can disable any module completely if you don't like it (The commands and events will all be disabled, just like the code never exists, without any performance issue).
+3. **High-Performance**: all the codes are optimized for performance, and the modules are designed to be as lightweight as
    possible (From data-structure, algorithm, lazy-load and cache to improve performance greatly).
-4. Easy-to-Use: all the modules are designed to be easy to use, and the commands are designed to be easy to remember, even the language file is designed to be easy to understand.
+4. **Easy-to-Use**: all the modules are designed to be easy to use, and the commands are designed to be easy to remember, even the language file is designed to be easy to understand.
 
 # Modules
 
@@ -191,8 +191,16 @@ provides `/afk` command to set your afk status and auto-afk
 #### SuicideModule
 provides `/suicide` command.
 
-# Commands
-Different modules provide different commands, but it's easy to guess what commands the module provides.
+#### CommandInteractive
+provides interactive sign command. You can insert `//` plus commands in any sign, and then right-click it to execute the command quickly.
+
+- If the sign contains `//`, then you must press `shift` to edit this sign
+- You can add some comments before the first `//`
+- You can use all the four lines to insert `//` (Every `//` means one command)
+
+# Config
+All the config files are inside `config/sakurawald/` directory.
+Normally, the newer version will generate missing configuration keys automatically, but if this doesn't work, you can delete the old config file and restart the server to let the newer version generate the default config file.
 
 # Permission
 This mod uses a low-level permission system, which means that most of the admin commands are required level-permission to use. However, if you really want a command-permission-node for every command, you can use the `zero-command-permission` module (This module adds a prefix command-permission for ALL commands, even the command is not provided by this mod!).
@@ -206,8 +214,3 @@ For JVM, we recommended GraalVM, which performs better than OpenJDK.
 > Here are the JVM arguments we optimized for GraalVM (Reference from papermc and graalvm manual):
 > 
 > java -Xms16G -Xmx16G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=40 -XX:G1MaxNewSizePercent=50 -XX:G1HeapRegionSize=16M -XX:G1ReservePercent=15 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -XX:+UseLargePages -XX:+UseTransparentHugePages -XX:+EnableDynamicAgentLoading -Djava.io.tmpdir=/tmp -jar server.jar --nogui
-
-
-# Config
-All the config files are inside `config/sakurawald/` directory.
-Normally, the newer version will generate missing configuration keys automatically, but if this doesn't work, you can delete the old config file and restart the server to let the newer version generate the default config file.
