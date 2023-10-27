@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.fly;
+package io.github.sakurawald.module.repair;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
@@ -13,7 +13,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
 
 @Slf4j
-public class FlyModule extends AbstractModule {
+public class RepairModule extends AbstractModule {
 
     @Override
     public void onInitialize() {
@@ -21,23 +21,16 @@ public class FlyModule extends AbstractModule {
     }
 
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
-        dispatcher.register(Commands.literal("fly").executes(this::$fly));
+        dispatcher.register(Commands.literal("repair").executes(this::$repair));
     }
 
     @SuppressWarnings("SameReturnValue")
-    private int $fly(CommandContext<CommandSourceStack> ctx) {
+    private int $repair(CommandContext<CommandSourceStack> ctx) {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return Command.SINGLE_SUCCESS;
 
-        boolean flag = !player.getAbilities().mayfly;
-        player.getAbilities().mayfly = flag;
-        player.onUpdateAbilities();
-
-        if (!flag) {
-            player.getAbilities().flying = false;
-        }
-
-        MessageUtil.sendMessage(player, flag ? "fly.on" : "fly.off");
+        player.getMainHandItem().setDamageValue(0);
+        MessageUtil.sendMessage(player, "repair");
         return Command.SINGLE_SUCCESS;
     }
 

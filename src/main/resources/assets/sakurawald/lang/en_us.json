@@ -145,5 +145,10 @@
   "afk.on": "<gold>Afk mode: on",
   "afk.on.broadcast": "<gold>Player %s is now afk",
   "afk.off.broadcast": "<gold>Player %s is no longer afk",
-  "afk.kick": "<red>You have been kicked for being afk."
+  "afk.kick": "<red>You have been kicked for being afk.",
+  "heal": "<gold>Healed.",
+  "feed": "<gold>Fed.",
+  "repair": "<gold>Repaired.",
+  "seen.success": "<gold>Seen %s at %s",
+  "seen.fail": "<red>Seen data no found for the target"
 }

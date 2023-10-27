@@ -145,5 +145,10 @@
   "afk.on": "<gold>闲置模式: 启用",
   "afk.on.broadcast": "<gold>玩家 %s 暂时离开了",
   "afk.off.broadcast": "<gold>玩家 %s 回来了",
-  "afk.kick": "<red>您已因长时间离开而被踢出"
+  "afk.kick": "<red>您已因长时间离开而被踢出",
+  "heal": "<gold>已治愈.",
+  "feed": "<gold>已饱食.",
+  "repair": "<gold>已修复.",
+  "seen.success": "<gold>玩家 %s 离线于 %s",
+  "seen.fail": "<red>未找到该目标的离线数据"
 }

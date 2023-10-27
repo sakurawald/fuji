@@ -38,6 +38,7 @@
     "resource_world.registry.DimensionOptionsMixin",
     "resource_world.registry.DimensionOptionsRegistryHolderMixin",
     "resource_world.registry.SimpleRegistryMixin",
+    "seen.PlayerListMixin",
     "skin.PlayerListMixin",
     "skin.ServerLoginNetworkHandlerMixin",
     "stronger_player_list.PlayerListMixin",

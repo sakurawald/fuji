@@ -21,11 +21,11 @@ public class GodModule extends AbstractModule {
     }
 
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
-        dispatcher.register(Commands.literal("god").executes(this::god));
+        dispatcher.register(Commands.literal("god").executes(this::$god));
     }
 
     @SuppressWarnings("SameReturnValue")
-    private int god(CommandContext<CommandSourceStack> ctx) {
+    private int $god(CommandContext<CommandSourceStack> ctx) {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return Command.SINGLE_SUCCESS;
 

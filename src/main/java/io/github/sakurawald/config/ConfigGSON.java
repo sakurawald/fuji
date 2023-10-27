@@ -66,6 +66,9 @@ public class ConfigGSON {
         public Afk afk = new Afk();
         public Suicide suicide = new Suicide();
         public CommandInteractive command_interactive = new CommandInteractive();
+        public Heal heal = new Heal();
+        public Feed feed = new Feed();
+        public Repair repair = new Repair();
 
         public class ResourceWorld {
             public boolean enable = false;
@@ -418,5 +421,25 @@ public class ConfigGSON {
             public boolean log_use = true;
 
         }
+
+        public class Heal {
+            public boolean enable = false;
+        }
+
+        public class Feed {
+            public boolean enable = false;
+        }
+
+        public class Repair {
+            public boolean enable = false;
+
+        }
+
+        public Seen seen = new Seen();
+
+        public class Seen {
+            public boolean enable = false;
+        }
+
     }
 }

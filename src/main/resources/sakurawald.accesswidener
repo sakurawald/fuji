@@ -8,3 +8,5 @@ accessible field net/minecraft/server/level/ChunkHolder UNLOADED_LEVEL_CHUNK_FUT
 accessible method net/minecraft/server/level/ServerChunkCache$ChunkAndHolder <init> (Lnet/minecraft/world/level/chunk/LevelChunk;Lnet/minecraft/server/level/ChunkHolder;)V
 accessible method net/minecraft/server/level/ChunkMap anyPlayerCloseEnoughForSpawning (Lnet/minecraft/world/level/ChunkPos;)Z
 accessible field net/minecraft/world/level/chunk/LevelChunk loaded Z
+
+accessible class net/minecraft/server/players/GameProfileCache$GameProfileInfo

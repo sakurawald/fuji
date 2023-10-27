@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.fly;
+package io.github.sakurawald.module.feed;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
@@ -11,9 +11,10 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.food.FoodData;
 
 @Slf4j
-public class FlyModule extends AbstractModule {
+public class FeedModule extends AbstractModule {
 
     @Override
     public void onInitialize() {
@@ -21,23 +22,20 @@ public class FlyModule extends AbstractModule {
     }
 
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
-        dispatcher.register(Commands.literal("fly").executes(this::$fly));
+        dispatcher.register(Commands.literal("feed").executes(this::$feed));
     }
 
     @SuppressWarnings("SameReturnValue")
-    private int $fly(CommandContext<CommandSourceStack> ctx) {
+    private int $feed(CommandContext<CommandSourceStack> ctx) {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return Command.SINGLE_SUCCESS;
 
-        boolean flag = !player.getAbilities().mayfly;
-        player.getAbilities().mayfly = flag;
-        player.onUpdateAbilities();
+        FoodData foodData = player.getFoodData();
+        foodData.setFoodLevel(20);
+        foodData.setSaturation(5);
+        foodData.setExhaustion(0);
 
-        if (!flag) {
-            player.getAbilities().flying = false;
-        }
-
-        MessageUtil.sendMessage(player, flag ? "fly.on" : "fly.off");
+        MessageUtil.sendMessage(player, "feed");
         return Command.SINGLE_SUCCESS;
     }
 
