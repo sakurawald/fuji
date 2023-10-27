@@ -197,6 +197,7 @@ provides interactive sign command. You can insert `//` plus commands in any sign
 - If the sign contains `//`, then you must press `shift` to edit this sign
 - You can add some comments before the first `//`
 - You can use all the four lines to insert `//` (Every `//` means one command)
+- Placeholder `@u` means the user of this sign
 
 # Config
 All the config files are inside `config/sakurawald/` directory.

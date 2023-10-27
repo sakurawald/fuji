@@ -40,7 +40,7 @@ public class SignBlockMixin {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
             if (blockEntity instanceof SignBlockEntity signBlockEntity) {
                 SignText signText = signBlockEntity.getText(signBlockEntity.isFacingFrontText(player));
-                String text = combineLines(signText);
+                String text = combineLines(signText).replace("@u", serverPlayer.getGameProfile().getName());
                 if (text.contains("//")) {
                     cir.setReturnValue(InteractionResult.CONSUME);
                     List<String> commands = resolveCommands(text);
