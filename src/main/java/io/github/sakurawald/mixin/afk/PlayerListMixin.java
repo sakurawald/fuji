@@ -4,6 +4,7 @@ import io.github.sakurawald.module.afk.ServerPlayerAccessor_afk;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.network.Connection;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.server.players.PlayerList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,8 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Slf4j
 public abstract class PlayerListMixin {
     @Inject(at = @At(value = "TAIL"), method = "placeNewPlayer")
-    private void $placeNewPlayer(Connection connection, ServerPlayer player, CallbackInfo info) {
-        ServerPlayerAccessor_afk afk_player = (ServerPlayerAccessor_afk) player;
-        afk_player.sakurawald$setLastLastActionTime(player.getLastActionTime());
+    private void $placeNewPlayer(Connection connection, ServerPlayer serverPlayer, CommonListenerCookie commonListenerCookie, CallbackInfo ci) {
+        ServerPlayerAccessor_afk afk_player = (ServerPlayerAccessor_afk) serverPlayer;
+        afk_player.sakurawald$setLastLastActionTime(serverPlayer.getLastActionTime());
     }
 }

@@ -3,6 +3,7 @@ package io.github.sakurawald.module.head.gui;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
+import com.mojang.authlib.yggdrasil.ProfileResult;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.AnvilInputGui;
 import io.github.sakurawald.config.base.ConfigManager;
@@ -58,7 +59,13 @@ class PlayerInputGui extends AnvilInputGui {
                     return;
                 }
 
-                GameProfile profile = sessionService.fillProfileProperties(possibleProfile.get(), false);
+                ProfileResult profileResult = sessionService.fetchProfile(possibleProfile.get().getId(), false);
+                if (profileResult == null) {
+                    outputStack.removeTagKey("SkullOwner");
+                    return;
+                }
+
+                GameProfile profile = profileResult.profile();
                 Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> textures = sessionService.getTextures(profile, false);
                 if (textures.isEmpty()) {
                     outputStack.removeTagKey("SkullOwner");

@@ -5,6 +5,7 @@ import io.github.sakurawald.module.better_fake_player.BetterFakePlayerModule;
 import io.github.sakurawald.util.CarpetUtil;
 import net.minecraft.network.Connection;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.server.players.PlayerList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -18,10 +19,10 @@ public abstract class PlayerListMixin {
     private static final BetterFakePlayerModule module = ModuleManager.getOrNewInstance(BetterFakePlayerModule.class);
 
     @Inject(at = @At(value = "TAIL"), method = "placeNewPlayer")
-    private void $placeNewPlayer(Connection connection, ServerPlayer player, CallbackInfo info) {
-        if (CarpetUtil.isFakePlayer(player)) return;
-        if (module.hasFakePlayers(player)) {
-            module.renewFakePlayers(player);
+    private void $placeNewPlayer(Connection connection, ServerPlayer serverPlayer, CommonListenerCookie commonListenerCookie, CallbackInfo ci) {
+        if (CarpetUtil.isFakePlayer(serverPlayer)) return;
+        if (module.hasFakePlayers(serverPlayer)) {
+            module.renewFakePlayers(serverPlayer);
         }
     }
 }

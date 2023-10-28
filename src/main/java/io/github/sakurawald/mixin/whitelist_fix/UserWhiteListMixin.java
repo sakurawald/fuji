@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.network.Connection;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.server.players.UserWhiteList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,7 +28,7 @@ public class UserWhiteListMixin {
      *
      * @see UserWhiteList#isWhiteListed(GameProfile)
      * @see UserWhiteList#getKeyForUser(GameProfile)
-     * @see net.minecraft.server.players.PlayerList#placeNewPlayer(Connection, ServerPlayer)
+     * @see net.minecraft.server.players.PlayerList#placeNewPlayer(Connection, ServerPlayer, CommonListenerCookie)
      * @see net.minecraft.server.players.GameProfileCache#add(GameProfile)
      **/
     @Inject(method = "getKeyForUser*", at = @At("HEAD"), cancellable = true)

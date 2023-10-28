@@ -5,6 +5,7 @@ import io.github.sakurawald.module.chat.ChatModule;
 import io.github.sakurawald.util.CarpetUtil;
 import net.minecraft.network.Connection;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.CommonListenerCookie;
 import net.minecraft.server.players.PlayerList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -19,8 +20,8 @@ public abstract class PlayerListMixin {
     private static final ChatModule module = ModuleManager.getOrNewInstance(ChatModule.class);
 
     @Inject(at = @At(value = "TAIL"), method = "placeNewPlayer")
-    private void $placeNewPlayer(Connection connection, ServerPlayer player, CallbackInfo info) {
-        if (CarpetUtil.isFakePlayer(player)) return;
-        module.getChatHistory().forEach(player::sendMessage);
+    private void $placeNewPlayer(Connection connection, ServerPlayer serverPlayer, CommonListenerCookie commonListenerCookie, CallbackInfo ci) {
+        if (CarpetUtil.isFakePlayer(serverPlayer)) return;
+        module.getChatHistory().forEach(serverPlayer::sendMessage);
     }
 }

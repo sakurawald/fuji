@@ -19,7 +19,10 @@ import net.minecraft.world.level.biome.BiomeManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
@@ -55,7 +58,7 @@ public class SkinRestorer {
 
             Collection<GameProfile> acceptedProfiles = pair.right();
             HashSet<ServerPlayer> acceptedPlayers = new HashSet<>();
-            JsonObject newSkinJson = gson.fromJson(new String(Base64.getDecoder().decode(skin.getValue()), StandardCharsets.UTF_8), JsonObject.class);
+            JsonObject newSkinJson = gson.fromJson(new String(Base64.getDecoder().decode(skin.value()), StandardCharsets.UTF_8), JsonObject.class);
             newSkinJson.remove("timestamp");
             for (GameProfile profile : acceptedProfiles) {
                 ServerPlayer player = server.getPlayerList().getPlayer(profile.getId());
@@ -70,22 +73,11 @@ public class SkinRestorer {
                     observer1.connection.send(new ClientboundPlayerInfoUpdatePacket(ClientboundPlayerInfoUpdatePacket.Action.ADD_PLAYER, player)); // refresh the player information
                     if (player != observer1 && observer1.hasLineOfSight(player)) {
                         observer1.connection.send(new ClientboundRemoveEntitiesPacket(player.getId()));
-                        observer1.connection.send(new ClientboundAddPlayerPacket(player));
+                        observer1.connection.send(new ClientboundAddEntityPacket(player));
                         observer1.connection.send(new ClientboundTeleportEntityPacket(player));
                         observer1.connection.send(new ClientboundSetEntityDataPacket(player.getId(), player.getEntityData().getNonDefaultValues()));
                     } else if (player == observer1) {
-                        observer1.connection.send(new ClientboundRespawnPacket(
-                                observer1.level().dimensionTypeId(),
-                                observer1.level().dimension(),
-                                BiomeManager.obfuscateSeed(observer1.serverLevel().getSeed()),
-                                observer1.gameMode.getGameModeForPlayer(),
-                                observer1.gameMode.getPreviousGameModeForPlayer(),
-                                observer1.level().isDebug(),
-                                observer1.serverLevel().isFlat(),
-                                (byte) 2,
-                                Optional.empty(),
-                                observer1.getPortalCooldown()
-                        ));
+                        observer1.connection.send(new ClientboundRespawnPacket(player.createCommonSpawnInfo(player.serverLevel()), (byte)2));
                         observer1.connection.send(new ClientboundSetCarriedItemPacket(observer1.getInventory().selected));
                         observer1.onUpdateAbilities();
                         observer1.inventoryMenu.broadcastFullState();
@@ -114,7 +106,7 @@ public class SkinRestorer {
             return false;
 
         try {
-            JsonObject jy = gson.fromJson(new String(Base64.getDecoder().decode(py.getValue()), StandardCharsets.UTF_8), JsonObject.class);
+            JsonObject jy = gson.fromJson(new String(Base64.getDecoder().decode(py.value()), StandardCharsets.UTF_8), JsonObject.class);
             jy.remove("timestamp");
             return x.equals(jy);
         } catch (Exception ex) {
