@@ -91,7 +91,7 @@ public class MainStatsModule extends AbstractModule {
 
         @Override
         public void execute(JobExecutionContext context) {
-            // save all online-player 's stats
+            // save all online-player's stats
             MinecraftServer server = (MinecraftServer) context.getJobDetail().getJobDataMap().get(MinecraftServer.class.getName());
             server.getPlayerList().getPlayers().forEach((p) -> p.getStats().save());
 

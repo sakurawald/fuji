@@ -34,7 +34,7 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
     public void $teleportTo(ServerLevel targetWorld, double x, double y, double z, float yaw, float pitch, CallbackInfo ci) {
         ServerPlayer player = (ServerPlayer) (Object) this;
 
-        // If we try to spawn a fake-player in end or nether, the fake-player will initially spawn in overworld
+        // If we try to spawn a fake-player in the end or nether, the fake-player will initially spawn in overworld
         // and teleport to the target world. This will cause the teleport warmup to be triggered.
         if (CarpetUtil.isFakePlayer(player)) return;
 

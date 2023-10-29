@@ -70,6 +70,9 @@ public class ConfigGSON {
         public Feed feed = new Feed();
         public Repair repair = new Repair();
         public Seen seen = new Seen();
+        public More more = new More();
+        public Extinguish extinguish = new Extinguish();
+        public Home home = new Home();
 
         public class ResourceWorld {
             public boolean enable = false;
@@ -90,7 +93,7 @@ public class ConfigGSON {
             public boolean enable = false;
             public List<String> descriptions = new ArrayList<>() {
                 {
-                    this.add("<gradient:#FF66B2:#FFB5CC>Pure Survival %version% / Up %uptime%H ❤ Discord Group Uv5X8amt</gradient><newline><gradient:#99CCFF:#BBDFFF>%playtime%\uD83D\uDD25 %mined%⛏ %placed%\uD83D\uDD33 %killed%\uD83D\uDDE1 %moved%\uD83C\uDF0D");
+                    this.add("<gradient:#FF66B2:#FFB5CC>Pure Survival %version% / Up %uptime%H ❤ Discord Group PyzU7Q6unb</gradient><newline><gradient:#99CCFF:#BBDFFF>%playtime%\uD83D\uDD25 %mined%⛏ %placed%\uD83D\uDD33 %killed%\uD83D\uDDE1 %moved%\uD83C\uDF0D");
                 }
             };
         }
@@ -438,6 +441,19 @@ public class ConfigGSON {
 
         public class Seen {
             public boolean enable = false;
+        }
+
+        public class More {
+            public boolean enable = false;
+        }
+
+        public class Extinguish {
+            public boolean enable = false;
+        }
+
+        public class Home {
+            public boolean enable = false;
+            public int max_homes = 3;
         }
 
     }

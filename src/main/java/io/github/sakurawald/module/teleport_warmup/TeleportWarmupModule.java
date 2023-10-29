@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.kyori.adventure.bossbar.BossBar;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.HashMap;
@@ -68,7 +67,7 @@ public class TeleportWarmupModule extends AbstractModule {
 
                 // don't change the order of the following two lines.
                 ticket.ready = true;
-                player.teleportTo((ServerLevel) ticket.destination.getLevel(), ticket.destination.getX(), ticket.destination.getY(), ticket.destination.getZ(), ticket.destination.getYaw(), ticket.destination.getPitch());
+                ticket.destination.teleport(player);
                 iterator.remove();
             }
         }

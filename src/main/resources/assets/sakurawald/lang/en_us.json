@@ -10,6 +10,7 @@
   "back": "<#FFA1F5>Back",
   "empty": "<#FFA1F5>Empty",
   "confirm": "<#FFA1F5>Confirm",
+  "level.no_exists": "<red>Level %s doesn't exist",
   "input.syntax.error": "<red>Input Syntax Error",
   "input.limit.error": "<red>Input limit exceed",
   "operation.cancelled": "<red>This operation is cancelled",
@@ -150,5 +151,11 @@
   "feed": "<gold>Fed.",
   "repair": "<gold>Repaired.",
   "seen.success": "<gold>Seen %s at %s",
-  "seen.fail": "<red>Seen data no found for the target"
+  "seen.fail": "<red>Seen data no found for the target",
+  "home.set.success": "<gold>Home %s set.",
+  "home.set.fail.limit": "<red>Home limit exceed",
+  "home.set.fail.need_override": "<red>Home %s exists, use \"/home set <name> override\" to override it",
+  "home.list": "<gold>Your homes: %s",
+  "home.unset.success": "<gold>Home %s removed.",
+  "home.no_found": "<red>Home %s not found."
 }

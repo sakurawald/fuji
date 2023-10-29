@@ -15,7 +15,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.biome.BiomeManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
@@ -77,7 +76,7 @@ public class SkinRestorer {
                         observer1.connection.send(new ClientboundTeleportEntityPacket(player));
                         observer1.connection.send(new ClientboundSetEntityDataPacket(player.getId(), player.getEntityData().getNonDefaultValues()));
                     } else if (player == observer1) {
-                        observer1.connection.send(new ClientboundRespawnPacket(player.createCommonSpawnInfo(player.serverLevel()), (byte)2));
+                        observer1.connection.send(new ClientboundRespawnPacket(player.createCommonSpawnInfo(player.serverLevel()), (byte) 2));
                         observer1.connection.send(new ClientboundSetCarriedItemPacket(observer1.getInventory().selected));
                         observer1.onUpdateAbilities();
                         observer1.inventoryMenu.broadcastFullState();

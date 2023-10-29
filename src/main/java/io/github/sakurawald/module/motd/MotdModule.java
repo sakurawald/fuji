@@ -24,6 +24,7 @@ public class MotdModule extends AbstractModule {
 
     private List<String> descriptions = new ArrayList<>();
 
+    // TODO: split modules
     public void updateDescriptions(ArrayList<String> descriptions) {
         this.descriptions = descriptions;
     }

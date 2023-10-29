@@ -20,6 +20,10 @@ import java.nio.file.Path;
 // TODO: luckperms context calculate module
 // TODO: warmup module
 // TODO: wastebin module
+// TODO: /ping module
+// TODO: join and leave message
+// TODO: /invsee module
+// TODO: logger level maps
 public class ServerMain implements ModInitializer {
     public static final String MOD_ID = "sakurawald";
     public static final Path CONFIG_PATH = Path.of(FabricLoader.getInstance().getConfigDir().resolve(MOD_ID).toString());

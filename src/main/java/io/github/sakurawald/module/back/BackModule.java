@@ -12,7 +12,6 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.HashMap;
@@ -43,7 +42,7 @@ public class BackModule extends AbstractModule {
             return Command.SINGLE_SUCCESS;
         }
 
-        player.teleportTo((ServerLevel) lastPos.getLevel(), lastPos.getX(), lastPos.getY(), lastPos.getZ(), lastPos.getYaw(), lastPos.getPitch());
+        lastPos.teleport(player);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -51,8 +50,8 @@ public class BackModule extends AbstractModule {
         Position lastPos = player2lastPos.get(player.getGameProfile().getName());
         double ignoreDistance = ConfigManager.configWrapper.instance().modules.back.ignore_distance;
         if (lastPos == null
-                || (player.level() != lastPos.getLevel())
-                || (player.level() == lastPos.getLevel() && player.position().distanceToSqr(lastPos.getX(), lastPos.getY(), lastPos.getZ()) > ignoreDistance * ignoreDistance)
+                || (!lastPos.sameLevel(player.level()))
+                || (lastPos.sameLevel(player.level()) && player.position().distanceToSqr(lastPos.getX(), lastPos.getY(), lastPos.getZ()) > ignoreDistance * ignoreDistance)
         ) {
             player2lastPos.put(player.getGameProfile().getName(),
                     Position.of(player));

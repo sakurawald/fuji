@@ -10,6 +10,7 @@ import org.quartz.impl.StdSchedulerFactory;
 
 @Slf4j
 public class ScheduleUtil {
+    public static final String CRON_EVERY_MINUTE = "0 * * ? * * *";
     private static final Scheduler scheduler;
 
     static {
@@ -26,10 +27,13 @@ public class ScheduleUtil {
     }
 
     public static void addJob(Class<? extends Job> jobClass, String cron, JobDataMap jobDataMap) {
-        String name = jobClass.getName();
+        addJob(jobClass, jobClass.getName(), cron, jobDataMap);
+    }
 
-        JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(name).usingJobData(jobDataMap).build();
-        CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(name).withSchedule(CronScheduleBuilder.cronSchedule(cron)).build();
+    public static void addJob(Class<? extends Job> jobClass, String jobName, String cron, JobDataMap jobDataMap) {
+        log.debug("addJob() -> jobClass: {}, jobName: {}, cron: {}, jobDataMap: {}", jobClass, jobName, cron, jobDataMap);
+        JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName).usingJobData(jobDataMap).build();
+        CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(jobName).withSchedule(CronScheduleBuilder.cronSchedule(cron)).build();
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
@@ -41,24 +45,27 @@ public class ScheduleUtil {
         removeJobs(clazz.getName());
     }
 
-    public static void removeJobs(String name) {
+    public static void removeJobs(String jobName) {
         try {
-            scheduler.deleteJob(new JobKey(name));
+            boolean b = scheduler.deleteJob(new JobKey(jobName));
+            log.debug("removeJobs() -> jobName: {}, result: {}", jobName, b);
         } catch (SchedulerException e) {
             log.error("Exception in ScheduleUtil.removeJobs", e);
         }
     }
 
-    public static void addJob(Class<? extends Job> jobClass, int intervalMs, int repeatCount, JobDataMap jobDataMap) {
-        String name = jobClass.getName();
-
-        JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(name).usingJobData(jobDataMap).build();
-        SimpleTrigger trigger = TriggerBuilder.newTrigger().withIdentity(name).withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMilliseconds(intervalMs).withRepeatCount(repeatCount - 1)).build();
+    public static void addJob(Class<? extends Job> jobClass, String jobName, int intervalMs, int repeatCount, JobDataMap jobDataMap) {
+        JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName).usingJobData(jobDataMap).build();
+        SimpleTrigger trigger = TriggerBuilder.newTrigger().withIdentity(jobName).withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMilliseconds(intervalMs).withRepeatCount(repeatCount - 1)).build();
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
             log.error("Exception in ScheduleUtil.addJob", e);
         }
+    }
+
+    public static void addJob(Class<? extends Job> jobClass, int intervalMs, int repeatCount, JobDataMap jobDataMap) {
+        addJob(jobClass, jobClass.getName(), intervalMs, repeatCount, jobDataMap);
     }
 
     public static void startScheduler() {

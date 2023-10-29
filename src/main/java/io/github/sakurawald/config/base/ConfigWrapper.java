@@ -3,8 +3,13 @@ package io.github.sakurawald.config.base;
 import assets.sakurawald.Cat;
 import com.google.gson.*;
 import io.github.sakurawald.module.works.work_type.Work;
+import io.github.sakurawald.util.ScheduleUtil;
 import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
+import org.quartz.Job;
+import org.quartz.JobDataMap;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -14,7 +19,7 @@ import java.util.Set;
 
 @Slf4j
 public abstract class ConfigWrapper<T> {
-    static final Gson gson = new GsonBuilder()
+    protected static final Gson gson = new GsonBuilder()
             .setPrettyPrinting()
             .disableHtmlEscaping()
             .serializeNulls()
@@ -64,6 +69,16 @@ public abstract class ConfigWrapper<T> {
         }
     }
 
+    public void autoSave(String cron) {
+        String jobName = this.file.getName();
+        ScheduleUtil.removeJobs(jobName);
+        ScheduleUtil.addJob(ConfigWrapperAutoSaveJob.class, jobName, cron, new JobDataMap() {
+            {
+                this.put(ConfigWrapper.class.getName(), ConfigWrapper.this);
+            }
+        });
+    }
+
     public void mergeJson(JsonElement oldJson, JsonElement newJson) {
         if (!oldJson.isJsonObject() || !newJson.isJsonObject()) {
             throw new IllegalArgumentException("Both elements must be JSON objects.");
@@ -88,5 +103,15 @@ public abstract class ConfigWrapper<T> {
             }
         }
     }
+
+    public static class ConfigWrapperAutoSaveJob implements Job {
+        @Override
+        public void execute(JobExecutionContext context) throws JobExecutionException {
+            log.debug("AutoSave ConfigWrapper {}", context.getJobDetail().getKey().getName());
+            ConfigWrapper<?> configWrapper = (ConfigWrapper<?>) context.getJobDetail().getJobDataMap().get(ConfigWrapper.class.getName());
+            configWrapper.saveToDisk();
+        }
+    }
+
 
 }
