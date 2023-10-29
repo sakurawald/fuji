@@ -12,7 +12,6 @@ import org.quartz.JobExecutionContext;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.UUID;
 
 @SuppressWarnings("PatternValidation")
 public class MentionPlayersJob implements Job {
@@ -22,7 +21,7 @@ public class MentionPlayersJob implements Job {
         int intervalMs = mentionPlayer.interval_ms;
         int repeatCount = mentionPlayer.repeat_count;
         Sound sound = Sound.sound(Key.key(mentionPlayer.sound), Sound.Source.MUSIC, mentionPlayer.volume, mentionPlayer.pitch);
-        ScheduleUtil.addJob(MentionPlayersJob.class, UUID.randomUUID().toString(), intervalMs, repeatCount, new JobDataMap() {
+        ScheduleUtil.addJob(MentionPlayersJob.class, null, null, intervalMs, repeatCount, new JobDataMap() {
             {
                 this.put(ArrayList.class.getName(), players);
                 this.put(Sound.class.getName(), sound);

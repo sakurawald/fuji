@@ -59,7 +59,7 @@ public class WorksModule extends AbstractModule {
 
     @SuppressWarnings("unused")
     public void registerScheduleTask(MinecraftServer server) {
-        ScheduleUtil.addJob(WorksScheduleJob.class, "0 * * ? * *", new JobDataMap() {
+        ScheduleUtil.addJob(WorksScheduleJob.class, null, null, "0 * * ? * *", new JobDataMap() {
             {
                 this.put(MinecraftServer.class.getName(), server);
             }

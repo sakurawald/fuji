@@ -65,7 +65,7 @@ public class ResourceWorldModule extends AbstractModule {
     }
 
     public void registerScheduleTask(MinecraftServer server) {
-        ScheduleUtil.addJob(ResourceWorldAutoResetJob.class, ConfigManager.configWrapper.instance().modules.resource_world.auto_reset_cron, new JobDataMap() {
+        ScheduleUtil.addJob(ResourceWorldAutoResetJob.class, null, null, ConfigManager.configWrapper.instance().modules.resource_world.auto_reset_cron, new JobDataMap() {
             {
                 this.put(MinecraftServer.class.getName(), server);
                 this.put(ResourceWorldModule.class.getName(), ResourceWorldModule.this);

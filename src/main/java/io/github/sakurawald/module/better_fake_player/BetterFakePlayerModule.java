@@ -154,7 +154,7 @@ public class BetterFakePlayerModule extends AbstractModule {
 
     @SuppressWarnings("unused")
     public void registerScheduleTask(MinecraftServer server) {
-        ScheduleUtil.addJob(ManageFakePlayersJob.class, "0 * * ? * *", new JobDataMap() {
+        ScheduleUtil.addJob(ManageFakePlayersJob.class, null, null, "0 * * ? * *", new JobDataMap() {
             {
                 this.put(BetterFakePlayerModule.class.getName(), BetterFakePlayerModule.this);
             }

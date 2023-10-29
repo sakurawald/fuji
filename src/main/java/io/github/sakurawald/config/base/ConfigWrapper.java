@@ -71,8 +71,9 @@ public abstract class ConfigWrapper<T> {
 
     public void autoSave(String cron) {
         String jobName = this.file.getName();
-        ScheduleUtil.removeJobs(jobName);
-        ScheduleUtil.addJob(ConfigWrapperAutoSaveJob.class, jobName, cron, new JobDataMap() {
+        String jobGroup = ConfigWrapperAutoSaveJob.class.getName();
+        ScheduleUtil.removeJobs(jobName, jobGroup);
+        ScheduleUtil.addJob(ConfigWrapperAutoSaveJob.class, jobName, jobGroup, cron, new JobDataMap() {
             {
                 this.put(ConfigWrapper.class.getName(), ConfigWrapper.this);
             }

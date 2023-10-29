@@ -35,8 +35,8 @@ public class AfkModule extends AbstractModule {
     }
 
     public void updateJobs() {
-        ScheduleUtil.removeJobs(AfkCheckerJob.class);
-        ScheduleUtil.addJob(AfkCheckerJob.class, ConfigManager.configWrapper.instance().modules.afk.afk_checker.cron, new JobDataMap());
+        ScheduleUtil.removeJobs(AfkCheckerJob.class.getName());
+        ScheduleUtil.addJob(AfkCheckerJob.class, null, null, ConfigManager.configWrapper.instance().modules.afk.afk_checker.cron, new JobDataMap());
     }
 
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {

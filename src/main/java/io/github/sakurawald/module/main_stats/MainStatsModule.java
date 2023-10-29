@@ -80,7 +80,7 @@ public class MainStatsModule extends AbstractModule {
 
     public void registerScheduleTask(MinecraftServer server) {
         // async task
-        ScheduleUtil.addJob(UpdateMainStatsJob.class, "0 * * ? * *", new JobDataMap() {
+        ScheduleUtil.addJob(UpdateMainStatsJob.class, null, null, "0 * * ? * *", new JobDataMap() {
             {
                 this.put(MinecraftServer.class.getName(), server);
                 this.put(MainStatsModule.class.getName(), MainStatsModule.this);

@@ -4,8 +4,9 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.ServerMain;
-import io.github.sakurawald.config.base.ConfigWrapper;
 import io.github.sakurawald.module.AbstractModule;
+import io.github.sakurawald.module.chat.mention.MentionPlayersJob;
+import io.github.sakurawald.util.ScheduleUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -14,6 +15,9 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.world.level.Level;
+import org.quartz.JobKey;
+import org.quartz.SchedulerException;
+import org.quartz.impl.matchers.GroupMatcher;
 
 @Slf4j
 public class TestModule extends AbstractModule {
@@ -50,11 +54,15 @@ public class TestModule extends AbstractModule {
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int copyConfig(CommandContext<CommandSourceStack> ctx) {
+    private static int magic(CommandContext<CommandSourceStack> ctx) {
 
-
-        ConfigWrapper.getJsonElement("lang/en_us.json");
-
+        try {
+            for (JobKey jobKey : ScheduleUtil.getScheduler().getJobKeys(GroupMatcher.groupEquals(MentionPlayersJob.class.getName()))) {
+                log.error("magic() -> jobKey: {}", jobKey);
+            }
+        } catch (SchedulerException e) {
+            log.error(e.getMessage());
+        }
 
         return 1;
     }
@@ -70,7 +78,7 @@ public class TestModule extends AbstractModule {
                         .then(Commands.literal("fake-players").executes(TestModule::fakePlayers))
                         .then(Commands.literal("simulate-lag").executes(TestModule::simulateLag))
                         .then(Commands.literal("clear-chat").executes(TestModule::clearChat))
-                        .then(Commands.literal("copy-config").executes(TestModule::copyConfig))
+                        .then(Commands.literal("magic").executes(TestModule::magic))
         );
     }
 }

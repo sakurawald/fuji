@@ -27,12 +27,11 @@ import static net.minecraft.commands.Commands.argument;
 public class SchedulerModule extends AbstractModule {
 
     private void updateJobs() {
-        ScheduleUtil.removeJobs(ScheduleJobJob.class);
-
+        ScheduleUtil.removeJobs(ScheduleJobJob.class.getName());
         ConfigManager.schedulerWrapper.instance().scheduleJobs.forEach(scheduleJob -> {
 
             if (scheduleJob.enable) {
-                scheduleJob.crons.forEach(cron -> ScheduleUtil.addJob(ScheduleJobJob.class, cron, new JobDataMap() {
+                scheduleJob.crons.forEach(cron -> ScheduleUtil.addJob(ScheduleJobJob.class, null, null, cron, new JobDataMap() {
                     {
                         this.put("job", scheduleJob);
                     }
