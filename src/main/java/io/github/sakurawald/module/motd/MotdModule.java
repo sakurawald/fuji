@@ -2,6 +2,7 @@ package io.github.sakurawald.module.motd;
 
 import com.google.common.base.Preconditions;
 import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +25,18 @@ public class MotdModule extends AbstractModule {
 
     private List<String> descriptions = new ArrayList<>();
 
-    // TODO: split modules
-    public void updateDescriptions(ArrayList<String> descriptions) {
+    public void updateDescriptions(List<String> descriptions) {
         this.descriptions = descriptions;
+    }
+
+    @Override
+    public void onInitialize() {
+        updateDescriptions(ConfigManager.configWrapper.instance().modules.motd.descriptions);
+    }
+
+    @Override
+    public void onReload() {
+        updateDescriptions(ConfigManager.configWrapper.instance().modules.motd.descriptions);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

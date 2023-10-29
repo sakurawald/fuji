@@ -21,7 +21,7 @@ import java.util.List;
 public class MainStatsModule extends AbstractModule {
 
     private final List<Character> colors = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
-    private final MotdModule dynamic_motd_module = ModuleManager.getOrNewInstance(MotdModule.class);
+    private final MotdModule motd_module = ModuleManager.getOrNewInstance(MotdModule.class);
 
     @Override
     public void onInitialize() {
@@ -32,14 +32,15 @@ public class MainStatsModule extends AbstractModule {
     }
 
     public void updateMainStats(MinecraftServer server) {
+        // calc main stats
         MainStats serverMainStats = MainStats.calculateServerMainStats();
 
-        ConfigGSON.Modules.MOTD dynamic_motd = ConfigManager.configWrapper.instance().modules.motd;
-        ArrayList<String> descriptions = new ArrayList<>();
-        dynamic_motd.descriptions.forEach(description -> descriptions.add(serverMainStats.resolve(server, description)));
-
-        if (dynamic_motd_module != null) {
-            dynamic_motd_module.updateDescriptions(descriptions);
+        // update motd if motd module is enabled
+        if (motd_module != null) {
+            ConfigGSON.Modules.MOTD motd = ConfigManager.configWrapper.instance().modules.motd;
+            ArrayList<String> descriptions = new ArrayList<>();
+            motd.descriptions.forEach(description -> descriptions.add(serverMainStats.resolve(server, description)));
+            motd_module.updateDescriptions(descriptions);
         }
     }
 
@@ -95,10 +96,9 @@ public class MainStatsModule extends AbstractModule {
             MinecraftServer server = (MinecraftServer) context.getJobDetail().getJobDataMap().get(MinecraftServer.class.getName());
             server.getPlayerList().getPlayers().forEach((p) -> p.getStats().save());
 
-            // update motd
+            // update main stats
             MainStatsModule module = (MainStatsModule) context.getJobDetail().getJobDataMap().get(MainStatsModule.class.getName());
             module.updateMainStats(server);
-
         }
     }
 }
