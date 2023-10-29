@@ -58,17 +58,19 @@ public class HomeModule extends AbstractModule {
         );
     }
 
+    private Map<String, Position> getHomes(ServerPlayer player) {
+        String playerName = player.getGameProfile().getName();
+        Map<String, Map<String, Position>> homes = data.instance().homes;
+        homes.computeIfAbsent(playerName, k -> new HashMap<>());
+        return homes.get(playerName);
+    }
+
     private int $tp(CommandContext<CommandSourceStack> ctx) {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return 0;
 
-        String playerName = player.getGameProfile().getName();
+        Map<String, Position> name2position = getHomes(player);
         String homeName = StringArgumentType.getString(ctx, "name");
-
-        Map<String, Map<String, Position>> homes = data.instance().homes;
-        homes.computeIfAbsent(playerName, k -> new HashMap<>());
-
-        Map<String, Position> name2position = homes.get(playerName);
         if (!name2position.containsKey(homeName)) {
             MessageUtil.sendMessage(player, "home.no_found", homeName);
             return 0;
@@ -83,13 +85,8 @@ public class HomeModule extends AbstractModule {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return 0;
 
-        String playerName = player.getGameProfile().getName();
+        Map<String, Position> name2position = getHomes(player);
         String homeName = StringArgumentType.getString(ctx, "name");
-
-        Map<String, Map<String, Position>> homes = data.instance().homes;
-        homes.computeIfAbsent(playerName, k -> new HashMap<>());
-
-        Map<String, Position> name2position = homes.get(playerName);
         if (!name2position.containsKey(homeName)) {
             MessageUtil.sendMessage(player, "home.no_found", homeName);
             return 0;
@@ -104,13 +101,8 @@ public class HomeModule extends AbstractModule {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return 0;
 
-        String playerName = player.getGameProfile().getName();
+        Map<String, Position> name2position = getHomes(player);
         String homeName = StringArgumentType.getString(ctx, "name");
-
-        Map<String, Map<String, Position>> homes = data.instance().homes;
-        homes.computeIfAbsent(playerName, k -> new HashMap<>());
-
-        Map<String, Position> name2position = homes.get(playerName);
         if (name2position.containsKey(homeName)) {
             if (!override) {
                 MessageUtil.sendMessage(player, "home.set.fail.need_override", homeName);
@@ -127,16 +119,10 @@ public class HomeModule extends AbstractModule {
     }
 
     private int $list(CommandContext<CommandSourceStack> ctx) {
-
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return 0;
 
-        String playerName = player.getGameProfile().getName();
-
-        Map<String, Map<String, Position>> homes = data.instance().homes;
-        homes.computeIfAbsent(playerName, k -> new HashMap<>());
-
-        MessageUtil.sendMessage(player, "home.list", homes.get(playerName).keySet());
+        MessageUtil.sendMessage(player, "home.list", getHomes(player).keySet());
         return Command.SINGLE_SUCCESS;
     }
 
@@ -146,12 +132,7 @@ public class HomeModule extends AbstractModule {
                             ServerPlayer player = context.getSource().getPlayer();
                             if (player == null) return builder.buildFuture();
 
-                            String playerName = player.getGameProfile().getName();
-
-                            Map<String, Map<String, Position>> homes = data.instance().homes;
-                            homes.computeIfAbsent(playerName, k -> new HashMap<>());
-
-                            Map<String, Position> name2position = homes.get(playerName);
+                            Map<String, Position> name2position = getHomes(player);
                             name2position.keySet().forEach(builder::suggest);
                             return builder.buildFuture();
                         }
