@@ -157,5 +157,6 @@
   "home.set.fail.need_override": "<red>Home %s exists, use \"/home set <name> override\" to override it",
   "home.list": "<gold>Your homes: %s",
   "home.unset.success": "<gold>Home %s removed.",
-  "home.no_found": "<red>Home %s not found."
+  "home.no_found": "<red>Home %s not found.",
+  "ping.player": "<gold>Ping of %s: %d ms"
 }

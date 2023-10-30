@@ -157,5 +157,6 @@
   "home.set.fail.need_override": "<red>家 %s 已存在, 请使用 \"/home set <name> override\" 进行覆盖",
   "home.list": "<gold>您的家: %s",
   "home.unset.success": "<gold>家 %s 已移除.",
-  "home.no_found": "<red>家 %s 不存在."
+  "home.no_found": "<red>家 %s 不存在.",
+  "ping.player": "<gold>玩家 %s 的延迟: %d ms"
 }
