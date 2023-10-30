@@ -8,7 +8,6 @@ import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.mixin.top_chunks.ThreadedAnvilChunkStorageMixin;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.MessageUtil;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -30,7 +29,7 @@ import java.util.HashMap;
 import java.util.PriorityQueue;
 import java.util.concurrent.CompletableFuture;
 
-@Slf4j
+
 public class TopChunksModule extends AbstractModule {
 
     @Override

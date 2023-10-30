@@ -4,7 +4,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.CommandNode;
 import io.github.sakurawald.mixin.zero_command_permission.CommandNodeAccessor;
 import io.github.sakurawald.module.AbstractModule;
-import lombok.extern.slf4j.Slf4j;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.util.TriState;
@@ -13,7 +12,7 @@ import net.minecraft.server.MinecraftServer;
 
 import java.util.function.Predicate;
 
-@Slf4j
+
 public class ZeroCommandPermissionModule extends AbstractModule {
 
     @Override

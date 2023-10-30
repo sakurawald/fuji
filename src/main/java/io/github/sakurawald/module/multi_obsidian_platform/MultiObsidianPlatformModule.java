@@ -3,14 +3,13 @@ package io.github.sakurawald.module.multi_obsidian_platform;
 import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Blocks;
 
 import java.util.HashMap;
 
-@Slf4j
+
 public class MultiObsidianPlatformModule extends AbstractModule {
 
     private final HashMap<BlockPos, BlockPos> TRANSFORM_CACHE = new HashMap<>();
@@ -33,7 +32,7 @@ public class MultiObsidianPlatformModule extends AbstractModule {
             }
         }
 
-        log.warn("BlockPos {} is not END_PORTAL and we can't find a nearby END_PORTAL block !", bp);
+        ServerMain.log.warn("BlockPos {} is not END_PORTAL and we can't find a nearby END_PORTAL block !", bp);
         return bp;
     }
 

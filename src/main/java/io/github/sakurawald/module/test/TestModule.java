@@ -8,7 +8,6 @@ import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.module.chat.mention.MentionPlayersJob;
 import io.github.sakurawald.util.ScheduleUtil;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.kyori.adventure.text.Component;
 import net.minecraft.commands.CommandBuildContext;
@@ -19,7 +18,7 @@ import org.quartz.JobKey;
 import org.quartz.SchedulerException;
 import org.quartz.impl.matchers.GroupMatcher;
 
-@Slf4j
+
 public class TestModule extends AbstractModule {
 
     @SneakyThrows
@@ -58,10 +57,10 @@ public class TestModule extends AbstractModule {
 
         try {
             for (JobKey jobKey : ScheduleUtil.getScheduler().getJobKeys(GroupMatcher.groupEquals(MentionPlayersJob.class.getName()))) {
-                log.error("magic() -> jobKey: {}", jobKey);
+                ServerMain.log.error("magic() -> jobKey: {}", jobKey);
             }
         } catch (SchedulerException e) {
-            log.error(e.getMessage());
+            ServerMain.log.error(e.getMessage());
         }
 
         return 1;

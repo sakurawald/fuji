@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.newbie_welcome.random_teleport;
 
 import com.google.common.base.Stopwatch;
+import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.config.base.ConfigManager;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
@@ -20,11 +20,11 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 // Thanks to https://github.com/John-Paul-R/Essential-Commands
-@Slf4j
+
 public class RandomTeleport {
     private static final Executor threadExecutor = Executors.newCachedThreadPool(runnable -> {
         var thread = new Thread(runnable, "RTP Location Calculator Thread");
-        thread.setUncaughtExceptionHandler((t, e) -> log.error("Exception in RTP calculator thread", e));
+        thread.setUncaughtExceptionHandler((t, e) -> ServerMain.log.error("Exception in RTP calculator thread", e));
         return thread;
     });
 
@@ -33,7 +33,7 @@ public class RandomTeleport {
     }
 
     private static void exec(ServerPlayer player, ServerLevel world, boolean shouldSetSpawnPoint) {
-        log.info("Starting RTP location search for {}", player.getGameProfile().getName());
+        ServerMain.log.info("Starting RTP location search for {}", player.getGameProfile().getName());
         Stopwatch timer = Stopwatch.createStarted();
 
         var centerOpt = getRtpCenter();
@@ -65,7 +65,7 @@ public class RandomTeleport {
         player.teleportTo(world, pos.get().getX() + 0.5, pos.get().getY(), pos.get().getZ() + 0.5, 0, 0);
 
         var cost = timer.stop();
-        log.info("RTP: {} has been teleported to ({} {} {} {}) (cost = {})", player.getGameProfile().getName(), world.dimension().location(), pos.get().getX(), pos.get().getY(), pos.get().getZ(), cost);
+        ServerMain.log.info("RTP: {} has been teleported to ({} {} {} {}) (cost = {})", player.getGameProfile().getName(), world.dimension().location(), pos.get().getX(), pos.get().getY(), pos.get().getZ(), cost);
     }
 
     private static Optional<Vec3i> getRtpCenter() {

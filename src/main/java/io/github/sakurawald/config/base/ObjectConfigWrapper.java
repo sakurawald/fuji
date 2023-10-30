@@ -5,12 +5,11 @@ import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonWriter;
 import io.github.sakurawald.ServerMain;
 import lombok.Cleanup;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 
-@Slf4j
+
 public class ObjectConfigWrapper<T> extends ConfigWrapper<T> {
 
     final Class<T> configClass;
@@ -52,7 +51,7 @@ public class ObjectConfigWrapper<T> extends ConfigWrapper<T> {
 
         } catch (IOException | NoSuchMethodException | InstantiationException | IllegalAccessException |
                  InvocationTargetException e) {
-            log.error("Load config failed: " + e.getMessage());
+            ServerMain.log.error("Load config failed: " + e.getMessage());
         }
     }
 

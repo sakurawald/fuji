@@ -6,7 +6,6 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.MessageUtil;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -17,7 +16,6 @@ import java.util.HashSet;
 import java.util.Objects;
 
 
-@Slf4j
 public class PvpModule extends AbstractModule {
 
     @Override

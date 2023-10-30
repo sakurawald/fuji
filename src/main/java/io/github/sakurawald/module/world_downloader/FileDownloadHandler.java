@@ -2,9 +2,9 @@ package io.github.sakurawald.module.world_downloader;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import io.github.sakurawald.ServerMain;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,7 +12,7 @@ import java.io.OutputStream;
 import java.util.concurrent.TimeUnit;
 
 @AllArgsConstructor
-@Slf4j
+
 public class FileDownloadHandler implements HttpHandler {
 
     private static final long NANO_TO_S = 1000000000L;
@@ -24,7 +24,7 @@ public class FileDownloadHandler implements HttpHandler {
     @Override
     @SneakyThrows
     public void handle(HttpExchange exchange) {
-        log.info("Download file: {}", file.getAbsolutePath());
+        ServerMain.log.info("Download file: {}", file.getAbsolutePath());
 
         /* consume this context */
         module.safelyRemoveContext(exchange.getHttpContext());
@@ -53,7 +53,7 @@ public class FileDownloadHandler implements HttpHandler {
                                     / bytesPerSecond;
                             Thread.sleep(TimeUnit.NANOSECONDS.toMillis(sleepTime));
                         } catch (InterruptedException e) {
-                            log.warn("Interrupted while sleeping for throttling", e);
+                            ServerMain.log.warn("Interrupted while sleeping for throttling", e);
                             return;
                         }
                     }
@@ -71,6 +71,6 @@ public class FileDownloadHandler implements HttpHandler {
                 os.close();
             }
         }
-        log.info("Delete file: {} -> {}", file.getAbsolutePath(), file.delete());
+        ServerMain.log.info("Delete file: {} -> {}", file.getAbsolutePath(), file.delete());
     }
 }

@@ -13,7 +13,6 @@ import io.github.sakurawald.util.GuiUtil;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.TimeUtil;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -31,7 +30,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@Slf4j
+
 public abstract class Work {
 
     public String type;

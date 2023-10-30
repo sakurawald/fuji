@@ -1,13 +1,12 @@
 package io.github.sakurawald.util;
 
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 @UtilityClass
-@Slf4j
+
 public class FileUtils {
 
     public static String readFile(File file) {

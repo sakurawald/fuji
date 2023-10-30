@@ -14,7 +14,6 @@ import io.github.sakurawald.module.teleport_warmup.Position;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.ScheduleUtil;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -28,7 +27,7 @@ import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
-@Slf4j
+
 public class HomeModule extends AbstractModule {
 
 

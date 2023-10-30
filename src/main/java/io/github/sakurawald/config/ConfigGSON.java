@@ -73,6 +73,7 @@ public class ConfigGSON {
         public More more = new More();
         public Extinguish extinguish = new Extinguish();
         public Home home = new Home();
+        public Ping ping = new Ping();
 
         public class ResourceWorld {
             public boolean enable = false;
@@ -454,6 +455,10 @@ public class ConfigGSON {
         public class Home {
             public boolean enable = false;
             public int max_homes = 3;
+        }
+
+        public class Ping {
+            public boolean enable = false;
         }
 
     }

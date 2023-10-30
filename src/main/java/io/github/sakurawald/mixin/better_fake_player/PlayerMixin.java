@@ -4,7 +4,6 @@ import carpet.patches.EntityPlayerMPFake;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.better_fake_player.BetterFakePlayerModule;
 import io.github.sakurawald.util.MessageUtil;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -22,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 // the carpet-fabric default event handler priority is 1000
 @Mixin(value = Player.class, priority = 999)
-@Slf4j
+
 public abstract class PlayerMixin extends LivingEntity {
 
     @Unique

@@ -3,7 +3,6 @@ package io.github.sakurawald.module.teleport_warmup;
 import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.MessageUtil;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.kyori.adventure.bossbar.BossBar;
 import net.minecraft.server.MinecraftServer;
@@ -14,7 +13,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 
-@Slf4j
 public class TeleportWarmupModule extends AbstractModule {
 
     public final HashMap<String, TeleportTicket> tickets = new HashMap<>();

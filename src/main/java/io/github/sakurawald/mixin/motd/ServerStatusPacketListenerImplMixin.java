@@ -26,7 +26,6 @@ package io.github.sakurawald.mixin.motd;
 import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.motd.MotdModule;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.network.protocol.status.ServerStatus;
 import net.minecraft.server.network.ServerStatusPacketListenerImpl;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,7 +36,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.Optional;
 
 @Mixin(ServerStatusPacketListenerImpl.class)
-@Slf4j
+
 abstract class ServerStatusPacketListenerImplMixin {
 
     @Unique
@@ -47,7 +46,7 @@ abstract class ServerStatusPacketListenerImplMixin {
     public ServerStatus $handleStatusRequest(final ServerStatusPacketListenerImpl instance) {
         ServerStatus vanillaStatus = ServerMain.SERVER.getStatus();
         if (vanillaStatus == null) {
-            log.warn("ServerStatus is null, use default.");
+            ServerMain.log.warn("ServerStatus is null, use default.");
             return new ServerStatus(module.getRandomDescription(), Optional.empty(), Optional.empty(), module.getRandomIcon(), false);
         }
         return new ServerStatus(module.getRandomDescription(), vanillaStatus.players(), vanillaStatus.version(), module.getRandomIcon(), vanillaStatus.enforcesSecureChat());

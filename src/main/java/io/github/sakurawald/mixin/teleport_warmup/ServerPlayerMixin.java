@@ -8,7 +8,6 @@ import io.github.sakurawald.module.teleport_warmup.TeleportTicket;
 import io.github.sakurawald.module.teleport_warmup.TeleportWarmupModule;
 import io.github.sakurawald.util.CarpetUtil;
 import io.github.sakurawald.util.MessageUtil;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -21,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 
 @Mixin(ServerPlayer.class)
-@Slf4j
+
 public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
     @Unique
     private static final BackModule backModule = ModuleManager.getOrNewInstance(BackModule.class);

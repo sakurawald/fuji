@@ -8,7 +8,6 @@ import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.module.chat.mention.MentionPlayersJob;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -23,7 +22,7 @@ import java.util.Optional;
 import static net.minecraft.commands.Commands.argument;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
-@Slf4j
+
 public class TpaModule extends AbstractModule {
 
     @Getter

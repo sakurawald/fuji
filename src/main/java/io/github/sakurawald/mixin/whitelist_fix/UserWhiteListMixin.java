@@ -1,7 +1,6 @@
 package io.github.sakurawald.mixin.whitelist_fix;
 
 import com.mojang.authlib.GameProfile;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.network.Connection;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.CommonListenerCookie;
@@ -12,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(UserWhiteList.class)
-@Slf4j
+
 public class UserWhiteListMixin {
 
     /**

@@ -3,7 +3,6 @@ package io.github.sakurawald.module.top_chunks;
 import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.TextReplacementConfig;
@@ -22,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-@Slf4j
+
 public class ChunkScore implements Comparable<ChunkScore> {
     private final HashMap<String, Integer> type2amount = new HashMap<>();
     private final HashMap<String, String> type2transform_type = new HashMap<>() {

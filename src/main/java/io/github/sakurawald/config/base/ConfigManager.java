@@ -1,9 +1,8 @@
 package io.github.sakurawald.config.base;
 
 import io.github.sakurawald.config.*;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+
 public class ConfigManager {
 
     public static final ConfigWrapper<ConfigGSON> configWrapper = new ObjectConfigWrapper<>("config.json", ConfigGSON.class);

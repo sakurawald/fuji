@@ -12,7 +12,6 @@ import io.github.sakurawald.util.GuiUtil;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.TimeUtil;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -37,7 +36,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @NoArgsConstructor
-@Slf4j
+
 public class ProductionWork extends Work implements ScheduleMethod {
 
     public @NotNull Sample sample = new Sample();

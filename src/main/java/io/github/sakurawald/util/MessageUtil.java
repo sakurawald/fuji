@@ -6,7 +6,6 @@ import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.config.base.ResourceConfigWrapper;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.fabric.FabricServerAudiences;
 import net.kyori.adventure.text.Component;
@@ -25,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @UtilityClass
-@Slf4j
+
 public class MessageUtil {
     private static final FabricServerAudiences adventure = FabricServerAudiences.of(ServerMain.SERVER);
     @Getter
@@ -53,9 +52,9 @@ public class MessageUtil {
             is = FileUtils.openInputStream(LANGUAGE_PATH.resolve(lang + ".json").toFile());
             JsonObject jsonObject = JsonParser.parseReader(new InputStreamReader(is)).getAsJsonObject();
             lang2json.put(lang, jsonObject);
-            log.info("Language {} loaded.", lang);
+            ServerMain.log.info("Language {} loaded.", lang);
         } catch (IOException e) {
-            log.debug("One of your player is using a language '{}' that is missing -> fallback to default language for this player", lang);
+            ServerMain.log.debug("One of your player is using a language '{}' that is missing -> fallback to default language for this player", lang);
         }
 
         if (!lang2json.containsKey(DEFAULT_LANG)) loadLanguageIfAbsent(DEFAULT_LANG);
@@ -85,7 +84,7 @@ public class MessageUtil {
         JsonObject json;
         json = lang2json.get(!lang2json.containsKey(lang) ? DEFAULT_LANG : lang);
         if (!json.has(key)) {
-            log.warn("Language {} miss key '{}' -> fallback to default language for this key", lang, key);
+            ServerMain.log.warn("Language {} miss key '{}' -> fallback to default language for this key", lang, key);
             json = lang2json.get(DEFAULT_LANG);
         }
 
@@ -138,7 +137,7 @@ public class MessageUtil {
 
     public static void sendBroadcast(String key, Object... args) {
         // fix: log broadcast for console
-        log.info(PlainTextComponentSerializer.plainText().serialize(ofComponent(null, key, args)));
+        ServerMain.log.info(PlainTextComponentSerializer.plainText().serialize(ofComponent(null, key, args)));
 
         for (ServerPlayer player : ServerMain.SERVER.getPlayerList().getPlayers()) {
             sendMessage(player, key, args);

@@ -1,9 +1,9 @@
 package io.github.sakurawald.mixin.works;
 
+import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.module.works.WorksCache;
 import io.github.sakurawald.module.works.work_type.ProductionWork;
 import io.github.sakurawald.module.works.work_type.Work;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -21,7 +21,7 @@ import java.util.HashSet;
 
 // the priority of carpet's is 1000
 @Mixin(value = HopperBlockEntity.class, priority = 999)
-@Slf4j
+
 public abstract class HopperBlockEntityMixin extends RandomizableContainerBlockEntity {
 
     protected HopperBlockEntityMixin(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
@@ -41,7 +41,7 @@ public abstract class HopperBlockEntityMixin extends RandomizableContainerBlockE
         } else if (container instanceof MinecartHopper mh) {
             works = WorksCache.getEntity2works().get(mh.getId());
         } else {
-            log.warn("addItem() found an unknown container: {}", container);
+            ServerMain.log.warn("addItem() found an unknown container: {}", container);
             return;
         }
         if (works == null) return;

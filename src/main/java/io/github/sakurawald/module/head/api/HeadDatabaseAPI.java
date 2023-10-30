@@ -7,7 +7,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import io.github.sakurawald.ServerMain;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.commons.io.FileUtils;
 
@@ -20,7 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @SuppressWarnings("FieldCanBeLocal")
-@Slf4j
+
 public class HeadDatabaseAPI {
     private final String API = "https://minecraft-heads.com/scripts/api.php?cat=%s&tags=true";
     private final Path STORAGE_PATH = ServerMain.CONFIG_PATH.resolve("head").toAbsolutePath();
@@ -34,16 +33,16 @@ public class HeadDatabaseAPI {
     private void refreshCacheFromAPI() {
         for (Category category : Category.values()) {
             try {
-                log.info("Saving {} heads to cache", category.name);
+                ServerMain.log.info("Saving {} heads to cache", category.name);
                 URLConnection connection = URI.create(String.format(API, category.name)).toURL().openConnection();
                 var stream = new BufferedInputStream(connection.getInputStream());
                 FileUtils.copyInputStreamToFile(stream, STORAGE_PATH.resolve(category.name + ".json").toFile());
             } catch (IOException e) {
-                log.warn("Failed to save new heads to cache");
+                ServerMain.log.warn("Failed to save new heads to cache");
             }
 
             if (!Files.exists(STORAGE_PATH.resolve(category.name + ".json"))) {
-                log.info("Loading fallback {} heads", category.name);
+                ServerMain.log.info("Loading fallback {} heads", category.name);
                 try {
                     Files.createDirectories(STORAGE_PATH);
                     Files.copy(
@@ -51,7 +50,7 @@ public class HeadDatabaseAPI {
                             STORAGE_PATH.resolve(category.name + ".json")
                     );
                 } catch (IOException e) {
-                    log.warn("Failed to load fallback heads", e);
+                    ServerMain.log.warn("Failed to load fallback heads", e);
                 }
             }
         }
@@ -62,7 +61,7 @@ public class HeadDatabaseAPI {
         Gson gson = new Gson();
         for (Category category : Category.values()) {
             try {
-                log.info("Loading {} heads from cache", category.name);
+                ServerMain.log.info("Loading {} heads from cache", category.name);
                 var stream = Files.newInputStream(STORAGE_PATH.resolve(category.name + ".json"));
                 JsonArray headsJson = JsonParser.parseReader(new InputStreamReader(stream)).getAsJsonArray();
                 for (JsonElement headJson : headsJson) {
@@ -70,14 +69,14 @@ public class HeadDatabaseAPI {
                         Head head = gson.fromJson(headJson, Head.class);
                         heads.put(category, head);
                     } catch (Exception e) {
-                        log.warn("Invalid head: " + headJson);
+                        ServerMain.log.warn("Invalid head: " + headJson);
                     }
                 }
             } catch (IOException e) {
-                log.warn("Failed to load heads from cache", e);
+                ServerMain.log.warn("Failed to load heads from cache", e);
             }
         }
-        log.info("Finished loading {} heads", heads.size());
+        ServerMain.log.info("Finished loading {} heads", heads.size());
         return heads;
     }
 }

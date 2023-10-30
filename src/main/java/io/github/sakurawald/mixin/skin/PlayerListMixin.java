@@ -2,7 +2,6 @@ package io.github.sakurawald.mixin.skin;
 
 import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.skin.SkinRestorer;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.network.Connection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,7 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Mixin(PlayerList.class)
-@Slf4j
+
 public abstract class PlayerListMixin {
 
     @Shadow

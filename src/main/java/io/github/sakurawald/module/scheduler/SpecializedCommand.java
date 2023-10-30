@@ -2,7 +2,6 @@ package io.github.sakurawald.module.scheduler;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.ServerMain;
-import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.server.MinecraftServer;
@@ -11,7 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import java.util.List;
 import java.util.Random;
 
-@Slf4j
+
 public class SpecializedCommand {
 
     // TODO: a language parser is needed here (supports some expressions solver)
@@ -50,7 +49,7 @@ public class SpecializedCommand {
         try {
             server.getCommands().getDispatcher().execute(command, server.createCommandSourceStack());
         } catch (CommandSyntaxException e) {
-            log.error(e.toString());
+            ServerMain.log.error(e.toString());
         }
     }
 

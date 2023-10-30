@@ -2,7 +2,6 @@ package io.github.sakurawald.module.chat.display.gui;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,7 +10,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-@Slf4j
+
 public class InventoryDisplayGui extends DisplayGuiBuilder {
 
     private final Component title;

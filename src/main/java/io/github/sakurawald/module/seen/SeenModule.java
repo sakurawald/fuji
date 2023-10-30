@@ -12,7 +12,6 @@ import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.TimeUtil;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -20,7 +19,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
-@Slf4j
+
 public class SeenModule extends AbstractModule {
 
     @Getter

@@ -3,7 +3,6 @@ package io.github.sakurawald.mixin.afk;
 import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.afk.ServerPlayerAccessor_afk;
 import io.github.sakurawald.util.MessageUtil;
-import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundPlayerInfoUpdatePacket;
@@ -23,7 +22,7 @@ import static io.github.sakurawald.util.MessageUtil.ofComponent;
 import static io.github.sakurawald.util.MessageUtil.toVomponent;
 
 @Mixin(ServerPlayer.class)
-@Slf4j
+
 public abstract class ServerPlayerMixin implements ServerPlayerAccessor_afk {
 
     @Unique

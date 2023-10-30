@@ -71,7 +71,7 @@ provides /skin command, and even an option to use local random-skin for fake-pla
 
 #### DeathLogModule
 provides /deathlog command, which can log and restore the death-log for all players.
-<img src="https://github.com/SakuraWald/sakurawald-fabric/raw/1.20.2/.github/images/death-log.gif" alt="module presentation gif">
+<img src="https://github.com/SakuraWald/sakurawald-fabric/raw/1.20.2/.github/images/death-ServerMain.log.gif" alt="module presentation gif">
 
 #### BackModule
 provides /back command (Support smart-ignore by distance).

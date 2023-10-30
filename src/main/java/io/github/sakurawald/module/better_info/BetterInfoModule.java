@@ -2,7 +2,6 @@ package io.github.sakurawald.module.better_info;
 
 import com.mojang.brigadier.CommandDispatcher;
 import io.github.sakurawald.module.AbstractModule;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -10,7 +9,7 @@ import net.minecraft.commands.Commands;
 
 import java.util.List;
 
-@Slf4j
+
 public class BetterInfoModule extends AbstractModule {
 
     @Override

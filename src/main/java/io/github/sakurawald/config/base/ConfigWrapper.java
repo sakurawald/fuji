@@ -2,10 +2,10 @@ package io.github.sakurawald.config.base;
 
 import assets.sakurawald.Cat;
 import com.google.gson.*;
+import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.module.works.work_type.Work;
 import io.github.sakurawald.util.ScheduleUtil;
 import lombok.Cleanup;
-import lombok.extern.slf4j.Slf4j;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -17,7 +17,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Map;
 import java.util.Set;
 
-@Slf4j
+
 public abstract class ConfigWrapper<T> {
     protected static final Gson gson = new GsonBuilder()
             .setPrettyPrinting()
@@ -41,7 +41,7 @@ public abstract class ConfigWrapper<T> {
             @Cleanup Reader reader = new BufferedReader(new InputStreamReader(inputStream));
             return JsonParser.parseReader(reader);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            ServerMain.log.error(e.getMessage());
         }
 
         return null;
@@ -65,7 +65,7 @@ public abstract class ConfigWrapper<T> {
         try {
             Files.copy(file.toPath(), backupFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            log.error("Backup file failed: " + e.getMessage());
+            ServerMain.log.error("Backup file failed: " + e.getMessage());
         }
     }
 
@@ -99,7 +99,7 @@ public abstract class ConfigWrapper<T> {
                 // note: for JsonArray, we will not directly set array elements, but we will add new properties for every array element (language default empty-value). e.g. For List<ExamplePojo>, we will never change the size of this list, but we will add missing properties for every ExamplePojo with the language default empty-value.
                 if (!oldJson.has(key)) {
                     oldJson.add(key, value);
-                    log.warn("Add missing json property: file = {}, key = {}, value = {}", this.file.getName(), key, value);
+                    ServerMain.log.warn("Add missing json property: file = {}, key = {}, value = {}", this.file.getName(), key, value);
                 }
             }
         }
@@ -108,7 +108,7 @@ public abstract class ConfigWrapper<T> {
     public static class ConfigWrapperAutoSaveJob implements Job {
         @Override
         public void execute(JobExecutionContext context) throws JobExecutionException {
-            log.debug("AutoSave ConfigWrapper {}", context.getJobDetail().getKey().getName());
+            ServerMain.log.debug("AutoSave ConfigWrapper {}", context.getJobDetail().getKey().getName());
             ConfigWrapper<?> configWrapper = (ConfigWrapper<?>) context.getJobDetail().getJobDataMap().get(ConfigWrapper.class.getName());
             configWrapper.saveToDisk();
         }

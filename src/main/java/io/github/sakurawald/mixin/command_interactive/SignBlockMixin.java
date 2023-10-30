@@ -1,8 +1,8 @@
 package io.github.sakurawald.mixin.command_interactive;
 
+import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.scheduler.SpecializedCommand;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Mixin(SignBlock.class)
-@Slf4j
+
 public class SignBlockMixin {
     @Inject(method = "use", at = @At("HEAD"), cancellable = true)
     private void $use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult, CallbackInfoReturnable<InteractionResult> cir) {
@@ -45,7 +45,7 @@ public class SignBlockMixin {
                     cir.setReturnValue(InteractionResult.CONSUME);
                     List<String> commands = resolveCommands(text);
                     if (ConfigManager.configWrapper.instance().modules.command_interactive.log_use) {
-                        log.info("Player {} execute commands: {}", serverPlayer.getName().getString(), commands);
+                        ServerMain.log.info("Player {} execute commands: {}", serverPlayer.getName().getString(), commands);
                     }
                     SpecializedCommand.executeCommands(serverPlayer, commands);
                 }

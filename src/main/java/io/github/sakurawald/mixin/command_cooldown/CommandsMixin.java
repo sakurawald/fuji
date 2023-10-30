@@ -4,7 +4,6 @@ import com.mojang.brigadier.ParseResults;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.command_cooldown.CommandCooldownModule;
 import io.github.sakurawald.util.MessageUtil;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Commands.class)
-@Slf4j
+
 public class CommandsMixin {
 
     @Unique

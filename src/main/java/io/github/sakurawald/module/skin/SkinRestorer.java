@@ -9,7 +9,6 @@ import io.github.sakurawald.module.skin.io.SkinIO;
 import io.github.sakurawald.module.skin.io.SkinStorage;
 import it.unimi.dsi.fastutil.Pair;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.network.protocol.game.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 // Thanks to: https://modrinth.com/mod/skinrestorer
-@Slf4j
+
 public class SkinRestorer {
 
     private static final Gson gson = new Gson();
@@ -40,7 +39,7 @@ public class SkinRestorer {
             HashSet<GameProfile> acceptedProfiles = new HashSet<>();
             Property skin = skinSupplier.get();
             if (skin == null) {
-                log.error("Cannot get the skin for {}", targets.stream().findFirst().orElseThrow());
+                ServerMain.log.error("Cannot get the skin for {}", targets.stream().findFirst().orElseThrow());
                 return Pair.of(null, Collections.emptySet());
             }
 
@@ -109,7 +108,7 @@ public class SkinRestorer {
             jy.remove("timestamp");
             return x.equals(jy);
         } catch (Exception ex) {
-            log.info("Can not compare skin", ex);
+            ServerMain.log.info("Can not compare skin", ex);
             return false;
         }
     }

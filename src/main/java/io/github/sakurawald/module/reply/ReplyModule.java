@@ -8,7 +8,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.MessageUtil;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -19,7 +18,7 @@ import java.util.HashMap;
 
 import static net.minecraft.commands.Commands.argument;
 
-@Slf4j
+
 public class ReplyModule extends AbstractModule {
 
     private final HashMap<String, String> player2target = new HashMap<>();

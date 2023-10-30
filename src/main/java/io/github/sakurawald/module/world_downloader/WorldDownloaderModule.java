@@ -6,12 +6,12 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
+import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.mixin.resource_world.MinecraftServerAccessor;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -37,7 +37,7 @@ import java.nio.file.Files;
 import java.util.UUID;
 
 @SuppressWarnings("UnstableApiUsage")
-@Slf4j
+
 public class WorldDownloaderModule extends AbstractModule {
 
     private EvictingQueue<String> contextQueue;
@@ -64,7 +64,7 @@ public class WorldDownloaderModule extends AbstractModule {
             server = HttpServer.create(new InetSocketAddress(ConfigManager.configWrapper.instance().modules.world_downloader.port), 0);
             server.start();
         } catch (IOException e) {
-            log.error("Failed to start http server: " + e.getMessage());
+            ServerMain.log.error("Failed to start http server: " + e.getMessage());
         }
     }
 
@@ -101,7 +101,7 @@ public class WorldDownloaderModule extends AbstractModule {
 
         /* remove redundant contexts */
         if (contextQueue.remainingCapacity() == 0) {
-            log.info("contexts is full, remove the oldest context. {}", contextQueue.peek());
+            ServerMain.log.info("contexts is full, remove the oldest context. {}", contextQueue.peek());
             safelyRemoveContext(contextQueue.poll());
         }
 
@@ -151,7 +151,7 @@ public class WorldDownloaderModule extends AbstractModule {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        log.info("Generate region file: {}", output.getAbsolutePath());
+        ServerMain.log.info("Generate region file: {}", output.getAbsolutePath());
         return output;
     }
 

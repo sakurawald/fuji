@@ -3,7 +3,6 @@ package io.github.sakurawald.mixin;
 import com.google.gson.JsonElement;
 import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.ModuleManager;
-import lombok.extern.slf4j.Slf4j;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -11,7 +10,7 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 import java.util.List;
 import java.util.Set;
 
-@Slf4j
+
 public class MixinConfigPlugin implements IMixinConfigPlugin {
 
     private static final JsonElement mixinConfigs;

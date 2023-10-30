@@ -15,7 +15,6 @@ import io.github.sakurawald.module.main_stats.MainStats;
 import io.github.sakurawald.module.main_stats.MainStatsModule;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
@@ -43,8 +42,6 @@ import java.util.Queue;
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
-@SuppressWarnings("UnstableApiUsage")
-@Slf4j
 public class ChatModule extends AbstractModule {
 
     private final MiniMessage miniMessage = MiniMessage.builder().build();
@@ -182,7 +179,7 @@ public class ChatModule extends AbstractModule {
         component = resolvePositionTag(player, component);
         chatHistory.add(component);
         // info so that it can be seen in the console
-        log.info(PlainTextComponentSerializer.plainText().serialize(component));
+        ServerMain.log.info(PlainTextComponentSerializer.plainText().serialize(component));
         for (ServerPlayer receiver : ServerMain.SERVER.getPlayerList().getPlayers()) {
             receiver.sendMessage(component);
         }

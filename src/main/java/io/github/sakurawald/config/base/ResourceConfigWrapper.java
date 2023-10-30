@@ -5,11 +5,10 @@ import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonWriter;
 import io.github.sakurawald.ServerMain;
 import lombok.Cleanup;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 
-@Slf4j
+
 public class ResourceConfigWrapper extends ConfigWrapper<JsonElement> {
 
     final String resourcePath;
@@ -48,7 +47,7 @@ public class ResourceConfigWrapper extends ConfigWrapper<JsonElement> {
             }
 
         } catch (IOException e) {
-            log.error("Load config failed: " + e.getMessage());
+            ServerMain.log.error("Load config failed: " + e.getMessage());
         }
     }
 

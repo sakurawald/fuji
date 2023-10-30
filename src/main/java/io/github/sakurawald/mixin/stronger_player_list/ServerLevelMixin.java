@@ -1,6 +1,6 @@
 package io.github.sakurawald.mixin.stronger_player_list;
 
-import lombok.extern.slf4j.Slf4j;
+import io.github.sakurawald.ServerMain;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Final;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Mixin(ServerLevel.class)
-@Slf4j
+
 public abstract class ServerLevelMixin {
 
     @Mutable
@@ -28,7 +28,7 @@ public abstract class ServerLevelMixin {
         ServerLevel that = (ServerLevel) (Object) this;
         players = new CopyOnWriteArrayList<>() {
             {
-                log.info("Patch stronger player list for {}", that.dimension().location());
+                ServerMain.log.info("Patch stronger player list for {}", that.dimension().location());
             }
         };
     }

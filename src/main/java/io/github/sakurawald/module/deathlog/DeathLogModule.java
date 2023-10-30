@@ -9,7 +9,6 @@ import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.CommandUtil;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -41,7 +40,7 @@ import java.util.Objects;
 import static net.minecraft.commands.Commands.argument;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
-@Slf4j
+
 public class DeathLogModule extends AbstractModule {
     private final Path STORAGE_PATH = ServerMain.CONFIG_PATH.resolve("deathlog");
     private final String DEATHS = "Deaths";

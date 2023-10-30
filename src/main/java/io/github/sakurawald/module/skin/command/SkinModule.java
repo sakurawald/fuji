@@ -10,7 +10,6 @@ import io.github.sakurawald.module.skin.enums.SkinVariant;
 import io.github.sakurawald.module.skin.provider.MineSkinSkinProvider;
 import io.github.sakurawald.module.skin.provider.MojangSkinProvider;
 import io.github.sakurawald.util.MessageUtil;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -25,7 +24,7 @@ import java.util.function.Supplier;
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
-@Slf4j
+
 public class SkinModule extends AbstractModule {
 
     @Override

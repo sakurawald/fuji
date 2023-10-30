@@ -7,10 +7,10 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.ScheduleUtil;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -23,7 +23,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static net.minecraft.commands.Commands.argument;
 
-@Slf4j
+
 public class SchedulerModule extends AbstractModule {
 
     private void updateJobs() {
@@ -36,7 +36,7 @@ public class SchedulerModule extends AbstractModule {
                         this.put("job", scheduleJob);
                     }
                 }));
-                log.info("SchedulerModule: Add ScheduleJob {}", scheduleJob);
+                ServerMain.log.info("SchedulerModule: Add ScheduleJob {}", scheduleJob);
             }
         });
     }

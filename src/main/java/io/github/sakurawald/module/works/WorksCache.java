@@ -2,7 +2,6 @@ package io.github.sakurawald.module.works;
 
 import io.github.sakurawald.module.works.work_type.Work;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.BlockPos;
 
 import java.util.HashSet;
@@ -10,7 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Slf4j
+
 public class WorksCache {
     @Getter
     private static final ConcurrentHashMap<BlockPos, HashSet<Work>> blockpos2works = new ConcurrentHashMap<>();

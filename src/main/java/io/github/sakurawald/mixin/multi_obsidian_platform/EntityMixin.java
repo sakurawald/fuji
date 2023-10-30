@@ -2,7 +2,6 @@ package io.github.sakurawald.mixin.multi_obsidian_platform;
 
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.multi_obsidian_platform.MultiObsidianPlatformModule;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -13,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Entity.class)
-@Slf4j
+
 public abstract class EntityMixin {
 
     @Unique

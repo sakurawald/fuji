@@ -15,7 +15,6 @@ import io.github.sakurawald.module.works.work_type.Work;
 import io.github.sakurawald.util.GuiUtil;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.ScheduleUtil;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.commands.CommandBuildContext;
@@ -39,7 +38,7 @@ import java.util.HashSet;
 import java.util.List;
 
 @SuppressWarnings("SameReturnValue")
-@Slf4j
+
 public class WorksModule extends AbstractModule {
 
     private final int PAGE_SIZE = 9 * 5;

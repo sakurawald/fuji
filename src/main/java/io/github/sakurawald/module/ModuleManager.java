@@ -1,15 +1,15 @@
 package io.github.sakurawald.module;
 
 import com.google.gson.JsonElement;
+import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.config.base.ConfigManager;
-import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-@Slf4j
+
 public class ModuleManager {
     private static final Map<Class<? extends AbstractModule>, AbstractModule> instances = new HashMap<>();
 
@@ -36,13 +36,13 @@ public class ModuleManager {
             String basePackageName = calculateBasePackageName(ModuleManager.class, clazz.getName());
             String moduleName = clazz.getSimpleName();
             if (enableModule(config, basePackageName)) {
-                log.info("+ {}", moduleName);
+                ServerMain.log.info("+ {}", moduleName);
                 try {
                     AbstractModule abstractModule = clazz.getDeclaredConstructor().newInstance();
                     abstractModule.onInitialize();
                     instances.put(clazz, abstractModule);
                 } catch (Exception e) {
-                    log.error(e.toString());
+                    ServerMain.log.error(e.toString());
                 }
             }
         }
@@ -54,7 +54,7 @@ public class ModuleManager {
         try {
             enable = config.getAsJsonObject().get("modules").getAsJsonObject().get(basePackageName).getAsJsonObject().get("enable").getAsBoolean();
         } catch (Exception e) {
-            log.error("The enable-supplier key '{}' is missing -> force enable this module", "modules.%s.enable".formatted(basePackageName));
+            ServerMain.log.error("The enable-supplier key '{}' is missing -> force enable this module", "modules.%s.enable".formatted(basePackageName));
             return true;
         }
         return enable;

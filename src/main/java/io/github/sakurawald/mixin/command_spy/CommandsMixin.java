@@ -1,7 +1,7 @@
 package io.github.sakurawald.mixin.command_spy;
 
 import com.mojang.brigadier.ParseResults;
-import lombok.extern.slf4j.Slf4j;
+import io.github.sakurawald.ServerMain;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Commands.class)
-@Slf4j
+
 public class CommandsMixin {
 
     // If you issue "///abcdefg", then commandLine = "//abcdefg"
@@ -21,6 +21,6 @@ public class CommandsMixin {
         if (player == null) return;
 
         // fix: fabric console will not log the command issue
-        log.info("{} issued server command: {}", player.getGameProfile().getName(), commandLine);
+        ServerMain.log.info("{} issued server command: {}", player.getGameProfile().getName(), commandLine);
     }
 }
