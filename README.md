@@ -89,7 +89,7 @@ provides /download command for every player who wants to download the nearby chu
 <img src="https://github.com/SakuraWald/sakurawald-fabric/raw/1.20.2/.github/images/download.gif" alt="module presentation gif">
 
 #### MainStatsModule
-This module sums up some basic stats, like: total_playtime, total_mined, total_placed, total_killed and total_moved (We call these 5 stats `MainStats`). You can use these placeholders in ChatStyleModule and DynamicMOTDModule
+This module sums up some basic stats, like: total_playtime, total_mined, total_placed, total_killed and total_moved (We call these 5 stats `MainStats`). You can use these placeholders in ChatStyleModule and MOTDModule
 <img src="https://github.com/SakuraWald/sakurawald-fabric/raw/1.20.2/.github/images/main-stats.gif" alt="module presentation gif">
 
 #### NewbieWelcomeModule
@@ -99,6 +99,7 @@ This module broadcasts a welcome-message and random teleport the new player and 
 Yeah, you know what this module does. (Use this module to avoid some heavy-command abuse)
 
 #### MotdModule
+<img src="https://github.com/SakuraWald/sakurawald-fabric/raw/1.20.2/.github/images/motd.gif" alt="module presentation gif">
 A simple MOTD that supports fancy and random motd, and supports some placeholders like MainStats
 
 #### HeadModule
@@ -215,7 +216,9 @@ provides `/home` command.
 provides `/ping` command.
 
 #### SystemMessageModule
+<img src="https://github.com/SakuraWald/sakurawald-fabric/raw/1.20.2/.github/images/system_message.gif" alt="module presentation gif">
 This module hijacks the vanilla system-message so that you can modify any system-message you want.
+(Actually, you can hijack almost all the language messages in the vanilla `en_us.json` language file)
 The system messages including:
 - Player join and leave server message
 - Player death message

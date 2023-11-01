@@ -1,13 +1,14 @@
 package io.github.sakurawald.module;
 
 import com.google.gson.JsonElement;
-import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.config.base.ConfigManager;
 import org.reflections.Reflections;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import static io.github.sakurawald.ServerMain.log;
 
 
 public class ModuleManager {
@@ -24,7 +25,14 @@ public class ModuleManager {
     }
 
     public static void reloadModules() {
-        instances.values().forEach(AbstractModule::onReload);
+        instances.values().forEach(module -> {
+                    try {
+                        module.onReload();
+                    } catch (Exception e) {
+                        log.error(e.getMessage());
+                    }
+                }
+        );
     }
 
     /**
@@ -36,13 +44,13 @@ public class ModuleManager {
             String basePackageName = calculateBasePackageName(ModuleManager.class, clazz.getName());
             String moduleName = clazz.getSimpleName();
             if (enableModule(config, basePackageName)) {
-                ServerMain.log.info("+ {}", moduleName);
+                log.info("+ {}", moduleName);
                 try {
                     AbstractModule abstractModule = clazz.getDeclaredConstructor().newInstance();
                     abstractModule.onInitialize();
                     instances.put(clazz, abstractModule);
                 } catch (Exception e) {
-                    ServerMain.log.error(e.toString());
+                    log.error(e.toString());
                 }
             }
         }
@@ -54,7 +62,7 @@ public class ModuleManager {
         try {
             enable = config.getAsJsonObject().get("modules").getAsJsonObject().get(basePackageName).getAsJsonObject().get("enable").getAsBoolean();
         } catch (Exception e) {
-            ServerMain.log.error("The enable-supplier key '{}' is missing -> force enable this module", "modules.%s.enable".formatted(basePackageName));
+            log.error("The enable-supplier key '{}' is missing -> force enable this module", "modules.%s.enable".formatted(basePackageName));
             return true;
         }
         return enable;

@@ -3,6 +3,7 @@ package io.github.sakurawald.module.config;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.util.MessageUtil;
@@ -17,6 +18,11 @@ public class ConfigModule extends AbstractModule {
     @Override
     public void onInitialize() {
         CommandRegistrationCallback.EVENT.register(this::registerCommand);
+    }
+
+    @Override
+    public void onReload() {
+        ConfigManager.configWrapper.loadFromDisk();
     }
 
     @SuppressWarnings("unused")
