@@ -13,19 +13,15 @@ import org.apache.logging.log4j.core.config.Configurator;
 
 import java.nio.file.Path;
 
-
+// TODO: remote workbench
+// TODO: warmup module
 // TODO: placeholder module
 // TODO: /tppos module
 // TODO: command alias module (test priority with ZeroPermissionModule)
 // TODO: playtime(every/for) rewards and rank like module
 // TODO: kit module
 // TODO: luckperms context calculate module
-// TODO: warmup module
-// TODO: wastebin module
-// TODO: join and leave message
 // TODO: /invsee module
-// TODO: logger level maps
-
 public class ServerMain implements ModInitializer {
     public static final Logger log = createLogger();
     public static final String MOD_ID = "sakurawald";
@@ -45,9 +41,6 @@ public class ServerMain implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        /* set server: set first because server started event priority */
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> SERVER = server);
-
         /* modules */
         ModuleManager.initializeModules();
 

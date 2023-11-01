@@ -74,7 +74,7 @@
   "works.production_work.prop.sample_counter.entry": "<#A076F9> - [item] * %d (%.1f/h)",
   "works.production_work.prop.sample_counter.empty": "<#A076F9> - No item",
   "works.production_work.set.sample": "<#FFA1F5>Sample",
-  "works.production_work.set.sample.lore": "<green>1. Stand in the center of the work\n<green>2. click this button to input distance",
+  "works.production_work.set.sample.lore": "<green>1. Stand in the center of the work\n<green>2. Click this button to input distance",
   "works.production_work.prompt.input.sample_distance": "Input sample distance",
   "works.work.add.empty_name": "<#FFA1F5>Name cannot be empty",
   "works.work.add.prompt.input.name": "Input work name",

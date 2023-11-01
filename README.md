@@ -214,8 +214,26 @@ provides `/home` command.
 #### PingModule
 provides `/ping` command.
 
+#### SystemMessageModule
+This module hijacks the vanilla system-message so that you can modify any system-message you want.
+The system messages including:
+- Player join and leave server message
+- Player death message
+- Player command feedback
+- Player white-list message
+- ...
+
 # Config
-All the config files are inside `config/sakurawald/` directory.
+### What is the format of config files?
+To make the config files more `readable` and `transparent`, we use `.json` as the config file format.
+We try our best to avoid the usage of `.dat` format
+(The vanilla minecraft data file format which needs an NBTExplorer to view and edit).
+
+### Where are the config files?
+All the config files are inside `config/sakurawald/` directory so
+that you don't need to find out where the config files are.
+
+### How to update?
 Normally, the newer version will generate missing configuration keys automatically, but if this doesn't work, you can delete the old config file and restart the server to let the newer version generate the default config file.
 
 # Permission
@@ -230,3 +248,28 @@ For JVM, we recommended GraalVM, which performs better than OpenJDK.
 > Here are the JVM arguments we optimized for GraalVM (Reference from papermc and graalvm manual):
 > 
 > java -Xms16G -Xmx16G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=40 -XX:G1MaxNewSizePercent=50 -XX:G1HeapRegionSize=16M -XX:G1ReservePercent=15 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -XX:+UseLargePages -XX:+UseTransparentHugePages -XX:+EnableDynamicAgentLoading -Djava.io.tmpdir=/tmp -jar server.jar --nogui
+
+# Diagnosis
+By default, this mod will output its `debug messages` into `logs/debug.log` so that you can know what this mod is doing.
+You can add `-Dsakurawald.level="INFO"` to change the logger level.
+
+# Build from source
+This mod is written on linux environment, but there are no native-method calls, so you can compile it on any platform.
+
+1. Clone the source: `git clone https://github.com/SakuraWald/sakurawald-fabric.git`
+2. Change the working-directory: `cd sakurawald-fabric`
+3. Compile the source: `./gradlew build`
+
+# Frequently asked questions
+1. What is `cron expression` ?
+
+Cron expression is an easy and powerful language used to define when a job should be triggered.
+You can learn more and generate a cron expression from the generator: https://www.freeformatter.com/cron-expression-generator-quartz.html
+
+# Thanks to
+At the early stage of this project, we reference some source and ideas from the following projects:
+1. https://www.zrips.net/cmi/
+2. https://essentialsx.net/
+3. https://modrinth.com/mod/essential-commands
+4. https://modrinth.com/mod/skinrestorer
+5. https://modrinth.com/mod/headindex

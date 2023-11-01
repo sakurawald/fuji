@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "io.github.sakurawald.mixin.MixinConfigPlugin",
   "mixins": [
+    "_internal.server_instance.MinecraftServerMixin",
     "afk.PlayerListMixin",
     "afk.ServerPlayerMixin",
     "back.ServerPlayerMixin",
@@ -44,6 +45,7 @@
     "skin.ServerLoginNetworkHandlerMixin",
     "stronger_player_list.PlayerListMixin",
     "stronger_player_list.ServerLevelMixin",
+    "system_message.ComponentMixin",
     "teleport_warmup.ServerPlayerMixin",
     "tick_chunk_cache.ChunkMapMixin",
     "tick_chunk_cache.ServerChunkCacheMixin",

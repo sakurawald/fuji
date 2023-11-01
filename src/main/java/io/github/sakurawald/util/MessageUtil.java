@@ -91,27 +91,32 @@ public class MessageUtil {
         /* get value */
         String value;
         value = json.get(key).getAsString();
-        if (args.length > 0) {
-            value = String.format(value, args);
-        }
+        return formatString(value, args);
+    }
 
-        return value;
+    public static String formatString(String string, Object... args) {
+        if (args.length > 0) {
+            return String.format(string, args);
+        }
+        return string;
     }
 
     public static Component ofComponent(Audience audience, String key, Object... args) {
-        return ofComponent(ofString(audience, key, args));
+        //note: if call ofString() directly with args, then we pass args to ofString(),
+        // or else we pass args to ofComponent() to avoid args being formatted twice
+        return ofComponent(ofString(audience, key), args);
     }
 
-    public static Component ofComponent(String str) {
-        return miniMessage.deserialize(str);
+    public static Component ofComponent(String str, Object... args) {
+        return miniMessage.deserialize(formatString(str, args));
     }
 
-    public static net.minecraft.network.chat.Component ofVomponent(String str) {
-        return toVomponent(ofComponent(str));
+    public static net.minecraft.network.chat.Component ofVomponent(String str, Object... args) {
+        return toVomponent(ofComponent(str, args));
     }
 
     public static net.minecraft.network.chat.Component ofVomponent(Audience audience, String key, Object... args) {
-        return adventure.toNative(ofComponent(audience, key, args));
+        return toVomponent(ofComponent(audience, key, args));
     }
 
     public static net.minecraft.network.chat.Component toVomponent(Component component) {
@@ -120,9 +125,10 @@ public class MessageUtil {
 
     public static List<net.minecraft.network.chat.Component> ofVomponents(Audience audience, String key, Object... args) {
         String lines = ofString(audience, key, args);
+
         List<net.minecraft.network.chat.Component> ret = new ArrayList<>();
         for (String line : lines.split("\n")) {
-            ret.add(adventure.toNative(miniMessage.deserialize(line)));
+            ret.add(ofVomponent(line));
         }
         return ret;
     }

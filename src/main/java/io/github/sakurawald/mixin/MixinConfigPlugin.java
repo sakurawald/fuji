@@ -33,6 +33,7 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         String basePackageName = ModuleManager.calculateBasePackageName(this.getClass(), mixinClassName);
+        if (basePackageName.startsWith("_")) return true;
         return ModuleManager.enableModule(mixinConfigs, basePackageName);
     }
 

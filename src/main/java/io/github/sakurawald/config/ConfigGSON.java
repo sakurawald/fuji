@@ -7,6 +7,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("ALL")
 public class ConfigGSON {
@@ -74,6 +75,7 @@ public class ConfigGSON {
         public Extinguish extinguish = new Extinguish();
         public Home home = new Home();
         public Ping ping = new Ping();
+        public SystemMessage system_message = new SystemMessage();
 
         public class ResourceWorld {
             public boolean enable = false;
@@ -459,6 +461,19 @@ public class ConfigGSON {
 
         public class Ping {
             public boolean enable = false;
+        }
+
+        public class SystemMessage {
+            public boolean enable = false;
+
+            public Map<String, String> key2value = new HashMap<>() {
+                {
+                    this.put("multiplayer.player.joined", "<rainbow>+ %s");
+                    this.put("commands.seed.success", "<rainbow> Seeeeeeeeeeed: %s");
+                    this.put("multiplayer.disconnect.not_whitelisted", "<rainbow>Please apply a whitelist first!");
+                    this.put("death.attack.explosion.player", "<rainbow>%1$s booooooom because of %2$s");
+                }
+            };
         }
 
     }
