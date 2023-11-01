@@ -99,8 +99,8 @@ This module broadcasts a welcome-message and random teleport the new player and 
 Yeah, you know what this module does. (Use this module to avoid some heavy-command abuse)
 
 #### MotdModule
-<img src="https://github.com/SakuraWald/sakurawald-fabric/raw/1.20.2/.github/images/motd.gif" alt="module presentation gif">
 A simple MOTD that supports fancy and random motd, and supports some placeholders like MainStats
+<img src="https://github.com/SakuraWald/sakurawald-fabric/raw/1.20.2/.github/images/motd.gif" alt="module presentation gif">
 
 #### HeadModule
 provides /head command to buy player heads.
@@ -216,7 +216,6 @@ provides `/home` command.
 provides `/ping` command.
 
 #### SystemMessageModule
-<img src="https://github.com/SakuraWald/sakurawald-fabric/raw/1.20.2/.github/images/system_message.gif" alt="module presentation gif">
 This module hijacks the vanilla system-message so that you can modify any system-message you want.
 (Actually, you can hijack almost all the language messages in the vanilla `en_us.json` language file)
 The system messages including:
@@ -225,6 +224,8 @@ The system messages including:
 - Player command feedback
 - Player white-list message
 - ...
+
+  <img src="https://github.com/SakuraWald/sakurawald-fabric/raw/1.20.2/.github/images/system_message.gif" alt="module presentation gif">
 
 # Config
 ### What is the format of config files?
