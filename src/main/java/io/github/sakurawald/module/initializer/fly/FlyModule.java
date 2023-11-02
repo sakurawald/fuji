@@ -30,12 +30,12 @@ public class FlyModule extends ModuleInitializer {
 
         boolean flag = !player.getAbilities().mayfly;
         player.getAbilities().mayfly = flag;
-        player.onUpdateAbilities();
 
         if (!flag) {
             player.getAbilities().flying = false;
         }
 
+        player.onUpdateAbilities();
         MessageUtil.sendMessage(player, flag ? "fly.on" : "fly.off");
         return Command.SINGLE_SUCCESS;
     }
