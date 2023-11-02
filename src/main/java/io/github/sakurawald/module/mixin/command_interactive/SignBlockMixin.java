@@ -45,7 +45,7 @@ public class SignBlockMixin {
                     cir.setReturnValue(InteractionResult.CONSUME);
                     List<String> commands = resolveCommands(text);
                     if (Configs.configHandler.model().modules.command_interactive.log_use) {
-                        Fuji.log.info("Player {} execute commands: {}", serverPlayer.getName().getString(), commands);
+                        Fuji.LOGGER.info("Player {} execute commands: {}", serverPlayer.getName().getString(), commands);
                     }
                     SpecializedCommand.executeCommands(serverPlayer, commands);
                 }

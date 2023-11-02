@@ -57,10 +57,10 @@ public class TestModule extends ModuleInitializer {
 
         try {
             for (JobKey jobKey : ScheduleUtil.getScheduler().getJobKeys(GroupMatcher.groupEquals(MentionPlayersJob.class.getName()))) {
-                Fuji.log.error("magic() -> jobKey: {}", jobKey);
+                Fuji.LOGGER.error("magic() -> jobKey: {}", jobKey);
             }
         } catch (SchedulerException e) {
-            Fuji.log.error(e.getMessage());
+            Fuji.LOGGER.error(e.getMessage());
         }
 
         return 1;

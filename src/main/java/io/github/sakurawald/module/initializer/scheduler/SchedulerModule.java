@@ -36,7 +36,7 @@ public class SchedulerModule extends ModuleInitializer {
                         this.put("job", scheduleJob);
                     }
                 }));
-                Fuji.log.info("SchedulerModule: Add ScheduleJob {}", scheduleJob);
+                Fuji.LOGGER.info("SchedulerModule: Add ScheduleJob {}", scheduleJob);
             }
         });
     }

@@ -8,12 +8,12 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
-import static io.github.sakurawald.Fuji.log;
+import static io.github.sakurawald.Fuji.LOGGER;
 
 @UtilityClass
 public class HttpUtil {
     public static String post(URI uri, String param) throws IOException {
-        log.debug("post() -> uri = {}, param = {}", uri, param);
+        LOGGER.debug("post() -> uri = {}, param = {}", uri, param);
 
         HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
         connection.setRequestMethod("POST");
@@ -28,7 +28,7 @@ public class HttpUtil {
     }
 
     public static String get(URI uri) throws IOException {
-        log.debug("get() -> uri = {}", uri);
+        LOGGER.debug("get() -> uri = {}", uri);
 
         HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
         connection.setRequestMethod("GET");

@@ -43,7 +43,7 @@ public class MotdModule extends ModuleInitializer {
         ICON_FOLDER.mkdirs();
         File[] icons = ICON_FOLDER.listFiles();
         if (icons == null || icons.length == 0) {
-            Fuji.log.warn("No icons found in {}", ICON_FOLDER.getAbsolutePath());
+            Fuji.LOGGER.warn("No icons found in {}", ICON_FOLDER.getAbsolutePath());
             return Optional.empty();
         }
         File randomIcon = icons[new Random().nextInt(icons.length)];
@@ -55,7 +55,7 @@ public class MotdModule extends ModuleInitializer {
             byteArrayOutputStream = new ByteArrayOutputStream();
             ImageIO.write(bufferedImage, "PNG", byteArrayOutputStream);
         } catch (IOException e) {
-            Fuji.log.warn("Failed to encode favicon", e);
+            Fuji.LOGGER.warn("Failed to encode favicon", e);
             return Optional.empty();
         }
         return Optional.of(new ServerStatus.Favicon(byteArrayOutputStream.toByteArray()));

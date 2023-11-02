@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static io.github.sakurawald.Fuji.log;
+import static io.github.sakurawald.Fuji.LOGGER;
 
 public class ModuleManager {
     private static final Map<Class<? extends ModuleInitializer>, ModuleInitializer> initializers = new HashMap<>();
@@ -32,7 +32,7 @@ public class ModuleManager {
                     try {
                         initializer.onReload();
                     } catch (Exception e) {
-                        log.error("Failed to reload module -> {}", e.getMessage());
+                        LOGGER.error("Failed to reload module -> {}", e.getMessage());
                     }
                 }
         );
@@ -44,7 +44,7 @@ public class ModuleManager {
             if (enable) enabled.add(module);
         });
 
-        log.info("Enabled {}/{} modules -> {}", enabled.size(), module2enable.size(), enabled);
+        LOGGER.info("Enabled {}/{} modules -> {}", enabled.size(), module2enable.size(), enabled);
     }
 
     @ApiStatus.AvailableSince("1.1.5")
@@ -68,7 +68,7 @@ public class ModuleManager {
                     moduleInitializer.onInitialize();
                     initializers.put(clazz, moduleInitializer);
                 } catch (Exception e) {
-                    log.error(e.toString());
+                    LOGGER.error(e.toString());
                 }
             }
         }
@@ -80,7 +80,7 @@ public class ModuleManager {
         try {
             enable = config.getAsJsonObject().get("modules").getAsJsonObject().get(basePackageName).getAsJsonObject().get("enable").getAsBoolean();
         } catch (Exception e) {
-            log.error("The enable-supplier key '{}' is missing -> force enable this module", "modules.%s.enable".formatted(basePackageName));
+            LOGGER.error("The enable-supplier key '{}' is missing -> force enable this module", "modules.%s.enable".formatted(basePackageName));
             enable = true;
         }
 

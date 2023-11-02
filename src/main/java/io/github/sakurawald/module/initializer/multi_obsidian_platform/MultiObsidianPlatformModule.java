@@ -32,7 +32,7 @@ public class MultiObsidianPlatformModule extends ModuleInitializer {
             }
         }
 
-        Fuji.log.warn("BlockPos {} is not END_PORTAL and we can't find a nearby END_PORTAL block !", bp);
+        Fuji.LOGGER.warn("BlockPos {} is not END_PORTAL and we can't find a nearby END_PORTAL block !", bp);
         return bp;
     }
 

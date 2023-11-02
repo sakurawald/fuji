@@ -75,7 +75,7 @@ public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInter
 
             return true;
         } catch (Throwable e) {
-            Fuji.log.error("Failed to remove entry: " + entry.toString());
+            Fuji.LOGGER.error("Failed to remove entry: " + entry.toString());
             return false;
         }
     }

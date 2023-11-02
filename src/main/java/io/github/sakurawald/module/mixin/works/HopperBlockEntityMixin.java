@@ -61,7 +61,7 @@ public abstract class HopperBlockEntityMixin extends RandomizableContainerBlockE
         } else if (container2 instanceof MinecartHopper mh) {
             works = WorksCache.getEntity2works().get(mh.getId());
         } else {
-            Fuji.log.warn("addItem() found an unknown container: {}", container2);
+            Fuji.LOGGER.warn("addItem() found an unknown container: {}", container2);
             return;
         }
         if (works == null) return;

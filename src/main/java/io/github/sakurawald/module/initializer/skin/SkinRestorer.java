@@ -25,7 +25,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-import static io.github.sakurawald.Fuji.log;
+import static io.github.sakurawald.Fuji.LOGGER;
 
 // Thanks to: https://modrinth.com/mod/skinrestorer
 
@@ -41,9 +41,9 @@ public class SkinRestorer {
             HashSet<GameProfile> acceptedProfiles = new HashSet<>();
             Property skin = skinSupplier.get();
 
-            log.debug("skinSupplier.get() -> skin = {}", skin);
+            LOGGER.debug("skinSupplier.get() -> skin = {}", skin);
             if (skin == null) {
-                log.error("Cannot get the skin for {}", targets.stream().findFirst().orElseThrow());
+                LOGGER.error("Cannot get the skin for {}", targets.stream().findFirst().orElseThrow());
                 return Pair.of(null, Collections.emptySet());
             }
 
@@ -112,7 +112,7 @@ public class SkinRestorer {
             jy.remove("timestamp");
             return x.equals(jy);
         } catch (Exception ex) {
-            log.info("Can not compare skin", ex);
+            LOGGER.info("Can not compare skin", ex);
             return false;
         }
     }

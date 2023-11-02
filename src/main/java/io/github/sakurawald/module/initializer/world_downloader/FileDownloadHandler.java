@@ -24,7 +24,7 @@ public class FileDownloadHandler implements HttpHandler {
     @Override
     @SneakyThrows
     public void handle(HttpExchange exchange) {
-        Fuji.log.info("Download file: {}", file.getAbsolutePath());
+        Fuji.LOGGER.info("Download file: {}", file.getAbsolutePath());
 
         /* consume this context */
         module.safelyRemoveContext(exchange.getHttpContext());
@@ -53,7 +53,7 @@ public class FileDownloadHandler implements HttpHandler {
                                     / bytesPerSecond;
                             Thread.sleep(TimeUnit.NANOSECONDS.toMillis(sleepTime));
                         } catch (InterruptedException e) {
-                            Fuji.log.warn("Interrupted while sleeping for throttling", e);
+                            Fuji.LOGGER.warn("Interrupted while sleeping for throttling", e);
                             return;
                         }
                     }
@@ -71,6 +71,6 @@ public class FileDownloadHandler implements HttpHandler {
                 os.close();
             }
         }
-        Fuji.log.info("Delete file: {} -> {}", file.getAbsolutePath(), file.delete());
+        Fuji.LOGGER.info("Delete file: {} -> {}", file.getAbsolutePath(), file.delete());
     }
 }

@@ -51,9 +51,9 @@ public class MessageUtil {
             is = FileUtils.openInputStream(Fuji.CONFIG_PATH.resolve("lang").resolve(lang + ".json").toFile());
             JsonObject jsonObject = JsonParser.parseReader(new InputStreamReader(is)).getAsJsonObject();
             lang2json.put(lang, jsonObject);
-            Fuji.log.info("Language {} loaded.", lang);
+            Fuji.LOGGER.info("Language {} loaded.", lang);
         } catch (IOException e) {
-            Fuji.log.debug("One of your player is using a language '{}' that is missing -> fallback to default language for this player", lang);
+            Fuji.LOGGER.debug("One of your player is using a language '{}' that is missing -> fallback to default language for this player", lang);
         }
 
         if (!lang2json.containsKey(DEFAULT_LANG)) loadLanguageIfAbsent(DEFAULT_LANG);
@@ -83,7 +83,7 @@ public class MessageUtil {
         JsonObject json;
         json = lang2json.get(!lang2json.containsKey(lang) ? DEFAULT_LANG : lang);
         if (!json.has(key)) {
-            Fuji.log.warn("Language {} miss key '{}' -> fallback to default language for this key", lang, key);
+            Fuji.LOGGER.warn("Language {} miss key '{}' -> fallback to default language for this key", lang, key);
             json = lang2json.get(DEFAULT_LANG);
         }
 
@@ -142,7 +142,7 @@ public class MessageUtil {
 
     public static void sendBroadcast(String key, Object... args) {
         // fix: log broadcast for console
-        Fuji.log.info(PlainTextComponentSerializer.plainText().serialize(ofComponent(null, key, args)));
+        Fuji.LOGGER.info(PlainTextComponentSerializer.plainText().serialize(ofComponent(null, key, args)));
 
         for (ServerPlayer player : Fuji.SERVER.getPlayerList().getPlayers()) {
             sendMessage(player, key, args);

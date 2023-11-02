@@ -12,10 +12,10 @@ import java.io.IOException;
 public class RemoveCustomStatsTest {
 
     public static void main(String[] args) {
-        Fuji.log.info("{}", 0 / 8);
-        Fuji.log.info("{}", -2 / 8);
-        Fuji.log.info("{}", -6 / 8);
-        Fuji.log.info("{}", -9 / 8);
+        Fuji.LOGGER.info("{}", 0 / 8);
+        Fuji.LOGGER.info("{}", -2 / 8);
+        Fuji.LOGGER.info("{}", -6 / 8);
+        Fuji.LOGGER.info("{}", -9 / 8);
     }
 
     void removeStats() {

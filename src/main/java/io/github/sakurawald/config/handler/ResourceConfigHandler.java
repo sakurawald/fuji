@@ -46,7 +46,7 @@ public class ResourceConfigHandler extends ConfigHandler<JsonElement> {
             }
 
         } catch (IOException e) {
-            Fuji.log.error("Load config failed: " + e.getMessage());
+            Fuji.LOGGER.error("Load config failed: " + e.getMessage());
         }
     }
 

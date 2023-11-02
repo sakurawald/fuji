@@ -12,7 +12,7 @@ import org.quartz.impl.matchers.GroupMatcher;
 import java.util.Set;
 import java.util.UUID;
 
-import static io.github.sakurawald.Fuji.log;
+import static io.github.sakurawald.Fuji.LOGGER;
 
 
 public class ScheduleUtil {
@@ -41,14 +41,14 @@ public class ScheduleUtil {
         if (jobGroup == null) {
             jobGroup = jobClass.getName();
         }
-        log.debug("addJob() -> jobClass: {}, jobName: {}, jobGroup: {}, cron: {}, jobDataMap: {}", jobClass, jobName, jobGroup, cron, jobDataMap);
+        LOGGER.debug("addJob() -> jobClass: {}, jobName: {}, jobGroup: {}, cron: {}, jobDataMap: {}", jobClass, jobName, jobGroup, cron, jobDataMap);
 
         JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName, jobGroup).usingJobData(jobDataMap).build();
         CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(jobName, jobGroup).withSchedule(CronScheduleBuilder.cronSchedule(cron)).build();
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            log.error("Exception in ScheduleUtil.addJob", e);
+            LOGGER.error("Exception in ScheduleUtil.addJob", e);
         }
     }
 
@@ -59,37 +59,37 @@ public class ScheduleUtil {
         if (jobGroup == null) {
             jobGroup = jobClass.getName();
         }
-        log.debug("addJob() -> jobClass: {}, jobName: {}, jobGroup: {}, intervalMs: {}, repeatCount: {}, jobDataMap: {}", jobClass, jobName, jobGroup, intervalMs, repeatCount, jobDataMap);
+        LOGGER.debug("addJob() -> jobClass: {}, jobName: {}, jobGroup: {}, intervalMs: {}, repeatCount: {}, jobDataMap: {}", jobClass, jobName, jobGroup, intervalMs, repeatCount, jobDataMap);
 
         JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName, jobGroup).usingJobData(jobDataMap).build();
         SimpleTrigger trigger = TriggerBuilder.newTrigger().withIdentity(jobName, jobGroup).withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMilliseconds(intervalMs).withRepeatCount(repeatCount - 1)).build();
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            log.error("Exception in ScheduleUtil.addJob", e);
+            LOGGER.error("Exception in ScheduleUtil.addJob", e);
         }
     }
 
     public static void removeJobs(String jobGroup, String jobName) {
-        log.debug("removeJobs() -> jobGroup: {}, jobName: {}", jobGroup, jobName);
+        LOGGER.debug("removeJobs() -> jobGroup: {}, jobName: {}", jobGroup, jobName);
 
 
         try {
             scheduler.deleteJob(new JobKey(jobName, jobGroup));
         } catch (SchedulerException e) {
-            log.error("Exception in ScheduleUtil.removeJobs", e);
+            LOGGER.error("Exception in ScheduleUtil.removeJobs", e);
         }
     }
 
     public static void removeJobs(String jobGroup) {
-        log.debug("removeJobs() -> jobGroup: {}", jobGroup);
+        LOGGER.debug("removeJobs() -> jobGroup: {}", jobGroup);
 
         try {
             GroupMatcher<JobKey> groupMatcher = GroupMatcher.groupEquals(jobGroup);
             Set<JobKey> jobKeys = scheduler.getJobKeys(groupMatcher);
             scheduler.deleteJobs(jobKeys.stream().toList());
         } catch (SchedulerException e) {
-            log.error("Exception in ScheduleUtil.removeJobs", e);
+            LOGGER.error("Exception in ScheduleUtil.removeJobs", e);
         }
     }
 
@@ -98,7 +98,7 @@ public class ScheduleUtil {
         try {
             scheduler.start();
         } catch (SchedulerException e) {
-            log.error("Exception in ScheduleUtil.startScheduler", e);
+            LOGGER.error("Exception in ScheduleUtil.startScheduler", e);
         }
     }
 
@@ -106,7 +106,7 @@ public class ScheduleUtil {
         try {
             scheduler.shutdown();
         } catch (SchedulerException e) {
-            log.error("Exception in ScheduleUtil.shutdownScheduler", e);
+            LOGGER.error("Exception in ScheduleUtil.shutdownScheduler", e);
         }
     }
 }

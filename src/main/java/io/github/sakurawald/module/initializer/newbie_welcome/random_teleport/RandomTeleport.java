@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
 public class RandomTeleport {
     private static final Executor threadExecutor = Executors.newCachedThreadPool(runnable -> {
         var thread = new Thread(runnable, "RTP Location Calculator Thread");
-        thread.setUncaughtExceptionHandler((t, e) -> Fuji.log.error("Exception in RTP calculator thread", e));
+        thread.setUncaughtExceptionHandler((t, e) -> Fuji.LOGGER.error("Exception in RTP calculator thread", e));
         return thread;
     });
 
@@ -33,7 +33,7 @@ public class RandomTeleport {
     }
 
     private static void exec(ServerPlayer player, ServerLevel world, boolean shouldSetSpawnPoint) {
-        Fuji.log.info("Starting RTP location search for {}", player.getGameProfile().getName());
+        Fuji.LOGGER.info("Starting RTP location search for {}", player.getGameProfile().getName());
         Stopwatch timer = Stopwatch.createStarted();
 
         var centerOpt = getRtpCenter();
@@ -65,7 +65,7 @@ public class RandomTeleport {
         player.teleportTo(world, pos.get().getX() + 0.5, pos.get().getY(), pos.get().getZ() + 0.5, 0, 0);
 
         var cost = timer.stop();
-        Fuji.log.info("RTP: {} has been teleported to ({} {} {} {}) (cost = {})", player.getGameProfile().getName(), world.dimension().location(), pos.get().getX(), pos.get().getY(), pos.get().getZ(), cost);
+        Fuji.LOGGER.info("RTP: {} has been teleported to ({} {} {} {}) (cost = {})", player.getGameProfile().getName(), world.dimension().location(), pos.get().getX(), pos.get().getY(), pos.get().getZ(), cost);
     }
 
     private static Optional<Vec3i> getRtpCenter() {

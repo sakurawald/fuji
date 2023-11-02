@@ -46,7 +46,7 @@ abstract class ServerStatusPacketListenerImplMixin {
     public ServerStatus $handleStatusRequest(final ServerStatusPacketListenerImpl instance) {
         ServerStatus vanillaStatus = Fuji.SERVER.getStatus();
         if (vanillaStatus == null) {
-            Fuji.log.warn("ServerStatus is null, use default.");
+            Fuji.LOGGER.warn("ServerStatus is null, use default.");
             return new ServerStatus(module.getRandomDescription(), Optional.empty(), Optional.empty(), module.getRandomIcon(), false);
         }
         return new ServerStatus(module.getRandomDescription(), vanillaStatus.players(), vanillaStatus.version(), module.getRandomIcon(), vanillaStatus.enforcesSecureChat());

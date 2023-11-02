@@ -33,16 +33,16 @@ public class HeadDatabaseAPI {
     private void refreshCacheFromAPI() {
         for (Category category : Category.values()) {
             try {
-                Fuji.log.info("Saving {} heads to cache", category.name);
+                Fuji.LOGGER.info("Saving {} heads to cache", category.name);
                 URLConnection connection = URI.create(String.format(API, category.name)).toURL().openConnection();
                 var stream = new BufferedInputStream(connection.getInputStream());
                 FileUtils.copyInputStreamToFile(stream, STORAGE_PATH.resolve(category.name + ".json").toFile());
             } catch (IOException e) {
-                Fuji.log.warn("Failed to save new heads to cache");
+                Fuji.LOGGER.warn("Failed to save new heads to cache");
             }
 
             if (!Files.exists(STORAGE_PATH.resolve(category.name + ".json"))) {
-                Fuji.log.info("Loading fallback {} heads", category.name);
+                Fuji.LOGGER.info("Loading fallback {} heads", category.name);
                 try {
                     Files.createDirectories(STORAGE_PATH);
                     Files.copy(
@@ -50,7 +50,7 @@ public class HeadDatabaseAPI {
                             STORAGE_PATH.resolve(category.name + ".json")
                     );
                 } catch (IOException e) {
-                    Fuji.log.warn("Failed to load fallback heads", e);
+                    Fuji.LOGGER.warn("Failed to load fallback heads", e);
                 }
             }
         }
@@ -61,7 +61,7 @@ public class HeadDatabaseAPI {
         Gson gson = new Gson();
         for (Category category : Category.values()) {
             try {
-                Fuji.log.info("Loading {} heads from cache", category.name);
+                Fuji.LOGGER.info("Loading {} heads from cache", category.name);
                 var stream = Files.newInputStream(STORAGE_PATH.resolve(category.name + ".json"));
                 JsonArray headsJson = JsonParser.parseReader(new InputStreamReader(stream)).getAsJsonArray();
                 for (JsonElement headJson : headsJson) {
@@ -69,14 +69,14 @@ public class HeadDatabaseAPI {
                         Head head = gson.fromJson(headJson, Head.class);
                         heads.put(category, head);
                     } catch (Exception e) {
-                        Fuji.log.warn("Invalid head: " + headJson);
+                        Fuji.LOGGER.warn("Invalid head: " + headJson);
                     }
                 }
             } catch (IOException e) {
-                Fuji.log.warn("Failed to load heads from cache", e);
+                Fuji.LOGGER.warn("Failed to load heads from cache", e);
             }
         }
-        Fuji.log.info("Finished loading {} heads", heads.size());
+        Fuji.LOGGER.info("Finished loading {} heads", heads.size());
         return heads;
     }
 }

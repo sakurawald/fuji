@@ -248,7 +248,7 @@ public class ResourceWorldModule extends ModuleInitializer {
             // IMPORTANT: only delete the world if it's a resource world
             if (!namespace.equals(DEFAULT_RESOURCE_WORLD_NAMESPACE)) return;
 
-            Fuji.log.info("onWorldUnload() -> Creating world {} ...", path);
+            Fuji.LOGGER.info("onWorldUnload() -> Creating world {} ...", path);
             long seed = Configs.configHandler.model().modules.resource_world.seed;
             this.createWorld(server, this.getDimensionTypeRegistryKeyByPath(path), path, seed);
         }
@@ -258,7 +258,7 @@ public class ResourceWorldModule extends ModuleInitializer {
 
         @Override
         public void execute(JobExecutionContext context) {
-            Fuji.log.info("Start to reset resource worlds.");
+            Fuji.LOGGER.info("Start to reset resource worlds.");
             MinecraftServer server = (MinecraftServer) context.getJobDetail().getJobDataMap().get(MinecraftServer.class.getName());
             ResourceWorldModule module = (ResourceWorldModule) context.getJobDetail().getJobDataMap().get(ResourceWorldModule.class.getName());
             server.execute(() -> module.resetWorlds(server));

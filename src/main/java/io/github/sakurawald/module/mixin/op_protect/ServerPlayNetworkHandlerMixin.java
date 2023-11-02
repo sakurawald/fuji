@@ -21,7 +21,7 @@ public class ServerPlayNetworkHandlerMixin {
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerCommonPacketListenerImpl;onDisconnect(Lnet/minecraft/network/chat/Component;)V"), method = "onDisconnect")
     private void $disconnect(Component reason, CallbackInfo info) {
         if (Fuji.SERVER.getPlayerList().isOp(player.getGameProfile())) {
-            Fuji.log.info("op protect -> deop " + player.getGameProfile().getName());
+            Fuji.LOGGER.info("op protect -> deop " + player.getGameProfile().getName());
             Fuji.SERVER.getPlayerList().deop(player.getGameProfile());
         }
     }

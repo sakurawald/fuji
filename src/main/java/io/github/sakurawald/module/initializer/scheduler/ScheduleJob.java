@@ -19,7 +19,7 @@ public class ScheduleJob {
     List<List<String>> commands_list;
 
     public void trigger() {
-        Fuji.log.info("Trigger ScheduleJob {}", this.getName());
+        Fuji.LOGGER.info("Trigger ScheduleJob {}", this.getName());
 
         if (left_trigger_times > 0) {
             left_trigger_times--;

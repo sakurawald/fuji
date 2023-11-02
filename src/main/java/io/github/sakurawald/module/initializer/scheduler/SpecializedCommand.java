@@ -49,7 +49,7 @@ public class SpecializedCommand {
         try {
             server.getCommands().getDispatcher().execute(command, server.createCommandSourceStack());
         } catch (CommandSyntaxException e) {
-            Fuji.log.error(e.toString());
+            Fuji.LOGGER.error(e.toString());
         }
     }
 

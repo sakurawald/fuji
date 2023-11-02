@@ -27,7 +27,7 @@ public abstract class PlayerListMixin {
     private void $init(CallbackInfo ci) {
         players = new CopyOnWriteArrayList<>() {
             {
-                Fuji.log.info("Patch stronger player list for Server#PlayerList");
+                Fuji.LOGGER.info("Patch stronger player list for Server#PlayerList");
             }
         };
     }

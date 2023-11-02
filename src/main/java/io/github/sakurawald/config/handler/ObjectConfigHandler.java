@@ -50,7 +50,7 @@ public class ObjectConfigHandler<T> extends ConfigHandler<T> {
 
         } catch (IOException | NoSuchMethodException | InstantiationException | IllegalAccessException |
                  InvocationTargetException e) {
-            Fuji.log.error("Load config failed: " + e.getMessage());
+            Fuji.LOGGER.error("Load config failed: " + e.getMessage());
         }
     }
 

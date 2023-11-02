@@ -179,7 +179,7 @@ public class ChatModule extends ModuleInitializer {
         component = resolvePositionTag(player, component);
         chatHistory.add(component);
         // info so that it can be seen in the console
-        Fuji.log.info(PlainTextComponentSerializer.plainText().serialize(component));
+        Fuji.LOGGER.info(PlainTextComponentSerializer.plainText().serialize(component));
         for (ServerPlayer receiver : Fuji.SERVER.getPlayerList().getPlayers()) {
             receiver.sendMessage(component);
         }

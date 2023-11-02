@@ -63,7 +63,7 @@ public class WorldDownloaderModule extends ModuleInitializer {
             server = HttpServer.create(new InetSocketAddress(Configs.configHandler.model().modules.world_downloader.port), 0);
             server.start();
         } catch (IOException e) {
-            Fuji.log.error("Failed to start http server: " + e.getMessage());
+            Fuji.LOGGER.error("Failed to start http server: " + e.getMessage());
         }
     }
 
@@ -100,7 +100,7 @@ public class WorldDownloaderModule extends ModuleInitializer {
 
         /* remove redundant contexts */
         if (contextQueue.remainingCapacity() == 0) {
-            Fuji.log.info("contexts is full, remove the oldest context. {}", contextQueue.peek());
+            Fuji.LOGGER.info("contexts is full, remove the oldest context. {}", contextQueue.peek());
             safelyRemoveContext(contextQueue.poll());
         }
 
@@ -150,7 +150,7 @@ public class WorldDownloaderModule extends ModuleInitializer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Fuji.log.info("Generate region file: {}", output.getAbsolutePath());
+        Fuji.LOGGER.info("Generate region file: {}", output.getAbsolutePath());
         return output;
     }
 

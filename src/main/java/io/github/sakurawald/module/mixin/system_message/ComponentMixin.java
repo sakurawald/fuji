@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
 
-import static io.github.sakurawald.Fuji.log;
+import static io.github.sakurawald.Fuji.LOGGER;
 
 @Mixin(Component.class)
 public interface ComponentMixin {
@@ -37,7 +37,7 @@ public interface ComponentMixin {
         Map<String, String> key2value = Configs.configHandler.model().modules.system_message.key2value;
         if (key2value.containsKey(key)) {
             if (Fuji.SERVER == null) {
-                log.warn("Server is null currently -> cannot hijack message key: {}", key);
+                LOGGER.warn("Server is null currently -> cannot hijack message key: {}", key);
                 return null;
             }
             String value = key2value.get(key);

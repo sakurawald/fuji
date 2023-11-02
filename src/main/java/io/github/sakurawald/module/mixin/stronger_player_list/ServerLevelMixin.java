@@ -28,7 +28,7 @@ public abstract class ServerLevelMixin {
         ServerLevel that = (ServerLevel) (Object) this;
         players = new CopyOnWriteArrayList<>() {
             {
-                Fuji.log.info("Patch stronger player list for {}", that.dimension().location());
+                Fuji.LOGGER.info("Patch stronger player list for {}", that.dimension().location());
             }
         };
     }
