@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.works.work_type;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.works.ScheduleMethod;
 import io.github.sakurawald.module.initializer.works.WorksCache;
 import io.github.sakurawald.module.initializer.works.gui.ConfirmGui;
@@ -89,7 +89,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
         // check npe to avoid broken
         if (this.sample.sampleCounter != null) {
             // trim counter
-            if (this.sample.sampleCounter.size() > ConfigManager.configWrapper.instance().modules.works.sample_counter_top_n) {
+            if (this.sample.sampleCounter.size() > Configs.configHandler.model().modules.works.sample_counter_top_n) {
                 trimCounter();
             }
             ret.add(MessageUtil.ofVomponent(player, "works.production_work.prop.sample_counter"));
@@ -107,7 +107,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
         new InputSignGui(player, MessageUtil.ofString(player, "works.production_work.prompt.input.sample_distance")) {
             @Override
             public void onClose() {
-                int limit = ConfigManager.configWrapper.instance().modules.works.sample_distance_limit;
+                int limit = Configs.configHandler.model().modules.works.sample_distance_limit;
                 int current;
                 try {
                     current = Integer.parseInt(this.getLine(0).getString());
@@ -230,7 +230,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
 
     public void startSample(ServerPlayer player) {
         this.sample.sampleStartTimeMS = System.currentTimeMillis();
-        this.sample.sampleEndTimeMS = this.sample.sampleStartTimeMS + ConfigManager.configWrapper.instance().modules.works.sample_time_ms;
+        this.sample.sampleEndTimeMS = this.sample.sampleStartTimeMS + Configs.configHandler.model().modules.works.sample_time_ms;
         this.sample.sampleDimension = player.serverLevel().dimension().location().toString();
         this.sample.sampleX = player.getX();
         this.sample.sampleY = player.getY();
@@ -259,7 +259,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
                 .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
                 .toList();
 
-        int N = ConfigManager.configWrapper.instance().modules.works.sample_counter_top_n;
+        int N = Configs.configHandler.model().modules.works.sample_counter_top_n;
         this.sample.sampleCounter.clear();
         for (int i = 0; i < N && i < sortedEntries.size(); i++) {
             this.sample.sampleCounter.put(sortedEntries.get(i).getKey(), sortedEntries.get(i).getValue());

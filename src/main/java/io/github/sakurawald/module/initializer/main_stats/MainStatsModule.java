@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.main_stats;
 
-import io.github.sakurawald.config.ConfigManager;
-import io.github.sakurawald.config.gson.ConfigGSON;
+import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.motd.MotdModule;
@@ -36,7 +36,7 @@ public class MainStatsModule extends ModuleInitializer {
 
         // update motd if motd module is enabled
         if (motd_module != null) {
-            ConfigGSON.Modules.MOTD motd = ConfigManager.configWrapper.instance().modules.motd;
+            ConfigModel.Modules.MOTD motd = Configs.configHandler.model().modules.motd;
             ArrayList<String> descriptions = new ArrayList<>();
             motd.descriptions.forEach(description -> descriptions.add(serverMainStats.resolve(server, description)));
             motd_module.updateDescriptions(descriptions);

@@ -5,7 +5,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.MessageUtil;
@@ -86,7 +86,7 @@ public class BetterFakePlayerModule extends ModuleInitializer {
 
     public void renewFakePlayers(ServerPlayer player) {
         String name = player.getGameProfile().getName();
-        int duration = ConfigManager.configWrapper.instance().modules.better_fake_player.renew_duration_ms;
+        int duration = Configs.configHandler.model().modules.better_fake_player.renew_duration_ms;
         long newTime = System.currentTimeMillis() + duration;
         player2expiration.put(name, newTime);
         MessageUtil.sendMessage(player, "better_fake_player.renew.success", DateUtil.toStandardDateFormat(newTime));
@@ -141,7 +141,7 @@ public class BetterFakePlayerModule extends ModuleInitializer {
     }
 
     private int getCurrentAmountLimit() {
-        ArrayList<List<Integer>> rules = ConfigManager.configWrapper.instance().modules.better_fake_player.caps_limit_rule;
+        ArrayList<List<Integer>> rules = Configs.configHandler.model().modules.better_fake_player.caps_limit_rule;
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
         int currentDays = currentDate.getDayOfWeek().getValue();

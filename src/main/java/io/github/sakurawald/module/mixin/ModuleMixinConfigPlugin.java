@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin;
 
 import com.google.gson.JsonElement;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
@@ -16,8 +16,8 @@ public class ModuleMixinConfigPlugin implements IMixinConfigPlugin {
     private static final JsonElement mixinConfigs;
 
     static {
-        ConfigManager.configWrapper.loadFromDisk();
-        mixinConfigs = ConfigManager.configWrapper.toJsonElement();
+        Configs.configHandler.loadFromDisk();
+        mixinConfigs = Configs.configHandler.toJsonElement();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.teleport_warmup;
 
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.MessageUtil;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -34,7 +34,7 @@ public class TeleportWarmupModule extends ModuleInitializer {
             BossBar bossbar = ticket.bossbar;
 
             // fix: bossbar.progress() may be greater than 1.0F and throw an IllegalArgumentException.
-            final float MAX_VALUE = 20 * ConfigManager.configWrapper.instance().modules.teleport_warmup.warmup_second;
+            final float MAX_VALUE = 20 * Configs.configHandler.model().modules.teleport_warmup.warmup_second;
             final float DELFA_PERCENT = 1F / MAX_VALUE;
             try {
                 bossbar.progress(Math.min(1f, bossbar.progress() + DELFA_PERCENT));
@@ -52,7 +52,7 @@ public class TeleportWarmupModule extends ModuleInitializer {
                 continue;
             }
 
-            final double INTERRUPT_DISTANCE = ConfigManager.configWrapper.instance().modules.teleport_warmup.interrupt_distance;
+            final double INTERRUPT_DISTANCE = Configs.configHandler.model().modules.teleport_warmup.interrupt_distance;
             if (player.position().distanceToSqr(ticket.source.getX(), ticket.source.getY(), ticket.source.getZ()) >= INTERRUPT_DISTANCE) {
                 bossbar.removeViewer(player);
                 iterator.remove();

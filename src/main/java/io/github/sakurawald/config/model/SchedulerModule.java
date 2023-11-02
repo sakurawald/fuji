@@ -1,11 +1,11 @@
-package io.github.sakurawald.config.gson;
+package io.github.sakurawald.config.model;
 
 import io.github.sakurawald.module.initializer.scheduler.ScheduleJob;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SchedulerGSON {
+public class SchedulerModule {
 
     public List<ScheduleJob> scheduleJobs = new ArrayList<>() {
         {

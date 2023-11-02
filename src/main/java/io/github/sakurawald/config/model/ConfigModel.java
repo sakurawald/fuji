@@ -1,4 +1,4 @@
-package io.github.sakurawald.config.gson;
+package io.github.sakurawald.config.model;
 
 
 import com.mojang.authlib.properties.Property;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("ALL")
-public class ConfigGSON {
+public class ConfigModel {
 
     public Common common = new Common();
     public Modules modules = new Modules();

@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.command_interactive;
 
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.scheduler.SpecializedCommand;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -44,7 +44,7 @@ public class SignBlockMixin {
                 if (text.contains("//")) {
                     cir.setReturnValue(InteractionResult.CONSUME);
                     List<String> commands = resolveCommands(text);
-                    if (ConfigManager.configWrapper.instance().modules.command_interactive.log_use) {
+                    if (Configs.configHandler.model().modules.command_interactive.log_use) {
                         Fuji.log.info("Player {} execute commands: {}", serverPlayer.getName().getString(), commands);
                     }
                     SpecializedCommand.executeCommands(serverPlayer, commands);

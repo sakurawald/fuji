@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.config;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.MessageUtil;
@@ -22,7 +22,7 @@ public class ConfigModule extends ModuleInitializer {
 
     @Override
     public void onReload() {
-        ConfigManager.configWrapper.loadFromDisk();
+        Configs.configHandler.loadFromDisk();
     }
 
     @SuppressWarnings("unused")

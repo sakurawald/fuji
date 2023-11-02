@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.pvp;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.MessageUtil;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -20,13 +20,13 @@ public class PvpModule extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        ConfigManager.pvpWrapper.loadFromDisk();
+        Configs.pvpHandler.loadFromDisk();
         CommandRegistrationCallback.EVENT.register(this::registerCommand);
     }
 
     @Override
     public void onReload() {
-        ConfigManager.pvpWrapper.loadFromDisk();
+        Configs.pvpHandler.loadFromDisk();
     }
 
     @SuppressWarnings("unused")
@@ -44,10 +44,10 @@ public class PvpModule extends ModuleInitializer {
         CommandSourceStack source = ctx.getSource();
         String player = Objects.requireNonNull(source.getPlayer()).getGameProfile().getName();
 
-        HashSet<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
+        HashSet<String> whitelist = Configs.pvpHandler.model().whitelist;
         if (!whitelist.contains(player)) {
             whitelist.add(player);
-            ConfigManager.pvpWrapper.saveToDisk();
+            Configs.pvpHandler.saveToDisk();
 
             MessageUtil.sendMessage(source, "pvp.on");
 
@@ -62,10 +62,10 @@ public class PvpModule extends ModuleInitializer {
         CommandSourceStack source = ctx.getSource();
         String player = Objects.requireNonNull(source.getPlayer()).getGameProfile().getName();
 
-        HashSet<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
+        HashSet<String> whitelist = Configs.pvpHandler.model().whitelist;
         if (whitelist.contains(player)) {
             whitelist.remove(player);
-            ConfigManager.pvpWrapper.saveToDisk();
+            Configs.pvpHandler.saveToDisk();
 
             MessageUtil.sendMessage(source, "pvp.off");
             return Command.SINGLE_SUCCESS;
@@ -80,21 +80,21 @@ public class PvpModule extends ModuleInitializer {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return Command.SINGLE_SUCCESS;
 
-        HashSet<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
+        HashSet<String> whitelist = Configs.pvpHandler.model().whitelist;
         player.sendMessage(MessageUtil.ofComponent(player, "pvp.status")
                 .append(whitelist.contains(player.getGameProfile().getName()) ? MessageUtil.ofComponent(player, "on") : MessageUtil.ofComponent(player, "off")));
         return Command.SINGLE_SUCCESS;
     }
 
     private int $list(CommandContext<CommandSourceStack> ctx) {
-        HashSet<String> whitelist = ConfigManager.pvpWrapper.instance().whitelist;
+        HashSet<String> whitelist = Configs.pvpHandler.model().whitelist;
         MessageUtil.sendMessage(ctx.getSource(), "pvp.list", whitelist);
         return Command.SINGLE_SUCCESS;
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean contains(String name) {
-        return ConfigManager.pvpWrapper.instance().whitelist.contains(name);
+        return Configs.pvpHandler.model().whitelist.contains(name);
     }
 
 }

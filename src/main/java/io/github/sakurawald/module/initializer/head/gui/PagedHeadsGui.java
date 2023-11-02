@@ -5,7 +5,7 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.GuiInterface;
 import eu.pb4.sgui.api.gui.layered.Layer;
 import eu.pb4.sgui.api.gui.layered.LayeredGui;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.head.HeadModule;
 import io.github.sakurawald.module.initializer.head.api.Head;
@@ -88,7 +88,7 @@ public class PagedHeadsGui extends LayeredGui {
             if (heads.size() > i + (this.page * 45)) {
                 Head head = heads.get(i + (this.page * 45));
                 var builder = GuiElementBuilder.from(head.of());
-                if (ConfigManager.headWrapper.instance().economyType != HeadModule.EconomyType.FREE) {
+                if (Configs.headHandler.model().economyType != HeadModule.EconomyType.FREE) {
                     builder.addLoreLine(Component.empty());
                     builder.addLoreLine(MessageUtil.ofVomponent(parent.getPlayer(), "head.price").copy().append(module.getCost()));
                 }
@@ -124,7 +124,7 @@ public class PagedHeadsGui extends LayeredGui {
             if (type.isLeft) {
                 module.tryPurchase(player, 1, () -> cursorStack.grow(1));
             } else if (type.isRight) {
-                if (ConfigManager.headWrapper.instance().economyType == HeadModule.EconomyType.FREE)
+                if (Configs.headHandler.model().economyType == HeadModule.EconomyType.FREE)
                     cursorStack.shrink(1);
             } else if (type.isMiddle) {
                 var amount = headStack.getMaxStackSize() - cursorStack.getCount();
@@ -134,7 +134,7 @@ public class PagedHeadsGui extends LayeredGui {
                 });
             }
         } else {
-            if (ConfigManager.headWrapper.instance().economyType == HeadModule.EconomyType.FREE)
+            if (Configs.headHandler.model().economyType == HeadModule.EconomyType.FREE)
                 player.containerMenu.setCarried(ItemStack.EMPTY);
         }
     }

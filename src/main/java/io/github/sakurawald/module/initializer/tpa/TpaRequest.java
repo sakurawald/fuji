@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.tpa;
 
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;
@@ -63,7 +63,7 @@ public class TpaRequest {
                         module.getRequests().remove(that);
                     }
                 },
-                ConfigManager.configWrapper.instance().modules.tpa.timeout * 1000L
+                Configs.configHandler.model().modules.tpa.timeout * 1000L
         );
     }
 

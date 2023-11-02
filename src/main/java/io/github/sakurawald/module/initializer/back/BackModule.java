@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.back;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.teleport_warmup.Position;
 import io.github.sakurawald.util.MessageUtil;
@@ -48,7 +48,7 @@ public class BackModule extends ModuleInitializer {
 
     public void updatePlayer(ServerPlayer player) {
         Position lastPos = player2lastPos.get(player.getGameProfile().getName());
-        double ignoreDistance = ConfigManager.configWrapper.instance().modules.back.ignore_distance;
+        double ignoreDistance = Configs.configHandler.model().modules.back.ignore_distance;
         if (lastPos == null
                 || (!lastPos.sameLevel(player.level()))
                 || (lastPos.sameLevel(player.level()) && player.position().distanceToSqr(lastPos.getX(), lastPos.getY(), lastPos.getZ()) > ignoreDistance * ignoreDistance)

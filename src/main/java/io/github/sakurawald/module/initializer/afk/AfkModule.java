@@ -4,7 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.ScheduleUtil;
@@ -35,7 +35,7 @@ public class AfkModule extends ModuleInitializer {
 
     public void updateJobs() {
         ScheduleUtil.removeJobs(AfkCheckerJob.class.getName());
-        ScheduleUtil.addJob(AfkCheckerJob.class, null, null, ConfigManager.configWrapper.instance().modules.afk.afk_checker.cron, new JobDataMap());
+        ScheduleUtil.addJob(AfkCheckerJob.class, null, null, Configs.configHandler.model().modules.afk.afk_checker.cron, new JobDataMap());
     }
 
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
@@ -75,7 +75,7 @@ public class AfkModule extends ModuleInitializer {
                     if (afk_player.fuji$isAfk()) continue;
 
                     afk_player.fuji$setAfk(true);
-                    if (ConfigManager.configWrapper.instance().modules.afk.afk_checker.kick_player) {
+                    if (Configs.configHandler.model().modules.afk.afk_checker.kick_player) {
                         player.connection.disconnect(MessageUtil.ofVomponent(player, "afk.kick"));
                     }
                 }

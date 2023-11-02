@@ -19,7 +19,7 @@ public abstract class PlayerListMixin {
 
     @Inject(method = "remove", at = @At("TAIL"))
     private void remove(ServerPlayer player, CallbackInfo ci) {
-        module.getData().instance().player2seen.put(player.getGameProfile().getName(), System.currentTimeMillis());
+        module.getData().model().player2seen.put(player.getGameProfile().getName(), System.currentTimeMillis());
         module.getData().saveToDisk();
     }
 

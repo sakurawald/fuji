@@ -1,7 +1,7 @@
 package io.github.sakurawald.util;
 
 
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import lombok.Getter;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
@@ -23,7 +23,7 @@ public class ScheduleUtil {
 
     static {
         /* set logger level for quartz */
-        Level level = Level.getLevel(ConfigManager.configWrapper.instance().common.quartz.logger_level);
+        Level level = Level.getLevel(Configs.configHandler.model().common.quartz.logger_level);
         Configurator.setAllLevels("org.quartz", level);
 
         /* new scheduler */
@@ -75,7 +75,7 @@ public class ScheduleUtil {
 
 
         try {
-            boolean b = scheduler.deleteJob(new JobKey(jobName, jobGroup));
+            scheduler.deleteJob(new JobKey(jobName, jobGroup));
         } catch (SchedulerException e) {
             log.error("Exception in ScheduleUtil.removeJobs", e);
         }

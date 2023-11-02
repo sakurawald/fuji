@@ -5,7 +5,7 @@ import com.google.common.collect.Multimap;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.head.api.Category;
 import io.github.sakurawald.module.initializer.head.api.Head;
@@ -34,8 +34,8 @@ public class HeadModule extends ModuleInitializer {
 
     @SuppressWarnings("UnstableApiUsage")
     public void tryPurchase(ServerPlayer player, int amount, Runnable onPurchase) {
-        int trueAmount = amount * ConfigManager.headWrapper.instance().costAmount;
-        switch (ConfigManager.headWrapper.instance().economyType) {
+        int trueAmount = amount * Configs.headHandler.model().costAmount;
+        switch (Configs.headHandler.model().economyType) {
             case FREE -> onPurchase.run();
             case ITEM -> {
                 try (Transaction transaction = Transaction.openOuter()) {
@@ -50,27 +50,27 @@ public class HeadModule extends ModuleInitializer {
     }
 
     public Component getCost() {
-        return switch (ConfigManager.headWrapper.instance().economyType) {
+        return switch (Configs.headHandler.model().economyType) {
             case ITEM ->
-                    Component.empty().append(getCostItem().getDescription()).append(Component.nullToEmpty(" × " + ConfigManager.headWrapper.instance().costAmount));
+                    Component.empty().append(getCostItem().getDescription()).append(Component.nullToEmpty(" × " + Configs.headHandler.model().costAmount));
             case FREE -> Component.empty();
         };
     }
 
     public Item getCostItem() {
-        return BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(ConfigManager.headWrapper.instance().costType));
+        return BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(Configs.headHandler.model().costType));
     }
 
     @Override
     public void onInitialize() {
         CommandRegistrationCallback.EVENT.register(this::registerCommand);
         CompletableFuture.runAsync(() -> heads = HEAD_DATABASE.getHeads());
-        ConfigManager.headWrapper.loadFromDisk();
+        Configs.headHandler.loadFromDisk();
     }
 
     @Override
     public void onReload() {
-        ConfigManager.headWrapper.loadFromDisk();
+        Configs.headHandler.loadFromDisk();
     }
 
     @SuppressWarnings("unused")

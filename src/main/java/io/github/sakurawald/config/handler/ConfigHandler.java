@@ -1,4 +1,4 @@
-package io.github.sakurawald.config.wrapper;
+package io.github.sakurawald.config.handler;
 
 import assets.fuji.Cat;
 import com.google.gson.*;
@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 
-public abstract class ConfigWrapper<T> {
+public abstract class ConfigHandler<T> {
 
     @Getter
     protected static final Gson gson = new GsonBuilder()
@@ -30,11 +30,11 @@ public abstract class ConfigWrapper<T> {
             .create();
 
     protected File file;
-    protected T configInstance;
+    protected T model;
 
     protected boolean merged = false;
 
-    public ConfigWrapper(File file) {
+    public ConfigHandler(File file) {
         this.file = file;
     }
 
@@ -56,12 +56,12 @@ public abstract class ConfigWrapper<T> {
     public abstract void saveToDisk();
 
 
-    public T instance() {
-        return this.configInstance;
+    public T model() {
+        return this.model;
     }
 
     public JsonElement toJsonElement() {
-        return gson.toJsonTree(this.configInstance);
+        return gson.toJsonTree(this.model);
     }
 
 
@@ -85,7 +85,7 @@ public abstract class ConfigWrapper<T> {
         ScheduleUtil.removeJobs(jobGroup, jobName);
         ScheduleUtil.addJob(ConfigWrapperAutoSaveJob.class, jobName, jobGroup, cron, new JobDataMap() {
             {
-                this.put(ConfigWrapper.class.getName(), ConfigWrapper.this);
+                this.put(ConfigHandler.class.getName(), ConfigHandler.this);
             }
         });
     }
@@ -119,8 +119,8 @@ public abstract class ConfigWrapper<T> {
         @Override
         public void execute(JobExecutionContext context) throws JobExecutionException {
             Fuji.log.debug("AutoSave ConfigWrapper {}", context.getJobDetail().getKey().getName());
-            ConfigWrapper<?> configWrapper = (ConfigWrapper<?>) context.getJobDetail().getJobDataMap().get(ConfigWrapper.class.getName());
-            configWrapper.saveToDisk();
+            ConfigHandler<?> configHandler = (ConfigHandler<?>) context.getJobDetail().getJobDataMap().get(ConfigHandler.class.getName());
+            configHandler.saveToDisk();
         }
     }
 

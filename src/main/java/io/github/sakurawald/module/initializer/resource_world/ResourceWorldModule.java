@@ -6,8 +6,8 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.serialization.Lifecycle;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.ConfigManager;
-import io.github.sakurawald.config.gson.ConfigGSON;
+import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.newbie_welcome.random_teleport.RandomTeleport;
 import io.github.sakurawald.module.initializer.resource_world.interfaces.DimensionOptionsMixinInterface;
@@ -65,7 +65,7 @@ public class ResourceWorldModule extends ModuleInitializer {
     }
 
     public void registerScheduleTask(MinecraftServer server) {
-        ScheduleUtil.addJob(ResourceWorldAutoResetJob.class, null, null, ConfigManager.configWrapper.instance().modules.resource_world.auto_reset_cron, new JobDataMap() {
+        ScheduleUtil.addJob(ResourceWorldAutoResetJob.class, null, null, Configs.configHandler.model().modules.resource_world.auto_reset_cron, new JobDataMap() {
             {
                 this.put(MinecraftServer.class.getName(), server);
                 this.put(ResourceWorldModule.class.getName(), ResourceWorldModule.this);
@@ -95,17 +95,17 @@ public class ResourceWorldModule extends ModuleInitializer {
 
     private void resetWorlds(MinecraftServer server) {
         MessageUtil.sendBroadcast("resource_world.world.reset");
-        ConfigManager.configWrapper.instance().modules.resource_world.seed = RandomSupport.generateUniqueSeed();
-        ConfigManager.configWrapper.saveToDisk();
+        Configs.configHandler.model().modules.resource_world.seed = RandomSupport.generateUniqueSeed();
+        Configs.configHandler.saveToDisk();
         deleteWorld(server, DEFAULT_OVERWORLD_PATH);
         deleteWorld(server, DEFAULT_THE_NETHER_PATH);
         deleteWorld(server, DEFAULT_THE_END_PATH);
     }
 
     public void loadWorlds(MinecraftServer server) {
-        long seed = ConfigManager.configWrapper.instance().modules.resource_world.seed;
+        long seed = Configs.configHandler.model().modules.resource_world.seed;
 
-        ConfigGSON.Modules.ResourceWorld.ResourceWorlds resourceWorlds = ConfigManager.configWrapper.instance().modules.resource_world.resource_worlds;
+        ConfigModel.Modules.ResourceWorld.ResourceWorlds resourceWorlds = Configs.configHandler.model().modules.resource_world.resource_worlds;
         if (resourceWorlds.enable_overworld) {
             createWorld(server, BuiltinDimensionTypes.OVERWORLD, DEFAULT_OVERWORLD_PATH, seed);
         }
@@ -249,7 +249,7 @@ public class ResourceWorldModule extends ModuleInitializer {
             if (!namespace.equals(DEFAULT_RESOURCE_WORLD_NAMESPACE)) return;
 
             Fuji.log.info("onWorldUnload() -> Creating world {} ...", path);
-            long seed = ConfigManager.configWrapper.instance().modules.resource_world.seed;
+            long seed = Configs.configHandler.model().modules.resource_world.seed;
             this.createWorld(server, this.getDimensionTypeRegistryKeyByPath(path), path, seed);
         }
     }

@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.top_chunks;
 
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
@@ -76,7 +76,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
     public void sumUpScore() {
         this.score = 0;
         for (String type : this.type2amount.keySet()) {
-            HashMap<String, Integer> type2score = ConfigManager.configWrapper.instance().modules.top_chunks.type2score;
+            HashMap<String, Integer> type2score = Configs.configHandler.model().modules.top_chunks.type2score;
             this.score += type2score.getOrDefault(type, type2score.get("default")) * type2amount.get(type);
         }
     }
@@ -105,7 +105,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
     public Component asComponent(CommandSourceStack source) {
 
         String chunkLocation;
-        if (ConfigManager.configWrapper.instance().modules.top_chunks.hide_location) {
+        if (Configs.configHandler.model().modules.top_chunks.hide_location) {
             chunkLocation = MessageUtil.ofString(source, "top_chunks.prop.hidden");
             if (source.hasPermission(4)) {
                 chunkLocation = MessageUtil.ofString(source, "top_chunks.prop.hidden.bypass", this.getChunkPos().toString());

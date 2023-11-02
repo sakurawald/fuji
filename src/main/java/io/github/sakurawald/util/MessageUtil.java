@@ -3,7 +3,7 @@ package io.github.sakurawald.util;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.wrapper.ResourceConfigWrapper;
+import io.github.sakurawald.config.handler.ResourceConfigHandler;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.audience.Audience;
@@ -21,15 +21,16 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @UtilityClass
 
 public class MessageUtil {
     private static final FabricServerAudiences adventure = FabricServerAudiences.of(Fuji.SERVER);
     @Getter
-    private static final HashMap<String, String> player2lang = new HashMap<>();
+    private static final Map<String, String> player2lang = new HashMap<>();
     @Getter
-    private static final HashMap<String, JsonObject> lang2json = new HashMap<>();
+    private static final Map<String, JsonObject> lang2json = new HashMap<>();
     private static final String DEFAULT_LANG = "en_us";
     private static final MiniMessage miniMessageParser = MiniMessage.builder().build();
 
@@ -38,8 +39,8 @@ public class MessageUtil {
     }
 
     public static void copyLanguageFiles() {
-        new ResourceConfigWrapper("lang/en_us.json").loadFromDisk();
-        new ResourceConfigWrapper("lang/zh_cn.json").loadFromDisk();
+        new ResourceConfigHandler("lang/en_us.json").loadFromDisk();
+        new ResourceConfigHandler("lang/zh_cn.json").loadFromDisk();
     }
 
     public static void loadLanguageIfAbsent(String lang) {

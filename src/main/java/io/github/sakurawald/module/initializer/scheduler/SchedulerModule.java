@@ -8,7 +8,7 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.ScheduleUtil;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -28,7 +28,7 @@ public class SchedulerModule extends ModuleInitializer {
 
     private void updateJobs() {
         ScheduleUtil.removeJobs(ScheduleJobJob.class.getName());
-        ConfigManager.schedulerWrapper.instance().scheduleJobs.forEach(scheduleJob -> {
+        Configs.schedulerHandler.model().scheduleJobs.forEach(scheduleJob -> {
 
             if (scheduleJob.enable) {
                 scheduleJob.crons.forEach(cron -> ScheduleUtil.addJob(ScheduleJobJob.class, null, null, cron, new JobDataMap() {
@@ -43,7 +43,7 @@ public class SchedulerModule extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        ConfigManager.schedulerWrapper.loadFromDisk();
+        Configs.schedulerHandler.loadFromDisk();
         updateJobs();
 
         CommandRegistrationCallback.EVENT.register(this::registerCommand);
@@ -51,7 +51,7 @@ public class SchedulerModule extends ModuleInitializer {
 
     @Override
     public void onReload() {
-        ConfigManager.schedulerWrapper.loadFromDisk();
+        Configs.schedulerHandler.loadFromDisk();
         updateJobs();
     }
 
@@ -63,7 +63,7 @@ public class SchedulerModule extends ModuleInitializer {
     private int $scheduler_trigger(CommandContext<CommandSourceStack> ctx) {
         String name = StringArgumentType.getString(ctx, "name");
 
-        ConfigManager.schedulerWrapper.instance().scheduleJobs.forEach(job -> {
+        Configs.schedulerHandler.model().scheduleJobs.forEach(job -> {
             if (job.name.equals(name)) {
                 job.trigger();
             }
@@ -76,7 +76,7 @@ public class SchedulerModule extends ModuleInitializer {
 
         @Override
         public CompletableFuture<Suggestions> getSuggestions(CommandContext context, SuggestionsBuilder builder) {
-            ConfigManager.schedulerWrapper.instance().scheduleJobs.forEach(job -> builder.suggest(job.name));
+            Configs.schedulerHandler.model().scheduleJobs.forEach(job -> builder.suggest(job.name));
             return builder.buildFuture();
         }
     }

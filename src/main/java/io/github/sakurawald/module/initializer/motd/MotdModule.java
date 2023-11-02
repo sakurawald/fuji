@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.motd;
 
 import com.google.common.base.Preconditions;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.network.chat.Component;
@@ -30,12 +30,12 @@ public class MotdModule extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        updateDescriptions(ConfigManager.configWrapper.instance().modules.motd.descriptions);
+        updateDescriptions(Configs.configHandler.model().modules.motd.descriptions);
     }
 
     @Override
     public void onReload() {
-        updateDescriptions(ConfigManager.configWrapper.instance().modules.motd.descriptions);
+        updateDescriptions(Configs.configHandler.model().modules.motd.descriptions);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")

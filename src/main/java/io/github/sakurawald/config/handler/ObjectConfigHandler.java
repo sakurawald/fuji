@@ -1,4 +1,4 @@
-package io.github.sakurawald.config.wrapper;
+package io.github.sakurawald.config.handler;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -10,17 +10,17 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 
 
-public class ObjectConfigWrapper<T> extends ConfigWrapper<T> {
+public class ObjectConfigHandler<T> extends ConfigHandler<T> {
 
     Class<T> configClass;
 
-    public ObjectConfigWrapper(File file, Class<T> configClass) {
+    public ObjectConfigHandler(File file, Class<T> configClass) {
         super(file);
         this.file = file;
         this.configClass = configClass;
     }
 
-    public ObjectConfigWrapper(String child, Class<T> configClass) {
+    public ObjectConfigHandler(String child, Class<T> configClass) {
         this(new File(Fuji.CONFIG_PATH.toString(), child), configClass);
     }
 
@@ -43,7 +43,7 @@ public class ObjectConfigWrapper<T> extends ConfigWrapper<T> {
                 }
 
                 // read merged json
-                configInstance = gson.fromJson(olderJsonElement, configClass);
+                model = gson.fromJson(olderJsonElement, configClass);
 
                 this.saveToDisk();
             }
@@ -61,12 +61,12 @@ public class ObjectConfigWrapper<T> extends ConfigWrapper<T> {
             if (!file.exists()) {
                 //noinspection ResultOfMethodCallIgnored
                 this.file.getParentFile().mkdirs();
-                this.configInstance = configClass.getDeclaredConstructor().newInstance();
+                this.model = configClass.getDeclaredConstructor().newInstance();
             }
 
             // Save.
             JsonWriter jsonWriter = gson.newJsonWriter(new BufferedWriter(new FileWriter(this.file)));
-            gson.toJson(this.configInstance, configClass, jsonWriter);
+            gson.toJson(this.model, configClass, jsonWriter);
             jsonWriter.close();
         } catch (IOException | InstantiationException | NoSuchMethodException | IllegalAccessException |
                  InvocationTargetException e) {

@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.afk;
 
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.afk.ServerPlayerAccessor_afk;
 import io.github.sakurawald.util.MessageUtil;
 import net.kyori.adventure.text.TextReplacementConfig;
@@ -42,7 +42,7 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor_afk {
 
         if (accessor.fuji$isAfk()) {
             cir.setReturnValue(Component.literal("afk " + player.getGameProfile().getName()));
-            net.kyori.adventure.text.@NotNull Component component = ofComponent(ConfigManager.configWrapper.instance().modules.afk.format)
+            net.kyori.adventure.text.@NotNull Component component = ofComponent(Configs.configHandler.model().modules.afk.format)
                     .replaceText(TextReplacementConfig.builder().match("%player_display_name%").replacement(player.getDisplayName()).build());
             cir.setReturnValue(toVomponent(component));
         } else {

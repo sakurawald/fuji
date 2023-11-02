@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.newbie_welcome.random_teleport;
 
 import com.google.common.base.Stopwatch;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
@@ -50,7 +50,7 @@ public class RandomTeleport {
         do {
             timesRun++;
             pos = findRtpPosition(world, center, heightFinder, executionContext);
-        } while (pos.isEmpty() && timesRun <= ConfigManager.configWrapper.instance().modules.newbie_welcome.random_teleport.max_try_times);
+        } while (pos.isEmpty() && timesRun <= Configs.configHandler.model().modules.newbie_welcome.random_teleport.max_try_times);
 
         if (pos.isEmpty()) {
             return;
@@ -99,8 +99,8 @@ public class RandomTeleport {
     private static BlockPos getRandomXZ(Vec3i center) {
         // Calculate position on circle perimeter
         var rand = new Random();
-        int r_max = ConfigManager.configWrapper.instance().modules.newbie_welcome.random_teleport.max_distance;
-        int r_min = ConfigManager.configWrapper.instance().modules.newbie_welcome.random_teleport.min_distance;
+        int r_max = Configs.configHandler.model().modules.newbie_welcome.random_teleport.max_distance;
+        int r_min = Configs.configHandler.model().modules.newbie_welcome.random_teleport.min_distance;
         int r = r_max == r_min
                 ? r_max
                 : rand.nextInt(r_min, r_max);

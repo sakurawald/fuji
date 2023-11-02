@@ -6,7 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.works.gui.ConfirmGui;
 import io.github.sakurawald.module.initializer.works.gui.InputSignGui;
 import io.github.sakurawald.util.DateUtil;
@@ -69,7 +69,7 @@ public abstract class Work {
     }
 
     private static Work getWorkByID(String uuid) {
-        List<Work> works = ConfigManager.worksWrapper.instance().works;
+        List<Work> works = Configs.worksHandler.model().works;
         for (Work work : works) {
             if (work.getId().equals(uuid)) {
                 return work;
@@ -164,7 +164,7 @@ public abstract class Work {
                 .setCallback(() -> new ConfirmGui(player) {
                     @Override
                     public void onConfirm() {
-                        ConfigManager.worksWrapper.instance().works.remove(work);
+                        Configs.worksHandler.model().works.remove(work);
                         MessageUtil.sendActionBar(player, "works.work.delete.done");
                     }
                 }.open())

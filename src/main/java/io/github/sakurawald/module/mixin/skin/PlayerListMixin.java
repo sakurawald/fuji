@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.skin;
 
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.skin.SkinRestorer;
 import net.minecraft.network.Connection;
 import net.minecraft.server.MinecraftServer;
@@ -42,7 +42,7 @@ public abstract class PlayerListMixin {
     private void onPlayerConnected(Connection connection, ServerPlayer serverPlayer, CommonListenerCookie commonListenerCookie, CallbackInfo ci) {
         // if the player isn't a server player entity, it must be someone's fake player
         if (serverPlayer.getClass() != ServerPlayer.class
-                && ConfigManager.configWrapper.instance().modules.better_fake_player.use_local_random_skins_for_fake_player) {
+                && Configs.configHandler.model().modules.better_fake_player.use_local_random_skins_for_fake_player) {
             SkinRestorer.setSkinAsync(server, Collections.singleton(serverPlayer.getGameProfile()), () -> SkinRestorer.getSkinStorage().getRandomSkin(serverPlayer.getUUID()));
         }
     }

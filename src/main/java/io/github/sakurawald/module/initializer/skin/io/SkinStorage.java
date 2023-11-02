@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.skin.io;
 
 import com.mojang.authlib.properties.Property;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import lombok.Getter;
 
 import java.util.*;
@@ -19,7 +19,7 @@ public class SkinStorage {
 
     public Property getRandomSkin(UUID uuid) {
         if (!skinMap.containsKey(uuid)) {
-            ArrayList<Property> defaultSkins = ConfigManager.configWrapper.instance().modules.skin.random_skins;
+            ArrayList<Property> defaultSkins = Configs.configHandler.model().modules.skin.random_skins;
             Property skin = defaultSkins.get(new Random().nextInt(defaultSkins.size()));
             setSkin(uuid, skin);
         }
@@ -28,7 +28,7 @@ public class SkinStorage {
     }
 
     public Property getDefaultSkin() {
-        return ConfigManager.configWrapper.instance().modules.skin.default_skin;
+        return Configs.configHandler.model().modules.skin.default_skin;
     }
 
     public Property getSkin(UUID uuid) {

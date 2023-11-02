@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.skin.io;
 
 import com.mojang.authlib.properties.Property;
-import io.github.sakurawald.config.wrapper.ConfigWrapper;
+import io.github.sakurawald.config.handler.ConfigHandler;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class SkinIO {
         File file = savePath.resolve(uuid + FILE_EXTENSION).toFile();
         try {
             String string = org.apache.commons.io.FileUtils.readFileToString(file, StandardCharsets.UTF_8);
-            return ConfigWrapper.getGson().fromJson(string, Property.class);
+            return ConfigHandler.getGson().fromJson(string, Property.class);
         } catch (IOException e) {
             log.error("Load skin failed: " + e.getMessage());
         }
@@ -34,7 +34,7 @@ public class SkinIO {
 
     public void saveSkin(UUID uuid, Property skin) {
         try {
-            org.apache.commons.io.FileUtils.writeStringToFile(new File(savePath.toFile(), uuid + FILE_EXTENSION), ConfigWrapper.getGson().toJson(skin), StandardCharsets.UTF_8);
+            org.apache.commons.io.FileUtils.writeStringToFile(new File(savePath.toFile(), uuid + FILE_EXTENSION), ConfigHandler.getGson().toJson(skin), StandardCharsets.UTF_8);
         } catch (IOException e) {
             log.error("Save skin failed: " + e.getMessage());
         }

@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.chat.mention;
 
-import io.github.sakurawald.config.ConfigManager;
-import io.github.sakurawald.config.gson.ConfigGSON;
+import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.util.ScheduleUtil;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
@@ -17,7 +17,7 @@ import java.util.Collections;
 public class MentionPlayersJob implements Job {
 
     public static void scheduleJob(ArrayList<ServerPlayer> players) {
-        ConfigGSON.Modules.Chat.MentionPlayer mentionPlayer = ConfigManager.configWrapper.instance().modules.chat.mention_player;
+        ConfigModel.Modules.Chat.MentionPlayer mentionPlayer = Configs.configHandler.model().modules.chat.mention_player;
         int intervalMs = mentionPlayer.interval_ms;
         int repeatCount = mentionPlayer.repeat_count;
         Sound sound = Sound.sound(Key.key(mentionPlayer.sound), Sound.Source.MUSIC, mentionPlayer.volume, mentionPlayer.pitch);

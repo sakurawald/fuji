@@ -1,9 +1,9 @@
-package io.github.sakurawald.config.gson;
+package io.github.sakurawald.config.model;
 
 import java.util.HashMap;
 
 @SuppressWarnings("InnerClassMayBeStatic")
-public class ChatGSON {
+public class ChatModel {
 
     public Format format = new Format();
 

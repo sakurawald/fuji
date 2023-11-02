@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.system_message;
 
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -34,7 +34,7 @@ public interface ComponentMixin {
 
     @Unique
     private static @Nullable MutableComponent transform(String key, Object... args) {
-        Map<String, String> key2value = ConfigManager.configWrapper.instance().modules.system_message.key2value;
+        Map<String, String> key2value = Configs.configHandler.model().modules.system_message.key2value;
         if (key2value.containsKey(key)) {
             if (Fuji.SERVER == null) {
                 log.warn("Server is null currently -> cannot hijack message key: {}", key);

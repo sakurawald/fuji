@@ -4,7 +4,7 @@ import carpet.commands.PlayerCommand;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.better_fake_player.BetterFakePlayerModule;
 import io.github.sakurawald.util.MessageUtil;
@@ -26,7 +26,7 @@ public abstract class PlayerCommandMixin {
 
     @Unique
     private static String transformFakePlayerName(String fakePlayerName) {
-        return ConfigManager.configWrapper.instance().modules.better_fake_player.transform_name.replace("%name%", fakePlayerName);
+        return Configs.configHandler.model().modules.better_fake_player.transform_name.replace("%name%", fakePlayerName);
     }
 
     @Redirect(method = "cantSpawn", at = @At(
@@ -56,7 +56,7 @@ public abstract class PlayerCommandMixin {
         }
 
         /* fix: fake-player auth network laggy */
-        if (ConfigManager.configWrapper.instance().modules.better_fake_player.use_local_random_skins_for_fake_player) {
+        if (Configs.configHandler.model().modules.better_fake_player.use_local_random_skins_for_fake_player) {
             String fakePlayerName = StringArgumentType.getString(context, "player");
             fakePlayerName = transformFakePlayerName(fakePlayerName);
             Fuji.SERVER.getProfileCache().add(module.createOfflineGameProfile(fakePlayerName));

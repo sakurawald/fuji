@@ -3,8 +3,8 @@ package io.github.sakurawald.module.initializer.top_chunks;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.config.ConfigManager;
-import io.github.sakurawald.config.gson.ConfigGSON;
+import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.mixin.top_chunks.ThreadedAnvilChunkStorageMixin;
 import io.github.sakurawald.util.MessageUtil;
@@ -81,7 +81,7 @@ public class TopChunksModule extends ModuleInitializer {
             }
 
             /* send output */
-            ConfigGSON.Modules.TopChunks topChunks = ConfigManager.configWrapper.instance().modules.top_chunks;
+            ConfigModel.Modules.TopChunks topChunks = Configs.configHandler.model().modules.top_chunks;
             calculateNearestPlayer(ctx.getSource(), PQ, topChunks.rows * topChunks.columns);
 
             TextComponent.Builder textComponentBuilder = Component.text();
@@ -108,7 +108,7 @@ public class TopChunksModule extends ModuleInitializer {
             Level world = chunkScore.getDimension();
             ChunkPos chunkPos = chunkScore.getChunkPos();
             BlockPos blockPos = chunkPos.getWorldPosition();
-            Player nearestPlayer = world.getNearestPlayer(blockPos.getX(), blockPos.getY(), blockPos.getZ(), ConfigManager.configWrapper.instance().modules.top_chunks.nearest_distance, false);
+            Player nearestPlayer = world.getNearestPlayer(blockPos.getX(), blockPos.getY(), blockPos.getZ(), Configs.configHandler.model().modules.top_chunks.nearest_distance, false);
             if (nearestPlayer != null) {
                 chunkScore.getPlayers().add(MessageUtil.ofString(source, "top_chunks.prop.players.nearest", nearestPlayer.getGameProfile().getName()));
             }

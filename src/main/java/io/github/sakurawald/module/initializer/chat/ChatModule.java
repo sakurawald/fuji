@@ -6,7 +6,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.chat.display.DisplayHelper;
@@ -51,18 +51,18 @@ public class ChatModule extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        ConfigManager.chatWrapper.loadFromDisk();
+        Configs.chatHandler.loadFromDisk();
 
-        chatHistory = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.chat.history.cache_size);
+        chatHistory = EvictingQueue.create(Configs.configHandler.model().modules.chat.history.cache_size);
         CommandRegistrationCallback.EVENT.register(this::registerCommand);
     }
 
 
     @Override
     public void onReload() {
-        ConfigManager.chatWrapper.loadFromDisk();
+        Configs.chatHandler.loadFromDisk();
 
-        EvictingQueue<Component> newQueue = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.chat.history.cache_size);
+        EvictingQueue<Component> newQueue = EvictingQueue.create(Configs.configHandler.model().modules.chat.history.cache_size);
         newQueue.addAll(chatHistory);
         chatHistory.clear();
         chatHistory = newQueue;
@@ -84,8 +84,8 @@ public class ChatModule extends ModuleInitializer {
 
         String name = player.getGameProfile().getName();
         String format = StringArgumentType.getString(ctx, "format");
-        ConfigManager.chatWrapper.instance().format.player2format.put(name, format);
-        ConfigManager.chatWrapper.saveToDisk();
+        Configs.chatHandler.model().format.player2format.put(name, format);
+        Configs.chatHandler.saveToDisk();
         return Command.SINGLE_SUCCESS;
     }
 
@@ -129,7 +129,7 @@ public class ChatModule extends ModuleInitializer {
             if (audience instanceof CommandSourceStack css && css.getPlayer() != null) {
                 DisplayHelper.viewDisplay(css.getPlayer(), displayUUID);
             }
-        }, ClickCallback.Options.builder().lifetime(Duration.of(ConfigManager.configWrapper.instance().modules.chat.display.expiration_duration_s, ChronoUnit.SECONDS))
+        }, ClickCallback.Options.builder().lifetime(Duration.of(Configs.configHandler.model().modules.chat.display.expiration_duration_s, ChronoUnit.SECONDS))
                 .uses(Integer.MAX_VALUE).build());
     }
 
@@ -158,10 +158,10 @@ public class ChatModule extends ModuleInitializer {
 
     public void broadcastChatMessage(ServerPlayer player, String message) {
         /* resolve format */
-        message = ConfigManager.chatWrapper.instance().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
+        message = Configs.chatHandler.model().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
                 .replace("%message%", message);
         message = resolveMentionTag(player, message);
-        String format = ConfigManager.configWrapper.instance().modules.chat.format;
+        String format = Configs.configHandler.model().modules.chat.format;
         format = format.replace("%message%", message);
         format = format.replace("%player%", player.getGameProfile().getName());
 

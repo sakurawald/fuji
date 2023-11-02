@@ -7,7 +7,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.mixin.resource_world.MinecraftServerAccessor;
 import io.github.sakurawald.util.MessageUtil;
@@ -46,7 +46,7 @@ public class WorldDownloaderModule extends ModuleInitializer {
     @Override
     public void onInitialize() {
         CommandRegistrationCallback.EVENT.register(this::registerCommand);
-        contextQueue = EvictingQueue.create(ConfigManager.configWrapper.instance().modules.world_downloader.context_cache_size);
+        contextQueue = EvictingQueue.create(Configs.configHandler.model().modules.world_downloader.context_cache_size);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class WorldDownloaderModule extends ModuleInitializer {
         }
 
         try {
-            server = HttpServer.create(new InetSocketAddress(ConfigManager.configWrapper.instance().modules.world_downloader.port), 0);
+            server = HttpServer.create(new InetSocketAddress(Configs.configHandler.model().modules.world_downloader.port), 0);
             server.start();
         } catch (IOException e) {
             Fuji.log.error("Failed to start http server: " + e.getMessage());
@@ -105,9 +105,9 @@ public class WorldDownloaderModule extends ModuleInitializer {
         }
 
         /* create context */
-        String url = ConfigManager.configWrapper.instance().modules.world_downloader.url_format;
+        String url = Configs.configHandler.model().modules.world_downloader.url_format;
 
-        int port = ConfigManager.configWrapper.instance().modules.world_downloader.port;
+        int port = Configs.configHandler.model().modules.world_downloader.port;
         url = url.replace("%port%", String.valueOf(port));
 
         String path = "/download/" + UUID.randomUUID();
@@ -117,7 +117,7 @@ public class WorldDownloaderModule extends ModuleInitializer {
         File file = compressRegionFile(player);
         double BYTE_TO_MEGABYTE = 1.0 * 1024 * 1024;
         MessageUtil.sendBroadcast("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
-        server.createContext(path, new FileDownloadHandler(this, file, ConfigManager.configWrapper.instance().modules.world_downloader.bytes_per_second_limit));
+        server.createContext(path, new FileDownloadHandler(this, file, Configs.configHandler.model().modules.world_downloader.bytes_per_second_limit));
         MessageUtil.sendMessage(player, "world_downloader.response", url);
         return Command.SINGLE_SUCCESS;
     }

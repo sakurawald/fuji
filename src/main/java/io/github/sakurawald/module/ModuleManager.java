@@ -1,7 +1,7 @@
 package io.github.sakurawald.module;
 
 import com.google.gson.JsonElement;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import org.jetbrains.annotations.ApiStatus;
 import org.reflections.Reflections;
@@ -59,7 +59,7 @@ public class ModuleManager {
      */
     @ApiStatus.AvailableSince("1.1.5")
     public static <T extends ModuleInitializer> T getInitializer(Class<T> clazz) {
-        JsonElement config = ConfigManager.configWrapper.toJsonElement();
+        JsonElement config = Configs.configHandler.toJsonElement();
         if (!initializers.containsKey(clazz)) {
             String basePackageName = calculateBasePackageName(ModuleInitializer.class, clazz.getName());
             if (enableModule(config, basePackageName)) {

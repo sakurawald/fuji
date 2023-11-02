@@ -6,7 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.ConfigManager;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.works.gui.InputSignGui;
 import io.github.sakurawald.module.initializer.works.work_type.NonProductionWork;
@@ -46,14 +46,14 @@ public class WorksModule extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        ConfigManager.worksWrapper.loadFromDisk();
+        Configs.worksHandler.loadFromDisk();
         CommandRegistrationCallback.EVENT.register(this::registerCommand);
         ServerLifecycleEvents.SERVER_STARTED.register(this::registerScheduleTask);
     }
 
     @Override
     public void onReload() {
-        ConfigManager.worksWrapper.loadFromDisk();
+        Configs.worksHandler.loadFromDisk();
     }
 
     @SuppressWarnings("unused")
@@ -90,7 +90,7 @@ public class WorksModule extends ModuleInitializer {
                 }
                 selectWorkTypeGui.setSlot(11, new GuiElementBuilder().setItem(Items.GUNPOWDER).setName(MessageUtil.ofVomponent(player, "works.non_production_work.name")).setCallback(() -> {
                     // add
-                    ConfigManager.worksWrapper.instance().works.add(0, new NonProductionWork(player, name));
+                    Configs.worksHandler.model().works.add(0, new NonProductionWork(player, name));
                     MessageUtil.sendActionBar(player, "works.work.add.done");
                     MessageUtil.sendBroadcast("works.work.add.broadcast", player.getGameProfile().getName(), name);
                     selectWorkTypeGui.close();
@@ -98,7 +98,7 @@ public class WorksModule extends ModuleInitializer {
                 selectWorkTypeGui.setSlot(15, new GuiElementBuilder().setItem(Items.REDSTONE).setName(MessageUtil.ofVomponent(player, "works.production_work.name")).setCallback(() -> {
                     // add
                     ProductionWork work = new ProductionWork(player, name);
-                    ConfigManager.worksWrapper.instance().works.add(0, work);
+                    Configs.worksHandler.model().works.add(0, work);
                     MessageUtil.sendActionBar(player, "works.work.add.done");
                     MessageUtil.sendBroadcast("works.work.add.broadcast", player.getGameProfile().getName(), name);
                     selectWorkTypeGui.close();
@@ -119,7 +119,7 @@ public class WorksModule extends ModuleInitializer {
 
     private void $listWorks(ServerPlayer player, @Nullable List<Work> source, int page) {
         if (source == null) {
-            source = ConfigManager.worksWrapper.instance().works;
+            source = Configs.worksHandler.model().works;
         }
 
         final SimpleGui gui = new SimpleGui(MenuType.GENERIC_9x6, player, false);
@@ -187,7 +187,7 @@ public class WorksModule extends ModuleInitializer {
                 .setSkullOwner(GuiUtil.PLUS_ICON)
                 .setCallback(() -> $addWork(player))
         );
-        if (source == ConfigManager.worksWrapper.instance().works) {
+        if (source == Configs.worksHandler.model().works) {
             gui.setSlot(49, new GuiElementBuilder()
                     .setItem(Items.PLAYER_HEAD)
                     .setName(MessageUtil.ofVomponent(player, "works.list.my_works"))
@@ -248,7 +248,7 @@ public class WorksModule extends ModuleInitializer {
     }
 
     private void $myWorks(ServerPlayer player) {
-        List<Work> works = ConfigManager.worksWrapper.instance().works;
+        List<Work> works = Configs.worksHandler.model().works;
         List<Work> myWorks = works.stream().filter(w -> w.creator.equals(player.getGameProfile().getName())).toList();
         $listWorks(player, myWorks, 0);
     }
@@ -268,7 +268,7 @@ public class WorksModule extends ModuleInitializer {
             // save current works data
             MinecraftServer server = (MinecraftServer) context.getJobDetail().getJobDataMap().get(MinecraftServer.class.getName());
             if (server.isRunning()) {
-                ConfigManager.worksWrapper.saveToDisk();
+                Configs.worksHandler.saveToDisk();
             }
 
             // run schedule method

@@ -5,10 +5,10 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.config.ConfigManager;
-import io.github.sakurawald.config.gson.HomeGSON;
-import io.github.sakurawald.config.wrapper.ConfigWrapper;
-import io.github.sakurawald.config.wrapper.ObjectConfigWrapper;
+import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.config.model.HomeModel;
+import io.github.sakurawald.config.handler.ConfigHandler;
+import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.teleport_warmup.Position;
 import io.github.sakurawald.util.MessageUtil;
@@ -32,7 +32,7 @@ public class HomeModule extends ModuleInitializer {
 
 
     @Getter
-    private final ConfigWrapper<HomeGSON> data = new ObjectConfigWrapper<>("home.json", HomeGSON.class);
+    private final ConfigHandler<HomeModel> data = new ObjectConfigHandler<>("home.json", HomeModel.class);
 
     public void onInitialize() {
         CommandRegistrationCallback.EVENT.register(this::registerCommand);
@@ -59,7 +59,7 @@ public class HomeModule extends ModuleInitializer {
 
     private Map<String, Position> getHomes(ServerPlayer player) {
         String playerName = player.getGameProfile().getName();
-        Map<String, Map<String, Position>> homes = data.instance().homes;
+        Map<String, Map<String, Position>> homes = data.model().homes;
         homes.computeIfAbsent(playerName, k -> new HashMap<>());
         return homes.get(playerName);
     }
@@ -107,7 +107,7 @@ public class HomeModule extends ModuleInitializer {
                 MessageUtil.sendMessage(player, "home.set.fail.need_override", homeName);
                 return Command.SINGLE_SUCCESS;
             }
-        } else if (name2position.size() >= ConfigManager.configWrapper.instance().modules.home.max_homes) {
+        } else if (name2position.size() >= Configs.configHandler.model().modules.home.max_homes) {
             MessageUtil.sendMessage(player, "home.set.fail.limit");
             return Command.SINGLE_SUCCESS;
         }
