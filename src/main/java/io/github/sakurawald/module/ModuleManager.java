@@ -2,8 +2,10 @@ package io.github.sakurawald.module;
 
 import com.google.gson.JsonElement;
 import io.github.sakurawald.config.ConfigManager;
+import lombok.Getter;
 import org.reflections.Reflections;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -12,7 +14,10 @@ import static io.github.sakurawald.Fuji.log;
 
 
 public class ModuleManager {
+    @Getter
     private static final Map<Class<? extends AbstractModule>, AbstractModule> instances = new HashMap<>();
+    @Getter
+    private static final Map<String, Boolean> module2enable = new HashMap<>();
 
     @SuppressWarnings("SameParameterValue")
     private static Set<Class<? extends AbstractModule>> scanModules(String packageName) {
@@ -35,16 +40,27 @@ public class ModuleManager {
         );
     }
 
+    public static void reportModules() {
+        ArrayList<String> enabled = new ArrayList<>();
+        ArrayList<String> disabled = new ArrayList<>();
+        module2enable.forEach((module, enable) -> {
+            if (enable) enabled.add(module);
+            else disabled.add(module);
+        });
+
+        log.info("\n[ModuleManager] \nEnabled {} modules -> {}\nDisabled {} modules -> {}", enabled.size(), enabled, disabled.size(), disabled);
+    }
+
     /**
-     * @return if a module is disabled, then this method will return null
+     * @return if a module is disabled, then this method will return null.
+     * (If a module is enabled, but the module doesn't extend AbstractModule, then this me*
+     hod will also return nullbut the module doesn't extend AbstractModule, then this method will also return null.)
      */
     public static <T extends AbstractModule> T getOrNewInstance(Class<T> clazz) {
         JsonElement config = ConfigManager.configWrapper.toJsonElement();
         if (!instances.containsKey(clazz)) {
             String basePackageName = calculateBasePackageName(ModuleManager.class, clazz.getName());
-            String moduleName = clazz.getSimpleName();
             if (enableModule(config, basePackageName)) {
-                log.info("+ {}", moduleName);
                 try {
                     AbstractModule abstractModule = clazz.getDeclaredConstructor().newInstance();
                     abstractModule.onInitialize();
@@ -63,8 +79,10 @@ public class ModuleManager {
             enable = config.getAsJsonObject().get("modules").getAsJsonObject().get(basePackageName).getAsJsonObject().get("enable").getAsBoolean();
         } catch (Exception e) {
             log.error("The enable-supplier key '{}' is missing -> force enable this module", "modules.%s.enable".formatted(basePackageName));
-            return true;
+            enable = true;
         }
+
+        module2enable.put(basePackageName, enable);
         return enable;
     }
 

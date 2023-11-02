@@ -13,6 +13,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 
 import java.nio.file.Path;
 
+// TODO: fix skin module
 // TODO: remote workbench
 // TODO: warmup module
 // TODO: placeholder module
@@ -44,6 +45,7 @@ public class Fuji implements ModInitializer {
     public void onInitialize() {
         /* modules */
         ModuleManager.initializeModules();
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> ModuleManager.reportModules());
 
         /* scheduler */
         ServerLifecycleEvents.SERVER_STARTED.register(server -> ScheduleUtil.startScheduler());
