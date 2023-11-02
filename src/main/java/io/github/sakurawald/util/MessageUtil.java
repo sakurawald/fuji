@@ -18,7 +18,6 @@ import org.apache.commons.io.FileUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +31,7 @@ public class MessageUtil {
     @Getter
     private static final HashMap<String, JsonObject> lang2json = new HashMap<>();
     private static final String DEFAULT_LANG = "en_us";
-    private static final MiniMessage miniMessage = MiniMessage.builder().build();
-    private static final Path LANGUAGE_PATH = Fuji.CONFIG_PATH.resolve("lang");
+    private static final MiniMessage miniMessageParser = MiniMessage.builder().build();
 
     static {
         copyLanguageFiles();
@@ -49,7 +47,7 @@ public class MessageUtil {
 
         InputStream is;
         try {
-            is = FileUtils.openInputStream(LANGUAGE_PATH.resolve(lang + ".json").toFile());
+            is = FileUtils.openInputStream(Fuji.CONFIG_PATH.resolve("lang").resolve(lang + ".json").toFile());
             JsonObject jsonObject = JsonParser.parseReader(new InputStreamReader(is)).getAsJsonObject();
             lang2json.put(lang, jsonObject);
             Fuji.log.info("Language {} loaded.", lang);
@@ -108,7 +106,7 @@ public class MessageUtil {
     }
 
     public static Component ofComponent(String str, Object... args) {
-        return miniMessage.deserialize(formatString(str, args));
+        return miniMessageParser.deserialize(formatString(str, args));
     }
 
     public static net.minecraft.network.chat.Component ofVomponent(String str, Object... args) {

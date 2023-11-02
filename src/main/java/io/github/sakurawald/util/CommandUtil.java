@@ -3,7 +3,7 @@ package io.github.sakurawald.util;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.module.seen.GameProfileCacheEx;
+import io.github.sakurawald.module.initializer.seen.GameProfileCacheEx;
 import lombok.experimental.UtilityClass;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.players.GameProfileCache;

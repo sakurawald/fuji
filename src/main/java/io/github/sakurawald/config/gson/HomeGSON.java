@@ -1,6 +1,6 @@
 package io.github.sakurawald.config.gson;
 
-import io.github.sakurawald.module.teleport_warmup.Position;
+import io.github.sakurawald.module.initializer.teleport_warmup.Position;
 
 import java.util.HashMap;
 import java.util.Map;

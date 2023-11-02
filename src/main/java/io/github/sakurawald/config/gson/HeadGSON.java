@@ -1,6 +1,6 @@
 package io.github.sakurawald.config.gson;
 
-import io.github.sakurawald.module.head.HeadModule;
+import io.github.sakurawald.module.initializer.head.HeadModule;
 
 public class HeadGSON {
     public HeadModule.EconomyType economyType = HeadModule.EconomyType.ITEM;

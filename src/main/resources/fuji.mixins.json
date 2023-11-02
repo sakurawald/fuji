@@ -1,8 +1,8 @@
 {
   "required": true,
-  "package": "io.github.sakurawald.mixin",
+  "package": "io.github.sakurawald.module.mixin",
   "compatibilityLevel": "JAVA_17",
-  "plugin": "io.github.sakurawald.mixin.MixinConfigPlugin",
+  "plugin": "io.github.sakurawald.module.mixin.ModuleMixinConfigPlugin",
   "mixins": [
     "_internal.server_instance.MinecraftServerMixin",
     "afk.PlayerListMixin",

@@ -1,6 +1,6 @@
 package io.github.sakurawald.config.gson;
 
-import io.github.sakurawald.module.scheduler.ScheduleJob;
+import io.github.sakurawald.module.initializer.scheduler.ScheduleJob;
 
 import java.util.ArrayList;
 import java.util.List;

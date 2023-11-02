@@ -2,7 +2,8 @@ package io.github.sakurawald.module;
 
 import com.google.gson.JsonElement;
 import io.github.sakurawald.config.ConfigManager;
-import lombok.Getter;
+import io.github.sakurawald.module.initializer.ModuleInitializer;
+import org.jetbrains.annotations.ApiStatus;
 import org.reflections.Reflections;
 
 import java.util.ArrayList;
@@ -12,29 +13,26 @@ import java.util.Set;
 
 import static io.github.sakurawald.Fuji.log;
 
-
 public class ModuleManager {
-    @Getter
-    private static final Map<Class<? extends AbstractModule>, AbstractModule> instances = new HashMap<>();
-    @Getter
+    private static final Map<Class<? extends ModuleInitializer>, ModuleInitializer> initializers = new HashMap<>();
     private static final Map<String, Boolean> module2enable = new HashMap<>();
 
     @SuppressWarnings("SameParameterValue")
-    private static Set<Class<? extends AbstractModule>> scanModules(String packageName) {
+    private static Set<Class<? extends ModuleInitializer>> scanModules(String packageName) {
         Reflections reflections = new Reflections(packageName);
-        return reflections.getSubTypesOf(AbstractModule.class);
+        return reflections.getSubTypesOf(ModuleInitializer.class);
     }
 
     public static void initializeModules() {
-        scanModules(ModuleManager.class.getPackageName()).forEach(ModuleManager::getOrNewInstance);
+        scanModules(ModuleManager.class.getPackageName()).forEach(ModuleManager::getInitializer);
     }
 
     public static void reloadModules() {
-        instances.values().forEach(module -> {
+        initializers.values().forEach(initializer -> {
                     try {
-                        module.onReload();
+                        initializer.onReload();
                     } catch (Exception e) {
-                        log.error(e.getMessage());
+                        log.error("Failed to reload module -> {}", e.getMessage());
                     }
                 }
         );
@@ -46,29 +44,35 @@ public class ModuleManager {
             if (enable) enabled.add(module);
         });
 
-        log.info("Enable {}/{} modules -> {}", enabled.size(), module2enable.size(), enabled);
+        log.info("Enabled {}/{} modules -> {}", enabled.size(), module2enable.size(), enabled);
+    }
+
+    @ApiStatus.AvailableSince("1.1.5")
+    public static boolean isModuleEnabled(String moduleName) {
+        return module2enable.get(moduleName);
     }
 
     /**
      * @return if a module is disabled, then this method will return null.
      * (If a module is enabled, but the module doesn't extend AbstractModule, then this me*
-     * hod will also return nullbut the module doesn't extend AbstractModule, then this method will also return null.)
+     * hod will also return null, but the module doesn't extend AbstractModule, then this method will also return null.)
      */
-    public static <T extends AbstractModule> T getOrNewInstance(Class<T> clazz) {
+    @ApiStatus.AvailableSince("1.1.5")
+    public static <T extends ModuleInitializer> T getInitializer(Class<T> clazz) {
         JsonElement config = ConfigManager.configWrapper.toJsonElement();
-        if (!instances.containsKey(clazz)) {
-            String basePackageName = calculateBasePackageName(ModuleManager.class, clazz.getName());
+        if (!initializers.containsKey(clazz)) {
+            String basePackageName = calculateBasePackageName(ModuleInitializer.class, clazz.getName());
             if (enableModule(config, basePackageName)) {
                 try {
-                    AbstractModule abstractModule = clazz.getDeclaredConstructor().newInstance();
-                    abstractModule.onInitialize();
-                    instances.put(clazz, abstractModule);
+                    ModuleInitializer moduleInitializer = clazz.getDeclaredConstructor().newInstance();
+                    moduleInitializer.onInitialize();
+                    initializers.put(clazz, moduleInitializer);
                 } catch (Exception e) {
                     log.error(e.toString());
                 }
             }
         }
-        return clazz.cast(instances.get(clazz));
+        return clazz.cast(initializers.get(clazz));
     }
 
     public static boolean enableModule(JsonElement config, String basePackageName) {
