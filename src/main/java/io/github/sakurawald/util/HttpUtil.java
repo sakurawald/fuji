@@ -1,16 +1,12 @@
 package io.github.sakurawald.util;
 
 import lombok.experimental.UtilityClass;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 
 import static io.github.sakurawald.Fuji.log;
 
@@ -18,24 +14,26 @@ import static io.github.sakurawald.Fuji.log;
 public class HttpUtil {
     public static String post(URI uri, String param) throws IOException {
         log.debug("post() -> uri = {}, param = {}", uri, param);
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpPost request = new HttpPost(uri);
-            StringEntity params = new StringEntity(param);
-            request.addHeader("content-type", "application/json");
-            request.setEntity(params);
-            try (CloseableHttpResponse response = httpClient.execute(request)) {
-                return EntityUtils.toString(response.getEntity());
-            }
-        }
+
+        HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Accept", "application/json");
+        connection.setRequestProperty("User-Agent", "Fuji");
+        connection.setDoOutput(true);
+        connection.setDoInput(true);
+
+        IOUtils.write(param.getBytes(StandardCharsets.UTF_8), connection.getOutputStream());
+        return IOUtils.toString(connection.getInputStream(), StandardCharsets.UTF_8);
     }
 
     public static String get(URI uri) throws IOException {
         log.debug("get() -> uri = {}", uri);
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpGet request = new HttpGet(uri);
-            try (CloseableHttpResponse response = httpClient.execute(request)) {
-                return EntityUtils.toString(response.getEntity());
-            }
-        }
+
+        HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
+        connection.setRequestMethod("GET");
+        connection.setDoOutput(true);
+
+        return IOUtils.toString(connection.getInputStream(), StandardCharsets.UTF_8);
     }
 }

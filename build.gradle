@@ -61,7 +61,6 @@ dependencies {
     include(implementation "net.kyori:adventure-text-serializer-plain:${project.adventure_api_version}")
 
     include(implementation group: 'org.apache.commons', name: 'commons-compress', version: "${project.apache_commons_compression_version}")
-
     include(implementation group: 'commons-io', name: 'commons-io', version: "${project.apache_commons_io_version}")
 
     include(implementation group: 'org.quartz-scheduler', name: 'quartz', version: "${project.quartz_version}")
