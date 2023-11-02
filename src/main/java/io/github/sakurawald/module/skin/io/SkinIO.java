@@ -1,11 +1,15 @@
 package io.github.sakurawald.module.skin.io;
 
 import com.mojang.authlib.properties.Property;
-import io.github.sakurawald.util.FileUtils;
-import io.github.sakurawald.util.JsonUtils;
+import io.github.sakurawald.config.wrapper.ConfigWrapper;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.UUID;
+
+import static io.github.sakurawald.Fuji.log;
 
 public class SkinIO {
 
@@ -18,10 +22,21 @@ public class SkinIO {
     }
 
     public Property loadSkin(UUID uuid) {
-        return JsonUtils.fromJson(FileUtils.readFile(savePath.resolve(uuid + FILE_EXTENSION).toFile()), Property.class);
+        File file = savePath.resolve(uuid + FILE_EXTENSION).toFile();
+        try {
+            String string = org.apache.commons.io.FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+            return ConfigWrapper.getGson().fromJson(string, Property.class);
+        } catch (IOException e) {
+            log.error("Load skin failed: " + e.getMessage());
+        }
+        return null;
     }
 
     public void saveSkin(UUID uuid, Property skin) {
-        FileUtils.writeFile(savePath.toFile(), uuid + FILE_EXTENSION, JsonUtils.toJson(skin));
+        try {
+            org.apache.commons.io.FileUtils.writeStringToFile(new File(savePath.toFile(), uuid + FILE_EXTENSION), ConfigWrapper.getGson().toJson(skin), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            log.error("Save skin failed: " + e.getMessage());
+        }
     }
 }

@@ -79,6 +79,7 @@ public class SkinModule extends AbstractModule {
         SkinRestorer.setSkinAsync(src.getServer(), targets, skinSupplier).thenAccept(pair -> {
             Collection<GameProfile> profiles = pair.right();
             Collection<ServerPlayer> players = pair.left();
+
             if (profiles.isEmpty()) {
                 MessageUtil.sendMessage(src, "skin.action.failed");
                 return;

@@ -25,6 +25,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
+import static io.github.sakurawald.Fuji.log;
+
 // Thanks to: https://modrinth.com/mod/skinrestorer
 
 public class SkinRestorer {
@@ -38,8 +40,11 @@ public class SkinRestorer {
         return CompletableFuture.<Pair<Property, Collection<GameProfile>>>supplyAsync(() -> {
             HashSet<GameProfile> acceptedProfiles = new HashSet<>();
             Property skin = skinSupplier.get();
+
+            log.error("skinSupplier.get() -> skin = {}", skin);
+
             if (skin == null) {
-                Fuji.log.error("Cannot get the skin for {}", targets.stream().findFirst().orElseThrow());
+                log.error("Cannot get the skin for {}", targets.stream().findFirst().orElseThrow());
                 return Pair.of(null, Collections.emptySet());
             }
 
@@ -108,7 +113,7 @@ public class SkinRestorer {
             jy.remove("timestamp");
             return x.equals(jy);
         } catch (Exception ex) {
-            Fuji.log.info("Can not compare skin", ex);
+            log.info("Can not compare skin", ex);
             return false;
         }
     }

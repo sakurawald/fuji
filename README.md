@@ -3,6 +3,10 @@
 
 This is a minecraft mod that provides many essential and useful modules for vanilla survival.
 
+> This is a server-side only mod, but you can use it in a single-player world. (Yes, the single-player world also includes a logic-server)
+> - For a server-maintainer: You only need to install this mod at the server-side, and the players don't need to install this mod at their client-side
+> - For a player: You only need to install this mod at the client-side, and then you can use the modules in your single-player world.
+
 # Feature
 1. **Vanilla-Respect**: all the modules do the least change to the vanilla game (Never touch the game-logic).
 2. **Fully-Modular**: you can disable any module completely if you don't like it (The commands and events will all be disabled, just like the code never exists, without any performance issue).

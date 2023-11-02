@@ -70,8 +70,9 @@ public class ScheduleUtil {
         }
     }
 
-    public static void removeJobs(String jobName, String jobGroup) {
-        log.debug("removeJobs() -> jobName: {}, jobGroup: {}", jobName, jobGroup);
+    public static void removeJobs(String jobGroup, String jobName) {
+        log.debug("removeJobs() -> jobGroup: {}, jobName: {}", jobGroup, jobName);
+
 
         try {
             boolean b = scheduler.deleteJob(new JobKey(jobName, jobGroup));

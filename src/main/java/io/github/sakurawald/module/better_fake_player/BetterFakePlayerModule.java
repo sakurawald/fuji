@@ -7,9 +7,9 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
+import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.ScheduleUtil;
-import io.github.sakurawald.util.TimeUtil;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.kyori.adventure.text.Component;
@@ -89,7 +89,7 @@ public class BetterFakePlayerModule extends AbstractModule {
         int duration = ConfigManager.configWrapper.instance().modules.better_fake_player.renew_duration_ms;
         long newTime = System.currentTimeMillis() + duration;
         player2expiration.put(name, newTime);
-        MessageUtil.sendMessage(player, "better_fake_player.renew.success", TimeUtil.getFormattedDate(newTime));
+        MessageUtil.sendMessage(player, "better_fake_player.renew.success", DateUtil.toStandardDateFormat(newTime));
     }
 
     private void validateFakePlayers() {

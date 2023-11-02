@@ -9,8 +9,8 @@ import io.github.sakurawald.config.wrapper.ConfigWrapper;
 import io.github.sakurawald.config.wrapper.ObjectConfigWrapper;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.CommandUtil;
+import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.MessageUtil;
-import io.github.sakurawald.util.TimeUtil;
 import lombok.Getter;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
@@ -48,7 +48,7 @@ public class SeenModule extends AbstractModule {
         String target = StringArgumentType.getString(ctx, "player");
         if (data.instance().player2seen.containsKey(target)) {
             Long time = data.instance().player2seen.get(target);
-            MessageUtil.sendMessage(player, "seen.success", target, TimeUtil.getFormattedDate(time));
+            MessageUtil.sendMessage(player, "seen.success", target, DateUtil.toStandardDateFormat(time));
         } else {
             MessageUtil.sendMessage(player, "seen.fail");
         }

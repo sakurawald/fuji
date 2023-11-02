@@ -8,9 +8,9 @@ import io.github.sakurawald.module.works.ScheduleMethod;
 import io.github.sakurawald.module.works.WorksCache;
 import io.github.sakurawald.module.works.gui.ConfirmGui;
 import io.github.sakurawald.module.works.gui.InputSignGui;
+import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.GuiUtil;
 import io.github.sakurawald.util.MessageUtil;
-import io.github.sakurawald.util.TimeUtil;
 import lombok.NoArgsConstructor;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.minecraft.core.BlockPos;
@@ -80,8 +80,8 @@ public class ProductionWork extends Work implements ScheduleMethod {
             return ret;
         }
 
-        ret.add(MessageUtil.ofVomponent(player, "works.production_work.prop.sample_start_time", TimeUtil.getFormattedDate(this.sample.sampleStartTimeMS)));
-        ret.add(MessageUtil.ofVomponent(player, "works.production_work.prop.sample_end_time", TimeUtil.getFormattedDate(this.sample.sampleEndTimeMS)));
+        ret.add(MessageUtil.ofVomponent(player, "works.production_work.prop.sample_start_time", DateUtil.toStandardDateFormat(this.sample.sampleStartTimeMS)));
+        ret.add(MessageUtil.ofVomponent(player, "works.production_work.prop.sample_end_time", DateUtil.toStandardDateFormat(this.sample.sampleEndTimeMS)));
         ret.add(MessageUtil.ofVomponent(player, "works.production_work.prop.sample_dimension", this.sample.sampleDimension));
         ret.add(MessageUtil.ofVomponent(player, "works.production_work.prop.sample_coordinate", this.sample.sampleX, this.sample.sampleY, this.sample.sampleZ));
         ret.add(MessageUtil.ofVomponent(player, "works.production_work.prop.sample_distance", this.sample.sampleDistance));

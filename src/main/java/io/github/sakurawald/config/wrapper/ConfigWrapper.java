@@ -6,6 +6,7 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.works.work_type.Work;
 import io.github.sakurawald.util.ScheduleUtil;
 import lombok.Cleanup;
+import lombok.Getter;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -19,6 +20,8 @@ import java.util.Set;
 
 
 public abstract class ConfigWrapper<T> {
+
+    @Getter
     protected static final Gson gson = new GsonBuilder()
             .setPrettyPrinting()
             .disableHtmlEscaping()
@@ -79,7 +82,7 @@ public abstract class ConfigWrapper<T> {
     public void autoSave(String cron) {
         String jobName = this.file.getName();
         String jobGroup = ConfigWrapperAutoSaveJob.class.getName();
-        ScheduleUtil.removeJobs(jobName, jobGroup);
+        ScheduleUtil.removeJobs(jobGroup, jobName);
         ScheduleUtil.addJob(ConfigWrapperAutoSaveJob.class, jobName, jobGroup, cron, new JobDataMap() {
             {
                 this.put(ConfigWrapper.class.getName(), ConfigWrapper.this);

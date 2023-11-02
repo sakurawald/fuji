@@ -1,14 +1,13 @@
 package io.github.sakurawald.config;
 
+import io.github.sakurawald.config.gson.*;
 import io.github.sakurawald.config.wrapper.ConfigWrapper;
 import io.github.sakurawald.config.wrapper.ObjectConfigWrapper;
-import io.github.sakurawald.config.gson.*;
 
 
 public class ConfigManager {
 
     public static final ConfigWrapper<ConfigGSON> configWrapper = new ObjectConfigWrapper<>("config.json", ConfigGSON.class);
-
     public static final ConfigWrapper<ChatGSON> chatWrapper = new ObjectConfigWrapper<>("chat.json", ChatGSON.class);
     public static final ConfigWrapper<PvPGSON> pvpWrapper = new ObjectConfigWrapper<>("pvp.json", PvPGSON.class);
     public static final ConfigWrapper<WorksGSON> worksWrapper = new ObjectConfigWrapper<>("works.json", WorksGSON.class);

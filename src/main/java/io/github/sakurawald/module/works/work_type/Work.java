@@ -9,9 +9,9 @@ import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.works.gui.ConfirmGui;
 import io.github.sakurawald.module.works.gui.InputSignGui;
+import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.GuiUtil;
 import io.github.sakurawald.util.MessageUtil;
-import io.github.sakurawald.util.TimeUtil;
 import lombok.Data;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -198,7 +198,7 @@ public abstract class Work {
         ret.add(MessageUtil.ofVomponent(player, "works.work.prop.creator", this.creator));
         if (this.introduction != null)
             ret.add(MessageUtil.ofVomponent(player, "works.work.prop.introduction", this.introduction));
-        ret.add(MessageUtil.ofVomponent(player, "works.work.prop.time", TimeUtil.getFormattedDate(this.createTimeMS)));
+        ret.add(MessageUtil.ofVomponent(player, "works.work.prop.time", DateUtil.toStandardDateFormat(this.createTimeMS)));
         ret.add(MessageUtil.ofVomponent(player, "works.work.prop.dimension", this.level));
         ret.add(MessageUtil.ofVomponent(player, "works.work.prop.coordinate", this.x, this.y, this.z));
         return ret;
