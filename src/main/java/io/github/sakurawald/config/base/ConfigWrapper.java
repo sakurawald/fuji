@@ -1,6 +1,6 @@
 package io.github.sakurawald.config.base;
 
-import assets.sakurawald.Cat;
+import assets.fuji.Cat;
 import com.google.gson.*;
 import io.github.sakurawald.ServerMain;
 import io.github.sakurawald.module.works.work_type.Work;

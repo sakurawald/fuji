@@ -45,7 +45,7 @@ public class TeleportWarmupModule extends AbstractModule {
             }
 
             ServerPlayer player = ticket.player;
-            if (((ServerPlayerAccessor) player).sakurawald$inCombat()) {
+            if (((ServerPlayerAccessor) player).fuji$inCombat()) {
                 bossbar.removeViewer(player);
                 iterator.remove();
                 MessageUtil.sendActionBar(player, "teleport_warmup.in_combat");

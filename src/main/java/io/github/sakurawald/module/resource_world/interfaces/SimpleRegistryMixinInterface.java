@@ -8,19 +8,19 @@ import org.jetbrains.annotations.ApiStatus;
 public interface SimpleRegistryMixinInterface<T> {
     @SuppressWarnings("unchecked")
     static <T> boolean remove(MappedRegistry<T> registry, ResourceLocation key) {
-        return ((SimpleRegistryMixinInterface<T>) registry).sakurawald$remove(key);
+        return ((SimpleRegistryMixinInterface<T>) registry).fuji$remove(key);
     }
 
     @SuppressWarnings("unchecked")
     static <T> boolean remove(MappedRegistry<T> registry, T value) {
-        return ((SimpleRegistryMixinInterface<T>) registry).sakurawald$remove(value);
+        return ((SimpleRegistryMixinInterface<T>) registry).fuji$remove(value);
     }
 
-    boolean sakurawald$remove(T value);
+    boolean fuji$remove(T value);
 
-    boolean sakurawald$remove(ResourceLocation key);
+    boolean fuji$remove(ResourceLocation key);
 
-    void sakurawald$setFrozen(boolean value);
+    void fuji$setFrozen(boolean value);
 
-    boolean sakurawald$isFrozen();
+    boolean fuji$isFrozen();
 }

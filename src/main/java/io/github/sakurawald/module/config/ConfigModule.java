@@ -28,7 +28,7 @@ public class ConfigModule extends AbstractModule {
     @SuppressWarnings("unused")
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
-                Commands.literal("sakurawald").requires(source -> source.hasPermission(4)).then(
+                Commands.literal("fuji").requires(source -> source.hasPermission(4)).then(
                         Commands.literal("reload").executes(this::$reload)
                 )
         );

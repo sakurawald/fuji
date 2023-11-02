@@ -7,9 +7,9 @@ import java.util.function.Predicate;
 
 @ApiStatus.Internal
 public interface DimensionOptionsMixinInterface {
-    Predicate<LevelStem> SAVE_PROPERTIES_PREDICATE = (e) -> ((DimensionOptionsMixinInterface) (Object) e).sakurawald$getSaveProperties();
+    Predicate<LevelStem> SAVE_PROPERTIES_PREDICATE = (e) -> ((DimensionOptionsMixinInterface) (Object) e).fuji$getSaveProperties();
 
-    void sakurawald$setSaveProperties(boolean value);
+    void fuji$setSaveProperties(boolean value);
 
-    boolean sakurawald$getSaveProperties();
+    boolean fuji$getSaveProperties();
 }

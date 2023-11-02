@@ -48,7 +48,7 @@ public class AfkModule extends AbstractModule {
         if (player == null) return Command.SINGLE_SUCCESS;
 
         // note: issue command will update lastLastActionTime, so it's impossible to use /afk to disable afk
-        ((ServerPlayerAccessor_afk) player).sakurawald$setAfk(true);
+        ((ServerPlayerAccessor_afk) player).fuji$setAfk(true);
         MessageUtil.sendMessage(player, "afk.on");
         return Command.SINGLE_SUCCESS;
     }
@@ -62,8 +62,8 @@ public class AfkModule extends AbstractModule {
 
                 // get last action time
                 long lastActionTime = player.getLastActionTime();
-                long lastLastActionTime = afk_player.sakurawald$getLastLastActionTime();
-                afk_player.sakurawald$setLastLastActionTime(lastActionTime);
+                long lastLastActionTime = afk_player.fuji$getLastLastActionTime();
+                afk_player.fuji$setLastLastActionTime(lastActionTime);
 
                 // diff last action time
                 /* note:
@@ -72,9 +72,9 @@ public class AfkModule extends AbstractModule {
                 but there are a little difference even if you call Player#getLastActionTime() again
                  */
                 if (lastActionTime - lastLastActionTime <= 3000) {
-                    if (afk_player.sakurawald$isAfk()) continue;
+                    if (afk_player.fuji$isAfk()) continue;
 
-                    afk_player.sakurawald$setAfk(true);
+                    afk_player.fuji$setAfk(true);
                     if (ConfigManager.configWrapper.instance().modules.afk.afk_checker.kick_player) {
                         player.connection.disconnect(MessageUtil.ofVomponent(player, "afk.kick"));
                     }

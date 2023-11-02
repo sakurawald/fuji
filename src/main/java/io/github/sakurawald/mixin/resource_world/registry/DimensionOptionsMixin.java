@@ -9,15 +9,15 @@ import org.spongepowered.asm.mixin.Unique;
 public class DimensionOptionsMixin implements DimensionOptionsMixinInterface {
 
     @Unique
-    private boolean sakurawald$saveProperties = true;
+    private boolean fuji$saveProperties = true;
 
     @Unique
-    public void sakurawald$setSaveProperties(boolean value) {
-        this.sakurawald$saveProperties = value;
+    public void fuji$setSaveProperties(boolean value) {
+        this.fuji$saveProperties = value;
     }
 
     @Unique
-    public boolean sakurawald$getSaveProperties() {
-        return this.sakurawald$saveProperties;
+    public boolean fuji$getSaveProperties() {
+        return this.fuji$saveProperties;
     }
 }

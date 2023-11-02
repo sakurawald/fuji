@@ -4,6 +4,6 @@ import java.util.Collection;
 
 public interface GameProfileCacheEx {
 
-    Collection<String> sakurawald$getNames();
+    Collection<String> fuji$getNames();
 
 }

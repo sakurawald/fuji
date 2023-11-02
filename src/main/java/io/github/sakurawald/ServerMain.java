@@ -24,14 +24,14 @@ import java.nio.file.Path;
 // TODO: /invsee module
 public class ServerMain implements ModInitializer {
     public static final Logger log = createLogger();
-    public static final String MOD_ID = "sakurawald";
+    public static final String MOD_ID = "fuji";
     public static final Path CONFIG_PATH = Path.of(FabricLoader.getInstance().getConfigDir().resolve(MOD_ID).toString());
     public static MinecraftServer SERVER;
 
     public static Logger createLogger() {
-        Logger logger = LogManager.getLogger("SakuraWald");
+        Logger logger = LogManager.getLogger("Fuji");
         try {
-            String level = System.getProperty("sakurawald.level");
+            String level = System.getProperty("fuji.level");
             Configurator.setLevel(logger, Level.getLevel(level));
         } catch (Exception e) {
             return logger;

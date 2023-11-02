@@ -17,7 +17,7 @@ public class CommandUtil {
                 .suggests((context, builder) -> {
                             GameProfileCache gameProfileCache = ServerMain.SERVER.getProfileCache();
                             if (gameProfileCache != null) {
-                                ((GameProfileCacheEx) gameProfileCache).sakurawald$getNames().forEach(builder::suggest);
+                                ((GameProfileCacheEx) gameProfileCache).fuji$getNames().forEach(builder::suggest);
                             }
                             return builder.buildFuture();
                         }

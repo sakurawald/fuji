@@ -2,11 +2,11 @@ package io.github.sakurawald.module.afk;
 
 public interface ServerPlayerAccessor_afk {
 
-    void sakurawald$setAfk(boolean flag);
+    void fuji$setAfk(boolean flag);
 
-    boolean sakurawald$isAfk();
+    boolean fuji$isAfk();
 
-    void sakurawald$setLastLastActionTime(long lastActionTime);
+    void fuji$setLastLastActionTime(long lastActionTime);
 
-    long sakurawald$getLastLastActionTime();
+    long fuji$getLastLastActionTime();
 }

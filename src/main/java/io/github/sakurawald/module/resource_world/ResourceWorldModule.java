@@ -181,16 +181,16 @@ public class ResourceWorldModule extends AbstractModule {
         }
 
         /* register the world */
-        ((DimensionOptionsMixinInterface) (Object) dimensionOptions).sakurawald$setSaveProperties(false);
+        ((DimensionOptionsMixinInterface) (Object) dimensionOptions).fuji$setSaveProperties(false);
 
         MappedRegistry<LevelStem> dimensionsRegistry = getDimensionOptionsRegistry(server);
-        boolean isFrozen = ((SimpleRegistryMixinInterface<?>) dimensionsRegistry).sakurawald$isFrozen();
-        ((SimpleRegistryMixinInterface<?>) dimensionsRegistry).sakurawald$setFrozen(false);
+        boolean isFrozen = ((SimpleRegistryMixinInterface<?>) dimensionsRegistry).fuji$isFrozen();
+        ((SimpleRegistryMixinInterface<?>) dimensionsRegistry).fuji$setFrozen(false);
         var dimensionOptionsRegistryKey = ResourceKey.create(Registries.LEVEL_STEM, worldRegistryKey.location());
         if (!dimensionsRegistry.containsKey(dimensionOptionsRegistryKey)) {
             dimensionsRegistry.register(dimensionOptionsRegistryKey, dimensionOptions, Lifecycle.stable());
         }
-        ((SimpleRegistryMixinInterface<?>) dimensionsRegistry).sakurawald$setFrozen(isFrozen);
+        ((SimpleRegistryMixinInterface<?>) dimensionsRegistry).fuji$setFrozen(isFrozen);
 
         serverAccessor.getLevels().put(world.dimension(), world);
         ServerWorldEvents.LOAD.invoker().onWorldLoad(server, world);

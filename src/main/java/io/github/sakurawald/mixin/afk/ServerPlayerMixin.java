@@ -40,7 +40,7 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor_afk {
     public void getTabListDisplayName(CallbackInfoReturnable<Component> cir) {
         ServerPlayerAccessor_afk accessor = (ServerPlayerAccessor_afk) player;
 
-        if (accessor.sakurawald$isAfk()) {
+        if (accessor.fuji$isAfk()) {
             cir.setReturnValue(Component.literal("afk " + player.getGameProfile().getName()));
             net.kyori.adventure.text.@NotNull Component component = ofComponent(ConfigManager.configWrapper.instance().modules.afk.format)
                     .replaceText(TextReplacementConfig.builder().match("%player_display_name%").replacement(player.getDisplayName()).build());
@@ -53,30 +53,30 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor_afk {
 
     @Inject(method = "resetLastActionTime", at = @At("HEAD"))
     public void resetLastActionTime(CallbackInfo ci) {
-        if (sakurawald$isAfk()) {
-            sakurawald$setAfk(false);
+        if (fuji$isAfk()) {
+            fuji$setAfk(false);
         }
     }
 
     @Override
-    public void sakurawald$setAfk(boolean flag) {
+    public void fuji$setAfk(boolean flag) {
         this.afk = flag;
         this.server.getPlayerList().broadcastAll(new ClientboundPlayerInfoUpdatePacket(ClientboundPlayerInfoUpdatePacket.Action.UPDATE_DISPLAY_NAME, (ServerPlayer) (Object) this));
         MessageUtil.sendBroadcast(this.afk ? "afk.on.broadcast" : "afk.off.broadcast", this.player.getGameProfile().getName());
     }
 
     @Override
-    public boolean sakurawald$isAfk() {
+    public boolean fuji$isAfk() {
         return this.afk;
     }
 
     @Override
-    public void sakurawald$setLastLastActionTime(long lastActionTime) {
+    public void fuji$setLastLastActionTime(long lastActionTime) {
         this.lastLastActionTime = lastActionTime;
     }
 
     @Override
-    public long sakurawald$getLastLastActionTime() {
+    public long fuji$getLastLastActionTime() {
         return this.lastLastActionTime;
     }
 

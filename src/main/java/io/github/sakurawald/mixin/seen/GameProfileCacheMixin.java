@@ -18,7 +18,7 @@ public class GameProfileCacheMixin implements GameProfileCacheEx {
 
 
     @Override
-    public Collection<String> sakurawald$getNames() {
+    public Collection<String> fuji$getNames() {
         ArrayList<String> ret = new ArrayList<>();
         profilesByName.values().forEach(o -> ret.add(o.getProfile().getName()));
         return ret;

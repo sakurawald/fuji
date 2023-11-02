@@ -1,4 +1,4 @@
-package assets.sakurawald;
+package assets.fuji;
 
 
 public class Cat {

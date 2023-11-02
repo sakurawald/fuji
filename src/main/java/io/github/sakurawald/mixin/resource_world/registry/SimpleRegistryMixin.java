@@ -56,7 +56,7 @@ public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInter
     public abstract Optional<Holder<T>> getHolder(int rawId);
 
     @Override
-    public boolean sakurawald$remove(T entry) {
+    public boolean fuji$remove(T entry) {
         var registryEntry = this.byValue.get(entry);
         int rawId = this.toId.removeInt(entry);
         if (rawId == -1) {
@@ -81,18 +81,18 @@ public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInter
     }
 
     @Override
-    public boolean sakurawald$remove(ResourceLocation key) {
+    public boolean fuji$remove(ResourceLocation key) {
         var entry = this.byLocation.get(key);
-        return entry != null && entry.isBound() && this.sakurawald$remove(entry.value());
+        return entry != null && entry.isBound() && this.fuji$remove(entry.value());
     }
 
     @Override
-    public void sakurawald$setFrozen(boolean value) {
+    public void fuji$setFrozen(boolean value) {
         this.frozen = value;
     }
 
     @Override
-    public boolean sakurawald$isFrozen() {
+    public boolean fuji$isFrozen() {
         return this.frozen;
     }
 }

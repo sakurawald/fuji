@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "sakurawald",
+  "id": "fuji",
   "version": "${version}",
-  "name": "SakuraWald",
+  "name": "Fuji",
   "description": "A mod that provides many essential and useful modules for vanilla survival.",
   "authors": [
     "SakuraWald"
@@ -11,16 +11,16 @@
     "homepage": "https://github.com/SakuraWald"
   },
   "license": "CC0-1.0",
-  "icon": "assets/sakurawald/icon.png",
+  "icon": "assets/fuji/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
       "io.github.sakurawald.ServerMain"
     ]
   },
-  "accessWidener": "sakurawald.accesswidener",
+  "accessWidener": "fuji.accesswidener",
   "mixins": [
-    "sakurawald.mixins.json"
+    "fuji.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.14.22",

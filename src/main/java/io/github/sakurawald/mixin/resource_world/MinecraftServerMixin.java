@@ -16,7 +16,7 @@ public abstract class MinecraftServerMixin {
        and do it again it's 3 times...
      */
     @Redirect(method = "tickChildren", at = @At(value = "INVOKE", target = "Ljava/lang/Iterable;iterator()Ljava/util/Iterator;", ordinal = 0), require = 0)
-    private Iterator<ServerLevel> sakurawald$copyBeforeTicking(Iterable<ServerLevel> instance) {
+    private Iterator<ServerLevel> fuji$copyBeforeTicking(Iterable<ServerLevel> instance) {
         return new SafeIterator<>((Collection<ServerLevel>) instance);
     }
 }

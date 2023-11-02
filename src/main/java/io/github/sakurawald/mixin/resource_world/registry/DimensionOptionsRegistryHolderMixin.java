@@ -15,7 +15,7 @@ import java.util.function.Function;
 public class DimensionOptionsRegistryHolderMixin {
     /* Prevent resource worlds to write in level.dat */
     @ModifyArg(method = "method_45516", at = @At(value = "INVOKE", target = "Lcom/mojang/serialization/MapCodec;forGetter(Ljava/util/function/Function;)Lcom/mojang/serialization/codecs/RecordCodecBuilder;"))
-    private static Function<Object, Registry<LevelStem>> sakurawald$swapRegistryGetter(Function<Object, Registry<LevelStem>> getter) {
+    private static Function<Object, Registry<LevelStem>> fuji$swapRegistryGetter(Function<Object, Registry<LevelStem>> getter) {
         return (x) -> new FilteredRegistry<>(getter.apply(x), DimensionOptionsMixinInterface.SAVE_PROPERTIES_PREDICATE);
     }
 }

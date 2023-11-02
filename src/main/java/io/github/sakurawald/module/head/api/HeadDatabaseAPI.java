@@ -46,7 +46,7 @@ public class HeadDatabaseAPI {
                 try {
                     Files.createDirectories(STORAGE_PATH);
                     Files.copy(
-                            FabricLoader.getInstance().getModContainer(ServerMain.MOD_ID).flatMap(modContainer -> modContainer.findPath("assets/sakurawald/cache/" + category.name + ".json")).get(),
+                            FabricLoader.getInstance().getModContainer(ServerMain.MOD_ID).flatMap(modContainer -> modContainer.findPath("assets/fuji/cache/" + category.name + ".json")).get(),
                             STORAGE_PATH.resolve(category.name + ".json")
                     );
                 } catch (IOException e) {

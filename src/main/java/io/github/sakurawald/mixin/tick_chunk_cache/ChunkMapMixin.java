@@ -41,7 +41,7 @@ public class ChunkMapMixin implements ITickableChunkSource {
     }
 
     @Override
-    public Iterable<ChunkHolder> sakurawald$tickableChunksIterator() {
+    public Iterable<ChunkHolder> fuji$tickableChunksIterator() {
         return this.tickingChunksCache.values();
     }
 }

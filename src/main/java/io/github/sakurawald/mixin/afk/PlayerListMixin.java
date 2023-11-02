@@ -16,6 +16,6 @@ public abstract class PlayerListMixin {
     @Inject(at = @At(value = "TAIL"), method = "placeNewPlayer")
     private void $placeNewPlayer(Connection connection, ServerPlayer serverPlayer, CommonListenerCookie commonListenerCookie, CallbackInfo ci) {
         ServerPlayerAccessor_afk afk_player = (ServerPlayerAccessor_afk) serverPlayer;
-        afk_player.sakurawald$setLastLastActionTime(serverPlayer.getLastActionTime());
+        afk_player.fuji$setLastLastActionTime(serverPlayer.getLastActionTime());
     }
 }

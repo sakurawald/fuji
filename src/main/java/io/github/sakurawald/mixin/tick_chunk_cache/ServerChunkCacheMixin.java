@@ -13,7 +13,7 @@ public class ServerChunkCacheMixin {
 
     @Redirect(method = "tickChunks", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ChunkMap;getChunks()Ljava/lang/Iterable;"))
     private Iterable<ChunkHolder> $tickChunks(ChunkMap instance) {
-        return ((ITickableChunkSource) instance).sakurawald$tickableChunksIterator();
+        return ((ITickableChunkSource) instance).fuji$tickableChunksIterator();
     }
 
 }

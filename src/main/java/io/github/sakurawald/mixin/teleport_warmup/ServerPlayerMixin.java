@@ -27,7 +27,7 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
     @Unique
     private static final TeleportWarmupModule module = ModuleManager.getOrNewInstance(TeleportWarmupModule.class);
     @Unique
-    public boolean sakurawald$inCombat;
+    public boolean fuji$inCombat;
 
     @Inject(method = "teleportTo(Lnet/minecraft/server/level/ServerLevel;DDDFF)V", at = @At("HEAD"), cancellable = true)
     public void $teleportTo(ServerLevel targetWorld, double x, double y, double z, float yaw, float pitch, CallbackInfo ci) {
@@ -74,16 +74,16 @@ public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
 
     @Inject(method = "onEnterCombat", at = @At("RETURN"))
     public void $onEnterCombat(CallbackInfo ci) {
-        sakurawald$inCombat = true;
+        fuji$inCombat = true;
     }
 
     @Inject(method = "onLeaveCombat", at = @At("RETURN"))
     public void $onLeaveCombat(CallbackInfo ci) {
-        sakurawald$inCombat = false;
+        fuji$inCombat = false;
     }
 
     @Override
-    public boolean sakurawald$inCombat() {
-        return sakurawald$inCombat;
+    public boolean fuji$inCombat() {
+        return fuji$inCombat;
     }
 }
