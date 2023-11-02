@@ -41,8 +41,7 @@ public class SkinRestorer {
             HashSet<GameProfile> acceptedProfiles = new HashSet<>();
             Property skin = skinSupplier.get();
 
-            log.error("skinSupplier.get() -> skin = {}", skin);
-
+            log.debug("skinSupplier.get() -> skin = {}", skin);
             if (skin == null) {
                 log.error("Cannot get the skin for {}", targets.stream().findFirst().orElseThrow());
                 return Pair.of(null, Collections.emptySet());

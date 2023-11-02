@@ -1,6 +1,5 @@
 package io.github.sakurawald.util;
 
-import io.github.sakurawald.Fuji;
 import lombok.experimental.UtilityClass;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -13,10 +12,12 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.net.URI;
 
+import static io.github.sakurawald.Fuji.log;
+
 @UtilityClass
 public class HttpUtil {
     public static String post(URI uri, String param) throws IOException {
-        Fuji.log.error("post() -> uri = {}", uri.toString());
+        log.debug("post() -> uri = {}, param = {}", uri, param);
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpPost request = new HttpPost(uri);
             StringEntity params = new StringEntity(param);
@@ -29,7 +30,7 @@ public class HttpUtil {
     }
 
     public static String get(URI uri) throws IOException {
-        Fuji.log.error("get() -> uri = {}", uri.toString());
+        log.debug("get() -> uri = {}", uri);
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpGet request = new HttpGet(uri);
             try (CloseableHttpResponse response = httpClient.execute(request)) {

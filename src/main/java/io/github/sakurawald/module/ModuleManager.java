@@ -42,19 +42,17 @@ public class ModuleManager {
 
     public static void reportModules() {
         ArrayList<String> enabled = new ArrayList<>();
-        ArrayList<String> disabled = new ArrayList<>();
         module2enable.forEach((module, enable) -> {
             if (enable) enabled.add(module);
-            else disabled.add(module);
         });
 
-        log.info("\n[ModuleManager] \nEnabled {} modules -> {}\nDisabled {} modules -> {}", enabled.size(), enabled, disabled.size(), disabled);
+        log.info("Enable {}/{} modules -> {}", enabled.size(), module2enable.size(), enabled);
     }
 
     /**
      * @return if a module is disabled, then this method will return null.
      * (If a module is enabled, but the module doesn't extend AbstractModule, then this me*
-     hod will also return nullbut the module doesn't extend AbstractModule, then this method will also return null.)
+     * hod will also return nullbut the module doesn't extend AbstractModule, then this method will also return null.)
      */
     public static <T extends AbstractModule> T getOrNewInstance(Class<T> clazz) {
         JsonElement config = ConfigManager.configWrapper.toJsonElement();
