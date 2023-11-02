@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.skin.io.SkinIO;
 import io.github.sakurawald.module.skin.io.SkinStorage;
 import it.unimi.dsi.fastutil.Pair;
@@ -31,7 +31,7 @@ public class SkinRestorer {
 
     private static final Gson gson = new Gson();
     @Getter
-    private static final SkinStorage skinStorage = new SkinStorage(new SkinIO(ServerMain.CONFIG_PATH.resolve("skin")));
+    private static final SkinStorage skinStorage = new SkinStorage(new SkinIO(Fuji.CONFIG_PATH.resolve("skin")));
 
 
     public static CompletableFuture<Pair<Collection<ServerPlayer>, Collection<GameProfile>>> setSkinAsync(MinecraftServer server, Collection<GameProfile> targets, Supplier<Property> skinSupplier) {
@@ -39,7 +39,7 @@ public class SkinRestorer {
             HashSet<GameProfile> acceptedProfiles = new HashSet<>();
             Property skin = skinSupplier.get();
             if (skin == null) {
-                ServerMain.log.error("Cannot get the skin for {}", targets.stream().findFirst().orElseThrow());
+                Fuji.log.error("Cannot get the skin for {}", targets.stream().findFirst().orElseThrow());
                 return Pair.of(null, Collections.emptySet());
             }
 
@@ -108,7 +108,7 @@ public class SkinRestorer {
             jy.remove("timestamp");
             return x.equals(jy);
         } catch (Exception ex) {
-            ServerMain.log.info("Can not compare skin", ex);
+            Fuji.log.info("Can not compare skin", ex);
             return false;
         }
     }

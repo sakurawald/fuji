@@ -5,7 +5,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.module.ModuleManager;
@@ -138,7 +138,7 @@ public class ChatModule extends AbstractModule {
         /* resolve player tag */
         ArrayList<ServerPlayer> mentionedPlayers = new ArrayList<>();
 
-        String[] playerNames = ServerMain.SERVER.getPlayerNames();
+        String[] playerNames = Fuji.SERVER.getPlayerNames();
         // fix: mention the longest name first
         Arrays.sort(playerNames, Comparator.comparingInt(String::length).reversed());
 
@@ -146,7 +146,7 @@ public class ChatModule extends AbstractModule {
             // here we must continue so that mentionPlayers will not be added
             if (!str.contains(playerName)) continue;
             str = str.replace(playerName, "<aqua>%s</aqua>".formatted(playerName));
-            mentionedPlayers.add(ServerMain.SERVER.getPlayerList().getPlayerByName(playerName));
+            mentionedPlayers.add(Fuji.SERVER.getPlayerList().getPlayerByName(playerName));
         }
 
         /* run mention player task */
@@ -168,7 +168,7 @@ public class ChatModule extends AbstractModule {
         /* resolve stats */
         if (mainStatsModule != null) {
             MainStats stats = MainStats.uuid2stats.getOrDefault(player.getUUID().toString(), new MainStats());
-            format = stats.update(player).resolve(ServerMain.SERVER, format);
+            format = stats.update(player).resolve(Fuji.SERVER, format);
         }
 
         /* resolve tags */
@@ -179,8 +179,8 @@ public class ChatModule extends AbstractModule {
         component = resolvePositionTag(player, component);
         chatHistory.add(component);
         // info so that it can be seen in the console
-        ServerMain.log.info(PlainTextComponentSerializer.plainText().serialize(component));
-        for (ServerPlayer receiver : ServerMain.SERVER.getPlayerList().getPlayers()) {
+        Fuji.log.info(PlainTextComponentSerializer.plainText().serialize(component));
+        for (ServerPlayer receiver : Fuji.SERVER.getPlayerList().getPlayers()) {
             receiver.sendMessage(component);
         }
     }

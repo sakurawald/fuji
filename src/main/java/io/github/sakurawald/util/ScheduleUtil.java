@@ -12,7 +12,7 @@ import org.quartz.impl.matchers.GroupMatcher;
 import java.util.Set;
 import java.util.UUID;
 
-import static io.github.sakurawald.ServerMain.log;
+import static io.github.sakurawald.Fuji.log;
 
 
 public class ScheduleUtil {

@@ -5,7 +5,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.serialization.Lifecycle;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.ConfigGSON;
 import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.mixin.resource_world.MinecraftServerAccessor;
@@ -248,7 +248,7 @@ public class ResourceWorldModule extends AbstractModule {
             // IMPORTANT: only delete the world if it's a resource world
             if (!namespace.equals(DEFAULT_RESOURCE_WORLD_NAMESPACE)) return;
 
-            ServerMain.log.info("onWorldUnload() -> Creating world {} ...", path);
+            Fuji.log.info("onWorldUnload() -> Creating world {} ...", path);
             long seed = ConfigManager.configWrapper.instance().modules.resource_world.seed;
             this.createWorld(server, this.getDimensionTypeRegistryKeyByPath(path), path, seed);
         }
@@ -258,7 +258,7 @@ public class ResourceWorldModule extends AbstractModule {
 
         @Override
         public void execute(JobExecutionContext context) {
-            ServerMain.log.info("Start to reset resource worlds.");
+            Fuji.log.info("Start to reset resource worlds.");
             MinecraftServer server = (MinecraftServer) context.getJobDetail().getJobDataMap().get(MinecraftServer.class.getName());
             ResourceWorldModule module = (ResourceWorldModule) context.getJobDetail().getJobDataMap().get(ResourceWorldModule.class.getName());
             server.execute(() -> module.resetWorlds(server));

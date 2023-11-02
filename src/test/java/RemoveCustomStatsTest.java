@@ -1,7 +1,7 @@
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 
 import java.io.File;
 import java.io.FileReader;
@@ -12,10 +12,10 @@ import java.io.IOException;
 public class RemoveCustomStatsTest {
 
     public static void main(String[] args) {
-        ServerMain.log.info("{}", 0 / 8);
-        ServerMain.log.info("{}", -2 / 8);
-        ServerMain.log.info("{}", -6 / 8);
-        ServerMain.log.info("{}", -9 / 8);
+        Fuji.log.info("{}", 0 / 8);
+        Fuji.log.info("{}", -2 / 8);
+        Fuji.log.info("{}", -6 / 8);
+        Fuji.log.info("{}", -9 / 8);
     }
 
     void removeStats() {

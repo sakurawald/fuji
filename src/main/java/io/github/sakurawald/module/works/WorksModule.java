@@ -5,7 +5,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.module.works.gui.InputSignGui;
@@ -139,7 +139,7 @@ public class WorksModule extends AbstractModule {
                         /* left click -> visit */
                         if (clickType.isLeft) {
                             ResourceKey<Level> worldKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(work.level));
-                            ServerLevel level = ServerMain.SERVER.getLevel(worldKey);
+                            ServerLevel level = Fuji.SERVER.getLevel(worldKey);
                             //noinspection DataFlowIssue
                             player.teleportTo(level, work.x, work.y, work.z, work.yaw, work.pitch);
                             gui.close();

@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.motd;
 
 import com.google.common.base.Preconditions;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.MessageUtil;
@@ -20,7 +20,7 @@ import java.util.Random;
 
 
 public class MotdModule extends AbstractModule {
-    private final File ICON_FOLDER = ServerMain.CONFIG_PATH.resolve("icon").toFile();
+    private final File ICON_FOLDER = Fuji.CONFIG_PATH.resolve("icon").toFile();
 
     private List<String> descriptions = new ArrayList<>();
 
@@ -43,7 +43,7 @@ public class MotdModule extends AbstractModule {
         ICON_FOLDER.mkdirs();
         File[] icons = ICON_FOLDER.listFiles();
         if (icons == null || icons.length == 0) {
-            ServerMain.log.warn("No icons found in {}", ICON_FOLDER.getAbsolutePath());
+            Fuji.log.warn("No icons found in {}", ICON_FOLDER.getAbsolutePath());
             return Optional.empty();
         }
         File randomIcon = icons[new Random().nextInt(icons.length)];
@@ -55,7 +55,7 @@ public class MotdModule extends AbstractModule {
             byteArrayOutputStream = new ByteArrayOutputStream();
             ImageIO.write(bufferedImage, "PNG", byteArrayOutputStream);
         } catch (IOException e) {
-            ServerMain.log.warn("Failed to encode favicon", e);
+            Fuji.log.warn("Failed to encode favicon", e);
             return Optional.empty();
         }
         return Optional.of(new ServerStatus.Favicon(byteArrayOutputStream.toByteArray()));

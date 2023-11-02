@@ -3,7 +3,7 @@ package io.github.sakurawald.config.base;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonWriter;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import lombok.Cleanup;
 
 import java.io.*;
@@ -22,7 +22,7 @@ public class ObjectConfigWrapper<T> extends ConfigWrapper<T> {
     }
 
     public ObjectConfigWrapper(String child, Class<T> configClass) {
-        this(new File(ServerMain.CONFIG_PATH.toString(), child), configClass);
+        this(new File(Fuji.CONFIG_PATH.toString(), child), configClass);
     }
 
     public void loadFromDisk() {
@@ -51,7 +51,7 @@ public class ObjectConfigWrapper<T> extends ConfigWrapper<T> {
 
         } catch (IOException | NoSuchMethodException | InstantiationException | IllegalAccessException |
                  InvocationTargetException e) {
-            ServerMain.log.error("Load config failed: " + e.getMessage());
+            Fuji.log.error("Load config failed: " + e.getMessage());
         }
     }
 

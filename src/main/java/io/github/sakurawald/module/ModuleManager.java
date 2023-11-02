@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static io.github.sakurawald.ServerMain.log;
+import static io.github.sakurawald.Fuji.log;
 
 
 public class ModuleManager {

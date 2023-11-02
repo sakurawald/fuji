@@ -1,7 +1,7 @@
 package io.github.sakurawald.mixin.command_spy;
 
 import com.mojang.brigadier.ParseResults;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,6 +21,6 @@ public class CommandsMixin {
         if (player == null) return;
 
         // fix: fabric console will not log the command issue
-        ServerMain.log.info("{} issued server command: {}", player.getGameProfile().getName(), commandLine);
+        Fuji.log.info("{} issued server command: {}", player.getGameProfile().getName(), commandLine);
     }
 }

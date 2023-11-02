@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.teleport_warmup;
 
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Data;
 import net.minecraft.core.registries.Registries;
@@ -51,7 +51,7 @@ public class Position {
 
     public void teleport(ServerPlayer player) {
         ResourceKey<Level> worldKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(this.level));
-        ServerLevel serverLevel = ServerMain.SERVER.getLevel(worldKey);
+        ServerLevel serverLevel = Fuji.SERVER.getLevel(worldKey);
         if (serverLevel == null) {
             MessageUtil.sendMessage(player, "level.no_exists", this.level);
             return;

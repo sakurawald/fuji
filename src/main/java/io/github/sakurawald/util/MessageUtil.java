@@ -2,7 +2,7 @@ package io.github.sakurawald.util;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.base.ResourceConfigWrapper;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
@@ -26,14 +26,14 @@ import java.util.List;
 @UtilityClass
 
 public class MessageUtil {
-    private static final FabricServerAudiences adventure = FabricServerAudiences.of(ServerMain.SERVER);
+    private static final FabricServerAudiences adventure = FabricServerAudiences.of(Fuji.SERVER);
     @Getter
     private static final HashMap<String, String> player2lang = new HashMap<>();
     @Getter
     private static final HashMap<String, JsonObject> lang2json = new HashMap<>();
     private static final String DEFAULT_LANG = "en_us";
     private static final MiniMessage miniMessage = MiniMessage.builder().build();
-    private static final Path LANGUAGE_PATH = ServerMain.CONFIG_PATH.resolve("lang");
+    private static final Path LANGUAGE_PATH = Fuji.CONFIG_PATH.resolve("lang");
 
     static {
         copyLanguageFiles();
@@ -52,9 +52,9 @@ public class MessageUtil {
             is = FileUtils.openInputStream(LANGUAGE_PATH.resolve(lang + ".json").toFile());
             JsonObject jsonObject = JsonParser.parseReader(new InputStreamReader(is)).getAsJsonObject();
             lang2json.put(lang, jsonObject);
-            ServerMain.log.info("Language {} loaded.", lang);
+            Fuji.log.info("Language {} loaded.", lang);
         } catch (IOException e) {
-            ServerMain.log.debug("One of your player is using a language '{}' that is missing -> fallback to default language for this player", lang);
+            Fuji.log.debug("One of your player is using a language '{}' that is missing -> fallback to default language for this player", lang);
         }
 
         if (!lang2json.containsKey(DEFAULT_LANG)) loadLanguageIfAbsent(DEFAULT_LANG);
@@ -84,7 +84,7 @@ public class MessageUtil {
         JsonObject json;
         json = lang2json.get(!lang2json.containsKey(lang) ? DEFAULT_LANG : lang);
         if (!json.has(key)) {
-            ServerMain.log.warn("Language {} miss key '{}' -> fallback to default language for this key", lang, key);
+            Fuji.log.warn("Language {} miss key '{}' -> fallback to default language for this key", lang, key);
             json = lang2json.get(DEFAULT_LANG);
         }
 
@@ -143,9 +143,9 @@ public class MessageUtil {
 
     public static void sendBroadcast(String key, Object... args) {
         // fix: log broadcast for console
-        ServerMain.log.info(PlainTextComponentSerializer.plainText().serialize(ofComponent(null, key, args)));
+        Fuji.log.info(PlainTextComponentSerializer.plainText().serialize(ofComponent(null, key, args)));
 
-        for (ServerPlayer player : ServerMain.SERVER.getPlayerList().getPlayers()) {
+        for (ServerPlayer player : Fuji.SERVER.getPlayerList().getPlayers()) {
             sendMessage(player, key, args);
         }
     }

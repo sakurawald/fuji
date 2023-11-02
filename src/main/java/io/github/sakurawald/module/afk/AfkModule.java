@@ -3,7 +3,7 @@ package io.github.sakurawald.module.afk;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.MessageUtil;
@@ -57,7 +57,7 @@ public class AfkModule extends AbstractModule {
 
         @Override
         public void execute(JobExecutionContext context) throws JobExecutionException {
-            for (ServerPlayer player : ServerMain.SERVER.getPlayerList().getPlayers()) {
+            for (ServerPlayer player : Fuji.SERVER.getPlayerList().getPlayers()) {
                 ServerPlayerAccessor_afk afk_player = (ServerPlayerAccessor_afk) player;
 
                 // get last action time

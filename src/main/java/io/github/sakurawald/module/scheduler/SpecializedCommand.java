@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.scheduler;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.server.MinecraftServer;
@@ -49,7 +49,7 @@ public class SpecializedCommand {
         try {
             server.getCommands().getDispatcher().execute(command, server.createCommandSourceStack());
         } catch (CommandSyntaxException e) {
-            ServerMain.log.error(e.toString());
+            Fuji.log.error(e.toString());
         }
     }
 
@@ -59,7 +59,7 @@ public class SpecializedCommand {
 
     public static void executeCommand(ServerPlayer player, String command) {
         try {
-            ServerMain.SERVER.getCommands().getDispatcher().execute(command, player.createCommandSourceStack());
+            Fuji.SERVER.getCommands().getDispatcher().execute(command, player.createCommandSourceStack());
         } catch (CommandSyntaxException e) {
             player.sendMessage(Component.text(e.getMessage()).color(NamedTextColor.RED));
         }

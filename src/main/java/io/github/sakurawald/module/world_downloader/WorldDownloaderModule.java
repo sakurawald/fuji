@@ -6,7 +6,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.mixin.resource_world.MinecraftServerAccessor;
 import io.github.sakurawald.module.AbstractModule;
@@ -64,7 +64,7 @@ public class WorldDownloaderModule extends AbstractModule {
             server = HttpServer.create(new InetSocketAddress(ConfigManager.configWrapper.instance().modules.world_downloader.port), 0);
             server.start();
         } catch (IOException e) {
-            ServerMain.log.error("Failed to start http server: " + e.getMessage());
+            Fuji.log.error("Failed to start http server: " + e.getMessage());
         }
     }
 
@@ -101,7 +101,7 @@ public class WorldDownloaderModule extends AbstractModule {
 
         /* remove redundant contexts */
         if (contextQueue.remainingCapacity() == 0) {
-            ServerMain.log.info("contexts is full, remove the oldest context. {}", contextQueue.peek());
+            Fuji.log.info("contexts is full, remove the oldest context. {}", contextQueue.peek());
             safelyRemoveContext(contextQueue.poll());
         }
 
@@ -151,7 +151,7 @@ public class WorldDownloaderModule extends AbstractModule {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        ServerMain.log.info("Generate region file: {}", output.getAbsolutePath());
+        Fuji.log.info("Generate region file: {}", output.getAbsolutePath());
         return output;
     }
 

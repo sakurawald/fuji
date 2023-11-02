@@ -1,6 +1,6 @@
 package io.github.sakurawald.mixin.stronger_player_list;
 
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
 import org.spongepowered.asm.mixin.Final;
@@ -27,7 +27,7 @@ public abstract class PlayerListMixin {
     private void $init(CallbackInfo ci) {
         players = new CopyOnWriteArrayList<>() {
             {
-                ServerMain.log.info("Patch stronger player list for Server#PlayerList");
+                Fuji.log.info("Patch stronger player list for Server#PlayerList");
             }
         };
     }

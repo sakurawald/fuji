@@ -1,7 +1,7 @@
 package io.github.sakurawald.mixin.op_protect;
 
 
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
@@ -20,9 +20,9 @@ public class ServerPlayNetworkHandlerMixin {
 
     @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerCommonPacketListenerImpl;onDisconnect(Lnet/minecraft/network/chat/Component;)V"), method = "onDisconnect")
     private void $disconnect(Component reason, CallbackInfo info) {
-        if (ServerMain.SERVER.getPlayerList().isOp(player.getGameProfile())) {
-            ServerMain.log.info("op protect -> deop " + player.getGameProfile());
-            ServerMain.SERVER.getPlayerList().deop(player.getGameProfile());
+        if (Fuji.SERVER.getPlayerList().isOp(player.getGameProfile())) {
+            Fuji.log.info("op protect -> deop " + player.getGameProfile());
+            Fuji.SERVER.getPlayerList().deop(player.getGameProfile());
         }
     }
 }

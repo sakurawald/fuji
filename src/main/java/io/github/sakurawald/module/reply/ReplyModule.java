@@ -5,7 +5,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.MessageUtil;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -45,7 +45,7 @@ public class ReplyModule extends AbstractModule {
         String message = StringArgumentType.getString(ctx, "message");
 
         try {
-            ServerMain.SERVER.getCommands().getDispatcher().execute("msg %s %s".formatted(target, message), player.createCommandSourceStack());
+            Fuji.SERVER.getCommands().getDispatcher().execute("msg %s %s".formatted(target, message), player.createCommandSourceStack());
         } catch (CommandSyntaxException e) {
             MessageUtil.sendMessage(player, "reply.no_target");
         }

@@ -2,7 +2,7 @@ package io.github.sakurawald.util;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.seen.GameProfileCacheEx;
 import lombok.experimental.UtilityClass;
 import net.minecraft.commands.CommandSourceStack;
@@ -15,7 +15,7 @@ public class CommandUtil {
     public static RequiredArgumentBuilder<CommandSourceStack, String> offlinePlayerArgument(String argumentName) {
         return argument(argumentName, StringArgumentType.string())
                 .suggests((context, builder) -> {
-                            GameProfileCache gameProfileCache = ServerMain.SERVER.getProfileCache();
+                            GameProfileCache gameProfileCache = Fuji.SERVER.getProfileCache();
                             if (gameProfileCache != null) {
                                 ((GameProfileCacheEx) gameProfileCache).fuji$getNames().forEach(builder::suggest);
                             }

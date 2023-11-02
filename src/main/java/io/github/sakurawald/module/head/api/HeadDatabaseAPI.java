@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.commons.io.FileUtils;
 
@@ -22,7 +22,7 @@ import java.nio.file.Path;
 
 public class HeadDatabaseAPI {
     private final String API = "https://minecraft-heads.com/scripts/api.php?cat=%s&tags=true";
-    private final Path STORAGE_PATH = ServerMain.CONFIG_PATH.resolve("head").toAbsolutePath();
+    private final Path STORAGE_PATH = Fuji.CONFIG_PATH.resolve("head").toAbsolutePath();
 
     public Multimap<Category, Head> getHeads() {
         refreshCacheFromAPI();
@@ -33,24 +33,24 @@ public class HeadDatabaseAPI {
     private void refreshCacheFromAPI() {
         for (Category category : Category.values()) {
             try {
-                ServerMain.log.info("Saving {} heads to cache", category.name);
+                Fuji.log.info("Saving {} heads to cache", category.name);
                 URLConnection connection = URI.create(String.format(API, category.name)).toURL().openConnection();
                 var stream = new BufferedInputStream(connection.getInputStream());
                 FileUtils.copyInputStreamToFile(stream, STORAGE_PATH.resolve(category.name + ".json").toFile());
             } catch (IOException e) {
-                ServerMain.log.warn("Failed to save new heads to cache");
+                Fuji.log.warn("Failed to save new heads to cache");
             }
 
             if (!Files.exists(STORAGE_PATH.resolve(category.name + ".json"))) {
-                ServerMain.log.info("Loading fallback {} heads", category.name);
+                Fuji.log.info("Loading fallback {} heads", category.name);
                 try {
                     Files.createDirectories(STORAGE_PATH);
                     Files.copy(
-                            FabricLoader.getInstance().getModContainer(ServerMain.MOD_ID).flatMap(modContainer -> modContainer.findPath("assets/fuji/cache/" + category.name + ".json")).get(),
+                            FabricLoader.getInstance().getModContainer(Fuji.MOD_ID).flatMap(modContainer -> modContainer.findPath("assets/fuji/cache/" + category.name + ".json")).get(),
                             STORAGE_PATH.resolve(category.name + ".json")
                     );
                 } catch (IOException e) {
-                    ServerMain.log.warn("Failed to load fallback heads", e);
+                    Fuji.log.warn("Failed to load fallback heads", e);
                 }
             }
         }
@@ -61,7 +61,7 @@ public class HeadDatabaseAPI {
         Gson gson = new Gson();
         for (Category category : Category.values()) {
             try {
-                ServerMain.log.info("Loading {} heads from cache", category.name);
+                Fuji.log.info("Loading {} heads from cache", category.name);
                 var stream = Files.newInputStream(STORAGE_PATH.resolve(category.name + ".json"));
                 JsonArray headsJson = JsonParser.parseReader(new InputStreamReader(stream)).getAsJsonArray();
                 for (JsonElement headJson : headsJson) {
@@ -69,14 +69,14 @@ public class HeadDatabaseAPI {
                         Head head = gson.fromJson(headJson, Head.class);
                         heads.put(category, head);
                     } catch (Exception e) {
-                        ServerMain.log.warn("Invalid head: " + headJson);
+                        Fuji.log.warn("Invalid head: " + headJson);
                     }
                 }
             } catch (IOException e) {
-                ServerMain.log.warn("Failed to load heads from cache", e);
+                Fuji.log.warn("Failed to load heads from cache", e);
             }
         }
-        ServerMain.log.info("Finished loading {} heads", heads.size());
+        Fuji.log.info("Finished loading {} heads", heads.size());
         return heads;
     }
 }

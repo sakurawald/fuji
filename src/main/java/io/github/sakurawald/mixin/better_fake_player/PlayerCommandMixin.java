@@ -3,7 +3,7 @@ package io.github.sakurawald.mixin.better_fake_player;
 import carpet.commands.PlayerCommand;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.better_fake_player.BetterFakePlayerModule;
@@ -59,7 +59,7 @@ public abstract class PlayerCommandMixin {
         if (ConfigManager.configWrapper.instance().modules.better_fake_player.use_local_random_skins_for_fake_player) {
             String fakePlayerName = StringArgumentType.getString(context, "player");
             fakePlayerName = transformFakePlayerName(fakePlayerName);
-            ServerMain.SERVER.getProfileCache().add(module.createOfflineGameProfile(fakePlayerName));
+            Fuji.SERVER.getProfileCache().add(module.createOfflineGameProfile(fakePlayerName));
         }
     }
 

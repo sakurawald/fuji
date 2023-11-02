@@ -5,7 +5,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.CommandUtil;
 import lombok.SneakyThrows;
@@ -42,7 +42,7 @@ import static net.minecraft.commands.Commands.argument;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 
 public class DeathLogModule extends AbstractModule {
-    private final Path STORAGE_PATH = ServerMain.CONFIG_PATH.resolve("deathlog");
+    private final Path STORAGE_PATH = Fuji.CONFIG_PATH.resolve("deathlog");
     private final String DEATHS = "Deaths";
     private final String TIME = "time";
     private final String REASON = "reason";
@@ -107,7 +107,7 @@ public class DeathLogModule extends AbstractModule {
         List<ItemStack> offhand = readSlotsTag((ListTag) inventoryTag.get(OFFHAND));
 
         // check the player's inventory for safety
-        if (!to.getInventory().isEmpty() && !ServerMain.SERVER.getPlayerList().isOp(to.getGameProfile())) {
+        if (!to.getInventory().isEmpty() && !Fuji.SERVER.getPlayerList().isOp(to.getGameProfile())) {
             source.sendMessage(Component.text("To player's inventory is not empty!"));
             return Command.SINGLE_SUCCESS;
         }

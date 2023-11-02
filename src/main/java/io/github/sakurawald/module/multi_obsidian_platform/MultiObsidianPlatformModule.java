@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.multi_obsidian_platform;
 
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import net.minecraft.core.BlockPos;
@@ -16,7 +16,7 @@ public class MultiObsidianPlatformModule extends AbstractModule {
 
     /* this method is used to fix Entity#position() async */
     private BlockPos findNearbyEndPortalBlock(BlockPos bp) {
-        ServerLevel overworld = ServerMain.SERVER.overworld();
+        ServerLevel overworld = Fuji.SERVER.overworld();
 
         // should we find nearby END_PORTAL block ?
         if (overworld.getBlockState(bp) == Blocks.END_PORTAL.defaultBlockState()) return bp;
@@ -32,12 +32,12 @@ public class MultiObsidianPlatformModule extends AbstractModule {
             }
         }
 
-        ServerMain.log.warn("BlockPos {} is not END_PORTAL and we can't find a nearby END_PORTAL block !", bp);
+        Fuji.log.warn("BlockPos {} is not END_PORTAL and we can't find a nearby END_PORTAL block !", bp);
         return bp;
     }
 
     private BlockPos findCenterEndPortalBlock(BlockPos bp) {
-        ServerLevel overworld = ServerMain.SERVER.overworld();
+        ServerLevel overworld = Fuji.SERVER.overworld();
         if (overworld.getBlockState(bp.north()) != Blocks.END_PORTAL.defaultBlockState()) {
             if (overworld.getBlockState(bp.west()) != Blocks.END_PORTAL.defaultBlockState()) {
                 return bp.south().east();

@@ -1,7 +1,7 @@
 package io.github.sakurawald.mixin.resource_world.registry;
 
 import com.mojang.serialization.Lifecycle;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.resource_world.interfaces.SimpleRegistryMixinInterface;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.ObjectList;
@@ -75,7 +75,7 @@ public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInter
 
             return true;
         } catch (Throwable e) {
-            ServerMain.log.error("Failed to remove entry: " + entry.toString());
+            Fuji.log.error("Failed to remove entry: " + entry.toString());
             return false;
         }
     }

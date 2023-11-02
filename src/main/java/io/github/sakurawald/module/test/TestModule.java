@@ -3,7 +3,7 @@ package io.github.sakurawald.module.test;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.module.chat.mention.MentionPlayersJob;
 import io.github.sakurawald.util.ScheduleUtil;
@@ -23,10 +23,10 @@ public class TestModule extends AbstractModule {
 
     @SneakyThrows
     private static int simulateLag(CommandContext<CommandSourceStack> ctx) {
-        ServerMain.SERVER.getCommands().getDispatcher().execute("execute in minecraft:overworld run test fake-players", ctx.getSource());
-        ServerMain.SERVER.getCommands().getDispatcher().execute("execute in minecraft:overworld run time set midnight", ctx.getSource());
-        ServerMain.SERVER.getCommands().getDispatcher().execute("execute in minecraft:the_nether run test fake-players", ctx.getSource());
-        ServerMain.SERVER.getCommands().getDispatcher().execute("execute in minecraft:the_end run test fake-players", ctx.getSource());
+        Fuji.SERVER.getCommands().getDispatcher().execute("execute in minecraft:overworld run test fake-players", ctx.getSource());
+        Fuji.SERVER.getCommands().getDispatcher().execute("execute in minecraft:overworld run time set midnight", ctx.getSource());
+        Fuji.SERVER.getCommands().getDispatcher().execute("execute in minecraft:the_nether run test fake-players", ctx.getSource());
+        Fuji.SERVER.getCommands().getDispatcher().execute("execute in minecraft:the_end run test fake-players", ctx.getSource());
 
         return Command.SINGLE_SUCCESS;
     }
@@ -41,7 +41,7 @@ public class TestModule extends AbstractModule {
         if (ctx.getSource().getLevel().dimension() == Level.END) startIndex = amount * 2;
         for (int i = 0; i < amount; i++) {
             int distance = i * 100;
-            ServerMain.SERVER.getCommands().getDispatcher().execute("player %d spawn at %d 96 %d".formatted(startIndex++, distance, distance), ctx.getSource());
+            Fuji.SERVER.getCommands().getDispatcher().execute("player %d spawn at %d 96 %d".formatted(startIndex++, distance, distance), ctx.getSource());
         }
         return Command.SINGLE_SUCCESS;
     }
@@ -57,10 +57,10 @@ public class TestModule extends AbstractModule {
 
         try {
             for (JobKey jobKey : ScheduleUtil.getScheduler().getJobKeys(GroupMatcher.groupEquals(MentionPlayersJob.class.getName()))) {
-                ServerMain.log.error("magic() -> jobKey: {}", jobKey);
+                Fuji.log.error("magic() -> jobKey: {}", jobKey);
             }
         } catch (SchedulerException e) {
-            ServerMain.log.error(e.getMessage());
+            Fuji.log.error(e.getMessage());
         }
 
         return 1;

@@ -4,7 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.base.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.MessageUtil;
@@ -105,7 +105,7 @@ public class BetterFakePlayerModule extends AbstractModule {
                 continue;
             }
             myFakePlayers.removeIf(name -> {
-                ServerPlayer fakePlayer = ServerMain.SERVER.getPlayerList().getPlayerByName(name);
+                ServerPlayer fakePlayer = Fuji.SERVER.getPlayerList().getPlayerByName(name);
                 return fakePlayer == null || fakePlayer.isRemoved();
             });
         }
@@ -134,7 +134,7 @@ public class BetterFakePlayerModule extends AbstractModule {
         if (player == null) return true;
 
         // bypass: op
-        if (ServerMain.SERVER.getPlayerList().isOp(player.getGameProfile())) return true;
+        if (Fuji.SERVER.getPlayerList().isOp(player.getGameProfile())) return true;
 
         ArrayList<String> myFakePlayers = this.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), CONSTANT_EMPTY_LIST);
         return myFakePlayers.contains(fakePlayer);
@@ -186,14 +186,14 @@ public class BetterFakePlayerModule extends AbstractModule {
                 ArrayList<String> fakePlayers = module.player2fakePlayers.getOrDefault(playerName, module.CONSTANT_EMPTY_LIST);
                 if (expiration <= currentTimeMS) {
                     /* auto-renew for online-playerName */
-                    ServerPlayer playerByName = ServerMain.SERVER.getPlayerList().getPlayerByName(playerName);
+                    ServerPlayer playerByName = Fuji.SERVER.getPlayerList().getPlayerByName(playerName);
                     if (playerByName != null) {
                         module.renewFakePlayers(playerByName);
                         continue;
                     }
 
                     for (String fakePlayerName : fakePlayers) {
-                        ServerPlayer fakePlayer = ServerMain.SERVER.getPlayerList().getPlayerByName(fakePlayerName);
+                        ServerPlayer fakePlayer = Fuji.SERVER.getPlayerList().getPlayerByName(fakePlayerName);
                         if (fakePlayer == null) return;
                         fakePlayer.kill();
                         MessageUtil.sendBroadcast("better_fake_player.kick_for_expiration", fakePlayer.getGameProfile().getName(), playerName);
@@ -207,7 +207,7 @@ public class BetterFakePlayerModule extends AbstractModule {
 
                 /* check for amount limits */
                 for (int i = fakePlayers.size() - 1; i >= limit; i--) {
-                    ServerPlayer fakePlayer = ServerMain.SERVER.getPlayerList().getPlayerByName(fakePlayers.get(i));
+                    ServerPlayer fakePlayer = Fuji.SERVER.getPlayerList().getPlayerByName(fakePlayers.get(i));
                     if (fakePlayer == null) continue;
                     fakePlayer.kill();
 

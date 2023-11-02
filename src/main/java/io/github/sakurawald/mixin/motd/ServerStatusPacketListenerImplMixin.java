@@ -23,7 +23,7 @@
  */
 package io.github.sakurawald.mixin.motd;
 
-import io.github.sakurawald.ServerMain;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.motd.MotdModule;
 import net.minecraft.network.protocol.status.ServerStatus;
@@ -44,9 +44,9 @@ abstract class ServerStatusPacketListenerImplMixin {
 
     @Redirect(method = "handleStatusRequest", at = @At(value = "FIELD", target = "Lnet/minecraft/server/network/ServerStatusPacketListenerImpl;status:Lnet/minecraft/network/protocol/status/ServerStatus;"))
     public ServerStatus $handleStatusRequest(final ServerStatusPacketListenerImpl instance) {
-        ServerStatus vanillaStatus = ServerMain.SERVER.getStatus();
+        ServerStatus vanillaStatus = Fuji.SERVER.getStatus();
         if (vanillaStatus == null) {
-            ServerMain.log.warn("ServerStatus is null, use default.");
+            Fuji.log.warn("ServerStatus is null, use default.");
             return new ServerStatus(module.getRandomDescription(), Optional.empty(), Optional.empty(), module.getRandomIcon(), false);
         }
         return new ServerStatus(module.getRandomDescription(), vanillaStatus.players(), vanillaStatus.version(), module.getRandomIcon(), vanillaStatus.enforcesSecureChat());

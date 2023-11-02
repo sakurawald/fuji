@@ -15,7 +15,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.github.sakurawald.ServerMain"
+      "io.github.sakurawald.Fuji"
     ]
   },
   "accessWidener": "fuji.accesswidener",
