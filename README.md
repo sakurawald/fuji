@@ -1,5 +1,5 @@
 # Fuji
-<img src="https://github.com/SakuraWald/fuji-fabric/raw/1.20.2/src/main/resources/assets/sakurawald/icon.png" width="128" alt="mod icon">
+<img src="https://github.com/SakuraWald/fuji-fabric/raw/1.20.2/src/main/resources/assets/fuji/icon.png" width="128" alt="mod icon">
 
 This is a minecraft mod that provides many essential and useful modules for vanilla survival.
 
