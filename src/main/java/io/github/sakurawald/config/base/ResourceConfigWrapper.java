@@ -12,7 +12,6 @@ import java.io.*;
 public class ResourceConfigWrapper extends ConfigWrapper<JsonElement> {
 
     final String resourcePath;
-    JsonElement configInstance;
 
     public ResourceConfigWrapper(File file, String resourcePath) {
         super(file);
@@ -52,11 +51,6 @@ public class ResourceConfigWrapper extends ConfigWrapper<JsonElement> {
     }
 
 
-    public JsonElement toJsonElement() {
-        return gson.toJsonTree(this.configInstance);
-    }
-
-
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void saveToDisk() {
         try {
@@ -75,7 +69,4 @@ public class ResourceConfigWrapper extends ConfigWrapper<JsonElement> {
         }
     }
 
-    public JsonElement instance() {
-        return configInstance;
-    }
 }

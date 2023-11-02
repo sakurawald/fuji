@@ -12,8 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class ObjectConfigWrapper<T> extends ConfigWrapper<T> {
 
-    final Class<T> configClass;
-    T configInstance;
+    Class<T> configClass;
 
     public ObjectConfigWrapper(File file, Class<T> configClass) {
         super(file);
@@ -56,11 +55,6 @@ public class ObjectConfigWrapper<T> extends ConfigWrapper<T> {
     }
 
 
-    public JsonElement toJsonElement() {
-        return gson.toJsonTree(this.configInstance, this.configClass);
-    }
-
-
     public void saveToDisk() {
         try {
             // Should we generate a default config instance ?
@@ -80,7 +74,4 @@ public class ObjectConfigWrapper<T> extends ConfigWrapper<T> {
         }
     }
 
-    public T instance() {
-        return configInstance;
-    }
 }

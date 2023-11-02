@@ -22,6 +22,7 @@ import java.nio.file.Path;
 // TODO: kit module
 // TODO: luckperms context calculate module
 // TODO: /invsee module
+
 public class Fuji implements ModInitializer {
     public static final Logger log = createLogger();
     public static final String MOD_ID = "fuji";

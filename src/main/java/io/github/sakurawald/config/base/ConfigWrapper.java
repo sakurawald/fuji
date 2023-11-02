@@ -27,6 +27,7 @@ public abstract class ConfigWrapper<T> {
             .create();
 
     protected File file;
+    protected T configInstance;
 
     protected boolean merged = false;
 
@@ -51,9 +52,15 @@ public abstract class ConfigWrapper<T> {
 
     public abstract void saveToDisk();
 
-    public abstract T instance();
 
-    public abstract JsonElement toJsonElement();
+    public T instance() {
+        return this.configInstance;
+    }
+
+    public JsonElement toJsonElement() {
+        return gson.toJsonTree(this.configInstance);
+    }
+
 
     @SuppressWarnings("unused")
     public void backupFromDisk() {
@@ -113,6 +120,5 @@ public abstract class ConfigWrapper<T> {
             configWrapper.saveToDisk();
         }
     }
-
 
 }
