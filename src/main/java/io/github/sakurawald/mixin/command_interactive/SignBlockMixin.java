@@ -1,7 +1,7 @@
 package io.github.sakurawald.mixin.command_interactive;
 
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.base.ConfigManager;
+import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.scheduler.SpecializedCommand;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.top_chunks;
 
-import io.github.sakurawald.config.base.ConfigManager;
+import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;

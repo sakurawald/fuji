@@ -2,7 +2,7 @@ package io.github.sakurawald.module.newbie_welcome.random_teleport;
 
 import com.google.common.base.Stopwatch;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.base.ConfigManager;
+import io.github.sakurawald.config.ConfigManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;

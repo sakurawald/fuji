@@ -1,7 +1,7 @@
 package io.github.sakurawald.mixin.system_message;
 
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.base.ConfigManager;
+import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

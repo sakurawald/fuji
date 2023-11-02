@@ -1,7 +1,7 @@
 package io.github.sakurawald.module;
 
 import com.google.gson.JsonElement;
-import io.github.sakurawald.config.base.ConfigManager;
+import io.github.sakurawald.config.ConfigManager;
 import org.reflections.Reflections;
 
 import java.util.HashMap;

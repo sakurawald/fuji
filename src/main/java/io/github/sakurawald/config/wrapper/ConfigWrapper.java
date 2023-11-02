@@ -1,4 +1,4 @@
-package io.github.sakurawald.config.base;
+package io.github.sakurawald.config.wrapper;
 
 import assets.fuji.Cat;
 import com.google.gson.*;

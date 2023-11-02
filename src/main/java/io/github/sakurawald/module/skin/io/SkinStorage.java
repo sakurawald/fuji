@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.skin.io;
 
 import com.mojang.authlib.properties.Property;
-import io.github.sakurawald.config.base.ConfigManager;
+import io.github.sakurawald.config.ConfigManager;
 import lombok.Getter;
 
 import java.util.*;

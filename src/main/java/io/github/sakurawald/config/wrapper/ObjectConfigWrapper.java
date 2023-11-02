@@ -1,4 +1,4 @@
-package io.github.sakurawald.config.base;
+package io.github.sakurawald.config.wrapper;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -7,20 +7,21 @@ import io.github.sakurawald.Fuji;
 import lombok.Cleanup;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 
 
-public class ResourceConfigWrapper extends ConfigWrapper<JsonElement> {
+public class ObjectConfigWrapper<T> extends ConfigWrapper<T> {
 
-    final String resourcePath;
+    Class<T> configClass;
 
-    public ResourceConfigWrapper(File file, String resourcePath) {
+    public ObjectConfigWrapper(File file, Class<T> configClass) {
         super(file);
         this.file = file;
-        this.resourcePath = resourcePath;
+        this.configClass = configClass;
     }
 
-    public ResourceConfigWrapper(String resourcePath) {
-        this(Fuji.CONFIG_PATH.resolve(resourcePath).toFile(), resourcePath);
+    public ObjectConfigWrapper(String child, Class<T> configClass) {
+        this(new File(Fuji.CONFIG_PATH.toString(), child), configClass);
     }
 
     public void loadFromDisk() {
@@ -36,35 +37,39 @@ public class ResourceConfigWrapper extends ConfigWrapper<JsonElement> {
                 // merge older json with newer json
                 if (!this.merged) {
                     this.merged = true;
-                    JsonElement newerJsonElement = ResourceConfigWrapper.getJsonElement(this.resourcePath);
+                    T newerJsonInstance = configClass.getDeclaredConstructor().newInstance();
+                    JsonElement newerJsonElement = gson.toJsonTree(newerJsonInstance, configClass);
                     mergeJson(olderJsonElement, newerJsonElement);
                 }
 
                 // read merged json
-                configInstance = olderJsonElement;
+                configInstance = gson.fromJson(olderJsonElement, configClass);
+
                 this.saveToDisk();
             }
 
-        } catch (IOException e) {
+        } catch (IOException | NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException e) {
             Fuji.log.error("Load config failed: " + e.getMessage());
         }
     }
 
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void saveToDisk() {
         try {
             // Should we generate a default config instance ?
             if (!file.exists()) {
+                //noinspection ResultOfMethodCallIgnored
                 this.file.getParentFile().mkdirs();
-                this.configInstance = ResourceConfigWrapper.getJsonElement(this.resourcePath);
+                this.configInstance = configClass.getDeclaredConstructor().newInstance();
             }
 
             // Save.
             JsonWriter jsonWriter = gson.newJsonWriter(new BufferedWriter(new FileWriter(this.file)));
-            gson.toJson(this.configInstance, jsonWriter);
+            gson.toJson(this.configInstance, configClass, jsonWriter);
             jsonWriter.close();
-        } catch (IOException e) {
+        } catch (IOException | InstantiationException | NoSuchMethodException | IllegalAccessException |
+                 InvocationTargetException e) {
             throw new RuntimeException(e);
         }
     }

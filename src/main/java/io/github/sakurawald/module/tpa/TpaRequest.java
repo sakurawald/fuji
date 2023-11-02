@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.tpa;
 
-import io.github.sakurawald.config.base.ConfigManager;
+import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;

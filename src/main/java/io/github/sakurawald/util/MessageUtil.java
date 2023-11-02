@@ -3,7 +3,7 @@ package io.github.sakurawald.util;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.base.ResourceConfigWrapper;
+import io.github.sakurawald.config.wrapper.ResourceConfigWrapper;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.audience.Audience;

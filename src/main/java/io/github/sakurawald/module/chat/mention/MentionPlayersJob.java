@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.chat.mention;
 
-import io.github.sakurawald.config.ConfigGSON;
-import io.github.sakurawald.config.base.ConfigManager;
+import io.github.sakurawald.config.gson.ConfigGSON;
+import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.util.ScheduleUtil;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;

@@ -1,7 +1,7 @@
 package io.github.sakurawald.mixin;
 
 import com.google.gson.JsonElement;
-import io.github.sakurawald.config.base.ConfigManager;
+import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.ModuleManager;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;

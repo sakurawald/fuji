@@ -1,6 +1,8 @@
-package io.github.sakurawald.config.base;
+package io.github.sakurawald.config;
 
-import io.github.sakurawald.config.*;
+import io.github.sakurawald.config.wrapper.ConfigWrapper;
+import io.github.sakurawald.config.wrapper.ObjectConfigWrapper;
+import io.github.sakurawald.config.gson.*;
 
 
 public class ConfigManager {

@@ -1,4 +1,4 @@
-package io.github.sakurawald.config;
+package io.github.sakurawald.config.gson;
 
 import io.github.sakurawald.module.works.work_type.Work;
 

@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.command_cooldown;
 
-import io.github.sakurawald.config.base.ConfigManager;
+import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import net.minecraft.server.level.ServerPlayer;
 

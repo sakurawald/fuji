@@ -4,7 +4,7 @@ import carpet.commands.PlayerCommand;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.base.ConfigManager;
+import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.better_fake_player.BetterFakePlayerModule;
 import io.github.sakurawald.util.MessageUtil;

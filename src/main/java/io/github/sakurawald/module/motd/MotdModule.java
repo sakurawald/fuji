@@ -2,7 +2,7 @@ package io.github.sakurawald.module.motd;
 
 import com.google.common.base.Preconditions;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.base.ConfigManager;
+import io.github.sakurawald.config.ConfigManager;
 import io.github.sakurawald.module.AbstractModule;
 import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.network.chat.Component;
