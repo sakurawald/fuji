@@ -476,5 +476,9 @@ public class ConfigModel {
             };
         }
 
+        public EnderChest ender_chest = new EnderChest();
+        public class EnderChest{
+            public boolean enable = false;
+        }
     }
 }

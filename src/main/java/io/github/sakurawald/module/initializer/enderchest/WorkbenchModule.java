@@ -1,40 +1,34 @@
-package io.github.sakurawald.module.initializer.workbench;
+package io.github.sakurawald.module.initializer.enderchest;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.CommandUtil;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.chat.Component;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.inventory.ChestMenu;
+import net.minecraft.world.inventory.PlayerEnderChestContainer;
 
 
 public class WorkbenchModule extends ModuleInitializer {
 
     @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
-        dispatcher.register(Commands.literal("workbench").executes(this::$workbench));
+        dispatcher.register(Commands.literal("enderchest").executes(this::$enderchest));
     }
 
     @SuppressWarnings("SameReturnValue")
-    private int $workbench(CommandContext<CommandSourceStack> ctx) {
+    private int $enderchest(CommandContext<CommandSourceStack> ctx) {
         return CommandUtil.playerOnlyCommand(ctx, player -> {
-
-            SimpleGui simpleGui = new SimpleGui(ExtendedScreenHandlerType.CRAFTING, player, false) {
-                @Override
-                public void onCraftRequest(ResourceLocation recipeId, boolean shift) {
-                    super.onCraftRequest(recipeId, shift);
-                }
-            };
-            simpleGui.open();
-
+            PlayerEnderChestContainer enderChestInventory = player.getEnderChestInventory();
+            player.openMenu(new SimpleMenuProvider((i, inventory, p) -> ChestMenu.threeRows(i, inventory, enderChestInventory), Component.translatable("container.enderchest")));
+            player.awardStat(Stats.OPEN_ENDERCHEST);
             return Command.SINGLE_SUCCESS;
         });
-
     }
-
 }

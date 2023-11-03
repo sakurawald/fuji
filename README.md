@@ -236,6 +236,10 @@ The system messages including:
 
   <img src="https://github.com/SakuraWald/fuji-fabric/raw/1.20.2/.github/images/system_message.gif" alt="module presentation gif">
 
+#### EnderChestModule
+provides `/enderchest` command.
+
+
 </details>
 
 # Config
