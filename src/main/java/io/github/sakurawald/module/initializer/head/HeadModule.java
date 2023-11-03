@@ -63,7 +63,6 @@ public class HeadModule extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
         CompletableFuture.runAsync(() -> heads = HEAD_DATABASE.getHeads());
         Configs.headHandler.loadFromDisk();
     }
@@ -74,6 +73,7 @@ public class HeadModule extends ModuleInitializer {
     }
 
     @SuppressWarnings("unused")
+    @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(Commands.literal("head").executes(this::$head));
     }

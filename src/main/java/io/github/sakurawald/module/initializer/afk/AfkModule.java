@@ -24,7 +24,6 @@ public class AfkModule extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
         ServerLifecycleEvents.SERVER_STARTED.register(server -> updateJobs());
     }
 
@@ -38,6 +37,7 @@ public class AfkModule extends ModuleInitializer {
         ScheduleUtil.addJob(AfkCheckerJob.class, null, null, Configs.configHandler.model().modules.afk.afk_checker.cron, new JobDataMap());
     }
 
+    @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(Commands.literal("afk").executes(this::$afk));
     }

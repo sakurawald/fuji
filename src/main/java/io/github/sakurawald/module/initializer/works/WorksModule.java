@@ -47,7 +47,6 @@ public class WorksModule extends ModuleInitializer {
     @Override
     public void onInitialize() {
         Configs.worksHandler.loadFromDisk();
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
         ServerLifecycleEvents.SERVER_STARTED.register(this::registerScheduleTask);
     }
 
@@ -66,6 +65,7 @@ public class WorksModule extends ModuleInitializer {
     }
 
     @SuppressWarnings("unused")
+    @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(Commands.literal("works").executes(this::$works));
     }

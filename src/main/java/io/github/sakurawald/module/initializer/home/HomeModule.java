@@ -35,7 +35,6 @@ public class HomeModule extends ModuleInitializer {
     private final ConfigHandler<HomeModel> data = new ObjectConfigHandler<>("home.json", HomeModel.class);
 
     public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
         data.loadFromDisk();
         data.autoSave(ScheduleUtil.CRON_EVERY_MINUTE);
     }
@@ -47,6 +46,7 @@ public class HomeModule extends ModuleInitializer {
     }
 
     @SuppressWarnings({"UnusedReturnValue", "unused"})
+    @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("home")

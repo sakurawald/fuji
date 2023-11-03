@@ -1,35 +1,38 @@
-package io.github.sakurawald.module.initializer.god;
+package io.github.sakurawald.module.initializer.workbench;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.MessageUtil;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
 
-public class GodModule extends ModuleInitializer {
-
+public class WorkbenchModule extends ModuleInitializer {
 
     @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
-        dispatcher.register(Commands.literal("god").executes(this::$god));
+        dispatcher.register(Commands.literal("workbench").executes(this::$workbench));
     }
 
     @SuppressWarnings("SameReturnValue")
-    private int $god(CommandContext<CommandSourceStack> ctx) {
+    private int $workbench(CommandContext<CommandSourceStack> ctx) {
         ServerPlayer player = ctx.getSource().getPlayer();
         if (player == null) return Command.SINGLE_SUCCESS;
 
-        boolean flag = !player.getAbilities().invulnerable;
-        player.getAbilities().invulnerable = flag;
-        player.onUpdateAbilities();
+        SimpleGui simpleGui = new SimpleGui(ExtendedScreenHandlerType.CRAFTING, player, false) {
+            @Override
+            public void onCraftRequest(ResourceLocation recipeId, boolean shift) {
+                super.onCraftRequest(recipeId, shift);
+            }
+        };
+        simpleGui.open();
 
-        MessageUtil.sendMessage(player, flag ? "god.on" : "god.off");
         return Command.SINGLE_SUCCESS;
     }
 

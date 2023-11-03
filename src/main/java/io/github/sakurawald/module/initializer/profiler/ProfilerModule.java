@@ -42,10 +42,6 @@ public class ProfilerModule extends ModuleInitializer {
     }
 
     @Override
-    public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
-    }
-
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(Commands.literal("profiler").executes(this::$profiler));
     }

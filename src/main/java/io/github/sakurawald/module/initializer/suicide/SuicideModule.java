@@ -13,11 +13,8 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class SuicideModule extends ModuleInitializer {
 
-    @Override
-    public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
-    }
 
+    @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(Commands.literal("suicide").executes(this::$suicide));
     }

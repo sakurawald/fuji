@@ -54,7 +54,6 @@ public class ChatModule extends ModuleInitializer {
         Configs.chatHandler.loadFromDisk();
 
         chatHistory = EvictingQueue.create(Configs.configHandler.model().modules.chat.history.cache_size);
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
     }
 
 
@@ -69,6 +68,7 @@ public class ChatModule extends ModuleInitializer {
     }
 
     @SuppressWarnings("unused")
+    @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("chat")

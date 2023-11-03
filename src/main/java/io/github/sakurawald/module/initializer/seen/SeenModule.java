@@ -27,7 +27,6 @@ public class SeenModule extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
         data.loadFromDisk();
     }
 
@@ -36,6 +35,7 @@ public class SeenModule extends ModuleInitializer {
         data.loadFromDisk();
     }
 
+    @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(Commands.literal("seen").then(CommandUtil.offlinePlayerArgument().executes(this::$seen)));
     }

@@ -5,8 +5,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.chat.mention.MentionPlayersJob;
-import io.github.sakurawald.util.ScheduleUtil;
 import lombok.SneakyThrows;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.kyori.adventure.text.Component;
@@ -14,9 +12,6 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.world.level.Level;
-import org.quartz.JobKey;
-import org.quartz.SchedulerException;
-import org.quartz.impl.matchers.GroupMatcher;
 
 
 public class TestModule extends ModuleInitializer {
@@ -55,22 +50,11 @@ public class TestModule extends ModuleInitializer {
 
     private static int magic(CommandContext<CommandSourceStack> ctx) {
 
-        try {
-            for (JobKey jobKey : ScheduleUtil.getScheduler().getJobKeys(GroupMatcher.groupEquals(MentionPlayersJob.class.getName()))) {
-                Fuji.LOGGER.error("magic() -> jobKey: {}", jobKey);
-            }
-        } catch (SchedulerException e) {
-            Fuji.LOGGER.error(e.getMessage());
-        }
-
         return 1;
     }
 
-    @Override
-    public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
-    }
 
+   @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("test").requires(s -> s.hasPermission(4))

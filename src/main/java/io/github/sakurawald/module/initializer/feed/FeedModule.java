@@ -15,11 +15,8 @@ import net.minecraft.world.food.FoodData;
 
 public class FeedModule extends ModuleInitializer {
 
-    @Override
-    public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
-    }
 
+    @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(Commands.literal("feed").executes(this::$feed));
     }

@@ -65,7 +65,7 @@ public class ModuleManager {
             if (enableModule(config, basePackageName)) {
                 try {
                     ModuleInitializer moduleInitializer = clazz.getDeclaredConstructor().newInstance();
-                    moduleInitializer.onInitialize();
+                    moduleInitializer.initialize();
                     initializers.put(clazz, moduleInitializer);
                 } catch (Exception e) {
                     LOGGER.error(e.toString());

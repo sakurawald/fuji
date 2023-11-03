@@ -12,11 +12,8 @@ import java.util.List;
 
 public class BetterInfoModule extends ModuleInitializer {
 
-    @Override
-    public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
-    }
 
+    @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("info").then(

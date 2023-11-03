@@ -22,14 +22,9 @@ public class BackModule extends ModuleInitializer {
     @Getter
     private final HashMap<String, Position> player2lastPos = new HashMap<>();
 
-    @SuppressWarnings("unused")
+    @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(Commands.literal("back").executes(this::$back));
-    }
-
-    @Override
-    public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
     }
 
     private int $back(CommandContext<CommandSourceStack> ctx) {

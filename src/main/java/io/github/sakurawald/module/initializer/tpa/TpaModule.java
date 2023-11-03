@@ -29,12 +29,9 @@ public class TpaModule extends ModuleInitializer {
     private final ArrayList<TpaRequest> requests = new ArrayList<>();
 
 
-    @Override
-    public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
-    }
 
     @SuppressWarnings("unused")
+    @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("tpa").then(argument("player", EntityArgument.player()).executes(this::$tpa))

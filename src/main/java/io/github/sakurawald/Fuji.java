@@ -22,8 +22,8 @@ import java.nio.file.Path;
 // TODO: /invsee module
 
 public class Fuji implements ModInitializer {
-    public static final Logger LOGGER = LogUtil.createLogger("Fuji");
     public static final String MOD_ID = "fuji";
+    public static final Logger LOGGER = LogUtil.createLogger("Fuji");
     public static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve(MOD_ID).toAbsolutePath();
     public static MinecraftServer SERVER;
 

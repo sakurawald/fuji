@@ -2,7 +2,6 @@ package io.github.sakurawald.config.handler;
 
 import assets.fuji.Cat;
 import com.google.gson.*;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.works.work_type.Work;
 import io.github.sakurawald.util.ScheduleUtil;
 import lombok.Cleanup;

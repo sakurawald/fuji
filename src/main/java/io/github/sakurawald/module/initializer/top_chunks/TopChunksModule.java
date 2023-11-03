@@ -32,11 +32,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class TopChunksModule extends ModuleInitializer {
 
-    @Override
-    public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
-    }
 
+    @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("chunks").executes(this::$chunks)

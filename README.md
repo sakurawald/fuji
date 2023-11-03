@@ -1,9 +1,9 @@
 # Fuji
 <img src="https://github.com/SakuraWald/fuji-fabric/raw/1.20.2/src/main/resources/assets/fuji/icon.png" width="128" alt="mod icon">
 
-This is a minecraft mod that provides many essential and useful modules for vanilla survival.
+Fuji is a minecraft mod that provides many essential and useful modules for vanilla survival.
 
-> This is a server-side only mod, but you can use it in a single-player world. (Yes, the single-player world also includes a logic-server)
+> This is a **server-side only** mod, but you can use it in a **single-player world**. (Yes, the single-player world also includes a logic-server)
 > - For a server-maintainer: You only need to install this mod at the server-side, and the players don't need to install this mod at their client-side
 > - For a player: You only need to install this mod at the client-side, and then you can use the modules in your single-player world.
 
@@ -16,7 +16,7 @@ This is a minecraft mod that provides many essential and useful modules for vani
 
 # Modules
 
-> _**By default, all the modules are disabled, and this mod does nothing to the vanilla game.**_
+_**By default, all the modules are disabled, and this mod does nothing to the vanilla minecraft.**_
 
 <details>
 <summary>Click here to display all the modules</summary>
@@ -248,7 +248,7 @@ We try our best to avoid the usage of `.dat` format
 All the config files are inside `config/fuji/` directory so
 that you don't need to find out where the config files are.
 
-### How to update?
+### How to update to a newer version?
 Normally, the newer version will generate missing configuration keys automatically, but if this doesn't work, you can delete the old config file and restart the server to let the newer version generate the default config file.
 
 # Permission
@@ -271,17 +271,38 @@ You can add `-Dfuji.level="INFO"` to change the logger level.
 # Build from source
 This mod is written on linux environment, but there are no native-method calls, so you can compile it on any platform.
 
-1. Clone the source: `git clone https://github.com/SakuraWald/fuji-fabric.git`
-2. Change the working-directory: `cd fuji-fabric`
-3. Compile the source: `./gradlew build`
+Clone the source: 
+```shell
+$ git clone https://github.com/SakuraWald/fuji-fabric.git
+```
+Change the working-directory: 
+```shell
+$ cd fuji-fabric
+```
+Compile the source:
+```shell
+$ ./gradlew build
+```
 
-# Frequently asked questions
-1. What is `cron expression` ?
+# FAQ
+###  What is `cron expression`?
 
 Cron expression is an easy and powerful language used to define when a job should be triggered.
 You can learn more and generate a cron expression from the generator: https://www.freeformatter.com/cron-expression-generator-quartz.html
 
-# Thanks to
+### This mod failed to mixin the server at server-startup stage, what should I do?
+
+This mod need `fabric-api` mod to work, so make sure you have installed `fabric-api` mod.
+
+Before you enable `BetterFakePlayerModule`, you need to install `carpet` mod.
+
+Before you enable `ProfilerMoudle`, you need to install `spark` mod.
+
+### How can I report bugs or suggest new features?
+
+You can create an issue at the project's `github` page.
+
+# Thanks
 At the early stage of this project, we reference some source and ideas from the following projects:
 1. https://www.zrips.net/cmi/
 2. https://essentialsx.net/

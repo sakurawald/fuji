@@ -15,10 +15,6 @@ import net.minecraft.commands.Commands;
 
 public class ConfigModule extends ModuleInitializer {
 
-    @Override
-    public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
-    }
 
     @Override
     public void onReload() {
@@ -26,6 +22,7 @@ public class ConfigModule extends ModuleInitializer {
     }
 
     @SuppressWarnings("unused")
+    @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("fuji").requires(source -> source.hasPermission(4)).then(

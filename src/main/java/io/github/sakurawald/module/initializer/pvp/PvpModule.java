@@ -21,7 +21,6 @@ public class PvpModule extends ModuleInitializer {
     @Override
     public void onInitialize() {
         Configs.pvpHandler.loadFromDisk();
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
     }
 
     @Override
@@ -30,6 +29,7 @@ public class PvpModule extends ModuleInitializer {
     }
 
     @SuppressWarnings("unused")
+    @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("pvp")

@@ -56,7 +56,6 @@ public class ResourceWorldModule extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
         ServerWorldEvents.UNLOAD.register(this::onWorldUnload);
         ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
             this.loadWorlds(server);
@@ -74,6 +73,7 @@ public class ResourceWorldModule extends ModuleInitializer {
     }
 
     @SuppressWarnings("unused")
+    @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("rw")

@@ -17,11 +17,8 @@ import static net.minecraft.commands.Commands.argument;
 
 public class PingModule extends ModuleInitializer {
 
-    @Override
-    public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
-    }
 
+    @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(Commands.literal("ping").executes(this::$ping)
                 .then(argument("player", EntityArgument.player()).executes(this::$ping))

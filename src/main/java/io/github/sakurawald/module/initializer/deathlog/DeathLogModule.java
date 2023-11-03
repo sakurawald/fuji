@@ -63,10 +63,10 @@ public class DeathLogModule extends ModuleInitializer {
     @Override
     public void onInitialize() {
         STORAGE_PATH.toFile().mkdirs();
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
     }
 
     @SuppressWarnings({"UnusedReturnValue", "unused"})
+    @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
                 Commands.literal("deathlog").requires(s -> s.hasPermission(4))

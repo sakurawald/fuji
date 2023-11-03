@@ -45,8 +45,6 @@ public class SchedulerModule extends ModuleInitializer {
     public void onInitialize() {
         Configs.schedulerHandler.loadFromDisk();
         updateJobs();
-
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
     }
 
     @Override
@@ -55,6 +53,7 @@ public class SchedulerModule extends ModuleInitializer {
         updateJobs();
     }
 
+    @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(Commands.literal("scheduler_trigger").requires(s -> s.hasPermission(4))
                 .then(argument("name", StringArgumentType.word()).suggests(new SchedulerJobSuggestionProvider()).executes(this::$scheduler_trigger)));
