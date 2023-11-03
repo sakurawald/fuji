@@ -9,6 +9,7 @@ import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.GroupMatcher;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
 
@@ -73,7 +74,6 @@ public class ScheduleUtil {
     public static void removeJobs(String jobGroup, String jobName) {
         LOGGER.debug("removeJobs() -> jobGroup: {}, jobName: {}", jobGroup, jobName);
 
-
         try {
             scheduler.deleteJob(new JobKey(jobName, jobGroup));
         } catch (SchedulerException e) {
@@ -85,14 +85,31 @@ public class ScheduleUtil {
         LOGGER.debug("removeJobs() -> jobGroup: {}", jobGroup);
 
         try {
-            GroupMatcher<JobKey> groupMatcher = GroupMatcher.groupEquals(jobGroup);
-            Set<JobKey> jobKeys = scheduler.getJobKeys(groupMatcher);
-            scheduler.deleteJobs(jobKeys.stream().toList());
+            scheduler.deleteJobs(getJobKeys(jobGroup).stream().toList());
         } catch (SchedulerException e) {
             LOGGER.error("Exception in ScheduleUtil.removeJobs", e);
         }
     }
 
+    private static Set<JobKey> getJobKeys(String jobGroup) {
+        GroupMatcher<JobKey> groupMatcher = GroupMatcher.groupEquals(jobGroup);
+        try {
+            return scheduler.getJobKeys(groupMatcher);
+        } catch (SchedulerException e) {
+            LOGGER.error("Exception in ScheduleUtil.getJobKeys", e);
+        }
+        return Collections.emptySet();
+    }
+
+    public static void triggerJobs(String jobGroup) {
+        getJobKeys(jobGroup).forEach(jobKey -> {
+            try {
+                scheduler.triggerJob(jobKey);
+            } catch (SchedulerException e) {
+                LOGGER.error("Exception in ScheduleUtil.triggerJobs", e);
+            }
+        });
+    }
 
     public static void startScheduler() {
         try {

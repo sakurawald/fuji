@@ -1,5 +1,6 @@
 package io.github.sakurawald;
 
+import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.ScheduleUtil;
@@ -35,6 +36,9 @@ public class Fuji implements ModInitializer {
 
         /* scheduler */
         ServerLifecycleEvents.SERVER_STARTED.register(server -> ScheduleUtil.startScheduler());
-        ServerLifecycleEvents.SERVER_STOPPING.register(server -> ScheduleUtil.shutdownScheduler());
+        ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
+            ScheduleUtil.triggerJobs(ConfigHandler.ConfigHandlerAutoSaveJob.class.getName());
+            ScheduleUtil.shutdownScheduler();
+        });
     }
 }

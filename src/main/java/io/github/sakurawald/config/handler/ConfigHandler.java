@@ -82,9 +82,9 @@ public abstract class ConfigHandler<T> {
 
     public void autoSave(String cron) {
         String jobName = this.file.getName();
-        String jobGroup = ConfigWrapperAutoSaveJob.class.getName();
+        String jobGroup = ConfigHandlerAutoSaveJob.class.getName();
         ScheduleUtil.removeJobs(jobGroup, jobName);
-        ScheduleUtil.addJob(ConfigWrapperAutoSaveJob.class, jobName, jobGroup, cron, new JobDataMap() {
+        ScheduleUtil.addJob(ConfigHandlerAutoSaveJob.class, jobName, jobGroup, cron, new JobDataMap() {
             {
                 this.put(ConfigHandler.class.getName(), ConfigHandler.this);
             }
@@ -116,7 +116,7 @@ public abstract class ConfigHandler<T> {
         }
     }
 
-    public static class ConfigWrapperAutoSaveJob implements Job {
+    public static class ConfigHandlerAutoSaveJob implements Job {
         @Override
         public void execute(JobExecutionContext context) throws JobExecutionException {
             LOGGER.debug("AutoSave ConfigWrapper {}", context.getJobDetail().getKey().getName());
