@@ -10,7 +10,6 @@ import io.github.sakurawald.module.initializer.skin.enums.SkinVariant;
 import io.github.sakurawald.module.initializer.skin.provider.MineSkinSkinProvider;
 import io.github.sakurawald.module.initializer.skin.provider.MojangSkinProvider;
 import io.github.sakurawald.util.MessageUtil;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;

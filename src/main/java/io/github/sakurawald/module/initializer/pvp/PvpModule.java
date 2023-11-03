@@ -5,15 +5,13 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.server.level.ServerPlayer;
 
 import java.util.HashSet;
-import java.util.Objects;
 
 
 public class PvpModule extends ModuleInitializer {
@@ -41,49 +39,48 @@ public class PvpModule extends ModuleInitializer {
     }
 
     private int $on(CommandContext<CommandSourceStack> ctx) {
-        CommandSourceStack source = ctx.getSource();
-        String player = Objects.requireNonNull(source.getPlayer()).getGameProfile().getName();
+        return CommandUtil.playerOnlyCommand(ctx, player -> {
+            HashSet<String> whitelist = Configs.pvpHandler.model().whitelist;
+            String name = player.getGameProfile().getName();
+            if (!whitelist.contains(name)) {
+                whitelist.add(name);
+                Configs.pvpHandler.saveToDisk();
 
-        HashSet<String> whitelist = Configs.pvpHandler.model().whitelist;
-        if (!whitelist.contains(player)) {
-            whitelist.add(player);
-            Configs.pvpHandler.saveToDisk();
+                MessageUtil.sendMessage(player, "pvp.on");
 
-            MessageUtil.sendMessage(source, "pvp.on");
+                return Command.SINGLE_SUCCESS;
+            }
 
+            MessageUtil.sendMessage(player, "pvp.on.already");
             return Command.SINGLE_SUCCESS;
-        }
-
-        MessageUtil.sendMessage(source, "pvp.on.already");
-        return 0;
+        });
     }
 
     private int $off(CommandContext<CommandSourceStack> ctx) {
-        CommandSourceStack source = ctx.getSource();
-        String player = Objects.requireNonNull(source.getPlayer()).getGameProfile().getName();
+        return CommandUtil.playerOnlyCommand(ctx, player -> {
+            HashSet<String> whitelist = Configs.pvpHandler.model().whitelist;
+            String name = player.getGameProfile().getName();
+            if (whitelist.contains(name)) {
+                whitelist.remove(name);
+                Configs.pvpHandler.saveToDisk();
 
-        HashSet<String> whitelist = Configs.pvpHandler.model().whitelist;
-        if (whitelist.contains(player)) {
-            whitelist.remove(player);
-            Configs.pvpHandler.saveToDisk();
+                MessageUtil.sendMessage(player, "pvp.off");
+                return Command.SINGLE_SUCCESS;
+            }
 
-            MessageUtil.sendMessage(source, "pvp.off");
-            return Command.SINGLE_SUCCESS;
-        }
-
-        MessageUtil.sendMessage(source, "pvp.off.already");
-        return 0;
+            MessageUtil.sendMessage(player, "pvp.off.already");
+            return 0;
+        });
     }
 
     @SuppressWarnings("SameReturnValue")
     private int $status(CommandContext<CommandSourceStack> ctx) {
-        ServerPlayer player = ctx.getSource().getPlayer();
-        if (player == null) return Command.SINGLE_SUCCESS;
-
-        HashSet<String> whitelist = Configs.pvpHandler.model().whitelist;
-        player.sendMessage(MessageUtil.ofComponent(player, "pvp.status")
-                .append(whitelist.contains(player.getGameProfile().getName()) ? MessageUtil.ofComponent(player, "on") : MessageUtil.ofComponent(player, "off")));
-        return Command.SINGLE_SUCCESS;
+        return CommandUtil.playerOnlyCommand(ctx, player -> {
+            HashSet<String> whitelist = Configs.pvpHandler.model().whitelist;
+            player.sendMessage(MessageUtil.ofComponent(player, "pvp.status")
+                    .append(whitelist.contains(player.getGameProfile().getName()) ? MessageUtil.ofComponent(player, "on") : MessageUtil.ofComponent(player, "off")));
+            return Command.SINGLE_SUCCESS;
+        });
     }
 
     private int $list(CommandContext<CommandSourceStack> ctx) {

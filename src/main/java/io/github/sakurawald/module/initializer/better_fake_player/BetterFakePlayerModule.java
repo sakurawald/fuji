@@ -6,12 +6,11 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.ScheduleUtil;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.kyori.adventure.text.Component;
 import net.minecraft.commands.CommandBuildContext;
@@ -51,12 +50,11 @@ public class BetterFakePlayerModule extends ModuleInitializer {
     }
 
     @SuppressWarnings("SameReturnValue")
-    private int $renew(CommandContext<CommandSourceStack> context) {
-        ServerPlayer player = context.getSource().getPlayer();
-        if (player == null) return Command.SINGLE_SUCCESS;
-
-        renewFakePlayers(player);
-        return Command.SINGLE_SUCCESS;
+    private int $renew(CommandContext<CommandSourceStack> ctx) {
+        return CommandUtil.playerOnlyCommand(ctx, player -> {
+            renewFakePlayers(player);
+            return Command.SINGLE_SUCCESS;
+        });
     }
 
 

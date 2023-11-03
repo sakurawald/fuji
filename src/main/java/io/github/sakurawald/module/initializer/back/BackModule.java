@@ -6,9 +6,9 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.teleport_warmup.Position;
+import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -28,17 +28,16 @@ public class BackModule extends ModuleInitializer {
     }
 
     private int $back(CommandContext<CommandSourceStack> ctx) {
-        ServerPlayer player = ctx.getSource().getPlayer();
-        if (player == null) return 0;
+        return CommandUtil.playerOnlyCommand(ctx, (player -> {
+            Position lastPos = player2lastPos.get(player.getName().getString());
+            if (lastPos == null) {
+                MessageUtil.sendActionBar(player, "back.no_previous_position");
+                return Command.SINGLE_SUCCESS;
+            }
 
-        Position lastPos = player2lastPos.get(player.getName().getString());
-        if (lastPos == null) {
-            MessageUtil.sendActionBar(player, "back.no_previous_position");
+            lastPos.teleport(player);
             return Command.SINGLE_SUCCESS;
-        }
-
-        lastPos.teleport(player);
-        return Command.SINGLE_SUCCESS;
+        }));
     }
 
     public void updatePlayer(ServerPlayer player) {

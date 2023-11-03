@@ -8,7 +8,6 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.chat.mention.MentionPlayersJob;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -27,7 +26,6 @@ public class TpaModule extends ModuleInitializer {
 
     @Getter
     private final ArrayList<TpaRequest> requests = new ArrayList<>();
-
 
 
     @SuppressWarnings("unused")

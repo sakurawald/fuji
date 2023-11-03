@@ -13,9 +13,9 @@ import io.github.sakurawald.module.initializer.chat.display.DisplayHelper;
 import io.github.sakurawald.module.initializer.chat.mention.MentionPlayersJob;
 import io.github.sakurawald.module.initializer.main_stats.MainStats;
 import io.github.sakurawald.module.initializer.main_stats.MainStatsModule;
+import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.ClickCallback;
@@ -79,14 +79,13 @@ public class ChatModule extends ModuleInitializer {
     }
 
     private int $format(CommandContext<CommandSourceStack> ctx) {
-        ServerPlayer player = ctx.getSource().getPlayer();
-        if (player == null) return 0;
-
-        String name = player.getGameProfile().getName();
-        String format = StringArgumentType.getString(ctx, "format");
-        Configs.chatHandler.model().format.player2format.put(name, format);
-        Configs.chatHandler.saveToDisk();
-        return Command.SINGLE_SUCCESS;
+        return CommandUtil.playerOnlyCommand(ctx, player -> {
+            String name = player.getGameProfile().getName();
+            String format = StringArgumentType.getString(ctx, "format");
+            Configs.chatHandler.model().format.player2format.put(name, format);
+            Configs.chatHandler.saveToDisk();
+            return Command.SINGLE_SUCCESS;
+        });
     }
 
 

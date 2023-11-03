@@ -10,9 +10,9 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.mixin.resource_world.MinecraftServerAccessor;
+import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.SneakyThrows;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -87,39 +87,35 @@ public class WorldDownloaderModule extends ModuleInitializer {
     @SuppressWarnings("SameReturnValue")
     @SneakyThrows
     private int $download(CommandContext<CommandSourceStack> ctx) {
+        return CommandUtil.playerOnlyCommand(ctx, player -> {
+            /* init server */
+            if (server == null) {
+                initServer();
+            }
 
-        ServerPlayer player = ctx.getSource().getPlayer();
-        if (player == null) {
+            /* remove redundant contexts */
+            if (contextQueue.remainingCapacity() == 0) {
+                Fuji.LOGGER.info("contexts is full, remove the oldest context. {}", contextQueue.peek());
+                safelyRemoveContext(contextQueue.poll());
+            }
+
+            /* create context */
+            String url = Configs.configHandler.model().modules.world_downloader.url_format;
+
+            int port = Configs.configHandler.model().modules.world_downloader.port;
+            url = url.replace("%port%", String.valueOf(port));
+
+            String path = "/download/" + UUID.randomUUID();
+            url = url.replace("%path%", path);
+
+            contextQueue.add(path);
+            File file = compressRegionFile(player);
+            double BYTE_TO_MEGABYTE = 1.0 * 1024 * 1024;
+            MessageUtil.sendBroadcast("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
+            server.createContext(path, new FileDownloadHandler(this, file, Configs.configHandler.model().modules.world_downloader.bytes_per_second_limit));
+            MessageUtil.sendMessage(player, "world_downloader.response", url);
             return Command.SINGLE_SUCCESS;
-        }
-
-        /* init server */
-        if (server == null) {
-            initServer();
-        }
-
-        /* remove redundant contexts */
-        if (contextQueue.remainingCapacity() == 0) {
-            Fuji.LOGGER.info("contexts is full, remove the oldest context. {}", contextQueue.peek());
-            safelyRemoveContext(contextQueue.poll());
-        }
-
-        /* create context */
-        String url = Configs.configHandler.model().modules.world_downloader.url_format;
-
-        int port = Configs.configHandler.model().modules.world_downloader.port;
-        url = url.replace("%port%", String.valueOf(port));
-
-        String path = "/download/" + UUID.randomUUID();
-        url = url.replace("%path%", path);
-
-        contextQueue.add(path);
-        File file = compressRegionFile(player);
-        double BYTE_TO_MEGABYTE = 1.0 * 1024 * 1024;
-        MessageUtil.sendBroadcast("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
-        server.createContext(path, new FileDownloadHandler(this, file, Configs.configHandler.model().modules.world_downloader.bytes_per_second_limit));
-        MessageUtil.sendMessage(player, "world_downloader.response", url);
-        return Command.SINGLE_SUCCESS;
+        });
     }
 
     public File compressRegionFile(ServerPlayer player) {

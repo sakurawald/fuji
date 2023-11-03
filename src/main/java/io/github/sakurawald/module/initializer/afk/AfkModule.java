@@ -6,9 +6,9 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.ScheduleUtil;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -44,13 +44,12 @@ public class AfkModule extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int $afk(CommandContext<CommandSourceStack> ctx) {
-        ServerPlayer player = ctx.getSource().getPlayer();
-        if (player == null) return Command.SINGLE_SUCCESS;
-
-        // note: issue command will update lastLastActionTime, so it's impossible to use /afk to disable afk
-        ((ServerPlayerAccessor_afk) player).fuji$setAfk(true);
-        MessageUtil.sendMessage(player, "afk.on");
-        return Command.SINGLE_SUCCESS;
+        return CommandUtil.playerOnlyCommand(ctx, (player -> {
+            // note: issue command will update lastLastActionTime, so it's impossible to use /afk to disable afk
+            ((ServerPlayerAccessor_afk) player).fuji$setAfk(true);
+            MessageUtil.sendMessage(player, "afk.on");
+            return Command.SINGLE_SUCCESS;
+        }));
     }
 
     public static class AfkCheckerJob implements Job {

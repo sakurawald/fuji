@@ -11,7 +11,7 @@ import io.github.sakurawald.module.initializer.head.api.Category;
 import io.github.sakurawald.module.initializer.head.api.Head;
 import io.github.sakurawald.module.initializer.head.api.HeadDatabaseAPI;
 import io.github.sakurawald.module.initializer.head.gui.HeadGui;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import io.github.sakurawald.util.CommandUtil;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.PlayerInventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -78,12 +78,11 @@ public class HeadModule extends ModuleInitializer {
         dispatcher.register(Commands.literal("head").executes(this::$head));
     }
 
-    public int $head(CommandContext<CommandSourceStack> context) {
-        ServerPlayer player = context.getSource().getPlayer();
-        if (player == null) return Command.SINGLE_SUCCESS;
-
-        new HeadGui(player).open();
-        return Command.SINGLE_SUCCESS;
+    public int $head(CommandContext<CommandSourceStack> ctx) {
+        return CommandUtil.playerOnlyCommand(ctx, player -> {
+            new HeadGui(player).open();
+            return Command.SINGLE_SUCCESS;
+        });
     }
 
     public enum EconomyType {

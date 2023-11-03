@@ -12,10 +12,10 @@ import io.github.sakurawald.module.initializer.works.gui.InputSignGui;
 import io.github.sakurawald.module.initializer.works.work_type.NonProductionWork;
 import io.github.sakurawald.module.initializer.works.work_type.ProductionWork;
 import io.github.sakurawald.module.initializer.works.work_type.Work;
+import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.GuiUtil;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.ScheduleUtil;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
@@ -254,11 +254,10 @@ public class WorksModule extends ModuleInitializer {
     }
 
     private int $works(CommandContext<CommandSourceStack> ctx) {
-        ServerPlayer player = ctx.getSource().getPlayer();
-        if (player == null) return Command.SINGLE_SUCCESS;
-
-        $listWorks(player, null, 0);
-        return Command.SINGLE_SUCCESS;
+        return CommandUtil.playerOnlyCommand(ctx, player -> {
+            $listWorks(player, null, 0);
+            return Command.SINGLE_SUCCESS;
+        });
     }
 
     public static class WorksScheduleJob implements Job {

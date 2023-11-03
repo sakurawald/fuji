@@ -11,10 +11,10 @@ import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.HomeModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.teleport_warmup.Position;
+import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.ScheduleUtil;
 import lombok.Getter;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -65,64 +65,60 @@ public class HomeModule extends ModuleInitializer {
     }
 
     private int $tp(CommandContext<CommandSourceStack> ctx) {
-        ServerPlayer player = ctx.getSource().getPlayer();
-        if (player == null) return 0;
+        return CommandUtil.playerOnlyCommand(ctx, player -> {
+            Map<String, Position> name2position = getHomes(player);
+            String homeName = StringArgumentType.getString(ctx, "name");
+            if (!name2position.containsKey(homeName)) {
+                MessageUtil.sendMessage(player, "home.no_found", homeName);
+                return 0;
+            }
 
-        Map<String, Position> name2position = getHomes(player);
-        String homeName = StringArgumentType.getString(ctx, "name");
-        if (!name2position.containsKey(homeName)) {
-            MessageUtil.sendMessage(player, "home.no_found", homeName);
-            return 0;
-        }
-
-        Position position = name2position.get(homeName);
-        position.teleport(player);
-        return Command.SINGLE_SUCCESS;
+            Position position = name2position.get(homeName);
+            position.teleport(player);
+            return Command.SINGLE_SUCCESS;
+        });
     }
 
     private int $unset(CommandContext<CommandSourceStack> ctx) {
-        ServerPlayer player = ctx.getSource().getPlayer();
-        if (player == null) return 0;
+        return CommandUtil.playerOnlyCommand(ctx, player -> {
+            Map<String, Position> name2position = getHomes(player);
+            String homeName = StringArgumentType.getString(ctx, "name");
+            if (!name2position.containsKey(homeName)) {
+                MessageUtil.sendMessage(player, "home.no_found", homeName);
+                return 0;
+            }
 
-        Map<String, Position> name2position = getHomes(player);
-        String homeName = StringArgumentType.getString(ctx, "name");
-        if (!name2position.containsKey(homeName)) {
-            MessageUtil.sendMessage(player, "home.no_found", homeName);
-            return 0;
-        }
-
-        name2position.remove(homeName);
-        MessageUtil.sendMessage(player, "home.unset.success", homeName);
-        return Command.SINGLE_SUCCESS;
+            name2position.remove(homeName);
+            MessageUtil.sendMessage(player, "home.unset.success", homeName);
+            return Command.SINGLE_SUCCESS;
+        });
     }
 
     private int $set(CommandContext<CommandSourceStack> ctx, boolean override) {
-        ServerPlayer player = ctx.getSource().getPlayer();
-        if (player == null) return 0;
-
-        Map<String, Position> name2position = getHomes(player);
-        String homeName = StringArgumentType.getString(ctx, "name");
-        if (name2position.containsKey(homeName)) {
-            if (!override) {
-                MessageUtil.sendMessage(player, "home.set.fail.need_override", homeName);
+        return CommandUtil.playerOnlyCommand(ctx, player -> {
+            Map<String, Position> name2position = getHomes(player);
+            String homeName = StringArgumentType.getString(ctx, "name");
+            if (name2position.containsKey(homeName)) {
+                if (!override) {
+                    MessageUtil.sendMessage(player, "home.set.fail.need_override", homeName);
+                    return Command.SINGLE_SUCCESS;
+                }
+            } else if (name2position.size() >= Configs.configHandler.model().modules.home.max_homes) {
+                MessageUtil.sendMessage(player, "home.set.fail.limit");
                 return Command.SINGLE_SUCCESS;
             }
-        } else if (name2position.size() >= Configs.configHandler.model().modules.home.max_homes) {
-            MessageUtil.sendMessage(player, "home.set.fail.limit");
-            return Command.SINGLE_SUCCESS;
-        }
 
-        name2position.put(homeName, Position.of(player));
-        MessageUtil.sendMessage(player, "home.set.success", homeName);
-        return Command.SINGLE_SUCCESS;
+            name2position.put(homeName, Position.of(player));
+            MessageUtil.sendMessage(player, "home.set.success", homeName);
+            return Command.SINGLE_SUCCESS;
+        });
     }
 
     private int $list(CommandContext<CommandSourceStack> ctx) {
-        ServerPlayer player = ctx.getSource().getPlayer();
-        if (player == null) return 0;
-
-        MessageUtil.sendMessage(player, "home.list", getHomes(player).keySet());
-        return Command.SINGLE_SUCCESS;
+        return CommandUtil.playerOnlyCommand(ctx, player -> {
+            MessageUtil.sendMessage(player, "home.list", getHomes(player).keySet());
+            return Command.SINGLE_SUCCESS;
+        });
     }
 
     public RequiredArgumentBuilder<CommandSourceStack, String> myHomesArgument() {

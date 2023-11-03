@@ -10,6 +10,7 @@
   "back": "<#FFA1F5>Back",
   "empty": "<#FFA1F5>Empty",
   "confirm": "<#FFA1F5>Confirm",
+  "command.player_only": "<red>This command can only be executed by a player",
   "level.no_exists": "<red>Level %s doesn't exist",
   "input.syntax.error": "<red>Input Syntax Error",
   "input.limit.error": "<red>Input limit exceed",
@@ -158,5 +159,6 @@
   "home.list": "<gold>Your homes: %s",
   "home.unset.success": "<gold>Home %s removed.",
   "home.no_found": "<red>Home %s not found.",
-  "ping.player": "<gold>Ping of %s: %d ms"
+  "ping.player": "<gold>Ping of %s: %d ms",
+  "ping.target.no_found": "<red>Ping target no found."
 }

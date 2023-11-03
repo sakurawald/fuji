@@ -4,11 +4,10 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import io.github.sakurawald.util.CommandUtil;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.server.level.ServerPlayer;
 
 
 public class ExtinguishModule extends ModuleInitializer {
@@ -21,11 +20,10 @@ public class ExtinguishModule extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int $extinguish(CommandContext<CommandSourceStack> ctx) {
-        ServerPlayer player = ctx.getSource().getPlayer();
-        if (player == null) return Command.SINGLE_SUCCESS;
-
-        player.setRemainingFireTicks(0);
-        return Command.SINGLE_SUCCESS;
+        return CommandUtil.playerOnlyCommand(ctx, player -> {
+            player.setRemainingFireTicks(0);
+            return Command.SINGLE_SUCCESS;
+        });
     }
 
 }

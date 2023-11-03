@@ -2,7 +2,6 @@ package io.github.sakurawald.module.initializer.better_info;
 
 import com.mojang.brigadier.CommandDispatcher;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;

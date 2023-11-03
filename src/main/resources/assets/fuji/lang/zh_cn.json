@@ -10,6 +10,7 @@
   "back": "<#FFA1F5>返回",
   "empty": "<#FFA1F5>空",
   "confirm": "<#FFA1F5>确认",
+  "command.player_only": "<red>该命名只能由玩家执行",
   "level.no_exists": "<red>维度 %s 不存在",
   "input.syntax.error": "<red>输入的格式错误",
   "input.limit.error": "<red>输入超出限制",
@@ -158,5 +159,6 @@
   "home.list": "<gold>您的家: %s",
   "home.unset.success": "<gold>家 %s 已移除.",
   "home.no_found": "<red>家 %s 不存在.",
-  "ping.player": "<gold>玩家 %s 的延迟: %d ms"
+  "ping.player": "<gold>玩家 %s 的延迟: %d ms",
+  "ping.target.no_found": "<red>目标玩家未找到"
 }

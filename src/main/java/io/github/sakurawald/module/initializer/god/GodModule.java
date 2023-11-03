@@ -4,12 +4,11 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.server.level.ServerPlayer;
 
 
 public class GodModule extends ModuleInitializer {
@@ -22,15 +21,14 @@ public class GodModule extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int $god(CommandContext<CommandSourceStack> ctx) {
-        ServerPlayer player = ctx.getSource().getPlayer();
-        if (player == null) return Command.SINGLE_SUCCESS;
+        return CommandUtil.playerOnlyCommand(ctx, player -> {
+            boolean flag = !player.getAbilities().invulnerable;
+            player.getAbilities().invulnerable = flag;
+            player.onUpdateAbilities();
 
-        boolean flag = !player.getAbilities().invulnerable;
-        player.getAbilities().invulnerable = flag;
-        player.onUpdateAbilities();
-
-        MessageUtil.sendMessage(player, flag ? "god.on" : "god.off");
-        return Command.SINGLE_SUCCESS;
+            MessageUtil.sendMessage(player, flag ? "god.on" : "god.off");
+            return Command.SINGLE_SUCCESS;
+        });
     }
 
 }

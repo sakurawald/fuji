@@ -5,7 +5,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.MessageUtil;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -27,19 +26,15 @@ public class PingModule extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int $ping(CommandContext<CommandSourceStack> ctx) {
-        ServerPlayer player = ctx.getSource().getPlayer();
-        if (player == null) return Command.SINGLE_SUCCESS;
-
-        ServerPlayer target;
         try {
-            target = EntityArgument.getPlayer(ctx, "player");
+            ServerPlayer target = EntityArgument.getPlayer(ctx, "player");
+            String name = target.getGameProfile().getName();
+            int latency = target.connection.latency();
+            MessageUtil.sendMessage(ctx.getSource(), "ping.player", name, latency);
         } catch (Exception e) {
-            target = player;
+            MessageUtil.sendMessage(ctx.getSource(), "ping.target.no_found");
         }
 
-        String name = target.getGameProfile().getName();
-        int latency = target.connection.latency();
-        MessageUtil.sendMessage(target, "ping.player", name, latency);
         return Command.SINGLE_SUCCESS;
     }
 

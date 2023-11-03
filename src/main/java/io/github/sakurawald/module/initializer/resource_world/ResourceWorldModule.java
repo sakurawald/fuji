@@ -13,9 +13,9 @@ import io.github.sakurawald.module.initializer.newbie_welcome.random_teleport.Ra
 import io.github.sakurawald.module.initializer.resource_world.interfaces.DimensionOptionsMixinInterface;
 import io.github.sakurawald.module.initializer.resource_world.interfaces.SimpleRegistryMixinInterface;
 import io.github.sakurawald.module.mixin.resource_world.MinecraftServerAccessor;
+import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.ScheduleUtil;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.Util;
@@ -31,7 +31,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.BiomeManager;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -204,26 +203,25 @@ public class ResourceWorldModule extends ModuleInitializer {
     }
 
     private int $tp(CommandContext<CommandSourceStack> ctx) {
-        ServerPlayer player = ctx.getSource().getPlayer();
-        if (player == null) return 0;
+        return CommandUtil.playerOnlyCommand(ctx, player -> {
+            String path = ctx.getNodes().get(2).getNode().getName();
+            ServerLevel world = getResourceWorldByPath(ctx.getSource().getServer(), path);
+            if (world == null) {
+                MessageUtil.sendMessage(ctx.getSource(), "resource_world.world.not_found", path);
+                return 0;
+            }
 
-        String path = ctx.getNodes().get(2).getNode().getName();
-        ServerLevel world = getResourceWorldByPath(ctx.getSource().getServer(), path);
-        if (world == null) {
-            MessageUtil.sendMessage(ctx.getSource(), "resource_world.world.not_found", path);
-            return 0;
-        }
+            if (world.dimensionTypeId() == BuiltinDimensionTypes.END) {
+                ServerLevel.makeObsidianPlatform(world);
+                BlockPos endSpawnPos = ServerLevel.END_SPAWN_POINT;
+                player.teleportTo(world, endSpawnPos.getX() + 0.5, endSpawnPos.getY(), endSpawnPos.getZ() + 0.5, 90, 0);
+            } else {
+                MessageUtil.sendActionBar(player, "resource_world.world.tp.tip");
+                RandomTeleport.randomTeleport(player, world, false);
+            }
 
-        if (world.dimensionTypeId() == BuiltinDimensionTypes.END) {
-            ServerLevel.makeObsidianPlatform(world);
-            BlockPos endSpawnPos = ServerLevel.END_SPAWN_POINT;
-            player.teleportTo(world, endSpawnPos.getX() + 0.5, endSpawnPos.getY(), endSpawnPos.getZ() + 0.5, 90, 0);
-        } else {
-            MessageUtil.sendActionBar(player, "resource_world.world.tp.tip");
-            RandomTeleport.randomTeleport(player, world, false);
-        }
-
-        return Command.SINGLE_SUCCESS;
+            return Command.SINGLE_SUCCESS;
+        });
     }
 
 

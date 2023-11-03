@@ -7,12 +7,11 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.server.level.ServerPlayer;
 
 import java.util.HashMap;
 
@@ -35,19 +34,19 @@ public class ReplyModule extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int $reply(CommandContext<CommandSourceStack> ctx) {
-        ServerPlayer player = ctx.getSource().getPlayer();
-        if (player == null) return Command.SINGLE_SUCCESS;
+        return CommandUtil.playerOnlyCommand(ctx, player -> {
 
-        String target = this.player2target.get(player.getGameProfile().getName());
-        String message = StringArgumentType.getString(ctx, "message");
+            String target = this.player2target.get(player.getGameProfile().getName());
+            String message = StringArgumentType.getString(ctx, "message");
 
-        try {
-            Fuji.SERVER.getCommands().getDispatcher().execute("msg %s %s".formatted(target, message), player.createCommandSourceStack());
-        } catch (CommandSyntaxException e) {
-            MessageUtil.sendMessage(player, "reply.no_target");
-        }
+            try {
+                Fuji.SERVER.getCommands().getDispatcher().execute("msg %s %s".formatted(target, message), player.createCommandSourceStack());
+            } catch (CommandSyntaxException e) {
+                MessageUtil.sendMessage(player, "reply.no_target");
+            }
 
-        return Command.SINGLE_SUCCESS;
+            return Command.SINGLE_SUCCESS;
+        });
     }
 
 }
