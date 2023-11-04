@@ -1,3 +1,5 @@
+import com.google.gson.JsonParser
+
 plugins {
     id 'fabric-loom' version '1.4-SNAPSHOT'
     id 'maven-publish'
@@ -132,3 +134,7 @@ modrinth {
  syncBodyFrom = rootProject.file("README.md").text
 }
 tasks.modrinth.dependsOn(tasks.modrinthSyncBody)
+tasks.register('replaceReadme') {
+    // todo
+}
+tasks.modrinthSyncBody.dependsOn(tasks.replaceReadme)

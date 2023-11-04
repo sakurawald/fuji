@@ -15,7 +15,7 @@ import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.PlayerEnderChestContainer;
 
 
-public class WorkbenchModule extends ModuleInitializer {
+public class EnderChestModule extends ModuleInitializer {
 
     @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {

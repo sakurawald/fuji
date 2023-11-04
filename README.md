@@ -243,6 +243,7 @@ provides `/enderchest` command.
 </details>
 
 # Config
+
 ### What is the format of config files?
 To make the config files more `readable` and `transparent`, we use `.json` as the config file format.
 We try our best to avoid the usage of `.dat` format
