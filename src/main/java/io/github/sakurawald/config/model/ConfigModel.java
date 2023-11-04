@@ -76,7 +76,8 @@ public class ConfigModel {
         public Home home = new Home();
         public Ping ping = new Ping();
         public SystemMessage system_message = new SystemMessage();
-        public EnderChest ender_chest = new EnderChest();
+        public EnderChest enderchest = new EnderChest();
+        public Workbench workbench = new Workbench();
 
         public class ResourceWorld {
             public boolean enable = false;
@@ -478,6 +479,10 @@ public class ConfigModel {
         }
 
         public class EnderChest {
+            public boolean enable = false;
+        }
+
+        public class Workbench {
             public boolean enable = false;
         }
     }
