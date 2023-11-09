@@ -239,6 +239,9 @@ The system messages including:
 #### EnderChestModule
 provides `/enderchest` command.
 
+#### WorkbenchModule
+provides `/workbench` command.
+
 
 </details>
 

@@ -78,6 +78,10 @@ public class ConfigModel {
         public SystemMessage system_message = new SystemMessage();
         public EnderChest enderchest = new EnderChest();
         public Workbench workbench = new Workbench();
+        public Enchantment enchantment = new Enchantment();
+        public Anvil anvil = new Anvil();
+        public GrindStone grindstone = new GrindStone();
+        public StoneCutter stonecutter = new StoneCutter();
 
         public class ResourceWorld {
             public boolean enable = false;
@@ -485,5 +489,27 @@ public class ConfigModel {
         public class Workbench {
             public boolean enable = false;
         }
+
+        public class Enchantment {
+
+            public boolean enable = false;
+
+        }
+
+        public class Anvil {
+
+            public boolean enable = false;
+        }
+
+        public class GrindStone {
+
+            public boolean enable = false;
+        }
+
+        public class StoneCutter {
+
+            public boolean enable = false;
+        }
+
     }
 }

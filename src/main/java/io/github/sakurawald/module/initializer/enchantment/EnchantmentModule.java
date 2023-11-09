@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.workbench;
+package io.github.sakurawald.module.initializer.enchantment;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
@@ -9,27 +9,25 @@ import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
-import net.minecraft.stats.Stats;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.CraftingMenu;
+import net.minecraft.world.inventory.EnchantmentMenu;
 
-public class WorkbenchModule extends ModuleInitializer {
+public class EnchantmentModule extends ModuleInitializer {
     @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
-        dispatcher.register(Commands.literal("workbench").executes(this::$workbench));
+        dispatcher.register(Commands.literal("enchantment").executes(this::$enchantment));
     }
 
-    private int $workbench(CommandContext<CommandSourceStack> ctx) {
+    private int $enchantment(CommandContext<CommandSourceStack> ctx) {
         return CommandUtil.playerOnlyCommand(ctx, player -> {
-            player.openMenu(new SimpleMenuProvider((i, inventory, p) -> new CraftingMenu(i, inventory, ContainerLevelAccess.create(p.level(), p.blockPosition())) {
+            player.openMenu(new SimpleMenuProvider((i, inventory, p) -> new EnchantmentMenu(i, inventory, ContainerLevelAccess.create(p.level(), p.blockPosition())) {
                 @Override
                 public boolean stillValid(Player player) {
                     return true;
                 }
-            }, Component.translatable("container.crafting")));
-            player.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
+            }, Component.translatable("container.enchant")));
             return Command.SINGLE_SUCCESS;
         });
     }
