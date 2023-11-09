@@ -160,5 +160,7 @@
   "home.unset.success": "<gold>家 %s 已移除.",
   "home.no_found": "<red>家 %s 不存在.",
   "ping.player": "<gold>玩家 %s 的延迟: %d ms",
-  "ping.target.no_found": "<red>目标玩家未找到"
+  "ping.target.no_found": "<red>目标玩家未找到",
+  "bed.not_found": "<red>未找到床",
+  "bed.success": "<gold>已传送到床"
 }

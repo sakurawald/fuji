@@ -511,5 +511,10 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
+        public Bed bed = new Bed();
+        public class Bed {
+
+            public boolean enable = false;
+        }
     }
 }

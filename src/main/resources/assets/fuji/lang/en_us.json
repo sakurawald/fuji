@@ -160,5 +160,7 @@
   "home.unset.success": "<gold>Home %s removed.",
   "home.no_found": "<red>Home %s not found.",
   "ping.player": "<gold>Ping of %s: %d ms",
-  "ping.target.no_found": "<red>Ping target no found."
+  "ping.target.no_found": "<red>Ping target no found.",
+  "bed.not_found": "<red>No bed found.",
+  "bed.success": "<gold>Teleported to bed."
 }
