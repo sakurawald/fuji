@@ -1,7 +1,7 @@
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import lombok.extern.slf4j.Slf4j;
+import io.github.sakurawald.Fuji;
 
 import java.io.File;
 import java.io.FileReader;
@@ -9,14 +9,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 
-@Slf4j
 public class RemoveCustomStatsTest {
 
     public static void main(String[] args) {
-        log.info("{}", 0 / 8);
-        log.info("{}", -2 / 8);
-        log.info("{}", -6 / 8);
-        log.info("{}", -9 / 8);
+        Fuji.LOGGER.info("{}", 0 / 8);
+        Fuji.LOGGER.info("{}", -2 / 8);
+        Fuji.LOGGER.info("{}", -6 / 8);
+        Fuji.LOGGER.info("{}", -9 / 8);
     }
 
     void removeStats() {

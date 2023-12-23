@@ -1,52 +1,78 @@
 package io.github.sakurawald.module;
 
 import com.google.gson.JsonElement;
-import io.github.sakurawald.config.base.ConfigManager;
-import lombok.extern.slf4j.Slf4j;
+import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.module.initializer.ModuleInitializer;
+import org.jetbrains.annotations.ApiStatus;
 import org.reflections.Reflections;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-@Slf4j
+import static io.github.sakurawald.Fuji.LOGGER;
+
 public class ModuleManager {
-    private static final Map<Class<? extends AbstractModule>, AbstractModule> instances = new HashMap<>();
+    private static final Map<Class<? extends ModuleInitializer>, ModuleInitializer> initializers = new HashMap<>();
+    private static final Map<String, Boolean> module2enable = new HashMap<>();
 
     @SuppressWarnings("SameParameterValue")
-    private static Set<Class<? extends AbstractModule>> scanModules(String packageName) {
+    private static Set<Class<? extends ModuleInitializer>> scanModules(String packageName) {
         Reflections reflections = new Reflections(packageName);
-        return reflections.getSubTypesOf(AbstractModule.class);
+        return reflections.getSubTypesOf(ModuleInitializer.class);
     }
 
     public static void initializeModules() {
-        scanModules(ModuleManager.class.getPackageName()).forEach(ModuleManager::getOrNewInstance);
+        scanModules(ModuleManager.class.getPackageName()).forEach(ModuleManager::getInitializer);
     }
 
     public static void reloadModules() {
-        instances.values().forEach(AbstractModule::onReload);
+        initializers.values().forEach(initializer -> {
+                    try {
+                        initializer.onReload();
+                    } catch (Exception e) {
+                        LOGGER.error("Failed to reload module -> {}", e.getMessage());
+                    }
+                }
+        );
+    }
+
+    public static void reportModules() {
+        ArrayList<String> enabled = new ArrayList<>();
+        module2enable.forEach((module, enable) -> {
+            if (enable) enabled.add(module);
+        });
+
+        LOGGER.info("Enabled {}/{} modules -> {}", enabled.size(), module2enable.size(), enabled);
+    }
+
+    @ApiStatus.AvailableSince("1.1.5")
+    public static boolean isModuleEnabled(String moduleName) {
+        return module2enable.get(moduleName);
     }
 
     /**
-     * @return if a module is disabled, then this method will return null
+     * @return if a module is disabled, then this method will return null.
+     * (If a module is enabled, but the module doesn't extend AbstractModule, then this me*
+     * hod will also return null, but the module doesn't extend AbstractModule, then this method will also return null.)
      */
-    public static <T extends AbstractModule> T getOrNewInstance(Class<T> clazz) {
-        JsonElement config = ConfigManager.configWrapper.toJsonElement();
-        if (!instances.containsKey(clazz)) {
-            String basePackageName = calculateBasePackageName(ModuleManager.class, clazz.getName());
-            String moduleName = clazz.getSimpleName();
+    @ApiStatus.AvailableSince("1.1.5")
+    public static <T extends ModuleInitializer> T getInitializer(Class<T> clazz) {
+        JsonElement config = Configs.configHandler.toJsonElement();
+        if (!initializers.containsKey(clazz)) {
+            String basePackageName = calculateBasePackageName(ModuleInitializer.class, clazz.getName());
             if (enableModule(config, basePackageName)) {
-                log.info("+ {}", moduleName);
                 try {
-                    AbstractModule abstractModule = clazz.getDeclaredConstructor().newInstance();
-                    abstractModule.onInitialize();
-                    instances.put(clazz, abstractModule);
+                    ModuleInitializer moduleInitializer = clazz.getDeclaredConstructor().newInstance();
+                    moduleInitializer.initialize();
+                    initializers.put(clazz, moduleInitializer);
                 } catch (Exception e) {
-                    log.error(e.toString());
+                    LOGGER.error(e.toString());
                 }
             }
         }
-        return clazz.cast(instances.get(clazz));
+        return clazz.cast(initializers.get(clazz));
     }
 
     public static boolean enableModule(JsonElement config, String basePackageName) {
@@ -54,9 +80,11 @@ public class ModuleManager {
         try {
             enable = config.getAsJsonObject().get("modules").getAsJsonObject().get(basePackageName).getAsJsonObject().get("enable").getAsBoolean();
         } catch (Exception e) {
-            log.error("The enable-supplier key '{}' is missing -> force enable this module", "modules.%s.enable".formatted(basePackageName));
-            return true;
+            LOGGER.error("The enable-supplier key '{}' is missing -> force enable this module", "modules.%s.enable".formatted(basePackageName));
+            enable = true;
         }
+
+        module2enable.put(basePackageName, enable);
         return enable;
     }
 

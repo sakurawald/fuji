@@ -2,11 +2,10 @@ package io.github.sakurawald.util;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.github.sakurawald.ServerMain;
-import io.github.sakurawald.config.base.ResourceConfigWrapper;
+import io.github.sakurawald.Fuji;
+import io.github.sakurawald.config.handler.ResourceConfigHandler;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.fabric.FabricServerAudiences;
 import net.kyori.adventure.text.Component;
@@ -19,30 +18,29 @@ import org.apache.commons.io.FileUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @UtilityClass
-@Slf4j
+
 public class MessageUtil {
-    private static final FabricServerAudiences adventure = FabricServerAudiences.of(ServerMain.SERVER);
+    private static final FabricServerAudiences adventure = FabricServerAudiences.of(Fuji.SERVER);
     @Getter
-    private static final HashMap<String, String> player2lang = new HashMap<>();
+    private static final Map<String, String> player2lang = new HashMap<>();
     @Getter
-    private static final HashMap<String, JsonObject> lang2json = new HashMap<>();
+    private static final Map<String, JsonObject> lang2json = new HashMap<>();
     private static final String DEFAULT_LANG = "en_us";
-    private static final MiniMessage miniMessage = MiniMessage.builder().build();
-    private static final Path LANGUAGE_PATH = ServerMain.CONFIG_PATH.resolve("lang");
+    private static final MiniMessage miniMessageParser = MiniMessage.builder().build();
 
     static {
         copyLanguageFiles();
     }
 
     public static void copyLanguageFiles() {
-        new ResourceConfigWrapper("lang/en_us.json").loadFromDisk();
-        new ResourceConfigWrapper("lang/zh_cn.json").loadFromDisk();
+        new ResourceConfigHandler("lang/en_us.json").loadFromDisk();
+        new ResourceConfigHandler("lang/zh_cn.json").loadFromDisk();
     }
 
     public static void loadLanguageIfAbsent(String lang) {
@@ -50,12 +48,12 @@ public class MessageUtil {
 
         InputStream is;
         try {
-            is = FileUtils.openInputStream(LANGUAGE_PATH.resolve(lang + ".json").toFile());
+            is = FileUtils.openInputStream(Fuji.CONFIG_PATH.resolve("lang").resolve(lang + ".json").toFile());
             JsonObject jsonObject = JsonParser.parseReader(new InputStreamReader(is)).getAsJsonObject();
             lang2json.put(lang, jsonObject);
-            log.info("Language {} loaded.", lang);
+            Fuji.LOGGER.info("Language {} loaded.", lang);
         } catch (IOException e) {
-            log.debug("One of your player is using a language '{}' that is missing -> fallback to default language for this player", lang);
+            Fuji.LOGGER.debug("One of your player is using a language '{}' that is missing -> fallback to default language for this player", lang);
         }
 
         if (!lang2json.containsKey(DEFAULT_LANG)) loadLanguageIfAbsent(DEFAULT_LANG);
@@ -85,34 +83,39 @@ public class MessageUtil {
         JsonObject json;
         json = lang2json.get(!lang2json.containsKey(lang) ? DEFAULT_LANG : lang);
         if (!json.has(key)) {
-            log.warn("Language {} miss key '{}' -> fallback to default language for this key", lang, key);
+            Fuji.LOGGER.warn("Language {} miss key '{}' -> fallback to default language for this key", lang, key);
             json = lang2json.get(DEFAULT_LANG);
         }
 
         /* get value */
         String value;
         value = json.get(key).getAsString();
-        if (args.length > 0) {
-            value = String.format(value, args);
-        }
+        return formatString(value, args);
+    }
 
-        return value;
+    public static String formatString(String string, Object... args) {
+        if (args.length > 0) {
+            return String.format(string, args);
+        }
+        return string;
     }
 
     public static Component ofComponent(Audience audience, String key, Object... args) {
-        return ofComponent(ofString(audience, key, args));
+        //note: if call ofString() directly with args, then we pass args to ofString(),
+        // or else we pass args to ofComponent() to avoid args being formatted twice
+        return ofComponent(ofString(audience, key), args);
     }
 
-    public static Component ofComponent(String str) {
-        return miniMessage.deserialize(str);
+    public static Component ofComponent(String str, Object... args) {
+        return miniMessageParser.deserialize(formatString(str, args));
     }
 
-    public static net.minecraft.network.chat.Component ofVomponent(String str) {
-        return toVomponent(ofComponent(str));
+    public static net.minecraft.network.chat.Component ofVomponent(String str, Object... args) {
+        return toVomponent(ofComponent(str, args));
     }
 
     public static net.minecraft.network.chat.Component ofVomponent(Audience audience, String key, Object... args) {
-        return adventure.toNative(ofComponent(audience, key, args));
+        return toVomponent(ofComponent(audience, key, args));
     }
 
     public static net.minecraft.network.chat.Component toVomponent(Component component) {
@@ -121,9 +124,10 @@ public class MessageUtil {
 
     public static List<net.minecraft.network.chat.Component> ofVomponents(Audience audience, String key, Object... args) {
         String lines = ofString(audience, key, args);
+
         List<net.minecraft.network.chat.Component> ret = new ArrayList<>();
         for (String line : lines.split("\n")) {
-            ret.add(adventure.toNative(miniMessage.deserialize(line)));
+            ret.add(ofVomponent(line));
         }
         return ret;
     }
@@ -138,9 +142,9 @@ public class MessageUtil {
 
     public static void sendBroadcast(String key, Object... args) {
         // fix: log broadcast for console
-        log.info(PlainTextComponentSerializer.plainText().serialize(ofComponent(null, key, args)));
+        Fuji.LOGGER.info(PlainTextComponentSerializer.plainText().serialize(ofComponent(null, key, args)));
 
-        for (ServerPlayer player : ServerMain.SERVER.getPlayerList().getPlayers()) {
+        for (ServerPlayer player : Fuji.SERVER.getPlayerList().getPlayers()) {
             sendMessage(player, key, args);
         }
     }

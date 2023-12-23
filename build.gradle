@@ -1,3 +1,5 @@
+import com.google.gson.JsonParser
+
 plugins {
     id 'fabric-loom' version '1.4-SNAPSHOT'
     id 'maven-publish'
@@ -24,9 +26,9 @@ loom {
 // fix: adventure mod error in runServer()
 //    splitEnvironmentSourceSets()
 
-    accessWidenerPath = file("src/main/resources/sakurawald.accesswidener")
+    accessWidenerPath = file("src/main/resources/fuji.accesswidener")
     mods {
-        "sakurawald" {
+        "fuji" {
             sourceSet sourceSets.main
         }
     }
@@ -61,7 +63,6 @@ dependencies {
     include(implementation "net.kyori:adventure-text-serializer-plain:${project.adventure_api_version}")
 
     include(implementation group: 'org.apache.commons', name: 'commons-compress', version: "${project.apache_commons_compression_version}")
-
     include(implementation group: 'commons-io', name: 'commons-io', version: "${project.apache_commons_io_version}")
 
     include(implementation group: 'org.quartz-scheduler', name: 'quartz', version: "${project.quartz_version}")
@@ -123,7 +124,7 @@ modrinth {
     versionNumber = "$mod_version"
     versionType = "release"
     uploadFile = remapJar
-    gameVersions = ["1.20.1"]
+    gameVersions = ["1.20.2"]
     loaders = ["fabric"]
     dependencies {
         required.project "fabric-api"
@@ -133,3 +134,7 @@ modrinth {
  syncBodyFrom = rootProject.file("README.md").text
 }
 tasks.modrinth.dependsOn(tasks.modrinthSyncBody)
+tasks.register('replaceReadme') {
+    // todo
+}
+tasks.modrinthSyncBody.dependsOn(tasks.replaceReadme)
