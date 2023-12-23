@@ -242,6 +242,20 @@ provides `/enderchest` command.
 #### WorkbenchModule
 provides `/workbench` command.
 
+#### EnchantmentModule
+provides `/enchantment` command.
+
+#### GrindStoneModule
+provides `/grindstone` command.
+
+#### StoneCutterModule
+provides `/stonecutter` command.
+
+#### AnvilModule
+provides `/anvil` command.
+
+#### BedModule
+provides `/bed` command.
 
 </details>
 
