@@ -88,7 +88,7 @@ public class DeathLogModule extends ModuleInitializer {
 
         File file = STORAGE_PATH.resolve(getStorageFileName(from)).toFile();
         CompoundTag rootTag;
-        rootTag = NbtIo.read(file);
+        rootTag = NbtIo.read(file.toPath());
         if (rootTag == null) {
             source.sendMessage(Component.text("No deathlog found."));
             return 0;
@@ -139,7 +139,7 @@ public class DeathLogModule extends ModuleInitializer {
 
         File file = STORAGE_PATH.resolve(getStorageFileName(from)).toFile();
         CompoundTag rootTag;
-        rootTag = NbtIo.read(file);
+        rootTag = NbtIo.read(file.toPath());
 
         if (rootTag == null) {
             ctx.getSource().sendMessage(Component.text("No deathlog found."));
@@ -185,9 +185,9 @@ public class DeathLogModule extends ModuleInitializer {
 
         CompoundTag rootTag;
         if (!file.exists()) {
-            NbtIo.write(new CompoundTag(), file);
+            NbtIo.write(new CompoundTag(), file.toPath());
         }
-        rootTag = NbtIo.read(file);
+        rootTag = NbtIo.read(file.toPath());
         if (rootTag == null) return;
 
         ListTag deathsTag;
@@ -201,7 +201,7 @@ public class DeathLogModule extends ModuleInitializer {
         writeRemarkTag(deathTag, player);
         deathsTag.add(deathTag);
 
-        NbtIo.write(rootTag, file);
+        NbtIo.write(rootTag, file.toPath());
     }
 
     private void writeRemarkTag(CompoundTag deathTag, ServerPlayer player) {

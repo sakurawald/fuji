@@ -2,6 +2,7 @@ package io.github.sakurawald.module.initializer.head.gui;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+import com.mojang.authlib.minecraft.MinecraftProfileTextures;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.yggdrasil.ProfileResult;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
@@ -66,13 +67,14 @@ class PlayerInputGui extends AnvilInputGui {
                 }
 
                 GameProfile profile = profileResult.profile();
-                Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> textures = sessionService.getTextures(profile, false);
-                if (textures.isEmpty()) {
+
+                MinecraftProfileTextures textures = sessionService.getTextures(profile);
+                if (textures == MinecraftProfileTextures.EMPTY) {
                     outputStack.removeTagKey("SkullOwner");
                     return;
                 }
 
-                MinecraftProfileTexture texture = textures.get(MinecraftProfileTexture.Type.SKIN);
+                MinecraftProfileTexture texture = textures.skin();
                 CompoundTag ownerTag = outputStack.getOrCreateTagElement("SkullOwner");
                 ownerTag.putUUID("Id", profile.getId());
                 ownerTag.putString("Name", profile.getName());

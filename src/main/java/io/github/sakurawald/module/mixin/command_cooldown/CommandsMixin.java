@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Commands.class)
@@ -22,14 +23,14 @@ public class CommandsMixin {
 
     // If you issue "///abcdefg", then commandLine = "//abcdefg"
     @Inject(method = "performCommand", at = @At("HEAD"), cancellable = true)
-    public void $performCommand(ParseResults<CommandSourceStack> parseResults, String commandLine, CallbackInfoReturnable<Integer> cir) {
+    public void $performCommand(ParseResults<CommandSourceStack> parseResults, String string, CallbackInfo ci) {
         ServerPlayer player = parseResults.getContext().getSource().getPlayer();
         if (player == null) return;
 
-        long cooldown = module.calculateCommandCooldown(player, commandLine);
+        long cooldown = module.calculateCommandCooldown(player, string);
         if (cooldown > 0) {
             MessageUtil.sendActionBar(player, "command_cooldown.cooldown", cooldown / 1000);
-            cir.setReturnValue(0);
+            ci.cancel();
         }
     }
 }

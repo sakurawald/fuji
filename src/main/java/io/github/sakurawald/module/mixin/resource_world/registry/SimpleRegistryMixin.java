@@ -5,6 +5,7 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.resource_world.interfaces.SimpleRegistryMixinInterface;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.ObjectList;
+import it.unimi.dsi.fastutil.objects.Reference2IntMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.resources.ResourceKey;
@@ -45,7 +46,8 @@ public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInter
 
     @Shadow
     @Final
-    private Object2IntMap<T> toId;
+    private Reference2IntMap<T> toId;
+
     @Shadow
     private boolean frozen;
     @Shadow
