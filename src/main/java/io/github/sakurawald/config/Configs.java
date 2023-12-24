@@ -12,5 +12,5 @@ public class Configs {
     public static final ConfigHandler<PvPModel> pvpHandler = new ObjectConfigHandler<>("pvp.json", PvPModel.class);
     public static final ConfigHandler<WorksModel> worksHandler = new ObjectConfigHandler<>("works.json", WorksModel.class);
     public static final ConfigHandler<HeadModel> headHandler = new ObjectConfigHandler<>("head.json", HeadModel.class);
-    public static final ConfigHandler<SchedulerModule> schedulerHandler = new ObjectConfigHandler<>("scheduler.json", SchedulerModule.class);
+    public static final ConfigHandler<SchedulerModel> schedulerHandler = new ObjectConfigHandler<>("scheduler.json", SchedulerModel.class);
 }

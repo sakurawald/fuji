@@ -1,5 +1,3 @@
-import com.google.gson.JsonParser
-
 plugins {
     id 'fabric-loom' version '1.4-SNAPSHOT'
     id 'maven-publish'
@@ -70,7 +68,7 @@ dependencies {
     modImplementation include("eu.pb4:sgui:${project.sgui_version}")
 
     implementation "me.lucko:spark-api:${project.spark_version}"
-    
+
     include(implementation "org.reflections:reflections:${project.reflections_version}")
     include(implementation "org.javassist:javassist:${project.javaassist_version}")
 }
@@ -124,14 +122,14 @@ modrinth {
     versionNumber = "$mod_version"
     versionType = "release"
     uploadFile = remapJar
-    gameVersions = ["1.20.2"]
+    gameVersions = ["1.20.3", "1.20.4"]
     loaders = ["fabric"]
     dependencies {
         required.project "fabric-api"
         optional.project "carpet"
         optional.project "spark"
     }
- syncBodyFrom = rootProject.file("README.md").text
+    syncBodyFrom = rootProject.file("README.md").text
 }
 tasks.modrinth.dependsOn(tasks.modrinthSyncBody)
 tasks.register('replaceReadme') {
