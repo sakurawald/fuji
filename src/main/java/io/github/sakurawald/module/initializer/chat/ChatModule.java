@@ -5,6 +5,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
@@ -20,7 +21,10 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.ClickCallback;
 import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -38,12 +42,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Queue;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import static net.minecraft.commands.Commands.argument;
 import static net.minecraft.commands.Commands.literal;
 
 public class ChatModule extends ModuleInitializer {
-
+    private static final Pattern xaero_waypoint_pattern = Pattern.compile(
+        "^xaero-waypoint:([^:]+):.+:(-?\\d+):(~?-?\\d*):(-?\\d+).*?-(.*)-waypoints$");
+    private static final Pattern pos_pattern = Pattern.compile("^xaero-waypoint:|((?<=^|\\s)\\[pos\\](?=\\s|$))");
     private final MiniMessage miniMessage = MiniMessage.builder().build();
     private final MainStatsModule mainStatsModule = ModuleManager.getInitializer(MainStatsModule.class);
     @Getter
@@ -71,28 +79,103 @@ public class ChatModule extends ModuleInitializer {
     @Override
     public void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext registryAccess, Commands.CommandSelection environment) {
         dispatcher.register(
-                Commands.literal("chat")
-                        .then(literal("format")
-                                .then(argument("format", StringArgumentType.greedyString())
-                                        .executes(this::$format)
-                                )));
+            Commands.literal("chat")
+                .then(Commands.literal("format")
+                    .then(Commands.literal("reset")
+                        .executes(this::resetFormat)
+                    )
+                    .then(Commands.literal("set")
+                        .then(argument("format", StringArgumentType.greedyString())
+                            .executes(this::format)
+                        )
+                    )
+                )
+        );
     }
 
-    private int $format(CommandContext<CommandSourceStack> ctx) {
+
+    private int format(CommandContext<CommandSourceStack> ctx) {
         return CommandUtil.playerOnlyCommand(ctx, player -> {
             String name = player.getGameProfile().getName();
             String format = StringArgumentType.getString(ctx, "format");
             Configs.chatHandler.model().format.player2format.put(name, format);
             Configs.chatHandler.saveToDisk();
+            format = MessageUtil.ofString(player,"chat.format.set").replace("%s",format);
+            Component formatComponent = miniMessage.deserialize(format, Formatter.date("date", LocalDateTime.now(ZoneId.systemDefault()))).asComponent();
+            Component component = formatComponent
+                .replaceText("%player%",Component.text(name))
+                .replaceText("%message%",MessageUtil.ofComponent(player, "chat.format.show"));
+            player.sendMessage(component);
             return Command.SINGLE_SUCCESS;
         });
     }
 
 
+    private int resetFormat(CommandContext<CommandSourceStack> ctx) 
+    {
+        return CommandUtil.playerOnlyCommand(ctx, player -> {
+            String name = player.getGameProfile().getName();
+            Configs.chatHandler.model().format.player2format.remove(name);
+            Configs.chatHandler.saveToDisk();
+            MessageUtil.sendMessage(player, "chat.format.reset");
+            return Command.SINGLE_SUCCESS;
+        });
+    }
+
     private Component resolvePositionTag(ServerPlayer player, Component component) {
-        Component replacement = Component.text("%s (%d %d %d) %s".formatted(player.serverLevel().dimension().location(),
-                player.getBlockX(), player.getBlockY(), player.getBlockZ(), player.chunkPosition().toString())).color(NamedTextColor.GOLD);
-        return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)pos(?=\\s|$)").replacement(replacement).build());
+        String str = PlainTextComponentSerializer.plainText().serialize(component);
+        Matcher posmatcher = pos_pattern.matcher(str);
+        if (posmatcher.find()) {
+            String hoverText;
+            String click_command;
+            int x,z;
+            String y;
+            String dim_name;
+            Matcher xaeroMap_matcher = xaero_waypoint_pattern.matcher(str);
+            if (xaeroMap_matcher.find()) { //小地图路径点
+                hoverText = xaeroMap_matcher.group(1).replaceAll("^col^",":").replaceAll("^ast^","*"); //xaeroMap使用^col^代替:,^ast^代替*以确保解析正确
+                x = Integer.parseInt(xaeroMap_matcher.group(2));
+                y = xaeroMap_matcher.group(3);
+                z = Integer.parseInt(xaeroMap_matcher.group(4));
+                dim_name = xaeroMap_matcher.group(5).replaceFirst(".*\\$",""); //在部分自定义纬度,xaeroMap使用类似dim%minecraft$开头
+                click_command = str
+                    .replaceFirst("xaero-waypoint","/xaero_waypoint_add") //小地图分享格式：xaero-waypoint:name:n:0:~:0:0:false:0:Internal-overworld-waypoints
+                    .replaceAll(":Internal-",":Internal_")               //小地图指令格式：/xaero_waypoint:name:n:0:~:0:0:false:0:Internal_overworld_waypoints
+                    .replaceAll("-waypoints$","_waypoints");
+            } else {
+                hoverText = MessageUtil.ofString(player,"chat.current_pos");
+                dim_name = player.serverLevel().dimension().location().toString().replaceFirst("minecraft:","");
+                x = player.getBlockX();
+                y = Integer.toString(player.getBlockY());
+                z = player.getBlockZ();
+                click_command = MessageUtil.ofString(player,"chat.xaero_waypoint_add.command",x, y, z,dim_name.replaceAll(":","$"));
+            }
+            switch (dim_name) {
+                case "overworld":
+                    hoverText += "\n"+MessageUtil.ofString(player,"the_nether")
+                            +": %d %s %d\n".formatted(x/8, y, z/8);
+                    break;
+                case "the_nether":
+                    hoverText += "\n"+MessageUtil.ofString(player,"overworld")
+                        +": %d %s %d\n".formatted(x*8, y, z*8);  
+                    break;
+            }
+            String dim_display_name;
+            if (MessageUtil.containsKey(player,dim_name)) {
+                dim_display_name = MessageUtil.ofString(player,dim_name);
+            } else {
+                dim_display_name = dim_name;
+            }
+            Component replacement = Component.text("[%d %s %d, %s]".formatted(x, y, z, dim_display_name))
+                    .decoration(TextDecoration.ITALIC, true)
+                    .clickEvent(ClickEvent.runCommand(click_command))
+                    .hoverEvent(Component.text(hoverText).append(MessageUtil.ofComponent(player,"chat.xaero_waypoint_add")));
+            return component.replaceText(TextReplacementConfig.builder()
+                .match("^xaero-waypoint:.*|(?<=^|\\s)\\[pos\\](?=\\s|$)")
+                .replacement(replacement)
+                .build());
+        }
+        return component;
     }
 
     private Component resolveItemTag(ServerPlayer player, Component component) {
@@ -101,7 +184,7 @@ public class ChatModule extends ModuleInitializer {
                 player.getMainHandItem().getDisplayName().asComponent()
                         .hoverEvent(MessageUtil.ofComponent(player, "display.click.prompt"))
                         .clickEvent(displayCallback(displayUUID));
-        return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)item(?=\\s|$)").replacement(replacement).build());
+        return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)\\[i\\](?=\\s|$)").replacement(replacement).build());
     }
 
     private Component resolveInvTag(ServerPlayer player, Component component) {
@@ -110,7 +193,7 @@ public class ChatModule extends ModuleInitializer {
                 MessageUtil.ofComponent(player, "display.inventory.text")
                         .hoverEvent(MessageUtil.ofComponent(player, "display.click.prompt"))
                         .clickEvent(displayCallback(displayUUID));
-        return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)inv(?=\\s|$)").replacement(replacement).build());
+        return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)\\[inv\\](?=\\s|$)").replacement(replacement).build());
     }
 
     private Component resolveEnderTag(ServerPlayer player, Component component) {
@@ -119,7 +202,7 @@ public class ChatModule extends ModuleInitializer {
                 MessageUtil.ofComponent(player, "display.ender_chest.text")
                         .hoverEvent(MessageUtil.ofComponent(player, "display.click.prompt"))
                         .clickEvent(displayCallback(displayUUID));
-        return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)ender(?=\\s|$)").replacement(replacement).build());
+        return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)\\[end\\](?=\\s|$)").replacement(replacement).build());
     }
 
     @NotNull
@@ -132,19 +215,19 @@ public class ChatModule extends ModuleInitializer {
                 .uses(Integer.MAX_VALUE).build());
     }
 
-    @SuppressWarnings("unused")
-    private String resolveMentionTag(ServerPlayer player, String str) {
+    private Component resolveMentionTag(ServerPlayer player, Component component) {
         /* resolve player tag */
         ArrayList<ServerPlayer> mentionedPlayers = new ArrayList<>();
-
         String[] playerNames = Fuji.SERVER.getPlayerNames();
-        // fix: mention the longest name first
         Arrays.sort(playerNames, Comparator.comparingInt(String::length).reversed());
-
+        String str = PlainTextComponentSerializer.plainText().serialize(component);
         for (String playerName : playerNames) {
-            // here we must continue so that mentionPlayers will not be added
-            if (!str.contains(playerName)) continue;
-            str = str.replace(playerName, "<aqua>%s</aqua>".formatted(playerName));
+
+            if (!str.matches("@" + Pattern.quote(playerName))) continue;
+            component = component.replaceText(
+                "@"+playerName,
+                Component.text("@",NamedTextColor.GREEN)
+                .append(Component.text(playerName,NamedTextColor.DARK_GREEN)));
             mentionedPlayers.add(Fuji.SERVER.getPlayerList().getPlayerByName(playerName));
         }
 
@@ -152,30 +235,73 @@ public class ChatModule extends ModuleInitializer {
         if (!mentionedPlayers.isEmpty()) {
             MentionPlayersJob.scheduleJob(mentionedPlayers);
         }
-        return str;
+
+        return component;
+
+    }
+
+    public Component resolveLinks(ServerPlayer player, Component component) { 
+        
+        String str = PlainTextComponentSerializer.plainText().serialize(component);
+
+        //BV号替换
+        Matcher bvmatcher = Pattern.compile("(?<=[^/]|^)BV\\w{10}",Pattern.CASE_INSENSITIVE).matcher(str);
+        while (bvmatcher.find()) {
+            String bvNumber = bvmatcher.group();
+            Component textBuilder = Component.text("bilibili")
+                .decoration(TextDecoration.UNDERLINED, true)
+                .hoverEvent(HoverEvent.showText(Component.text(bvNumber)))
+                .clickEvent(ClickEvent.openUrl("https://www.bilibili.com/video/"+bvNumber));
+            component = component.replaceText(bvNumber, textBuilder);
+        }
+
+        //网址替换
+        Matcher urlmatcher = Pattern.compile("(https?)://[^\\s/$.?#].[^\\s]*").matcher(str);
+        Pattern displayPattern = Pattern.compile("(?<=https?://)[^/\\s]{0,15}(?=\\.[^./]{0,20}(/|$))");
+        while (urlmatcher.find()) {
+            String url = urlmatcher.group();
+            Matcher displayMatcher = displayPattern.matcher(url);
+            String displayText = url;
+            if (displayMatcher.find()) {
+                displayText = displayMatcher.group().replaceFirst("www.|m.","");
+            }
+            Component textBuilder = Component.text(displayText)
+                .decoration(TextDecoration.UNDERLINED, true)
+                .hoverEvent(HoverEvent.showText(Component.text(url)))
+                .clickEvent(ClickEvent.openUrl(url));
+            component = component.replaceText(url, textBuilder);
+        }
+        
+        return component;
     }
 
     public void broadcastChatMessage(ServerPlayer player, String message) {
-        /* resolve format */
-        message = Configs.chatHandler.model().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
-                .replace("%message%", message);
-        message = resolveMentionTag(player, message);
-        String format = Configs.configHandler.model().modules.chat.format;
-        format = format.replace("%message%", message);
-        format = format.replace("%player%", player.getGameProfile().getName());
 
+        //输入文本处理
+        Component msgComponent = Component.text(message);
+        msgComponent = resolveLinks(player, msgComponent);
+        msgComponent = resolveMentionTag(player, msgComponent);
+        msgComponent = resolveItemTag(player, msgComponent);
+        msgComponent = resolveInvTag(player, msgComponent);
+        msgComponent = resolveEnderTag(player, msgComponent);
+        msgComponent = resolvePositionTag(player, msgComponent);
+
+        //玩家发言样式
+        String format = Configs.chatHandler.model().format.player2format.getOrDefault(
+            player.getGameProfile().getName(),                  //获取玩家名对应的样式
+            Configs.configHandler.model().modules.chat.format); //若无，使用默认样式
         /* resolve stats */
         if (mainStatsModule != null) {
             MainStats stats = MainStats.uuid2stats.getOrDefault(player.getUUID().toString(), new MainStats());
             format = stats.update(player).resolve(Fuji.SERVER, format);
         }
+        Component formatComponent = miniMessage.deserialize(
+            format, Formatter.date("date", LocalDateTime.now(ZoneId.systemDefault()))).asComponent();
+        //合并
+        Component component = formatComponent
+            .replaceText("%player%",Component.text(player.getGameProfile().getName()))
+            .replaceText("%message%",msgComponent);
 
-        /* resolve tags */
-        Component component = miniMessage.deserialize(format, Formatter.date("date", LocalDateTime.now(ZoneId.systemDefault()))).asComponent();
-        component = resolveItemTag(player, component);
-        component = resolveInvTag(player, component);
-        component = resolveEnderTag(player, component);
-        component = resolvePositionTag(player, component);
         chatHistory.add(component);
         // info so that it can be seen in the console
         Fuji.LOGGER.info(PlainTextComponentSerializer.plainText().serialize(component));
