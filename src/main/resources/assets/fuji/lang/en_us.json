@@ -10,6 +10,9 @@
   "back": "<#FFA1F5>Back",
   "empty": "<#FFA1F5>Empty",
   "confirm": "<#FFA1F5>Confirm",
+  "overworld":"overworld",
+  "the_nether":"the nether",
+  "the_end":"the end",
   "command.player_only": "<red>This command can only be executed by a player",
   "level.no_exists": "<red>Level %s doesn't exist",
   "input.syntax.error": "<red>Input Syntax Error",
@@ -162,5 +165,11 @@
   "ping.player": "<gold>Ping of %s: %d ms",
   "ping.target.no_found": "<red>Ping target no found.",
   "bed.not_found": "<red>No bed found.",
-  "bed.success": "<gold>Teleported to bed."
+  "bed.success": "<gold>Teleported to bed.",
+  "chat.format.set": "<gold>Chat format has been modified, current style:</gold><newline>%s<reset><newline><red><click:run_command:/chat format reset>   [Reset]</click></red>",
+  "chat.format.reset": "<gold>Chat format has been reset</gold>",
+  "chat.format.show": "Current style",
+  "chat.current_pos": "Current Position",
+  "chat.xaero_waypoint_add": "Click to add a Xaero's minimap waypoint",
+  "chat.xaero_waypoint_add.command": "/xaero_waypoint_add:Waypoint:·:%d:%s:%d:0:false:0:Internal_%s_waypoints"
 }

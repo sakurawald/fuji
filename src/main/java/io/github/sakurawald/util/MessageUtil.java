@@ -93,6 +93,26 @@ public class MessageUtil {
         return formatString(value, args);
     }
 
+    public boolean containsKey(Audience audience, String key) {
+                ServerPlayer player;
+        if (audience instanceof ServerPlayer) player = (ServerPlayer) audience;
+        else if (audience instanceof CommandSourceStack source && source.getPlayer() != null)
+            player = source.getPlayer();
+        else player = null;
+
+        /* get lang */
+        String lang;
+        if (player != null) {
+            lang = player2lang.getOrDefault(player.getGameProfile().getName(), DEFAULT_LANG);
+        } else {
+            lang = DEFAULT_LANG;
+        }
+        loadLanguageIfAbsent(lang);
+        JsonObject json;
+        json = lang2json.get(!lang2json.containsKey(lang) ? DEFAULT_LANG : lang);
+        
+        return json.has(key);
+    }
     public static String formatString(String string, Object... args) {
         if (args.length > 0) {
             return String.format(string, args);
