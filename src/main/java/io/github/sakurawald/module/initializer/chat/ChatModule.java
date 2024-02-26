@@ -240,15 +240,6 @@ public class ChatModule extends ModuleInitializer {
 
     }
 
-        /* run mention player task */
-        if (!mentionedPlayers.isEmpty()) {
-            MentionPlayersJob.scheduleJob(mentionedPlayers);
-        }
-
-        return component;
-
-    }
-
     public Component resolveLinks(ServerPlayer player, Component component) { 
         
         String str = PlainTextComponentSerializer.plainText().serialize(component);
