@@ -137,7 +137,7 @@ public class ChatModule extends ModuleInitializer {
                 x = Integer.parseInt(xaeroMap_matcher.group(2));
                 y = xaeroMap_matcher.group(3);
                 z = Integer.parseInt(xaeroMap_matcher.group(4));
-                dim_name = xaeroMap_matcher.group(5).replaceFirst(".*\\$",""); //在部分自定义纬度,xaeroMap使用类似dim%minecraft$开头
+                dim_name = xaeroMap_matcher.group(5).replaceFirst(".*\\$","").replaceAll("-","_"); //在部分自定义纬度,xaeroMap使用类似dim%minecraft$开头
                 click_command = str
                     .replaceFirst("xaero-waypoint","/xaero_waypoint_add") //小地图分享格式：xaero-waypoint:name:n:0:~:0:0:false:0:Internal-overworld-waypoints
                     .replaceAll(":Internal-",":Internal_")               //小地图指令格式：/xaero_waypoint:name:n:0:~:0:0:false:0:Internal_overworld_waypoints
@@ -153,11 +153,11 @@ public class ChatModule extends ModuleInitializer {
             switch (dim_name) {
                 case "overworld":
                     hoverText += "\n"+MessageUtil.ofString(player,"the_nether")
-                            +": %d %s %d\n".formatted(x/8, y, z/8);
+                            +": %d %s %d".formatted(x/8, y, z/8);
                     break;
                 case "the_nether":
                     hoverText += "\n"+MessageUtil.ofString(player,"overworld")
-                        +": %d %s %d\n".formatted(x*8, y, z*8);  
+                        +": %d %s %d".formatted(x*8, y, z*8);  
                     break;
             }
             String dim_display_name;
@@ -169,7 +169,7 @@ public class ChatModule extends ModuleInitializer {
             Component replacement = Component.text("[%d %s %d, %s]".formatted(x, y, z, dim_display_name))
                     .decoration(TextDecoration.ITALIC, true)
                     .clickEvent(ClickEvent.runCommand(click_command))
-                    .hoverEvent(Component.text(hoverText).append(MessageUtil.ofComponent(player,"chat.xaero_waypoint_add")));
+                    .hoverEvent(Component.text(hoverText+"\n").append(MessageUtil.ofComponent(player,"chat.xaero_waypoint_add")));
             return component.replaceText(TextReplacementConfig.builder()
                 .match("^xaero-waypoint:.*|pos")
                 .replacement(replacement)
