@@ -51,7 +51,7 @@ import static net.minecraft.commands.Commands.literal;
 public class ChatModule extends ModuleInitializer {
     private static final Pattern xaero_waypoint_pattern = Pattern.compile(
         "^xaero-waypoint:([^:]+):.+:(-?\\d+):(~?-?\\d*):(-?\\d+).*?-(.*)-waypoints$");
-    private static final Pattern pos_pattern = Pattern.compile("^xaero-waypoint:|((?<=^|\\s)\\[pos\\](?=\\s|$))");
+    private static final Pattern pos_pattern = Pattern.compile("^xaero-waypoint:|pos");
     private final MiniMessage miniMessage = MiniMessage.builder().build();
     private final MainStatsModule mainStatsModule = ModuleManager.getInitializer(MainStatsModule.class);
     @Getter
@@ -171,7 +171,7 @@ public class ChatModule extends ModuleInitializer {
                     .clickEvent(ClickEvent.runCommand(click_command))
                     .hoverEvent(Component.text(hoverText).append(MessageUtil.ofComponent(player,"chat.xaero_waypoint_add")));
             return component.replaceText(TextReplacementConfig.builder()
-                .match("^xaero-waypoint:.*|(?<=^|\\s)\\[pos\\](?=\\s|$)")
+                .match("^xaero-waypoint:.*|pos")
                 .replacement(replacement)
                 .build());
         }
@@ -184,7 +184,7 @@ public class ChatModule extends ModuleInitializer {
                 player.getMainHandItem().getDisplayName().asComponent()
                         .hoverEvent(MessageUtil.ofComponent(player, "display.click.prompt"))
                         .clickEvent(displayCallback(displayUUID));
-        return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)\\[i\\](?=\\s|$)").replacement(replacement).build());
+        return component.replaceText(TextReplacementConfig.builder().match("item").replacement(replacement).build());
     }
 
     private Component resolveInvTag(ServerPlayer player, Component component) {
@@ -193,7 +193,7 @@ public class ChatModule extends ModuleInitializer {
                 MessageUtil.ofComponent(player, "display.inventory.text")
                         .hoverEvent(MessageUtil.ofComponent(player, "display.click.prompt"))
                         .clickEvent(displayCallback(displayUUID));
-        return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)\\[inv\\](?=\\s|$)").replacement(replacement).build());
+        return component.replaceText(TextReplacementConfig.builder().match("inv").replacement(replacement).build());
     }
 
     private Component resolveEnderTag(ServerPlayer player, Component component) {
@@ -202,7 +202,7 @@ public class ChatModule extends ModuleInitializer {
                 MessageUtil.ofComponent(player, "display.ender_chest.text")
                         .hoverEvent(MessageUtil.ofComponent(player, "display.click.prompt"))
                         .clickEvent(displayCallback(displayUUID));
-        return component.replaceText(TextReplacementConfig.builder().match("(?<=^|\\s)\\[end\\](?=\\s|$)").replacement(replacement).build());
+        return component.replaceText(TextReplacementConfig.builder().match("ender").replacement(replacement).build());
     }
 
     @NotNull
@@ -222,14 +222,23 @@ public class ChatModule extends ModuleInitializer {
         Arrays.sort(playerNames, Comparator.comparingInt(String::length).reversed());
         String str = PlainTextComponentSerializer.plainText().serialize(component);
         for (String playerName : playerNames) {
-
-            if (!str.matches("@" + Pattern.quote(playerName))) continue;
-            component = component.replaceText(
-                "@"+playerName,
+            Pattern pattern = Pattern.compile("(?:(?<=\\s)|^|@)" + Pattern.quote(playerName));
+            Matcher matcher = pattern.matcher(str);
+            if (!matcher.find()) continue;
+            component = component.replaceText(matcher.group(),
                 Component.text("@",NamedTextColor.GREEN)
                 .append(Component.text(playerName,NamedTextColor.DARK_GREEN)));
             mentionedPlayers.add(Fuji.SERVER.getPlayerList().getPlayerByName(playerName));
         }
+
+        /* run mention player task */
+        if (!mentionedPlayers.isEmpty()) {
+            MentionPlayersJob.scheduleJob(mentionedPlayers);
+        }
+
+        return component;
+
+    }
 
         /* run mention player task */
         if (!mentionedPlayers.isEmpty()) {
