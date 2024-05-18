@@ -8,6 +8,7 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.CommandUtil;
+import io.github.sakurawald.util.RegistryUtil;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -16,6 +17,8 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -27,6 +30,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Uuids;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Vec3d;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -238,7 +242,7 @@ public class DeathLogModule extends ModuleInitializer {
 
     private NbtList writeSlotsTag(NbtList slotsTag, DefaultedList<ItemStack> itemStackList) {
         for (ItemStack item : itemStackList) {
-            slotsTag.add(item.writeNbt(new NbtCompound()));
+            NbtComponent.set(DataComponentTypes.CUSTOM_DATA, item, new NbtCompound());
         }
         return slotsTag;
     }
@@ -246,7 +250,7 @@ public class DeathLogModule extends ModuleInitializer {
     private List<ItemStack> readSlotsTag(NbtList slotsTag) {
         ArrayList<ItemStack> ret = new ArrayList<>();
         for (int i = 0; i < slotsTag.size(); i++) {
-            ret.add(ItemStack.fromNbt(slotsTag.getCompound(i)));
+            ret.add(ItemStack.fromNbt(RegistryUtil.getDefaultWrapperLookup(), slotsTag.getCompound(i)).get());
         }
         return ret;
     }

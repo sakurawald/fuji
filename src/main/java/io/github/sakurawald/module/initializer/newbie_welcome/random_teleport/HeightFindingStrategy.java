@@ -1,13 +1,16 @@
 package io.github.sakurawald.module.initializer.newbie_welcome.random_teleport;
 
+import java.util.Optional;
 import java.util.OptionalInt;
 import net.minecraft.block.BlockState;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkSection;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.dimension.DimensionTypes;
 
 public enum HeightFindingStrategy implements HeightFinder {
@@ -36,10 +39,11 @@ public enum HeightFindingStrategy implements HeightFinder {
     }
 
     public static HeightFindingStrategy forWorld(ServerWorld world) {
-        if (world.getDimensionKey() == DimensionTypes.OVERWORLD || world.getDimensionKey() == DimensionTypes.THE_END) {
+        Optional<RegistryKey<DimensionType>> dt = world.getDimensionEntry().getKey();
+        if (dt.get() == DimensionTypes.OVERWORLD || dt.get() == DimensionTypes.THE_END) {
             return HeightFindingStrategy.SKY_TO_SURFACE__FIRST_SOLID;
         }
-        if (world.getDimensionKey() == DimensionTypes.THE_NETHER) {
+        if (dt.get() == DimensionTypes.THE_NETHER) {
             return HeightFindingStrategy.BOTTOM_TO_SKY__FIRST_SAFE_AIR;
         }
 

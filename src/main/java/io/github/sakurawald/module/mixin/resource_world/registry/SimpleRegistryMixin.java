@@ -39,10 +39,6 @@ public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInter
 
     @Shadow
     @Final
-    private Map<T, Lifecycle> entryToLifecycle;
-
-    @Shadow
-    @Final
     private ObjectList<RegistryEntry.Reference<T>> rawIdToEntry;
 
     @Shadow
@@ -51,9 +47,6 @@ public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInter
 
     @Shadow
     private boolean frozen;
-    @Shadow
-    @Nullable
-    private List<RegistryEntry.Reference<T>> cachedEntries;
 
     @Shadow
     public abstract Optional<RegistryEntry<T>> getEntry(int rawId);
@@ -70,11 +63,7 @@ public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInter
             this.rawIdToEntry.set(rawId, null);
             this.idToEntry.remove(registryEntry.registryKey().getValue());
             this.keyToEntry.remove(registryEntry.registryKey());
-            this.entryToLifecycle.remove(entry);
             this.valueToEntry.remove(entry);
-            if (this.cachedEntries != null) {
-                this.cachedEntries.remove(registryEntry);
-            }
 
             return true;
         } catch (Throwable e) {

@@ -72,11 +72,6 @@ public class FilteredRegistry<T> extends SimpleRegistry<T> {
     }
 
     @Override
-    public Lifecycle getEntryLifecycle(T entry) {
-        return this.source.getEntryLifecycle(entry);
-    }
-
-    @Override
     public Lifecycle getLifecycle() {
         return this.source.getLifecycle();
     }

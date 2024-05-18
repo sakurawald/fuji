@@ -4,6 +4,8 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.util.GuiUtil;
 import io.github.sakurawald.util.MessageUtil;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -46,14 +48,15 @@ public class ShulkerBoxDisplayGui extends DisplayGuiBuilder {
         }
 
         /* construct items */
-        NbtCompound blockEntityData = BlockItem.getBlockEntityNbt(itemStack);
+        NbtCompound blockEntityData = itemStack.get(DataComponentTypes.BLOCK_ENTITY_DATA).copyNbt();
+
         if (blockEntityData != null) {
             NbtList items = (NbtList) blockEntityData.get("Items");
             if (items == null) return gui;
             items.forEach(tag -> {
                 NbtCompound compoundTag = (NbtCompound) tag;
                 int slot = compoundTag.getInt("Slot");
-                ItemStack itemStack = ItemStack.fromNbt(compoundTag);
+                ItemStack itemStack = ItemStack.fromNbt(player.getRegistryManager(),compoundTag).get();
                 gui.setSlot(LINE_SIZE + slot, itemStack);
             });
         }

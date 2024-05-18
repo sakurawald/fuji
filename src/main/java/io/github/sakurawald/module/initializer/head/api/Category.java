@@ -2,6 +2,9 @@ package io.github.sakurawald.module.initializer.head.api;
 
 import io.github.sakurawald.util.MessageUtil;
 import java.util.UUID;
+
+import net.minecraft.component.DataComponentType;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -74,7 +77,8 @@ public enum Category {
     }
 
     public ItemStack of(ServerPlayerEntity player) {
-        return icon.setCustomName(getDisplayName(player));
+        icon.set(DataComponentTypes.CUSTOM_NAME, getDisplayName(player));
+        return icon;
     }
 
     public Text getDisplayName(ServerPlayerEntity player) {

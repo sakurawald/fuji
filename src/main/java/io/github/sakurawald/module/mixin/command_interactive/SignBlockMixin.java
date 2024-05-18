@@ -31,13 +31,13 @@ import net.minecraft.world.World;
 
 public class SignBlockMixin {
     @Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
-    private void $onUse(BlockState blockState, World level, BlockPos blockPos, PlayerEntity player, Hand interactionHand, BlockHitResult blockHitResult, CallbackInfoReturnable<ActionResult> cir) {
+    private void $onUse(BlockState blockState, World world, BlockPos blockPos, PlayerEntity player, BlockHitResult blockHitResult, CallbackInfoReturnable<ActionResult> cir) {
         // bypass if player is sneaking
         if (player.isSneaking()) return;
 
         // interact with sign
         if (player instanceof ServerPlayerEntity serverPlayer) {
-            BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            BlockEntity blockEntity = world.getBlockEntity(blockPos);
             if (blockEntity instanceof SignBlockEntity signBlockEntity) {
                 SignText signText = signBlockEntity.getText(signBlockEntity.isPlayerFacingFront(player));
                 String text = combineLines(signText).replace("@u", serverPlayer.getGameProfile().getName());

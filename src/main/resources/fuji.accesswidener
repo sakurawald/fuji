@@ -1,18 +1,12 @@
 accessWidener v2 named
 
-accessible class net/minecraft/server/players/GameProfileCache$GameProfileInfo
+# accessible field net/minecraft/registry/entry/RegistryEntry$Reference value Ljava/lang/Object;
 
-accessible field net/minecraft/registry/entry/RegistryEntry$Reference value Ljava/lang/Object;
-
-accessible method net/minecraft/world/level/NaturalSpawner getRandomSpawnMobAt (Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/level/StructureManager;Lnet/minecraft/world/level/chunk/ChunkGenerator;Lnet/minecraft/world/entity/MobCategory;Lnet/minecraft/util/RandomSource;Lnet/minecraft/core/BlockPos;)Ljava/util/Optional;
-accessible method net/minecraft/server/level/ServerChunkCache getVisibleChunkIfPresent (J)Lnet/minecraft/server/level/ChunkHolder;
-accessible field net/minecraft/server/level/ChunkMap visibleChunkMap Lit/unimi/dsi/fastutil/longs/Long2ObjectLinkedOpenHashMap;
 accessible method net/minecraft/server/world/ServerChunkManager getChunkHolder (J)Lnet/minecraft/server/world/ChunkHolder;
+
+accessible method net/minecraft/util/UserCache$Entry getProfile ()Lcom/mojang/authlib/GameProfile;
+
+accessible field net/minecraft/server/world/ChunkHolder UNLOADED_WORLD_CHUNK Lnet/minecraft/server/world/OptionalChunk;
 accessible field net/minecraft/server/world/ChunkHolder UNLOADED_WORLD_CHUNK_FUTURE Ljava/util/concurrent/CompletableFuture;
 
-accessible method net/minecraft/server/level/ServerChunkCache$ChunkAndHolder <init> (Lnet/minecraft/world/level/chunk/LevelChunk;Lnet/minecraft/server/level/ChunkHolder;)V
-accessible method net/minecraft/server/level/ChunkMap anyPlayerCloseEnoughForSpawning (Lnet/minecraft/world/level/ChunkPos;)Z
-accessible field net/minecraft/world/level/chunk/LevelChunk loaded Z
-
-accessible class net/minecraft/util/UserCache$Entry
-accessible method net/minecraft/util/UserCache$Entry getProfile ()Lcom/mojang/authlib/GameProfile;
+accessible field net/minecraft/registry/entry/RegistryEntry$Reference value Ljava/lang/Object;

@@ -34,7 +34,7 @@ public class InfoCommandMixin {
         }
 
         // send nbt data
-        NbtCompound compoundTag = blockEntity.createNbtWithIdentifyingData();
+        NbtCompound compoundTag = blockEntity.createNbtWithIdentifyingData(blockEntity.getWorld().getRegistryManager());
         player.sendMessage(output.append(Text.translatable("commands.data.block.query", pos.getX(), pos.getY(), pos.getZ(), NbtHelper.toPrettyPrintedText(compoundTag))));
     }
 }

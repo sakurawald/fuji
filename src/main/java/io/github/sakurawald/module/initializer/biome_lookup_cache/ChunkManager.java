@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.biome_lookup_cache;
 
 import com.mojang.datafixers.util.Either;
+import net.minecraft.server.world.OptionalChunk;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,14 +49,17 @@ public class ChunkManager {
         }
     }
 
+    @SuppressWarnings("ObjectEquality")
     @Nullable
-    public static WorldChunk getChunkFromFuture(CompletableFuture<Either<WorldChunk, ChunkHolder.Unloaded>> chunkFuture) {
-        Either<WorldChunk, ChunkHolder.Unloaded> either;
-        if (chunkFuture == ChunkHolder.UNLOADED_WORLD_CHUNK_FUTURE || (either = chunkFuture.getNow(null)) == null) {
+    public static WorldChunk getChunkFromFuture(CompletableFuture<OptionalChunk<WorldChunk>> future) {
+
+        WorldChunk now = future.getNow(null).orElse(null);
+
+        if (now == ChunkHolder.UNLOADED_WORLD_CHUNK || now == null) {
             return null;
         }
 
-        return either.left().orElse(null);
+        return now;
     }
 
     @Nullable

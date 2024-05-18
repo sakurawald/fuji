@@ -25,6 +25,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.entry.RegistryEntryInfo;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -42,6 +43,8 @@ import net.minecraft.world.gen.chunk.ChunkGenerator;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
+
+import java.util.Optional;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
@@ -187,7 +190,7 @@ public class ResourceWorldModule extends ModuleInitializer {
         ((SimpleRegistryMixinInterface<?>) dimensionsRegistry).fuji$setFrozen(false);
         var dimensionOptionsRegistryKey = RegistryKey.of(RegistryKeys.DIMENSION, worldRegistryKey.getValue());
         if (!dimensionsRegistry.contains(dimensionOptionsRegistryKey)) {
-            dimensionsRegistry.add(dimensionOptionsRegistryKey, dimensionOptions, Lifecycle.stable());
+            dimensionsRegistry.add(dimensionOptionsRegistryKey, dimensionOptions, RegistryEntryInfo.DEFAULT);
         }
         ((SimpleRegistryMixinInterface<?>) dimensionsRegistry).fuji$setFrozen(isFrozen);
 
@@ -211,7 +214,8 @@ public class ResourceWorldModule extends ModuleInitializer {
                 return 0;
             }
 
-            if (world.getDimensionKey() == DimensionTypes.THE_END) {
+            Optional<RegistryKey<DimensionType>> type = world.getDimensionEntry().getKey();
+            if (type.isPresent() && type.get() == DimensionTypes.THE_END) {
                 ServerWorld.createEndSpawnPlatform(world);
                 BlockPos endSpawnPos = ServerWorld.END_SPAWN_POS;
                 player.teleport(world, endSpawnPos.getX() + 0.5, endSpawnPos.getY(), endSpawnPos.getZ() + 0.5, 90, 0);

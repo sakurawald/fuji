@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.works.gui.ConfirmGui;
 import io.github.sakurawald.module.initializer.works.gui.InputSignGui;
@@ -18,6 +19,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryEntryLookup;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -186,7 +189,8 @@ public abstract class Work {
         NbtCompound rootTag = new NbtCompound();
         rootTag.putString("id", this.getIcon());
         rootTag.putInt("Count", 1);
-        return ItemStack.fromNbt(rootTag).getItem();
+
+        return ItemStack.fromNbt(Fuji.SERVER.getRegistryManager(),rootTag).get().getItem();
     }
 
     public @NotNull String getIcon() {

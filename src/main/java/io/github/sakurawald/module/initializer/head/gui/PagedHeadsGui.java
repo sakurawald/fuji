@@ -11,13 +11,14 @@ import io.github.sakurawald.module.initializer.head.HeadModule;
 import io.github.sakurawald.module.initializer.head.api.Head;
 import io.github.sakurawald.util.GuiUtil;
 import io.github.sakurawald.util.MessageUtil;
-import java.util.List;
-import java.util.UUID;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+
+import java.util.List;
+import java.util.UUID;
 
 public class PagedHeadsGui extends LayeredGui {
     public final List<Head> heads;
@@ -52,10 +53,12 @@ public class PagedHeadsGui extends LayeredGui {
         for (int i = 0; i < 9; i++) {
             navigationLayer.setSlot(i, Items.PINK_STAINED_GLASS_PANE.getDefaultStack());
         }
+
+        ItemStack prevItemStack = new Head(UUID.fromString("8aa062dc-9852-42b1-ae37-b2f8a3121c0e"),
+                GuiUtil.PREVIOUS_PAGE_ICON).of();
+        prevItemStack.set(DataComponentTypes.CUSTOM_NAME, MessageUtil.ofVomponent(parent.getPlayer(), "previous_page"));
         navigationLayer.setSlot(
-                3, new Head(
-                        UUID.fromString("8aa062dc-9852-42b1-ae37-b2f8a3121c0e"),
-                        GuiUtil.PREVIOUS_PAGE_ICON).of().setCustomName(MessageUtil.ofVomponent(parent.getPlayer(), "previous_page")),
+                3, prevItemStack,
                 ((index, type, action) -> {
                     this.page -= 1;
                     if (this.page < 0) {
@@ -65,10 +68,11 @@ public class PagedHeadsGui extends LayeredGui {
                     this.updatePage();
                 })
         );
+
+        ItemStack nextItemStack = new Head(UUID.fromString("8aa062dc-9852-42b1-ae37-b2f8a3121c0e"), GuiUtil.NEXT_PAGE_ICON).of();
+        nextItemStack.set(DataComponentTypes.CUSTOM_NAME, MessageUtil.ofVomponent(parent.getPlayer(), "next_page"));
         navigationLayer.setSlot(
-                5, new Head(
-                        UUID.fromString("8aa062dc-9852-42b1-ae37-b2f8a3121c0e"),
-                        GuiUtil.NEXT_PAGE_ICON).of().setCustomName(MessageUtil.ofVomponent(parent.getPlayer(), "next_page")),
+                5, nextItemStack,
                 ((index, type, action) -> {
                     this.page += 1;
                     if (this.page >= getMaxPage()) {
@@ -120,7 +124,7 @@ public class PagedHeadsGui extends LayeredGui {
         } else if (cursorStack.getMaxCount() <= cursorStack.getCount()) {
             //noinspection UnnecessaryReturnStatement
             return;
-        } else if (ItemStack.canCombine(headStack, cursorStack)) {
+        } else if (ItemStack.areItemsAndComponentsEqual(headStack, cursorStack)) {
             if (type.isLeft) {
                 module.tryPurchase(player, 1, () -> cursorStack.increment(1));
             } else if (type.isRight) {

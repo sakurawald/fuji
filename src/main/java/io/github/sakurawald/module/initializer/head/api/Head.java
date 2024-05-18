@@ -1,5 +1,13 @@
 package io.github.sakurawald.module.initializer.head.api;
 
+import com.mojang.serialization.MapDecoder;
+import io.github.sakurawald.Fuji;
+import io.github.sakurawald.util.RegistryUtil;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.client.gui.screen.world.EditWorldScreen;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
+import net.minecraft.nbt.NbtHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -24,11 +32,12 @@ public class Head {
         this.tags = tags;
     }
 
+    public Head(String name, UUID uuid, String value) {
+        this(name, uuid, value,null);
+    }
+
     public Head(UUID uuid, String value) {
-        this.name = "";
-        this.uuid = uuid;
-        this.value = value;
-        this.tags = null;
+        this("", uuid, value, null);
     }
 
     public String getTagsOrEmpty() {
@@ -38,17 +47,23 @@ public class Head {
     public ItemStack of() {
         ItemStack ret = new ItemStack(Items.PLAYER_HEAD);
         if (name != null) {
-            ret.setCustomName(Text.literal(name).styled(style -> style.withItalic(false)));
+            ret.set(DataComponentTypes.CUSTOM_NAME,Text.literal(name).styled(style -> style.withItalic(false)));
         }
 
         if (tags != null) {
-            NbtCompound displayTag = ret.getOrCreateSubNbt("display");
+            NbtCompound displayTag = new NbtCompound();
             NbtList loreTag = new NbtList();
-            loreTag.add(NbtString.of(Text.Serialization.toJsonString(Text.literal(tags))));
+            loreTag.add(NbtString.of(Text.Serialization.toJsonString(Text.literal(tags), RegistryUtil.getDefaultWrapperLookup())));
+
             displayTag.put("Lore", loreTag);
+            ret.apply(DataComponentTypes.CUSTOM_DATA,NbtComponent.DEFAULT, comp -> comp.apply(cur -> {
+                cur.put("display", displayTag);
+            }));
         }
 
-        NbtCompound ownerTag = ret.getOrCreateSubNbt("SkullOwner");
+
+
+        NbtCompound ownerTag = new NbtCompound();
         ownerTag.putUuid("Id", uuid);
 
         NbtCompound propertiesTag = new NbtCompound();
@@ -60,6 +75,10 @@ public class Head {
 
         propertiesTag.put("textures", texturesTag);
         ownerTag.put("Properties", propertiesTag);
+
+        ret.apply(DataComponentTypes.CUSTOM_DATA,NbtComponent.DEFAULT, comp -> comp.apply(cur -> {
+            cur.put("SkullOwner", ownerTag);
+        }));
 
         return ret;
     }

@@ -11,6 +11,8 @@ import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.head.HeadModule;
 import io.github.sakurawald.util.MessageUtil;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -18,9 +20,9 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.Text;
 import net.minecraft.util.UserCache;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -48,20 +50,29 @@ class PlayerInputGui extends AnvilInputGui {
                 MinecraftServer server = player.server;
                 UserCache profileCache = server.getUserCache();
                 if (profileCache == null) {
-                    outputStack.removeSubNbt("SkullOwner");
+                    outputStack.apply(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT, comp -> comp.apply(cur -> {
+                                cur.remove("SkullOwner");
+                            })
+                    );
                     return;
                 }
 
                 Optional<GameProfile> possibleProfile = profileCache.findByName(this.getInput());
                 MinecraftSessionService sessionService = server.getSessionService();
                 if (possibleProfile.isEmpty()) {
-                    outputStack.removeSubNbt("SkullOwner");
+                    outputStack.apply(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT, comp -> comp.apply(cur -> {
+                                cur.remove("SkullOwner");
+                            })
+                    );
                     return;
                 }
 
                 ProfileResult profileResult = sessionService.fetchProfile(possibleProfile.get().getId(), false);
                 if (profileResult == null) {
-                    outputStack.removeSubNbt("SkullOwner");
+                    outputStack.apply(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT, comp -> comp.apply(cur -> {
+                                cur.remove("SkullOwner");
+                            })
+                    );
                     return;
                 }
 
@@ -69,12 +80,16 @@ class PlayerInputGui extends AnvilInputGui {
 
                 MinecraftProfileTextures textures = sessionService.getTextures(profile);
                 if (textures == MinecraftProfileTextures.EMPTY) {
-                    outputStack.removeSubNbt("SkullOwner");
+                    outputStack.apply(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT, comp -> comp.apply(cur -> {
+                                cur.remove("SkullOwner");
+                            })
+                    );
                     return;
                 }
 
                 MinecraftProfileTexture texture = textures.skin();
-                NbtCompound ownerTag = outputStack.getOrCreateSubNbt("SkullOwner");
+
+                NbtCompound ownerTag = new NbtCompound();
                 ownerTag.putUuid("Id", profile.getId());
                 ownerTag.putString("Name", profile.getName());
 
@@ -88,6 +103,10 @@ class PlayerInputGui extends AnvilInputGui {
                 propertiesTag.put("textures", texturesTag);
                 ownerTag.put("Properties", propertiesTag);
 
+                outputStack.apply(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT, comp -> comp.apply(cur -> {
+                    cur.put("SkullOwner", ownerTag);
+                }));
+
                 var builder = GuiElementBuilder.from(outputStack);
                 if (Configs.headHandler.model().economyType != HeadModule.EconomyType.FREE) {
                     builder.addLoreLine(Text.empty());
@@ -99,7 +118,7 @@ class PlayerInputGui extends AnvilInputGui {
                             var cursorStack = getPlayer().currentScreenHandler.getCursorStack();
                             if (player.currentScreenHandler.getCursorStack().isEmpty()) {
                                 player.currentScreenHandler.setCursorStack(outputStack.copy());
-                            } else if (ItemStack.canCombine(outputStack, cursorStack) && cursorStack.getCount() < cursorStack.getMaxCount()) {
+                            } else if (ItemStack.areItemsAndComponentsEqual(outputStack, cursorStack) && cursorStack.getCount() < cursorStack.getMaxCount()) {
                                 cursorStack.increment(1);
                             } else {
                                 player.dropItem(outputStack.copy(), false);
