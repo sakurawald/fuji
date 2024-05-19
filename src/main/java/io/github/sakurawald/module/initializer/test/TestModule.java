@@ -10,6 +10,8 @@ import net.kyori.adventure.text.Component;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.world.World;
 
 
@@ -48,6 +50,8 @@ public class TestModule extends ModuleInitializer {
     }
 
     private static int magic(CommandContext<ServerCommandSource> ctx) {
+        ServerPlayerEntity player = ctx.getSource().getPlayer();
+        player.sendMessage(Text.literal(String.valueOf(player.getMainHandStack().getComponents())));
 
         return 1;
     }

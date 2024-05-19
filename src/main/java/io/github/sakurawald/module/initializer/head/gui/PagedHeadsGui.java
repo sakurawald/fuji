@@ -12,6 +12,7 @@ import io.github.sakurawald.module.initializer.head.api.Head;
 import io.github.sakurawald.util.GuiUtil;
 import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
@@ -54,11 +55,8 @@ public class PagedHeadsGui extends LayeredGui {
             navigationLayer.setSlot(i, Items.PINK_STAINED_GLASS_PANE.getDefaultStack());
         }
 
-        ItemStack prevItemStack = new Head(UUID.fromString("8aa062dc-9852-42b1-ae37-b2f8a3121c0e"),
-                GuiUtil.PREVIOUS_PAGE_ICON).of();
-        prevItemStack.set(DataComponentTypes.CUSTOM_NAME, MessageUtil.ofVomponent(parent.getPlayer(), "previous_page"));
         navigationLayer.setSlot(
-                3, prevItemStack,
+                3, new GuiElementBuilder().setItem(Items.PLAYER_HEAD).setName(MessageUtil.ofVomponent(parent.getPlayer(), "previous_page")).setSkullOwner(GuiUtil.PREVIOUS_PAGE_ICON).asStack(),
                 ((index, type, action) -> {
                     this.page -= 1;
                     if (this.page < 0) {
@@ -69,10 +67,8 @@ public class PagedHeadsGui extends LayeredGui {
                 })
         );
 
-        ItemStack nextItemStack = new Head(UUID.fromString("8aa062dc-9852-42b1-ae37-b2f8a3121c0e"), GuiUtil.NEXT_PAGE_ICON).of();
-        nextItemStack.set(DataComponentTypes.CUSTOM_NAME, MessageUtil.ofVomponent(parent.getPlayer(), "next_page"));
         navigationLayer.setSlot(
-                5, nextItemStack,
+                5, new GuiElementBuilder().setItem(Items.PLAYER_HEAD).setName(MessageUtil.ofVomponent(parent.getPlayer(), "next_page")).setSkullOwner(GuiUtil.NEXT_PAGE_ICON).asStack(),
                 ((index, type, action) -> {
                     this.page += 1;
                     if (this.page >= getMaxPage()) {
