@@ -3,6 +3,8 @@
 
 Fuji is a minecraft mod that provides many essential and useful modules for vanilla survival.
 
+> **_If minecraft gets updated, you can mail sakurawald@gmail.com for fuji update reminder._**
+
 > This is a **server-side only** mod, but you can use it in a **single-player world**. (Yes, the single-player world also includes a logic-server)
 > - For a server-maintainer: You only need to install this mod at the server-side, and the players don't need to install this mod at their client-side
 > - For a player: You only need to install this mod at the client-side, and then you can use the modules in your single-player world.

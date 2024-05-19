@@ -37,6 +37,7 @@ import java.nio.file.Files;
 import java.util.UUID;
 
 
+//todo: fix world download module no class found bug
 public class WorldDownloaderModule extends ModuleInitializer {
 
     private EvictingQueue<String> contextQueue;

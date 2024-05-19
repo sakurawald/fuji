@@ -47,8 +47,6 @@ public class ShulkerBoxDisplayGui extends DisplayGuiBuilder {
         }
 
         /* construct items */
-        player.sendMessage(Text.literal(itemStack.getComponents().toString()));
-
         ContainerComponent containerComponent = itemStack.get(DataComponentTypes.CONTAINER);
 
         if (containerComponent != null) {
