@@ -316,7 +316,7 @@ You can learn more and generate a cron expression from the generator: https://ww
 
 This mod need `fabric-api` mod to work, so make sure you have installed `fabric-api` mod.
 
-Before you enable `BetterFakePlayerModule`, you need to install `carpet` mod.
+Before you enable `BetterFakePlayerModule` and `BetterInfoModule` , you need to install `carpet` mod.
 
 Before you enable `ProfilerMoudle`, you need to install `spark` mod.
 

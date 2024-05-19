@@ -18,8 +18,8 @@ public class ServerPlayNetworkHandlerMixin {
     @Shadow
     public ServerPlayerEntity player;
 
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerCommonPacketListenerImpl;onDisconnect(Lnet/minecraft/network/chat/Component;)V"), method = "onDisconnect")
-    private void $disconnect(Text reason, CallbackInfo info) {
+    @Inject(at = @At(value = "HEAD"), method = "onDisconnected")
+    private void $onDisconnected(Text reason, CallbackInfo info) {
         if (Fuji.SERVER.getPlayerManager().isOperator(player.getGameProfile())) {
             Fuji.LOGGER.info("op protect -> deop " + player.getGameProfile().getName());
             Fuji.SERVER.getPlayerManager().removeFromOperators(player.getGameProfile());
