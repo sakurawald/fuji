@@ -5,12 +5,11 @@ import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.util.GuiUtil;
 import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.component.type.NbtComponent;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -48,18 +47,20 @@ public class ShulkerBoxDisplayGui extends DisplayGuiBuilder {
         }
 
         /* construct items */
-        NbtCompound blockEntityData = itemStack.get(DataComponentTypes.BLOCK_ENTITY_DATA).copyNbt();
+        player.sendMessage(Text.literal(itemStack.getComponents().toString()));
 
-        if (blockEntityData != null) {
-            NbtList items = (NbtList) blockEntityData.get("Items");
-            if (items == null) return gui;
-            items.forEach(tag -> {
-                NbtCompound compoundTag = (NbtCompound) tag;
-                int slot = compoundTag.getInt("Slot");
-                ItemStack itemStack = ItemStack.fromNbt(player.getRegistryManager(),compoundTag).get();
-                gui.setSlot(LINE_SIZE + slot, itemStack);
+        ContainerComponent containerComponent = itemStack.get(DataComponentTypes.CONTAINER);
+
+        if (containerComponent != null) {
+            var counter = new Object() {
+                int offset = 0;
+            };
+            containerComponent.stream().forEach(item -> {
+                gui.setSlot(LINE_SIZE + counter.offset, item.copy());
+                counter.offset++;
             });
         }
+
         return gui;
     }
 }
