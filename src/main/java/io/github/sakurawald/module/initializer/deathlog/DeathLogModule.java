@@ -17,8 +17,6 @@ import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -242,7 +240,7 @@ public class DeathLogModule extends ModuleInitializer {
 
     private NbtList writeSlotsTag(NbtList slotsTag, DefaultedList<ItemStack> itemStackList) {
         for (ItemStack item : itemStackList) {
-            NbtComponent.set(DataComponentTypes.CUSTOM_DATA, item, new NbtCompound());
+            slotsTag.add(item.encodeAllowEmpty(RegistryUtil.getDefaultWrapperLookup()));
         }
         return slotsTag;
     }
@@ -250,7 +248,7 @@ public class DeathLogModule extends ModuleInitializer {
     private List<ItemStack> readSlotsTag(NbtList slotsTag) {
         ArrayList<ItemStack> ret = new ArrayList<>();
         for (int i = 0; i < slotsTag.size(); i++) {
-            ret.add(ItemStack.fromNbt(RegistryUtil.getDefaultWrapperLookup(), slotsTag.getCompound(i)).get());
+            ret.add(ItemStack.fromNbtOrEmpty(RegistryUtil.getDefaultWrapperLookup(), slotsTag.getCompound(i)));
         }
         return ret;
     }

@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 public class InfoCommandMixin {
 
-    @Inject(method = "infoBlock", at = @At(value = "INVOKE", target = "Lcarpet/utils/BlockInfo;blockInfo(Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/server/world/ServerWorld;)Ljava/util/List;", shift = At.Shift.AFTER))
+    @Inject(method = "infoBlock", at = @At(value = "INVOKE", target = "Lcarpet/commands/InfoCommand;printBlock(Ljava/util/List;Lnet/minecraft/server/command/ServerCommandSource;Ljava/lang/String;)V", shift = At.Shift.AFTER))
     private static void blockInfo(ServerCommandSource source, BlockPos pos, String grep, CallbackInfoReturnable<Integer> cir) {
         // is player ?
         ServerPlayerEntity player = source.getPlayer();

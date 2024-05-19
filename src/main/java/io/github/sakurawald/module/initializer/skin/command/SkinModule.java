@@ -23,8 +23,8 @@ import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 
+// todo: code review
 public class SkinModule extends ModuleInitializer {
-
 
     @SuppressWarnings("unused")
     @Override
