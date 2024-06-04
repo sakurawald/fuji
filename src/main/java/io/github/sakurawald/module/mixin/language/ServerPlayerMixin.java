@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.mixin.language;
 
-import io.github.sakurawald.module.initializer.teleport_warmup.ServerPlayerAccessor;
 import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.network.packet.c2s.common.SyncedClientOptions;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -12,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayerEntity.class)
 
-public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
+public abstract class ServerPlayerMixin {
 
     @Inject(method = "setClientOptions", at = @At("HEAD"))
     public void $setClientOptions(SyncedClientOptions clientInformation, CallbackInfo ci) {

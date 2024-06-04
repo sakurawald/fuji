@@ -46,7 +46,7 @@ public class AfkModule extends ModuleInitializer {
     private int $afk(CommandContext<ServerCommandSource> ctx) {
         return CommandUtil.playerOnlyCommand(ctx, (player -> {
             // note: issue command will update lastLastActionTime, so it's impossible to use /afk to disable afk
-            ((ServerPlayerAccessor_afk) player).fuji$setAfk(true);
+            ((ServerPlayerAfkStateAccessor) player).fuji$setAfk(true);
             MessageUtil.sendMessage(player, "afk.on");
             return Command.SINGLE_SUCCESS;
         }));
@@ -57,7 +57,7 @@ public class AfkModule extends ModuleInitializer {
         @Override
         public void execute(JobExecutionContext context) throws JobExecutionException {
             for (ServerPlayerEntity player : Fuji.SERVER.getPlayerManager().getPlayerList()) {
-                ServerPlayerAccessor_afk afk_player = (ServerPlayerAccessor_afk) player;
+                ServerPlayerAfkStateAccessor afk_player = (ServerPlayerAfkStateAccessor) player;
 
                 // get last action time
                 long lastActionTime = player.getLastActionTime();

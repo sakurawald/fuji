@@ -33,7 +33,6 @@
     "pvp.PvpToggleMixin",
     "reply.MsgCommandMixin",
     "resource_world.EndGatewayBlockEntityMixin",
-    "resource_world.MinecraftServerAccessor",
     "resource_world.MinecraftServerMixin",
     "resource_world.ServerWorldMixin",
     "resource_world.registry.DimensionOptionsMixin",

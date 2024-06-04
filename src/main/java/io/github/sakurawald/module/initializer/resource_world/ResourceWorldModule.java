@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.serialization.Lifecycle;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
@@ -12,7 +11,6 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.newbie_welcome.random_teleport.RandomTeleport;
 import io.github.sakurawald.module.initializer.resource_world.interfaces.DimensionOptionsMixinInterface;
 import io.github.sakurawald.module.initializer.resource_world.interfaces.SimpleRegistryMixinInterface;
-import io.github.sakurawald.module.mixin.resource_world.MinecraftServerAccessor;
 import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.ScheduleUtil;
@@ -164,10 +162,9 @@ public class ResourceWorldModule extends ModuleInitializer {
         ResourceWorldProperties resourceWorldProperties = new ResourceWorldProperties(server.getSaveProperties(), seed);
         RegistryKey<World> worldRegistryKey = RegistryKey.of(RegistryKeys.WORLD, new Identifier(DEFAULT_RESOURCE_WORLD_NAMESPACE, path));
         DimensionOptions dimensionOptions = createDimensionOptions(server, dimensionTypeRegistryKey);
-        MinecraftServerAccessor serverAccessor = (MinecraftServerAccessor) server;
         ServerWorld world = new ResourceWorld(server,
                 Util.getMainWorkerExecutor(),
-                serverAccessor.getSession(),
+                server.session,
                 resourceWorldProperties,
                 worldRegistryKey,
                 dimensionOptions,
@@ -194,7 +191,7 @@ public class ResourceWorldModule extends ModuleInitializer {
         }
         ((SimpleRegistryMixinInterface<?>) dimensionsRegistry).fuji$setFrozen(isFrozen);
 
-        serverAccessor.getWorlds().put(world.getRegistryKey(), world);
+        server.worlds.put(world.getRegistryKey(), world);
         ServerWorldEvents.LOAD.invoker().onWorldLoad(server, world);
         world.tick(() -> true);
         MessageUtil.sendBroadcast("resource_world.world.created", path);

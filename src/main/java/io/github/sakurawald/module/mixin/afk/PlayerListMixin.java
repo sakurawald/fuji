@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.afk;
 
-import io.github.sakurawald.module.initializer.afk.ServerPlayerAccessor_afk;
+import io.github.sakurawald.module.initializer.afk.ServerPlayerAfkStateAccessor;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ConnectedClientData;
@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerListMixin {
     @Inject(at = @At(value = "TAIL"), method = "onPlayerConnect")
     private void $onPlayerConnect(ClientConnection connection, ServerPlayerEntity serverPlayer, ConnectedClientData commonListenerCookie, CallbackInfo ci) {
-        ServerPlayerAccessor_afk afk_player = (ServerPlayerAccessor_afk) serverPlayer;
+        ServerPlayerAfkStateAccessor afk_player = (ServerPlayerAfkStateAccessor) serverPlayer;
         afk_player.fuji$setLastLastActionTime(serverPlayer.getLastActionTime());
     }
 }

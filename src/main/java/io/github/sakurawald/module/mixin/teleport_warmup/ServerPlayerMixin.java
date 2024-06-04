@@ -3,7 +3,7 @@ package io.github.sakurawald.module.mixin.teleport_warmup;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.back.BackModule;
 import io.github.sakurawald.module.initializer.teleport_warmup.Position;
-import io.github.sakurawald.module.initializer.teleport_warmup.ServerPlayerAccessor;
+import io.github.sakurawald.module.initializer.teleport_warmup.ServerPlayerCombatStateAccessor;
 import io.github.sakurawald.module.initializer.teleport_warmup.TeleportTicket;
 import io.github.sakurawald.module.initializer.teleport_warmup.TeleportWarmupModule;
 import io.github.sakurawald.util.CarpetUtil;
@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayerEntity.class)
 
-public abstract class ServerPlayerMixin implements ServerPlayerAccessor {
+public abstract class ServerPlayerMixin implements ServerPlayerCombatStateAccessor {
     @Unique
     private static final BackModule backModule = ModuleManager.getInitializer(BackModule.class);
     @Unique

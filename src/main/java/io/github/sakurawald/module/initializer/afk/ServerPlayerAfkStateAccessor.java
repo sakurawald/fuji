@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.afk;
 
-public interface ServerPlayerAccessor_afk {
+public interface ServerPlayerAfkStateAccessor {
 
     void fuji$setAfk(boolean flag);
 

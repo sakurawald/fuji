@@ -5,7 +5,6 @@ import io.github.sakurawald.module.initializer.resource_world.interfaces.SimpleR
 import io.github.sakurawald.module.initializer.teleport_warmup.Position;
 import io.github.sakurawald.module.initializer.teleport_warmup.TeleportTicket;
 import io.github.sakurawald.module.initializer.teleport_warmup.TeleportWarmupModule;
-import io.github.sakurawald.module.mixin.resource_world.MinecraftServerAccessor;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
@@ -89,14 +88,13 @@ public class ResourceWorldManager {
 
     private static void delete(ServerWorld world) {
         MinecraftServer server = world.getServer();
-        MinecraftServerAccessor serverAccess = (MinecraftServerAccessor) server;
 
         RegistryKey<World> dimensionKey = world.getRegistryKey();
-        if (serverAccess.getWorlds().remove(dimensionKey, world)) {
+        if (server.worlds.remove(dimensionKey, world)) {
             ServerWorldEvents.UNLOAD.invoker().onWorldUnload(server, world);
             SimpleRegistry<DimensionOptions> dimensionsRegistry = getDimensionsRegistry(server);
             SimpleRegistryMixinInterface.remove(dimensionsRegistry, dimensionKey.getValue());
-            LevelStorage.Session session = serverAccess.getSession();
+            LevelStorage.Session session = server.session;
             File worldDirectory = session.getWorldDirectory(dimensionKey).toFile();
             cleanFiles(worldDirectory);
         }
