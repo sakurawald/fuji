@@ -10,3 +10,6 @@ accessible field net/minecraft/server/world/ChunkHolder UNLOADED_WORLD_CHUNK Lne
 accessible field net/minecraft/server/world/ChunkHolder UNLOADED_WORLD_CHUNK_FUTURE Ljava/util/concurrent/CompletableFuture;
 
 accessible field net/minecraft/registry/entry/RegistryEntry$Reference value Ljava/lang/Object;
+
+accessible method net/minecraft/server/MinecraftServer getWorlds ()Ljava/lang/Iterable;
+accessible field net/minecraft/server/MinecraftServer session Lnet/minecraft/world/level/storage/LevelStorage$Session;

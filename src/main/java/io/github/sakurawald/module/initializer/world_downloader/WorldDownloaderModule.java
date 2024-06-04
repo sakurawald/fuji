@@ -9,7 +9,6 @@ import com.sun.net.httpserver.HttpServer;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.mixin.resource_world.MinecraftServerAccessor;
 import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.SneakyThrows;
@@ -128,9 +127,8 @@ public class WorldDownloaderModule extends ModuleInitializer {
         /* get world folder */
         ServerWorld world = player.getServerWorld();
         MinecraftServer server = world.getServer();
-        MinecraftServerAccessor serverAccess = (MinecraftServerAccessor) server;
         RegistryKey<World> dimensionKey = world.getRegistryKey();
-        LevelStorage.Session session = serverAccess.getSession();
+        LevelStorage.Session session = server.session;
         File worldDirectory = session.getWorldDirectory(dimensionKey).toFile();
 
         /* compress file */
