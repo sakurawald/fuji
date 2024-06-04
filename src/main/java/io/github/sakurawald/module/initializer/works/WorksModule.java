@@ -6,7 +6,9 @@ import com.mojang.brigadier.context.CommandContext;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.config.handler.ConfigHandler;
+import io.github.sakurawald.config.handler.ObjectConfigHandler;
+import io.github.sakurawald.config.model.WorksModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.works.gui.InputSignGui;
 import io.github.sakurawald.module.initializer.works.work_type.NonProductionWork;
@@ -41,18 +43,19 @@ import java.util.List;
 
 public class WorksModule extends ModuleInitializer {
 
+    public static final ConfigHandler<WorksModel> worksHandler = new ObjectConfigHandler<>("works.json", WorksModel.class);
     private final int PAGE_SIZE = 9 * 5;
 
 
     @Override
     public void onInitialize() {
-        Configs.worksHandler.loadFromDisk();
+        worksHandler.loadFromDisk();
         ServerLifecycleEvents.SERVER_STARTED.register(this::registerScheduleTask);
     }
 
     @Override
     public void onReload() {
-        Configs.worksHandler.loadFromDisk();
+        worksHandler.loadFromDisk();
     }
 
     @SuppressWarnings("unused")
@@ -90,7 +93,7 @@ public class WorksModule extends ModuleInitializer {
                 }
                 selectWorkTypeGui.setSlot(11, new GuiElementBuilder().setItem(Items.GUNPOWDER).setName(MessageUtil.ofVomponent(player, "works.non_production_work.name")).setCallback(() -> {
                     // add
-                    Configs.worksHandler.model().works.add(0, new NonProductionWork(player, name));
+                    worksHandler.model().works.add(0, new NonProductionWork(player, name));
                     MessageUtil.sendActionBar(player, "works.work.add.done");
                     MessageUtil.sendBroadcast("works.work.add.broadcast", player.getGameProfile().getName(), name);
                     selectWorkTypeGui.close();
@@ -98,7 +101,7 @@ public class WorksModule extends ModuleInitializer {
                 selectWorkTypeGui.setSlot(15, new GuiElementBuilder().setItem(Items.REDSTONE).setName(MessageUtil.ofVomponent(player, "works.production_work.name")).setCallback(() -> {
                     // add
                     ProductionWork work = new ProductionWork(player, name);
-                    Configs.worksHandler.model().works.add(0, work);
+                    worksHandler.model().works.add(0, work);
                     MessageUtil.sendActionBar(player, "works.work.add.done");
                     MessageUtil.sendBroadcast("works.work.add.broadcast", player.getGameProfile().getName(), name);
                     selectWorkTypeGui.close();
@@ -119,7 +122,7 @@ public class WorksModule extends ModuleInitializer {
 
     private void $listWorks(ServerPlayerEntity player, @Nullable List<Work> source, int page) {
         if (source == null) {
-            source = Configs.worksHandler.model().works;
+            source = worksHandler.model().works;
         }
 
         final SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X6, player, false);
@@ -187,7 +190,7 @@ public class WorksModule extends ModuleInitializer {
                 .setSkullOwner(GuiUtil.PLUS_ICON)
                 .setCallback(() -> $addWork(player))
         );
-        if (source == Configs.worksHandler.model().works) {
+        if (source == worksHandler.model().works) {
             gui.setSlot(49, new GuiElementBuilder()
                     .setItem(Items.PLAYER_HEAD)
                     .setName(MessageUtil.ofVomponent(player, "works.list.my_works"))
@@ -248,7 +251,7 @@ public class WorksModule extends ModuleInitializer {
     }
 
     private void $myWorks(ServerPlayerEntity player) {
-        List<Work> works = Configs.worksHandler.model().works;
+        List<Work> works = worksHandler.model().works;
         List<Work> myWorks = works.stream().filter(w -> w.creator.equals(player.getGameProfile().getName())).toList();
         $listWorks(player, myWorks, 0);
     }
@@ -267,7 +270,7 @@ public class WorksModule extends ModuleInitializer {
             // save current works data
             MinecraftServer server = (MinecraftServer) context.getJobDetail().getJobDataMap().get(MinecraftServer.class.getName());
             if (server.isRunning()) {
-                Configs.worksHandler.saveToDisk();
+                worksHandler.saveToDisk();
             }
 
             // run schedule method

@@ -7,6 +7,9 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.config.handler.ConfigHandler;
+import io.github.sakurawald.config.handler.ObjectConfigHandler;
+import io.github.sakurawald.config.model.ChatModel;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.chat.display.DisplayHelper;
@@ -44,6 +47,7 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 public class ChatModule extends ModuleInitializer {
 
+    public static final ConfigHandler<ChatModel> chatHandler = new ObjectConfigHandler<>("chat.json", ChatModel.class);
     private final MiniMessage miniMessage = MiniMessage.builder().build();
     private final MainStatsModule mainStatsModule = ModuleManager.getInitializer(MainStatsModule.class);
     @Getter
@@ -51,7 +55,7 @@ public class ChatModule extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        Configs.chatHandler.loadFromDisk();
+        chatHandler.loadFromDisk();
 
         chatHistory = EvictingQueue.create(Configs.configHandler.model().modules.chat.history.cache_size);
     }
@@ -59,7 +63,7 @@ public class ChatModule extends ModuleInitializer {
 
     @Override
     public void onReload() {
-        Configs.chatHandler.loadFromDisk();
+        chatHandler.loadFromDisk();
 
         EvictingQueue<Component> newQueue = EvictingQueue.create(Configs.configHandler.model().modules.chat.history.cache_size);
         newQueue.addAll(chatHistory);
@@ -82,8 +86,8 @@ public class ChatModule extends ModuleInitializer {
         return CommandUtil.playerOnlyCommand(ctx, player -> {
             String name = player.getGameProfile().getName();
             String format = StringArgumentType.getString(ctx, "format");
-            Configs.chatHandler.model().format.player2format.put(name, format);
-            Configs.chatHandler.saveToDisk();
+            chatHandler.model().format.player2format.put(name, format);
+            chatHandler.saveToDisk();
             return Command.SINGLE_SUCCESS;
         });
     }
@@ -157,7 +161,7 @@ public class ChatModule extends ModuleInitializer {
 
     public void broadcastChatMessage(ServerPlayerEntity player, String message) {
         /* resolve format */
-        message = Configs.chatHandler.model().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
+        message = chatHandler.model().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
                 .replace("%message%", message);
         message = resolveMentionTag(player, message);
         String format = Configs.configHandler.model().modules.chat.format;

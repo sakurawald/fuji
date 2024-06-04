@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.initializer.scheduler;
 
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.Configs;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -26,7 +25,7 @@ public class ScheduleJob {
             if (left_trigger_times == 0) {
                 this.enable = false;
             }
-            Configs.schedulerHandler.saveToDisk();
+            SchedulerModule.schedulerHandler.saveToDisk();
         }
 
         List<String> commands = this.commands_list.get(new Random().nextInt(this.commands_list.size()));

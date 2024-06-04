@@ -7,7 +7,6 @@ import com.mojang.authlib.yggdrasil.ProfileResult;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.AnvilInputGui;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.head.HeadModule;
 import io.github.sakurawald.util.MessageUtil;
@@ -16,8 +15,6 @@ import net.minecraft.item.Items;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.Text;
 import net.minecraft.util.UserCache;
-import net.minecraft.util.Uuids;
-import org.apache.logging.log4j.core.util.UuidUtil;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -75,7 +72,7 @@ class PlayerInputGui extends AnvilInputGui {
                 }
 
                 GuiElementBuilder builder = new GuiElementBuilder().setItem(Items.PLAYER_HEAD);
-                if (Configs.headHandler.model().economyType != HeadModule.EconomyType.FREE) {
+                if (HeadModule.headHandler.model().economyType != HeadModule.EconomyType.FREE) {
                     builder.addLoreLine(Text.empty());
                     builder.addLoreLine(MessageUtil.ofVomponent(player, "head.price").copy().append(module.getCost()));
                 }
