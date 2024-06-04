@@ -9,7 +9,7 @@ import net.minecraft.server.command.ServerCommandSource;
 
 public abstract class ModuleInitializer {
 
-    public void initialize() {
+    public final void initialize() {
         CommandRegistrationCallback.EVENT.register(this::registerCommand);
         this.onInitialize();
     }

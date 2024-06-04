@@ -259,6 +259,9 @@ provides `/anvil` command.
 #### BedModule
 provides `/bed` command.
 
+#### SitModule
+provides `/sit` command and sit interact.
+
 </details>
 
 # Config
@@ -333,3 +336,4 @@ At the early stage of this project, we reference some source and ideas from the 
 3. https://modrinth.com/mod/essential-commands
 4. https://modrinth.com/mod/skinrestorer
 5. https://modrinth.com/mod/headindex
+6. https://modrinth.com/mod/sit

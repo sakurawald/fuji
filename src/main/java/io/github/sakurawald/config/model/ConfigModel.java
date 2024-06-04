@@ -512,9 +512,23 @@ public class ConfigModel {
         }
 
         public Bed bed = new Bed();
+
         public class Bed {
 
             public boolean enable = false;
+        }
+
+        public Sit sit = new Sit();
+
+        public class Sit {
+
+            public boolean enable = false;
+            public boolean allow_right_click_sit = true;
+            public int max_distance_to_sit = -1;
+            public boolean must_be_stairs = true;
+            public boolean required_empty_hand = false;
+            public boolean allow_sneaking = false;
+            public boolean no_opaque_block_above = false;
         }
     }
 }
