@@ -88,9 +88,13 @@ public class MessageUtil {
         }
 
         /* get value */
-        String value;
-        value = json.get(key).getAsString();
-        return formatString(value, args);
+        if (json.has(key)) {
+            String value = json.get(key).getAsString();
+            return formatString(value, args);
+        }
+
+        Fuji.LOGGER.error("Missing language key '{}'", key);
+        return null;
     }
 
     public static String formatString(String string, Object... args) {

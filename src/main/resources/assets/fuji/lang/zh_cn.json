@@ -10,6 +10,9 @@
   "back": "<#FFA1F5>返回",
   "empty": "<#FFA1F5>空",
   "confirm": "<#FFA1F5>确认",
+  "overworld": "主世界",
+  "the_nether": "下界",
+  "the_end": "末地",
   "command.player_only": "<red>该命名只能由玩家执行",
   "level.no_exists": "<red>维度 %s 不存在",
   "input.syntax.error": "<red>输入的格式错误",
@@ -162,5 +165,11 @@
   "ping.player": "<gold>玩家 %s 的延迟: %d ms",
   "ping.target.no_found": "<red>目标玩家未找到",
   "bed.not_found": "<red>未找到床",
-  "bed.success": "<gold>已传送到床"
+  "bed.success": "<gold>已传送到床",
+  "chat.format.set": "<gold>已修改聊天样式, 当前样式：</gold><newline>%s<reset><newline><red><click:run_command:/chat format reset>   [重置]</click></red>",
+  "chat.format.reset": "<gold>已重置聊天样式</gold>",
+  "chat.format.show": "当前样式",
+  "chat.current_pos": "当前位置",
+  "chat.xaero_waypoint_add": "点击添加小地图路径点",
+  "chat.xaero_waypoint_add.command": "/xaero_waypoint_add:路径点:·:%d:%s:%d:0:false:0:Internal_%s_waypoints"
 }
