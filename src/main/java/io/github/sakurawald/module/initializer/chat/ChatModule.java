@@ -142,7 +142,8 @@ public class ChatModule extends ModuleInitializer {
                         .replaceAll("-waypoints$", "_waypoints");
             } else {
                 hoverText = MessageUtil.ofString(player, "chat.current_pos");
-                dim_name = player.getWorld().getRegistryKey().getRegistry().toString().replaceFirst("minecraft:", "");
+
+                dim_name = player.getWorld().getRegistryKey().getValue().toString().replaceFirst("minecraft:", "");
                 x = player.getBlockX();
                 y = Integer.toString(player.getBlockY());
                 z = player.getBlockZ();
@@ -278,7 +279,6 @@ public class ChatModule extends ModuleInitializer {
         message = chatHandler.model().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
                 .replace("%message%", message);
         message = resolveMentionTag(message);
-
         String format = Configs.configHandler.model().modules.chat.format;
         format = format.replace("%message%", message);
         format = format.replace("%player%", player.getGameProfile().getName());
