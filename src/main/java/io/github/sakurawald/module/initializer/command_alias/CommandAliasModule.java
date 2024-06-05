@@ -32,16 +32,26 @@ public class CommandAliasModule extends ModuleInitializer {
                  builder = literal(entry.from.get(0)).redirect(target);
                  break;
              case 2:
-                 builder = literal(entry.from.get(0)).then(literal(entry.from.get(1)).redirect(target));
+                 builder = literal(entry.from.get(0))
+                         .then(literal(entry.from.get(1)).redirect(target));
                  break;
              case 3:
-                 builder = literal(entry.from.get(0)).then(literal(entry.from.get(1)).then(literal(entry.from.get(2)).redirect(target)));
+                 builder = literal(entry.from.get(0))
+                         .then(literal(entry.from.get(1))
+                                 .then(literal(entry.from.get(2)).redirect(target)));
                  break;
              case 4:
-                 builder = literal(entry.from.get(0)).then(literal(entry.from.get(1)).then(literal(entry.from.get(2))).then(literal(entry.from.get(3)).redirect(target)));
+                 builder = literal(entry.from.get(0))
+                         .then(literal(entry.from.get(1))
+                                 .then(literal(entry.from.get(2))
+                                         .then(literal(entry.from.get(3)).redirect(target))));
                  break;
              case 5:
-                 builder = literal(entry.from.get(0)).then(literal(entry.from.get(1)).then(literal(entry.from.get(2))).then(literal(entry.from.get(3)).then(literal(entry.from.get(4)).redirect(target))));
+                 builder = literal(entry.from.get(0))
+                         .then(literal(entry.from.get(1))
+                                 .then(literal(entry.from.get(2))
+                                         .then(literal(entry.from.get(3))
+                                                 .then(literal(entry.from.get(4)).redirect(target)))));
                  break;
              default:
                  Fuji.LOGGER.warn("The command alias is too long !");
