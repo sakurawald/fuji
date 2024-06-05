@@ -2,6 +2,7 @@ package io.github.sakurawald.config.model;
 
 
 import com.mojang.authlib.properties.Property;
+import io.github.sakurawald.module.initializer.command_alias.CommandAliasEntry;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.util.ArrayList;
@@ -529,6 +530,19 @@ public class ConfigModel {
             public boolean required_empty_hand = false;
             public boolean allow_sneaking = false;
             public boolean no_opaque_block_above = false;
+        }
+
+        public CommandAlias command_alias = new CommandAlias();
+
+        public class CommandAlias {
+            public boolean enable = false;
+            public List<CommandAliasEntry> alias = new ArrayList<>() {
+                {
+                    this.add(new CommandAliasEntry(List.of("r"), List.of("reply")));
+                    this.add(new CommandAliasEntry(List.of("magic", "stick", "applied"), List.of("gamemode")));
+                    this.add(new CommandAliasEntry(List.of("i", "want", "to","modify","chat"), List.of("chat","format")));
+                }
+            };
         }
     }
 }

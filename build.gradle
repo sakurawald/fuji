@@ -15,6 +15,7 @@ repositories {
     maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     maven { url "https://jitpack.io" }
+    maven { url 'https://masa.dy.fi/maven' }
     maven { url 'https://maven.nucleoid.xyz' }
     maven { url 'https://projectlombok.org/edge-releases' }
 }

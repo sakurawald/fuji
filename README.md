@@ -262,6 +262,9 @@ provides `/bed` command.
 #### SitModule
 provides `/sit` command and sit interact.
 
+#### CommandAliasModule
+provides command alias so that you can alias existed commands in a short name.
+
 </details>
 
 # Config
