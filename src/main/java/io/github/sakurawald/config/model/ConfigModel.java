@@ -2,17 +2,22 @@ package io.github.sakurawald.config.model;
 
 
 import com.mojang.authlib.properties.Property;
+import io.github.sakurawald.config.serializer.Comment;
 import io.github.sakurawald.module.initializer.command_alias.CommandAliasEntry;
+import jdk.jfr.Description;
 import net.fabricmc.loader.api.FabricLoader;
+import org.spongepowered.asm.mixin.injection.Desc;
 
+import java.lang.annotation.Documented;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("ALL")
-public class ConfigModel {
+public class ConfigModel extends AbstractModel{
 
+    @Comment("this is common")
     public Common common = new Common();
     public Modules modules = new Modules();
 
@@ -21,6 +26,7 @@ public class ConfigModel {
         public Quartz quartz = new Quartz();
 
         public class Quartz {
+//            @Comment("the default logger level is warn")
             public String logger_level = "WARN";
         }
 

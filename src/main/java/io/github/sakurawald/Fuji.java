@@ -13,14 +13,16 @@ import org.apache.logging.log4j.Logger;
 import java.nio.file.Path;
 
 
+// TODO: /spawn module
+// TODO: custom tab list
+// TODO: player nickname / prefix / suffix
+// TODO: backup module
 // TODO: warmup module
 // TODO: placeholder module
 // TODO: /tppos module
-// TODO: command alias module (test priority with ZeroPermissionModule)
 // TODO: playtime(every/for) rewards and rank like module
-// TODO: kit module
+// TODO: kit module -> spec-command
 // TODO: luckperms context calculate module
-// TODO: /invsee module
 
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";

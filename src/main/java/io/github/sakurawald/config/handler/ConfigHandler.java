@@ -2,6 +2,7 @@ package io.github.sakurawald.config.handler;
 
 import assets.fuji.Cat;
 import com.google.gson.*;
+import io.github.sakurawald.config.serializer.CommentTypeAdapterFactory;
 import io.github.sakurawald.module.initializer.works.work_type.Work;
 import io.github.sakurawald.util.ScheduleUtil;
 import lombok.Cleanup;
@@ -27,6 +28,7 @@ public abstract class ConfigHandler<T> {
             .setPrettyPrinting()
             .disableHtmlEscaping()
             .serializeNulls()
+            .registerTypeAdapterFactory(new CommentTypeAdapterFactory())
             .registerTypeAdapter(Work.class, new Work.WorkTypeAdapter())
             .create();
 
