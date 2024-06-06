@@ -26,7 +26,7 @@ public class ConfigModel extends AbstractModel{
         public Quartz quartz = new Quartz();
 
         public class Quartz {
-//            @Comment("the default logger level is warn")
+            @Comment("the default logger level is warn")
             public String logger_level = "WARN";
         }
 
@@ -303,7 +303,7 @@ public class ConfigModel extends AbstractModel{
         public class Works {
             public boolean enable = false;
 
-            public int sample_time_ms = FabricLoader.getInstance().isDevelopmentEnvironment() ? 60 * 1000 : 60 * 1000 * 60;
+            public int sample_time_ms = 60 * 1000 * 60;
             public int sample_distance_limit = 512;
             public int sample_counter_top_n = 20;
         }

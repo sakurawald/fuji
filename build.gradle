@@ -70,6 +70,10 @@ dependencies {
     include(implementation "org.quartz-scheduler:quartz:${project.quartz_version}")
     include(implementation "org.reflections:reflections:${project.reflections_version}")
     include(implementation "org.javassist:javassist:${project.javaassist_version}")
+
+    testImplementation(platform('org.junit:junit-bom:5.10.2'))
+    testImplementation('org.junit.jupiter:junit-jupiter')
+    testRuntimeOnly('org.junit.platform:junit-platform-launcher')
 }
 
 processResources {
@@ -137,3 +141,8 @@ tasks.register('replaceReadme') {
     // todo
 }
 tasks.modrinthSyncBody.dependsOn(tasks.replaceReadme)
+
+
+test {
+    useJUnitPlatform()
+}
