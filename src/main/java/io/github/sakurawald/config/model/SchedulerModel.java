@@ -5,7 +5,7 @@ import io.github.sakurawald.module.initializer.scheduler.ScheduleJob;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SchedulerModel extends  AbstractModel {
+public class SchedulerModel {
 
     public List<ScheduleJob> scheduleJobs = new ArrayList<>() {
         {

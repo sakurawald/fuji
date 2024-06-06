@@ -3,7 +3,7 @@ package io.github.sakurawald.config.model;
 import java.util.HashMap;
 
 @SuppressWarnings("InnerClassMayBeStatic")
-public class ChatModel extends AbstractModel{
+public class ChatModel {
 
     public Format format = new Format();
 
