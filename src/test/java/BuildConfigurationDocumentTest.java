@@ -1,4 +1,7 @@
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.config.serializer.Comment;
 import org.junit.jupiter.api.Test;
@@ -8,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 public class BuildConfigurationDocumentTest {
 
@@ -42,6 +46,15 @@ public class BuildConfigurationDocumentTest {
                             }
                         }
                         jsonObject.add(fieldName, jsonArray);
+                    } else if (Map.class.isAssignableFrom(field.getType())) {
+                        JsonObject mapJsonObject = new JsonObject();
+                            Map<?, ?> map = (Map<?, ?>) value;
+                            for (Map.Entry<?, ?> entry : map.entrySet()) {
+                                String mapKey = entry.getKey().toString();
+                                Object mapValue = entry.getValue();
+                                mapJsonObject.add(mapKey, new Gson().toJsonTree(mapValue));
+                            }
+                            jsonObject.add(fieldName, mapJsonObject);
                     } else {
                         JsonObject nestedJsonObject = new JsonObject();
                         processFieldsWithComments(value, nestedJsonObject);
