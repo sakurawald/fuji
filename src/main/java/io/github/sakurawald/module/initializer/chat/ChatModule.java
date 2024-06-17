@@ -143,11 +143,12 @@ public class ChatModule extends ModuleInitializer {
             } else {
                 hoverText = MessageUtil.ofString(player, "chat.current_pos");
 
+                Fuji.LOGGER.warn("str = {}",player.getWorld().getRegistryKey().getValue().toString());
                 dim_name = player.getWorld().getRegistryKey().getValue().toString().replaceFirst("minecraft:", "");
                 x = player.getBlockX();
                 y = Integer.toString(player.getBlockY());
                 z = player.getBlockZ();
-                click_command = MessageUtil.ofString(player, "chat.xaero_waypoint_add.command", x, y, z, dim_name.replaceAll(":", "$"));
+                click_command = MessageUtil.ofString(player, "chat.xaero_waypoint_add.command", x, y, z, dim_name.replaceAll(":", "\\$"));
             }
             switch (dim_name) {
                 case "overworld":
