@@ -11,6 +11,7 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.newbie_welcome.random_teleport.RandomTeleport;
 import io.github.sakurawald.module.initializer.resource_world.interfaces.DimensionOptionsMixinInterface;
 import io.github.sakurawald.module.initializer.resource_world.interfaces.SimpleRegistryMixinInterface;
+import io.github.sakurawald.module.mixin.resource_world.ServerWorldMixin;
 import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.ScheduleUtil;
@@ -31,13 +32,17 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Position;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.RandomSeed;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.dimension.DimensionTypes;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
+import net.minecraft.world.gen.feature.EndPlatformFeature;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -160,7 +165,7 @@ public class ResourceWorldModule extends ModuleInitializer {
         /* create the world */
         // note: we use the same WorldData from OVERWORLD
         ResourceWorldProperties resourceWorldProperties = new ResourceWorldProperties(server.getSaveProperties(), seed);
-        RegistryKey<World> worldRegistryKey = RegistryKey.of(RegistryKeys.WORLD, new Identifier(DEFAULT_RESOURCE_WORLD_NAMESPACE, path));
+        RegistryKey<World> worldRegistryKey = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(DEFAULT_RESOURCE_WORLD_NAMESPACE, path));
         DimensionOptions dimensionOptions = createDimensionOptions(server, dimensionTypeRegistryKey);
         ServerWorld world = new ResourceWorld(server,
                 Util.getMainWorkerExecutor(),
@@ -198,7 +203,7 @@ public class ResourceWorldModule extends ModuleInitializer {
     }
 
     private ServerWorld getResourceWorldByPath(MinecraftServer server, String path) {
-        RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, new Identifier(DEFAULT_RESOURCE_WORLD_NAMESPACE, path));
+        RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(DEFAULT_RESOURCE_WORLD_NAMESPACE, path));
         return server.getWorld(worldKey);
     }
 
@@ -213,7 +218,8 @@ public class ResourceWorldModule extends ModuleInitializer {
 
             Optional<RegistryKey<DimensionType>> type = world.getDimensionEntry().getKey();
             if (type.isPresent() && type.get() == DimensionTypes.THE_END) {
-                ServerWorld.createEndSpawnPlatform(world);
+                this.createEndSpawnPlatform(world);
+
                 BlockPos endSpawnPos = ServerWorld.END_SPAWN_POS;
                 player.teleport(world, endSpawnPos.getX() + 0.5, endSpawnPos.getY(), endSpawnPos.getZ() + 0.5, 90, 0);
             } else {
@@ -225,6 +231,11 @@ public class ResourceWorldModule extends ModuleInitializer {
         });
     }
 
+    private void createEndSpawnPlatform(ServerWorld world) {
+        BlockPos endSpawnPos = ServerWorld.END_SPAWN_POS;
+        Vec3d vec3d = endSpawnPos.toBottomCenterPos();
+        EndPlatformFeature.generate(world, BlockPos.ofFloored(vec3d).down(), true);
+    }
 
     private void deleteWorld(MinecraftServer server, String path) {
         ServerWorld world = getResourceWorldByPath(server, path);
