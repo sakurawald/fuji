@@ -38,8 +38,7 @@ public class EndPortalBlockMixin {
             // feature: https://bugs.mojang.com/browse/MC-252361
             return ServerWorld.END_SPAWN_POS;
         }
-        BlockPos transformedEndSpawnPoint = getTransformedEndSpawnPoint(entity);
-        return transformedEndSpawnPoint;
+        return getTransformedEndSpawnPoint(entity);
     }
 
 }
