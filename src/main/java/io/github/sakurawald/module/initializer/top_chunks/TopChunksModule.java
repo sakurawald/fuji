@@ -54,7 +54,7 @@ public class TopChunksModule extends ModuleInitializer {
                 }
 
                 /* block-entity in this world */
-                ThreadedAnvilChunkStorageMixin threadedAnvilChunkStorage = (ThreadedAnvilChunkStorageMixin) world.getChunkManager().threadedAnvilChunkStorage;
+                ThreadedAnvilChunkStorageMixin threadedAnvilChunkStorage = (ThreadedAnvilChunkStorageMixin) world.getChunkManager().chunkLoadingManager;
                 Iterable<ChunkHolder> chunkHolders = threadedAnvilChunkStorage.$getChunks();
                 for (ChunkHolder chunkHolder : chunkHolders) {
                     WorldChunk worldChunk = chunkHolder.getWorldChunk();

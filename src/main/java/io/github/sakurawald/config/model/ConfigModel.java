@@ -2,7 +2,7 @@ package io.github.sakurawald.config.model;
 
 
 import com.mojang.authlib.properties.Property;
-import io.github.sakurawald.config.serializer.Comment;
+import io.github.sakurawald.config.annotation.Comment;
 import io.github.sakurawald.module.initializer.command_alias.CommandAliasEntry;
 
 import java.util.ArrayList;

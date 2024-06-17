@@ -2,6 +2,7 @@ package io.github.sakurawald.module.mixin.op_protect;
 
 
 import io.github.sakurawald.Fuji;
+import net.minecraft.network.DisconnectionInfo;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -19,7 +20,7 @@ public class ServerPlayNetworkHandlerMixin {
     public ServerPlayerEntity player;
 
     @Inject(at = @At(value = "HEAD"), method = "onDisconnected")
-    private void $onDisconnected(Text reason, CallbackInfo info) {
+    private void $onDisconnected(DisconnectionInfo disconnectionInfo, CallbackInfo ci) {
         if (Fuji.SERVER.getPlayerManager().isOperator(player.getGameProfile())) {
             Fuji.LOGGER.info("op protect -> deop " + player.getGameProfile().getName());
             Fuji.SERVER.getPlayerManager().removeFromOperators(player.getGameProfile());

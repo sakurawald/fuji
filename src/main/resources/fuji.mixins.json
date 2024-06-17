@@ -27,6 +27,7 @@
     "main_stats.PlayerListMixin",
     "main_stats.ServerPlayNetworkHandlerMixin",
     "motd.ServerStatusPacketListenerImplMixin",
+    "multi_obsidian_platform.EndPortalBlockMixin",
     "multi_obsidian_platform.EntityMixin",
     "newbie_welcome.PlayerListMixin",
     "op_protect.ServerPlayNetworkHandlerMixin",

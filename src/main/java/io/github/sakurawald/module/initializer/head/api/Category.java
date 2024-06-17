@@ -3,7 +3,6 @@ package io.github.sakurawald.module.initializer.head.api;
 import io.github.sakurawald.util.MessageUtil;
 import java.util.UUID;
 
-import net.minecraft.component.DataComponentType;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;

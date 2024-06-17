@@ -141,7 +141,7 @@ public class WorksModule extends ModuleInitializer {
                     .setCallback((index, clickType, actionType) -> {
                         /* left click -> visit */
                         if (clickType.isLeft) {
-                            RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, new Identifier(work.level));
+                            RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(work.level));
                             ServerWorld level = Fuji.SERVER.getWorld(worldKey);
                             //noinspection DataFlowIssue
                             player.teleport(level, work.x, work.y, work.z, work.yaw, work.pitch);

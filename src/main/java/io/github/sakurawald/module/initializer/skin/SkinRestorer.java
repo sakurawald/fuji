@@ -11,16 +11,7 @@ import it.unimi.dsi.fastutil.Pair;
 import lombok.Getter;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.packet.s2c.play.EntitiesDestroyS2CPacket;
-import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
-import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
-import net.minecraft.network.packet.s2c.play.EntityStatusEffectS2CPacket;
-import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket;
-import net.minecraft.network.packet.s2c.play.ExperienceBarUpdateS2CPacket;
-import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
-import net.minecraft.network.packet.s2c.play.PlayerRemoveS2CPacket;
-import net.minecraft.network.packet.s2c.play.PlayerRespawnS2CPacket;
-import net.minecraft.network.packet.s2c.play.UpdateSelectedSlotS2CPacket;
+import net.minecraft.network.packet.s2c.play.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
@@ -84,7 +75,7 @@ public class SkinRestorer {
                     observer1.networkHandler.sendPacket(new PlayerListS2CPacket(PlayerListS2CPacket.Action.ADD_PLAYER, player)); // refresh the player information
                     if (player != observer1 && observer1.canSee(player)) {
                         observer1.networkHandler.sendPacket(new EntitiesDestroyS2CPacket(player.getId()));
-                        observer1.networkHandler.sendPacket(new EntitySpawnS2CPacket(player));
+                        observer1.networkHandler.sendPacket(new EntitySpawnS2CPacket(player, 0, player.getBlockPos()));
                         observer1.networkHandler.sendPacket(new EntityPositionS2CPacket(player));
                         observer1.networkHandler.sendPacket(new EntityTrackerUpdateS2CPacket(player.getId(), player.getDataTracker().getChangedEntries()));
                     } else if (player == observer1) {

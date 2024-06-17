@@ -12,6 +12,7 @@ base {
 }
 
 repositories {
+    mavenCentral()
     maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     maven { url "https://jitpack.io" }
@@ -59,7 +60,6 @@ dependencies {
     modImplementation include("me.lucko:fabric-permissions-api:${project.fabric_permissions_version}")
     modImplementation include("net.kyori:adventure-platform-fabric:${project.adventure_platform_fabric_version}")
     include(implementation "net.kyori:adventure-text-minimessage:${project.adventure_api_version}")
-    include(implementation "net.kyori:adventure-text-serializer-plain:${project.adventure_api_version}")
 
     modImplementation include("eu.pb4:sgui:${project.sgui_version}")
 

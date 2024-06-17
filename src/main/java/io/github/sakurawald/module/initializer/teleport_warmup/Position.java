@@ -50,7 +50,7 @@ public class Position {
     }
 
     public void teleport(ServerPlayerEntity player) {
-        RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, new Identifier(this.level));
+        RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(this.level));
         ServerWorld serverLevel = Fuji.SERVER.getWorld(worldKey);
         if (serverLevel == null) {
             MessageUtil.sendMessage(player, "level.no_exists", this.level);

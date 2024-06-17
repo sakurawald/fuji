@@ -42,3 +42,6 @@ replay_*.log
 output/
 logs/
 .vim/
+
+# yarn
+remappedSrc
