@@ -3,7 +3,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import io.github.sakurawald.config.model.ConfigModel;
-import io.github.sakurawald.config.serializer.Comment;
+import io.github.sakurawald.config.annotation.Comment;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

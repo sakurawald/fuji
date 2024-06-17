@@ -1,4 +1,4 @@
-package io.github.sakurawald.config.serializer;
+package io.github.sakurawald.config.annotation;
 
 import java.lang.annotation.*;
 
