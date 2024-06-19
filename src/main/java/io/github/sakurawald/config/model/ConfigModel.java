@@ -52,7 +52,7 @@ public class ConfigModel {
         public Pvp pvp = new Pvp();
         public FixPlayerListCME fix_player_list_cme = new FixPlayerListCME();
         public FixWhitelist fix_whitelist = new FixWhitelist();
-        public ZeroCommandPermission zero_command_permission = new ZeroCommandPermission();
+        public CommandPermission command_permission = new CommandPermission();
         public Head head = new Head();
         public Profiler profiler = new Profiler();
         public CommandSpy command_spy = new CommandSpy();
@@ -378,7 +378,7 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        public class ZeroCommandPermission {
+        public class CommandPermission {
             public boolean enable = false;
         }
 

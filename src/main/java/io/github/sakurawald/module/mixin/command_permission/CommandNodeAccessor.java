@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.mixin.zero_command_permission;
+package io.github.sakurawald.module.mixin.command_permission;
 
 import com.mojang.brigadier.tree.CommandNode;
 import org.spongepowered.asm.mixin.Mixin;

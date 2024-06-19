@@ -118,13 +118,13 @@ provides /head command to buy player heads.
 #### ProfilerModule
 provides /profiler to sample the server health. (Including os, vm, cpu, ram, tps, mspt and gc)
 
-#### ZeroCommandPermissionModule
-this module modifies ALL commands (even the command is registered from other mods) and adds a prefix-permission (we called it zero-permission) for the command. If the player has zero-permission, then we check zero-permission for that command, otherwise check the command's original requires-permission. 
+#### CommandPermissionModule
+this module modifies ALL commands (even the command is registered from other mods) and adds a prefix-permission (we called it fuji-permission) for the command. If the player has fuji-permission, then we check fuji-permission for that command, otherwise check the command's original requires-permission. 
 
-> Tips: if you don't know how to determine command-node name, you can just type `/lp>  group default permission zero.` and let luckperms tell you what command-node names you can use.
-> - Allow the default group to use a command by adding a zero-permission (e.g. /seed) -> `/lp  group default permission set zero.seed true`
-> - Disallow the default group to use a command by adding a zero-permission (e.g. /help) -> `/lp  group default permission set zero.help false`
-> - Disallow the default group to use a sub-command from a command by adding a zero-permission (e.g. /player [player] mount) -> `/lp group default permission set zero.player.player.mount false`
+> Tips: if you don't know how to determine command-node name, you can just type `/lp group default permission fuji.` and let luckperms tell you what command-node names you can use.
+> - Allow the default group to use a command by adding a fuji-permission (e.g. /seed) -> `/lp  group default permission set fuji.seed true`
+> - Disallow the default group to use a command by adding a fuji-permission (e.g. /help) -> `/lp  group default permission set fuji.help false`
+> - Disallow the default group to use a sub-command from a command by adding a fuji-permission (e.g. /player [player] mount) -> `/lp group default permission set fuji.player.player.mount false`
 
 #### BypassThingsModule
 provides options to bypass some annoyed things.
@@ -282,9 +282,9 @@ that you don't need to find out where the config files are.
 Normally, the newer version will generate missing configuration keys automatically, but if this doesn't work, you can delete the old config file and restart the server to let the newer version generate the default config file.
 
 # Permission
-This mod uses a low-level permission system, which means that most of the admin commands are required level-permission to use. However, if you really want a command-permission-node for every command, you can use the `zero-command-permission` module (This module adds a prefix command-permission for ALL commands, even the command is not provided by this mod!).
+This mod uses a low-level permission system, which means that most of the admin commands are required level-permission to use. However, if you really want a command-permission-node for every command, you can use the `fuji-command-permission` module (This module adds a prefix command-permission for ALL commands, even the command is not provided by this mod!).
 
-> In other words, most of the commands doesn't require any permission to use, but if you want, you can use `ZeroPermissionModule` to add a prefix-permission for every command!
+> In other words, most of the commands doesn't require any permission to use, but if you want, you can use `CommandPermissionModule` to add a prefix-permission for every command!
 
 # Optimization
 For a better server performance and without vanilla sacrifice, we recommend you to use `Lithium` and `Krypton` with this mod.

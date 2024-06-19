@@ -50,7 +50,7 @@
     "top_chunks.ThreadedAnvilChunkStorageMixin",
     "fix_whitelist.UserWhiteListMixin",
     "works.HopperBlockEntityMixin",
-    "zero_command_permission.CommandNodeAccessor"
+    "command_permission.CommandNodeAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
