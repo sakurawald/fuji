@@ -13,6 +13,9 @@ import net.minecraft.world.dimension.DimensionOptionsRegistryHolder;
 
 @Mixin(DimensionOptionsRegistryHolder.class)
 public class DimensionOptionsRegistryHolderMixin {
+
+    // TODO: fix a bug
+
     /* Prevent resource worlds to write in level.dat */
     @ModifyArg(method = "method_45516", at = @At(value = "INVOKE", target = "Lcom/mojang/serialization/MapCodec;forGetter(Ljava/util/function/Function;)Lcom/mojang/serialization/codecs/RecordCodecBuilder;"))
     private static Function<Object, Registry<DimensionOptions>> fuji$swapRegistryGetter(Function<Object, Registry<DimensionOptions>> getter) {

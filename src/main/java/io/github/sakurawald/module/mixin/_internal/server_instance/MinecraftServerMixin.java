@@ -15,7 +15,7 @@ public class MinecraftServerMixin {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void $init(CallbackInfo ci) {
         MinecraftServer server = (MinecraftServer) (Object) this;
-        LOGGER.debug("MinecraftServerMixin: $init: " + server);
+        LOGGER.debug("MinecraftServerMixin: $init: {}", server);
         Fuji.SERVER = server;
     }
 }

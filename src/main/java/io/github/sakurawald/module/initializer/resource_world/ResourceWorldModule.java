@@ -51,7 +51,6 @@ import java.util.Optional;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
-
 public class ResourceWorldModule extends ModuleInitializer {
 
     private final String DEFAULT_RESOURCE_WORLD_NAMESPACE = "resource_world";
