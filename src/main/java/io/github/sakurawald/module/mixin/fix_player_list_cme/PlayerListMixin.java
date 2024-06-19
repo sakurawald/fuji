@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.mixin.stronger_player_list;
+package io.github.sakurawald.module.mixin.fix_player_list_cme;
 
 import io.github.sakurawald.Fuji;
 import org.spongepowered.asm.mixin.Final;
@@ -27,7 +27,7 @@ public abstract class PlayerListMixin {
     private void $init(CallbackInfo ci) {
         players = new CopyOnWriteArrayList<>() {
             {
-                Fuji.LOGGER.info("Patch stronger player list for Server#PlayerList");
+                Fuji.LOGGER.info("Fix player list CME for Server#PlayerList");
             }
         };
     }

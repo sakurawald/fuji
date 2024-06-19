@@ -50,7 +50,7 @@ public class ConfigModel {
         public MultiObsidianPlatform multi_obsidian_platform = new MultiObsidianPlatform();
         public OpProtect op_protect = new OpProtect();
         public Pvp pvp = new Pvp();
-        public StrongerPlayerList stronger_player_list = new StrongerPlayerList();
+        public FixPlayerListCME fix_player_list_cme = new FixPlayerListCME();
         public WhitelistFix whitelist_fix = new WhitelistFix();
         public ZeroCommandPermission zero_command_permission = new ZeroCommandPermission();
         public Head head = new Head();
@@ -369,7 +369,7 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        public class StrongerPlayerList {
+        public class FixPlayerListCME {
             public boolean enable = false;
         }
 
