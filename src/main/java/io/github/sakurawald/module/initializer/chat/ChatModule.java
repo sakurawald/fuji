@@ -142,8 +142,6 @@ public class ChatModule extends ModuleInitializer {
                         .replaceAll("-waypoints$", "_waypoints");
             } else {
                 hoverText = MessageUtil.ofString(player, "chat.current_pos");
-
-                Fuji.LOGGER.warn("str = {}",player.getWorld().getRegistryKey().getValue().toString());
                 dim_name = player.getWorld().getRegistryKey().getValue().toString().replaceFirst("minecraft:", "");
                 x = player.getBlockX();
                 y = Integer.toString(player.getBlockY());

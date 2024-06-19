@@ -61,7 +61,6 @@ public class ConfigModel {
         public BypassMoveSpeed bypass_move_speed = new BypassMoveSpeed();
         public BypassMaxPlayerLimit bypass_max_player_limit = new BypassMaxPlayerLimit();
         public BiomeLookupCache biome_lookup_cache = new BiomeLookupCache();
-        public TickChunkCache tick_chunk_cache = new TickChunkCache();
         public Config config = new Config();
         public Test test = new Test();
         public Hat hat = new Hat();
@@ -402,10 +401,6 @@ public class ConfigModel {
         }
 
         public class BiomeLookupCache {
-            public boolean enable = false;
-        }
-
-        public class TickChunkCache {
             public boolean enable = false;
         }
 

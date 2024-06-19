@@ -47,8 +47,6 @@
     "stronger_player_list.ServerLevelMixin",
     "system_message.ComponentMixin",
     "teleport_warmup.ServerPlayerMixin",
-    "tick_chunk_cache.ChunkMapMixin",
-    "tick_chunk_cache.ServerChunkCacheMixin",
     "top_chunks.ThreadedAnvilChunkStorageMixin",
     "whitelist_fix.UserWhiteListMixin",
     "works.HopperBlockEntityMixin",
