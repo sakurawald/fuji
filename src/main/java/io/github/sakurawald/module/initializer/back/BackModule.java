@@ -3,6 +3,7 @@ package io.github.sakurawald.module.initializer.back;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.common.event.PrePlayerDeathEvent;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.common.Position;
@@ -13,6 +14,8 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.ActionResult;
+
 import java.util.HashMap;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
@@ -20,6 +23,14 @@ public class BackModule extends ModuleInitializer {
 
     @Getter
     private final HashMap<String, Position> player2lastPos = new HashMap<>();
+
+    @Override
+    public void onInitialize() {
+        PrePlayerDeathEvent.EVENT.register((player, damageSource) -> {
+            this.updatePlayer(player);
+            return ActionResult.PASS;
+        });
+    }
 
     @Override
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
