@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.main_stats;
 
+import io.github.sakurawald.common.event.PostPlayerConnectEvent;
 import io.github.sakurawald.common.event.PrePlayerDisconnectEvent;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
@@ -36,6 +37,13 @@ public class MainStatsModule extends ModuleInitializer {
             MainStats.uuid2stats.remove(uuid);
             return ActionResult.PASS;
         }));
+
+        PostPlayerConnectEvent.EVENT.register((connection, player, commonListenerCookie) -> {
+            String uuid = player.getUuid().toString();
+            MainStats stats = MainStats.calculatePlayerMainStats(uuid);
+            MainStats.uuid2stats.put(uuid, stats);
+            return ActionResult.PASS;
+        });
     }
 
     public void updateMainStats(MinecraftServer server) {
