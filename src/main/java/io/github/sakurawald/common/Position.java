@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.teleport_warmup;
+package io.github.sakurawald.common;
 
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.util.MessageUtil;

@@ -83,13 +83,4 @@ public class MultiObsidianPlatformModule extends ModuleInitializer {
         return TRANSFORM_CACHE.get(bp);
     }
 
-    public void makeObsidianPlatform(ServerWorld serverLevel, BlockPos centerBlockPos) {
-        int i = centerBlockPos.getX();
-        int j = centerBlockPos.getY() - 2;
-        int k = centerBlockPos.getZ();
-        BlockPos.iterate(i - 2, j + 1, k - 2, i + 2, j + 3, k + 2).forEach(blockPos -> serverLevel.setBlockState(blockPos, Blocks.AIR.getDefaultState()));
-        BlockPos.iterate(i - 2, j, k - 2, i + 2, j, k + 2).forEach(blockPos -> serverLevel.setBlockState(blockPos, Blocks.OBSIDIAN.getDefaultState()));
-    }
-
-
 }

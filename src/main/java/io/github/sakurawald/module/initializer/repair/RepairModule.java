@@ -13,7 +13,6 @@ import net.minecraft.server.command.ServerCommandSource;
 
 public class RepairModule extends ModuleInitializer {
 
-
     @Override
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(CommandManager.literal("repair").executes(this::$repair));

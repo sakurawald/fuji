@@ -27,7 +27,6 @@ public class TpaModule extends ModuleInitializer {
     @Getter
     private final ArrayList<TpaRequest> requests = new ArrayList<>();
 
-
     @SuppressWarnings("unused")
     @Override
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {

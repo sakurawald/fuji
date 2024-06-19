@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.afk;
 
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.module.initializer.afk.ServerPlayerAfkStateAccessor;
+import io.github.sakurawald.module.initializer.afk.AfkStateAccessor;
 import io.github.sakurawald.util.MessageUtil;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
@@ -22,11 +22,11 @@ import static io.github.sakurawald.util.MessageUtil.ofComponent;
 import static io.github.sakurawald.util.MessageUtil.toVomponent;
 
 @Mixin(ServerPlayerEntity.class)
-
-public abstract class ServerPlayerMixin implements ServerPlayerAfkStateAccessor {
+public abstract class ServerPlayerMixin implements AfkStateAccessor {
 
     @Unique
     private final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+
     @Shadow
     @Final
     public MinecraftServer server;
@@ -39,7 +39,7 @@ public abstract class ServerPlayerMixin implements ServerPlayerAfkStateAccessor 
 
     @Inject(method = "getPlayerListName", at = @At("HEAD"), cancellable = true)
     public void $getPlayerListName(CallbackInfoReturnable<Text> cir) {
-        ServerPlayerAfkStateAccessor accessor = (ServerPlayerAfkStateAccessor) player;
+        AfkStateAccessor accessor = (AfkStateAccessor) player;
 
         if (accessor.fuji$isAfk()) {
             cir.setReturnValue(Text.literal("afk " + player.getGameProfile().getName()));

@@ -3,6 +3,7 @@ package io.github.sakurawald.util;
 
 import io.github.sakurawald.config.Configs;
 import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.quartz.*;
@@ -16,6 +17,7 @@ import java.util.UUID;
 import static io.github.sakurawald.Fuji.LOGGER;
 
 
+@UtilityClass
 public class ScheduleUtil {
 
     public static final String CRON_EVERY_MINUTE = "0 * * ? * * *";

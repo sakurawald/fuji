@@ -41,7 +41,6 @@ abstract class ServerStatusPacketListenerImplMixin {
     @Unique
     private static final MotdModule module = ModuleManager.getInitializer(MotdModule.class);
 
-    
     @Redirect(method = "onRequest", at = @At(value = "FIELD", target = "Lnet/minecraft/server/network/ServerQueryNetworkHandler;metadata:Lnet/minecraft/server/ServerMetadata;"))
     public ServerMetadata $handleStatusRequest(final ServerQueryNetworkHandler instance) {
         ServerMetadata vanillaStatus = Fuji.SERVER.getServerMetadata();

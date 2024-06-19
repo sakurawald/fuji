@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 @UtilityClass
-
 public class MessageUtil {
     private static final FabricServerAudiences adventure = FabricServerAudiences.of(Fuji.SERVER);
     @Getter

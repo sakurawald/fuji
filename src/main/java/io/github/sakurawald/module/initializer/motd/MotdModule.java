@@ -64,5 +64,4 @@ public class MotdModule extends ModuleInitializer {
         return MessageUtil.ofVomponent(descriptions.get(new Random().nextInt(descriptions.size())));
     }
 
-
 }
