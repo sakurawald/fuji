@@ -48,7 +48,7 @@
     "system_message.ComponentMixin",
     "teleport_warmup.ServerPlayerMixin",
     "top_chunks.ThreadedAnvilChunkStorageMixin",
-    "whitelist_fix.UserWhiteListMixin",
+    "fix_whitelist.UserWhiteListMixin",
     "works.HopperBlockEntityMixin",
     "zero_command_permission.CommandNodeAccessor"
   ],

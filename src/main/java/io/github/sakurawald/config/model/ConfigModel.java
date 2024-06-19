@@ -51,7 +51,7 @@ public class ConfigModel {
         public OpProtect op_protect = new OpProtect();
         public Pvp pvp = new Pvp();
         public FixPlayerListCME fix_player_list_cme = new FixPlayerListCME();
-        public WhitelistFix whitelist_fix = new WhitelistFix();
+        public FixWhitelist fix_whitelist = new FixWhitelist();
         public ZeroCommandPermission zero_command_permission = new ZeroCommandPermission();
         public Head head = new Head();
         public Profiler profiler = new Profiler();
@@ -373,7 +373,7 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        public class WhitelistFix {
+        public class FixWhitelist {
 
             public boolean enable = false;
         }
