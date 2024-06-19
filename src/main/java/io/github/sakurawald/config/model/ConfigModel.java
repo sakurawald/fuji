@@ -60,7 +60,6 @@ public class ConfigModel {
         public BypassChatSpeed bypass_chat_speed = new BypassChatSpeed();
         public BypassMoveSpeed bypass_move_speed = new BypassMoveSpeed();
         public BypassMaxPlayerLimit bypass_max_player_limit = new BypassMaxPlayerLimit();
-        public BiomeLookupCache biome_lookup_cache = new BiomeLookupCache();
         public Config config = new Config();
         public Test test = new Test();
         public Hat hat = new Hat();
@@ -397,10 +396,6 @@ public class ConfigModel {
         }
 
         public class Scheduler {
-            public boolean enable = false;
-        }
-
-        public class BiomeLookupCache {
             public boolean enable = false;
         }
 
