@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.main_stats;
 
+import io.github.sakurawald.common.event.PrePlayerDisconnectEvent;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.ModuleManager;
@@ -8,6 +9,7 @@ import io.github.sakurawald.module.initializer.motd.MotdModule;
 import io.github.sakurawald.util.ScheduleUtil;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ActionResult;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -28,6 +30,12 @@ public class MainStatsModule extends ModuleInitializer {
             this.updateMainStats(server);
             this.registerScheduleTask(server);
         });
+
+        PrePlayerDisconnectEvent.EVENT.register(((player, disconnectionInfo) -> {
+            String uuid = player.getUuid().toString();
+            MainStats.uuid2stats.remove(uuid);
+            return ActionResult.PASS;
+        }));
     }
 
     public void updateMainStats(MinecraftServer server) {
