@@ -35,7 +35,7 @@ public class ConfigModel {
         public NewbieWelcome newbie_welcome = new NewbieWelcome();
         public TeleportWarmup teleport_warmup = new TeleportWarmup();
         public MOTD motd = new MOTD();
-        public BetterFakePlayer better_fake_player = new BetterFakePlayer();
+        public FakePlayerManager fake_player_manager = new FakePlayerManager();
         public BetterInfo better_info = new BetterInfo();
         public CommandCooldown command_cooldown = new CommandCooldown();
         public TopChunks top_chunks = new TopChunks();
@@ -135,7 +135,7 @@ public class ConfigModel {
             public double interrupt_distance = 1d;
         }
 
-        public class BetterFakePlayer {
+        public class FakePlayerManager {
             public boolean enable = false;
             @Comment("How many fake-player can each player spawn? The tuple means (day_of_week, minutes_of_the_day, max_fake_player_per_player)." +
                     "The range of day_of_week is [1,7]. " +

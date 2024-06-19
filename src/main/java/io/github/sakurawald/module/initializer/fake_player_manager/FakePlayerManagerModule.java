@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.better_fake_player;
+package io.github.sakurawald.module.initializer.fake_player_manager;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;
@@ -27,7 +27,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
-public class BetterFakePlayerModule extends ModuleInitializer {
+public class FakePlayerManagerModule extends ModuleInitializer {
     private final ArrayList<String> CONSTANT_EMPTY_LIST = new ArrayList<>();
     private final HashMap<String, ArrayList<String>> player2fakePlayers = new HashMap<>();
     private final HashMap<String, Long> player2expiration = new HashMap<>();
@@ -74,7 +74,7 @@ public class BetterFakePlayerModule extends ModuleInitializer {
             builder.append("\n");
         }
         ServerCommandSource source = context.getSource();
-        source.sendMessage(MessageUtil.ofComponent(source, "better_fake_player.who.header").append(Component.text(builder.toString())));
+        source.sendMessage(MessageUtil.ofComponent(source, "fake_player_manager.who.header").append(Component.text(builder.toString())));
         return Command.SINGLE_SUCCESS;
     }
 
@@ -85,10 +85,10 @@ public class BetterFakePlayerModule extends ModuleInitializer {
 
     public void renewFakePlayers(ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
-        int duration = Configs.configHandler.model().modules.better_fake_player.renew_duration_ms;
+        int duration = Configs.configHandler.model().modules.fake_player_manager.renew_duration_ms;
         long newTime = System.currentTimeMillis() + duration;
         player2expiration.put(name, newTime);
-        MessageUtil.sendMessage(player, "better_fake_player.renew.success", DateUtil.toStandardDateFormat(newTime));
+        MessageUtil.sendMessage(player, "fake_player_manager.renew.success", DateUtil.toStandardDateFormat(newTime));
     }
 
     private void validateFakePlayers() {
@@ -140,7 +140,7 @@ public class BetterFakePlayerModule extends ModuleInitializer {
     }
 
     private int getCurrentAmountLimit() {
-        ArrayList<List<Integer>> rules = Configs.configHandler.model().modules.better_fake_player.caps_limit_rule;
+        ArrayList<List<Integer>> rules = Configs.configHandler.model().modules.fake_player_manager.caps_limit_rule;
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
         int currentDays = currentDate.getDayOfWeek().getValue();
@@ -155,7 +155,7 @@ public class BetterFakePlayerModule extends ModuleInitializer {
     public void registerScheduleTask(MinecraftServer server) {
         ScheduleUtil.addJob(ManageFakePlayersJob.class, null, null, ScheduleUtil.CRON_EVERY_MINUTE, new JobDataMap() {
             {
-                this.put(BetterFakePlayerModule.class.getName(), BetterFakePlayerModule.this);
+                this.put(FakePlayerManagerModule.class.getName(), FakePlayerManagerModule.this);
             }
         });
     }
@@ -174,7 +174,7 @@ public class BetterFakePlayerModule extends ModuleInitializer {
         @Override
         public void execute(JobExecutionContext context) {
             /* validate */
-            BetterFakePlayerModule module = (BetterFakePlayerModule) context.getJobDetail().getJobDataMap().get(BetterFakePlayerModule.class.getName());
+            FakePlayerManagerModule module = (FakePlayerManagerModule) context.getJobDetail().getJobDataMap().get(FakePlayerManagerModule.class.getName());
             module.validateFakePlayers();
 
             int limit = module.getCurrentAmountLimit();
@@ -195,7 +195,7 @@ public class BetterFakePlayerModule extends ModuleInitializer {
                         ServerPlayerEntity fakePlayer = Fuji.SERVER.getPlayerManager().getPlayer(fakePlayerName);
                         if (fakePlayer == null) return;
                         fakePlayer.kill();
-                        MessageUtil.sendBroadcast("better_fake_player.kick_for_expiration", fakePlayer.getGameProfile().getName(), playerName);
+                        MessageUtil.sendBroadcast("fake_player_manager.kick_for_expiration", fakePlayer.getGameProfile().getName(), playerName);
                     }
                     // remove entry
                     module.player2expiration.remove(playerName);
@@ -210,7 +210,7 @@ public class BetterFakePlayerModule extends ModuleInitializer {
                     if (fakePlayer == null) continue;
                     fakePlayer.kill();
 
-                    MessageUtil.sendBroadcast("better_fake_player.kick_for_amount", fakePlayer.getGameProfile().getName(), playerName);
+                    MessageUtil.sendBroadcast("fake_player_manager.kick_for_amount", fakePlayer.getGameProfile().getName(), playerName);
                 }
             }
         }
