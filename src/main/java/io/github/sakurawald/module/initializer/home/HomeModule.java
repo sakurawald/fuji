@@ -10,7 +10,7 @@ import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.HomeModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.common.Position;
+import io.github.sakurawald.common.structure.Position;
 import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.ScheduleUtil;

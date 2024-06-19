@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "io.github.sakurawald.module.mixin.ModuleMixinConfigPlugin",
   "mixins": [
+    "_internal.event.CommandManagerMixin",
     "_internal.event.PlayerManagerMixin",
     "_internal.event.ServerPlayerEntityMixin",
     "_internal.event.ServerPlayNetworkHandlerMixin",
@@ -16,10 +17,8 @@
     "bypass_move_speed.ServerGamePacketListenerImplMixin",
     "chat.PlayerListMixin",
     "chat.ServerGamePacketListenerImplMixin",
-    "command_cooldown.CommandsMixin",
     "command_interactive.SignBlockMixin",
     "command_permission.CommandNodeAccessor",
-    "command_spy.CommandsMixin",
     "fake_player_manager.PlayerCommandMixin",
     "fake_player_manager.PlayerMixin",
     "fix_player_list_cme.PlayerListMixin",
