@@ -1,29 +1,31 @@
 package io.github.sakurawald.module.mixin.resource_world.registry;
 
-import com.mojang.serialization.Lifecycle;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.resource_world.interfaces.SimpleRegistryMixinInterface;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import it.unimi.dsi.fastutil.objects.Reference2IntMap;
-import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Final;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import net.minecraft.registry.MutableRegistry;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntry.Reference;
+import net.minecraft.registry.entry.RegistryEntryInfo;
 import net.minecraft.util.Identifier;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
 @Mixin(SimpleRegistry.class)
 
-public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInterface<T> {
+public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInterface<T>, MutableRegistry<T> {
 
     @Shadow
     @Final
@@ -39,6 +41,10 @@ public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInter
 
     @Shadow
     @Final
+    private Map<RegistryKey<T>, RegistryEntryInfo> keyToEntryInfo;
+
+    @Shadow
+    @Final
     private ObjectList<RegistryEntry.Reference<T>> rawIdToEntry;
 
     @Shadow
@@ -46,10 +52,12 @@ public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInter
     private Reference2IntMap<T> entryToRawId;
 
     @Shadow
-    private boolean frozen;
+    @Final
+    RegistryKey<? extends Registry<T>> key;
 
     @Shadow
-    public abstract Optional<RegistryEntry<T>> getEntry(int rawId);
+    private boolean frozen;
+
 
     @Override
     public boolean fuji$remove(T entry) {
@@ -60,14 +68,14 @@ public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInter
         }
 
         try {
-            this.rawIdToEntry.set(rawId, null);
-            this.idToEntry.remove(registryEntry.registryKey().getValue());
             this.keyToEntry.remove(registryEntry.registryKey());
+            this.idToEntry.remove(registryEntry.registryKey().getValue());
             this.valueToEntry.remove(entry);
-
+            this.rawIdToEntry.set(rawId, null);
+            this.keyToEntryInfo.remove(this.key);
             return true;
         } catch (Throwable e) {
-            Fuji.LOGGER.error("Failed to remove entry: " + entry.toString());
+            Fuji.LOGGER.error("Failed to remove entry: {}", entry.toString());
             return false;
         }
     }
@@ -87,4 +95,10 @@ public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInter
     public boolean fuji$isFrozen() {
         return this.frozen;
     }
+
+    @ModifyReturnValue(method = "streamEntries", at = @At("RETURN"))
+    public Stream<Reference<T>> fixEntryStream(Stream<RegistryEntry.Reference<T>> original) {
+        return original.filter(Objects::nonNull);
+    }
 }
+

@@ -1,9 +1,9 @@
 package io.github.sakurawald.module.initializer.resource_world.interfaces;
 
+import net.minecraft.world.dimension.DimensionOptions;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.Predicate;
-import net.minecraft.world.dimension.DimensionOptions;
 
 @ApiStatus.Internal
 public interface DimensionOptionsMixinInterface {
