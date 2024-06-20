@@ -6,6 +6,7 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import org.jetbrains.annotations.ApiStatus;
 import org.reflections.Reflections;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +32,8 @@ public class ModuleManager {
         initializers.values().forEach(initializer -> {
                     try {
                         initializer.onReload();
+                    } catch (OperationNotSupportedException e) {
+                       // no-op
                     } catch (Exception e) {
                         LOGGER.error("Failed to reload module -> {}", e.getMessage());
                     }
@@ -62,7 +65,7 @@ public class ModuleManager {
         JsonElement config = Configs.configHandler.toJsonElement();
         if (!initializers.containsKey(clazz)) {
             String basePackageName = calculateBasePackageName(ModuleInitializer.class, clazz.getName());
-            if (enableModule(config, basePackageName)) {
+            if (shouldEnableModule(config, basePackageName)) {
                 try {
                     ModuleInitializer moduleInitializer = clazz.getDeclaredConstructor().newInstance();
                     moduleInitializer.initialize();
@@ -75,7 +78,7 @@ public class ModuleManager {
         return clazz.cast(initializers.get(clazz));
     }
 
-    public static boolean enableModule(JsonElement config, String basePackageName) {
+    public static boolean shouldEnableModule(JsonElement config, String basePackageName) {
         boolean enable;
         try {
             enable = config.getAsJsonObject().get("modules").getAsJsonObject().get(basePackageName).getAsJsonObject().get("enable").getAsBoolean();

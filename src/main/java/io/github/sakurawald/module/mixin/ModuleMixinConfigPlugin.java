@@ -37,7 +37,7 @@ public class ModuleMixinConfigPlugin implements IMixinConfigPlugin {
         // bypass
         if (basePackageName.startsWith("_")) return true;
 
-        return ModuleManager.enableModule(mixinConfigs, basePackageName);
+        return ModuleManager.shouldEnableModule(mixinConfigs, basePackageName);
     }
 
     @Override

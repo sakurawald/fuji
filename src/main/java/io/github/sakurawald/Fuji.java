@@ -23,6 +23,7 @@ import java.nio.file.Path;
 // TODO: playtime(every/for) rewards and rank like module
 // TODO: kit module -> spec-command
 // TODO: luckperms context calculate module
+
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";
     public static final Logger LOGGER = LogUtil.createLogger("Fuji");

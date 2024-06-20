@@ -9,8 +9,11 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.motd.MotdModule;
 import io.github.sakurawald.util.ScheduleUtil;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Identifier;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -27,6 +30,7 @@ public class MainStatsModule extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
+
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             this.updateMainStats(server);
             this.registerScheduleTask(server);

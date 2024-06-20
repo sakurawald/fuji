@@ -7,6 +7,8 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 
+import javax.naming.OperationNotSupportedException;
+
 public abstract class ModuleInitializer {
 
     public final void initialize() {
@@ -18,8 +20,8 @@ public abstract class ModuleInitializer {
         // no-op
     }
 
-    public void onReload() {
-        // no-op
+    public void onReload() throws OperationNotSupportedException {
+        throw new OperationNotSupportedException("This module don't support reload");
     }
 
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
