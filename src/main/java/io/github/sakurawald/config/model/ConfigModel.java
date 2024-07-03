@@ -518,6 +518,15 @@ public class ConfigModel {
 
             public boolean enable = false;
 
+            @Comment("Should we override the power of proviers for the opened enchant table?")
+            public OverridePower override_power = new OverridePower();
+            public class OverridePower {
+
+                public boolean enable = false;
+                @Comment("How many power providers for the opened enchant table. For a max level of enchant table, it requires 15 power providers.")
+                public int power_provider_amount = 15;
+            }
+
         }
 
         public class Anvil {

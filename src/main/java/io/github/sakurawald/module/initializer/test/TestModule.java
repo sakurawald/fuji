@@ -6,6 +6,8 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import lombok.SneakyThrows;
+import me.lucko.fabric.api.permissions.v0.Permissions;
+import net.fabricmc.fabric.api.util.TriState;
 import net.kyori.adventure.text.Component;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
@@ -25,8 +27,9 @@ public class TestModule extends ModuleInitializer {
     }
 
     private static int magic(CommandContext<ServerCommandSource> ctx) {
-        ServerPlayerEntity player = ctx.getSource().getPlayer();
-        player.sendMessage(Text.literal(String.valueOf(player.getMainHandStack().getComponents())));
+        var source = ctx.getSource();
+        TriState test = Permissions.getPermissionValue(source, "fuji.seed");
+        source.sendMessage(Text.literal("state is " + test.name()));
         return 1;
     }
 

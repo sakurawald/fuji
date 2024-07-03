@@ -149,20 +149,6 @@ for offline whitelist, this makes whitelist ONLY compare the username and ignore
 #### CommandSpyModule
 log command issue into the console.
 
-#### BiomeLookupCacheModule
-an optimization for mob-spawn, this will cause the mob spawns a few blocks away from the biome-border (This will not influence structure-based mob spawn).
-
-> After many rounds of test (about 46000 chunks and 6000 entities), we found that this optimization can boost about 5~6 mspt, which is very considerable. 
-
-#### TickChunkCacheModule
-an optimization for iterating chunks, use event-based chunk-list constructor to avoid chunk-iteration lag.
-
-> Disable `mixin.experimental.chunk_tickets=false
-` in Lithium to avoid in-compatibility with this module.
-> Lithium does some other optimization in the same mixin. However, this mod provides a better performance at this point.
-> 
-> About 3~4 mspt boost
-
 #### SchedulerModule
 where you can add schedule jobs by cron expression, set the random command-list to be executed.
 
