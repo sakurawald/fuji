@@ -5,7 +5,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.module.initializer.seen.GameProfileCacheEx;
+import io.github.sakurawald.common.structure.GameProfileCacheEx;
 import lombok.experimental.UtilityClass;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;

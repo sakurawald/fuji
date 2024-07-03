@@ -1,6 +1,6 @@
-package io.github.sakurawald.module.mixin.seen;
+package io.github.sakurawald.module.mixin._internal.low_level;
 
-import io.github.sakurawald.module.initializer.seen.GameProfileCacheEx;
+import io.github.sakurawald.common.structure.GameProfileCacheEx;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

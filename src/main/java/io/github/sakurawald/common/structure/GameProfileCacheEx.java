@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.seen;
+package io.github.sakurawald.common.structure;
 
 import java.util.Collection;
 

@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.mixin._internal.server_instance;
+package io.github.sakurawald.module.mixin._internal.low_level;
 
 import io.github.sakurawald.Fuji;
 import net.minecraft.server.MinecraftServer;
