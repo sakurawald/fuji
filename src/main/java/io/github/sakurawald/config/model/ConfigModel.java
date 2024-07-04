@@ -4,6 +4,7 @@ package io.github.sakurawald.config.model;
 import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.config.annotation.Comment;
 import io.github.sakurawald.module.initializer.command_alias.CommandAliasEntry;
+import io.github.sakurawald.module.initializer.command_rewrite.CommandRewriteEntry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -522,7 +523,7 @@ public class ConfigModel {
             public OverridePower override_power = new OverridePower();
             public class OverridePower {
 
-                public boolean enable = false;
+                public boolean enable = true;
                 @Comment("How many power providers for the opened enchant table. For a max level of enchant table, it requires 15 power providers.")
                 public int power_provider_amount = 15;
             }
@@ -571,10 +572,21 @@ public class ConfigModel {
             public List<CommandAliasEntry> alias = new ArrayList<>() {
                 {
                     this.add(new CommandAliasEntry(List.of("r"), List.of("reply")));
-                    this.add(new CommandAliasEntry(List.of("magic", "stick", "applied"), List.of("gamemode")));
                     this.add(new CommandAliasEntry(List.of("i", "want", "to","modify","chat"), List.of("chat","format")));
                 }
             };
         }
+
+        public CommandRewrite command_rewrite = new CommandRewrite();
+        public class CommandRewrite  {
+            public boolean enable = false;
+            public List<CommandRewriteEntry> rules = new ArrayList<>() {
+                {
+                    this.add(new CommandRewriteEntry("home", "home tp default"));
+                }
+            };
+
+        }
+
     }
 }

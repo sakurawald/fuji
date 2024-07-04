@@ -20,6 +20,7 @@
     "chat.ServerGamePacketListenerImplMixin",
     "command_interactive.SignBlockMixin",
     "command_permission.CommandNodeAccessor",
+    "command_rewrite.ServerPlayNetworkHandlerMixin",
     "enchantment.EnchantmentScreenHandlerMixin",
     "fake_player_manager.PlayerCommandMixin",
     "fake_player_manager.PlayerMixin",
