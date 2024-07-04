@@ -251,6 +251,9 @@ provides `/sit` command and sit interact.
 #### CommandAliasModule
 provides command alias so that you can alias existed commands in a short name.
 
+#### CommandRewriteModule
+provides command rewrite so that you can use regex to rewrite the command players issued.
+
 </details>
 
 # Config
