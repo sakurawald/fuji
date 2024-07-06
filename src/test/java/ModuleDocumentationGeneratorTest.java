@@ -32,18 +32,14 @@ public class ModuleDocumentationGeneratorTest {
         for (Class<?> innerClazz : clazz.getDeclaredClasses()) {
             String name = innerClazz.getSimpleName();
 
-            /* insert related comment property */
+            sb.append("## ").append(name).append(" module");
             if (innerClazz.isAnnotationPresent(Documentation.class)) {
                 Documentation annotation = innerClazz.getAnnotation(Documentation.class);
-                sb.append("## ").append(name).append(" module");
                 sb.append("\n").append(annotation.value().trim()).append("\n\n");
+            } else {
+                sb.append("\n").append("No documentation.").append("\n\n");
             }
         }
-    }
-
-    private boolean isPrimitiveOrWrapper(Class<?> clazz) {
-        return clazz.isPrimitive() || clazz == Boolean.class || clazz == Character.class ||
-                Number.class.isAssignableFrom(clazz) || clazz == String.class;
     }
 
     private void writeToFile(String fileName, Object object) {
