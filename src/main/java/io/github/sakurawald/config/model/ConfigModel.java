@@ -642,10 +642,10 @@ public class ConfigModel {
 
         @Documentation("""
                 This module provides afk detection.
-                
+                                
                 If a player is idle long enough, he will be marked as afk state.
                 A afk player will display in `tab list`.
-                
+                                
                 A player can issue `/afk` command to afk manually.
                 """)
         public class Afk {
@@ -673,13 +673,13 @@ public class ConfigModel {
 
         @Documentation("""
                 This module allows you to write commands in `sign block`.
-                
+                                
                 A sign-block contains 4 lines.
                 You can write commands in the sign-block.
-                
+                                
                 Each command starts with prefix `//`
                 e.g. Line 1 contains `Click me //back` will execute the command `/back`
-                
+                                
                 The placeholder `@u` means the user player name.
                 e.g. Line 1 contains `//kill @u` will execute the command `/kill {player_name}`
                  
@@ -736,11 +736,11 @@ public class ConfigModel {
         }
 
         @Documentation("""
-        This module allows you to custom every system-message defined by mojang in `./assets/minecraft/lang/en_us.json`
-        
-        The mojang offical en_us.json file may looks like: [en_us.json for minecraft 1.21](https://github.com/sakurawald/fuji-fabric/blob/dev/.github/files/en_us.json)
-        
-        """)
+                This module allows you to custom every system-message defined by mojang in `./assets/minecraft/lang/en_us.json`
+                        
+                The mojang offical en_us.json file may looks like: [en_us.json for minecraft 1.21](https://github.com/sakurawald/fuji-fabric/blob/dev/.github/files/en_us.json)
+                        
+                """)
         public class SystemMessage {
             public boolean enable = false;
 
@@ -830,7 +830,7 @@ public class ConfigModel {
 
         @Documentation("""
                 This module provides command alias.
-                
+                                
                 An alias means we redirect a command-node into another command-node.
                 The requirement of comamnd-node is extended.
                 """)
