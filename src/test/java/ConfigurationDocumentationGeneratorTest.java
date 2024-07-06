@@ -13,7 +13,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
-public class DocumentationGeneratorTest {
+public class ConfigurationDocumentationGeneratorTest {
 
     private JsonObject processJavaObject(Object obj) {
         JsonObject jsonObject = new JsonObject();
@@ -93,5 +93,4 @@ public class DocumentationGeneratorTest {
         writeToFile("config.json", processJavaObject(new ConfigModel()));
     }
 
-    // todo: a generator for Module.md
 }

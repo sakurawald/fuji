@@ -139,4 +139,9 @@ tasks.modrinth.dependsOn(tasks.modrinthSyncBody)
 // test framework
 test {
     useJUnitPlatform()
+
+    filter {
+        includeTestsMatching 'ModuleDocumentationGeneratorTest.buildModuleDocumentation'
+    }
 }
+tasks.modrinthSyncBody.dependsOn(tasks.test)

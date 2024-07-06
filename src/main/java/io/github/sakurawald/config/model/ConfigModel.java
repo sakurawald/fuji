@@ -5,6 +5,8 @@ import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.config.annotation.Documentation;
 import io.github.sakurawald.module.initializer.command_alias.CommandAliasEntry;
 import io.github.sakurawald.module.initializer.command_rewrite.CommandRewriteEntry;
+import net.minecraft.client.realms.Ping;
+import net.minecraft.enchantment.Enchantment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -120,6 +122,8 @@ public class ConfigModel {
         @Documentation("""
                 This module adds another 3 worlds called `resource world`: resrouce_overworld, resource_nether, resource_the_end .
                                 
+                Command: /rw
+                                
                 Use-case: you have 3 permanent-world which is boundary-limited, and you want to provides infinite
                 resource for the newbie players, then you can use `resource world` while keeping the permanent-world.
                 """)
@@ -183,9 +187,10 @@ public class ConfigModel {
         @Documentation("""
                 This module adds a warmup cooldown before player-teleporatation.
                                 
-                The teleporatation will be cancelled if:
-                1. the player runs to far.
+                The teleportation will be cancelled if:
+                1. the player runs too far.
                 2. the player gets damage.
+                3. the player is in combat.
                                 
                 """)
         public class TeleportWarmup {
@@ -217,6 +222,10 @@ public class ConfigModel {
                                         
                     Besides, you can add multi rules, the rules are checked from up to down.
                     The first rule that matches current time will be used to decide the max_fake_player_per_player.
+                                        
+                    You can issue `/player who` to see the owner of the fake-player.
+                    Only the owner can operates the fake-player. (Op can bypass this limit)
+                                        
                     """)
             public ArrayList<List<Integer>> caps_limit_rule = new ArrayList<>() {
                 {
@@ -230,6 +239,8 @@ public class ConfigModel {
                     The command `/player renew` allows the player to manually renew all of his `fake-player`.
                                 
                     If a fake-player don't gets renew, then it will expired and get killed.
+                                        
+                    Use-case: to avoid some long-term alive fake-player.
                     """)
             public int renew_duration_ms = 1000 * 60 * 60 * 12;
 
@@ -258,6 +269,8 @@ public class ConfigModel {
 
         @Documentation("""
                 This module provides a cooldown before each command the player issued.
+                                
+                Use-case: use this module to avoid some heavy-command abuse
                 """)
         public class CommandCooldown {
             public boolean enable = false;
@@ -370,6 +383,10 @@ public class ConfigModel {
 
         @Documentation("""
                 This module provides chat custom.
+                                
+                Command: /chat
+                                
+                You can also insert some placeholder in chat message: `pos`
                 """)
         public class Chat {
             public boolean enable = false;
@@ -387,6 +404,9 @@ public class ConfigModel {
             public History history = new History();
             public Display display = new Display();
 
+            @Documentation("""
+                    New joined players can see the historical chat messages.
+                    """)
             public class History {
                 @Documentation("How many chat components should we save, so that we can send for a new-join player.")
                 public int cache_size = 50;
@@ -466,7 +486,9 @@ public class ConfigModel {
                                 
                 All `work` types:
                 1. Non-production work: the project don't produce any resource (e.g. bone, string, coal).
-                2. Production work: the project produce some resource.
+                2. Production work: the project produce some resource. 
+                   For a production-work, fuji provides the `production sample` to count the `hopper` and `minecart-hopper`
+                                
                 """)
         public class Works {
             public boolean enable = false;
@@ -502,6 +524,9 @@ public class ConfigModel {
             public int context_cache_size = 5;
         }
 
+        @Documentation("""
+                This module bypass "Kicked for spamming"
+                """)
         public class BypassChatSpeed {
             public boolean enable = false;
         }
@@ -530,6 +555,9 @@ public class ConfigModel {
 
         @Documentation("""
                 This module provides some useful stats, you can use the stats placeholder with ChatModule and MotdModule
+                                
+                Placeholders: total_playtime, total_mined, total_placed, total_killed and total_moved (We call these 5 stats `MainStats`). 
+                You can use these placeholders in `Chat module` and `MOTD module`
                 """)
         public class MainStats {
             public boolean enable = false;
@@ -538,6 +566,11 @@ public class ConfigModel {
         @Documentation("""
                 In vanilla minecraft, each `ender-portal` links to `the only one obsidian platform`.
                 This module makes each `ender-portal` links to its own `obsidian platform`.
+                                
+                makes every EnderPortal generate its own Obsidian Platform (Up to 128 in survival-mode.
+                You can even use creative-mode to build more Ender Portal and more ObsidianPlatform. 
+                                
+                Please note that: all the obsidian-platform are vanilla-respect, which means they have the SAME chunk-layout and the SAME behaviour as vanilla obsidian-platform which locates in (100,50,0))
                                 
                 Use-case: you want more `obsidian platform` for your redstone-struture.
                 """)
@@ -549,21 +582,28 @@ public class ConfigModel {
             public double factor = 4;
         }
 
+        @Documentation("auto deop an op-player when he leaves the server.")
         public class OpProtect {
             public boolean enable = false;
         }
 
         @Documentation("""
-                This module provides `/pvp` command. 
+                This module provides `/pvp` command.
                 """)
         public class Pvp {
             public boolean enable = false;
         }
 
+        @Documentation("""
+                a fix patch for ServerWorld#PlayerList, to avoid CME in player-list (e.g. sometimes tick-entity and tick-block-entity will randomly crash the server because of player-list CME)
+                """)
         public class FixPlayerListCME {
             public boolean enable = false;
         }
 
+        @Documentation("""
+                for offline whitelist, this makes whitelist ONLY compare the username and ignore UUID!
+                """)
         public class FixWhitelist {
 
             public boolean enable = false;
@@ -584,19 +624,22 @@ public class ConfigModel {
         @Documentation("""
                 Enable this module requires `spark` mod installed.
                                 
-                This module provides `/profiler` command.
+                This module provides `/profiler` command to show server health status (including os, vm, cpu, ram, tps, mspt and gc)
                 """)
         public class Profiler {
 
             public boolean enable = false;
         }
 
+        @Documentation("log command issue into the console.")
         public class CommandSpy {
             public boolean enable = false;
         }
 
         @Documentation("""
                 This module provides scheduler for auto-run jobs, and `/schudler_trigger` command.
+                
+                You can add schedule jobs by cron expression, set the random command-list to be executed.
                                 
                 """)
         public class Scheduler {
@@ -629,13 +672,21 @@ public class ConfigModel {
         }
 
         @Documentation("""
-                If this module is enabled, then `/fuji reload` command will reload the files inside `/config/fuji/lang`.
+                This module provides multi-language support for your players.
+                (Disable this module will force all the players to use the default language)
+                
+                - The default language is en_us.
+                - Respect the player's client-side language-setting.
+                - If the player's client-side language-setting is not supported, then use the default language.
+                - Lazy-load support, which means if a language is not required, then it will not be loaded.
+                - Dynamic-reload support, you need to enable `ConfigModule` to use reload command.
+                
                 """)
         public class Language {
             public boolean enable = false;
         }
 
-        @Documentation("This module provides `/reply` command.")
+        @Documentation("This module provides `/reply` command, which replys the recent player who `/msg` you")
         public class Reply {
             public boolean enable = false;
         }
@@ -682,6 +733,11 @@ public class ConfigModel {
                                 
                 The placeholder `@u` means the user player name.
                 e.g. Line 1 contains `//kill @u` will execute the command `/kill {player_name}`
+                
+                - If the sign contains `//`, then you must press `shift` to edit this sign
+                - You can add some comments before the first `//`
+                - You can use all the four lines to insert `//` (Every `//` means one command)
+                - Placeholder `@u` means the user of this sign
                  
                 """)
         public class CommandInteractive {
@@ -739,6 +795,14 @@ public class ConfigModel {
                 This module allows you to custom every system-message defined by mojang in `./assets/minecraft/lang/en_us.json`
                         
                 The mojang offical en_us.json file may looks like: [en_us.json for minecraft 1.21](https://github.com/sakurawald/fuji-fabric/blob/dev/.github/files/en_us.json)
+                
+                The system messages including:
+                - Player join and leave server message
+                - Player advancement message
+                - Player death message
+                - Player command feedback
+                - Player white-list message
+                - ... (and 7000+ other system messages)
                         
                 """)
         public class SystemMessage {
@@ -802,19 +866,19 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        @Documentation("This module provides `/bed` command, which teleports the player to his bed.")
         public Bed bed = new Bed();
 
+        @Documentation("This module provides `/bed` command, which teleports the player to his bed.")
         public class Bed {
 
             public boolean enable = false;
         }
 
+        public Sit sit = new Sit();
+
         @Documentation("""
                 This module provides `/sit` command, and the ability to sit by right-click any chair.
                 """)
-        public Sit sit = new Sit();
-
         public class Sit {
 
             public boolean enable = false;
@@ -847,7 +911,7 @@ public class ConfigModel {
         public CommandRewrite command_rewrite = new CommandRewrite();
 
         @Documentation("""
-                This module provides command rewrite, so that you can rewrite the `command line` a player issued.
+                This module provides command rewrite, so that you can use `regex language` to rewrite the `command line` a player issued.
                 """)
         public class CommandRewrite {
             public boolean enable = false;
