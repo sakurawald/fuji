@@ -256,70 +256,9 @@ provides command rewrite so that you can use regex to rewrite the command player
 
 </details>
 
-# Config
-
-### What is the format of config files?
-To make the config files more `readable` and `transparent`, we use `.json` as the config file format.
-We try our best to avoid the usage of `.dat` format
-(The vanilla minecraft data file format which needs an NBTExplorer to view and edit).
-
-### Where are the config files?
-All the config files are inside `config/fuji/` directory so
-that you don't need to find out where the config files are.
-
-### How to update to a newer version?
-Normally, the newer version will generate missing configuration keys automatically, but if this doesn't work, you can delete the old config file and restart the server to let the newer version generate the default config file.
-
-# Permission
-This mod uses a low-level permission system, which means that most of the admin commands are required level-permission to use. However, if you really want a command-permission-node for every command, you can use the `fuji-command-permission` module (This module adds a prefix command-permission for ALL commands, even the command is not provided by this mod!).
-
-> In other words, most of the commands doesn't require any permission to use, but if you want, you can use `CommandPermissionModule` to add a prefix-permission for every command!
-
-# Optimization
-For a better server performance and without vanilla sacrifice, we recommend you to use `Lithium` and `Krypton` with this mod.
-
-For JVM, we recommended GraalVM, which performs better than OpenJDK.
-> Here are the JVM arguments we optimized for GraalVM (Reference from papermc and graalvm manual):
-> 
-> java -Xms16G -Xmx16G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=40 -XX:G1MaxNewSizePercent=50 -XX:G1HeapRegionSize=16M -XX:G1ReservePercent=15 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -XX:+UseLargePages -XX:+UseTransparentHugePages -XX:+EnableDynamicAgentLoading -Djava.io.tmpdir=/tmp -jar server.jar --nogui
-
-# Diagnosis
-By default, this mod will output its `debug messages` into `logs/debug.log` so that you can know what this mod is doing.
-You can add `-Dfuji.level="INFO"` to change the logger level.
-
-# Build from source
-This mod is written on linux environment, but there are no native-method calls, so you can compile it on any platform.
-
-Clone the source: 
-```shell
-$ git clone https://github.com/SakuraWald/fuji-fabric.git
-```
-Change the working-directory: 
-```shell
-$ cd fuji-fabric
-```
-Compile the source:
-```shell
-$ ./gradlew build
-```
-
-# FAQ
-###  What is `cron expression`?
-
-Cron expression is an easy and powerful language used to define when a job should be triggered.
-You can learn more and generate a cron expression from the generator: https://www.freeformatter.com/cron-expression-generator-quartz.html
-
-### This mod failed to mixin the server at server-startup stage, what should I do?
-
-This mod need `fabric-api` mod to work, so make sure you have installed `fabric-api` mod.
-
-Before you enable `BetterFakePlayerModule` and `BetterInfoModule` , you need to install `carpet` mod.
-
-Before you enable `ProfilerMoudle`, you need to install `spark` mod.
-
-### How can I report bugs or suggest new features?
-
-You can create an issue at the project's `github` page.
+# Links
+See [configuration](https://github.com/sakurawald/fuji-fabric/wiki/Configuration)
+See [permission](https://github.com/sakurawald/fuji-fabric/wiki/Permission)
 
 # Thanks
 At the early stage of this project, we reference some source and ideas from the following projects:
