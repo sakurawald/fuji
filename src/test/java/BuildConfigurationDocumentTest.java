@@ -3,7 +3,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import io.github.sakurawald.config.model.ConfigModel;
-import io.github.sakurawald.config.annotation.Comment;
+import io.github.sakurawald.config.annotation.Documentation;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -17,11 +17,11 @@ public class BuildConfigurationDocumentTest {
 
     private JsonObject buildJsonObjectWithComments(Object obj) {
         JsonObject jsonObject = new JsonObject();
-        processFieldsWithComments(obj, jsonObject);
+        processFields(obj, jsonObject);
         return jsonObject;
     }
 
-    private void processFieldsWithComments(Object obj, JsonObject jsonObject) {
+    private void processFields(Object obj, JsonObject jsonObject) {
         Class<?> clazz = obj.getClass();
         for (Field field : clazz.getFields()) {
             try {
@@ -29,9 +29,9 @@ public class BuildConfigurationDocumentTest {
                 Object value = field.get(obj);
 
                 /* insert related comment property */
-                if (field.isAnnotationPresent(Comment.class)) {
-                    Comment commentAnnotation = field.getAnnotation(Comment.class);
-                    jsonObject.addProperty(fieldName + "@comment", commentAnnotation.value());
+                if (field.isAnnotationPresent(Documentation.class)) {
+                    Documentation documentationAnnotation = field.getAnnotation(Documentation.class);
+                    jsonObject.addProperty(fieldName + "@documentation", documentationAnnotation.value());
                 }
 
                 /* switch type */
@@ -57,7 +57,7 @@ public class BuildConfigurationDocumentTest {
                             jsonObject.add(fieldName, mapJsonObject);
                     } else {
                         JsonObject nestedJsonObject = new JsonObject();
-                        processFieldsWithComments(value, nestedJsonObject);
+                        processFields(value, nestedJsonObject);
                         jsonObject.add(fieldName, nestedJsonObject);
                     }
                 }
