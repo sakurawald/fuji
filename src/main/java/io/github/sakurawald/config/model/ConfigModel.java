@@ -738,6 +738,9 @@ public class ConfigModel {
 
         @Comment("""
         This module allows you to custom every system-message defined by mojang in `./assets/minecraft/lang/en_us.json`
+        
+        The mojang offical en_us.json file may looks like: [en_us.json for minecraft 1.21](https://github.com/sakurawald/fuji-fabric/blob/dev/.github/files/en_us.json)
+        
         """)
         public class SystemMessage {
             public boolean enable = false;
@@ -753,14 +756,17 @@ public class ConfigModel {
             };
         }
 
+        @Comment("This module provides `/enderchest` command.")
         public class EnderChest {
             public boolean enable = false;
         }
 
+        @Comment("This module provides `/workbench` command.")
         public class Workbench {
             public boolean enable = false;
         }
 
+        @Comment("This module provides `/enchantment` command.")
         public class Enchantment {
 
             public boolean enable = false;
@@ -779,21 +785,25 @@ public class ConfigModel {
 
         }
 
+        @Comment("This module provides `/anvil` command.")
         public class Anvil {
 
             public boolean enable = false;
         }
 
+        @Comment("This module provides `/grindstone` command.")
         public class GrindStone {
 
             public boolean enable = false;
         }
 
+        @Comment("This module provides `/stonecutter` command.")
         public class StoneCutter {
 
             public boolean enable = false;
         }
 
+        @Comment("This module provides `/bed` command, which teleports the player to his bed.")
         public Bed bed = new Bed();
 
         public class Bed {
@@ -801,6 +811,9 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
+        @Comment("""
+                This module provides `/sit` command, and the ability to sit by right-click any chair.
+                """)
         public Sit sit = new Sit();
 
         public class Sit {
@@ -816,6 +829,12 @@ public class ConfigModel {
 
         public CommandAlias command_alias = new CommandAlias();
 
+        @Comment("""
+                This module provides command alias.
+                
+                An alias means we redirect a command-node into another command-node.
+                The requirement of comamnd-node is extended.
+                """)
         public class CommandAlias {
             public boolean enable = false;
             public List<CommandAliasEntry> alias = new ArrayList<>() {
@@ -828,6 +847,9 @@ public class ConfigModel {
 
         public CommandRewrite command_rewrite = new CommandRewrite();
 
+        @Comment("""
+                This module provides command rewrite, so that you can rewrite the `command line` a player issued.
+                """)
         public class CommandRewrite {
             public boolean enable = false;
             public List<CommandRewriteEntry> rules = new ArrayList<>() {
