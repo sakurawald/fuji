@@ -609,6 +609,9 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
+        @Documentation("""
+                See [permission](https://github.com/sakurawald/fuji-fabric/wiki/Permission)
+                """)
         public class CommandPermission {
             public boolean enable = false;
         }
