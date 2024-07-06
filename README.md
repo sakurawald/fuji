@@ -1,6 +1,4 @@
-# Fuji
-<img src="https://github.com/SakuraWald/fuji-fabric/raw/1.20.2/src/main/resources/assets/fuji/icon.png" width="128" alt="mod icon">
-
+# Introduction
 Fuji is a minecraft mod that provides many essential and useful modules for vanilla survival.
 
 > **_If minecraft gets updated, you can mail sakurawald@gmail.com for fuji update reminder._**
@@ -18,8 +16,12 @@ Fuji is a minecraft mod that provides many essential and useful modules for vani
 
 # Wiki
 See [module](https://github.com/sakurawald/fuji-fabric/wiki/Module)
+
 See [configuration](https://github.com/sakurawald/fuji-fabric/wiki/Configuration)
+
 See [permission](https://github.com/sakurawald/fuji-fabric/wiki/Permission)
+
+See [faq](https://github.com/sakurawald/fuji-fabric/wiki/FAQ)
 
 # Thanks
 At the early stage of this project, we reference some source and ideas from the following projects:
