@@ -13,9 +13,9 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
-public class BuildConfigurationDocumentTest {
+public class DocumentationGeneratorTest {
 
-    private JsonObject buildJsonObjectWithComments(Object obj) {
+    private JsonObject processJavaObject(Object obj) {
         JsonObject jsonObject = new JsonObject();
         processFields(obj, jsonObject);
         return jsonObject;
@@ -77,8 +77,9 @@ public class BuildConfigurationDocumentTest {
 
     private void writeToFile(String fileName, JsonObject content) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        String filePath = "./build/document/" + fileName;
+        String filePath = "./build/documentation/" + fileName;
         new File(filePath).getParentFile().mkdirs();
+
         try (FileWriter writer = new FileWriter(filePath)) {
             writer.write(gson.toJson(content));
             System.out.println("File " + fileName + " has been written successfully.");
@@ -88,7 +89,9 @@ public class BuildConfigurationDocumentTest {
     }
 
     @Test
-    void buildConfigurationDocument() {
-        writeToFile("config.json", buildJsonObjectWithComments(new ConfigModel()));
+    void buildConfigurationDocumentation() {
+        writeToFile("config.json", processJavaObject(new ConfigModel()));
     }
+
+    // todo: a generator for Module.md
 }
