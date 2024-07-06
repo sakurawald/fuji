@@ -256,11 +256,12 @@ provides command rewrite so that you can use regex to rewrite the command player
 
 </details>
 
-# Links
+# Wiki
 See [configuration](https://github.com/sakurawald/fuji-fabric/wiki/Configuration)
+
 See [permission](https://github.com/sakurawald/fuji-fabric/wiki/Permission)
 
-# Thanks
+# Reference
 At the early stage of this project, we reference some source and ideas from the following projects:
 1. https://www.zrips.net/cmi/
 2. https://essentialsx.net/
