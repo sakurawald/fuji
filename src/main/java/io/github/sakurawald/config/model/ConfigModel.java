@@ -926,5 +926,20 @@ public class ConfigModel {
 
         }
 
+        public Loom loom = new Loom();
+        public class Loom {
+            public boolean enable = false;
+        }
+
+        public Cartography cartography = new Cartography();
+        public class Cartography {
+            public boolean enable = false;
+        }
+
+        public Smithing smithing = new Smithing();
+        public class Smithing {
+            public boolean enable = false;
+        }
+
     }
 }
