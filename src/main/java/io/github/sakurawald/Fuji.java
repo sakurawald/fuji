@@ -32,13 +32,9 @@ import java.nio.file.Path;
 
 // TODO: revert some custom events
 
-// TODO: delete ./github images
-
 // TODO: remove fabric-api dep
 
 // TODO: a program to generate module reference DAG
-
-// TODO: add loom module
 
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";
