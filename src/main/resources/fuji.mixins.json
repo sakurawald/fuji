@@ -4,6 +4,8 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "io.github.sakurawald.module.mixin.ModuleMixinConfigPlugin",
   "mixins": [
+    "_internal.event.PlayerManagerMixin",
+    "_internal.event.ServerPlayerEntityMixin",
     "_internal.event.ServerPlayNetworkHandlerMixin",
     "_internal.server_instance.MinecraftServerMixin",
     "afk.PlayerListMixin",
@@ -22,6 +24,7 @@
     "command_cooldown.CommandsMixin",
     "command_interactive.SignBlockMixin",
     "command_permission.CommandNodeAccessor",
+    "command_spy.CommandsMixin",
     "command_rewrite.ServerPlayNetworkHandlerMixin",
     "enchantment.EnchantmentScreenHandlerMixin",
     "fake_player_manager.PlayerCommandMixin",

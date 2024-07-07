@@ -1,34 +1,15 @@
 package io.github.sakurawald.module.initializer.command_cooldown;
 
-import io.github.sakurawald.common.event.PreCommandExecuteEvent;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import java.util.HashMap;
 import java.util.Map;
-
-import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ActionResult;
 
 public class CommandCooldownModule extends ModuleInitializer {
 
     private final HashMap<ServerPlayerEntity, HashMap<String, Long>> map = new HashMap<>();
 
-    @Override
-    public void onInitialize() {
-        PreCommandExecuteEvent.EVENT.register((parseResults, string) -> {
-            ServerPlayerEntity player = parseResults.getContext().getSource().getPlayer();
-            if (player == null) return ActionResult.PASS;
-
-            long cooldown = this.calculateCommandCooldown(player, string);
-            if (cooldown > 0) {
-                MessageUtil.sendActionBar(player, "command_cooldown.cooldown", cooldown / 1000);
-                return ActionResult.FAIL;
-            }
-
-            return ActionResult.PASS;
-        });
-    }
 
     public long calculateCommandCooldown(ServerPlayerEntity player, String commandLine) {
 
