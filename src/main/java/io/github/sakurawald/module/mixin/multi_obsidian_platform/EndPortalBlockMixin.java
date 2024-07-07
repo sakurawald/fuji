@@ -2,7 +2,7 @@ package io.github.sakurawald.module.mixin.multi_obsidian_platform;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.initializer.multi_obsidian_platform.MultiObsidianPlatformModule;
+import io.github.sakurawald.module.initializer.multi_obsidian_platform.MultiObsidianPlatformInitializer;
 import net.minecraft.block.EndPortalBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class EndPortalBlockMixin {
 
     @Unique
-    private static final MultiObsidianPlatformModule module = ModuleManager.getInitializer(MultiObsidianPlatformModule.class);
+    private static final MultiObsidianPlatformInitializer module = ModuleManager.getInitializer(MultiObsidianPlatformInitializer.class);
 
     @Unique
     BlockPos getTransformedEndSpawnPoint(Entity entity) {

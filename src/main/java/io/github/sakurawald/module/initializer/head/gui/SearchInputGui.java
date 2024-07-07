@@ -3,14 +3,14 @@ package io.github.sakurawald.module.initializer.head.gui;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.AnvilInputGui;
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.initializer.head.HeadModule;
+import io.github.sakurawald.module.initializer.head.HeadInitializer;
 import io.github.sakurawald.util.MessageUtil;
-import java.util.List;
+
 import java.util.stream.Collectors;
 import net.minecraft.item.Items;
 
 class SearchInputGui extends AnvilInputGui {
-    final HeadModule module = ModuleManager.getInitializer(HeadModule.class);
+    final HeadInitializer module = ModuleManager.getInitializer(HeadInitializer.class);
     private final HeadGui parentGui;
 
     public SearchInputGui(HeadGui parentGui) {

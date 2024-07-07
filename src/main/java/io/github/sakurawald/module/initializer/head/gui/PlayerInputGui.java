@@ -8,7 +8,7 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.AnvilInputGui;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.initializer.head.HeadModule;
+import io.github.sakurawald.module.initializer.head.HeadInitializer;
 import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 class PlayerInputGui extends AnvilInputGui {
-    final HeadModule module = ModuleManager.getInitializer(HeadModule.class);
+    final HeadInitializer module = ModuleManager.getInitializer(HeadInitializer.class);
     private final HeadGui parentGui;
     private long apiDebounce = 0;
     private final ItemStack DEFAULT_PLAYER_HEAD = Items.PLAYER_HEAD.getDefaultStack();
@@ -72,7 +72,7 @@ class PlayerInputGui extends AnvilInputGui {
                 }
 
                 GuiElementBuilder builder = new GuiElementBuilder().setItem(Items.PLAYER_HEAD);
-                if (HeadModule.headHandler.model().economyType != HeadModule.EconomyType.FREE) {
+                if (HeadInitializer.headHandler.model().economyType != HeadInitializer.EconomyType.FREE) {
                     builder.addLoreLine(Text.empty());
                     builder.addLoreLine(MessageUtil.ofVomponent(player, "head.price").copy().append(module.getCost()));
                 }

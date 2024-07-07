@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.mixin.back;
 
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.initializer.back.BackModule;
-import io.github.sakurawald.module.initializer.teleport_warmup.TeleportWarmupModule;
+import io.github.sakurawald.module.initializer.back.BackInitializer;
+import io.github.sakurawald.module.initializer.teleport_warmup.TeleportWarmupInitializer;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -17,9 +17,9 @@ public abstract class ServerPlayerMixin {
 
 
     @Unique
-    private static final BackModule module = ModuleManager.getInitializer(BackModule.class);
+    private static final BackInitializer module = ModuleManager.getInitializer(BackInitializer.class);
     @Unique
-    private static final TeleportWarmupModule teleportWarmupModule = ModuleManager.getInitializer(TeleportWarmupModule.class);
+    private static final TeleportWarmupInitializer TELEPORT_WARMUP_INITIALIZER = ModuleManager.getInitializer(TeleportWarmupInitializer.class);
 
     @Inject(method = "onDeath", at = @At("HEAD"))
     public void $onDeath(DamageSource damageSource, CallbackInfo ci) {
@@ -32,7 +32,7 @@ public abstract class ServerPlayerMixin {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
         // note: if TeleportWarmupModule don't update back-position for us, we do it ourselves.
-        if (teleportWarmupModule == null) {
+        if (TELEPORT_WARMUP_INITIALIZER == null) {
             module.updatePlayer(player);
         }
     }

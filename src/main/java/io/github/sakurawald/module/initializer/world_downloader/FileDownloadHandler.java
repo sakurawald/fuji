@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class FileDownloadHandler implements HttpHandler {
 
     private static final long NANO_TO_S = 1000000000L;
-    private final WorldDownloaderModule module;
+    private final WorldDownloaderInitializer module;
     private final File file;
     private final int bytesPerSecond;
 

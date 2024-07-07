@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.chat;
 
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.initializer.chat.ChatModule;
+import io.github.sakurawald.module.initializer.chat.ChatInitializer;
 import io.github.sakurawald.util.CarpetUtil;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;
@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerListMixin {
 
     @Unique
-    private static final ChatModule module = ModuleManager.getInitializer(ChatModule.class);
+    private static final ChatInitializer module = ModuleManager.getInitializer(ChatInitializer.class);
 
     @Inject(at = @At(value = "TAIL"), method = "onPlayerConnect")
     private void $onPlayerConnect(ClientConnection connection, ServerPlayerEntity serverPlayer, ConnectedClientData commonListenerCookie, CallbackInfo ci) {

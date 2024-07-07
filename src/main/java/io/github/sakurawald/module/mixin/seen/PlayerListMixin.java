@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.seen;
 
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.initializer.seen.SeenModule;
+import io.github.sakurawald.module.initializer.seen.SeenInitializer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerListMixin {
 
     @Unique
-    private SeenModule module = ModuleManager.getInitializer(SeenModule.class);
+    private SeenInitializer module = ModuleManager.getInitializer(SeenInitializer.class);
 
     @Inject(method = "remove", at = @At("TAIL"))
     private void remove(ServerPlayerEntity player, CallbackInfo ci) {

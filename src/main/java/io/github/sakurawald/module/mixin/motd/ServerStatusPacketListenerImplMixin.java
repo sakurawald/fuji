@@ -25,7 +25,7 @@ package io.github.sakurawald.module.mixin.motd;
 
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.initializer.motd.MotdModule;
+import io.github.sakurawald.module.initializer.motd.MotdInitializer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -39,7 +39,7 @@ import net.minecraft.server.network.ServerQueryNetworkHandler;
 abstract class ServerStatusPacketListenerImplMixin {
 
     @Unique
-    private static final MotdModule module = ModuleManager.getInitializer(MotdModule.class);
+    private static final MotdInitializer module = ModuleManager.getInitializer(MotdInitializer.class);
 
     @Redirect(method = "onRequest", at = @At(value = "FIELD", target = "Lnet/minecraft/server/network/ServerQueryNetworkHandler;metadata:Lnet/minecraft/server/ServerMetadata;"))
     public ServerMetadata $handleStatusRequest(final ServerQueryNetworkHandler instance) {

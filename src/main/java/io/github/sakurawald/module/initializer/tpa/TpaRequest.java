@@ -21,7 +21,7 @@ public class TpaRequest {
     private static final String CIRCLE = "●";
     private static final String TICK = "[✔]";
     private static final String CROSS = "[❌]";
-    private static final TpaModule module = ModuleManager.getInitializer(TpaModule.class);
+    private static final TpaInitializer module = ModuleManager.getInitializer(TpaInitializer.class);
     @Getter
     private final ServerPlayerEntity sender;
     @Getter

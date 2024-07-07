@@ -2,7 +2,7 @@ package io.github.sakurawald.module.mixin.fake_player_manager;
 
 import carpet.patches.EntityPlayerMPFake;
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.initializer.fake_player_manager.FakePlayerManagerModule;
+import io.github.sakurawald.module.initializer.fake_player_manager.FakePlayerManagerInitializer;
 import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class PlayerMixin extends LivingEntity {
 
     @Unique
-    private static final FakePlayerManagerModule FAKE_PLAYER_MANAGER_MODULE = ModuleManager.getInitializer(FakePlayerManagerModule.class);
+    private static final FakePlayerManagerInitializer FAKE_PLAYER_MANAGER_MODULE = ModuleManager.getInitializer(FakePlayerManagerInitializer.class);
 
     protected PlayerMixin(EntityType<? extends LivingEntity> entityType, World level) {
         super(entityType, level);

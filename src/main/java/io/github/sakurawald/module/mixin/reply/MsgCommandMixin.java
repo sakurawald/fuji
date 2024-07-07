@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.reply;
 
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.initializer.reply.ReplyModule;
+import io.github.sakurawald.module.initializer.reply.ReplyInitializer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,7 +18,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class MsgCommandMixin {
 
     @Unique
-    private static final ReplyModule module = ModuleManager.getInitializer(ReplyModule.class);
+    private static final ReplyInitializer module = ModuleManager.getInitializer(ReplyInitializer.class);
 
     @Inject(method = "execute", at = @At("HEAD"))
     private static void $execute(ServerCommandSource commandSourceStack, Collection<ServerPlayerEntity> collection, SignedMessage playerChatMessage, CallbackInfo ci) {

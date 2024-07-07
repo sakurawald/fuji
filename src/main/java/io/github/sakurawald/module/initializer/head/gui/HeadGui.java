@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.head.gui;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.initializer.head.HeadModule;
+import io.github.sakurawald.module.initializer.head.HeadInitializer;
 import io.github.sakurawald.module.initializer.head.api.Category;
 import io.github.sakurawald.util.MessageUtil;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public class HeadGui extends SimpleGui {
     protected final ServerPlayerEntity player;
-    final HeadModule module = ModuleManager.getInitializer(HeadModule.class);
+    final HeadInitializer module = ModuleManager.getInitializer(HeadInitializer.class);
 
     public HeadGui(ServerPlayerEntity player) {
         super(ScreenHandlerType.GENERIC_9X2, player, false);

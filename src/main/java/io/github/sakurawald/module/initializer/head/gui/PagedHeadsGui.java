@@ -6,7 +6,7 @@ import eu.pb4.sgui.api.gui.GuiInterface;
 import eu.pb4.sgui.api.gui.layered.Layer;
 import eu.pb4.sgui.api.gui.layered.LayeredGui;
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.initializer.head.HeadModule;
+import io.github.sakurawald.module.initializer.head.HeadInitializer;
 import io.github.sakurawald.module.initializer.head.api.Head;
 import io.github.sakurawald.util.GuiUtil;
 import io.github.sakurawald.util.MessageUtil;
@@ -22,7 +22,7 @@ public class PagedHeadsGui extends LayeredGui {
     final GuiInterface parent;
     final Layer contentLayer;
     final Layer navigationLayer;
-    final HeadModule module = ModuleManager.getInitializer(HeadModule.class);
+    final HeadInitializer module = ModuleManager.getInitializer(HeadInitializer.class);
     public int page = 0;
 
     public PagedHeadsGui(GuiInterface parent, List<Head> heads) {
@@ -84,7 +84,7 @@ public class PagedHeadsGui extends LayeredGui {
             if (heads.size() > i + (this.page * 45)) {
                 Head head = heads.get(i + (this.page * 45));
                 var builder = GuiElementBuilder.from(head.of());
-                if (HeadModule.headHandler.model().economyType != HeadModule.EconomyType.FREE) {
+                if (HeadInitializer.headHandler.model().economyType != HeadInitializer.EconomyType.FREE) {
                     builder.addLoreLine(Text.empty());
                     builder.addLoreLine(MessageUtil.ofVomponent(parent.getPlayer(), "head.price").copy().append(module.getCost()));
                 }
@@ -120,7 +120,7 @@ public class PagedHeadsGui extends LayeredGui {
             if (type.isLeft) {
                 module.tryPurchase(player, 1, () -> cursorStack.increment(1));
             } else if (type.isRight) {
-                if (HeadModule.headHandler.model().economyType == HeadModule.EconomyType.FREE)
+                if (HeadInitializer.headHandler.model().economyType == HeadInitializer.EconomyType.FREE)
                     cursorStack.decrement(1);
             } else if (type.isMiddle) {
                 var amount = headStack.getMaxCount() - cursorStack.getCount();
@@ -130,7 +130,7 @@ public class PagedHeadsGui extends LayeredGui {
                 });
             }
         } else {
-            if (HeadModule.headHandler.model().economyType == HeadModule.EconomyType.FREE)
+            if (HeadInitializer.headHandler.model().economyType == HeadInitializer.EconomyType.FREE)
                 player.currentScreenHandler.setCursorStack(ItemStack.EMPTY);
         }
     }

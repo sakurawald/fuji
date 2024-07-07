@@ -1,11 +1,11 @@
 package io.github.sakurawald.module.mixin.teleport_warmup;
 
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.initializer.back.BackModule;
+import io.github.sakurawald.module.initializer.back.BackInitializer;
 import io.github.sakurawald.common.structure.Position;
 import io.github.sakurawald.module.initializer.teleport_warmup.ServerPlayerCombatStateAccessor;
 import io.github.sakurawald.module.initializer.teleport_warmup.TeleportTicket;
-import io.github.sakurawald.module.initializer.teleport_warmup.TeleportWarmupModule;
+import io.github.sakurawald.module.initializer.teleport_warmup.TeleportWarmupInitializer;
 import io.github.sakurawald.util.CarpetUtil;
 import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.entity.damage.DamageSource;
@@ -23,9 +23,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 public abstract class ServerPlayerMixin implements ServerPlayerCombatStateAccessor {
     @Unique
-    private static final BackModule backModule = ModuleManager.getInitializer(BackModule.class);
+    private static final BackInitializer BACK_INITIALIZER = ModuleManager.getInitializer(BackInitializer.class);
     @Unique
-    private static final TeleportWarmupModule module = ModuleManager.getInitializer(TeleportWarmupModule.class);
+    private static final TeleportWarmupInitializer module = ModuleManager.getInitializer(TeleportWarmupInitializer.class);
     @Unique
     public boolean fuji$inCombat;
 
@@ -54,8 +54,8 @@ public abstract class ServerPlayerMixin implements ServerPlayerCombatStateAccess
         }
 
         // let's do teleport now.
-        if (backModule != null) {
-            backModule.updatePlayer(player);
+        if (BACK_INITIALIZER != null) {
+            BACK_INITIALIZER.updatePlayer(player);
         }
     }
 

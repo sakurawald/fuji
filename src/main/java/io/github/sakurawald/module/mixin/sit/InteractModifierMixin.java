@@ -2,7 +2,7 @@ package io.github.sakurawald.module.mixin.sit;
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.initializer.sit.SitModule;
+import io.github.sakurawald.module.initializer.sit.SitInitializer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SideShapeType;
@@ -49,7 +49,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class InteractModifierMixin {
 
     @Unique
-    private static final SitModule module = ModuleManager.getInitializer(SitModule.class);
+    private static final SitInitializer module = ModuleManager.getInitializer(SitInitializer.class);
 
     @Final
     @Shadow

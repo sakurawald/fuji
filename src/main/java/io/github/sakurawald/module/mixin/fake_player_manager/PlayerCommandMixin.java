@@ -6,7 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.initializer.fake_player_manager.FakePlayerManagerModule;
+import io.github.sakurawald.module.initializer.fake_player_manager.FakePlayerManagerInitializer;
 import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class PlayerCommandMixin {
 
     @Unique
-    private static final FakePlayerManagerModule module = ModuleManager.getInitializer(FakePlayerManagerModule.class);
+    private static final FakePlayerManagerInitializer module = ModuleManager.getInitializer(FakePlayerManagerInitializer.class);
 
     @Unique
     private static String transformFakePlayerName(String fakePlayerName) {
