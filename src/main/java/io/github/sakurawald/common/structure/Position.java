@@ -1,4 +1,4 @@
-package io.github.sakurawald.common;
+package io.github.sakurawald.common.structure;
 
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.util.MessageUtil;

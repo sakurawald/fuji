@@ -135,7 +135,6 @@ modrinth {
     syncBodyFrom = rootProject.file("README.md").text
 }
 tasks.modrinth.dependsOn(tasks.modrinthSyncBody)
-tasks.modrinthSyncBody.dependsOn(tasks.replaceReadme)
 
 // test framework
 test {

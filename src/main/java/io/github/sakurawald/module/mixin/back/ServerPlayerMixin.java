@@ -15,10 +15,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerMixin {
 
+
     @Unique
     private static final BackModule module = ModuleManager.getInitializer(BackModule.class);
     @Unique
     private static final TeleportWarmupModule teleportWarmupModule = ModuleManager.getInitializer(TeleportWarmupModule.class);
+
+    @Inject(method = "onDeath", at = @At("HEAD"))
+    public void $onDeath(DamageSource damageSource, CallbackInfo ci) {
+        ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+        module.updatePlayer(player);
+    }
 
     @Inject(method = "teleport(Lnet/minecraft/server/world/ServerWorld;DDDFF)V", at = @At("HEAD"))
     public void $teleport(ServerWorld targetWorld, double x, double y, double z, float yaw, float pitch, CallbackInfo ci) {

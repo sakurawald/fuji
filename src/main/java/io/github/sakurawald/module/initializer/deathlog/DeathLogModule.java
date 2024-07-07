@@ -6,7 +6,6 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.common.event.PrePlayerDeathEvent;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.RegistryUtil;
@@ -26,7 +25,6 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Uuids;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Vec3d;
@@ -65,13 +63,6 @@ public class DeathLogModule extends ModuleInitializer {
     @Override
     public void onInitialize() {
         STORAGE_PATH.toFile().mkdirs();
-
-        PrePlayerDeathEvent.EVENT.register((player, damageSource) -> {
-            // don't store empty inventory
-            if (player.getInventory().isEmpty()) return ActionResult.PASS;
-            this.store(player);
-            return ActionResult.PASS;
-        });
     }
 
     @SuppressWarnings({"UnusedReturnValue", "unused"})

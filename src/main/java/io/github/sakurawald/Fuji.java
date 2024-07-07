@@ -36,6 +36,10 @@ import java.nio.file.Path;
 
 // TODO: remove fabric-api dep
 
+// TODO: a program to generate module reference DAG
+
+// TODO: add loom module
+
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";
     public static final Logger LOGGER = LogUtil.createLogger(StringUtils.capitalize(MOD_ID));

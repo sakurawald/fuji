@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.resource_world;
 
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.resource_world.interfaces.SimpleRegistryMixinInterface;
-import io.github.sakurawald.common.Position;
+import io.github.sakurawald.common.structure.Position;
 import io.github.sakurawald.module.initializer.teleport_warmup.TeleportTicket;
 import io.github.sakurawald.module.initializer.teleport_warmup.TeleportWarmupModule;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
