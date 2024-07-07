@@ -8,10 +8,10 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
-
 
 // TODO: placeholder module (placeholder api)
 
@@ -25,11 +25,20 @@ import java.nio.file.Path;
 // TODO: command warmup module
 // TODO: /spawn module
 // TODO: /tppos module
-// TODO: playtime(every/for) rewards and rank like module
+// TODO: playtime(every/for) rewards module
+// TODO: rank module
+
+// TODO: a light-weight way to implement chat module
+
+// TODO: revert some custom events
+
+// TODO: delete ./github images
+
+// TODO: remove fabric-api dep
 
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";
-    public static final Logger LOGGER = LogUtil.createLogger("Fuji");
+    public static final Logger LOGGER = LogUtil.createLogger(StringUtils.capitalize(MOD_ID));
     public static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve(MOD_ID).toAbsolutePath();
     public static MinecraftServer SERVER;
 

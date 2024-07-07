@@ -169,7 +169,6 @@ public class ChatModule extends ModuleInitializer {
             }
             String dim_display_name;
 
-            // TODO: insert `pos` in resource world will throw error
             if (MessageUtil.ofString(player, dim_name) != null) {
                 dim_display_name = MessageUtil.ofString(player, dim_name);
             } else {

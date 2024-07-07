@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class SpecializedCommand {
 
-    // TODO: a language parser is needed here (supports some expressions solver)
+    // TODO: require a DSL here
 
     private static final String RANDOM_PLAYER = "!random_player!";
     private static final String ALL_PLAYER = "!all_player!";

@@ -9,6 +9,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 
 @UtilityClass
 public class LogUtil {
+
     public static Logger createLogger(String name) {
         Logger logger = LogManager.getLogger(name);
         try {

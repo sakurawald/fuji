@@ -1,4 +1,4 @@
-# Introduction
+# Description
 Fuji is a minecraft mod that provides many essential and useful modules for vanilla survival.
 
 > **_If minecraft gets updated, you can mail sakurawald@gmail.com for fuji update reminder._**
