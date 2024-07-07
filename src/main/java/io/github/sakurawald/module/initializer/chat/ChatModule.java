@@ -6,7 +6,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.common.event.PostPlayerConnectEvent;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
@@ -17,7 +16,6 @@ import io.github.sakurawald.module.initializer.chat.display.DisplayHelper;
 import io.github.sakurawald.module.initializer.chat.mention.MentionPlayersJob;
 import io.github.sakurawald.module.initializer.main_stats.MainStats;
 import io.github.sakurawald.module.initializer.main_stats.MainStatsModule;
-import io.github.sakurawald.util.CarpetUtil;
 import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;
@@ -34,7 +32,6 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ActionResult;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
@@ -65,12 +62,6 @@ public class ChatModule extends ModuleInitializer {
     public void onInitialize() {
         chatHandler.loadFromDisk();
         chatHistory = EvictingQueue.create(Configs.configHandler.model().modules.chat.history.cache_size);
-
-//        PostPlayerConnectEvent.EVENT.register(((connection, player, commonListenerCookie) -> {
-//            if (CarpetUtil.isFakePlayer(player)) return ActionResult.PASS;
-//            this.getChatHistory().forEach(player::sendMessage);
-//            return ActionResult.PASS;
-//        }));
     }
 
 

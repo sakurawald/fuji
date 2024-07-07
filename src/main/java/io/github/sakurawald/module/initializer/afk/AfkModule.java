@@ -4,7 +4,6 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.common.event.PostPlayerConnectEvent;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.CommandUtil;
@@ -15,7 +14,6 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ActionResult;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -27,11 +25,6 @@ public class AfkModule extends ModuleInitializer {
     @Override
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> updateJobs());
-        PostPlayerConnectEvent.EVENT.register((connection, player, commonListenerCookie) -> {
-            AfkStateAccessor afk_player = (AfkStateAccessor) player;
-            afk_player.fuji$setLastLastActionTime(player.getLastActionTime());
-            return ActionResult.PASS;
-        });
     }
 
     @Override

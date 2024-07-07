@@ -5,19 +5,19 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.common.event.PostPlayerConnectEvent;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.*;
+import io.github.sakurawald.util.CommandUtil;
+import io.github.sakurawald.util.DateUtil;
+import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.ScheduleUtil;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.kyori.adventure.text.Component;
-import net.minecraft.client.realms.Request;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ActionResult;
 import net.minecraft.util.Uuids;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
@@ -35,14 +35,6 @@ public class FakePlayerManagerModule extends ModuleInitializer {
     @Override
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(this::registerScheduleTask);
-
-        PostPlayerConnectEvent.EVENT.register((connection, player, commonListenerCookie) -> {
-            if (CarpetUtil.isFakePlayer(player)) return ActionResult.PASS;
-            if (this.hasFakePlayers(player)) {
-                this.renewFakePlayers(player);
-            }
-            return ActionResult.PASS;
-        });
     }
 
     @SuppressWarnings("unused")

@@ -1,26 +1,21 @@
-package io.github.sakurawald.module.mixin._internal.event;
+package io.github.sakurawald.module.mixin.afk;
 
-import io.github.sakurawald.common.event.PostPlayerConnectEvent;
-import net.minecraft.entity.passive.SheepEntity;
+import io.github.sakurawald.module.initializer.afk.AfkStateAccessor;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ConnectedClientData;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ActionResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerManager.class)
-public class PlayerManagerMixin {
 
-    @Inject(at = @At(value = "TAIL"), method = "onPlayerConnect", cancellable = true)
+public abstract class PlayerListMixin {
+    @Inject(at = @At(value = "TAIL"), method = "onPlayerConnect")
     private void $onPlayerConnect(ClientConnection connection, ServerPlayerEntity serverPlayer, ConnectedClientData commonListenerCookie, CallbackInfo ci) {
-        ActionResult result = PostPlayerConnectEvent.EVENT.invoker().interact(connection, serverPlayer, commonListenerCookie);
-
-        if (result == ActionResult.FAIL) {
-            ci.cancel();
-        }
+        AfkStateAccessor afk_player = (AfkStateAccessor) serverPlayer;
+        afk_player.fuji$setLastLastActionTime(serverPlayer.getLastActionTime());
     }
 }
