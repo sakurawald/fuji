@@ -175,5 +175,6 @@
   "chat.format.show": "Current style",
   "chat.current_pos": "Current Position",
   "chat.xaero_waypoint_add": "Click to add a Xaero's minimap waypoint",
-  "chat.xaero_waypoint_add.command": "/xaero_waypoint_add:Waypoint:·:%d:%s:%d:0:false:0:Internal_%s_waypoints"
+  "chat.xaero_waypoint_add.command": "/xaero_waypoint_add:Waypoint:·:%d:%s:%d:0:false:0:Internal_%s_waypoints",
+  "realname": "<gold>Real name is %s"
 }

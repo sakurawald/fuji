@@ -26,6 +26,7 @@ public class PingInitializer extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int $ping(CommandContext<ServerCommandSource> ctx) {
+
         try {
             ServerPlayerEntity target = EntityArgumentType.getPlayer(ctx, "player");
             String name = target.getGameProfile().getName();
