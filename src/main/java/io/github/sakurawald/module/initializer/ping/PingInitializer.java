@@ -32,7 +32,7 @@ public class PingInitializer extends ModuleInitializer {
             int latency = target.networkHandler.getLatency();
             MessageUtil.sendMessage(ctx.getSource(), "ping.player", name, latency);
         } catch (Exception e) {
-            MessageUtil.sendMessage(ctx.getSource(), "ping.target.no_found");
+            MessageUtil.sendMessage(ctx.getSource(), "entity.no_found");
         }
 
         return Command.SINGLE_SUCCESS;

@@ -30,11 +30,11 @@ import java.nio.file.Path;
 
 // TODO: a light-weight way to implement chat module
 
-// TODO: revert some custom events
-
 // TODO: remove fabric-api dep
 
 // TODO: a program to generate module reference DAG
+
+// TODO: luckperms context calculator
 
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";

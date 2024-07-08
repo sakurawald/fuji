@@ -927,18 +927,31 @@ public class ConfigModel {
         }
 
         public Loom loom = new Loom();
+
+        @Documentation("This module provides `/loom` command.")
         public class Loom {
             public boolean enable = false;
         }
 
         public Cartography cartography = new Cartography();
+
+        @Documentation("This module provides `/cartography` command.")
         public class Cartography {
             public boolean enable = false;
         }
 
         public Smithing smithing = new Smithing();
+
+        @Documentation("This module provides `/smithing` command.")
         public class Smithing {
             public boolean enable = false;
+        }
+
+        public World world = new World();
+        @Documentation("This module provides `/world` command, which teleport the player to target dimension.")
+        public class World {
+            public boolean enable = false;
+
         }
 
     }

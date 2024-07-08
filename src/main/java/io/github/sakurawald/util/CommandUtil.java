@@ -15,6 +15,9 @@ import static net.minecraft.server.command.CommandManager.argument;
 
 @UtilityClass
 public class CommandUtil {
+    
+    public static final String ARGUMENT_NAME_DIMENSION = "dimension";
+    
     public static RequiredArgumentBuilder<ServerCommandSource, String> offlinePlayerArgument(String argumentName) {
         return argument(argumentName, StringArgumentType.string())
                 .suggests((context, builder) -> {

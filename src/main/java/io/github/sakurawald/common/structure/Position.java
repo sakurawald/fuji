@@ -8,6 +8,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 @Data
@@ -35,6 +36,11 @@ public class Position {
 
     public static Position of(ServerPlayerEntity player) {
         return new Position(player.getWorld().getRegistryKey().getValue().toString(), player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch());
+    }
+
+    public static Position of(ServerPlayerEntity player, ServerWorld world) {
+        BlockPos spawnPos = world.getSpawnPos();
+        return new Position(world, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), player.getYaw(), player.getPitch());
     }
 
     public boolean sameLevel(World level) {
