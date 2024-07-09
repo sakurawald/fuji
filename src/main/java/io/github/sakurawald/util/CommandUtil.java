@@ -5,13 +5,12 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.common.structure.GameProfileCacheEx;
+import io.github.sakurawald.module.common.structure.GameProfileCacheEx;
 import lombok.experimental.UtilityClass;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.ProgressListener;
 import net.minecraft.util.UserCache;
 
 import static net.minecraft.server.command.CommandManager.argument;

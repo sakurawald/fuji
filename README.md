@@ -27,6 +27,7 @@ See [faq](https://github.com/sakurawald/fuji-fabric/wiki/FAQ)
 At the early stage of this project, we reference some source and ideas from the following projects:
 1. https://www.zrips.net/cmi/
 2. https://essentialsx.net/
+3. https://v2.nucleuspowered.org/
 3. https://modrinth.com/mod/essential-commands
 4. https://modrinth.com/mod/skinrestorer
 5. https://modrinth.com/mod/headindex

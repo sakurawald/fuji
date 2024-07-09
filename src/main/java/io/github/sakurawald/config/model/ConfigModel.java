@@ -954,5 +954,12 @@ public class ConfigModel {
 
         }
 
+        public Realname realname = new Realname();
+        @Documentation("This module provides `/realname` command.")
+        public class Realname {
+            public boolean enable = false;
+
+        }
+
     }
 }

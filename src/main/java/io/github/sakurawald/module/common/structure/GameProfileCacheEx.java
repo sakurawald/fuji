@@ -1,4 +1,4 @@
-package io.github.sakurawald.common.structure;
+package io.github.sakurawald.module.common.structure;
 
 import java.util.Collection;
 

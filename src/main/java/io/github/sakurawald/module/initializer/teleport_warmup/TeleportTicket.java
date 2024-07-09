@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.teleport_warmup;
 
-import io.github.sakurawald.common.structure.Position;
+import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.util.MessageUtil;
 import net.kyori.adventure.bossbar.BossBar;
 import net.minecraft.server.network.ServerPlayerEntity;

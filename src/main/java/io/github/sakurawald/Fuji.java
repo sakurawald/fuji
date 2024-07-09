@@ -20,7 +20,9 @@ import java.nio.file.Path;
 // TODO: kit module -> spec-command
 
 // TODO: custom tab list
+
 // TODO: player nickname / prefix / suffix
+// TODO: nickname module
 
 // TODO: command warmup module
 // TODO: /spawn module
@@ -35,6 +37,13 @@ import java.nio.file.Path;
 // TODO: a program to generate module reference DAG
 
 // TODO: luckperms context calculator
+
+// TODO: invsee module
+
+// TODO: essential protect module
+
+// TODO: condense
+
 
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";

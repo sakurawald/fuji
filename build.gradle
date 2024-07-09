@@ -56,6 +56,7 @@ dependencies {
     modImplementation("carpet:fabric-carpet:${project.carpet_core_version}")
 
     modImplementation include("me.lucko:fabric-permissions-api:${project.fabric_permissions_version}")
+    compileOnly "net.luckperms:api:5.4"
 
     modImplementation include("net.kyori:adventure-platform-fabric:${project.adventure_platform_fabric_version}")
     include(implementation "net.kyori:adventure-text-minimessage:${project.adventure_api_version}")

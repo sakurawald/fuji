@@ -2,7 +2,7 @@ package io.github.sakurawald.module.mixin.teleport_warmup;
 
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.back.BackInitializer;
-import io.github.sakurawald.common.structure.Position;
+import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.initializer.teleport_warmup.ServerPlayerCombatStateAccessor;
 import io.github.sakurawald.module.initializer.teleport_warmup.TeleportTicket;
 import io.github.sakurawald.module.initializer.teleport_warmup.TeleportWarmupInitializer;
