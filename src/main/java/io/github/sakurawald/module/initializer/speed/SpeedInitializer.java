@@ -22,6 +22,7 @@ public class SpeedInitializer extends ModuleInitializer {
             ...
 
             // TODO: force enable -> force disable
+            // TODO: stop loading if configuration structure is in-compatible
 
             // will also be trigger if the player disconnect
             LuckPermsUtil.getAPI().getEventBus().subscribe(UserDataRecalculateEvent.class, (event) -> {
