@@ -21,6 +21,8 @@ public class SpeedInitializer extends ModuleInitializer {
             // add event post user login
             ...
 
+            // TODO: force enable -> force disable
+
             // will also be trigger if the player disconnect
             LuckPermsUtil.getAPI().getEventBus().subscribe(UserDataRecalculateEvent.class, (event) -> {
                 log.warn("luckperms event {} -> player {}", event.getClass().getSimpleName(), event.getUser().getUsername());
