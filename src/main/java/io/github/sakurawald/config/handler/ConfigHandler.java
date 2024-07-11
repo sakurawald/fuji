@@ -76,7 +76,7 @@ public abstract class ConfigHandler<T> {
         try {
             Files.copy(file.toPath(), backupFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            LOGGER.error("Backup file failed: " + e.getMessage());
+            LOGGER.error("Backup file failed: {}", e.getMessage());
         }
     }
 
@@ -98,18 +98,18 @@ public abstract class ConfigHandler<T> {
         mergeFields(oldJson.getAsJsonObject(), newJson.getAsJsonObject());
     }
 
-    private void mergeFields(JsonObject oldJson, JsonObject newJson) {
-        Set<Map.Entry<String, JsonElement>> entrySet = newJson.entrySet();
+    private void mergeFields(JsonObject currentJson, JsonObject defaultJson) {
+        Set<Map.Entry<String, JsonElement>> entrySet = defaultJson.entrySet();
         for (Map.Entry<String, JsonElement> entry : entrySet) {
             String key = entry.getKey();
             JsonElement value = entry.getValue();
 
-            if (oldJson.has(key) && oldJson.get(key).isJsonObject() && value.isJsonObject()) {
-                mergeFields(oldJson.getAsJsonObject(key), value.getAsJsonObject());
+            if (currentJson.has(key) && currentJson.get(key).isJsonObject() && value.isJsonObject()) {
+                mergeFields(currentJson.getAsJsonObject(key), value.getAsJsonObject());
             } else {
                 // note: for JsonArray, we will not directly set array elements, but we will add new properties for every array element (language default empty-value). e.g. For List<ExamplePojo>, we will never change the size of this list, but we will add missing properties for every ExamplePojo with the language default empty-value.
-                if (!oldJson.has(key)) {
-                    oldJson.add(key, value);
+                if (!currentJson.has(key)) {
+                    currentJson.add(key, value);
                     LOGGER.warn("Add missing json property: file = {}, key = {}, value = {}", this.file.getName(), key, value);
                 }
             }

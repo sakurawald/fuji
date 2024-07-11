@@ -44,9 +44,6 @@ import java.nio.file.Path;
 
 // TODO: condense
 
-// TODO: force enable -> force disable
-// TODO: stop loading if configuration structure is in-compatible
-
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";
     public static final Logger LOGGER = LogUtil.createLogger(StringUtils.capitalize(MOD_ID));

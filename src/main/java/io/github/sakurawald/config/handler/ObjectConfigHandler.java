@@ -32,18 +32,18 @@ public class ObjectConfigHandler<T> extends ConfigHandler<T> {
             } else {
                 // read older json from disk
                 @Cleanup Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this.file)));
-                JsonElement olderJsonElement = JsonParser.parseReader(reader);
+                JsonElement currentJsonElement = JsonParser.parseReader(reader);
 
                 // merge older json with newer json
                 if (!this.merged) {
                     this.merged = true;
-                    T newerJsonInstance = configClass.getDeclaredConstructor().newInstance();
-                    JsonElement newerJsonElement = gson.toJsonTree(newerJsonInstance, configClass);
-                    mergeJson(olderJsonElement, newerJsonElement);
+                    T defaultJsonInstance = configClass.getDeclaredConstructor().newInstance();
+                    JsonElement defaultJsonElement = gson.toJsonTree(defaultJsonInstance, configClass);
+                    mergeJson(currentJsonElement, defaultJsonElement);
                 }
 
                 // read merged json
-                model = gson.fromJson(olderJsonElement, configClass);
+                model = gson.fromJson(currentJsonElement, configClass);
 
                 this.saveToDisk();
             }
