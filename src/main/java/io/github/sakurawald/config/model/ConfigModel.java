@@ -967,25 +967,24 @@ public class ConfigModel {
 
         @Documentation("""
                 This module provides damage-cancel by permission.
+                                
+                For performance considered:
+                1. This module only check damage_type inside this checklist.
+                2. The permission is checked by cache.
+                
+                You can query damage_type list in minecraft using `/damage @r 1 <damage_type>`
+                
+                For example, 
+                If you want to protect all the players from fall damage, you should do:
+                1. add `minecraft:fall` into the `damage_type_checklist`.
+                2. grant the permission for players: `/lp group default permission set fuji.protect.minecraft:fall`
+                
+                If you grant permission `/lp group default permission set fuji.protect.*`, then it means cancel
+                all the damage types inside the `damage_type_checklist`.
                 """)
         public class Protect {
             public boolean enable = false;
 
-            @Documentation("""
-                    For performance considered:
-                    1. This module only check damage_type inside this checklist.
-                    2. The permission is checked by cache.
-                    
-                    You can query damage_type list in minecraft using `/damage @r 1 <damage_type>`
-                    
-                    For example, 
-                    If you want to protect all the players from fall damage, you should do:
-                    1. add `minecraft:fall` into the `damage_type_checklist`.
-                    2. grant the permission for players: `/lp group default permission set fuji.protect.minecraft:fall`
-                    
-                    If you grant permission `/lp group default permission set fuji.protect.*`, then it means cancel
-                    all the damage types inside the `damage_type_checklist`.
-                    """)
             public Set<String> damage_type_checklist = new HashSet<>() {
                 {
                     this.add("minecraft:fall");
