@@ -1,12 +1,11 @@
 package io.github.sakurawald.module.initializer.test;
 
-import carpet.utils.FabricAPIHooks;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.LuckPermsUtil;
 import lombok.extern.slf4j.Slf4j;
+import me.lucko.fabric.api.permissions.v0.Options;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.fabric.api.util.TriState;
 import net.fabricmc.loader.api.FabricLoader;
@@ -16,9 +15,6 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-
-import java.time.Duration;
-import java.util.Collection;
 
 
 @Slf4j
@@ -34,6 +30,8 @@ public class TestInitializer extends ModuleInitializer {
     private static int magic(CommandContext<ServerCommandSource> ctx) {
         var source = ctx.getSource();
         ServerPlayerEntity player = source.getPlayer();
+
+        log.warn("flyspeed = {}", Options.get(player, "fuji.flyspeed", Double::valueOf));
 
         TriState test = Permissions.getPermissionValue(ctx.getSource(), "fuji.seed");
         source.sendMessage(Text.literal("state is " + test.name()));

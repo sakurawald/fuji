@@ -1,3 +1,5 @@
+package generator;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.github.sakurawald.config.annotation.Documentation;

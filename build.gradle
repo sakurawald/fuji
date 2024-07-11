@@ -139,9 +139,23 @@ tasks.modrinth.dependsOn(tasks.modrinthSyncBody)
 // test framework
 test {
     useJUnitPlatform()
+}
 
-    filter {
-        includeTestsMatching 'ModuleDocumentationGeneratorTest.buildModuleDocumentation'
+tasks.register('generateModuleDocumentation') {
+    test {
+        filter {
+            includeTestsMatching 'ModuleDocumentationGeneratorTest.buildModuleDocumentation'
+        }
     }
 }
-tasks.modrinthSyncBody.dependsOn(tasks.test)
+tasks.modrinthSyncBody.dependsOn(generateModuleDocumentation)
+
+tasks.register('generateMixinRegistry') {
+    test {
+        filter {
+            includeTestsMatching 'MixinRegistryGeneratorTest.generate'
+        }
+    }
+}
+tasks.compileJava.dependsOn(generateMixinRegistry)
+
