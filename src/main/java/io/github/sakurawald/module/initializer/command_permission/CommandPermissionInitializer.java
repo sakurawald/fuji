@@ -4,12 +4,17 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.CommandNode;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.mixin.command_permission.CommandNodeAccessor;
+import io.github.sakurawald.util.LuckPermsUtil;
 import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
+
+import java.util.concurrent.TransferQueue;
 import java.util.function.Predicate;
+
+import static org.reflections.Reflections.log;
 
 
 public class CommandPermissionInitializer extends ModuleInitializer {
@@ -52,8 +57,12 @@ public class CommandPermissionInitializer extends ModuleInitializer {
 
                    Only valid command has its command path (command-alias also has its path, but it will redirect the execution to the real command-path)
                  */
-                TriState triState = Permissions.getPermissionValue(source, "fuji.%s".formatted(commandPath));
-                return triState.orElseGet(() -> original.test(source));
+                TriState triState = Permissions.getPermissionValue(source.getPlayer(), "fuji.%s".formatted(commandPath));
+                if (triState != TriState.DEFAULT) {
+                    return triState.get();
+                }
+
+                return original.test(source);
             } catch (Throwable use_original_predicate_if_failed) {
                 return original.test(source);
             }

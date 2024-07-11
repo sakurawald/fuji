@@ -5,8 +5,6 @@ import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.config.annotation.Documentation;
 import io.github.sakurawald.module.initializer.command_alias.CommandAliasEntry;
 import io.github.sakurawald.module.initializer.command_rewrite.CommandRewriteEntry;
-import net.minecraft.client.realms.Ping;
-import net.minecraft.enchantment.Enchantment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -641,7 +639,7 @@ public class ConfigModel {
 
         @Documentation("""
                 This module provides scheduler for auto-run jobs, and `/schudler_trigger` command.
-                
+                                
                 You can add schedule jobs by cron expression, set the random command-list to be executed.
                                 
                 """)
@@ -654,6 +652,11 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
+        @Documentation("""
+                This module provides some test commands for development.
+                This module only works in development-environment.
+                If you enable this module in a production-environment, then nothing will happen.
+                """)
         public class Test {
             // disable TestModule by default
             public boolean enable = false;
@@ -677,13 +680,13 @@ public class ConfigModel {
         @Documentation("""
                 This module provides multi-language support for your players.
                 (Disable this module will force all the players to use the default language)
-                
+                                
                 - The default language is en_us.
                 - Respect the player's client-side language-setting.
                 - If the player's client-side language-setting is not supported, then use the default language.
                 - Lazy-load support, which means if a language is not required, then it will not be loaded.
                 - Dynamic-reload support, you need to enable `ConfigModule` to use reload command.
-                
+                                
                 """)
         public class Language {
             public boolean enable = false;
@@ -736,7 +739,7 @@ public class ConfigModel {
                                 
                 The placeholder `@u` means the user player name.
                 e.g. Line 1 contains `//kill @u` will execute the command `/kill {player_name}`
-                
+                                
                 - If the sign contains `//`, then you must press `shift` to edit this sign
                 - You can add some comments before the first `//`
                 - You can use all the four lines to insert `//` (Every `//` means one command)
@@ -798,7 +801,7 @@ public class ConfigModel {
                 This module allows you to custom every system-message defined by mojang in `./assets/minecraft/lang/en_us.json`
                         
                 The mojang offical en_us.json file may looks like: [en_us.json for minecraft 1.21](https://github.com/sakurawald/fuji-fabric/blob/dev/.github/files/en_us.json)
-                
+                                
                 The system messages including:
                 - Player join and leave server message
                 - Player advancement message
@@ -948,6 +951,7 @@ public class ConfigModel {
         }
 
         public World world = new World();
+
         @Documentation("This module provides `/world` command, which teleport the player to target dimension.")
         public class World {
             public boolean enable = false;
@@ -955,6 +959,7 @@ public class ConfigModel {
         }
 
         public Realname realname = new Realname();
+
         @Documentation("This module provides `/realname` command.")
         public class Realname {
             public boolean enable = false;

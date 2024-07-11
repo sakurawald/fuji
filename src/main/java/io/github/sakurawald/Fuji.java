@@ -42,7 +42,9 @@ import java.nio.file.Path;
 
 // TODO: essential protect module
 
-// TODO: condense
+// TODO: condense module
+
+// TODO: use aop style
 
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";
