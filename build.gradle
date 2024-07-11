@@ -142,6 +142,7 @@ test {
 }
 
 tasks.register('generateModuleDocumentation') {
+    outputs.upToDateWhen { false }
     test {
         filter {
             includeTestsMatching 'ModuleDocumentationGeneratorTest.buildModuleDocumentation'
@@ -151,6 +152,7 @@ tasks.register('generateModuleDocumentation') {
 tasks.modrinthSyncBody.dependsOn(generateModuleDocumentation)
 
 tasks.register('generateMixinRegistry') {
+    outputs.upToDateWhen { false }
     test {
         filter {
             includeTestsMatching 'MixinRegistryGeneratorTest.generate'
