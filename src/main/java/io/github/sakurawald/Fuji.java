@@ -40,8 +40,6 @@ import java.nio.file.Path;
 
 // TODO: invsee module
 
-// TODO: essential protect module
-
 // TODO: condense module
 
 // TODO: use aop style

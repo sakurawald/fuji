@@ -16,6 +16,7 @@ import java.util.Set;
 @Slf4j
 public abstract class ServerPlayerMixin {
 
+    @SuppressWarnings("CancellableInjectionUsage")
     @Inject(method = "damage", at = @At(value = "HEAD"), cancellable = true)
     public void damage(DamageSource damageSource, float f, CallbackInfoReturnable<Boolean> cir) {
         Set<String> damageTypeChecklist = Configs.configHandler.model().modules.protect.damage_type_checklist;
