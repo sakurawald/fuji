@@ -120,7 +120,7 @@ publishing {
 
 // modrinth
 modrinth {
-    token = "$System.env.modrinth_token"
+    token = "$System.env.MODRINTH_TOKEN"
     projectId = "1TowMm2v"
     versionNumber = "$mod_version"
     versionType = "release"
