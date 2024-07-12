@@ -29,20 +29,14 @@ import java.nio.file.Path;
 // TODO: /tppos module
 // TODO: playtime(every/for) rewards module
 // TODO: rank module
-
 // TODO: a light-weight way to implement chat module
-
 // TODO: remove fabric-api dep
-
+// TODO: luckperms context calculator
+// TODO: invsee module
+// TODO: condense module
+// TODO: use aop style
 // TODO: a program to generate module reference DAG
 
-// TODO: luckperms context calculator
-
-// TODO: invsee module
-
-// TODO: condense module
-
-// TODO: use aop style
 
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";

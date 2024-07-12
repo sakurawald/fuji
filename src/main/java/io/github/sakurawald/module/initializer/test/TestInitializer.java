@@ -31,6 +31,7 @@ public class TestInitializer extends ModuleInitializer {
         var source = ctx.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
+
         log.warn("flyspeed = {}", Options.get(player, "fuji.flyspeed", Double::valueOf));
 
         TriState test = Permissions.getPermissionValue(ctx.getSource(), "fuji.seed");

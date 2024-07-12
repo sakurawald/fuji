@@ -4,6 +4,8 @@ package io.github.sakurawald.util;
 import io.github.sakurawald.config.Configs;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.quartz.*;
@@ -22,19 +24,15 @@ public class ScheduleUtil {
 
     public static final String CRON_EVERY_MINUTE = "0 * * ? * * *";
     @Getter
-    private static final Scheduler scheduler;
+    private static Scheduler scheduler;
 
     static {
         /* set logger level for quartz */
         Level level = Level.getLevel(Configs.configHandler.model().common.quartz.logger_level);
         Configurator.setAllLevels("org.quartz", level);
 
-        /* new scheduler */
-        try {
-            scheduler = new StdSchedulerFactory().getScheduler();
-        } catch (SchedulerException e) {
-            throw new RuntimeException(e);
-        }
+        // note: for some early initialize, here will cause NPE
+        resetScheduler();
     }
 
     public static void addJob(Class<? extends Job> jobClass, String jobName, String jobGroup, String cron, JobDataMap jobDataMap) {
@@ -113,7 +111,18 @@ public class ScheduleUtil {
         });
     }
 
+    private static void resetScheduler() {
+        /* new scheduler */
+        try {
+            scheduler = new StdSchedulerFactory().getScheduler();
+        } catch (SchedulerException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void startScheduler() {
+        resetScheduler();
+
         try {
             scheduler.start();
         } catch (SchedulerException e) {
@@ -124,6 +133,12 @@ public class ScheduleUtil {
     public static void shutdownScheduler() {
         try {
             scheduler.shutdown();
+
+            // note: reset scheduler right now to fix client-side NPE
+            if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+                resetScheduler();
+            }
+
         } catch (SchedulerException e) {
             LOGGER.error("Exception in ScheduleUtil.shutdownScheduler", e);
         }
