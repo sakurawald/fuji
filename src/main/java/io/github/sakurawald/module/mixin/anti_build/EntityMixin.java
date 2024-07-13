@@ -3,13 +3,11 @@ package io.github.sakurawald.module.mixin.anti_build;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.util.IdentifierUtil;
 import io.github.sakurawald.util.MessageUtil;
-import io.github.sakurawald.util.PermissionUtil;
-import lombok.extern.slf4j.Slf4j;
+import io.github.sakurawald.util.LuckPermsUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,7 +22,7 @@ public class EntityMixin {
         String id = IdentifierUtil.getEntityTypeIdentifier(entity);
 
         if (Configs.configHandler.model().modules.anti_build.anti.interact_entity.id.contains(id)
-                && !PermissionUtil.hasPermission(player, "fuji.anti_build.%s.bypass.%s".formatted("interact_entity", id))
+                && !LuckPermsUtil.hasPermission(player, "fuji.anti_build.%s.bypass.%s".formatted("interact_entity", id))
         ) {
 
             if (hand == Hand.MAIN_HAND) {

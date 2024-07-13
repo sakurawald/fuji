@@ -8,13 +8,12 @@ import net.luckperms.api.util.Tristate;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
 import java.util.Optional;
 import java.util.function.Function;
 
 @SuppressWarnings("BooleanMethodIsAlwaysInverted")
 @UtilityClass
-public class PermissionUtil {
+public class LuckPermsUtil {
 
     private static LuckPerms luckPerms;
 
