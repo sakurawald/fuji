@@ -11,6 +11,7 @@ import net.kyori.adventure.platform.fabric.FabricServerAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.apache.commons.io.FileUtils;
@@ -59,14 +60,15 @@ public class MessageUtil {
     }
 
 
-    public static String ofString(Audience audience, String key, Object... args) {
+    public static String ofString(Object audience, String key, Object... args) {
 
         /* get player */
-        ServerPlayerEntity player;
-        if (audience instanceof ServerPlayerEntity) player = (ServerPlayerEntity) audience;
-        else if (audience instanceof ServerCommandSource source && source.getPlayer() != null)
-            player = source.getPlayer();
-        else player = null;
+        PlayerEntity player = switch (audience) {
+            case ServerPlayerEntity serverPlayerEntity -> serverPlayerEntity;
+            case PlayerEntity playerEntity -> playerEntity;
+            case ServerCommandSource source when source.getPlayer() != null -> source.getPlayer();
+            case null, default -> null;
+        };
 
         /* get lang */
         String lang;
@@ -101,6 +103,10 @@ public class MessageUtil {
             return String.format(string, args);
         }
         return string;
+    }
+
+    public static void sendMessageToPlayerEntity(PlayerEntity player, String key, Object... args) {
+        player.sendMessage(adventure.toNative(ofComponent(ofString(player, key), args)));
     }
 
     public static Component ofComponent(Audience audience, String key, Object... args) {
