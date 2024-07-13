@@ -10,6 +10,7 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.CommandUtil;
+import io.github.sakurawald.util.FileUtil;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.SneakyThrows;
 import net.minecraft.command.CommandRegistryAccess;
@@ -22,17 +23,13 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.level.storage.LevelStorage;
-import org.apache.commons.compress.archivers.ArchiveEntry;
-import org.apache.commons.compress.archivers.ArchiveOutputStream;
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class WorldDownloaderInitializer extends ModuleInitializer {
@@ -131,45 +128,22 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
 
         /* compress file */
         String regionName = "r." + regionX + "." + regionZ + ".mca";
-        File[] input = {
-                new File(worldDirectory, "region" + File.separator + regionName),
-                new File(worldDirectory, "poi" + File.separator + regionName),
-                new File(worldDirectory, "entities" + File.separator + regionName)
+        List<File> input = new ArrayList<>() {
+            {
+                this.add(new File(worldDirectory, "region" + File.separator + regionName));
+                this.add(new File(worldDirectory, "poi" + File.separator + regionName));
+                this.add(new File(worldDirectory, "entities" + File.separator + regionName));
+            }
         };
         File output;
         try {
             output = Files.createTempFile(regionName + "#", ".zip").toFile();
-            compressFiles(input, output);
+            FileUtil.compressFiles(input, output);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         Fuji.LOGGER.info("Generate region file: {}", output.getAbsolutePath());
         return output;
-    }
-
-    @SneakyThrows
-    public void compressFiles(File[] input, File output) {
-        try (FileOutputStream fos = new FileOutputStream(output);
-             ArchiveOutputStream archiveOut = new ZipArchiveOutputStream(fos)) {
-            for (File file : input) {
-                if (file.isFile() && file.exists()) {
-                    ArchiveEntry entry = new ZipArchiveEntry(file, getEntryName(file));
-                    archiveOut.putArchiveEntry(entry);
-                    try (FileInputStream fis = new FileInputStream(file)) {
-                        byte[] buffer = new byte[1024];
-                        int len;
-                        while ((len = fis.read(buffer)) > 0) {
-                            archiveOut.write(buffer, 0, len);
-                        }
-                    }
-                    archiveOut.closeArchiveEntry();
-                }
-            }
-        }
-    }
-
-    private String getEntryName(File file) {
-        return file.getParentFile().getName() + File.separator + file.getName();
     }
 
 }

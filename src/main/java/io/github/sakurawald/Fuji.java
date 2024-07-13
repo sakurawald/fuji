@@ -2,6 +2,7 @@ package io.github.sakurawald;
 
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.module.ModuleManager;
+import io.github.sakurawald.module.common.service.AutomaticBackup;
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.ScheduleUtil;
 import net.fabricmc.api.ModInitializer;
@@ -13,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
 
-// TODO: placeholder module (placeholder api)
+// TODO: placeholder module (refactor main stats to use placeholder manager -> local + luckperms metas)
 
 // TODO: specific command module
 // TODO: add native shell support specific command
@@ -24,6 +25,7 @@ import java.nio.file.Path;
 // TODO: player nickname / prefix / suffix
 // TODO: nickname module
 
+// TODO: refactor command facility (selector)
 // TODO: command warmup module
 // TODO: /spawn module
 // TODO: /tppos module
@@ -36,7 +38,11 @@ import java.nio.file.Path;
 // TODO: condense module
 // TODO: use aop style
 // TODO: a program to generate module reference DAG
-
+// TODO: powertool module
+// TODO: refactor chat module to use prefix/suffix metas
+// TODO: refactor system-message module -> transform, supress
+// TODO: refactor home module to support metas
+// TODO: add anti build module -> place, use, break, piston. (facility: alert, permission, black/white list)
 
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";
@@ -46,6 +52,9 @@ public class Fuji implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        /* backup */
+        AutomaticBackup.backup();
+
         /* modules */
         ModuleManager.initializeModules();
         ServerLifecycleEvents.SERVER_STARTED.register(server -> ModuleManager.reportModules());

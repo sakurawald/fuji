@@ -45,6 +45,20 @@ public class ConfigModel {
             public String logger_level = "WARN";
         }
 
+        public Backup backup = new Backup();
+        public class Backup {
+            @Documentation("How many backup should we keep?")
+            public int max_slots = 15;
+            @Documentation("""
+                    The list of `path resolver` to skip
+                    """)
+            public List<String> skip = new ArrayList<>() {
+                {
+                    this.add("head");
+                }
+            };
+        }
+
     }
 
     @Documentation("""
@@ -113,6 +127,16 @@ public class ConfigModel {
         public Anvil anvil = new Anvil();
         public GrindStone grindstone = new GrindStone();
         public StoneCutter stonecutter = new StoneCutter();
+        public Bed bed = new Bed();
+        public Sit sit = new Sit();
+        public CommandAlias command_alias = new CommandAlias();
+        public CommandRewrite command_rewrite = new CommandRewrite();
+        public Loom loom = new Loom();
+        public Cartography cartography = new Cartography();
+        public Smithing smithing = new Smithing();
+        public World world = new World();
+        public Realname realname = new Realname();
+        public Protect protect = new Protect();
 
         @Documentation("""
                 This module adds another 3 worlds called `resource world`: resrouce_overworld, resource_nether, resource_the_end .
@@ -869,15 +893,11 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        public Bed bed = new Bed();
-
         @Documentation("This module provides `/bed` command, which teleports the player to his bed.")
         public class Bed {
 
             public boolean enable = false;
         }
-
-        public Sit sit = new Sit();
 
         @Documentation("""
                 This module provides `/sit` command, and the ability to sit by right-click any chair.
@@ -892,8 +912,6 @@ public class ConfigModel {
             public boolean allow_sneaking = false;
             public boolean no_opaque_block_above = false;
         }
-
-        public CommandAlias command_alias = new CommandAlias();
 
         @Documentation("""
                 This module provides command alias.
@@ -911,8 +929,6 @@ public class ConfigModel {
             };
         }
 
-        public CommandRewrite command_rewrite = new CommandRewrite();
-
         @Documentation("""
                 This module provides command rewrite, so that you can use `regex language` to rewrite the `command line` a player issued.
                 """)
@@ -926,28 +942,20 @@ public class ConfigModel {
 
         }
 
-        public Loom loom = new Loom();
-
         @Documentation("This module provides `/loom` command.")
         public class Loom {
             public boolean enable = false;
         }
-
-        public Cartography cartography = new Cartography();
 
         @Documentation("This module provides `/cartography` command.")
         public class Cartography {
             public boolean enable = false;
         }
 
-        public Smithing smithing = new Smithing();
-
         @Documentation("This module provides `/smithing` command.")
         public class Smithing {
             public boolean enable = false;
         }
-
-        public World world = new World();
 
         @Documentation("This module provides `/world` command, which teleport the player to target dimension.")
         public class World {
@@ -955,15 +963,11 @@ public class ConfigModel {
 
         }
 
-        public Realname realname = new Realname();
-
         @Documentation("This module provides `/realname` command.")
         public class Realname {
             public boolean enable = false;
 
         }
-
-        public Protect protect = new Protect();
 
         @Documentation("""
                 This module provides damage-cancel by permission.
@@ -971,14 +975,14 @@ public class ConfigModel {
                 For performance considered:
                 1. This module only check damage_type inside this checklist.
                 2. The permission is checked by cache.
-                
+                                
                 You can query damage_type list in minecraft using `/damage @r 1 <damage_type>`
-                
+                                
                 For example, 
                 If you want to protect all the players from fall damage, you should do:
                 1. add `minecraft:fall` into the `damage_type_checklist`.
                 2. grant the permission for players: `/lp group default permission set fuji.protect.minecraft:fall`
-                
+                                
                 If you grant permission `/lp group default permission set fuji.protect.*`, then it means cancel
                 all the damage types inside the `damage_type_checklist`.
                 """)

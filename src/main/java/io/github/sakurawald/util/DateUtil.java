@@ -9,6 +9,10 @@ public class DateUtil {
 
     private static final SimpleDateFormat STANDARD_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    public static String getCurrentDate() {
+        return toStandardDateFormat(System.currentTimeMillis());
+    }
+
     public static String toStandardDateFormat(long timeMillis) {
         return STANDARD_DATE_FORMAT.format(timeMillis);
     }
