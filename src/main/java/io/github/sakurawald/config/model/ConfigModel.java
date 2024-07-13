@@ -878,7 +878,7 @@ public class ConfigModel {
                         For a max level of enchant table, it requires 15 power providers.""")
                 public int power_provider_amount = 15;
             }
-            
+
         }
 
         @Documentation("This module provides `/anvil` command.")
@@ -1003,9 +1003,85 @@ public class ConfigModel {
         }
 
         public AntiBuild anti_build = new AntiBuild();
+
+        @Documentation("""
+                This module provides anti-build purpose.
+                
+                Use-case: ban some item/block/entity 
+                
+                Anti types:
+                - break_block
+                - place_block
+                - interact_item
+                - interact_block
+                - interact_entity
+                
+                For example, let's say you want to ban TNT:
+                1. add `minecraft:tnt` into `place_block` list
+                
+                And it's done. 
+                
+                Use `/lp user <player> permission set fuji.anti_build.place_block.bypass.minecraft:tnt` to 
+                allow a player place the tnt.
+                
+                """)
         public class AntiBuild {
             public boolean enable = false;
-        }
 
+            public Anti anti = new Anti();
+
+            public class Anti {
+
+                public Break break_block = new Break();
+
+                public class Break {
+                    public Set<String> id = new HashSet<>() {
+                        {
+                            this.add("minecraft:gold_block");
+                        }
+                    };
+                }
+
+                public Place place_block = new Place();
+
+                public class Place {
+                    public Set<String> id = new HashSet<>() {
+                        {
+                            this.add("minecraft:tnt");
+                        }
+                    };
+                }
+
+                public InteractItem interact_item = new InteractItem();
+
+                public class InteractItem {
+                    public Set<String> id = new HashSet<>() {
+                        {
+                            this.add("minecraft:lava_bucket");
+                        }
+                    };
+                }
+
+                public InteractBlock interact_block = new InteractBlock();
+
+                public class InteractBlock {
+                    public Set<String> id = new HashSet<>() {
+                        {
+                            this.add("minecraft:lever");
+                        }
+                    };
+                }
+
+                public InteractEntity interact_entity = new InteractEntity();
+                public class InteractEntity {
+                    public Set<String> id = new HashSet<>() {
+                        {
+                            this.add("minecraft:villager");
+                        }
+                    };
+
+                }
+            }
+        }
     }
 }

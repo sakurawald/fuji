@@ -37,11 +37,10 @@ import java.nio.file.Path;
 // TODO: invsee module
 // TODO: condense module
 // TODO: use aop style
-// TODO: a program to generate module reference DAG
 // TODO: powertool module
 // TODO: refactor chat module to use prefix/suffix metas
 
-// TODO: add anti build module -> place, use, break, piston. (facility: alert, permission, black/white list)
+// TODO: a program to generate module reference DAG
 
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";
