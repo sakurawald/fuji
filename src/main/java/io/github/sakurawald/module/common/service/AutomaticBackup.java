@@ -2,6 +2,7 @@ package io.github.sakurawald.module.common.service;
 
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.FileUtil;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -67,7 +68,7 @@ public class AutomaticBackup {
     }
 
     private static File getOutputFile() {
-        String fileName = System.currentTimeMillis() + ".zip";
+        String fileName = DateUtil.getCurrentDate() + ".zip";
         return BACKUP_PATH.resolve(fileName).toFile();
     }
 
