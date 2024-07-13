@@ -40,10 +40,7 @@ import java.nio.file.Path;
 // TODO: a program to generate module reference DAG
 // TODO: powertool module
 // TODO: refactor chat module to use prefix/suffix metas
-// TODO: refactor home module to support metas
 
-
-// TODO: refactor system-message module -> transform, supress
 // TODO: add anti build module -> place, use, break, piston. (facility: alert, permission, black/white list)
 
 public class Fuji implements ModInitializer {

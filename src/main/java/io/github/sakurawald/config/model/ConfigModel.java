@@ -46,6 +46,7 @@ public class ConfigModel {
         }
 
         public Backup backup = new Backup();
+
         public class Backup {
             @Documentation("How many backup should we keep?")
             public int max_slots = 15;
@@ -807,10 +808,15 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        @Documentation("This module provides `/home` command.")
+        @Documentation("""
+                This module provides `/home` command.
+                        
+                Meta:
+                - Integer `fuji.home.home_limit` # The home number per player limit.
+                """)
+
         public class Home {
             public boolean enable = false;
-            public int max_homes = 3;
         }
 
         @Documentation("This module provides `/ping` command.")

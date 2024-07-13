@@ -15,12 +15,15 @@ import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.ScheduleUtil;
 import lombok.Getter;
+import me.lucko.fabric.api.permissions.v0.Options;
+import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -102,7 +105,10 @@ public class HomeInitializer extends ModuleInitializer {
                     MessageUtil.sendMessage(player, "home.set.fail.need_override", homeName);
                     return Command.SINGLE_SUCCESS;
                 }
-            } else if (name2position.size() >= Configs.configHandler.model().modules.home.max_homes) {
+            }
+
+            Optional<Integer> limit = Options.get(ctx.getSource(), "fuji.home.home_limit", Integer::valueOf);
+            if (limit.isPresent() && name2position.size() >= limit.get()) {
                 MessageUtil.sendMessage(player, "home.set.fail.limit");
                 return Command.SINGLE_SUCCESS;
             }
