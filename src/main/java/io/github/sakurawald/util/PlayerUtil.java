@@ -4,8 +4,13 @@ import lombok.experimental.UtilityClass;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 @UtilityClass
-public class CarpetUtil {
+public class PlayerUtil {
+
+    public static boolean isRealPlayer(ServerPlayerEntity player) {
+        return player.getClass() == ServerPlayerEntity.class;
+    }
+
     public static boolean isFakePlayer(ServerPlayerEntity player) {
-        return player.getClass() != ServerPlayerEntity.class;
+        return !isRealPlayer(player);
     }
 }

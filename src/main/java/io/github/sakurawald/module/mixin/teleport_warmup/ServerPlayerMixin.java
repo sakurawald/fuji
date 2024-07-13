@@ -6,7 +6,7 @@ import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.initializer.teleport_warmup.ServerPlayerCombatStateAccessor;
 import io.github.sakurawald.module.initializer.teleport_warmup.TeleportTicket;
 import io.github.sakurawald.module.initializer.teleport_warmup.TeleportWarmupInitializer;
-import io.github.sakurawald.util.CarpetUtil;
+import io.github.sakurawald.util.PlayerUtil;
 import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -35,7 +35,7 @@ public abstract class ServerPlayerMixin implements ServerPlayerCombatStateAccess
 
         // If we try to spawn a fake-player in the end or nether, the fake-player will initially spawn in overworld
         // and teleport to the target world. This will cause the teleport warmup to be triggered.
-        if (CarpetUtil.isFakePlayer(player)) return;
+        if (PlayerUtil.isFakePlayer(player)) return;
 
         String playerName = player.getGameProfile().getName();
         if (!module.tickets.containsKey(playerName)) {

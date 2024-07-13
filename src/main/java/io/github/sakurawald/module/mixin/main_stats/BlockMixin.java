@@ -24,8 +24,8 @@ public class BlockMixin {
     }
 
     @Inject(method = "onPlaced", at = @At("HEAD"))
-    public void $onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack, CallbackInfo ci) {
-        if (!(placer instanceof ServerPlayerEntity player)) return;
+    public void $onPlaced(World world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack itemStack, CallbackInfo ci) {
+        if (!(entity instanceof ServerPlayerEntity player)) return;
         MainStats.uuid2stats.get(player.getUuid().toString()).placed += 1;
     }
 }

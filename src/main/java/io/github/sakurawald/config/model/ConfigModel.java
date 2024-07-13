@@ -878,7 +878,7 @@ public class ConfigModel {
                         For a max level of enchant table, it requires 15 power providers.""")
                 public int power_provider_amount = 15;
             }
-
+            
         }
 
         @Documentation("This module provides `/anvil` command.")
@@ -1000,7 +1000,11 @@ public class ConfigModel {
                     this.add("minecraft:fall");
                 }
             };
+        }
 
+        public AntiBuild anti_build = new AntiBuild();
+        public class AntiBuild {
+            public boolean enable = false;
         }
 
     }
