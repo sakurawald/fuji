@@ -14,15 +14,13 @@ import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
 
-// TODO: placeholder module (refactor main stats to use placeholder manager -> local + luckperms metas)
-
 // TODO: specific command module
 // TODO: add native shell support specific command
 // TODO: kit module -> spec-command
 
 // TODO: custom tab list
 
-// TODO: refactor command facility (selector)
+// TODO: refactor command facility (selector, aop)
 // TODO: command warmup module
 // TODO: spawn module
 // TODO: tppos module
@@ -32,7 +30,6 @@ import java.nio.file.Path;
 // TODO: luckperms context calculator
 // TODO: invsee module
 // TODO: condense module
-// TODO: use aop style
 // TODO: powertool module
 
 // TODO: nickname module
@@ -41,6 +38,8 @@ import java.nio.file.Path;
 // TODO: refactor chat module to use prefix/suffix metas
 
 // TODO: a program to generate module reference DAG
+
+// TODO: placeholder module (refactor main stats to use placeholder manager -> local + luckperms metas)
 
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";

@@ -4,11 +4,11 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.placeholder.MainStats;
 import io.github.sakurawald.util.LuckPermsUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.loader.api.FabricLoader;
 import net.kyori.adventure.text.Component;
-import net.luckperms.api.node.NodeType;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -30,15 +30,21 @@ public class TestInitializer extends ModuleInitializer {
         ServerPlayerEntity player = source.getPlayer();
 
 
-        for (int i = 0; i < 10; i++) {
+        MainStats mainStats = MainStats.calculatePlayerMainStats(player.getUuidAsString());
 
-        }
 
+        LuckPermsUtil.saveMeta(player, "fuji.placed", String.valueOf(mainStats.placed));
+        LuckPermsUtil.saveMeta(player, "fuji.mined", String.valueOf(mainStats.mined));
+        LuckPermsUtil.saveMeta(player, "fuji.killed", String.valueOf(mainStats.killed));
+        LuckPermsUtil.saveMeta(player, "fuji.moved", String.valueOf(mainStats.moved));
+        LuckPermsUtil.saveMeta(player, "fuji.playtime", String.valueOf(mainStats.playtime));
+
+
+        log.warn("mainStats = {}", mainStats);
 
 //        log.warn("flyspeed = {}", Options.get(player, "fuji.flyspeed", Double::valueOf));
 //        TriState test = Permissions.getPermissionValue(ctx.getSource(), "fuji.seed");
 //        source.sendMessage(Text.literal("state is " + test.name()));
-
         return 1;
     }
 

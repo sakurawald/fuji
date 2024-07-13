@@ -89,7 +89,7 @@ public class ConfigModel {
         public Works works = new Works();
         public WorldDownloader world_downloader = new WorldDownloader();
         public DeathLog deathlog = new DeathLog();
-        public MainStats main_stats = new MainStats();
+        public Placeholder placeholder = new Placeholder();
         public MultiObsidianPlatform multi_obsidian_platform = new MultiObsidianPlatform();
         public OpProtect op_protect = new OpProtect();
         public Pvp pvp = new Pvp();
@@ -579,7 +579,7 @@ public class ConfigModel {
                 Placeholders: total_playtime, total_mined, total_placed, total_killed and total_moved (We call these 5 stats `MainStats`). 
                 You can use these placeholders in `Chat module` and `MOTD module`
                 """)
-        public class MainStats {
+        public class Placeholder {
             public boolean enable = false;
         }
 

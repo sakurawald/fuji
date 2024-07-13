@@ -1,11 +1,10 @@
-package io.github.sakurawald.module.mixin.main_stats;
+package io.github.sakurawald.module.mixin.placeholder;
 
 
-import io.github.sakurawald.module.initializer.main_stats.MainStats;
+import io.github.sakurawald.module.initializer.placeholder.MainStats;
 import net.minecraft.network.DisconnectionInfo;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

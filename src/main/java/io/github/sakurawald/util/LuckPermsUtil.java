@@ -4,6 +4,9 @@ import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
+import net.luckperms.api.model.user.User;
+import net.luckperms.api.node.NodeType;
+import net.luckperms.api.node.types.MetaNode;
 import net.luckperms.api.util.Tristate;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -62,6 +65,17 @@ public class LuckPermsUtil {
                 .getMetaData(player)
                 .getMetaValue(meta, valueTransformer);
 
+    }
+
+
+    public static void saveMeta(ServerPlayerEntity player, String key, String value) {
+        User user = getAPI().getUserManager()
+                .getUser(player.getGameProfile().getName());
+
+        MetaNode node = MetaNode.builder(key, value).build();
+        user.data().clear(NodeType.META.predicate(mn -> mn.getMetaKey().equals(key)));
+        user.data().add(node);
+        getAPI().getUserManager().saveUser(user);
     }
 
 }

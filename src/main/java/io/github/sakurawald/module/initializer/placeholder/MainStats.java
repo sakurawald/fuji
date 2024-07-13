@@ -1,10 +1,9 @@
-package io.github.sakurawald.module.initializer.main_stats;
+package io.github.sakurawald.module.initializer.placeholder;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.ToString;
-import net.fabricmc.loader.language.LanguageAdapter;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.ServerStatHandler;
@@ -32,6 +31,7 @@ public class MainStats {
             // get player statistics
             File file = new File("world/stats/" + uuid + ".json");
             if (!file.exists()) return playerMainStats;
+
             JsonObject json = JsonParser.parseReader(new FileReader(file)).getAsJsonObject();
             JsonObject stats = json.getAsJsonObject("stats");
             if (stats == null) return playerMainStats;

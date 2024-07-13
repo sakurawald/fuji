@@ -1,6 +1,6 @@
-package io.github.sakurawald.module.mixin.main_stats;
+package io.github.sakurawald.module.mixin.placeholder;
 
-import io.github.sakurawald.module.initializer.main_stats.MainStats;
+import io.github.sakurawald.module.initializer.placeholder.MainStats;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ConnectedClientData;

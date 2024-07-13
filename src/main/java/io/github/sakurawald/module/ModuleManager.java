@@ -83,8 +83,7 @@ public class ModuleManager {
         try {
             enable = config.getAsJsonObject().get("modules").getAsJsonObject().get(basePackageName).getAsJsonObject().get("enable").getAsBoolean();
         } catch (Exception e) {
-            LOGGER.error("The enable-supplier key '{}' is missing, will disable this module", "modules.%s.enable".formatted(basePackageName));
-            enable = false;
+            throw new RuntimeException("The enable-supplier key 'modules.%s.enable' is missing".formatted(basePackageName));
         }
 
         module2enable.put(basePackageName, enable);

@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.main_stats;
+package io.github.sakurawald.module.initializer.placeholder;
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
