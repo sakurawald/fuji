@@ -71,6 +71,8 @@ dependencies {
     include(implementation "org.reflections:reflections:${project.reflections_version}")
     include(implementation "org.javassist:javassist:${project.javaassist_version}")
 
+//    implementation("com.google.guava:guava:33.2.1-jre")
+
     testImplementation(platform('org.junit:junit-bom:5.10.2'))
     testImplementation('org.junit.jupiter:junit-jupiter')
     testRuntimeOnly('org.junit.platform:junit-platform-launcher')
@@ -129,6 +131,7 @@ modrinth {
     loaders = ["fabric"]
     dependencies {
         required.project "fabric-api"
+        optional.project "luckperms"
         optional.project "carpet"
         optional.project "spark"
     }
