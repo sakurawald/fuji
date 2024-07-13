@@ -3,7 +3,7 @@ package io.github.sakurawald.module.mixin.anti_build;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.util.IdentifierUtil;
 import io.github.sakurawald.util.MessageUtil;
-import me.lucko.fabric.api.permissions.v0.Permissions;
+import io.github.sakurawald.util.PermissionUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -37,7 +37,7 @@ public class ServerPlayerInteractionManagerMixin {
 
         String id = IdentifierUtil.getBlockStateIdentifier(blockState);
         if (Configs.configHandler.model().modules.anti_build.anti.break_block.id.contains(id)
-                && !Permissions.check(player, "fuji.anti_build.%s.bypass.%s".formatted("break_block", id))
+                && !PermissionUtil.hasPermission(player, "fuji.anti_build.%s.bypass.%s".formatted("break_block", id))
         ) {
             MessageUtil.sendMessage(player, "anti_build.disallow");
             cir.setReturnValue(false);
@@ -50,7 +50,7 @@ public class ServerPlayerInteractionManagerMixin {
         String id = IdentifierUtil.getItemStackIdentifier(itemStack);
 
         if (Configs.configHandler.model().modules.anti_build.anti.interact_item.id.contains(id)
-                && !Permissions.check(player, "fuji.anti_build.%s.bypass.%s".formatted("interact_item", id))
+                && !PermissionUtil.hasPermission(player, "fuji.anti_build.%s.bypass.%s".formatted("interact_item", id))
         ) {
             MessageUtil.sendMessage(player, "anti_build.disallow");
             cir.setReturnValue(ActionResult.FAIL);
@@ -64,7 +64,7 @@ public class ServerPlayerInteractionManagerMixin {
         String id = IdentifierUtil.getBlockStateIdentifier(blockState);
 
         if (Configs.configHandler.model().modules.anti_build.anti.interact_block.id.contains(id)
-                && !Permissions.check(player, "fuji.anti_build.%s.bypass.%s".formatted("interact_block", id))
+                && !PermissionUtil.hasPermission(player, "fuji.anti_build.%s.bypass.%s".formatted("interact_block", id))
         ) {
             MessageUtil.sendMessage(player, "anti_build.disallow");
             cir.setReturnValue(ActionResult.FAIL);

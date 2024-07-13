@@ -22,22 +22,22 @@ import java.nio.file.Path;
 
 // TODO: custom tab list
 
-// TODO: player nickname / prefix / suffix
-// TODO: nickname module
-
 // TODO: refactor command facility (selector)
 // TODO: command warmup module
-// TODO: /spawn module
-// TODO: /tppos module
+// TODO: spawn module
+// TODO: tppos module
 // TODO: playtime(every/for) rewards module
 // TODO: rank module
-// TODO: a light-weight way to implement chat module
 // TODO: remove fabric-api dep
 // TODO: luckperms context calculator
 // TODO: invsee module
 // TODO: condense module
 // TODO: use aop style
 // TODO: powertool module
+
+// TODO: nickname module
+// TODO: player nickname / prefix / suffix
+// TODO: a light-weight way to implement chat module
 // TODO: refactor chat module to use prefix/suffix metas
 
 // TODO: a program to generate module reference DAG

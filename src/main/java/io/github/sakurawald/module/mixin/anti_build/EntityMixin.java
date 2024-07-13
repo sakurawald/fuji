@@ -3,8 +3,8 @@ package io.github.sakurawald.module.mixin.anti_build;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.util.IdentifierUtil;
 import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.PermissionUtil;
 import lombok.extern.slf4j.Slf4j;
-import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ActionResult;
@@ -24,7 +24,7 @@ public class EntityMixin {
         String id = IdentifierUtil.getEntityTypeIdentifier(entity);
 
         if (Configs.configHandler.model().modules.anti_build.anti.interact_entity.id.contains(id)
-                && !Permissions.check(player, "fuji.anti_build.%s.bypass.%s".formatted("interact_entity", id))
+                && !PermissionUtil.hasPermission(player, "fuji.anti_build.%s.bypass.%s".formatted("interact_entity", id))
         ) {
 
             if (hand == Hand.MAIN_HAND) {

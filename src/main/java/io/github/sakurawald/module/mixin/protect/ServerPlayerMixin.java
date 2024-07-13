@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.mixin.protect;
 
 import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.util.PermissionUtil;
 import lombok.extern.slf4j.Slf4j;
-import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,7 +24,7 @@ public abstract class ServerPlayerMixin {
         String key = damageSource.getTypeRegistryEntry().getIdAsString();
         if (damageTypeChecklist.contains(key)) {
             ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-            if (Permissions.check(player, "fuji.protect.%s".formatted(key))) {
+            if (PermissionUtil.hasPermission(player, "fuji.protect.%s".formatted(key))) {
                 cir.cancel();
             }
         }
