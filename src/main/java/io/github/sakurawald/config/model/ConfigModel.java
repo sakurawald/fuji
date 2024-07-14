@@ -410,7 +410,12 @@ public class ConfigModel {
                                 
                 Command: /chat
                                 
-                You can also insert some playerSumUpPlaceholder in chat message: `pos`
+                Feature:
+                - You can insert `placeholder` like `%world:name%` in the chat message. (See more placeholders in: https://placeholders.pb4.eu/user/default-placeholders/)
+                - You can insert `item`, `inv` and `ender` to display your `item in your hand`, `your inventory` and `your enderchest`
+                - You can insert `@Steve` to mention another player.
+                - You can insert `pos` to show the position.
+                
                 """)
         public class Chat {
             public boolean enable = false;
@@ -578,10 +583,21 @@ public class ConfigModel {
         }
 
         @Documentation("""
-                This module provides some useful stats, you can use the stats playerSumUpPlaceholder with ChatModule and MotdModule
-                                
-                Placeholders: total_playtime, total_mined, total_placed, total_killed and total_moved (We call these 5 stats `MainStats`). 
-                You can use these placeholders in `Chat module` and `MOTD module`
+                This module provides some extra `placeholder`.
+                Extra placeholder:
+                - %fuji:player_mined%
+                - %fuji:server_mined%
+                - %fuji:player_placed%
+                - %fuji:server_placed%
+                - %fuji:player_killed%
+                - %fuji:server_killed%
+                - %fuji:player_moved%
+                - %fuji:server_moved%
+                - %fuji:player_playtime%
+                - %fuji:server_playtime%
+                
+                You also use [the default available placeholders](https://placeholders.pb4.eu/user/default-placeholders/) 
+                in anywhere. (Yeah, you can use `placeholder` in the `en_us.json` language file, it works)
                 """)
         public class Placeholder {
             public boolean enable = false;
