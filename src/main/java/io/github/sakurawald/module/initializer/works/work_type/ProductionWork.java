@@ -104,7 +104,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
     }
 
     public void openInputSampleDistanceGui(ServerPlayerEntity player) {
-        new InputSignGui(player, MessageUtil.ofString(player, "works.production_work.prompt.input.sample_distance")) {
+        new InputSignGui(player, MessageUtil.getString(player, "works.production_work.prompt.input.sample_distance")) {
             @Override
             public void onClose() {
                 int limit = Configs.configHandler.model().modules.works.sample_distance_limit;

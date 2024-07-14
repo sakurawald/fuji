@@ -60,6 +60,10 @@ public class ConfigModel {
             };
         }
 
+        public Language language = new Language();
+        public class Language {
+            public String default_language = "en_us";
+        }
     }
 
     @Documentation("""

@@ -106,9 +106,9 @@ public class ChunkScore implements Comparable<ChunkScore> {
 
         String chunkLocation;
         if (Configs.configHandler.model().modules.top_chunks.hide_location) {
-            chunkLocation = MessageUtil.ofString(source, "top_chunks.prop.hidden");
+            chunkLocation = MessageUtil.getString(source, "top_chunks.prop.hidden");
             if (source.hasPermissionLevel(4)) {
-                chunkLocation = MessageUtil.ofString(source, "top_chunks.prop.hidden.bypass", this.getChunkPos().toString());
+                chunkLocation = MessageUtil.getString(source, "top_chunks.prop.hidden.bypass", this.getChunkPos().toString());
             }
         } else {
             chunkLocation = this.getChunkPos().toString();

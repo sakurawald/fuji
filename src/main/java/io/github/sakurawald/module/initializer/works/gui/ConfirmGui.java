@@ -5,7 +5,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public abstract class ConfirmGui extends InputSignGui {
     public ConfirmGui(ServerPlayerEntity player) {
-        super(player, MessageUtil.ofString(player, "prompt.input.confirm"));
+        super(player, MessageUtil.getString(player, "prompt.input.confirm"));
     }
 
     @Override

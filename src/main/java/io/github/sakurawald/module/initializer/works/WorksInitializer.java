@@ -74,7 +74,7 @@ public class WorksInitializer extends ModuleInitializer {
     }
 
     private void $addWork(ServerPlayerEntity player) {
-        new InputSignGui(player, MessageUtil.ofString(player, "works.work.add.prompt.input.name")) {
+        new InputSignGui(player, MessageUtil.getString(player, "works.work.add.prompt.input.name")) {
             @Override
             public void onClose() {
                 /* input name */

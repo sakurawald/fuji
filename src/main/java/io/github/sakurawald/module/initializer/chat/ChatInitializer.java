@@ -33,7 +33,6 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
@@ -103,7 +102,7 @@ public class ChatInitializer extends ModuleInitializer {
             String format = StringArgumentType.getString(ctx, "format");
             chatHandler.model().format.player2format.put(name, format);
             chatHandler.saveToDisk();
-            format = MessageUtil.ofString(player, "chat.format.set").replace("%s", format);
+            format = MessageUtil.getString(player, "chat.format.set").replace("%s", format);
             Component formatComponent = miniMessage.deserialize(format, Formatter.date("date", LocalDateTime.now(ZoneId.systemDefault()))).asComponent();
             Component component = formatComponent
                     .replaceText("%player%", Component.text(name))
@@ -145,27 +144,27 @@ public class ChatInitializer extends ModuleInitializer {
                         .replaceAll(":Internal-", ":Internal_")               //小地图指令格式：/xaero_waypoint:name:n:0:~:0:0:false:0:Internal_overworld_waypoints
                         .replaceAll("-waypoints$", "_waypoints");
             } else {
-                hoverText = MessageUtil.ofString(player, "chat.current_pos");
+                hoverText = MessageUtil.getString(player, "chat.current_pos");
                 dim_name = player.getWorld().getRegistryKey().getValue().toString().replaceFirst("minecraft:", "");
                 x = player.getBlockX();
                 y = Integer.toString(player.getBlockY());
                 z = player.getBlockZ();
-                click_command = MessageUtil.ofString(player, "chat.xaero_waypoint_add.command", x, y, z, dim_name.replaceAll(":", "\\$"));
+                click_command = MessageUtil.getString(player, "chat.xaero_waypoint_add.command", x, y, z, dim_name.replaceAll(":", "\\$"));
             }
             switch (dim_name) {
                 case "overworld":
-                    hoverText += "\n" + MessageUtil.ofString(player, "the_nether")
+                    hoverText += "\n" + MessageUtil.getString(player, "the_nether")
                             + ": %d %s %d".formatted(x / 8, y, z / 8);
                     break;
                 case "the_nether":
-                    hoverText += "\n" + MessageUtil.ofString(player, "overworld")
+                    hoverText += "\n" + MessageUtil.getString(player, "overworld")
                             + ": %d %s %d".formatted(x * 8, y, z * 8);
                     break;
             }
             String dim_display_name;
 
-            if (MessageUtil.ofString(player, dim_name) != null) {
-                dim_display_name = MessageUtil.ofString(player, dim_name);
+            if (MessageUtil.getString(player, dim_name) != null) {
+                dim_display_name = MessageUtil.getString(player, dim_name);
             } else {
                 dim_display_name = dim_name;
             }

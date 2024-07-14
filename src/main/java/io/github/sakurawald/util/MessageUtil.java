@@ -3,6 +3,7 @@ package io.github.sakurawald.util;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.handler.ResourceConfigHandler;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
@@ -29,21 +30,20 @@ public class MessageUtil {
     private static final FabricServerAudiences adventure = FabricServerAudiences.of(Fuji.SERVER);
     @Getter
     private static final Map<String, String> player2lang = new HashMap<>();
-    @Getter
+
     private static final Map<String, JsonObject> lang2json = new HashMap<>();
-    private static final String DEFAULT_LANG = "en_us";
     private static final MiniMessage miniMessageParser = MiniMessage.builder().build();
 
     static {
-        copyLanguageFiles();
+        writeDefaultLanguageFiles();
     }
 
-    public static void copyLanguageFiles() {
+    private static void writeDefaultLanguageFiles() {
         new ResourceConfigHandler("lang/en_us.json").loadFromDisk();
         new ResourceConfigHandler("lang/zh_cn.json").loadFromDisk();
     }
 
-    public static void loadLanguageIfAbsent(String lang) {
+    private static void loadLanguageIfAbsent(String lang) {
         if (lang2json.containsKey(lang)) return;
 
         InputStream is;
@@ -53,40 +53,38 @@ public class MessageUtil {
             lang2json.put(lang, jsonObject);
             Fuji.LOGGER.info("Language {} loaded.", lang);
         } catch (IOException e) {
-            Fuji.LOGGER.debug("One of your player is using a language '{}' that is missing -> fallback to default language for this player", lang);
+            Fuji.LOGGER.error("Failed to load language '{}'", lang);
         }
-
-        if (!lang2json.containsKey(DEFAULT_LANG)) loadLanguageIfAbsent(DEFAULT_LANG);
     }
 
+    private String getClientSideLanguage(String player) {
+        return player2lang.get(player);
+    }
 
-    public static String ofString(Object audience, String key, Object... args) {
+    private JsonObject getLanguage(String lang) {
+        // if target language is missing, we fall back to default_language
+        if (!lang2json.containsKey(lang)) {
+            lang = Configs.configHandler.model().common.language.default_language;
+        }
 
+        loadLanguageIfAbsent(lang);
+        return lang2json.get(lang);
+    }
+
+    public static String getString(Object audience, String key, Object... args) {
         /* get player */
         PlayerEntity player = switch (audience) {
             case ServerPlayerEntity serverPlayerEntity -> serverPlayerEntity;
             case PlayerEntity playerEntity -> playerEntity;
             case ServerCommandSource source when source.getPlayer() != null -> source.getPlayer();
-            case null, default -> null;
+            case null, default -> throw new RuntimeException("audience can't be null");
         };
 
         /* get lang */
-        String lang;
-        if (player != null) {
-            lang = player2lang.getOrDefault(player.getGameProfile().getName(), DEFAULT_LANG);
-        } else {
-            lang = DEFAULT_LANG;
-        }
-
-        loadLanguageIfAbsent(lang);
+        String lang = getClientSideLanguage(player.getGameProfile().getName());
 
         /* get json */
-        JsonObject json;
-        json = lang2json.get(!lang2json.containsKey(lang) ? DEFAULT_LANG : lang);
-        if (!json.has(key)) {
-            Fuji.LOGGER.warn("Language {} miss key '{}' -> fallback to default language for this key", lang, key);
-            json = lang2json.get(DEFAULT_LANG);
-        }
+        JsonObject json = getLanguage(lang);
 
         /* get value */
         if (json.has(key)) {
@@ -94,11 +92,11 @@ public class MessageUtil {
             return formatString(value, args);
         }
 
-        Fuji.LOGGER.error("Missing language key '{}'", key);
+        Fuji.LOGGER.error("Language '{}' miss the key '{}'", lang, key);
         return null;
     }
 
-    public static String formatString(String string, Object... args) {
+    private static String formatString(String string, Object... args) {
         if (args.length > 0) {
             return String.format(string, args);
         }
@@ -106,13 +104,13 @@ public class MessageUtil {
     }
 
     public static void sendMessageToPlayerEntity(PlayerEntity player, String key, Object... args) {
-        player.sendMessage(adventure.toNative(ofComponent(ofString(player, key), args)));
+        player.sendMessage(adventure.toNative(ofComponent(getString(player, key), args)));
     }
 
     public static Component ofComponent(Audience audience, String key, Object... args) {
         //note: if call ofString() directly with args, then we pass args to ofString(),
         // or else we pass args to ofComponent() to avoid args being formatted twice
-        return ofComponent(ofString(audience, key), args);
+        return ofComponent(getString(audience, key), args);
     }
 
     public static Component ofComponent(String str, Object... args) {
@@ -132,7 +130,7 @@ public class MessageUtil {
     }
 
     public static List<net.minecraft.text.Text> ofVomponents(Audience audience, String key, Object... args) {
-        String lines = ofString(audience, key, args);
+        String lines = getString(audience, key, args);
 
         List<net.minecraft.text.Text> ret = new ArrayList<>();
         for (String line : lines.split("\n")) {
