@@ -38,7 +38,6 @@ import java.nio.file.Path;
 // TODO: add native shell support specific command
 // TODO: kit module -> spec-command
 
-
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";
     public static final Logger LOGGER = LogUtil.createLogger(StringUtils.capitalize(MOD_ID));
