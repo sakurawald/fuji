@@ -14,7 +14,7 @@ import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.chat.display.DisplayHelper;
 import io.github.sakurawald.module.initializer.chat.mention.MentionPlayersJob;
-import io.github.sakurawald.module.initializer.placeholder.MainStats;
+import io.github.sakurawald.module.initializer.placeholder.PlayerSumUpPlaceholder;
 import io.github.sakurawald.module.initializer.placeholder.PlaceholderInitializer;
 import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
@@ -56,7 +56,6 @@ public class ChatInitializer extends ModuleInitializer {
             "^xaero-waypoint:([^:]+):.+:(-?\\d+):(~?-?\\d*):(-?\\d+).*?-(.*)-waypoints$");
     private static final Pattern pos_pattern = Pattern.compile("^xaero-waypoint:|pos");
     private final MiniMessage miniMessage = MiniMessage.builder().build();
-    private final PlaceholderInitializer mainStatsInitializer = ModuleManager.getInitializer(PlaceholderInitializer.class);
 
     @Getter
     private Queue<Component> chatHistory;
@@ -285,15 +284,9 @@ public class ChatInitializer extends ModuleInitializer {
         format = format.replace("%message%", message);
         format = format.replace("%player%", player.getGameProfile().getName());
 
-        /* resolve stats */
-        if (mainStatsInitializer != null) {
-            MainStats stats = MainStats.uuid2stats.getOrDefault(player.getUuid().toString(), new MainStats());
-            format = stats.update(player).resolve(Fuji.SERVER, format);
-        }
-
         /* resolve tags */
         Component component = MessageUtil.ofComponent(player, false, format);
-                
+
         component = resolveItemTag(player, component);
         component = resolveInvTag(player, component);
         component = resolveEnderTag(player, component);

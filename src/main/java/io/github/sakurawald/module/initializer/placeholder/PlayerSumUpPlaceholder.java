@@ -3,11 +3,14 @@ package io.github.sakurawald.module.initializer.placeholder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.ServerStatHandler;
 import net.minecraft.stat.Stats;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -15,30 +18,40 @@ import java.util.HashMap;
 import java.util.regex.Pattern;
 
 @ToString
-public class MainStats {
-    public static final HashMap<String, MainStats> uuid2stats = new HashMap<>();
+public class PlayerSumUpPlaceholder {
+    public static final HashMap<String, PlayerSumUpPlaceholder> uuid2stats = new HashMap<>();
     private static final int CM_TO_KM_DIVISOR = 100 * 1000;
     private static final int GT_TO_H_DIVISOR = 20 * 3600;
+
+    @Getter
+    private static PlayerSumUpPlaceholder ofServer;
+
     public int playtime;
     public int mined;
     public int placed;
     public int killed;
     public int moved;
 
-    public static MainStats calculatePlayerMainStats(String uuid) {
-        MainStats playerMainStats = new MainStats();
+    public static PlayerSumUpPlaceholder ofPlayer(String uuid) {
+       if (uuid2stats.containsKey(uuid)) {
+           return uuid2stats.get(uuid);
+       }
+        
+        PlayerSumUpPlaceholder ret = new PlayerSumUpPlaceholder();
+        
         try {
             // get player statistics
             File file = new File("world/stats/" + uuid + ".json");
-            if (!file.exists()) return playerMainStats;
+            if (!file.exists()) return ret;
 
             JsonObject json = JsonParser.parseReader(new FileReader(file)).getAsJsonObject();
             JsonObject stats = json.getAsJsonObject("stats");
-            if (stats == null) return playerMainStats;
+            if (stats == null) return ret;
+
             int mined_all = sumUpStats(stats.getAsJsonObject("minecraft:mined"), ".*");
             int used_all = sumUpStats(stats.getAsJsonObject("minecraft:used"), ".*");
             JsonObject custom = stats.getAsJsonObject("minecraft:custom");
-            if (custom == null) return playerMainStats;
+            if (custom == null) return ret;
             int moved_all = sumUpStats(custom, ".+_cm") / CM_TO_KM_DIVISOR;
             JsonElement mobKills = custom.get("minecraft:mob_kills");
             int mob_kills = (mobKills == null ? 0 : mobKills.getAsInt());
@@ -46,32 +59,37 @@ public class MainStats {
             int play_time = (playTime == null ? 0 : playTime.getAsInt()) / GT_TO_H_DIVISOR;
 
             // set main-stats
-            playerMainStats.playtime += play_time;
-            playerMainStats.mined += mined_all;
-            playerMainStats.placed += used_all;
-            playerMainStats.killed += mob_kills;
-            playerMainStats.moved += moved_all;
+            ret.playtime = play_time;
+            ret.mined = mined_all;
+            ret.placed = used_all;
+            ret.killed = mob_kills;
+            ret.moved = moved_all;
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        return playerMainStats;
+        // save
+        uuid2stats.put(uuid, ret);
+        return ret;
     }
 
-    public static MainStats calculateServerMainStats() {
-        MainStats serverMainStats = new MainStats();
+    public static PlayerSumUpPlaceholder ofServer() {
+        PlayerSumUpPlaceholder ofServer = new PlayerSumUpPlaceholder();
         File file = new File("world/stats/");
         File[] files = file.listFiles();
-        if (files == null) return serverMainStats;
+        if (files == null) return ofServer;
 
         for (File playerStatFile : files) {
             String uuid = playerStatFile.getName().replace(".json", "");
-            MainStats playerMainStats = MainStats.calculatePlayerMainStats(uuid);
-            serverMainStats.add(playerMainStats);
+            PlayerSumUpPlaceholder playerMainStats = ofPlayer(uuid);
+            ofServer.add(playerMainStats);
         }
 
-        return serverMainStats;
+        // save
+        PlayerSumUpPlaceholder.ofServer = ofServer;
+
+        return ofServer;
     }
 
     private static int sumUpStats(JsonObject jsonObject, String regex) {
@@ -86,7 +104,7 @@ public class MainStats {
         return count;
     }
 
-    public MainStats update(ServerPlayerEntity player) {
+    public PlayerSumUpPlaceholder updatePlayer(ServerPlayerEntity player) {
         this.playtime = player.getStatHandler().getStat((Stats.CUSTOM.getOrCreateStat(Stats.PLAY_TIME))) / GT_TO_H_DIVISOR;
         this.killed = player.getStatHandler().getStat(Stats.CUSTOM.getOrCreateStat(Stats.MOB_KILLS));
         ServerStatHandler statHandler = player.getStatHandler();
@@ -108,17 +126,7 @@ public class MainStats {
         return this;
     }
 
-    public String resolve(MinecraftServer server, String str) {
-        return str.replace("%playtime%", String.valueOf(playtime))
-                .replace("%mined%", String.valueOf(mined))
-                .replace("%placed%", String.valueOf(placed))
-                .replace("%killed%", String.valueOf(killed))
-                .replace("%moved%", String.valueOf(moved))
-                .replace("%uptime%", String.valueOf(server.getTicks() / GT_TO_H_DIVISOR))
-                .replace("%version%", server.getVersion());
-    }
-
-    public void add(MainStats other) {
+    public void add(PlayerSumUpPlaceholder other) {
         this.playtime += other.playtime;
         this.mined += other.mined;
         this.placed += other.placed;

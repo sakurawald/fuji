@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.placeholder;
 
 
-import io.github.sakurawald.module.initializer.placeholder.MainStats;
+import io.github.sakurawald.module.initializer.placeholder.PlayerSumUpPlaceholder;
 import net.minecraft.network.DisconnectionInfo;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -20,6 +20,6 @@ public class ServerPlayNetworkHandlerMixin {
     @Inject(at = @At("HEAD"), method = "onDisconnected")
     private void $disconnect(DisconnectionInfo disconnectionInfo, CallbackInfo ci) {
         String uuid = player.getUuid().toString();
-        MainStats.uuid2stats.remove(uuid);
+        PlayerSumUpPlaceholder.uuid2stats.remove(uuid);
     }
 }

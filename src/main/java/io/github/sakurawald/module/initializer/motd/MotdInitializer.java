@@ -6,6 +6,8 @@ import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.MessageUtil;
 import javax.imageio.ImageIO;
+
+import lombok.Setter;
 import net.minecraft.server.ServerMetadata;
 import net.minecraft.text.Text;
 import java.awt.image.BufferedImage;
@@ -21,20 +23,17 @@ import java.util.Random;
 public class MotdInitializer extends ModuleInitializer {
     private final File ICON_FOLDER = Fuji.CONFIG_PATH.resolve("icon").toFile();
 
-    private List<String> descriptions = new ArrayList<>();
-
-    public void updateDescriptions(List<String> descriptions) {
-        this.descriptions = descriptions;
-    }
+    @Setter
+    private List<String> motd = new ArrayList<>();
 
     @Override
     public void onInitialize() {
-        updateDescriptions(Configs.configHandler.model().modules.motd.descriptions);
+        setMotd(Configs.configHandler.model().modules.motd.list);
     }
 
     @Override
     public void onReload() {
-        updateDescriptions(Configs.configHandler.model().modules.motd.descriptions);
+        setMotd(Configs.configHandler.model().modules.motd.list);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -61,7 +60,7 @@ public class MotdInitializer extends ModuleInitializer {
     }
 
     public Text getRandomDescription() {
-        return MessageUtil.ofVomponent(descriptions.get(new Random().nextInt(descriptions.size())));
+        return MessageUtil.ofVomponent(motd.get(new Random().nextInt(motd.size())));
     }
 
 }

@@ -185,9 +185,9 @@ public class ConfigModel {
             @Documentation("""
                     Fuji will randomly pick a motd each time the player refresh server list.
                     """)
-            public List<String> descriptions = new ArrayList<>() {
+            public List<String> list = new ArrayList<>() {
                 {
-                    this.add("<gradient:#FF66B2:#FFB5CC>Pure Survival %version% / Up %uptime%H ❤ Discord Group PyzU7Q6unb</gradient><newline><gradient:#99CCFF:#BBDFFF>%playtime%\uD83D\uDD25 %mined%⛏ %placed%\uD83D\uDD33 %killed%\uD83D\uDDE1 %moved%\uD83C\uDF0D");
+                    this.add("<gradient:#FF66B2:#FFB5CC>Pure Survival %server:version% / Up %server:uptime% ❤ Discord Group XXX</gradient><newline><gradient:#99CCFF:#BBDFFF>%fuji:server_playtime%🔥 %fuji:server_mined%⛏ %fuji:server_placed%🔳 %fuji:server_killed%🗡 %fuji:server_moved%🌍");
                 }
             };
         }
@@ -410,7 +410,7 @@ public class ConfigModel {
                                 
                 Command: /chat
                                 
-                You can also insert some placeholder in chat message: `pos`
+                You can also insert some playerSumUpPlaceholder in chat message: `pos`
                 """)
         public class Chat {
             public boolean enable = false;
@@ -422,7 +422,7 @@ public class ConfigModel {
                     See: https://docs.advntr.dev/minimessage/format.html
                                 
                     """)
-            public String format = "<#B1B2FF>[%playtime%\uD83D\uDD25 %mined%⛏ %placed%\uD83D\uDD33 %killed%\uD83D\uDDE1 %moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:/msg %player% ><hover:show_text:\"Time: <date:'yyyy-MM-dd HH:mm:ss'><newline><italic>Click to Message\">%player%</hover></click></dark_green>> %message%";
+            public String format = "<#B1B2FF>[%fuji:player_playtime%\uD83D\uDD25 %fuji:player_mined%⛏ %fuji:player_placed%\uD83D\uDD33 %fuji:player_killed%\uD83D\uDDE1 %moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:/msg %player% ><hover:show_text:\"Time: <date:'yyyy-MM-dd HH:mm:ss'><newline><italic>Click to Message\">%player%</hover></click></dark_green>> %message%";
 
             public MentionPlayer mention_player = new MentionPlayer();
             public History history = new History();
@@ -578,7 +578,7 @@ public class ConfigModel {
         }
 
         @Documentation("""
-                This module provides some useful stats, you can use the stats placeholder with ChatModule and MotdModule
+                This module provides some useful stats, you can use the stats playerSumUpPlaceholder with ChatModule and MotdModule
                                 
                 Placeholders: total_playtime, total_mined, total_placed, total_killed and total_moved (We call these 5 stats `MainStats`). 
                 You can use these placeholders in `Chat module` and `MOTD module`
