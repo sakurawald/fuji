@@ -61,6 +61,7 @@ public class ConfigModel {
         }
 
         public Language language = new Language();
+
         public class Language {
             public String default_language = "en_us";
         }
@@ -417,7 +418,19 @@ public class ConfigModel {
                 - You can insert `item`, `inv` and `ender` to display your `item in your hand`, `your inventory` and `your enderchest`
                 - You can insert `@Steve` to mention another player.
                 - You can insert `pos` to show the position.
+                                
+                Note:
+                - In vanilla minecraft, `chat message` is marked as `system message` and its type is `MessageType.CHAT`.
                 
+                  However, fuji will hijack the vanilla `chat message`, and `re-send` them as the type of `MessageType.SYSTEM`.
+                  This means, if you use `Chat` module provides by fuji, then all the `MessageType.CHAT` message will be re-send as `MessageType.SYSTEM` message
+                  
+                  In this case, you players will not need to download mods like `No Chat Reports`.
+                  Any player can messages from other players, and `vaniila chat filter` will not work with `MessageType.SYSTEM`.
+                  
+                  If you have some other mods that relative to chats, and they only works with `MessageType.CHAT`, then
+                  these mods may not work.
+                  
                 """)
         public class Chat {
             public boolean enable = false;
@@ -597,7 +610,7 @@ public class ConfigModel {
                 - %fuji:server_moved%
                 - %fuji:player_playtime%
                 - %fuji:server_playtime%
-                
+                                
                 You also use [the default available placeholders](https://placeholders.pb4.eu/user/default-placeholders/) 
                 in anywhere. (Yeah, you can use `placeholder` in the `en_us.json` language file, it works)
                 """)
@@ -1028,24 +1041,24 @@ public class ConfigModel {
 
         @Documentation("""
                 This module provides anti-build purpose.
-                
+                                
                 Use-case: ban some item/block/entity 
-                
+                                
                 Anti types:
                 - break_block
                 - place_block
                 - interact_item
                 - interact_block
                 - interact_entity
-                
+                                
                 For example, let's say you want to ban TNT:
                 1. add `minecraft:tnt` into `place_block` list
-                
+                                
                 And it's done. 
-                
+                                
                 Use `/lp user <player> permission set fuji.anti_build.place_block.bypass.minecraft:tnt` to 
                 allow a player place the tnt.
-                
+                                
                 """)
         public class AntiBuild {
             public boolean enable = false;
@@ -1095,6 +1108,7 @@ public class ConfigModel {
                 }
 
                 public InteractEntity interact_entity = new InteractEntity();
+
                 public class InteractEntity {
                     public Set<String> id = new HashSet<>() {
                         {

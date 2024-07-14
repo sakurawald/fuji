@@ -34,14 +34,13 @@ import java.nio.file.Path;
 
 // TODO: nickname module
 // TODO: player nickname / prefix / suffix
-// TODO: a light-weight way to implement chat module (parser)
-// TODO: refactor chat module to use prefix/suffix metas
 
 // TODO: a program to generate module reference DAG
 // TODO: code review for skin module
 // TODO: a lisp-like DSL (parser and code-walker) for specific command.
 
-// TODO: placeholder module (refactor main stats to use placeholder manager -> local + luckperms metas)
+// TODO: a light-weight way to implement chat module (parser)
+// TODO: refactor chat module to use prefix/suffix metas
 
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";

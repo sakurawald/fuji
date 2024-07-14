@@ -30,8 +30,6 @@ public class TestInitializer extends ModuleInitializer {
         var source = ctx.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-//        MainStats mainStats = MainStats.calculatePlayerMainStats(player.getUuidAsString());
-
 
 
         Text text = Placeholders.parseText(Text.literal("my name is %player:name%, and my placeholder is %fuji:my_placeholder%"), PlaceholderContext.of(player));

@@ -272,7 +272,7 @@ public class ChatInitializer extends ModuleInitializer {
         return component;
     }
 
-    public void broadcastChatMessage(ServerPlayerEntity player, String message) {
+    public Component parseChatComponent(ServerPlayerEntity player, String message) {
         /* resolve format */
         message = chatHandler.model().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
                 .replace("%message%", message);
@@ -289,13 +289,7 @@ public class ChatInitializer extends ModuleInitializer {
         component = resolveEnderTag(player, component);
         component = resolvePositionTag(player, component);
         component = resolveLinks(component);
-
-        chatHistory.add(component);
-        // info so that it can be seen in the console
-        Fuji.LOGGER.info(PlainTextComponentSerializer.plainText().serialize(component));
-        for (ServerPlayerEntity receiver : Fuji.SERVER.getPlayerManager().getPlayerList()) {
-            receiver.sendMessage(component);
-        }
+        return component;
     }
 
 }
