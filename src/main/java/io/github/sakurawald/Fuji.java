@@ -20,7 +20,7 @@ import java.nio.file.Path;
 
 // TODO: custom tab list
 
-// TODO: refactor command facility (selector, aop)
+// TODO: refactor command facility (selector, aop, options, parser)
 // TODO: command warmup module
 // TODO: spawn module
 // TODO: tppos module
@@ -34,7 +34,7 @@ import java.nio.file.Path;
 
 // TODO: nickname module
 // TODO: player nickname / prefix / suffix
-// TODO: a light-weight way to implement chat module
+// TODO: a light-weight way to implement chat module (parser)
 // TODO: refactor chat module to use prefix/suffix metas
 
 // TODO: a program to generate module reference DAG

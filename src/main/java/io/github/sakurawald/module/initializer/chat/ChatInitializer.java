@@ -15,10 +15,11 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.chat.display.DisplayHelper;
 import io.github.sakurawald.module.initializer.chat.mention.MentionPlayersJob;
 import io.github.sakurawald.module.initializer.placeholder.MainStats;
-import io.github.sakurawald.module.initializer.placeholder.MainStatsInitializer;
+import io.github.sakurawald.module.initializer.placeholder.PlaceholderInitializer;
 import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.ClickCallback;
@@ -32,6 +33,7 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
@@ -48,13 +50,15 @@ import java.util.regex.Pattern;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
+@Slf4j
 public class ChatInitializer extends ModuleInitializer {
     public static final ConfigHandler<ChatModel> chatHandler = new ObjectConfigHandler<>("chat.json", ChatModel.class);
     private static final Pattern xaero_waypoint_pattern = Pattern.compile(
             "^xaero-waypoint:([^:]+):.+:(-?\\d+):(~?-?\\d*):(-?\\d+).*?-(.*)-waypoints$");
     private static final Pattern pos_pattern = Pattern.compile("^xaero-waypoint:|pos");
     private final MiniMessage miniMessage = MiniMessage.builder().build();
-    private final MainStatsInitializer mainStatsInitializer = ModuleManager.getInitializer(MainStatsInitializer.class);
+    private final PlaceholderInitializer mainStatsInitializer = ModuleManager.getInitializer(PlaceholderInitializer.class);
+
     @Getter
     private Queue<Component> chatHistory;
 

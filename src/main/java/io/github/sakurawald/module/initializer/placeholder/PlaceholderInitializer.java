@@ -1,5 +1,8 @@
 package io.github.sakurawald.module.initializer.placeholder;
 
+import eu.pb4.placeholders.api.PlaceholderResult;
+import eu.pb4.placeholders.api.Placeholders;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.ModuleManager;
@@ -8,22 +11,27 @@ import io.github.sakurawald.module.initializer.motd.MotdInitializer;
 import io.github.sakurawald.util.ScheduleUtil;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
-public class MainStatsInitializer extends ModuleInitializer {
+public class PlaceholderInitializer extends ModuleInitializer {
 
-    private final List<Character> colors = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
     private final MotdInitializer motd_module = ModuleManager.getInitializer(MotdInitializer.class);
 
     @Override
     public void onInitialize() {
+
+        Placeholders.register(
+                Identifier.of(Fuji.MOD_ID, "my_placeholder"),
+                (ctx, arg) -> PlaceholderResult.value(Text.literal("Hello World!"))
+        );
+
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             this.updateMainStats(server);
             this.registerScheduleTask(server);
@@ -39,42 +47,9 @@ public class MainStatsInitializer extends ModuleInitializer {
             ConfigModel.Modules.MOTD motd = Configs.configHandler.model().modules.motd;
             ArrayList<String> descriptions = new ArrayList<>();
             motd.descriptions.forEach(description -> descriptions.add(serverMainStats.resolve(server, description)));
+
             motd_module.updateDescriptions(descriptions);
         }
-    }
-
-    @SuppressWarnings({"SameParameterValue", "unused"})
-    private String centerText(String text, int lineLength, int lengthDelta) {
-        /* calc length */
-        char[] chars = text.toCharArray();
-        double length = 0;
-        boolean bold = false;
-        char code;
-        for (int i = 0; i < chars.length; i++) {
-            if (chars[i] == '§') {
-                // skip §
-                if (i + 1 != chars.length) {
-                    // skip code
-                    code = chars[i + 1];
-                    if (code == 'l') bold = true;
-                    else if (colors.contains(code) && code == 'r') bold = false;
-                }
-            } else {
-                length += (chars[i] == ' ' ? 1 : (bold ? 1.1555555555555556 : 1));
-            }
-        }
-
-        /* add length delta */
-        length += lengthDelta;
-
-        /* build spaces */
-        double spaces = (lineLength - length) / 2;
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < spaces; i++) {
-            builder.append(' ');
-        }
-        builder.append(text);
-        return builder.toString();
     }
 
     public void registerScheduleTask(MinecraftServer server) {
@@ -82,7 +57,7 @@ public class MainStatsInitializer extends ModuleInitializer {
         ScheduleUtil.addJob(UpdateMainStatsJob.class, null, null, ScheduleUtil.CRON_EVERY_MINUTE, new JobDataMap() {
             {
                 this.put(MinecraftServer.class.getName(), server);
-                this.put(MainStatsInitializer.class.getName(), MainStatsInitializer.this);
+                this.put(PlaceholderInitializer.class.getName(), PlaceholderInitializer.this);
             }
         });
     }
@@ -96,7 +71,7 @@ public class MainStatsInitializer extends ModuleInitializer {
             server.getPlayerManager().getPlayerList().forEach((p) -> p.getStatHandler().save());
 
             // update main stats
-            MainStatsInitializer module = (MainStatsInitializer) context.getJobDetail().getJobDataMap().get(MainStatsInitializer.class.getName());
+            PlaceholderInitializer module = (PlaceholderInitializer) context.getJobDetail().getJobDataMap().get(PlaceholderInitializer.class.getName());
             module.updateMainStats(server);
         }
     }

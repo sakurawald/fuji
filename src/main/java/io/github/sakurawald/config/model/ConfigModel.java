@@ -140,7 +140,7 @@ public class ConfigModel {
         public Protect protect = new Protect();
 
         @Documentation("""
-                This module adds another 3 worlds called `resource world`: resrouce_overworld, resource_nether, resource_the_end .
+                This module adds another 3 worlds called `resource world`: resource_overworld, resource_nether, resource_the_end .
                                 
                 Command: /rw
                                 
