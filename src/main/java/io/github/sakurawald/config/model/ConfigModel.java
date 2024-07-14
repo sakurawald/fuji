@@ -3,6 +3,7 @@ package io.github.sakurawald.config.model;
 
 import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.config.annotation.Documentation;
+import io.github.sakurawald.module.initializer.chat.RegexEntry;
 import io.github.sakurawald.module.initializer.command_alias.CommandAliasEntry;
 import io.github.sakurawald.module.initializer.command_rewrite.CommandRewriteEntry;
 
@@ -442,7 +443,7 @@ public class ConfigModel {
                     See: https://docs.advntr.dev/minimessage/format.html
                                 
                     """)
-            public String format = "<#B1B2FF>[%fuji:player_playtime%\uD83D\uDD25 %fuji:player_mined%⛏ %fuji:player_placed%\uD83D\uDD33 %fuji:player_killed%\uD83D\uDDE1 %fuji:player_moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:/msg %player% ><hover:show_text:\"Time: %fuji:date%<newline><italic>Click to Message\">%player%</hover></click></dark_green>> %message%";
+            public String format = "<#B1B2FF>[%fuji:player_playtime%\uD83D\uDD25 %fuji:player_mined%⛏ %fuji:player_placed%\uD83D\uDD33 %fuji:player_killed%\uD83D\uDDE1 %fuji:player_moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:/msg %player% ><hover:show_text:\"Time: %fuji:date%<newline><italic>Click to Message\">%player:name%</hover></click></dark_green>> %message%";
 
             public MentionPlayer mention_player = new MentionPlayer();
             public History history = new History();
@@ -477,6 +478,21 @@ public class ConfigModel {
                         Note that if a player shares its inventory items, then fuji will save a copy of his inventory data in the memory.
                         """)
                 public int expiration_duration_s = 3600;
+            }
+
+            public Pattern pattern = new Pattern();
+            public class Pattern {
+                public List<RegexEntry> list = new ArrayList<>(){
+                    {
+                        this.add(new RegexEntry("^BV(\\w{10})","<underline><blue><hover:show_text:'$1'><click:open_url:'https://www.bilibili.com/video/BV$1'>bilibili $1</click></hover></blue></underline>"));
+                        this.add(new RegexEntry("(?<=^|\\s)item(?=\\s|$)", "%fuji:item%"));
+                        this.add(new RegexEntry("(?<=^|\\s)inv(?=\\s|$)", "%fuji:inv%"));
+                        this.add(new RegexEntry("(?<=^|\\s)ender(?=\\s|$)", "%fuji:ender%"));
+                        this.add(new RegexEntry("(?<=^|\\s)pos(?=\\s|$)", "%fuji:pos%"));
+                        this.add(new RegexEntry("((https?)://[^\\s/$.?#].\\S*)","<underline><blue><hover:show_text:'$1'><click:open_url:'$1'>$1</click></hover></blue></underline>"));
+                    }
+                };
+
             }
         }
 
@@ -885,6 +901,7 @@ public class ConfigModel {
                     this.put("death.attack.explosion.player", "<rainbow>%1$s booooooom because of %2$s");
                 }
             };
+
         }
 
         @Documentation("This module provides `/enderchest` command.")
