@@ -2,7 +2,7 @@ package io.github.sakurawald;
 
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.common.service.AutomaticBackup;
+import io.github.sakurawald.module.common.service.BackupService;
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.ScheduleUtil;
 import net.fabricmc.api.ModInitializer;
@@ -38,6 +38,8 @@ import java.nio.file.Path;
 // TODO: refactor chat module to use prefix/suffix metas
 
 // TODO: a program to generate module reference DAG
+// TODO: code review for skin module
+// TODO: a lisp-like DSL (parser and code-walker) for specific command.
 
 // TODO: placeholder module (refactor main stats to use placeholder manager -> local + luckperms metas)
 
@@ -50,7 +52,7 @@ public class Fuji implements ModInitializer {
     @Override
     public void onInitialize() {
         /* backup */
-        AutomaticBackup.backup();
+        BackupService.backup();
 
         /* modules */
         ModuleManager.initializeModules();

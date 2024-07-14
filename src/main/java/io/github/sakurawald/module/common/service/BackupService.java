@@ -20,7 +20,7 @@ import java.util.List;
 
 @Slf4j
 @UtilityClass
-public class AutomaticBackup {
+public class BackupService {
 
     public static final Path BACKUP_PATH = Fuji.CONFIG_PATH.resolve("backup");
 

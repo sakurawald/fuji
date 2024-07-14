@@ -12,8 +12,6 @@ import java.util.Random;
 
 public class SpecializedCommand {
 
-    // TODO: require a DSL here
-
     private static final String RANDOM_PLAYER = "!random_player!";
     private static final String ALL_PLAYER = "!all_player!";
 
