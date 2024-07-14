@@ -418,7 +418,7 @@ public class ConfigModel {
                 - You can create your own `regex transformaer` to repalce the input message.
                 - You can insert any `placeholder` like `%world:name%` in the chat message. (See more placeholders in: https://placeholders.pb4.eu/user/default-placeholders/)
                 - You can insert player's prefix and suffix. Just insert `fuji:player_prefix` and `fuji:player_suffix`. 
-                    Requires `luckperms` installed`. See also: https://luckperms.net/wiki/Prefixes,-Suffixes-&-Meta
+                    Requires `luckperms` installed. See also: https://luckperms.net/wiki/Prefixes,-Suffixes-&-Meta
                     After you installed `luckperms` mod, just issue `/lp group default meta setprefix <yellow>[awesome]` to assign prefix.
                     Don't forget to change the format of `Chat module`, and issue `/fuji reload`
                 - You can insert `item`, `inv` and `ender` to display your `item in your hand`, `your inventory` and `your enderchest`
