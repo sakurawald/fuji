@@ -21,6 +21,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import org.apache.commons.io.FileUtils;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -88,7 +89,7 @@ public class MessageUtil {
         return lang2json.get(lang);
     }
 
-    public static String getString(Object audience, String key, Object... args) {
+    public static String getString(@Nullable Object audience, String key, Object... args) {
         /* get lang */
         String lang = getClientSideLanguage(audience);
 
@@ -114,13 +115,13 @@ public class MessageUtil {
     }
 
     public static void sendMessageToPlayerEntity(PlayerEntity player, String key, Object... args) {
-        player.sendMessage(adventure.toNative(ofComponent(getString(player, key), args)));
+        player.sendMessage(adventure.toNative(ofComponent(null, false, getString(player, key), args)));
     }
 
     /* This is the core method to map `String` into `Component`.
      *  All methods that return `Vomponent` are converted from this method.
      * */
-    public static Component ofComponent(Audience audience, boolean isKey, String keyOrString, Object... args) {
+    public static Component ofComponent(@Nullable Audience audience, boolean isKey, String keyOrString, MiniMessage serializer, Object... args) {
         String string = isKey ? getString(audience, keyOrString, args) : keyOrString;
 
         PlaceholderContext placeholderContext;
@@ -135,23 +136,26 @@ public class MessageUtil {
         string = PlainTextComponentSerializer.plainText().serialize(component);
 
         // minimessage parser
-        return miniMessageParser.deserialize(string);
+        if (serializer == null) {
+            serializer = miniMessageParser;
+        }
+        return serializer.deserialize(string);
+    }
+
+    public static Component ofComponent(Audience audience, boolean isKey, String keyOrString, Object... args) {
+        return ofComponent(audience, isKey, keyOrString, miniMessageParser, args);
     }
 
     public static Component ofComponent(Audience audience, String key, Object... args) {
-        return ofComponent(audience, true, key, args);
+        return ofComponent(audience, true, key, null, args);
     }
 
     public static Text ofVomponent(Audience audience, String key, Object... args) {
         return toVomponent(ofComponent(audience, key, args));
     }
 
-    public static Component ofComponent(String str, Object... args) {
-        return ofComponent(null, false, str, args);
-    }
-
     public static Text ofVomponent(String str, Object... args) {
-        return toVomponent(ofComponent(str, args));
+        return toVomponent(ofComponent(null, false, str, args));
     }
 
     public static Text toVomponent(Component component) {
