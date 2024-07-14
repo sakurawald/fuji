@@ -2,9 +2,15 @@ package io.github.sakurawald.util;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import eu.pb4.placeholders.api.ParserContext;
 import eu.pb4.placeholders.api.PlaceholderContext;
-import eu.pb4.placeholders.api.Placeholders;
+import eu.pb4.placeholders.api.node.LiteralNode;
 import eu.pb4.placeholders.api.node.TextNode;
+import eu.pb4.placeholders.api.parsers.NodeParser;
+import eu.pb4.placeholders.api.parsers.TagParser;
+import eu.pb4.placeholders.api.parsers.tag.TagRegistry;
+import eu.pb4.placeholders.api.parsers.tag.TextTag;
+import eu.pb4.placeholders.impl.textparser.MergedParser;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.handler.ResourceConfigHandler;
@@ -30,17 +36,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static eu.pb4.placeholders.api.Placeholders.DEFAULT_PLACEHOLDER_PARSER;
+
 @UtilityClass
 public class MessageUtil {
+    private static final MergedParser MERGED_PARSER = new MergedParser(
+            new NodeParser[]{
+                    DEFAULT_PLACEHOLDER_PARSER
+                    , TagParser.QUICK_TEXT_WITH_STF
+            });
     private static final FabricServerAudiences adventure = FabricServerAudiences.of(Fuji.SERVER);
     @Getter
     private static final Map<String, String> player2lang = new HashMap<>();
     @Getter
     private static final Map<String, JsonObject> lang2json = new HashMap<>();
-    private static final MiniMessage miniMessageParser = MiniMessage.builder().build();
 
     static {
         writeDefaultLanguageFiles();
+
+        TagRegistry.registerDefault(
+                TextTag.self(
+                        "newline",
+                        "formatting",
+                        true,
+                        (nodes, data, parser) -> new LiteralNode("\n")
+                )
+
+        );
     }
 
     private static void writeDefaultLanguageFiles() {
@@ -118,10 +140,11 @@ public class MessageUtil {
         player.sendMessage(adventure.toNative(ofComponent(null, false, getString(player, key), args)));
     }
 
+
     /* This is the core method to map `String` into `Component`.
      *  All methods that return `Vomponent` are converted from this method.
      * */
-    public static Component ofComponent(@Nullable Audience audience, boolean isKey, String keyOrString, MiniMessage serializer, Object... args) {
+    public static Component ofComponent(@Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
         String string = isKey ? getString(audience, keyOrString, args) : keyOrString;
 
         PlaceholderContext placeholderContext;
@@ -130,24 +153,13 @@ public class MessageUtil {
         } else {
             placeholderContext = PlaceholderContext.of(Fuji.SERVER);
         }
+        ParserContext parserContext = ParserContext.of(PlaceholderContext.KEY, placeholderContext);
 
-        // placeholder parser
-        Component component = Placeholders.parseText(TextNode.of(string), placeholderContext).asComponent();
-        string = PlainTextComponentSerializer.plainText().serialize(component);
-
-        // minimessage parser
-        if (serializer == null) {
-            serializer = miniMessageParser;
-        }
-        return serializer.deserialize(string);
-    }
-
-    public static Component ofComponent(Audience audience, boolean isKey, String keyOrString, Object... args) {
-        return ofComponent(audience, isKey, keyOrString, miniMessageParser, args);
+        return MERGED_PARSER.parseText(TextNode.of(string), parserContext).asComponent();
     }
 
     public static Component ofComponent(Audience audience, String key, Object... args) {
-        return ofComponent(audience, true, key, null, args);
+        return ofComponent(audience, true, key, args);
     }
 
     public static Text ofVomponent(Audience audience, String key, Object... args) {
@@ -188,5 +200,4 @@ public class MessageUtil {
             sendMessage(player, key, args);
         }
     }
-
 }

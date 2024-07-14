@@ -43,7 +43,7 @@ public abstract class ServerPlayerMixin implements AfkStateAccessor {
 
         if (accessor.fuji$isAfk()) {
             cir.setReturnValue(Text.literal("afk " + player.getGameProfile().getName()));
-            net.kyori.adventure.text.@NotNull Component component = ofComponent(Configs.configHandler.model().modules.afk.format)
+            net.kyori.adventure.text.@NotNull Component component = ofComponent(null, false,Configs.configHandler.model().modules.afk.format)
                     .replaceText(TextReplacementConfig.builder().match("%player_display_name%").replacement(player.getDisplayName()).build());
             cir.setReturnValue(toVomponent(component));
         } else {
