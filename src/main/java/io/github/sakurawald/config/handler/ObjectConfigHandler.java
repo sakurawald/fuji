@@ -35,12 +35,9 @@ public class ObjectConfigHandler<T> extends ConfigHandler<T> {
                 JsonElement currentJsonElement = JsonParser.parseReader(reader);
 
                 // merge older json with newer json
-                if (!this.merged) {
-                    this.merged = true;
-                    T defaultJsonInstance = configClass.getDeclaredConstructor().newInstance();
-                    JsonElement defaultJsonElement = gson.toJsonTree(defaultJsonInstance, configClass);
-                    mergeJson(currentJsonElement, defaultJsonElement);
-                }
+                T defaultJsonInstance = configClass.getDeclaredConstructor().newInstance();
+                JsonElement defaultJsonElement = gson.toJsonTree(defaultJsonInstance, configClass);
+                mergeJson(currentJsonElement, defaultJsonElement);
 
                 // read merged json
                 model = gson.fromJson(currentJsonElement, configClass);

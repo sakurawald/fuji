@@ -33,8 +33,6 @@ public abstract class ConfigHandler<T> {
     protected File file;
     protected T model;
 
-    protected boolean merged = false;
-
     public ConfigHandler(File file) {
         this.file = file;
     }

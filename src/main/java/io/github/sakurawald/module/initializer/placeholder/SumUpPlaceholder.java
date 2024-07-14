@@ -3,15 +3,18 @@ package io.github.sakurawald.module.initializer.placeholder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import io.github.sakurawald.Fuji;
 import lombok.Getter;
 import lombok.ToString;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.ServerStatHandler;
 import net.minecraft.stat.Stats;
+import net.minecraft.util.WorldSavePath;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
@@ -30,6 +33,10 @@ public class SumUpPlaceholder {
     public int killed;
     public int moved;
 
+    private static Path getStatPath() {
+        return Fuji.SERVER.getSavePath(WorldSavePath.STATS);
+    }
+
     public static SumUpPlaceholder ofPlayer(String uuid) {
        if (uuid2stats.containsKey(uuid)) {
            return uuid2stats.get(uuid);
@@ -39,7 +46,7 @@ public class SumUpPlaceholder {
         
         try {
             // get player statistics
-            File file = new File("world/stats/" + uuid + ".json");
+            File file = getStatPath().resolve(uuid + ".json").toFile();
             if (!file.exists()) return ret;
 
             JsonObject json = JsonParser.parseReader(new FileReader(file)).getAsJsonObject();
@@ -74,7 +81,7 @@ public class SumUpPlaceholder {
 
     public static SumUpPlaceholder ofServer() {
         SumUpPlaceholder ofServer = new SumUpPlaceholder();
-        File file = new File("world/stats/");
+        File file = getStatPath().toFile();
         File[] files = file.listFiles();
         if (files == null) return ofServer;
 

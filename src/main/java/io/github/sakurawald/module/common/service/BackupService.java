@@ -73,11 +73,11 @@ public class BackupService {
     }
 
     private static void newBackup() {
-        BACKUP_PATH.toFile().mkdirs();
         FileUtil.compressFiles(getInputFiles(), getOutputFile());
     }
 
     public static void backup() {
+        BACKUP_PATH.toFile().mkdirs();
         trimBackup();
         newBackup();
     }
