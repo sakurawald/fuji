@@ -21,7 +21,7 @@ import java.util.Random;
 
 
 public class MotdInitializer extends ModuleInitializer {
-    private final File ICON_FOLDER = Fuji.CONFIG_PATH.resolve("icon").toFile();
+    private final File ICON_FOLDER = Fuji.CONFIG_PATH.resolve("motd").resolve("icon").toFile();
 
     @Setter
     private List<String> motd = new ArrayList<>();
@@ -38,12 +38,17 @@ public class MotdInitializer extends ModuleInitializer {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public Optional<ServerMetadata.Favicon> getRandomIcon() {
+        if (!Configs.configHandler.model().modules.motd.enable_custom_server_icon) {
+            return Optional.empty();
+        }
+
         ICON_FOLDER.mkdirs();
         File[] icons = ICON_FOLDER.listFiles();
         if (icons == null || icons.length == 0) {
             Fuji.LOGGER.warn("No icons found in {}", ICON_FOLDER.getAbsolutePath());
             return Optional.empty();
         }
+
         File randomIcon = icons[new Random().nextInt(icons.length)];
         ByteArrayOutputStream byteArrayOutputStream;
         try {

@@ -27,64 +27,64 @@ public class PlaceholderInitializer extends ModuleInitializer {
                 Identifier.of(Fuji.MOD_ID, "player_mined"),
                 (ctx, arg) -> {
                     if (ctx.player() == null) PlaceholderResult.invalid(NO_PLAYER);
-                    return PlaceholderResult.value(Text.literal(String.valueOf(PlayerSumUpPlaceholder.ofPlayer(ctx.player().getUuidAsString()).mined)));
+                    return PlaceholderResult.value(Text.literal(String.valueOf(SumUpPlaceholder.ofPlayer(ctx.player().getUuidAsString()).mined)));
                 });
         Placeholders.register(
                 Identifier.of(Fuji.MOD_ID, "server_mined"),
-                (ctx, arg) -> PlaceholderResult.value(Text.literal(String.valueOf(PlayerSumUpPlaceholder.ofServer().mined))));
+                (ctx, arg) -> PlaceholderResult.value(Text.literal(String.valueOf(SumUpPlaceholder.ofServer().mined))));
 
         Placeholders.register(
                 Identifier.of(Fuji.MOD_ID, "player_placed"),
                 (ctx, arg) -> {
                     if (ctx.player() == null) PlaceholderResult.invalid(NO_PLAYER);
-                    return PlaceholderResult.value(Text.literal(String.valueOf(PlayerSumUpPlaceholder.ofPlayer(ctx.player().getUuidAsString()).placed)));
+                    return PlaceholderResult.value(Text.literal(String.valueOf(SumUpPlaceholder.ofPlayer(ctx.player().getUuidAsString()).placed)));
                 });
         Placeholders.register(
                 Identifier.of(Fuji.MOD_ID, "server_placed"),
-                (ctx, arg) -> PlaceholderResult.value(Text.literal(String.valueOf(PlayerSumUpPlaceholder.ofServer().placed))));
+                (ctx, arg) -> PlaceholderResult.value(Text.literal(String.valueOf(SumUpPlaceholder.ofServer().placed))));
 
         Placeholders.register(
                 Identifier.of(Fuji.MOD_ID, "player_killed"),
                 (ctx, arg) -> {
                     if (ctx.player() == null) PlaceholderResult.invalid(NO_PLAYER);
-                    return PlaceholderResult.value(Text.literal(String.valueOf(PlayerSumUpPlaceholder.ofPlayer(ctx.player().getUuidAsString()).killed)));
+                    return PlaceholderResult.value(Text.literal(String.valueOf(SumUpPlaceholder.ofPlayer(ctx.player().getUuidAsString()).killed)));
                 });
         Placeholders.register(
                 Identifier.of(Fuji.MOD_ID, "server_killed"),
-                (ctx, arg) -> PlaceholderResult.value(Text.literal(String.valueOf(PlayerSumUpPlaceholder.ofServer().killed))));
+                (ctx, arg) -> PlaceholderResult.value(Text.literal(String.valueOf(SumUpPlaceholder.ofServer().killed))));
 
 
         Placeholders.register(
                 Identifier.of(Fuji.MOD_ID, "player_moved"),
                 (ctx, arg) -> {
                     if (ctx.player() == null) PlaceholderResult.invalid(NO_PLAYER);
-                    PlayerSumUpPlaceholder playerSumUpPlaceholder = PlayerSumUpPlaceholder.ofPlayer(ctx.player().getUuidAsString());
-                    return PlaceholderResult.value(Text.literal(String.valueOf(playerSumUpPlaceholder.moved)));
+                    SumUpPlaceholder sumUpPlaceholder = SumUpPlaceholder.ofPlayer(ctx.player().getUuidAsString());
+                    return PlaceholderResult.value(Text.literal(String.valueOf(sumUpPlaceholder.moved)));
                 });
         Placeholders.register(
                 Identifier.of(Fuji.MOD_ID, "server_moved"),
                 (ctx, arg) -> {
-                    PlayerSumUpPlaceholder playerSumUpPlaceholder = PlayerSumUpPlaceholder.ofServer();
-                    return PlaceholderResult.value(Text.literal(String.valueOf(playerSumUpPlaceholder.moved)));
+                    SumUpPlaceholder sumUpPlaceholder = SumUpPlaceholder.ofServer();
+                    return PlaceholderResult.value(Text.literal(String.valueOf(sumUpPlaceholder.moved)));
                 });
 
         Placeholders.register(
                 Identifier.of(Fuji.MOD_ID, "player_playtime"),
                 (ctx, arg) -> {
                     if (ctx.player() == null) PlaceholderResult.invalid(NO_PLAYER);
-                    PlayerSumUpPlaceholder playerSumUpPlaceholder = PlayerSumUpPlaceholder.ofPlayer(ctx.player().getUuidAsString());
-                    return PlaceholderResult.value(Text.literal(String.valueOf(playerSumUpPlaceholder.playtime)));
+                    SumUpPlaceholder sumUpPlaceholder = SumUpPlaceholder.ofPlayer(ctx.player().getUuidAsString());
+                    return PlaceholderResult.value(Text.literal(String.valueOf(sumUpPlaceholder.playtime)));
                 });
         Placeholders.register(
                 Identifier.of(Fuji.MOD_ID, "server_playtime"),
                 (ctx, arg) -> {
-                    PlayerSumUpPlaceholder playerSumUpPlaceholder = PlayerSumUpPlaceholder.ofServer();
-                    return PlaceholderResult.value(Text.literal(String.valueOf(playerSumUpPlaceholder.playtime)));
+                    SumUpPlaceholder sumUpPlaceholder = SumUpPlaceholder.ofServer();
+                    return PlaceholderResult.value(Text.literal(String.valueOf(sumUpPlaceholder.playtime)));
                 });
 
        /* events */
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-            PlayerSumUpPlaceholder.ofServer();
+            SumUpPlaceholder.ofServer();
             ScheduleUtil.addJob(UpdatePlaceholderJob.class, null, null, ScheduleUtil.CRON_EVERY_MINUTE, new JobDataMap() {
                 {
                     this.put(MinecraftServer.class.getName(), server);
@@ -102,7 +102,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
             server.getPlayerManager().getPlayerList().forEach((p) -> p.getStatHandler().save());
 
             // update
-            PlayerSumUpPlaceholder.ofServer();
+            SumUpPlaceholder.ofServer();
         }
     }
 }
