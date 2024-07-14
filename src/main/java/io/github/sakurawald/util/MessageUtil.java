@@ -15,6 +15,7 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
@@ -30,7 +31,7 @@ public class MessageUtil {
     private static final FabricServerAudiences adventure = FabricServerAudiences.of(Fuji.SERVER);
     @Getter
     private static final Map<String, String> player2lang = new HashMap<>();
-
+    @Getter
     private static final Map<String, JsonObject> lang2json = new HashMap<>();
     private static final MiniMessage miniMessageParser = MiniMessage.builder().build();
 
@@ -57,8 +58,21 @@ public class MessageUtil {
         }
     }
 
-    private String getClientSideLanguage(String player) {
-        return player2lang.get(player);
+    private String getClientSideLanguage(Object audience) {
+        String defaultLanguage = Configs.configHandler.model().common.language.default_language;
+
+        if (audience == null) {
+            return defaultLanguage;
+        }
+
+        PlayerEntity player = switch (audience) {
+            case ServerPlayerEntity serverPlayerEntity -> serverPlayerEntity;
+            case PlayerEntity playerEntity -> playerEntity;
+            case ServerCommandSource source when source.getPlayer() != null -> source.getPlayer();
+            default -> null;
+        };
+
+        return player == null ? defaultLanguage : player2lang.get(player.getGameProfile().getName());
     }
 
     private JsonObject getLanguage(String lang) {
@@ -72,16 +86,8 @@ public class MessageUtil {
     }
 
     public static String getString(Object audience, String key, Object... args) {
-        /* get player */
-        PlayerEntity player = switch (audience) {
-            case ServerPlayerEntity serverPlayerEntity -> serverPlayerEntity;
-            case PlayerEntity playerEntity -> playerEntity;
-            case ServerCommandSource source when source.getPlayer() != null -> source.getPlayer();
-            case null, default -> throw new RuntimeException("audience can't be null");
-        };
-
         /* get lang */
-        String lang = getClientSideLanguage(player.getGameProfile().getName());
+        String lang = getClientSideLanguage(audience);
 
         /* get json */
         JsonObject json = getLanguage(lang);
@@ -92,8 +98,9 @@ public class MessageUtil {
             return formatString(value, args);
         }
 
-        Fuji.LOGGER.error("Language '{}' miss the key '{}'", lang, key);
-        return null;
+        String errorString = "Language '%s' miss the key '%s'".formatted(lang, key);
+        Fuji.LOGGER.error(errorString);
+        return errorString;
     }
 
     private static String formatString(String string, Object... args) {
@@ -107,32 +114,39 @@ public class MessageUtil {
         player.sendMessage(adventure.toNative(ofComponent(getString(player, key), args)));
     }
 
+
+    /* This is the core method to map `String` into `Component`.
+     *  All methods that return `Vomponent` are converted from this method.
+     * */
+    public static Component ofComponent(Audience audience, boolean isKey, String keyOrString, Object... args) {
+        String string = isKey ? getString(audience, keyOrString, args) : keyOrString;
+        return miniMessageParser.deserialize(string);
+    }
+
     public static Component ofComponent(Audience audience, String key, Object... args) {
-        //note: if call ofString() directly with args, then we pass args to ofString(),
-        // or else we pass args to ofComponent() to avoid args being formatted twice
-        return ofComponent(getString(audience, key), args);
+        return ofComponent(audience, true, key, args);
     }
 
-    public static Component ofComponent(String str, Object... args) {
-        return miniMessageParser.deserialize(formatString(str, args));
-    }
-
-    public static net.minecraft.text.Text ofVomponent(String str, Object... args) {
-        return toVomponent(ofComponent(str, args));
-    }
-
-    public static net.minecraft.text.Text ofVomponent(Audience audience, String key, Object... args) {
+    public static Text ofVomponent(Audience audience, String key, Object... args) {
         return toVomponent(ofComponent(audience, key, args));
     }
 
-    public static net.minecraft.text.Text toVomponent(Component component) {
+    public static Component ofComponent(String str, Object... args) {
+        return ofComponent(null, false, str, args);
+    }
+
+    public static Text ofVomponent(String str, Object... args) {
+        return toVomponent(ofComponent(str, args));
+    }
+
+    public static Text toVomponent(Component component) {
         return adventure.toNative(component);
     }
 
-    public static List<net.minecraft.text.Text> ofVomponents(Audience audience, String key, Object... args) {
+    public static List<Text> ofVomponents(Audience audience, String key, Object... args) {
         String lines = getString(audience, key, args);
 
-        List<net.minecraft.text.Text> ret = new ArrayList<>();
+        List<Text> ret = new ArrayList<>();
         for (String line : lines.split("\n")) {
             ret.add(ofVomponent(line));
         }
