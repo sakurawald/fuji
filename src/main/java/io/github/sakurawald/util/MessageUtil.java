@@ -2,6 +2,9 @@ package io.github.sakurawald.util;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import eu.pb4.placeholders.api.PlaceholderContext;
+import eu.pb4.placeholders.api.Placeholders;
+import eu.pb4.placeholders.api.node.TextNode;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.handler.ResourceConfigHandler;
@@ -114,12 +117,24 @@ public class MessageUtil {
         player.sendMessage(adventure.toNative(ofComponent(getString(player, key), args)));
     }
 
-
     /* This is the core method to map `String` into `Component`.
      *  All methods that return `Vomponent` are converted from this method.
      * */
     public static Component ofComponent(Audience audience, boolean isKey, String keyOrString, Object... args) {
         String string = isKey ? getString(audience, keyOrString, args) : keyOrString;
+
+        PlaceholderContext placeholderContext;
+        if (audience instanceof PlayerEntity playerEntity) {
+            placeholderContext = PlaceholderContext.of(playerEntity);
+        } else {
+            placeholderContext = PlaceholderContext.of(Fuji.SERVER);
+        }
+
+        // placeholder parser
+        Component component = Placeholders.parseText(TextNode.of(string), placeholderContext).asComponent();
+        string = PlainTextComponentSerializer.plainText().serialize(component);
+
+        // minimessage parser
         return miniMessageParser.deserialize(string);
     }
 

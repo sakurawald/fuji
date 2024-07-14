@@ -292,7 +292,8 @@ public class ChatInitializer extends ModuleInitializer {
         }
 
         /* resolve tags */
-        Component component = miniMessage.deserialize(format, Formatter.date("date", LocalDateTime.now(ZoneId.systemDefault()))).asComponent();
+        Component component = MessageUtil.ofComponent(player, false, format);
+                
         component = resolveItemTag(player, component);
         component = resolveInvTag(player, component);
         component = resolveEnderTag(player, component);
