@@ -26,6 +26,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import org.apache.commons.io.FileUtils;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -50,6 +51,7 @@ public class MessageUtil {
     private static final Map<String, String> player2lang = new HashMap<>();
     @Getter
     private static final Map<String, JsonObject> lang2json = new HashMap<>();
+    private static final JsonObject UNSUPPORTED_LANGUAGE = new JsonObject();
 
     static {
         writeDefaultLanguageFiles();
@@ -81,10 +83,11 @@ public class MessageUtil {
             Fuji.LOGGER.info("Language {} loaded.", lang);
         } catch (IOException e) {
             Fuji.LOGGER.error("Failed to load language '{}'", lang);
+            lang2json.put(lang, UNSUPPORTED_LANGUAGE);
         }
     }
 
-    private String getClientSideLanguage(Object audience) {
+    private @NotNull String getClientSideLanguage(@Nullable Object audience) {
         String defaultLanguage = Configs.configHandler.model().common.language.default_language;
 
         if (audience == null) {
@@ -101,9 +104,9 @@ public class MessageUtil {
         return player == null ? defaultLanguage : player2lang.get(player.getGameProfile().getName());
     }
 
-    private JsonObject getLanguage(String lang) {
+    private @NotNull JsonObject getLanguage(String lang) {
         // if target language is missing, we fall back to default_language
-        if (!lang2json.containsKey(lang)) {
+        if (!lang2json.containsKey(lang) && lang2json.get(lang) == UNSUPPORTED_LANGUAGE) {
             lang = Configs.configHandler.model().common.language.default_language;
         }
 
@@ -111,7 +114,7 @@ public class MessageUtil {
         return lang2json.get(lang);
     }
 
-    public static String getString(@Nullable Object audience, String key, Object... args) {
+    public static @NotNull String getString(@Nullable Object audience, String key, Object... args) {
         /* get lang */
         String lang = getClientSideLanguage(audience);
 
@@ -129,7 +132,7 @@ public class MessageUtil {
         return errorString;
     }
 
-    private static String formatString(String string, Object... args) {
+    private static @NotNull String formatString(String string, Object... args) {
         if (args.length > 0) {
             return String.format(string, args);
         }
@@ -144,7 +147,7 @@ public class MessageUtil {
     /* This is the core method to map `String` into `Component`.
      *  All methods that return `Vomponent` are converted from this method.
      * */
-    public static Component ofComponent(@Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
+    public static @NotNull Component ofComponent(@Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
         String string = isKey ? getString(audience, keyOrString, args) : keyOrString;
 
         PlaceholderContext placeholderContext;
@@ -158,23 +161,23 @@ public class MessageUtil {
         return MERGED_PARSER.parseText(TextNode.of(string), parserContext).asComponent();
     }
 
-    public static Component ofComponent(Audience audience, String key, Object... args) {
+    public static @NotNull Component ofComponent(@Nullable Audience audience, String key, Object... args) {
         return ofComponent(audience, true, key, args);
     }
 
-    public static Text ofVomponent(Audience audience, String key, Object... args) {
+    public static @NotNull Text ofVomponent(@Nullable Audience audience, String key, Object... args) {
         return toVomponent(ofComponent(audience, key, args));
     }
 
-    public static Text ofVomponent(String str, Object... args) {
+    public static @NotNull Text ofVomponent(String str, Object... args) {
         return toVomponent(ofComponent(null, false, str, args));
     }
 
-    public static Text toVomponent(Component component) {
+    public static @NotNull Text toVomponent(Component component) {
         return adventure.toNative(component);
     }
 
-    public static List<Text> ofVomponents(Audience audience, String key, Object... args) {
+    public static List<Text> ofVomponents(@Nullable Audience audience, String key, Object... args) {
         String lines = getString(audience, key, args);
 
         List<Text> ret = new ArrayList<>();
@@ -184,15 +187,15 @@ public class MessageUtil {
         return ret;
     }
 
-    public static void sendMessage(Audience audience, String key, Object... args) {
+    public static void sendMessage(@NotNull Audience audience, String key, Object... args) {
         audience.sendMessage(ofComponent(audience, key, args));
     }
 
-    public static void sendActionBar(Audience audience, String key, Object... args) {
+    public static void sendActionBar(@NotNull Audience audience, String key, Object... args) {
         audience.sendActionBar(ofComponent(audience, key, args));
     }
 
-    public static void sendBroadcast(String key, Object... args) {
+    public static void sendBroadcast(@NotNull String key, Object... args) {
         // fix: log broadcast for console
         Fuji.LOGGER.info(PlainTextComponentSerializer.plainText().serialize(ofComponent(null, key, args)));
 

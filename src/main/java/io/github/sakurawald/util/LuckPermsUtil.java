@@ -67,6 +67,27 @@ public class LuckPermsUtil {
 
     }
 
+    public static <T> String getPrefix(ServerPlayerEntity player) {
+        if (getAPI() == null) {
+            return null;
+        }
+
+        return getAPI().getPlayerAdapter(ServerPlayerEntity.class)
+                .getMetaData(player)
+                .getPrefix();
+
+    }
+
+    public static <T> String getSuffix(ServerPlayerEntity player) {
+        if (getAPI() == null) {
+            return null;
+        }
+
+        return getAPI().getPlayerAdapter(ServerPlayerEntity.class)
+                .getMetaData(player)
+                .getSuffix();
+
+    }
 
     public static void saveMeta(ServerPlayerEntity player, String key, String value) {
         User user = getAPI().getUserManager()

@@ -415,14 +415,31 @@ public class ConfigModel {
                 Command: /chat
                                 
                 Feature:
-                - You can insert `placeholder` like `%world:name%` in the chat message. (See more placeholders in: https://placeholders.pb4.eu/user/default-placeholders/)
+                - You can create your own `regex transformaer` to repalce the input message.
+                - You can insert any `placeholder` like `%world:name%` in the chat message. (See more placeholders in: https://placeholders.pb4.eu/user/default-placeholders/)
+                - You can insert player's prefix and suffix. Just insert `fuji:player_prefix` and `fuji:player_suffix`. 
+                    Requires `luckperms` installed`. See also: https://luckperms.net/wiki/Prefixes,-Suffixes-&-Meta
+                    After you installed `luckperms` mod, just issue `/lp group default meta setprefix <yellow>[awesome]` to assign prefix.
+                    Don't forget to change the format of `Chat module`, and issue `/fuji reload`
                 - You can insert `item`, `inv` and `ender` to display your `item in your hand`, `your inventory` and `your enderchest`
                 - You can insert `@Steve` to mention another player.
                 - You can insert `pos` to show the position.
+                - You can use `mini-message language` to define complex format.
+                    See: https://docs.advntr.dev/minimessage/format.html
+                    See: https://placeholders.pb4.eu/user/quicktext
+                                
+                Placeholder:
+                - %fuji:item%
+                - %fuji:inv%
+                - %fuji:ender%
+                - %fuji:pos%
+                - %fuji:date%
+                - %fuji:player_prefix%
+                - %fuji:player_suffix%
                                 
                 Note:
                 - In vanilla minecraft, `chat message` is marked as `system message` and its type is `MessageType.CHAT`.
-                
+                                
                   However, fuji will hijack the vanilla `chat message`, and `re-send` them as the type of `MessageType.SYSTEM`.
                   This means, if you use `Chat` module provides by fuji, then all the `MessageType.CHAT` message will be re-send as `MessageType.SYSTEM` message
                   
@@ -438,10 +455,6 @@ public class ConfigModel {
 
             @Documentation("""
                     The server chat format for all players.
-                                
-                    You can use `minimessage language` to define complex format.
-                    See: https://docs.advntr.dev/minimessage/format.html
-                                
                     """)
             public String format = "<#B1B2FF>[%fuji:player_playtime%\uD83D\uDD25 %fuji:player_mined%⛏ %fuji:player_placed%\uD83D\uDD33 %fuji:player_killed%\uD83D\uDDE1 %fuji:player_moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:/msg %player% ><hover:show_text:\"Time: %fuji:date%<newline><italic>Click to Message\">%player:name%</hover></click></dark_green>> %message%";
 
@@ -481,15 +494,16 @@ public class ConfigModel {
             }
 
             public Pattern pattern = new Pattern();
+
             public class Pattern {
-                public List<RegexEntry> list = new ArrayList<>(){
+                public List<RegexEntry> list = new ArrayList<>() {
                     {
-                        this.add(new RegexEntry("^BV(\\w{10})","<underline><blue><hover:show_text:'$1'><click:open_url:'https://www.bilibili.com/video/BV$1'>bilibili $1</click></hover></blue></underline>"));
+                        this.add(new RegexEntry("^BV(\\w{10})", "<underline><blue><hover:show_text:'$1'><click:open_url:'https://www.bilibili.com/video/BV$1'>bilibili $1</click></hover></blue></underline>"));
                         this.add(new RegexEntry("(?<=^|\\s)item(?=\\s|$)", "%fuji:item%"));
                         this.add(new RegexEntry("(?<=^|\\s)inv(?=\\s|$)", "%fuji:inv%"));
                         this.add(new RegexEntry("(?<=^|\\s)ender(?=\\s|$)", "%fuji:ender%"));
                         this.add(new RegexEntry("(?<=^|\\s)pos(?=\\s|$)", "%fuji:pos%"));
-                        this.add(new RegexEntry("((https?)://[^\\s/$.?#].\\S*)","<underline><blue><hover:show_text:'$1'><click:open_url:'$1'>$1</click></hover></blue></underline>"));
+                        this.add(new RegexEntry("((https?)://[^\\s/$.?#].\\S*)", "<underline><blue><hover:show_text:'$1'><click:open_url:'$1'>$1</click></hover></blue></underline>"));
                     }
                 };
 

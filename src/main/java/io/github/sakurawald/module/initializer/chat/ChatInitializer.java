@@ -17,6 +17,7 @@ import io.github.sakurawald.module.initializer.chat.display.DisplayHelper;
 import io.github.sakurawald.module.initializer.chat.mention.MentionPlayersJob;
 import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.DateUtil;
+import io.github.sakurawald.util.LuckPermsUtil;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -64,6 +65,8 @@ public class ChatInitializer extends ModuleInitializer {
         registerEnderPlaceholder();
         registerPosPlaceholder();
         registerDatePlaceholder();
+        registerPrefixPlaceholder();
+        registerSuffixPlaceholder();
     }
 
     @Override
@@ -178,6 +181,30 @@ public class ChatInitializer extends ModuleInitializer {
                     return PlaceholderResult.value(MessageUtil.toVomponent(component));
                 });
 
+    }
+
+    private void registerSuffixPlaceholder() {
+        Placeholders.register(
+                Identifier.of(Fuji.MOD_ID, "player_suffix"),
+                (ctx, arg) -> {
+                    if (ctx.player() == null) PlaceholderResult.invalid();
+
+                    ServerPlayerEntity player = ctx.player();
+                    String prefix = LuckPermsUtil.getPrefix(player);
+                    return PlaceholderResult.value(MessageUtil.ofVomponent(prefix));
+                });
+    }
+
+    private void registerPrefixPlaceholder() {
+        Placeholders.register(
+                Identifier.of(Fuji.MOD_ID, "player_prefix"),
+                (ctx, arg) -> {
+                    if (ctx.player() == null) PlaceholderResult.invalid();
+
+                    ServerPlayerEntity player = ctx.player();
+                    String prefix = LuckPermsUtil.getPrefix(player);
+                    return PlaceholderResult.value(MessageUtil.ofVomponent(prefix));
+                });
     }
 
 

@@ -14,33 +14,30 @@ import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
 
-// TODO: specific command module
-// TODO: add native shell support specific command
-// TODO: kit module -> spec-command
-
 // TODO: custom tab list
-
-// TODO: refactor command facility (selector, aop, options, parser)
-// TODO: command warmup module
 // TODO: spawn module
+// TODO: command warmup module
 // TODO: tppos module
 // TODO: playtime(every/for) rewards module
 // TODO: rank module
 // TODO: remove fabric-api dep
-// TODO: luckperms context calculator
 // TODO: invsee module
 // TODO: condense module
 // TODO: powertool module
 
-// TODO: nickname module
-// TODO: player nickname / prefix / suffix
-
 // TODO: a program to generate module reference DAG
 // TODO: code review for skin module
-// TODO: a lisp-like DSL (parser and code-walker) for specific command.
 
-// TODO: a light-weight way to implement chat module (parser)
-// TODO: refactor chat module to use prefix/suffix metas
+// TODO: nickname module -> luckperms
+
+// TODO: luckperms context calculator
+
+// TODO: a lisp-like DSL (parser and code-walker) for specific command.
+// TODO: refactor command facility (selector, aop, options, parser)
+// TODO: specific command module
+// TODO: add native shell support specific command
+// TODO: kit module -> spec-command
+
 
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";
