@@ -425,7 +425,9 @@ public class ConfigModel {
                 - You can insert `@Steve` to mention another player.
                 - You can insert `pos` to show the position.
                 - You can use `mini-message language` to define complex format.
+                
                     See: https://docs.advntr.dev/minimessage/format.html
+                    
                     See: https://placeholders.pb4.eu/user/quicktext
                                 
                 Placeholder:
