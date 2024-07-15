@@ -109,7 +109,7 @@ public class ChatInitializer extends ModuleInitializer {
                             MessageUtil.ofComponent(player, "display.ender_chest.text")
                                     .hoverEvent(MessageUtil.ofComponent(player, "display.click.prompt"))
                                     .clickEvent(buildDisplayClickEvent(displayUUID));
-                    return PlaceholderResult.value(MessageUtil.toVomponent(replacement));
+                    return PlaceholderResult.value(MessageUtil.toText(replacement));
                 });
     }
 
@@ -126,7 +126,7 @@ public class ChatInitializer extends ModuleInitializer {
                                     .hoverEvent(MessageUtil.ofComponent(player, "display.click.prompt"))
                                     .clickEvent(buildDisplayClickEvent(displayUUID));
 
-                    return PlaceholderResult.value(MessageUtil.toVomponent(replacement));
+                    return PlaceholderResult.value(MessageUtil.toText(replacement));
                 });
     }
 
@@ -142,7 +142,7 @@ public class ChatInitializer extends ModuleInitializer {
                             Component.text("[%s]".formatted(player.getMainHandStack().getName().getString()))
                                     .hoverEvent(MessageUtil.ofComponent(player, "display.click.prompt"))
                                     .clickEvent(buildDisplayClickEvent(displayUUID));
-                    return PlaceholderResult.value(MessageUtil.toVomponent(replacement));
+                    return PlaceholderResult.value(MessageUtil.toText(replacement));
                 });
     }
 
@@ -179,7 +179,7 @@ public class ChatInitializer extends ModuleInitializer {
                             .clickEvent(ClickEvent.runCommand(clickCommand))
                             .hoverEvent(Component.text(hoverString + "\n").append(MessageUtil.ofComponent(player, "chat.xaero_waypoint_add")));
 
-                    return PlaceholderResult.value(MessageUtil.toVomponent(component));
+                    return PlaceholderResult.value(MessageUtil.toText(component));
                 });
 
     }

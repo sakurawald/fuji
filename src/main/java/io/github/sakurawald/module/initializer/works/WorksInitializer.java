@@ -209,7 +209,7 @@ public class WorksInitializer extends ModuleInitializer {
                 .setItem(Items.PLAYER_HEAD)
                 .setName(MessageUtil.ofText(player, "works.list.help"))
                 .setSkullOwner(GuiUtil.QUESTION_MARK_ICON)
-                .setLore(MessageUtil.ofVomponents(player, "works.list.help.lore")));
+                .setLore(MessageUtil.ofTextList(player, "works.list.help.lore")));
         gui.setSlot(52, new GuiElementBuilder()
                 .setItem(Items.COMPASS)
                 .setName(MessageUtil.ofText(player, "search"))

@@ -61,7 +61,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
             double rate = entry.getValue() * ((double) (3600 * 1000) / ((Math.min(this.sample.sampleEndTimeMS, currentTimeMS)) - this.sample.sampleStartTimeMS));
             net.kyori.adventure.text.Component component = MessageUtil.ofComponent(player, "works.production_work.prop.sample_counter.entry", entry.getValue(), rate)
                     .replaceText(TextReplacementConfig.builder().matchLiteral("[item]").replacement(Text.translatable(key)).build());
-            ret.add(MessageUtil.toVomponent(component));
+            ret.add(MessageUtil.toText(component));
         });
 
         if (ret.isEmpty()) {
@@ -76,7 +76,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
         List<Text> ret = super.asLore(player);
         // note: hide sample info in lore if sample not exists
         if (this.sample.sampleStartTimeMS == 0) {
-            ret.addAll((MessageUtil.ofVomponents(player, "works.production_work.sample.not_exists")));
+            ret.addAll((MessageUtil.ofTextList(player, "works.production_work.sample.not_exists")));
             return ret;
         }
 
@@ -141,7 +141,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
         gui.addSlot(new GuiElementBuilder()
                 .setItem(Items.CLOCK)
                 .setName(MessageUtil.ofText(player, "works.production_work.set.sample"))
-                .setLore(MessageUtil.ofVomponents(player, "works.production_work.set.sample.lore"))
+                .setLore(MessageUtil.ofTextList(player, "works.production_work.set.sample.lore"))
                 .setCallback(() -> new ConfirmGui(player) {
                             @Override
                             public void onConfirm() {

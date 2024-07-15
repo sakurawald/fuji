@@ -168,7 +168,7 @@ public class MessageUtil {
         return ofText(null, false, str, args);
     }
 
-    public static List<Text> ofVomponents(@Nullable Audience audience, String key, Object... args) {
+    public static List<Text> ofTextList(@Nullable Audience audience, String key, Object... args) {
         String lines = getString(audience, key, args);
 
         List<Text> ret = new ArrayList<>();
@@ -178,7 +178,7 @@ public class MessageUtil {
         return ret;
     }
 
-    public static @NotNull Text toVomponent(Component component) {
+    public static @NotNull Text toText(Component component) {
         return adventure.toNative(component);
     }
 

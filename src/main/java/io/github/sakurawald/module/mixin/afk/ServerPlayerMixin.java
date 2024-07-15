@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static io.github.sakurawald.util.MessageUtil.ofComponent;
-import static io.github.sakurawald.util.MessageUtil.toVomponent;
+import static io.github.sakurawald.util.MessageUtil.toText;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerMixin implements AfkStateAccessor {
@@ -45,7 +45,7 @@ public abstract class ServerPlayerMixin implements AfkStateAccessor {
             cir.setReturnValue(Text.literal("afk " + player.getGameProfile().getName()));
             net.kyori.adventure.text.@NotNull Component component = ofComponent(null, false,Configs.configHandler.model().modules.afk.format)
                     .replaceText(TextReplacementConfig.builder().match("%player_display_name%").replacement(player.getDisplayName()).build());
-            cir.setReturnValue(toVomponent(component));
+            cir.setReturnValue(toText(component));
         } else {
             cir.setReturnValue(null);
         }
