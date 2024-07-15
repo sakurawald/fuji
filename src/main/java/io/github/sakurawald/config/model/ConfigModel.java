@@ -422,8 +422,9 @@ public class ConfigModel {
                     After you installed `luckperms` mod, just issue `/lp group default meta setprefix <yellow>[awesome]` to assign prefix.
                     Don't forget to change the format of `Chat module`, and issue `/fuji reload`
                 - You can insert `item`, `inv` and `ender` to display your `item in your hand`, `your inventory` and `your enderchest`
-                - You can insert `@Steve` to mention another player.
+                - You can insert `Steve` to mention another player named `Steve`.
                 - You can insert `pos` to show the position.
+                - You can use `markdown language` to define simple format.
                 - You can use `mini-message language` to define complex format.
                 
                     See: https://docs.advntr.dev/minimessage/format.html
@@ -461,7 +462,7 @@ public class ConfigModel {
             }
 
             @Documentation("""
-                    If you insert `@Steve` in chat message, then the player named `Steve` will get audio mention.
+                    If you insert `Steve` in chat message, then the player named `Steve` will get audio mention.
                     """)
             public class MentionPlayer {
                 public String sound = "entity.experience_orb.pickup";
