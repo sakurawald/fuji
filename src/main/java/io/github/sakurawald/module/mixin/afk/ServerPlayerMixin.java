@@ -3,7 +3,7 @@ package io.github.sakurawald.module.mixin.afk;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.afk.AfkStateAccessor;
 import io.github.sakurawald.util.MessageUtil;
-import net.kyori.adventure.text.TextReplacementConfig;
+import net.kyori.adventure.text.Component;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -18,8 +18,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import static io.github.sakurawald.util.MessageUtil.ofComponent;
-import static io.github.sakurawald.util.MessageUtil.toText;
+import static io.github.sakurawald.util.MessageUtil.*;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerMixin implements AfkStateAccessor {
@@ -43,9 +42,7 @@ public abstract class ServerPlayerMixin implements AfkStateAccessor {
 
         if (accessor.fuji$isAfk()) {
             cir.setReturnValue(Text.literal("afk " + player.getGameProfile().getName()));
-            net.kyori.adventure.text.@NotNull Component component = ofComponent(null, false,Configs.configHandler.model().modules.afk.format)
-                    .replaceText(TextReplacementConfig.builder().match("%player_display_name%").replacement(player.getDisplayName()).build());
-            cir.setReturnValue(toText(component));
+            cir.setReturnValue(ofText(player, false, Configs.configHandler.model().modules.afk.format));
         } else {
             cir.setReturnValue(null);
         }

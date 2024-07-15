@@ -545,7 +545,7 @@ public class ConfigModel {
         }
 
         @Documentation("""
-                This module provides `/work` command.
+                This module provides `/works` command.
                                 
                 A `work` means a project (a building, a red-stone device ...) that crafted by a player.
                                 
@@ -787,7 +787,7 @@ public class ConfigModel {
 
             public boolean enable = false;
             @Documentation("The tab-name format when a player is afk")
-            public String format = "<gray>[AFK] <reset>%player_display_name%";
+            public String format = "<gray>[AFK] <reset>%player:name_visual%";
 
             @Documentation("The afk checker is a timer to check and mark the player's recently active time.")
             public AfkChecker afk_checker = new AfkChecker();
