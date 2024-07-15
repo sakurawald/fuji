@@ -23,7 +23,7 @@ public abstract class ServerGamePacketListenerImplMixin {
     public ServerPlayerEntity player;
 
 
-    @ModifyVariable(method = "handleDecoratedMessage", at = @At(value = "HEAD"))
+    @ModifyVariable(method = "handleDecoratedMessage", at = @At(value = "HEAD"), argsOnly = true)
     public SignedMessage handleChat(SignedMessage before) {
         Text text = module.parseText(player, before.getContent().getString());
         module.getChatHistory().add(text.asComponent());

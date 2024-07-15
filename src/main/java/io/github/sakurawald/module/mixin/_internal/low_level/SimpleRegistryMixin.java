@@ -1,8 +1,8 @@
-package io.github.sakurawald.module.mixin.resource_world.registry;
+package io.github.sakurawald.module.mixin._internal.low_level;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.module.initializer.resource_world.interfaces.SimpleRegistryMixinInterface;
+import io.github.sakurawald.module.common.structure.SimpleRegistryMixinInterface;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import it.unimi.dsi.fastutil.objects.Reference2IntMap;
 import net.minecraft.registry.MutableRegistry;
@@ -24,7 +24,6 @@ import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
 @Mixin(SimpleRegistry.class)
-
 public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInterface<T>, MutableRegistry<T> {
 
     @Shadow

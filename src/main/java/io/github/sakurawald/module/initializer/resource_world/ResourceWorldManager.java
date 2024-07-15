@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.resource_world;
 
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.initializer.resource_world.interfaces.SimpleRegistryMixinInterface;
+import io.github.sakurawald.module.common.structure.SimpleRegistryMixinInterface;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.initializer.teleport_warmup.TeleportTicket;
 import io.github.sakurawald.module.initializer.teleport_warmup.TeleportWarmupInitializer;

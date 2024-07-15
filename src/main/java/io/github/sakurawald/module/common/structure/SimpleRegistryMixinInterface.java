@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.resource_world.interfaces;
+package io.github.sakurawald.module.common.structure;
 
 import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.util.Identifier;

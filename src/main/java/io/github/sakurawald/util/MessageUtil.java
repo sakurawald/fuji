@@ -100,7 +100,7 @@ public class MessageUtil {
             default -> null;
         };
 
-        return player == null ? defaultLanguage : player2lang.get(player.getGameProfile().getName());
+        return player == null ? defaultLanguage : player2lang.getOrDefault(player.getGameProfile().getName(), defaultLanguage);
     }
 
     private @NotNull JsonObject getLanguage(String lang) {

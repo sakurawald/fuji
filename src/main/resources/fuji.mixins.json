@@ -46,7 +46,7 @@
     "resource_world.MinecraftServerMixin",
     "resource_world.ServerWorldMixin",
     "resource_world.registry.DimensionOptionsMixin",
-    "resource_world.registry.SimpleRegistryMixin",
+    "_internal.low_level.SimpleRegistryMixin",
     "resource_world.registry.WorldGenSettingsMixin",
     "seen.PlayerListMixin",
     "sit.InteractModifierMixin",

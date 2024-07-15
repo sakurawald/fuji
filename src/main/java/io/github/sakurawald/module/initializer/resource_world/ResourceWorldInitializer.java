@@ -10,7 +10,7 @@ import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.newbie_welcome.random_teleport.RandomTeleport;
 import io.github.sakurawald.module.initializer.resource_world.interfaces.DimensionOptionsMixinInterface;
-import io.github.sakurawald.module.initializer.resource_world.interfaces.SimpleRegistryMixinInterface;
+import io.github.sakurawald.module.common.structure.SimpleRegistryMixinInterface;
 import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.ScheduleUtil;
