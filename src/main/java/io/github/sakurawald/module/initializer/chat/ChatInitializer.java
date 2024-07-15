@@ -192,7 +192,7 @@ public class ChatInitializer extends ModuleInitializer {
 
                     ServerPlayerEntity player = ctx.player();
                     String prefix = LuckPermsUtil.getPrefix(player);
-                    return PlaceholderResult.value(MessageUtil.ofVomponent(prefix));
+                    return PlaceholderResult.value(MessageUtil.ofText(prefix));
                 });
     }
 
@@ -204,7 +204,7 @@ public class ChatInitializer extends ModuleInitializer {
 
                     ServerPlayerEntity player = ctx.player();
                     String prefix = LuckPermsUtil.getPrefix(player);
-                    return PlaceholderResult.value(MessageUtil.ofVomponent(prefix));
+                    return PlaceholderResult.value(MessageUtil.ofText(prefix));
                 });
     }
 
@@ -308,7 +308,7 @@ public class ChatInitializer extends ModuleInitializer {
 
         /* combine */
         String string = format.replace("%message%", message);
-        return MessageUtil.ofVomponent(player, false, string);
+        return MessageUtil.ofText(player, false, string);
     }
 
 }

@@ -13,7 +13,7 @@ public class InputSignGui extends SignGui {
         this.setSignType(Blocks.CHERRY_WALL_SIGN);
         this.setColor(DyeColor.BLACK);
         if (promptKey != null) {
-            this.setLine(3, MessageUtil.ofVomponent(promptKey));
+            this.setLine(3, MessageUtil.ofText(promptKey));
         }
         this.setAutoUpdate(false);
     }

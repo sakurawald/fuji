@@ -31,7 +31,7 @@ class PlayerInputGui extends AnvilInputGui {
         this.setDefaultInputValue("");
         this.setSlot(1, Items.PLAYER_HEAD.getDefaultStack());
         this.resetSearchResult();
-        this.setTitle(MessageUtil.ofVomponent(player, "head.category.player"));
+        this.setTitle(MessageUtil.ofText(player, "head.category.player"));
     }
 
     private void resetSearchResult() {
@@ -74,7 +74,7 @@ class PlayerInputGui extends AnvilInputGui {
                 GuiElementBuilder builder = new GuiElementBuilder().setItem(Items.PLAYER_HEAD);
                 if (HeadInitializer.headHandler.model().economyType != HeadInitializer.EconomyType.FREE) {
                     builder.addLoreLine(Text.empty());
-                    builder.addLoreLine(MessageUtil.ofVomponent(player, "head.price").copy().append(module.getCost()));
+                    builder.addLoreLine(MessageUtil.ofText(player, "head.price").copy().append(module.getCost()));
                 }
 
                 builder.setSkullOwner(profile, Fuji.SERVER);

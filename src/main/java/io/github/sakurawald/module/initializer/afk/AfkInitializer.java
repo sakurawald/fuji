@@ -75,7 +75,7 @@ public class AfkInitializer extends ModuleInitializer {
 
                     afk_player.fuji$setAfk(true);
                     if (Configs.configHandler.model().modules.afk.afk_checker.kick_player) {
-                        player.networkHandler.disconnect(MessageUtil.ofVomponent(player, "afk.kick"));
+                        player.networkHandler.disconnect(MessageUtil.ofText(player, "afk.kick"));
                     }
                 }
             }

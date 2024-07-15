@@ -52,7 +52,7 @@ public class PagedHeadsGui extends LayeredGui {
         }
 
         navigationLayer.setSlot(
-                3, new GuiElementBuilder().setItem(Items.PLAYER_HEAD).setName(MessageUtil.ofVomponent(parent.getPlayer(), "previous_page")).setSkullOwner(GuiUtil.PREVIOUS_PAGE_ICON).asStack(),
+                3, new GuiElementBuilder().setItem(Items.PLAYER_HEAD).setName(MessageUtil.ofText(parent.getPlayer(), "previous_page")).setSkullOwner(GuiUtil.PREVIOUS_PAGE_ICON).asStack(),
                 ((index, type, action) -> {
                     this.page -= 1;
                     if (this.page < 0) {
@@ -64,7 +64,7 @@ public class PagedHeadsGui extends LayeredGui {
         );
 
         navigationLayer.setSlot(
-                5, new GuiElementBuilder().setItem(Items.PLAYER_HEAD).setName(MessageUtil.ofVomponent(parent.getPlayer(), "next_page")).setSkullOwner(GuiUtil.NEXT_PAGE_ICON).asStack(),
+                5, new GuiElementBuilder().setItem(Items.PLAYER_HEAD).setName(MessageUtil.ofText(parent.getPlayer(), "next_page")).setSkullOwner(GuiUtil.NEXT_PAGE_ICON).asStack(),
                 ((index, type, action) -> {
                     this.page += 1;
                     if (this.page >= getMaxPage()) {
@@ -75,7 +75,7 @@ public class PagedHeadsGui extends LayeredGui {
         );
         navigationLayer.setSlot(4, new GuiElementBuilder(Items.PLAYER_HEAD)
                 .setSkullOwner(GuiUtil.QUESTION_MARK_ICON)
-                .setName(MessageUtil.ofVomponent(parent.getPlayer(), "head.page", this.page + 1, this.getMaxPage()))
+                .setName(MessageUtil.ofText(parent.getPlayer(), "head.page", this.page + 1, this.getMaxPage()))
         );
     }
 
@@ -86,7 +86,7 @@ public class PagedHeadsGui extends LayeredGui {
                 var builder = GuiElementBuilder.from(head.of());
                 if (HeadInitializer.headHandler.model().economyType != HeadInitializer.EconomyType.FREE) {
                     builder.addLoreLine(Text.empty());
-                    builder.addLoreLine(MessageUtil.ofVomponent(parent.getPlayer(), "head.price").copy().append(module.getCost()));
+                    builder.addLoreLine(MessageUtil.ofText(parent.getPlayer(), "head.price").copy().append(module.getCost()));
                 }
 
                 contentLayer.setSlot(i, builder.asStack(), (index, type, action) -> processHeadClick(head, type));

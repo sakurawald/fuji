@@ -25,14 +25,14 @@ public class HeadGui extends SimpleGui {
             addCategoryButton(index, category);
             ++index;
         }
-        this.setTitle(MessageUtil.ofVomponent(player, "head.title"));
+        this.setTitle(MessageUtil.ofText(player, "head.title"));
         this.setSlot(this.getSize() - 1, new GuiElementBuilder()
                 .setItem(Items.COMPASS)
-                .setName(MessageUtil.ofVomponent(player, "search"))
+                .setName(MessageUtil.ofText(player, "search"))
                 .setCallback((index1, type1, action) -> new SearchInputGui(this).open()));
         this.setSlot(this.getSize() - 2, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(MessageUtil.ofVomponent(player, "head.category.player"))
+                .setName(MessageUtil.ofText(player, "head.category.player"))
                 .setCallback((index1, type1, action) -> new PlayerInputGui(this).open()));
     }
 

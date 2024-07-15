@@ -146,7 +146,7 @@ public class MessageUtil {
     /* This is the core method to map `String` into `Component`.
      *  All methods that return `Vomponent` are converted from this method.
      * */
-    public static @NotNull Text ofVomponent(@Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
+    public static @NotNull Text ofText(@Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
         String string = isKey ? getString(audience, keyOrString, args) : keyOrString;
 
         PlaceholderContext placeholderContext;
@@ -160,12 +160,12 @@ public class MessageUtil {
         return NODE_PARSER.parseText(TextNode.of(string), parserContext);
     }
 
-    public static @NotNull Text ofVomponent(@Nullable Audience audience, String key, Object... args) {
-        return ofVomponent(audience, true, key, args);
+    public static @NotNull Text ofText(@Nullable Audience audience, String key, Object... args) {
+        return ofText(audience, true, key, args);
     }
 
-    public static @NotNull Text ofVomponent(String str, Object... args) {
-        return ofVomponent(null, false, str, args);
+    public static @NotNull Text ofText(String str, Object... args) {
+        return ofText(null, false, str, args);
     }
 
     public static List<Text> ofVomponents(@Nullable Audience audience, String key, Object... args) {
@@ -173,7 +173,7 @@ public class MessageUtil {
 
         List<Text> ret = new ArrayList<>();
         for (String line : lines.split("\n")) {
-            ret.add(ofVomponent(line));
+            ret.add(ofText(line));
         }
         return ret;
     }
@@ -183,7 +183,7 @@ public class MessageUtil {
     }
 
     public static @NotNull Component ofComponent(@Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
-        return ofVomponent(audience, isKey, keyOrString, args).asComponent();
+        return ofText(audience, isKey, keyOrString, args).asComponent();
     }
 
     public static @NotNull Component ofComponent(@Nullable Audience audience, String key, Object... args) {

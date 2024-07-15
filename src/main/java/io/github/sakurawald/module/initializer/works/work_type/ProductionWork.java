@@ -65,7 +65,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
         });
 
         if (ret.isEmpty()) {
-            ret.add(MessageUtil.ofVomponent(player, "works.production_work.prop.sample_counter.empty"));
+            ret.add(MessageUtil.ofText(player, "works.production_work.prop.sample_counter.empty"));
         }
         return ret;
     }
@@ -80,11 +80,11 @@ public class ProductionWork extends Work implements ScheduleMethod {
             return ret;
         }
 
-        ret.add(MessageUtil.ofVomponent(player, "works.production_work.prop.sample_start_time", DateUtil.toStandardDateFormat(this.sample.sampleStartTimeMS)));
-        ret.add(MessageUtil.ofVomponent(player, "works.production_work.prop.sample_end_time", DateUtil.toStandardDateFormat(this.sample.sampleEndTimeMS)));
-        ret.add(MessageUtil.ofVomponent(player, "works.production_work.prop.sample_dimension", this.sample.sampleDimension));
-        ret.add(MessageUtil.ofVomponent(player, "works.production_work.prop.sample_coordinate", this.sample.sampleX, this.sample.sampleY, this.sample.sampleZ));
-        ret.add(MessageUtil.ofVomponent(player, "works.production_work.prop.sample_distance", this.sample.sampleDistance));
+        ret.add(MessageUtil.ofText(player, "works.production_work.prop.sample_start_time", DateUtil.toStandardDateFormat(this.sample.sampleStartTimeMS)));
+        ret.add(MessageUtil.ofText(player, "works.production_work.prop.sample_end_time", DateUtil.toStandardDateFormat(this.sample.sampleEndTimeMS)));
+        ret.add(MessageUtil.ofText(player, "works.production_work.prop.sample_dimension", this.sample.sampleDimension));
+        ret.add(MessageUtil.ofText(player, "works.production_work.prop.sample_coordinate", this.sample.sampleX, this.sample.sampleY, this.sample.sampleZ));
+        ret.add(MessageUtil.ofText(player, "works.production_work.prop.sample_distance", this.sample.sampleDistance));
 
         // check npe to avoid broken
         if (this.sample.sampleCounter != null) {
@@ -92,7 +92,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
             if (this.sample.sampleCounter.size() > Configs.configHandler.model().modules.works.sample_counter_top_n) {
                 trimCounter();
             }
-            ret.add(MessageUtil.ofVomponent(player, "works.production_work.prop.sample_counter"));
+            ret.add(MessageUtil.ofText(player, "works.production_work.prop.sample_counter"));
             ret.addAll(formatSampleCounter(player));
         }
         return ret;
@@ -136,11 +136,11 @@ public class ProductionWork extends Work implements ScheduleMethod {
     @Override
     public void openSpecializedSettingsGui(ServerPlayerEntity player, SimpleGui parentGui) {
         final SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X1, player, false);
-        gui.setTitle(MessageUtil.ofVomponent(player, "works.work.set.specialized_settings.title"));
+        gui.setTitle(MessageUtil.ofText(player, "works.work.set.specialized_settings.title"));
         gui.setLockPlayerInventory(true);
         gui.addSlot(new GuiElementBuilder()
                 .setItem(Items.CLOCK)
-                .setName(MessageUtil.ofVomponent(player, "works.production_work.set.sample"))
+                .setName(MessageUtil.ofText(player, "works.production_work.set.sample"))
                 .setLore(MessageUtil.ofVomponents(player, "works.production_work.set.sample.lore"))
                 .setCallback(() -> new ConfirmGui(player) {
                             @Override
@@ -153,7 +153,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
         gui.setSlot(8, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
                 .setSkullOwner(GuiUtil.PREVIOUS_PAGE_ICON)
-                .setName(MessageUtil.ofVomponent(player, "back"))
+                .setName(MessageUtil.ofText(player, "back"))
                 .setCallback(parentGui::open)
         );
 

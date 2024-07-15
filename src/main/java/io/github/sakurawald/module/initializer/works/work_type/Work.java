@@ -103,10 +103,10 @@ public abstract class Work {
         Work work = this;
         final SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X1, player, false);
         gui.setLockPlayerInventory(true);
-        gui.setTitle(MessageUtil.ofVomponent(player, "works.work.set.general_settings.title"));
+        gui.setTitle(MessageUtil.ofText(player, "works.work.set.general_settings.title"));
         gui.addSlot(new GuiElementBuilder()
                 .setItem(Items.NAME_TAG)
-                .setName(MessageUtil.ofVomponent(player, "works.work.set.target.name"))
+                .setName(MessageUtil.ofText(player, "works.work.set.target.name"))
                 .setCallback(() -> new InputSignGui(player, null) {
                     @Override
                     public void onClose() {
@@ -122,7 +122,7 @@ public abstract class Work {
         );
         gui.addSlot(new GuiElementBuilder()
                 .setItem(Items.CHERRY_HANGING_SIGN)
-                .setName(MessageUtil.ofVomponent(player, "works.work.set.target.introduction"))
+                .setName(MessageUtil.ofText(player, "works.work.set.target.introduction"))
                 .setCallback(() -> new InputSignGui(player, null) {
                     @Override
                     public void onClose() {
@@ -133,7 +133,7 @@ public abstract class Work {
         );
         gui.addSlot(new GuiElementBuilder()
                 .setItem(Items.END_PORTAL_FRAME)
-                .setName(MessageUtil.ofVomponent(player, "works.work.set.target.position"))
+                .setName(MessageUtil.ofText(player, "works.work.set.target.position"))
                 .setCallback(() -> {
                     work.level = player.getServerWorld().getRegistryKey().getValue().toString();
                     work.x = player.getPos().x;
@@ -145,7 +145,7 @@ public abstract class Work {
         );
         gui.addSlot(new GuiElementBuilder()
                 .setItem(Items.PAINTING)
-                .setName(MessageUtil.ofVomponent(player, "works.work.set.target.icon"))
+                .setName(MessageUtil.ofText(player, "works.work.set.target.icon"))
                 .setCallback(() -> {
                     ItemStack mainHandItem = player.getMainHandStack();
                     if (mainHandItem.isEmpty()) {
@@ -161,7 +161,7 @@ public abstract class Work {
 
         gui.addSlot(new GuiElementBuilder()
                 .setItem(Items.BARRIER)
-                .setName(MessageUtil.ofVomponent(player, "works.work.set.target.delete"))
+                .setName(MessageUtil.ofText(player, "works.work.set.target.delete"))
                 .setCallback(() -> new ConfirmGui(player) {
                     @Override
                     public void onConfirm() {
@@ -175,7 +175,7 @@ public abstract class Work {
         gui.setSlot(8, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
                 .setSkullOwner(GuiUtil.PREVIOUS_PAGE_ICON)
-                .setName(MessageUtil.ofVomponent(player, "works.list.back"))
+                .setName(MessageUtil.ofText(player, "works.list.back"))
                 .setCallback(parentGui::open)
         );
 
@@ -197,12 +197,12 @@ public abstract class Work {
 
     public List<Text> asLore(ServerPlayerEntity player) {
         ArrayList<Text> ret = new ArrayList<>();
-        ret.add(MessageUtil.ofVomponent(player, "works.work.prop.creator", this.creator));
+        ret.add(MessageUtil.ofText(player, "works.work.prop.creator", this.creator));
         if (this.introduction != null)
-            ret.add(MessageUtil.ofVomponent(player, "works.work.prop.introduction", this.introduction));
-        ret.add(MessageUtil.ofVomponent(player, "works.work.prop.time", DateUtil.toStandardDateFormat(this.createTimeMS)));
-        ret.add(MessageUtil.ofVomponent(player, "works.work.prop.dimension", this.level));
-        ret.add(MessageUtil.ofVomponent(player, "works.work.prop.coordinate", this.x, this.y, this.z));
+            ret.add(MessageUtil.ofText(player, "works.work.prop.introduction", this.introduction));
+        ret.add(MessageUtil.ofText(player, "works.work.prop.time", DateUtil.toStandardDateFormat(this.createTimeMS)));
+        ret.add(MessageUtil.ofText(player, "works.work.prop.dimension", this.level));
+        ret.add(MessageUtil.ofText(player, "works.work.prop.coordinate", this.x, this.y, this.z));
         return ret;
     }
 

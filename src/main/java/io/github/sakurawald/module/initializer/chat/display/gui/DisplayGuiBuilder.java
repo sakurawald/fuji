@@ -18,7 +18,7 @@ public abstract class DisplayGuiBuilder {
     protected static void $setSlot(SimpleGui gui, int i, ItemStack itemStack, SlotClickForDeeperDisplayCallback slotClickForDeeperDisplayCallback) {
         GuiElementBuilder guiElementBuilder = GuiElementBuilder.from(itemStack).setCallback(slotClickForDeeperDisplayCallback);
         if (isShulkerBox(itemStack)) {
-            guiElementBuilder.addLoreLine(MessageUtil.ofVomponent(gui.getPlayer(), "display.click.prompt"));
+            guiElementBuilder.addLoreLine(MessageUtil.ofText(gui.getPlayer(), "display.click.prompt"));
         }
         gui.setSlot(i, guiElementBuilder.build());
     }
@@ -35,7 +35,7 @@ public abstract class DisplayGuiBuilder {
         public void click(int i, ClickType clickType, net.minecraft.screen.slot.SlotActionType clickType1, SlotGuiInterface slotGuiInterface) {
             ItemStack itemStack = slotGuiInterface.getSlot(i).getItemStack();
             if (isShulkerBox(itemStack)) {
-                ShulkerBoxDisplayGui shulkerBoxDisplayGui = new ShulkerBoxDisplayGui(MessageUtil.ofVomponent(player, "display.gui.title", player.getGameProfile().getName()), itemStack, parentGui);
+                ShulkerBoxDisplayGui shulkerBoxDisplayGui = new ShulkerBoxDisplayGui(MessageUtil.ofText(player, "display.gui.title", player.getGameProfile().getName()), itemStack, parentGui);
                 shulkerBoxDisplayGui.build(player).open();
             }
         }

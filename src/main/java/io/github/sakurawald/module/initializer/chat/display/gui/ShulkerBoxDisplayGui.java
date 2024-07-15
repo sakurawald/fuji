@@ -6,10 +6,8 @@ import io.github.sakurawald.util.GuiUtil;
 import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ContainerComponent;
-import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -41,7 +39,7 @@ public class ShulkerBoxDisplayGui extends DisplayGuiBuilder {
         if (this.parentGui != null) {
             gui.setSlot(LINE_SIZE - 1, new GuiElementBuilder()
                     .setItem(Items.PLAYER_HEAD)
-                    .setName(MessageUtil.ofVomponent(player, "back"))
+                    .setName(MessageUtil.ofText(player, "back"))
                     .setSkullOwner(GuiUtil.PREVIOUS_PAGE_ICON)
                     .setCallback(parentGui::open));
         }

@@ -42,7 +42,7 @@ public interface ComponentMixin {
             }
             String value = key2value.get(key);
             String miniMessageSource = MutableText.of(new TranslatableTextContent("force_fallback", value, args)).getString();
-            return MessageUtil.ofVomponent(miniMessageSource).copy();
+            return MessageUtil.ofText(miniMessageSource).copy();
         }
         return null;
     }

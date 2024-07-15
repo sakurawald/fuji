@@ -81,6 +81,6 @@ public enum Category {
     }
 
     public Text getDisplayName(ServerPlayerEntity player) {
-        return MessageUtil.ofVomponent(player, "head.category." + name);
+        return MessageUtil.ofText(player, "head.category." + name);
     }
 }

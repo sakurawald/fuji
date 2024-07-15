@@ -19,14 +19,14 @@ class SearchInputGui extends AnvilInputGui {
 
         this.setDefaultInputValue("");
         this.setSlot(1, Items.BARRIER.getDefaultStack());
-        this.setSlot(2, new GuiElementBuilder().setItem(Items.SLIME_BALL).setName(MessageUtil.ofVomponent(player, "confirm")).setCallback((index, type, action, gui) -> {
+        this.setSlot(2, new GuiElementBuilder().setItem(Items.SLIME_BALL).setName(MessageUtil.ofText(player, "confirm")).setCallback((index, type, action, gui) -> {
 
             String search = this.getInput();
             var heads = module.heads.values().stream()
                     .filter(head -> head.name.toLowerCase().contains(search.toLowerCase()) || head.getTagsOrEmpty().toLowerCase().contains(search.toLowerCase()))
                     .collect(Collectors.toList());
             var $gui = new PagedHeadsGui(this, heads);
-            $gui.setTitle(MessageUtil.ofVomponent(player, "head.search.output", search));
+            $gui.setTitle(MessageUtil.ofText(player, "head.search.output", search));
             $gui.open();
         }));
     }

@@ -87,18 +87,18 @@ public class WorksInitializer extends ModuleInitializer {
                 /* input type */
                 SimpleGui selectWorkTypeGui = new SimpleGui(ScreenHandlerType.GENERIC_9X3, player, false);
                 selectWorkTypeGui.setLockPlayerInventory(true);
-                selectWorkTypeGui.setTitle(MessageUtil.ofVomponent(player, "works.work.add.select_work_type.title"));
+                selectWorkTypeGui.setTitle(MessageUtil.ofText(player, "works.work.add.select_work_type.title"));
                 for (int i = 0; i < 27; i++) {
                     selectWorkTypeGui.setSlot(i, new GuiElementBuilder().setItem(Items.PINK_STAINED_GLASS_PANE));
                 }
-                selectWorkTypeGui.setSlot(11, new GuiElementBuilder().setItem(Items.GUNPOWDER).setName(MessageUtil.ofVomponent(player, "works.non_production_work.name")).setCallback(() -> {
+                selectWorkTypeGui.setSlot(11, new GuiElementBuilder().setItem(Items.GUNPOWDER).setName(MessageUtil.ofText(player, "works.non_production_work.name")).setCallback(() -> {
                     // add
                     worksHandler.model().works.add(0, new NonProductionWork(player, name));
                     MessageUtil.sendActionBar(player, "works.work.add.done");
                     MessageUtil.sendBroadcast("works.work.add.broadcast", player.getGameProfile().getName(), name);
                     selectWorkTypeGui.close();
                 }));
-                selectWorkTypeGui.setSlot(15, new GuiElementBuilder().setItem(Items.REDSTONE).setName(MessageUtil.ofVomponent(player, "works.production_work.name")).setCallback(() -> {
+                selectWorkTypeGui.setSlot(15, new GuiElementBuilder().setItem(Items.REDSTONE).setName(MessageUtil.ofText(player, "works.production_work.name")).setCallback(() -> {
                     // add
                     ProductionWork work = new ProductionWork(player, name);
                     worksHandler.model().works.add(0, work);
@@ -127,7 +127,7 @@ public class WorksInitializer extends ModuleInitializer {
 
         final SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X6, player, false);
         gui.setLockPlayerInventory(true);
-        gui.setTitle(MessageUtil.ofVomponent(player, "works.list.title", page + 1));
+        gui.setTitle(MessageUtil.ofText(player, "works.list.title", page + 1));
 
         /* draw content */
         for (int slotIndex = 0; slotIndex < PAGE_SIZE; slotIndex++) {
@@ -136,7 +136,7 @@ public class WorksInitializer extends ModuleInitializer {
             Work work = source.get(workIndex);
             gui.setSlot(slotIndex, new GuiElementBuilder()
                     .setItem(work.asItem())
-                    .setName(MessageUtil.ofVomponent(work.name))
+                    .setName(MessageUtil.ofText(work.name))
                     .setLore(work.asLore(player))
                     .setCallback((index, clickType, actionType) -> {
                         /* left click -> visit */
@@ -178,7 +178,7 @@ public class WorksInitializer extends ModuleInitializer {
         List<Work> finalSource = source;
         gui.setSlot(45, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(MessageUtil.ofVomponent(player, "previous_page"))
+                .setName(MessageUtil.ofText(player, "previous_page"))
                 .setSkullOwner(GuiUtil.PREVIOUS_PAGE_ICON)
                 .setCallback(() -> {
                     if (page == 0) return;
@@ -186,38 +186,38 @@ public class WorksInitializer extends ModuleInitializer {
                 }));
         gui.setSlot(48, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(MessageUtil.ofVomponent(player, "works.list.add"))
+                .setName(MessageUtil.ofText(player, "works.list.add"))
                 .setSkullOwner(GuiUtil.PLUS_ICON)
                 .setCallback(() -> $addWork(player))
         );
         if (source == worksHandler.model().works) {
             gui.setSlot(49, new GuiElementBuilder()
                     .setItem(Items.PLAYER_HEAD)
-                    .setName(MessageUtil.ofVomponent(player, "works.list.my_works"))
+                    .setName(MessageUtil.ofText(player, "works.list.my_works"))
                     .setSkullOwner(GuiUtil.HEART_ICON)
                     .setCallback(() -> $myWorks(player))
             );
         } else {
             gui.setSlot(49, new GuiElementBuilder()
                     .setItem(Items.PLAYER_HEAD)
-                    .setName(MessageUtil.ofVomponent(player, "works.list.all_works"))
+                    .setName(MessageUtil.ofText(player, "works.list.all_works"))
                     .setSkullOwner(GuiUtil.A_ICON)
                     .setCallback(() -> $listWorks(player, null, 0))
             );
         }
         gui.setSlot(50, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(MessageUtil.ofVomponent(player, "works.list.help"))
+                .setName(MessageUtil.ofText(player, "works.list.help"))
                 .setSkullOwner(GuiUtil.QUESTION_MARK_ICON)
                 .setLore(MessageUtil.ofVomponents(player, "works.list.help.lore")));
         gui.setSlot(52, new GuiElementBuilder()
                 .setItem(Items.COMPASS)
-                .setName(MessageUtil.ofVomponent(player, "search"))
+                .setName(MessageUtil.ofText(player, "search"))
                 .setCallback(() -> $searchWorks(player, finalSource))
         );
         gui.setSlot(53, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(MessageUtil.ofVomponent(player, "next_page"))
+                .setName(MessageUtil.ofText(player, "next_page"))
                 .setSkullOwner(GuiUtil.NEXT_PAGE_ICON)
                 .setCallback(() -> {
                     if ((page + 1) * PAGE_SIZE >= finalSource.size()) return;
