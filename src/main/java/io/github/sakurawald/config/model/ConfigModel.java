@@ -458,7 +458,7 @@ public class ConfigModel {
             @Documentation("""
                     The server chat format for all players.
                     """)
-            public String format = "<#B1B2FF>[%fuji:player_playtime%\uD83D\uDD25 %fuji:player_mined%⛏ %fuji:player_placed%\uD83D\uDD33 %fuji:player_killed%\uD83D\uDDE1 %fuji:player_moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:/msg %player% ><hover:show_text:\"Time: %fuji:date%<newline><italic>Click to Message\">%player:name%</hover></click></dark_green>> %message%";
+            public String format = "<#B1B2FF>[%fuji:player_playtime%\uD83D\uDD25 %fuji:player_mined%⛏ %fuji:player_placed%\uD83D\uDD33 %fuji:player_killed%\uD83D\uDDE1 %fuji:player_moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:/msg %player:name% ><hover:show_text:\"Time: %fuji:date%<newline><italic>Click to Message\">%player:name%</hover></click></dark_green>> %message%";
 
             public MentionPlayer mention_player = new MentionPlayer();
             public History history = new History();
@@ -643,7 +643,7 @@ public class ConfigModel {
                 - %fuji:player_playtime%
                 - %fuji:server_playtime%
                                 
-                You also use [the default available placeholders](https://placeholders.pb4.eu/user/default-placeholders/) 
+                You can also use [the default available placeholders](https://placeholders.pb4.eu/user/default-placeholders/) 
                 in anywhere. (Yeah, you can use `placeholder` in the `en_us.json` language file, it works)
                 """)
         public class Placeholder {

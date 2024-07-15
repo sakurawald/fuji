@@ -7,19 +7,17 @@ import eu.pb4.placeholders.api.PlaceholderContext;
 import eu.pb4.placeholders.api.node.LiteralNode;
 import eu.pb4.placeholders.api.node.TextNode;
 import eu.pb4.placeholders.api.parsers.NodeParser;
-import eu.pb4.placeholders.api.parsers.TagParser;
 import eu.pb4.placeholders.api.parsers.tag.TagRegistry;
 import eu.pb4.placeholders.api.parsers.tag.TextTag;
-import eu.pb4.placeholders.impl.textparser.MergedParser;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.handler.ResourceConfigHandler;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.fabric.FabricServerAudiences;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.ServerCommandSource;
@@ -37,15 +35,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static eu.pb4.placeholders.api.Placeholders.DEFAULT_PLACEHOLDER_PARSER;
-
 @UtilityClass
+@Slf4j
 public class MessageUtil {
-    private static final MergedParser MERGED_PARSER = new MergedParser(
-            new NodeParser[]{
-                    DEFAULT_PLACEHOLDER_PARSER
-                    , TagParser.QUICK_TEXT_WITH_STF
-            });
+    private static final NodeParser NODE_PARSER = NodeParser.builder()
+            .quickText()
+            .simplifiedTextFormat()
+            .globalPlaceholders()
+            .markdown()
+            .build();
+
     private static final FabricServerAudiences adventure = FabricServerAudiences.of(Fuji.SERVER);
     @Getter
     private static final Map<String, String> player2lang = new HashMap<>();
@@ -63,8 +62,8 @@ public class MessageUtil {
                         true,
                         (nodes, data, parser) -> new LiteralNode("\n")
                 )
-
         );
+
     }
 
     private static void writeDefaultLanguageFiles() {
@@ -147,7 +146,7 @@ public class MessageUtil {
     /* This is the core method to map `String` into `Component`.
      *  All methods that return `Vomponent` are converted from this method.
      * */
-    public static @NotNull Component ofComponent(@Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
+    public static @NotNull Text ofVomponent(@Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
         String string = isKey ? getString(audience, keyOrString, args) : keyOrString;
 
         PlaceholderContext placeholderContext;
@@ -158,23 +157,15 @@ public class MessageUtil {
         }
         ParserContext parserContext = ParserContext.of(PlaceholderContext.KEY, placeholderContext);
 
-        return MERGED_PARSER.parseText(TextNode.of(string), parserContext).asComponent();
-    }
-
-    public static @NotNull Component ofComponent(@Nullable Audience audience, String key, Object... args) {
-        return ofComponent(audience, true, key, args);
+        return NODE_PARSER.parseText(TextNode.of(string), parserContext);
     }
 
     public static @NotNull Text ofVomponent(@Nullable Audience audience, String key, Object... args) {
-        return toVomponent(ofComponent(audience, key, args));
+        return ofVomponent(audience, true, key, args);
     }
 
     public static @NotNull Text ofVomponent(String str, Object... args) {
-        return toVomponent(ofComponent(null, false, str, args));
-    }
-
-    public static @NotNull Text toVomponent(Component component) {
-        return adventure.toNative(component);
+        return ofVomponent(null, false, str, args);
     }
 
     public static List<Text> ofVomponents(@Nullable Audience audience, String key, Object... args) {
@@ -185,6 +176,18 @@ public class MessageUtil {
             ret.add(ofVomponent(line));
         }
         return ret;
+    }
+
+    public static @NotNull Text toVomponent(Component component) {
+        return adventure.toNative(component);
+    }
+
+    public static @NotNull Component ofComponent(@Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
+        return ofVomponent(audience, isKey, keyOrString, args).asComponent();
+    }
+
+    public static @NotNull Component ofComponent(@Nullable Audience audience, String key, Object... args) {
+        return ofComponent(audience, true, key, args);
     }
 
     public static void sendMessage(@NotNull Audience audience, String key, Object... args) {

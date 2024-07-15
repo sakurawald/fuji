@@ -10,10 +10,14 @@ import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.loader.api.FabricLoader;
 import net.kyori.adventure.text.Component;
 import net.minecraft.command.CommandRegistryAccess;
+import net.minecraft.network.message.MessageType;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 
 @Slf4j
@@ -30,10 +34,11 @@ public class TestInitializer extends ModuleInitializer {
         var source = ctx.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
+        RegistryKey<MessageType> nowMessageType = RegistryKey.of(RegistryKeys.MESSAGE_TYPE, Identifier.ofVanilla("chat.type.text"));
+
+        log.warn("now message type = {}", nowMessageType);
 
 
-        Text text = Placeholders.parseText(Text.literal("my name is %player:name%, and my placeholder is %fuji:my_placeholder%"), PlaceholderContext.of(player));
-        player.sendMessage(text);
         return 1;
     }
 

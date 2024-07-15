@@ -17,7 +17,7 @@ public class EnderChestDisplayGui extends DisplayGuiBuilder {
 
     public EnderChestDisplayGui(Text title, ServerPlayerEntity serverPlayer) {
         this.title = title;
-        serverPlayer.getEnderChestInventory().heldStacks.forEach(itemStack -> this.items.add(itemStack.copy()));
+        serverPlayer.getEnderChestInventory().getHeldStacks().forEach(itemStack -> this.items.add(itemStack.copy()));
     }
 
     @Override

@@ -1,15 +1,12 @@
 accessWidener v2 named
 
-# accessible field net/minecraft/registry/entry/RegistryEntry$Reference value Ljava/lang/Object;
-
 accessible method net/minecraft/server/world/ServerChunkManager getChunkHolder (J)Lnet/minecraft/server/world/ChunkHolder;
 
 accessible method net/minecraft/util/UserCache$Entry getProfile ()Lcom/mojang/authlib/GameProfile;
-
-accessible field net/minecraft/server/world/ChunkHolder UNLOADED_WORLD_CHUNK Lnet/minecraft/server/world/OptionalChunk;
-accessible field net/minecraft/server/world/ChunkHolder UNLOADED_WORLD_CHUNK_FUTURE Ljava/util/concurrent/CompletableFuture;
 
 accessible field net/minecraft/registry/entry/RegistryEntry$Reference value Ljava/lang/Object;
 
 accessible field net/minecraft/server/MinecraftServer worlds Ljava/util/Map;
 accessible field net/minecraft/server/MinecraftServer session Lnet/minecraft/world/level/storage/LevelStorage$Session;
+
+accessible class net/minecraft/registry/RegistryLoader$Loader

@@ -14,12 +14,13 @@ import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
 
+// TODO: playtime(every/for) rewards module
+// TODO: rank module (track)
+
 // TODO: custom tab list
 // TODO: spawn module
 // TODO: command warmup module
 // TODO: tppos module
-// TODO: playtime(every/for) rewards module
-// TODO: rank module
 // TODO: remove fabric-api dep
 // TODO: invsee module
 // TODO: condense module

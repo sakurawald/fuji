@@ -32,10 +32,8 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.WorldSavePath;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -298,7 +296,7 @@ public class ChatInitializer extends ModuleInitializer {
         return string;
     }
 
-    public Component parseChatComponent(ServerPlayerEntity player, String message) {
+    public Text parseText(ServerPlayerEntity player, String message) {
         /* parse message */
         message = resolvePatterns(message);
         message = resolveMentionTag(message);
@@ -310,7 +308,7 @@ public class ChatInitializer extends ModuleInitializer {
 
         /* combine */
         String string = format.replace("%message%", message);
-        return MessageUtil.ofComponent(player, false, string);
+        return MessageUtil.ofVomponent(player, false, string);
     }
 
 }
