@@ -439,18 +439,6 @@ public class ConfigModel {
                 - %fuji:player_prefix%
                 - %fuji:player_suffix%
                                 
-                Note:
-                - In vanilla minecraft, `chat message` is marked as `system message` and its type is `MessageType.CHAT`.
-                                
-                  However, fuji will hijack the vanilla `chat message`, and `re-send` them as the type of `MessageType.SYSTEM`.
-                  This means, if you use `Chat` module provides by fuji, then all the `MessageType.CHAT` message will be re-send as `MessageType.SYSTEM` message
-                  
-                  In this case, you players will not need to download mods like `No Chat Reports`.
-                  Any player can messages from other players, and `vaniila chat filter` will not work with `MessageType.SYSTEM`.
-                  
-                  If you have some other mods that relative to chats, and they only works with `MessageType.CHAT`, then
-                  these mods may not work.
-                  
                 """)
         public class Chat {
             public boolean enable = false;
