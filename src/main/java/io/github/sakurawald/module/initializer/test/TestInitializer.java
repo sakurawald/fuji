@@ -34,9 +34,8 @@ public class TestInitializer extends ModuleInitializer {
         var source = ctx.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
-        RegistryKey<MessageType> nowMessageType = RegistryKey.of(RegistryKeys.MESSAGE_TYPE, Identifier.ofVanilla("chat.type.text"));
 
-        log.warn("now message type = {}", nowMessageType);
+        log.warn("custom name = {}", player.getCustomName());
 
 
         return 1;

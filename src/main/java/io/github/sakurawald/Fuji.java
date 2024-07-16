@@ -34,12 +34,11 @@ import java.nio.file.Path;
 // TODO: kit module -> spec-command
 
 // TODO: a generalized mixin plugin to dispatch text.
-
-// TODO: sign module
 // TODO: a program to generate module reference DAG
 
-// TODO: nickname module -> luckperms
+// TODO: friendly mixin check
 // TODO: luckperms context calculator
+// TODO: sign module
 
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";

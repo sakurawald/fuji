@@ -176,6 +176,7 @@
   "chat.current_pos": "当前位置",
   "chat.xaero_waypoint_add": "点击添加小地图路径点",
   "chat.xaero_waypoint_add.command": "/xaero_waypoint_add:路径点:·:%d:%s:%d:0:false:0:Internal_%s_waypoints",
-  "realname": "<gold>玩家名称 %s",
-  "anti_build.disallow": "<red>该操作被禁止"
+  "anti_build.disallow": "<red>该操作被禁止",
+  "nickname.set": "<gold>名称已修改",
+  "nickname.unset": "<gold>名称已还原"
 }
