@@ -447,7 +447,7 @@ public class ConfigModel {
             @Documentation("""
                     The server chat format for all players.
                     """)
-            public String format = "<#B1B2FF>[%fuji:player_playtime%\uD83D\uDD25 %fuji:player_mined%⛏ %fuji:player_placed%\uD83D\uDD33 %fuji:player_killed%\uD83D\uDDE1 %fuji:player_moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:/msg %player:name% ><hover:show_text:\"Time: %fuji:date%<newline><italic>Click to Message\">%player:displayname%</hover></click></dark_green>> %message%";
+            public String format = "<#B1B2FF>[%fuji:player_playtime%\uD83D\uDD25 %fuji:player_mined%⛏ %fuji:player_placed%\uD83D\uDD33 %fuji:player_killed%\uD83D\uDDE1 %fuji:player_moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:/msg %player:name% ><hover:show_text:\"Time: %fuji:date%<newline><italic>Click to Message\">%player:displayname_visual%</hover></click></dark_green>> %message%";
 
             public MentionPlayer mention_player = new MentionPlayer();
             public History history = new History();
@@ -646,7 +646,7 @@ public class ConfigModel {
                 makes every EnderPortal generate its own Obsidian Platform (Up to 128 in survival-mode.
                 You can even use creative-mode to build more Ender Portal and more ObsidianPlatform. 
                                 
-                Please note that: all the obsidian-platform are vanilla-respect, which means they have the SAME chunk-layout and the SAME behaviour as vanilla obsidian-platform which locates in (100,50,0))
+                Please note that: all the obsidian-platform are vanilla-respect, which means they have the same chunk-layout and the same behaviour as vanilla obsidian-platform which locates in (100,50,0))
                                 
                 Use-case: you want more `obsidian platform` for your redstone-struture.
                 """)

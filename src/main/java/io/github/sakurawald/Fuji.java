@@ -23,9 +23,11 @@ import java.nio.file.Path;
 // TODO: tppos module
 // TODO: invsee module
 // TODO: condense module
-// TODO: powertool module
+// TODO: powertool modul
 
 // TODO: code review for skin module
+
+// TODO: luckperms context calculator
 
 // TODO: a lisp-like DSL (parser and code-walker) for specific command.
 // TODO: refactor command facility (selector, aop, options, parser)
@@ -34,10 +36,8 @@ import java.nio.file.Path;
 // TODO: kit module -> spec-command
 
 // TODO: a generalized mixin plugin to dispatch text.
+// TODO: a friendly mixin pre-checker
 // TODO: a program to generate module reference DAG
-
-// TODO: friendly mixin check
-// TODO: luckperms context calculator
 
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";
