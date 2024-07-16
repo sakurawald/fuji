@@ -143,7 +143,7 @@ public class ConfigModel {
         public Smithing smithing = new Smithing();
         public World world = new World();
         public Realname realname = new Realname();
-        public Protect protect = new Protect();
+        public Multiplier multiplier = new Multiplier();
 
         @Documentation("""
                 This module adds another 3 worlds called `resource world`: resource_overworld, resource_nether, resource_the_end .
@@ -1033,30 +1033,32 @@ public class ConfigModel {
         }
 
         @Documentation("""
-                This module provides damage-cancel by permission.
-                                
-                For performance considered:
-                1. This module only check damage_type inside this checklist.
-                2. The permission is checked by cache.
-                                
-                You can query damage_type list in minecraft using `/damage @r 1 <damage_type>`
-                                
-                For example, 
-                If you want to protect all the players from fall damage, you should do:
-                1. add `minecraft:fall` into the `damage_type_checklist`.
-                2. grant the permission for players: `/lp group default permission set fuji.protect.minecraft:fall`
-                                
-                If you grant permission `/lp group default permission set fuji.protect.*`, then it means cancel
-                all the damage types inside the `damage_type_checklist`.
+                This module provides some `numeric multiplier`.
+                
+                Supported numeric types:
+                - damage 
+                - experience
+                
+                - Example 1
+                If you want to `doubled` the damage from zombie to a player.
+                You can set a meta by: `/lp group default meta set fuji.multiplier.damage.minecraft:zombie 2`
+                
+                - Example 2
+                If you want to cancel fall damage for all players. You can use `damage multiplier`.
+                You can set a meta by: `/lp group default meta set fuji.multiplier.damage.minecraft:fall 0`
+                
+                - Example 3
+                If you want to `doubled` all the damages to a player.
+                You can set a meta by: `/lp group default meta set fuji.multiplier.damage.all 2`
+                
+                - Example 4
+                If you want to `doubled` all the experience a player gained.
+                You can set a meta by: `/lp group default meta set fuji.multiplier.experience.all 2`
+               
                 """)
-        public class Protect {
+        public class Multiplier {
             public boolean enable = false;
 
-            public Set<String> damage_type_checklist = new HashSet<>() {
-                {
-                    this.add("minecraft:fall");
-                }
-            };
         }
 
         public AntiBuild anti_build = new AntiBuild();

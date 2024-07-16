@@ -21,23 +21,26 @@ import java.nio.file.Path;
 // TODO: spawn module
 // TODO: command warmup module
 // TODO: tppos module
-// TODO: remove fabric-api dep
 // TODO: invsee module
 // TODO: condense module
 // TODO: powertool module
 
-// TODO: a program to generate module reference DAG
 // TODO: code review for skin module
-
-// TODO: nickname module -> luckperms
-
-// TODO: luckperms context calculator
 
 // TODO: a lisp-like DSL (parser and code-walker) for specific command.
 // TODO: refactor command facility (selector, aop, options, parser)
 // TODO: specific command module
 // TODO: add native shell support specific command
 // TODO: kit module -> spec-command
+
+// TODO: a generalized mixin plugin to dispatch text.
+
+// TODO: sign module
+// TODO: feature for chat module -> handle more chat types
+// TODO: a program to generate module reference DAG
+
+// TODO: nickname module -> luckperms
+// TODO: luckperms context calculator
 
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";

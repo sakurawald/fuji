@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.mixin.chat;
 
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.chat.ChatInitializer;
 import lombok.extern.slf4j.Slf4j;
