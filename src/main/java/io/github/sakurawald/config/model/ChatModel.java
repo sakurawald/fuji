@@ -10,7 +10,7 @@ public class ChatModel {
     public class Format {
         public HashMap<String, String> player2format = new HashMap<>() {
             {
-                this.put("SakuraWald", "<#FFC7EA>%message%");
+                this.put("Steve", "<#FFC7EA>%message%");
             }
         };
     }
