@@ -118,6 +118,7 @@
   "top_chunks.prop.types.entry": "[type]=%d ",
   "top_chunks.prop.hidden": "hidden",
   "top_chunks.prop.hidden.bypass": "%s (bypass-hidden)",
+  "placeholder.pos": "<#2596be>[%d %d %d, %s]",
   "display.gui.title": "Player %s 's Display",
   "display.invalid": "This display is invalid",
   "display.inventory.text": "<#D2E0FB>[Inventory Display]",

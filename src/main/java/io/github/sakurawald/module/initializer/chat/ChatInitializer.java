@@ -176,8 +176,7 @@ public class ChatInitializer extends ModuleInitializer {
                             break;
                     }
 
-                    Component component = Component.text("[%d %d %d, %s]".formatted(x, y, z, dim_display_name))
-                            .decoration(TextDecoration.ITALIC, true)
+                    Component component = MessageUtil.ofComponent(player, true, "placeholder.pos", x, y, z, dim_display_name)
                             .clickEvent(ClickEvent.runCommand(clickCommand))
                             .hoverEvent(Component.text(hoverString + "\n").append(MessageUtil.ofComponent(player, "chat.xaero_waypoint_add")));
 

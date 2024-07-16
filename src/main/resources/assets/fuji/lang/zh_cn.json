@@ -178,5 +178,6 @@
   "chat.xaero_waypoint_add.command": "/xaero_waypoint_add:路径点:·:%d:%s:%d:0:false:0:Internal_%s_waypoints",
   "anti_build.disallow": "<red>该操作被禁止",
   "nickname.set": "<gold>名称已修改",
-  "nickname.unset": "<gold>名称已还原"
+  "nickname.unset": "<gold>名称已还原",
+  "placeholder.pos": "<#2596be>[%d %d %d, %s]"
 }
