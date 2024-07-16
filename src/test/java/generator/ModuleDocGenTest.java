@@ -12,7 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 @Slf4j
-public class ModuleDocumentationGeneratorTest {
+public class ModuleDocGenTest {
 
     private StringBuilder processJavaObject(Object obj) {
         StringBuilder sb = new StringBuilder();
@@ -58,7 +58,7 @@ public class ModuleDocumentationGeneratorTest {
     }
 
     @Test
-    void buildModuleDocumentation() {
+    void generate() {
         writeToFile("Module.md", processJavaObject(new ConfigModel().modules));
     }
 

@@ -144,13 +144,16 @@ tasks.modrinth.dependsOn(tasks.modrinthSyncBody)
 // test framework
 test {
     useJUnitPlatform()
+    filter {
+        includeTestsMatching 'ConfigDocGenTest.generate'
+    }
 }
 
 tasks.register('generateModuleDocumentation') {
     outputs.upToDateWhen { false }
     test {
         filter {
-            includeTestsMatching 'ModuleDocumentationGeneratorTest.buildModuleDocumentation'
+            includeTestsMatching 'ModuleDocGenTest.generate'
         }
     }
 }
@@ -160,7 +163,7 @@ tasks.register('generateMixinRegistry') {
     outputs.upToDateWhen { false }
     test {
         filter {
-            includeTestsMatching 'MixinRegistryGeneratorTest.generate'
+            includeTestsMatching 'MixinRegistryGenTest.generate'
         }
     }
 }

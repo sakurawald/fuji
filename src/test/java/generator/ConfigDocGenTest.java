@@ -15,7 +15,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
-public class ConfigurationDocumentationGeneratorTest {
+public class ConfigDocGenTest {
 
     private JsonObject processJavaObject(Object obj) {
         JsonObject jsonObject = new JsonObject();
@@ -76,6 +76,10 @@ public class ConfigurationDocumentationGeneratorTest {
         return clazz.isPrimitive() || clazz == Boolean.class || clazz == Character.class ||
                 Number.class.isAssignableFrom(clazz) || clazz == String.class;
     }
+    private String applyRegex(String json) {
+//        return json.replaceAll("\"\\S+@documentation\":\\s+\"(.+)\",", "# $1");
+        return json;
+    }
 
     private void writeToFile(String fileName, JsonObject content) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -83,7 +87,9 @@ public class ConfigurationDocumentationGeneratorTest {
         new File(filePath).getParentFile().mkdirs();
 
         try (FileWriter writer = new FileWriter(filePath)) {
-            writer.write(gson.toJson(content));
+            String json = gson.toJson(content);
+            json = applyRegex(json);
+            writer.write(json);
             System.out.println("File " + fileName + " has been written successfully.");
         } catch (IOException e) {
             System.err.println("An error occurred while writing file: " + e.getMessage());
@@ -91,7 +97,7 @@ public class ConfigurationDocumentationGeneratorTest {
     }
 
     @Test
-    void buildConfigurationDocumentation() {
+    void generate() {
         writeToFile("config.json", processJavaObject(new ConfigModel()));
     }
 

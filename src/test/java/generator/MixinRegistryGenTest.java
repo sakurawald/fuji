@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import java.io.*;
 import java.util.Iterator;
 
-public class MixinRegistryGeneratorTest {
+public class MixinRegistryGenTest {
 
     @SneakyThrows
     @Test
