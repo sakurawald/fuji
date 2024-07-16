@@ -1035,26 +1035,36 @@ public class ConfigModel {
         @Documentation("""
                 This module provides some `numeric multiplier`.
                 
-                Supported numeric types:
-                - damage 
-                - experience
+                Supported `numeric types`:
+                - `damage`: damage to plaer
+                - `experience`: experience a player gained
                 
-                - Example 1
+                ---
+                Example 1
+                
                 If you want to `doubled` the damage from zombie to a player.
                 You can set a meta by: `/lp group default meta set fuji.multiplier.damage.minecraft:zombie 2`
                 
-                - Example 2
+                ---
+                Example 2
                 If you want to cancel fall damage for all players. You can use `damage multiplier`.
                 You can set a meta by: `/lp group default meta set fuji.multiplier.damage.minecraft:fall 0`
                 
-                - Example 3
+                ---
+                Example 3
                 If you want to `doubled` all the damages to a player.
                 You can set a meta by: `/lp group default meta set fuji.multiplier.damage.all 2`
                 
-                - Example 4
+                ---
+                Example 4
                 If you want to `doubled` all the experience a player gained.
                 You can set a meta by: `/lp group default meta set fuji.multiplier.experience.all 2`
-               
+                
+                ---
+                Example 5
+                If you want to `half` all the damages to a player.
+                You can set a meta by: `/lp group default meta set fuji.multiplier.damage.all 0.5`
+                
                 """)
         public class Multiplier {
             public boolean enable = false;

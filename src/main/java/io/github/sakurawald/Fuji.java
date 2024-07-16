@@ -36,7 +36,6 @@ import java.nio.file.Path;
 // TODO: a generalized mixin plugin to dispatch text.
 
 // TODO: sign module
-// TODO: feature for chat module -> handle more chat types
 // TODO: a program to generate module reference DAG
 
 // TODO: nickname module -> luckperms
