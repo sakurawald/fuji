@@ -50,6 +50,8 @@
     "resource_world.registry.DimensionOptionsMixin",
     "resource_world.registry.WorldGenSettingsMixin",
     "seen.PlayerListMixin",
+    "color.anvil.AnvilScreenHandlerMixin",
+    "color.sign.SignBlockEntityMixin",
     "sit.InteractModifierMixin",
     "skin.PlayerListMixin",
     "skin.ServerLoginNetworkHandlerMixin",

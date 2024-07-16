@@ -1,10 +1,12 @@
 package io.github.sakurawald.module.initializer.test;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import eu.pb4.placeholders.api.PlaceholderContext;
 import eu.pb4.placeholders.api.Placeholders;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.loader.api.FabricLoader;
@@ -33,9 +35,6 @@ public class TestInitializer extends ModuleInitializer {
     private static int $run(CommandContext<ServerCommandSource> ctx) {
         var source = ctx.getSource();
         ServerPlayerEntity player = source.getPlayer();
-
-
-        log.warn("custom name = {}", player.getCustomName());
 
 
         return 1;

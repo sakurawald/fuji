@@ -1155,7 +1155,19 @@ public class ConfigModel {
         }
 
         public Nickname nickname = new Nickname();
+
+        @Documentation("""
+                This module provides `/nickname` command.
+                """)
         public class Nickname {
+            public boolean enable = false;
+        }
+
+        public Color color = new Color();
+        @Documentation("""
+                This module provides colorize for: sign, anvil
+                """)
+        public class Color {
             public boolean enable = false;
         }
     }

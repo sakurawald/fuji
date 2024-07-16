@@ -38,7 +38,6 @@ import java.nio.file.Path;
 
 // TODO: friendly mixin check
 // TODO: luckperms context calculator
-// TODO: sign module
 
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";
