@@ -824,6 +824,14 @@ public class ConfigModel {
                 /say the last command
                 ```
                 
+                Exmaple 3
+                ```
+                prefix /say this is
+                the first /say and the
+                second
+                line 4 empty
+                ```
+                
                 Note:
                 
                 - You need to press `shift + right click` to edit an `interactive sign`
