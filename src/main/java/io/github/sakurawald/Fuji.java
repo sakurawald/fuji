@@ -33,7 +33,6 @@ import java.nio.file.Path;
 // TODO: kit module -> spec-command
 
 // TODO: a generalized mixin plugin to dispatch text.
-// TODO: a friendly mixin pre-checker
 // TODO: a program to generate module reference DAG
 // TODO: a program to generate config json with documentation
 

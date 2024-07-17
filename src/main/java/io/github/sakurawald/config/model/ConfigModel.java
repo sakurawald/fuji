@@ -410,7 +410,7 @@ public class ConfigModel {
         }
 
         @Documentation("""
-                This module provides chat custom.
+                This module provides chat custom. (You might also want to enable `placeholder module`)
                                 
                 Command: /chat
                                 
@@ -418,19 +418,16 @@ public class ConfigModel {
                 - You can create your own `regex transformaer` to repalce the input message.
                 - You can insert any `placeholder` like `%world:name%` in the chat message. (See more placeholders in: https://placeholders.pb4.eu/user/default-placeholders/)
                 - You can insert player's prefix and suffix. Just insert `fuji:player_prefix` and `fuji:player_suffix`. 
-                    Requires `luckperms` installed. See also: https://luckperms.net/wiki/Prefixes,-Suffixes-&-Meta
-                    After you installed `luckperms` mod, just issue `/lp group default meta setprefix <yellow>[awesome]` to assign prefix.
-                    Don't forget to change the format of `Chat module`, and issue `/fuji reload`
+                 > Requires `luckperms` installed. See also: https://luckperms.net/wiki/Prefixes,-Suffixes-&-Meta
+                 > After you installed `luckperms` mod, just issue `/lp group default meta setprefix <yellow>[awesome]` to assign prefix.
+                 > Don't forget to change the format of `Chat module`, and issue `/fuji reload`
                 - You can insert `item`, `inv` and `ender` to display your `item in your hand`, `your inventory` and `your enderchest`
                 - You can insert `Steve` to mention another player named `Steve`.
                 - You can insert `pos` to show the position.
                 - You can use `markdown language` to define simple format.
                 - You can use `mini-message language` to define complex format.
-                
-                    See: https://docs.advntr.dev/minimessage/format.html
-                    
-                    See: https://placeholders.pb4.eu/user/quicktext
-                                
+                 > See: https://docs.advntr.dev/minimessage/format.html
+                 > See: https://placeholders.pb4.eu/user/quicktext
                 Placeholder:
                 - %fuji:item%
                 - %fuji:inv%

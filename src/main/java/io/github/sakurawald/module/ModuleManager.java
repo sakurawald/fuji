@@ -1,8 +1,10 @@
 package io.github.sakurawald.module;
 
 import com.google.gson.JsonElement;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.ApiStatus;
 import org.reflections.Reflections;
 
@@ -79,6 +81,16 @@ public class ModuleManager {
     }
 
     public static boolean shouldEnableModule(JsonElement config, String basePackageName) {
+        if (module2enable.containsKey(basePackageName)) {
+            return module2enable.get(basePackageName);
+        }
+
+        if (!isDependencyModsInstalled(basePackageName)) {
+            Fuji.LOGGER.warn("Can't load module {} (reason: the required dependency mod isn't installed)", basePackageName);
+            module2enable.put(basePackageName, false);
+            return false;
+        }
+
         boolean enable;
         try {
             enable = config.getAsJsonObject().get("modules").getAsJsonObject().get(basePackageName).getAsJsonObject().get("enable").getAsBoolean();
@@ -97,5 +109,18 @@ public class ModuleManager {
         int right = basePackageName.indexOf(".");
         basePackageName = basePackageName.substring(0, right);
         return basePackageName;
+    }
+
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public static boolean isDependencyModsInstalled(String basePackageName) {
+        if (basePackageName.equals("better_info") || basePackageName.equals("fake_player_manager")) {
+            return FabricLoader.getInstance().isModLoaded("carpet");
+        }
+
+        if (basePackageName.equals("profiler")) {
+            return FabricLoader.getInstance().isModLoaded("spark");
+        }
+
+        return true;
     }
 }

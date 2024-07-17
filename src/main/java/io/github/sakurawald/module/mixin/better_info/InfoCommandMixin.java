@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(InfoCommand.class)
-
 public class InfoCommandMixin {
 
     @Inject(method = "infoBlock", at = @At(value = "INVOKE", target = "Lcarpet/commands/InfoCommand;printBlock(Ljava/util/List;Lnet/minecraft/server/command/ServerCommandSource;Ljava/lang/String;)V", shift = At.Shift.AFTER))

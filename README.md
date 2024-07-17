@@ -23,7 +23,7 @@ See [permission](https://github.com/sakurawald/fuji-fabric/wiki/Permission)
 
 See [faq](https://github.com/sakurawald/fuji-fabric/wiki/FAQ)
 
-# Credit
+# Reference
 At the early stage of this project, we reference some source and ideas from the following projects:
 1. https://www.zrips.net/cmi/
 2. https://essentialsx.net/
