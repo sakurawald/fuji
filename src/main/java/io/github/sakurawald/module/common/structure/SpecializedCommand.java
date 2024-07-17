@@ -1,7 +1,10 @@
-package io.github.sakurawald.module.initializer.scheduler;
+package io.github.sakurawald.module.common.structure;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.config.model.ConfigModel;
+import io.github.sakurawald.util.MessageUtil;
+import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.server.MinecraftServer;
@@ -10,6 +13,7 @@ import java.util.List;
 import java.util.Random;
 
 
+@Slf4j
 public class SpecializedCommand {
 
     private static final String RANDOM_PLAYER = "!random_player!";
@@ -55,8 +59,11 @@ public class SpecializedCommand {
     }
 
     public static void executeCommand(ServerPlayerEntity player, String command) {
+        command = MessageUtil.ofString(player, false, command);
+
         try {
             Fuji.SERVER.getCommandManager().getDispatcher().execute(command, player.getCommandSource());
+
         } catch (CommandSyntaxException e) {
             player.sendMessage(Component.text(e.getMessage()).color(NamedTextColor.RED));
         }

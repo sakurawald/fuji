@@ -40,12 +40,6 @@ public class ModuleMixinConfigPlugin implements IMixinConfigPlugin {
         // bypass
         if (basePackageName.startsWith("_")) return true;
 
-        // checker
-        if (!ModuleManager.isDependencyModsInstalled(mixinClassName)) {
-            return false;
-        }
-
-
         return ModuleManager.shouldEnableModule(mixinConfigs, basePackageName);
     }
 

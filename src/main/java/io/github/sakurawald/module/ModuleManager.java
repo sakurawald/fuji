@@ -85,7 +85,7 @@ public class ModuleManager {
             return module2enable.get(basePackageName);
         }
 
-        if (!isDependencyModsInstalled(basePackageName)) {
+        if (!isRequiredModsInstalled(basePackageName)) {
             Fuji.LOGGER.warn("Can't load module {} (reason: the required dependency mod isn't installed)", basePackageName);
             module2enable.put(basePackageName, false);
             return false;
@@ -112,7 +112,7 @@ public class ModuleManager {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean isDependencyModsInstalled(String basePackageName) {
+    public static boolean isRequiredModsInstalled(String basePackageName) {
         if (basePackageName.equals("better_info") || basePackageName.equals("fake_player_manager")) {
             return FabricLoader.getInstance().isModLoaded("carpet");
         }

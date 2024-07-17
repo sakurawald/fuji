@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.scheduler;
 
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.module.common.structure.SpecializedCommand;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -9,7 +10,6 @@ import java.util.Random;
 
 @Data
 @AllArgsConstructor
-
 public class ScheduleJob {
     String name;
     boolean enable;

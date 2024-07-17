@@ -14,10 +14,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
 
-// TODO: playtime(every/for) rewards module
 // TODO: rank module (track)
-
-// TODO: custom tab list
+// TODO: tab list module
 // TODO: spawn module
 // TODO: command warmup module
 // TODO: tppos module
@@ -25,8 +23,9 @@ import java.nio.file.Path;
 // TODO: condense module
 // TODO: powertool modul
 // TODO: code review for skin module
+// TODO: hologram module
 
-// TODO: a lisp-like DSL (parser and code-walker) for specific command.
+// TODO: a lisp-like DSL (parser and code-walker) for specific command with context and placeholders (%fuji:play_time_total%).
 // TODO: refactor command facility (selector, aop, options, parser)
 // TODO: specific command module
 // TODO: add native shell support specific command

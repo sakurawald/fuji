@@ -825,9 +825,6 @@ public class ConfigModel {
 
             public boolean enable = false;
 
-            @Documentation("Should we log the command used by signs into the console ?")
-            public boolean log_use = true;
-
         }
 
         @Documentation("This module provides `/heal` command.")

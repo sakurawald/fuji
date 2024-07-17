@@ -160,6 +160,12 @@ public class MessageUtil {
         return NODE_PARSER.parseText(TextNode.of(string), parserContext);
     }
 
+
+    public static @NotNull String ofString(@Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
+        Text text = ofText(audience, isKey, keyOrString, args);
+        return PlainTextComponentSerializer.plainText().serialize(text.asComponent());
+    }
+
     public static @NotNull Text ofText(@Nullable Audience audience, String key, Object... args) {
         return ofText(audience, true, key, args);
     }

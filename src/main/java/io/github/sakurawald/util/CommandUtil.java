@@ -20,7 +20,7 @@ public class CommandUtil {
 
     public static final String ARGUMENT_NAME_DIMENSION = "dimension";
     public static final String ARGUMENT_NAME_ENTITY = "entity";
-    public static final String ARGUMENT_NAME_PLYAER = "player";
+    public static final String ARGUMENT_NAME_PLAYER = "player";
 
     public static RequiredArgumentBuilder<ServerCommandSource, String> offlinePlayerArgument(String argumentName) {
         return argument(argumentName, StringArgumentType.string())
@@ -64,7 +64,7 @@ public class CommandUtil {
     public static int acceptPlayer(CommandContext<ServerCommandSource> ctx, AcceptPlayerFunction function) {
         ServerPlayerEntity player;
         try {
-            player = EntityArgumentType.getPlayer(ctx, CommandUtil.ARGUMENT_NAME_PLYAER);
+            player = EntityArgumentType.getPlayer(ctx, CommandUtil.ARGUMENT_NAME_PLAYER);
         } catch (Exception e) {
             MessageUtil.sendMessage(ctx.getSource(), "player.no_found");
             return Command.SINGLE_SUCCESS;
