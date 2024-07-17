@@ -26,8 +26,6 @@ import java.nio.file.Path;
 // TODO: powertool modul
 // TODO: code review for skin module
 
-// TODO: luckperms context calculator
-
 // TODO: a lisp-like DSL (parser and code-walker) for specific command.
 // TODO: refactor command facility (selector, aop, options, parser)
 // TODO: specific command module
