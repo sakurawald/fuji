@@ -824,7 +824,7 @@ public class ConfigModel {
                 /say the last command
                 ```
                 
-                Exmaple 3
+                Example 3
                 ```
                 prefix /say this is
                 the first /say and the
