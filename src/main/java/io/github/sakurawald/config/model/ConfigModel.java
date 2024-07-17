@@ -806,20 +806,28 @@ public class ConfigModel {
         @Documentation("""
                 This module allows you to write commands in `sign block`.
                                 
-                A sign-block contains 4 lines.
-                You can write commands in the sign-block.
-                                
-                Each command starts with prefix `//`
-                e.g. Line 1 contains `Click me //back` will execute the command `/back`
-                                
-                The placeholder `@u` means the user player name.
-                e.g. Line 1 contains `//kill @u` will execute the command `/kill {player_name}`
-                                
-                - If the sign contains `//`, then you must press `shift` to edit this sign
-                - You can add some comments before the first `//`
-                - You can use all the four lines to insert `//` (Every `//` means one command)
-                - Placeholder `@u` means the user of this sign
-                 
+                Example 1
+                
+                ```
+                /say hi %player:name%
+                line 2 empty
+                line 3 empty
+                line 4 epmty
+                ```
+                
+                Example 2
+                
+                ```
+                prefix /say first
+                /say the second
+                /say hi %player:name%
+                /say the last command
+                ```
+                
+                Note:
+                
+                - You need to press `shift + right click` to edit an `interactive sign`
+                - The command is executed as `the player in the console`. (Not executed as the console)
                 """)
         public class CommandInteractive {
 
