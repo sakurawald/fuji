@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.common.structure;
+package io.github.sakurawald.module.common.accessor;
 
 import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.util.Identifier;

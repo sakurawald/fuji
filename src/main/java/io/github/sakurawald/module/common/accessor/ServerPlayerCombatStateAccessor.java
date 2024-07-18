@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.teleport_warmup;
+package io.github.sakurawald.module.common.accessor;
 
 public interface ServerPlayerCombatStateAccessor {
 

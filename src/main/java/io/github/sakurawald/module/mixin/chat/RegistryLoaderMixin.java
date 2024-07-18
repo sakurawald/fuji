@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.chat;
 
-import io.github.sakurawald.module.common.structure.SimpleRegistryMixinInterface;
+import io.github.sakurawald.module.common.accessor.SimpleRegistryMixinInterface;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.network.message.MessageType;

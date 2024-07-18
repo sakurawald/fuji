@@ -1,10 +1,9 @@
 package io.github.sakurawald.module.initializer.resource_world;
 
-import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.structure.Position;
-import io.github.sakurawald.module.common.structure.SimpleRegistryMixinInterface;
-import io.github.sakurawald.module.initializer.teleport_warmup.TeleportTicket;
+import io.github.sakurawald.module.common.accessor.SimpleRegistryMixinInterface;
+import io.github.sakurawald.module.common.structure.TeleportTicket;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
@@ -68,8 +67,8 @@ public class ResourceWorldManager {
             // fix: if the player is inside resource-world while resetting the worlds, then resource worlds will delay its deletion until the player left the resource-world.
             Position from = Position.of(player);
             Position to = new Position(overworld, spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5, 0, 0);
-            TeleportTicket teleportTicket = TeleportTicket.ofInstantTicket(player, from, to);
 
+            TeleportTicket teleportTicket = TeleportTicket.ofInstantTicket(player, from, to);
             Managers.getBossBarManager().addTicket(teleportTicket);
         }
     }

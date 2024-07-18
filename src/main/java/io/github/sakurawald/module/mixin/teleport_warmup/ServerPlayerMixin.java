@@ -1,19 +1,16 @@
 package io.github.sakurawald.module.mixin.teleport_warmup;
 
-import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.structure.BossBarTicket;
 import io.github.sakurawald.module.common.structure.Position;
-import io.github.sakurawald.module.initializer.teleport_warmup.ServerPlayerCombatStateAccessor;
-import io.github.sakurawald.module.initializer.teleport_warmup.TeleportTicket;
+import io.github.sakurawald.module.common.accessor.ServerPlayerCombatStateAccessor;
+import io.github.sakurawald.module.common.structure.TeleportTicket;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.PlayerUtil;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -21,29 +18,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
-import java.util.Set;
 
 @Mixin(value = ServerPlayerEntity.class, priority = 1000 - 500)
-public abstract class ServerPlayerMixin implements ServerPlayerCombatStateAccessor {
-
-    @Unique
-    public boolean fuji$inCombat;
-
-
-    @Inject(method = "enterCombat", at = @At("RETURN"))
-    public void $enterCombat(CallbackInfo ci) {
-        fuji$inCombat = true;
-    }
-
-    @Inject(method = "endCombat", at = @At("RETURN"))
-    public void $leaveCombat(CallbackInfo ci) {
-        fuji$inCombat = false;
-    }
-
-    @Override
-    public boolean fuji$inCombat() {
-        return fuji$inCombat;
-    }
+public abstract class ServerPlayerMixin {
 
     @Unique
     public @Nullable TeleportTicket getTeleportTicket(ServerPlayerEntity player) {

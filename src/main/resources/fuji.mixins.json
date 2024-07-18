@@ -4,9 +4,10 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "io.github.sakurawald.module.mixin.ModuleMixinConfigPlugin",
   "mixins": [
-    "_internal.low_level.GameProfileCacheMixin",
     "_internal.low_level.MinecraftServerMixin",
+    "_internal.low_level.ServerPlayerEntityMixin",
     "_internal.low_level.SimpleRegistryMixin",
+    "_internal.low_level.UserCacheMixin",
     "afk.PlayerListMixin",
     "afk.ServerPlayerMixin",
     "anti_build.BlockMixin",
