@@ -20,16 +20,14 @@ import java.nio.file.Path;
 // TODO: command warmup module
 // TODO: tppos module
 // TODO: invsee module
-// TODO: condense module
 // TODO: powertool modul
 // TODO: code review for skin module
 // TODO: hologram module
+// TODO: kit module
 
 // TODO: a lisp-like DSL (parser and code-walker) for specific command with context and placeholders (%fuji:play_time_total%).
 // TODO: refactor command facility (selector, aop, options, parser)
-// TODO: specific command module
-// TODO: add native shell support specific command
-// TODO: kit module -> spec-command
+// TODO: add native shell support command
 
 // TODO: a generalized mixin plugin to dispatch text.
 // TODO: a program to generate module reference DAG

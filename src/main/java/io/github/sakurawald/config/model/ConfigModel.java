@@ -754,9 +754,14 @@ public class ConfigModel {
 
         @Documentation("""
                 This module provides multi-language support for your players.
-                (Disable this module will force all the players to use the default language)
+                
+                Disable this module: all the players use the `default_language`
+                
+                Enable this module: will try to respect the player's client-side language, if the server-side supports its
+                language
                                 
-                - The default language is en_us.
+                                
+                Feature:
                 - Respect the player's client-side language-setting.
                 - If the player's client-side language-setting is not supported, then use the default language.
                 - Lazy-load support, which means if a language is not required, then it will not be loaded.

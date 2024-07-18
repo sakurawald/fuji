@@ -1,6 +1,8 @@
 package io.github.sakurawald.module.initializer.test;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,7 @@ public class TestInitializer extends ModuleInitializer {
     @Override
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         if (!FabricLoader.getInstance().isDevelopmentEnvironment()) return;
+        LiteralArgumentBuilder<Object> arg1 = LiteralArgumentBuilder.literal("arg1");
 
         dispatcher.register(
                 CommandManager.literal("test").requires(s -> s.hasPermissionLevel(4))
