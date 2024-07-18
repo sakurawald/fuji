@@ -12,13 +12,14 @@ import org.reflections.Reflections;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static io.github.sakurawald.Fuji.LOGGER;
 
 @Slf4j
 public class ModuleManager {
     private static final Map<Class<? extends ModuleInitializer>, ModuleInitializer> initializers = new HashMap<>();
-    private static final Map<String, Boolean> module2enable = new HashMap<>();
+    private static final Map<List<String>, Boolean> module2enable = new HashMap<>();
 
     @SuppressWarnings("SameParameterValue")
     private static Set<Class<? extends ModuleInitializer>> scanModules(String packageName) {
@@ -46,15 +47,15 @@ public class ModuleManager {
     public static void reportModules() {
         ArrayList<String> enabled = new ArrayList<>();
         module2enable.forEach((module, enable) -> {
-            if (enable) enabled.add(module);
+            if (enable) enabled.add(String.join(".", module));
         });
 
-        LOGGER.info("Enabled {}/{} modules -> {}", enabled.size(), module2enable.size(), enabled);
+        LOGGER.info("Enabled {} modules -> {}", enabled.size(), enabled);
     }
 
     @ApiStatus.AvailableSince("1.1.5")
-    public static boolean isModuleEnabled(String moduleName) {
-        return module2enable.get(moduleName);
+    public static boolean isModuleEnabled(List<String> packagePath) {
+        return module2enable.get(packagePath);
     }
 
     /**
@@ -80,10 +81,13 @@ public class ModuleManager {
     }
 
     public static boolean shouldEnableModule(JsonElement config, List<String> packagePath) {
-        String basePackagePath = packagePath.getFirst();
+        if (module2enable.containsKey(packagePath)) {
+            return module2enable.get(packagePath);
+        }
+
         if (!isRequiredModsInstalled(packagePath)) {
             Fuji.LOGGER.warn("Can't load module {} (reason: the required dependency mod isn't installed)", packagePath);
-            module2enable.put(basePackagePath, false);
+            module2enable.put(packagePath, false);
             return false;
         }
 
@@ -101,7 +105,7 @@ public class ModuleManager {
         }
 
         // note: this only means that the module is enabled. (maybe partial enabled)
-        module2enable.put(basePackagePath, enable);
+        module2enable.put(packagePath, enable);
         return enable;
     }
 
