@@ -50,6 +50,7 @@ public class ModuleManager {
             if (enable) enabled.add(String.join(".", module));
         });
 
+        enabled.sort(String::compareTo);
         LOGGER.info("Enabled {} modules -> {}", enabled.size(), enabled);
     }
 
