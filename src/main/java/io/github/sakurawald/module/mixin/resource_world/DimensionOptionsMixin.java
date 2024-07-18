@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.mixin.resource_world.registry;
+package io.github.sakurawald.module.mixin.resource_world;
 
 import io.github.sakurawald.module.initializer.resource_world.interfaces.DimensionOptionsMixinInterface;
 import net.minecraft.world.dimension.DimensionOptions;

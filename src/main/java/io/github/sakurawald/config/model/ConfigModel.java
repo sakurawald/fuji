@@ -104,9 +104,6 @@ public class ConfigModel {
         public Profiler profiler = new Profiler();
         public CommandSpy command_spy = new CommandSpy();
         public Scheduler scheduler = new Scheduler();
-        public BypassChatSpeed bypass_chat_speed = new BypassChatSpeed();
-        public BypassMoveSpeed bypass_move_speed = new BypassMoveSpeed();
-        public BypassMaxPlayerLimit bypass_max_player_limit = new BypassMaxPlayerLimit();
         public Config config = new Config();
         public Test test = new Test();
         public Hat hat = new Hat();
@@ -513,24 +510,38 @@ public class ConfigModel {
             public int context_cache_size = 5;
         }
 
+        public Disabler disabler = new Disabler();
         @Documentation("""
+                This module provides `disabler` to disable checkers in `vaniila minecraft`
+                
+                """)
+        public class Disabler {
+            public boolean enable = false;
+
+            public ChatSpeedDisabler chat_speed_disabler = new ChatSpeedDisabler();
+            public MoveSpeedDisabler move_speed_disabler = new MoveSpeedDisabler();
+            public MaxPlayerDisabler max_player_disabler = new MaxPlayerDisabler();
+
+            @Documentation("""
                 This module bypass "Kicked for spamming"
                 """)
-        public class BypassChatSpeed {
-            public boolean enable = false;
-        }
+            public class ChatSpeedDisabler {
+                public boolean enable = true;
+            }
 
-        @Documentation("Disable `moved too quickly` and `vehicle too quickly` check")
-        public class BypassMoveSpeed {
-            public boolean enable = false;
-        }
+            @Documentation("Disable `moved too quickly` and `vehicle too quickly` check")
+            public class MoveSpeedDisabler {
+                public boolean enable = true;
+            }
 
-        @Documentation("""
+            @Documentation("""
                 Bypass the max players limit of the server.
                 """)
-        public class BypassMaxPlayerLimit {
-            public boolean enable = false;
+            public class MaxPlayerDisabler {
+                public boolean enable = true;
+            }
         }
+
 
         @Documentation("""
                 This module provides `/deathlog` command.

@@ -95,9 +95,10 @@ public class ModuleManager {
         boolean enable = true;
         JsonObject parent = config.getAsJsonObject().get("modules").getAsJsonObject();
         for (String packageName : packagePath) {
-            if (!parent.has(packageName)) break;
             parent = parent.getAsJsonObject(packageName);
-            if (!parent.has("enable")) break;
+            if (parent == null || !parent.has("enable")) {
+                throw new RuntimeException("Missing `enable supplier` key for package path %s".formatted(packagePath));
+            }
             if (!parent.getAsJsonPrimitive("enable").getAsBoolean()) {
                 enable = false;
                 break;

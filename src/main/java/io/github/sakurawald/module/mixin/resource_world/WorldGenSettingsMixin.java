@@ -1,15 +1,12 @@
-package io.github.sakurawald.module.mixin.resource_world.registry;
+package io.github.sakurawald.module.mixin.resource_world;
 
 import com.google.common.collect.Maps;
 import io.github.sakurawald.module.initializer.resource_world.interfaces.DimensionOptionsMixinInterface;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionOptionsRegistryHolder;
-import net.minecraft.world.gen.GeneratorOptions;
 import net.minecraft.world.level.WorldGenSettings;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 

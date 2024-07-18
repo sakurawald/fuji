@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.mixin.bypass_max_player_limit;
+package io.github.sakurawald.module.mixin.disabler.max_player_disabler;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mojang.authlib.GameProfile;

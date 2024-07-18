@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.mixin.bypass_chat_speed;
+package io.github.sakurawald.module.mixin.disabler.chat_speed_disabler;
 
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
