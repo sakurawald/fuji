@@ -1184,6 +1184,16 @@ public class ConfigModel {
                 """)
         public class Color {
             public boolean enable = false;
+
+            public Sign sign = new Sign();
+            public class Sign {
+                public boolean enable = false;
+            }
+
+            public Anvil anvil = new Anvil();
+            public class Anvil {
+                public boolean enable = true;
+            }
         }
     }
 

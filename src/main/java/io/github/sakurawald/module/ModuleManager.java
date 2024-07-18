@@ -1,21 +1,21 @@
 package io.github.sakurawald.module;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.ApiStatus;
 import org.reflections.Reflections;
 
 import javax.naming.OperationNotSupportedException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static io.github.sakurawald.Fuji.LOGGER;
 
+@Slf4j
 public class ModuleManager {
     private static final Map<Class<? extends ModuleInitializer>, ModuleInitializer> initializers = new HashMap<>();
     private static final Map<String, Boolean> module2enable = new HashMap<>();
@@ -35,7 +35,7 @@ public class ModuleManager {
                     try {
                         initializer.onReload();
                     } catch (OperationNotSupportedException e) {
-                       // no-op
+                        // no-op
                     } catch (Exception e) {
                         LOGGER.error("Failed to reload module -> {}", e.getMessage());
                     }
@@ -66,8 +66,7 @@ public class ModuleManager {
     public static <T extends ModuleInitializer> T getInitializer(Class<T> clazz) {
         JsonElement config = Configs.configHandler.toJsonElement();
         if (!initializers.containsKey(clazz)) {
-            String basePackageName = calculateBasePackageName(ModuleInitializer.class, clazz.getName());
-            if (shouldEnableModule(config, basePackageName)) {
+            if (shouldEnableModule(config, getPackagePath(ModuleInitializer.class, clazz.getName()))) {
                 try {
                     ModuleInitializer moduleInitializer = clazz.getDeclaredConstructor().newInstance();
                     moduleInitializer.initialize();
@@ -80,44 +79,52 @@ public class ModuleManager {
         return clazz.cast(initializers.get(clazz));
     }
 
-    public static boolean shouldEnableModule(JsonElement config, String basePackageName) {
-        if (module2enable.containsKey(basePackageName)) {
-            return module2enable.get(basePackageName);
-        }
-
-        if (!isRequiredModsInstalled(basePackageName)) {
-            Fuji.LOGGER.warn("Can't load module {} (reason: the required dependency mod isn't installed)", basePackageName);
-            module2enable.put(basePackageName, false);
+    public static boolean shouldEnableModule(JsonElement config, List<String> packagePath) {
+        String basePackagePath = packagePath.getFirst();
+        if (!isRequiredModsInstalled(packagePath)) {
+            Fuji.LOGGER.warn("Can't load module {} (reason: the required dependency mod isn't installed)", packagePath);
+            module2enable.put(basePackagePath, false);
             return false;
         }
 
-        boolean enable;
-        try {
-            enable = config.getAsJsonObject().get("modules").getAsJsonObject().get(basePackageName).getAsJsonObject().get("enable").getAsBoolean();
-        } catch (Exception e) {
-            throw new RuntimeException("The enable-supplier key 'modules.%s.enable' is missing".formatted(basePackageName));
+        // note: if missing the `enable supplier` for the package, then it's considered as `enable = true`
+        boolean enable = true;
+        JsonObject parent = config.getAsJsonObject().get("modules").getAsJsonObject();
+        for (String packageName : packagePath) {
+            if (!parent.has(packageName)) break;
+            parent = parent.getAsJsonObject(packageName);
+            if (!parent.has("enable")) break;
+            if (!parent.getAsJsonPrimitive("enable").getAsBoolean()) {
+                enable = false;
+                break;
+            }
         }
 
-        module2enable.put(basePackageName, enable);
+        // note: this only means that the module is enabled. (maybe partial enabled)
+        module2enable.put(basePackagePath, enable);
         return enable;
     }
 
-    public static String calculateBasePackageName(Class<?> packageRootClass, String className) {
-        String basePackageName;
-        int left = packageRootClass.getPackageName().length() + 1;
-        basePackageName = className.substring(left);
-        int right = basePackageName.indexOf(".");
-        basePackageName = basePackageName.substring(0, right);
-        return basePackageName;
+    public static List<String> getPackagePath(Class<?> rootPackageClass, String className) {
+        String ret;
+        int left = rootPackageClass.getPackageName().length() + 1;
+        ret = className.substring(left);
+
+        int right = ret.lastIndexOf(".");
+        ret = ret.substring(0, right);
+
+        return List.of(ret.split("\\."));
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean isRequiredModsInstalled(String basePackageName) {
-        if (basePackageName.equals("better_info") || basePackageName.equals("fake_player_manager")) {
+    public static boolean isRequiredModsInstalled(List<String> packagePath) {
+        String basePackagePath = packagePath.getFirst();
+
+        if (basePackagePath.equals("better_info") || basePackagePath.equals("fake_player_manager")) {
             return FabricLoader.getInstance().isModLoaded("carpet");
         }
 
-        if (basePackageName.equals("profiler")) {
+        if (basePackagePath.equals("profiler")) {
             return FabricLoader.getInstance().isModLoaded("spark");
         }
 

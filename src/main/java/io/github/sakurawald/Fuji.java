@@ -14,6 +14,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
 
+import static io.github.sakurawald.module.ModuleManager.initializeModules;
+
 // TODO: rank module (track)
 // TODO: tab list module
 // TODO: spawn module
@@ -23,13 +25,12 @@ import java.nio.file.Path;
 // TODO: powertool modul
 // TODO: code review for skin module
 // TODO: hologram module
-// TODO: kit module
+// TODO: kit module (/kit <editor/give>)
 
 // TODO: a lisp-like DSL (parser and code-walker) for specific command with context and placeholders (%fuji:play_time_total%).
 // TODO: refactor command facility (selector, aop, options, parser)
 // TODO: add native shell support command
 
-// TODO: a generalized mixin plugin to dispatch text.
 // TODO: a program to generate module reference DAG
 // TODO: a program to generate config json with documentation
 
@@ -45,7 +46,7 @@ public class Fuji implements ModInitializer {
         BackupService.backup();
 
         /* modules */
-        ModuleManager.initializeModules();
+        initializeModules();
         ServerLifecycleEvents.SERVER_STARTED.register(server -> ModuleManager.reportModules());
 
         /* scheduler */
