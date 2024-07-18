@@ -30,7 +30,6 @@ import static io.github.sakurawald.module.ModuleManager.initializeModules;
 
 // TODO: a lisp-like DSL (parser and code-walker) for specific command with context and placeholders (%fuji:play_time_total%).
 // TODO: refactor command facility (selector, aop, options, parser)
-// TODO: add native shell support command
 
 // TODO: a program to generate module reference DAG
 // TODO: a program to generate config json with documentation

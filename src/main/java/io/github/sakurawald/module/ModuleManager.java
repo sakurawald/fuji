@@ -126,7 +126,7 @@ public class ModuleManager {
     public static boolean isRequiredModsInstalled(List<String> packagePath) {
         String basePackagePath = packagePath.getFirst();
 
-        if (basePackagePath.equals("better_info") || basePackagePath.equals("fake_player_manager")) {
+        if (basePackagePath.equals("carpet")) {
             return FabricLoader.getInstance().isModLoaded("carpet");
         }
 
