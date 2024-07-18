@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.loom;
+package io.github.sakurawald.module.initializer.functional.smithing;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
@@ -13,21 +13,22 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 
-public class LoomInitializer extends ModuleInitializer {
+public class SmithInitializer extends ModuleInitializer {
+
     @Override
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("loom").executes(this::$loom));
+        dispatcher.register(CommandManager.literal("smithing").executes(this::$smithing));
     }
 
-    private int $loom(CommandContext<ServerCommandSource> ctx) {
+    private int $smithing(CommandContext<ServerCommandSource> ctx) {
         return CommandUtil.playerOnlyCommand(ctx, player -> {
-            player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> new LoomScreenHandler(i, inventory, ScreenHandlerContext.create(p.getWorld(), p.getBlockPos())) {
+            player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> new SmithingScreenHandler(i, inventory, ScreenHandlerContext.create(p.getWorld(), p.getBlockPos())) {
                 @Override
                 public boolean canUse(PlayerEntity player) {
                     return true;
                 }
-            }, Text.translatable("container.loom")));
-            player.incrementStat(Stats.INTERACT_WITH_LOOM);
+            }, Text.translatable("block.minecraft.smithing_table")));
+            player.incrementStat(Stats.INTERACT_WITH_SMITHING_TABLE);
             return Command.SINGLE_SUCCESS;
         });
     }

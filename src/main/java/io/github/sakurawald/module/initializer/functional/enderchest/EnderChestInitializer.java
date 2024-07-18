@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.enderchest;
+package io.github.sakurawald.module.initializer.functional.enderchest;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;

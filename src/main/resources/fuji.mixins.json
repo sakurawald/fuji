@@ -29,7 +29,7 @@
     "command_rewrite.ServerPlayNetworkHandlerMixin",
     "command_spy.CommandsMixin",
     "deathlog.ServerPlayerMixin",
-    "enchantment.EnchantmentScreenHandlerMixin",
+    "functional.enchantment.EnchantmentScreenHandlerMixin",
     "fake_player_manager.PlayerCommandMixin",
     "fake_player_manager.PlayerListMixin",
     "fake_player_manager.PlayerMixin",

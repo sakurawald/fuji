@@ -6,6 +6,7 @@ import io.github.sakurawald.config.annotation.Documentation;
 import io.github.sakurawald.module.initializer.chat.RegexEntry;
 import io.github.sakurawald.module.initializer.command_alias.CommandAliasEntry;
 import io.github.sakurawald.module.initializer.command_rewrite.CommandRewriteEntry;
+import net.minecraft.enchantment.Enchantment;
 
 import java.util.*;
 
@@ -128,19 +129,11 @@ public class ConfigModel {
         public Home home = new Home();
         public Ping ping = new Ping();
         public SystemMessage system_message = new SystemMessage();
-        public EnderChest enderchest = new EnderChest();
-        public Workbench workbench = new Workbench();
-        public Enchantment enchantment = new Enchantment();
-        public Anvil anvil = new Anvil();
-        public GrindStone grindstone = new GrindStone();
-        public StoneCutter stonecutter = new StoneCutter();
+
         public Bed bed = new Bed();
         public Sit sit = new Sit();
         public CommandAlias command_alias = new CommandAlias();
         public CommandRewrite command_rewrite = new CommandRewrite();
-        public Loom loom = new Loom();
-        public Cartography cartography = new Cartography();
-        public Smithing smithing = new Smithing();
         public World world = new World();
         public Realname realname = new Realname();
         public Multiplier multiplier = new Multiplier();
@@ -924,53 +917,6 @@ public class ConfigModel {
 
         }
 
-        @Documentation("This module provides `/enderchest` command.")
-        public class EnderChest {
-            public boolean enable = false;
-        }
-
-        @Documentation("This module provides `/workbench` command.")
-        public class Workbench {
-            public boolean enable = false;
-        }
-
-        @Documentation("This module provides `/enchantment` command.")
-        public class Enchantment {
-
-            public boolean enable = false;
-
-            @Documentation("Should we override the power of proviers for the opened enchant table?")
-            public OverridePower override_power = new OverridePower();
-
-            public class OverridePower {
-
-                public boolean enable = true;
-                @Documentation("""
-                        How many power providers for the opened enchant table.
-                        For a max level of enchant table, it requires 15 power providers.""")
-                public int power_provider_amount = 15;
-            }
-
-        }
-
-        @Documentation("This module provides `/anvil` command.")
-        public class Anvil {
-
-            public boolean enable = false;
-        }
-
-        @Documentation("This module provides `/grindstone` command.")
-        public class GrindStone {
-
-            public boolean enable = false;
-        }
-
-        @Documentation("This module provides `/stonecutter` command.")
-        public class StoneCutter {
-
-            public boolean enable = false;
-        }
-
         @Documentation("This module provides `/bed` command, which teleports the player to his bed.")
         public class Bed {
 
@@ -1020,20 +966,6 @@ public class ConfigModel {
 
         }
 
-        @Documentation("This module provides `/loom` command.")
-        public class Loom {
-            public boolean enable = false;
-        }
-
-        @Documentation("This module provides `/cartography` command.")
-        public class Cartography {
-            public boolean enable = false;
-        }
-
-        @Documentation("This module provides `/smithing` command.")
-        public class Smithing {
-            public boolean enable = false;
-        }
 
         @Documentation("This module provides `/world` command, which teleport the player to target dimension.")
         public class World {
@@ -1187,13 +1119,92 @@ public class ConfigModel {
 
             public Sign sign = new Sign();
             public class Sign {
-                public boolean enable = false;
+                public boolean enable = true;
             }
 
             public Anvil anvil = new Anvil();
             public class Anvil {
                 public boolean enable = true;
             }
+        }
+
+        public Functional functional = new Functional();
+        @Documentation("""
+                This module provides commands to open `remote functional blocks` (e.g. workbench, enderchest...)
+                """)
+        public class Functional {
+            public boolean enable = true;
+
+            public Workbench workbench = new Workbench();
+            @Documentation("This module provides `/workbench` command.")
+            public class Workbench {
+                public boolean enable = true;
+            }
+
+            public Enchantment enchantment = new Enchantment();
+            @Documentation("This module provides `/enchantment` command.")
+            public class Enchantment {
+
+                public boolean enable = true;
+
+                @Documentation("Should we override the power of proviers for the opened enchant table?")
+                public OverridePower override_power = new OverridePower();
+
+                public class OverridePower {
+
+                    public boolean enable = true;
+                    @Documentation("""
+                        How many power providers for the opened enchant table.
+                        For a max level of enchant table, it requires 15 power providers.""")
+                    public int power_provider_amount = 15;
+                }
+            }
+
+            public GrindStone grindstone = new GrindStone();
+            @Documentation("This module provides `/grindstone` command.")
+            public class GrindStone {
+
+                public boolean enable = true;
+            }
+
+            public StoneCutter stonecutter = new StoneCutter();
+            @Documentation("This module provides `/stonecutter` command.")
+            public class StoneCutter {
+
+                public boolean enable = true;
+            }
+
+            public Anvil anvil = new Anvil();
+            @Documentation("This module provides `/anvil` command.")
+            public class Anvil {
+
+                public boolean enable = true;
+            }
+
+            public Cartography cartography = new Cartography();
+            @Documentation("This module provides `/cartography` command.")
+            public class Cartography {
+                public boolean enable = true;
+            }
+
+            public EnderChest enderchest = new EnderChest();
+            @Documentation("This module provides `/enderchest` command.")
+            public class EnderChest {
+                public boolean enable = true;
+            }
+
+            public Smithing smithing = new Smithing();
+            @Documentation("This module provides `/smithing` command.")
+            public class Smithing {
+                public boolean enable = true;
+            }
+
+            public Loom loom = new Loom();
+            @Documentation("This module provides `/loom` command.")
+            public class Loom {
+                public boolean enable = true;
+            }
+
         }
     }
 

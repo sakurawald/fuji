@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.enchantment;
+package io.github.sakurawald.module.initializer.functional.enchantment;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
