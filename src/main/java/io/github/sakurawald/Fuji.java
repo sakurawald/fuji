@@ -3,6 +3,7 @@ package io.github.sakurawald;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.common.manager.BackupManager;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.ScheduleUtil;
 import net.fabricmc.api.ModInitializer;
@@ -46,6 +47,9 @@ public class Fuji implements ModInitializer {
     public void onInitialize() {
         /* backup */
         BackupManager.backup();
+
+        /* managers */
+        Managers.getBossBarManager().initialize();
 
         /* modules */
         initializeModules();

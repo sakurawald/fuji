@@ -1,25 +1,64 @@
 package io.github.sakurawald.module.initializer.teleport_warmup;
 
+import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.module.common.structure.BossBarTicket;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.util.MessageUtil;
+import lombok.Getter;
+import lombok.Setter;
 import net.kyori.adventure.bossbar.BossBar;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-public class TeleportTicket {
+import java.util.List;
 
-    public ServerPlayerEntity player;
-    public Position source;
-    public Position destination;
-    public boolean ready;
-    public BossBar bossbar;
+@Getter
+public class TeleportTicket extends BossBarTicket {
+    private final ServerPlayerEntity player;
+    private final Position source;
+    private final Position destination;
+    @Setter
+    private boolean ready;
 
-    public TeleportTicket(ServerPlayerEntity player, Position source, Position destination, boolean ready) {
+    private TeleportTicket(ServerPlayerEntity player, Position source, Position destination, float progress) {
+        super(BossBar.bossBar(MessageUtil.ofComponent(player, "teleport_warmup.bossbar.name"), progress, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS), Configs.configHandler.model().modules.teleport_warmup.warmup_second * 1000, List.of(player)
+        );
         this.player = player;
         this.source = source;
         this.destination = destination;
-        this.ready = ready;
-        this.bossbar = BossBar.bossBar(MessageUtil.ofComponent(player, "teleport_warmup.bossbar.name"), 0f, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS);
-        bossbar.addViewer(player);
+    }
+
+    public static TeleportTicket of(ServerPlayerEntity player, Position source, Position destination) {
+        return new TeleportTicket(player, source, destination, 0f);
+    }
+
+    public static TeleportTicket ofInstantTicket(ServerPlayerEntity player, Position source, Position destination) {
+        return new TeleportTicket(player, source, destination, 1f);
+    }
+
+    @Override
+    public boolean preProgressChange() {
+        // check combat
+        if (((ServerPlayerCombatStateAccessor) player).fuji$inCombat()) {
+            MessageUtil.sendActionBar(player, "teleport_warmup.in_combat");
+            return false;
+        }
+
+        // check damage
+        final double INTERRUPT_DISTANCE = Configs.configHandler.model().modules.teleport_warmup.interrupt_distance;
+        if (player.getPos().squaredDistanceTo(this.source.getX(), this.source.getY(), this.source.getZ()) >= INTERRUPT_DISTANCE) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onComplete() {
+        // set ready before teleport
+        this.ready = true;
+        if (!player.isDisconnected()) {
+            destination.teleport(player);
+        }
     }
 
 }

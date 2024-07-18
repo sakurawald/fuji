@@ -1,10 +1,10 @@
 package io.github.sakurawald.module.initializer.resource_world;
 
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.common.structure.SimpleRegistryMixinInterface;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.structure.Position;
+import io.github.sakurawald.module.common.structure.SimpleRegistryMixinInterface;
 import io.github.sakurawald.module.initializer.teleport_warmup.TeleportTicket;
-import io.github.sakurawald.module.initializer.teleport_warmup.TeleportWarmupInitializer;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
@@ -26,7 +26,6 @@ import java.util.Set;
 
 public class ResourceWorldManager {
 
-    private static final TeleportWarmupInitializer TELEPORT_WARMUP_INITIALIZER = ModuleManager.getInitializer(TeleportWarmupInitializer.class);
     private static final Set<ServerWorld> deletionQueue = new ReferenceOpenHashSet<>();
 
     static {
@@ -67,13 +66,11 @@ public class ResourceWorldManager {
         List<ServerPlayerEntity> players = new ArrayList<>(world.getPlayers());
         for (ServerPlayerEntity player : players) {
             // fix: if the player is inside resource-world while resetting the worlds, then resource worlds will delay its deletion until the player left the resource-world.
-            if (TELEPORT_WARMUP_INITIALIZER != null) {
-                TELEPORT_WARMUP_INITIALIZER.tickets.put(player.getGameProfile().getName(),
-                        new TeleportTicket(player
-                                , Position.of(player), new Position(overworld, spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5, 0, 0)
-                                , true));
-            }
-            player.teleport(overworld, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, overworld.getSpawnAngle(), 0.0F);
+            Position from = Position.of(player);
+            Position to = new Position(overworld, spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5, 0, 0);
+            TeleportTicket teleportTicket = TeleportTicket.ofInstantTicket(player, from, to);
+
+            Managers.getBossBarManager().addTicket(teleportTicket);
         }
     }
 

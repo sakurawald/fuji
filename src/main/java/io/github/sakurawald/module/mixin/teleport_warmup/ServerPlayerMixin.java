@@ -1,69 +1,34 @@
 package io.github.sakurawald.module.mixin.teleport_warmup;
 
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.initializer.back.BackInitializer;
+import io.github.sakurawald.module.common.manager.Managers;
+import io.github.sakurawald.module.common.structure.BossBarTicket;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.initializer.teleport_warmup.ServerPlayerCombatStateAccessor;
 import io.github.sakurawald.module.initializer.teleport_warmup.TeleportTicket;
-import io.github.sakurawald.module.initializer.teleport_warmup.TeleportWarmupInitializer;
-import io.github.sakurawald.util.PlayerUtil;
 import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.PlayerUtil;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import javax.annotation.Nullable;
+import java.util.Set;
+
 @Mixin(value = ServerPlayerEntity.class, priority = 1000 - 500)
 public abstract class ServerPlayerMixin implements ServerPlayerCombatStateAccessor {
 
     @Unique
-    private static final TeleportWarmupInitializer module = ModuleManager.getInitializer(TeleportWarmupInitializer.class);
-    @Unique
     public boolean fuji$inCombat;
 
-    @Inject(method = "teleport(Lnet/minecraft/server/world/ServerWorld;DDDFF)V", at = @At("HEAD"), cancellable = true)
-    public void $teleport(ServerWorld targetWorld, double x, double y, double z, float yaw, float pitch, CallbackInfo ci) {
-        ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-
-        // If we try to spawn a fake-player in the end or nether, the fake-player will initially spawn in overworld
-        // and teleport to the target world. This will cause the teleport warmup to be triggered.
-        if (PlayerUtil.isFakePlayer(player)) return;
-
-        String playerName = player.getGameProfile().getName();
-        if (!module.tickets.containsKey(playerName)) {
-            module.tickets.put(playerName,
-                    new TeleportTicket(player
-                            , Position.of(player), new Position(targetWorld, x, y, z, yaw, pitch), false));
-            ci.cancel();
-            return;
-        } else {
-            TeleportTicket ticket = module.tickets.get(playerName);
-            if (!ticket.ready) {
-                MessageUtil.sendActionBar(player, "teleport_warmup.another_teleportation_in_progress");
-                ci.cancel();
-                return;
-            }
-        }
-
-    }
-
-    @Inject(method = "damage", at = @At("RETURN"))
-    public void $damage(DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> cir) {
-        // If damage was actually applied...
-        if (cir.getReturnValue()) {
-            ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-            String playerName = player.getGameProfile().getName();
-            if (module.tickets.containsKey(playerName)) {
-                module.tickets.get(playerName).bossbar.removeViewer(player);
-                module.tickets.remove(playerName);
-            }
-        }
-    }
 
     @Inject(method = "enterCombat", at = @At("RETURN"))
     public void $enterCombat(CallbackInfo ci) {
@@ -78,5 +43,58 @@ public abstract class ServerPlayerMixin implements ServerPlayerCombatStateAccess
     @Override
     public boolean fuji$inCombat() {
         return fuji$inCombat;
+    }
+
+    @Unique
+    public @Nullable TeleportTicket getTeleportTicket(ServerPlayerEntity player) {
+        for (BossBarTicket ticket : Managers.getBossBarManager().getTickets()) {
+            if (ticket instanceof TeleportTicket teleportTicket) {
+                if (player.equals(teleportTicket.getPlayer())) {
+                    return teleportTicket;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    @Inject(method = "teleport(Lnet/minecraft/server/world/ServerWorld;DDDFF)V", at = @At("HEAD"), cancellable = true)
+    public void $teleport(ServerWorld targetWorld, double x, double y, double z, float yaw, float pitch, CallbackInfo ci) {
+        ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+
+        // If we try to spawn a fake-player in the end or nether, the fake-player will initially spawn in overworld
+        // and teleport to the target world. This will cause the teleport warmup to be triggered.
+        if (PlayerUtil.isFakePlayer(player)) return;
+
+        TeleportTicket ticket = getTeleportTicket(player);
+        if (ticket == null) {
+            ticket = TeleportTicket.of(
+                    player
+                    , Position.of(player)
+                    , new Position(targetWorld, x, y, z, yaw, pitch));
+            Managers.getBossBarManager().addTicket(ticket);
+            ci.cancel();
+        } else {
+            if (!ticket.isReady()) {
+                MessageUtil.sendActionBar(player, "teleport_warmup.another_teleportation_in_progress");
+                ci.cancel();
+            }
+        }
+
+        // yeah, let's do teleport now.
+    }
+
+    @Inject(method = "damage", at = @At("RETURN"))
+    public void $damage(DamageSource damageSource, float amount, CallbackInfoReturnable<Boolean> cir) {
+        // If damage was actually applied...
+        if (cir.getReturnValue()) {
+            ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+            if (PlayerUtil.isFakePlayer(player)) return;
+
+            TeleportTicket ticket = getTeleportTicket(player);
+            if (ticket != null) {
+                ticket.setAborted(true);
+            }
+        }
     }
 }
