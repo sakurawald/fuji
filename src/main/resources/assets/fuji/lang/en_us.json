@@ -179,5 +179,6 @@
   "chat.xaero_waypoint_add.command": "/xaero_waypoint_add:Waypoint:·:%d:%s:%d:0:false:0:Internal_%s_waypoints",
   "anti_build.disallow": "<red>This action is disallowed by anti build.",
   "nickname.set": "<gold>Nickname set.",
-  "nickname.unset": "<gold>Nickname unset."
+  "nickname.unset": "<gold>Nickname unset.",
+  "top": "<gold>Top!"
 }

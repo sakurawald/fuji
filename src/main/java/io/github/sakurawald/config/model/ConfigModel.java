@@ -512,8 +512,7 @@ public class ConfigModel {
 
         public Disabler disabler = new Disabler();
         @Documentation("""
-                This module provides `disabler` to disable checkers in `vaniila minecraft`
-                
+                This module provides `disabler` to disable checkers in `vaniila minecraft`.
                 """)
         public class Disabler {
             public boolean enable = false;
@@ -1224,7 +1223,14 @@ public class ConfigModel {
             public class BetterInfo {
                 public boolean enable = true;
             }
+        }
 
+        public Top top = new Top();
+        @Documentation("""
+                This module provides `/top` command.
+                """)
+        public class Top {
+            public boolean enable = false;
         }
     }
 

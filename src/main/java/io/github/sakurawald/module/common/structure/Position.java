@@ -2,7 +2,9 @@ package io.github.sakurawald.module.common.structure;
 
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.util.MessageUtil;
+import lombok.Builder;
 import lombok.Data;
+import lombok.With;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -12,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 @Data
-
+@With
 public class Position {
     private String level;
     private double x;
