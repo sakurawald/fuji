@@ -6,7 +6,6 @@ import io.github.sakurawald.config.annotation.Documentation;
 import io.github.sakurawald.module.initializer.chat.RegexEntry;
 import io.github.sakurawald.module.initializer.command_alias.CommandAliasEntry;
 import io.github.sakurawald.module.initializer.command_rewrite.CommandRewriteEntry;
-import net.minecraft.enchantment.Enchantment;
 
 import java.util.*;
 
@@ -101,7 +100,7 @@ public class ConfigModel {
         public OpProtect op_protect = new OpProtect();
         public Pvp pvp = new Pvp();
         public FixPlayerListCME fix_player_list_cme = new FixPlayerListCME();
-        public FixWhitelist fix_whitelist = new FixWhitelist();
+        public Whitelist whitelist = new Whitelist();
         public CommandPermission command_permission = new CommandPermission();
         public Head head = new Head();
         public Profiler profiler = new Profiler();
@@ -670,7 +669,7 @@ public class ConfigModel {
         @Documentation("""
                 for offline whitelist, this makes whitelist ONLY compare the username and ignore UUID!
                 """)
-        public class FixWhitelist {
+        public class Whitelist {
 
             public boolean enable = false;
         }
