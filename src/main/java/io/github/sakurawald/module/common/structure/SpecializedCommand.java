@@ -2,13 +2,12 @@ package io.github.sakurawald.module.common.structure;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import net.minecraft.network.packet.c2s.play.CommandExecutionC2SPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+
 import java.util.List;
 import java.util.Random;
 
@@ -60,13 +59,7 @@ public class SpecializedCommand {
 
     public static void executeCommand(ServerPlayerEntity player, String command) {
         command = MessageUtil.ofString(player, false, command);
-
-        try {
-            Fuji.SERVER.getCommandManager().getDispatcher().execute(command, player.getCommandSource());
-
-        } catch (CommandSyntaxException e) {
-            player.sendMessage(Component.text(e.getMessage()).color(NamedTextColor.RED));
-        }
+        player.networkHandler.onCommandExecution(new CommandExecutionC2SPacket(command));
     }
 
 }

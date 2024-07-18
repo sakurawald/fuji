@@ -33,6 +33,7 @@ public class TestInitializer extends ModuleInitializer {
         List<Audience> playerList = new ArrayList<>(Fuji.SERVER.getPlayerManager().getPlayerList());
 
         Managers.getBossBarManager().addTicket(new BossBarTicket(bossbar, 10 * 1000, playerList) {
+
             @Override
             public void onComplete() {
                 log.warn("done with audiences {}", this.getAudiences());

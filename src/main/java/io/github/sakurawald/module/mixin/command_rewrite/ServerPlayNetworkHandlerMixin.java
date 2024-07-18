@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-@Mixin(value = ServerPlayNetworkHandler.class, priority = 999)
+@Mixin(value = ServerPlayNetworkHandler.class, priority = 1000 - 500)
 @Slf4j
 public class ServerPlayNetworkHandlerMixin {
 

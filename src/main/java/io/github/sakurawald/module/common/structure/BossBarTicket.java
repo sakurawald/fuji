@@ -21,6 +21,11 @@ public abstract class BossBarTicket {
     @Getter
     private final float deltaValue;
     private final BossBar bossbar;
+
+    @Getter
+    @Setter
+    private boolean ready;
+
     @Getter
     @Setter
     private boolean aborted;

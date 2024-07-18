@@ -31,7 +31,7 @@
     "command_spy.CommandsMixin",
     "command_toolbox.reply.MsgCommandMixin",
     "command_toolbox.seen.PlayerListMixin",
-    "command_warmup.CommandsMixin",
+    "command_warmup.ServerPlayNetworkHandler",
     "deathlog.ServerPlayerMixin",
     "disabler.chat_speed_disabler.ServerGamePacketListenerImplMixin",
     "disabler.max_player_disabler.DedicatedPlayerManagerMixin",

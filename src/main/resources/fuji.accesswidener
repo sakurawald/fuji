@@ -10,3 +10,5 @@ accessible field net/minecraft/server/MinecraftServer worlds Ljava/util/Map;
 accessible field net/minecraft/server/MinecraftServer session Lnet/minecraft/world/level/storage/LevelStorage$Session;
 
 accessible class net/minecraft/registry/RegistryLoader$Loader
+
+accessible method net/minecraft/server/network/ServerPlayNetworkHandler executeCommand (Ljava/lang/String;)V

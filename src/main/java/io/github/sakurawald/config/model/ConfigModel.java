@@ -230,9 +230,9 @@ public class ConfigModel {
         public class CommandWarmup {
             public boolean enable = false;
 
-            public HashMap<String, Long> regex2ms = new HashMap<>() {
+            public HashMap<String, Integer> regex2ms = new HashMap<>() {
                 {
-                    this.put("back", 3 * 1000L);
+                    this.put("back", 3 * 1000);
                 }
             };
 

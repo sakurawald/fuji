@@ -2,7 +2,6 @@ package io.github.sakurawald.module.common.manager;
 
 import com.google.common.collect.ImmutableList;
 import io.github.sakurawald.module.common.structure.BossBarTicket;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.kyori.adventure.audience.Audience;
@@ -10,43 +9,52 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
 @Slf4j
 public class BossBarManager {
 
-    @Getter
     private final List<BossBarTicket> tickets = new ArrayList<>();
-
-    public void addTicket(BossBarTicket ticket) {
-        this.tickets.add(ticket);
-    }
+    private final List<BossBarTicket> addedTickets = new ArrayList<>();
 
     public void initialize() {
         ServerTickEvents.START_SERVER_TICK.register(this::onServerTick);
     }
 
-    private void abortTicket(Iterator<BossBarTicket> iterator, BossBarTicket ticket){
+    public List<BossBarTicket> getTickets() {
+        return ImmutableList.copyOf(this.tickets);
+    }
+
+    public void addTicket(BossBarTicket ticket) {
+        this.addedTickets.add(ticket);
+    }
+
+    private void abortTicket(BossBarTicket ticket) {
         ticket.clearAudiences();
-        iterator.remove();
+        this.tickets.remove(ticket);
     }
 
     private void onServerTick(MinecraftServer server) {
+        /* add tickets */
+        this.tickets.addAll(addedTickets);
+        addedTickets.clear();
+
+        /* iterate tickets */
         if (tickets.isEmpty()) return;
 
-        Iterator<BossBarTicket> ticketIter = tickets.iterator();
-        while (ticketIter.hasNext()) {
-            BossBarTicket ticket = ticketIter.next();
+        List<BossBarTicket> abortedTickets = new ArrayList<>();
+        List<BossBarTicket> completedTickets = new ArrayList<>();
 
+        for (BossBarTicket ticket : tickets) {
+            // is aborted ?
             if (ticket.isAborted()) {
-                abortTicket(ticketIter, ticket);
+                abortedTickets.add(ticket);
                 continue;
             }
 
             if (!ticket.preProgressChange()) {
-                abortTicket(ticketIter, ticket);
+                ticket.setAborted(true);
                 continue;
             }
 
@@ -68,21 +76,26 @@ public class BossBarManager {
                  1. One of the viewer of the bossbar is disconnected (but not removed from the bossbar).
                  2. The viewers of the bossbar is empty.
                  */
-                abortTicket(ticketIter, ticket);
+                ticket.setAborted(true);
                 return;
             }
 
             if (!ticket.postProgressChange()) {
-                abortTicket(ticketIter, ticket);
+                ticket.setAborted(true);
                 continue;
             }
 
             // even the ServerPlayer is disconnected, the bossbar will still be ticked.
             if (Float.compare(ticket.progress(), 1f) == 0) {
-                ticket.onComplete();
-                abortTicket(ticketIter, ticket);
+                ticket.setReady(true);
+                ticket.setAborted(true);
+                completedTickets.add(ticket);
             }
         }
+
+        /* remove tickets */
+        completedTickets.forEach(BossBarTicket::onComplete);
+        abortedTickets.forEach(this::abortTicket);
     }
 
 }

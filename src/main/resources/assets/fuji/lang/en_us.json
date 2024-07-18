@@ -180,5 +180,6 @@
   "anti_build.disallow": "<red>This action is disallowed by anti build.",
   "nickname.set": "<gold>Nickname set.",
   "nickname.unset": "<gold>Nickname unset.",
-  "top": "<gold>Top!"
+  "top": "<gold>Top!",
+  "command_warmup.bossbar.name": "<dark_green>Command warmup: %s"
 }

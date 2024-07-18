@@ -15,8 +15,6 @@ public class TeleportTicket extends BossBarTicket {
     private final ServerPlayerEntity player;
     private final Position source;
     private final Position destination;
-    @Setter
-    private boolean ready;
 
     private TeleportTicket(ServerPlayerEntity player, Position source, Position destination, float progress) {
         super(BossBar.bossBar(MessageUtil.ofComponent(player, "teleport_warmup.bossbar.name"), progress, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS), Configs.configHandler.model().modules.teleport_warmup.warmup_second * 1000, List.of(player)
@@ -55,7 +53,6 @@ public class TeleportTicket extends BossBarTicket {
     @Override
     public void onComplete() {
         // set ready before teleport
-        this.ready = true;
         if (!player.isDisconnected()) {
             destination.teleport(player);
         }

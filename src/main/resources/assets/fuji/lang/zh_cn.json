@@ -180,5 +180,6 @@
   "nickname.set": "<gold>名称已修改",
   "nickname.unset": "<gold>名称已还原",
   "placeholder.pos": "<#2596be>[%d %d %d, %s]",
-  "top": "<gold>已传送到顶部!"
+  "top": "<gold>已传送到顶部!",
+  "command_warmup.bossbar.name": "<dark_green>命令预热: %s"
 }
