@@ -30,7 +30,6 @@ public class TestInitializer extends ModuleInitializer {
 
         BossBar bossbar = BossBar.bossBar(Component.text("test progress"), 0f, BossBar.Color.BLUE,  BossBar.Overlay.NOTCHED_20);
 
-
         return 1;
     }
 
