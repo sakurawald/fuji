@@ -1201,6 +1201,7 @@ public class ConfigModel {
             public class Heal {
                 public boolean enable = true;
             }
+
             public More more = new More();
             @Documentation("This module provides `/more` command.")
             public class More {
@@ -1246,6 +1247,22 @@ public class ConfigModel {
                 This module provides `/top` command.
                 """)
             public class Top {
+                public boolean enable = true;
+            }
+
+            public SendMessage send_message = new SendMessage();
+            @Documentation("""
+                    This module provides `/sendmessage` command.
+                    """)
+            public class SendMessage {
+                public boolean enable = true;
+            }
+
+            public  SendBroadcast send_broadcast = new SendBroadcast();
+            @Documentation("""
+                    This module provides `/sendbroadcast` command.
+                    """)
+            public class SendBroadcast {
                 public boolean enable = true;
             }
         }

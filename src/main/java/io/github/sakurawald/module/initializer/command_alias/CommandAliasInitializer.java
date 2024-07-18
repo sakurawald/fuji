@@ -27,6 +27,7 @@ public class CommandAliasInitializer extends ModuleInitializer {
 
          LiteralArgumentBuilder<ServerCommandSource> builder;
 
+         // todo: tree iterator
          switch (entry.from.size()) {
              case 1:
                  builder = literal(entry.from.get(0)).redirect(target);

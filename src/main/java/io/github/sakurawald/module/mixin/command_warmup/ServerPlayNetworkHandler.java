@@ -37,7 +37,6 @@ public abstract class ServerPlayNetworkHandler {
 
     @Inject(method = "onCommandExecution", at = @At("HEAD"), cancellable = true)
     public void $execute(CommandExecutionC2SPacket commandExecutionC2SPacket, CallbackInfo ci) {
-
         ServerPlayerEntity player = getPlayer();
         String string = commandExecutionC2SPacket.comp_808();
 

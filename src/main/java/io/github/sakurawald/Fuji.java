@@ -24,8 +24,6 @@ import static io.github.sakurawald.module.ModuleManager.initializeModules;
 // TODO: tppos module
 // TODO: code review for skin module
 
-// TODO: command warmup module
-
 // TODO: kit module (/kit <editor/give>)
 // TODO: invsee module
 // TODO: powertool module
