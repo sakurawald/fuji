@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.scheduler;
 
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.module.common.structure.SpecializedCommand;
+import io.github.sakurawald.module.common.structure.CommandExecuter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -29,6 +29,6 @@ public class ScheduleJob {
         }
 
         List<String> commands = this.commands_list.get(new Random().nextInt(this.commands_list.size()));
-        SpecializedCommand.runSpecializedCommands(Fuji.SERVER, commands);
+        CommandExecuter.executeCommandsWithContext(Fuji.SERVER, commands);
     }
 }

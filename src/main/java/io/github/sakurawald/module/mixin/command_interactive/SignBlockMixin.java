@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.command_interactive;
 
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.module.common.structure.SpecializedCommand;
+import io.github.sakurawald.module.common.structure.CommandExecuter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -44,8 +44,7 @@ public class SignBlockMixin {
                     cir.setReturnValue(ActionResult.CONSUME);
                     List<String> commands = splitCommands(text);
 
-                    Fuji.LOGGER.info("Player {} execute commands: {}", serverPlayer.getName().getString(), commands);
-                    SpecializedCommand.executeCommands(serverPlayer, commands);
+                    commands.forEach(command -> CommandExecuter.executeCommandAsPlayer(serverPlayer,command));
                 }
             }
         }

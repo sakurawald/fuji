@@ -30,20 +30,6 @@ public class TestInitializer extends ModuleInitializer {
 
         BossBar bossbar = BossBar.bossBar(Component.text("test progress"), 0f, BossBar.Color.BLUE,  BossBar.Overlay.NOTCHED_20);
 
-        List<Audience> playerList = new ArrayList<>(Fuji.SERVER.getPlayerManager().getPlayerList());
-
-        Managers.getBossBarManager().addTicket(new BossBarTicket(bossbar, 10 * 1000, playerList) {
-
-            @Override
-            public void onComplete() {
-                log.warn("done with audiences {}", this.getAudiences());
-            }
-
-            @Override
-            public void onAudienceDisconnected(Audience audience) {
-                log.warn("audience {} disconnected", audience);
-            }
-        });
 
         return 1;
     }

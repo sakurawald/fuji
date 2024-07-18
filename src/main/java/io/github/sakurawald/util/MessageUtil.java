@@ -13,6 +13,7 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.handler.ResourceConfigHandler;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.audience.Audience;
@@ -38,12 +39,15 @@ import java.util.Map;
 @UtilityClass
 @Slf4j
 public class MessageUtil {
-    private static final NodeParser NODE_PARSER = NodeParser.builder()
+    public static final NodeParser POWERFUL_PARSER = NodeParser.builder()
             .quickText()
             .simplifiedTextFormat()
             .globalPlaceholders()
             .markdown()
             .build();
+
+    public static final NodeParser PLACEHOLDER_PARSER = NodeParser.builder()
+            .globalPlaceholders().build();
 
     private static final FabricServerAudiences adventure = FabricServerAudiences.of(Fuji.SERVER);
     @Getter
@@ -142,11 +146,10 @@ public class MessageUtil {
         player.sendMessage(adventure.toNative(ofComponent(null, false, getString(player, key), args)));
     }
 
-
     /* This is the core method to map `String` into `Component`.
      *  All methods that return `Vomponent` are converted from this method.
      * */
-    public static @NotNull Text ofText(@Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
+    public static @NotNull Text ofText(@NonNull NodeParser parser, @Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
         String string = isKey ? getString(audience, keyOrString, args) : keyOrString;
 
         PlaceholderContext placeholderContext;
@@ -157,14 +160,17 @@ public class MessageUtil {
         }
         ParserContext parserContext = ParserContext.of(PlaceholderContext.KEY, placeholderContext);
 
-        return NODE_PARSER.parseText(TextNode.of(string), parserContext);
+        return parser.parseText(TextNode.of(string), parserContext);
     }
 
-
-    public static @NotNull String ofString(@Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
-        Text text = ofText(audience, isKey, keyOrString, args);
-        return PlainTextComponentSerializer.plainText().serialize(text.asComponent());
+    public static @NotNull Text ofText(@Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
+        return ofText(POWERFUL_PARSER, audience, isKey, keyOrString, args);
     }
+
+    public static String ofString(@Nullable Audience audience, String string) {
+        return PlainTextComponentSerializer.plainText().serialize(MessageUtil.ofText(PLACEHOLDER_PARSER, audience, false, string).asComponent());
+    }
+
 
     public static @NotNull Text ofText(@Nullable Audience audience, String key, Object... args) {
         return ofText(audience, true, key, args);

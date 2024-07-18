@@ -1,15 +1,12 @@
-package io.github.sakurawald.module.initializer.command_toolbox.send_broadcast;
+package io.github.sakurawald.module.initializer.command_toolbox.for_each;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import io.github.sakurawald.config.model.ConfigModel;
+import io.github.sakurawald.module.common.structure.CommandExecuter;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.MessageUtil;
-import io.github.sakurawald.util.PlayerUtil;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.command.argument.EntityArgumentType;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -17,23 +14,23 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
-public class SendBroadcastInitializer extends ModuleInitializer {
+public class ForEachCommand extends ModuleInitializer {
     @Override
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(
-                literal("sendbroadcast")
-                        .requires(ctx -> ctx.hasPermissionLevel(4))
-                        .then(argument("message", StringArgumentType.greedyString())
-                                .executes((ctx) -> {
-                                    String message = StringArgumentType.getString(ctx, "message");
 
-                                    for (ServerPlayerEntity player : ctx.getSource().getServer().getPlayerManager().getPlayerList()) {
-                                        player.sendMessage(MessageUtil.ofText(player, false, message));
+        dispatcher.register(
+                literal("foreach")
+                        .requires(ctx -> ctx.hasPermissionLevel(4))
+                        .then(argument("rest", StringArgumentType.greedyString())
+                                .executes((ctx) -> {
+                                    String rest = StringArgumentType.getString(ctx, "rest");
+                                    MinecraftServer server = ctx.getSource().getServer();
+                                    for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+                                        CommandExecuter.executeCommandAsConsole(player, rest);
                                     }
                                     return Command.SINGLE_SUCCESS;
                                 })
                         )
         );
     }
-
 }

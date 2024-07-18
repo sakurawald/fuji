@@ -1265,6 +1265,22 @@ public class ConfigModel {
             public class SendBroadcast {
                 public boolean enable = true;
             }
+
+            public  SendActionBar send_actionbar = new SendActionBar();
+            public class SendActionBar {
+                public boolean enable = true;
+            }
+
+            public ForEach for_each = new ForEach();
+            public class ForEach {
+                public boolean enable = true;
+            }
+
+            public Shell shell = new Shell();
+            public class Shell {
+                public String enable_warning = "ENABLE THIS MODULE IS POTENTIAL TO HARM YOUR COMPUTER! YOU NEED TO CHANGE THIS FIELD INTO `CONFIRM` TO ENABLE THIS MODULE";
+                public boolean enable = false;
+            }
         }
     }
 

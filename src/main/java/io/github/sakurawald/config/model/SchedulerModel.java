@@ -11,9 +11,9 @@ public class SchedulerModel {
         {
             this.add(new ScheduleJob("example_job", false, 3, List.of("0 0 * ? * *"),
                     List.of(
-                            List.of("tellraw @a [{\"text\":\"Nobody gets the gift!\",\"color\":\"aqua\",\"bold\":false,\"italic\":false,\"underlined\":false,\"strikethrough\":false,\"obfuscated\":false}]"),
-                            List.of("title @a title \"All players get the gift!\"", "give !all_player! minecraft:diamond 1"),
-                            List.of("title @a title \"player !random_player! get the gift!\"", "give !random_player! minecraft:diamond 1")
+                            List.of("send_broadcast nobody gets the gift"),
+                            List.of("all players get the gift!", "foreach give %player:name% minecraft:diamond 16")
+//                            List.of("a random player gets the gift", "give !random_player! minecraft:diamond 1")
                     )));
         }
     };
