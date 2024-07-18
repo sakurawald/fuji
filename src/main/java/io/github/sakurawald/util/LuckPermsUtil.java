@@ -5,6 +5,7 @@ import lombok.experimental.UtilityClass;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
+import net.luckperms.api.model.user.UserManager;
 import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.MetaNode;
 import net.luckperms.api.util.Tristate;
@@ -12,6 +13,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -33,12 +35,13 @@ public class LuckPermsUtil {
     }
 
     public static Tristate checkPermission(ServerPlayerEntity player, String permission) {
-        if (getAPI() == null || PlayerUtil.isFakePlayer(player)) {
+        LuckPerms api = getAPI();
+        if (api == null) {
             return Tristate.UNDEFINED;
         }
 
-        return getAPI().getPlayerAdapter(ServerPlayerEntity.class)
-                .getUser(player)
+        User user = loadUser(api, player);
+        return user
                 .getCachedData()
                 .getPermissionData().checkPermission(permission);
     }
@@ -51,42 +54,70 @@ public class LuckPermsUtil {
         return checkPermission(player, permission).asBoolean();
     }
 
+    private static User loadUser(@NonNull LuckPerms api, ServerPlayerEntity player) {
+        User user;
+        if (PlayerUtil.isFakePlayer(player)) {
+            UserManager userManager = api.getUserManager();
+            CompletableFuture<User> userFuture = userManager.loadUser(player.getUuid());
+            user = userFuture.join();
+            userManager.savePlayerData(player.getUuid(), player.getGameProfile().getName());
+        } else {
+            user = api.getPlayerAdapter(ServerPlayerEntity.class).getUser(player);
+        }
+
+        return user;
+    }
+
     public static <T> @NonNull Optional<T> getMeta(ServerPlayerEntity player, String meta, @NonNull Function<String, ? extends T> valueTransformer) {
-        if (getAPI() == null || PlayerUtil.isFakePlayer(player)) {
+        LuckPerms api = getAPI();
+        if (api == null) {
             return Optional.empty();
         }
 
-        return getAPI().getPlayerAdapter(ServerPlayerEntity.class)
-                .getMetaData(player)
+        User user = loadUser(api, player);
+        return user.getCachedData()
+                .getMetaData()
                 .getMetaValue(meta, valueTransformer);
 
     }
 
-    public static <T> String getPrefix(ServerPlayerEntity player) {
-        if (getAPI() == null || PlayerUtil.isFakePlayer(player)) {
+    public static String getPrefix(ServerPlayerEntity player) {
+        LuckPerms api = getAPI();
+        if (api == null) {
             return null;
         }
 
-        return getAPI().getPlayerAdapter(ServerPlayerEntity.class)
-                .getMetaData(player)
+        User user = loadUser(api, player);
+
+        return user
+                .getCachedData()
+                .getMetaData()
                 .getPrefix();
 
     }
 
     public static <T> String getSuffix(ServerPlayerEntity player) {
-        if (getAPI() == null) {
+        LuckPerms api = getAPI();
+        if (api == null) {
             return null;
         }
 
-        return getAPI().getPlayerAdapter(ServerPlayerEntity.class)
-                .getMetaData(player)
+        User user = loadUser(api, player);
+
+        return user
+                .getCachedData()
+                .getMetaData()
                 .getSuffix();
 
     }
 
     public static void saveMeta(ServerPlayerEntity player, String key, String value) {
-        User user = getAPI().getUserManager()
-                .getUser(player.getGameProfile().getName());
+        LuckPerms api = getAPI();
+        if (api == null) {
+            throw new RuntimeException("Failed to save meta");
+        }
+
+        User user = loadUser(api, player);
 
         MetaNode node = MetaNode.builder(key, value).build();
         user.data().clear(NodeType.META.predicate(mn -> mn.getMetaKey().equals(key)));

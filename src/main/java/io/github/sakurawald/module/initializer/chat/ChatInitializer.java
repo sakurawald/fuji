@@ -185,9 +185,9 @@ public class ChatInitializer extends ModuleInitializer {
 
     }
 
-    private void registerSuffixPlaceholder() {
+    private void registerPrefixPlaceholder() {
         Placeholders.register(
-                Identifier.of(Fuji.MOD_ID, "player_suffix"),
+                Identifier.of(Fuji.MOD_ID, "player_prefix"),
                 (ctx, arg) -> {
                     if (ctx.player() == null) PlaceholderResult.invalid();
 
@@ -197,14 +197,14 @@ public class ChatInitializer extends ModuleInitializer {
                 });
     }
 
-    private void registerPrefixPlaceholder() {
+    private void registerSuffixPlaceholder() {
         Placeholders.register(
-                Identifier.of(Fuji.MOD_ID, "player_prefix"),
+                Identifier.of(Fuji.MOD_ID, "player_suffix"),
                 (ctx, arg) -> {
                     if (ctx.player() == null) PlaceholderResult.invalid();
 
                     ServerPlayerEntity player = ctx.player();
-                    String prefix = LuckPermsUtil.getPrefix(player);
+                    String prefix = LuckPermsUtil.getSuffix(player);
                     return PlaceholderResult.value(MessageUtil.ofText(prefix));
                 });
     }
