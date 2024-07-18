@@ -1,7 +1,7 @@
-package io.github.sakurawald.module.mixin.fake_player_manager;
+package io.github.sakurawald.module.mixin.carpet.fake_player_manager;
 
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.initializer.fake_player_manager.FakePlayerManagerInitializer;
+import io.github.sakurawald.module.initializer.carpet.fake_player_manager.FakePlayerManagerInitializer;
 import io.github.sakurawald.util.PlayerUtil;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;

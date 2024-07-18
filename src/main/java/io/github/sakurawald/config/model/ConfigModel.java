@@ -84,8 +84,6 @@ public class ConfigModel {
         public NewbieWelcome newbie_welcome = new NewbieWelcome();
         public TeleportWarmup teleport_warmup = new TeleportWarmup();
         public MOTD motd = new MOTD();
-        public FakePlayerManager fake_player_manager = new FakePlayerManager();
-        public BetterInfo better_info = new BetterInfo();
         public CommandCooldown command_cooldown = new CommandCooldown();
         public TopChunks top_chunks = new TopChunks();
         public Chat chat = new Chat();
@@ -223,69 +221,6 @@ public class ConfigModel {
             public double interrupt_distance = 1d;
         }
 
-        @Documentation("""
-                Enable this module requires `carpet-fabric` mod installed.
-                                
-                This module provides some management for `fake-player` and `/player` command.
-                """)
-        public class FakePlayerManager {
-            public boolean enable = false;
-
-            @Documentation("""
-                    How many fake-player can each player spawn (in different time)? 
-                                        
-                    The tuple means (day_of_week, minutes_of_the_day, max_fake_player_per_player).
-                    The range of day_of_week is [1,7].
-                    The range of minutes_of_the_day is [0, 1440].
-                                         
-                    For example: (1, 0, 2) means if the days_of_week >= 1, and minutes_of_the_day >= 0, then the max_fake_player_per_player now is 2.
-                                        
-                    Besides, you can add multi rules, the rules are checked from up to down.
-                    The first rule that matches current time will be used to decide the max_fake_player_per_player.
-                                        
-                    You can issue `/player who` to see the owner of the fake-player.
-                    Only the owner can operates the fake-player. (Op can bypass this limit)
-                                        
-                    """)
-            public ArrayList<List<Integer>> caps_limit_rule = new ArrayList<>() {
-                {
-                    this.add(List.of(1, 0, 2));
-                }
-            };
-
-            @Documentation("""
-                    How long should we renew when a player issue command `/player renew`
-                                
-                    The command `/player renew` allows the player to manually renew all of his `fake-player`.
-                                
-                    If a fake-player don't gets renew, then it will expired and get killed.
-                                        
-                    Use-case: to avoid some long-term alive fake-player.
-                    """)
-            public int renew_duration_ms = 1000 * 60 * 60 * 12;
-
-            @Documentation("""
-                    The rule to transform the name of fake-player.
-                                        
-                    Use-case: add prefix or suffix for fake-player.
-                    """)
-            public String transform_name = "_fake_%name%";
-
-            @Documentation("""
-                    Should we use local skin for fake-player? 
-                                        
-                    Enable this can prevent fetching skins from mojang official server each time the fake-player is spawned. 
-                    This is mainly used in some network siatuation if your network to mojang official server is bad.
-                    """)
-            public boolean use_local_random_skins_for_fake_player = true;
-        }
-
-        @Documentation("""
-                Adds nbt query and entity query for carpet command `/info`.
-                """)
-        public class BetterInfo {
-            public boolean enable = false;
-        }
 
         @Documentation("""
                 This module provides a cooldown before each command the player issued.
@@ -1132,7 +1067,7 @@ public class ConfigModel {
                 This module provides commands to open `remote functional blocks` (e.g. workbench, enderchest...)
                 """)
         public class Functional {
-            public boolean enable = true;
+            public boolean enable = false;
 
             public Workbench workbench = new Workbench();
             @Documentation("This module provides `/workbench` command.")
@@ -1201,6 +1136,81 @@ public class ConfigModel {
             public Loom loom = new Loom();
             @Documentation("This module provides `/loom` command.")
             public class Loom {
+                public boolean enable = true;
+            }
+
+        }
+
+        public Carpet carpet = new Carpet();
+        @Documentation("""
+                This module provides some purpose about `carpet-fabric` mod.
+                """)
+        public class Carpet {
+            public boolean enable = false;
+
+            public FakePlayerManager fake_player_manager = new FakePlayerManager();
+            @Documentation("""
+                Enable this module requires `carpet-fabric` mod installed.
+                                
+                This module provides some management for `fake-player` and `/player` command.
+                """)
+            public class FakePlayerManager {
+                public boolean enable = true;
+
+                @Documentation("""
+                    How many fake-player can each player spawn (in different time)? 
+                                        
+                    The tuple means (day_of_week, minutes_of_the_day, max_fake_player_per_player).
+                    The range of day_of_week is [1,7].
+                    The range of minutes_of_the_day is [0, 1440].
+                                         
+                    For example: (1, 0, 2) means if the days_of_week >= 1, and minutes_of_the_day >= 0, then the max_fake_player_per_player now is 2.
+                                        
+                    Besides, you can add multi rules, the rules are checked from up to down.
+                    The first rule that matches current time will be used to decide the max_fake_player_per_player.
+                                        
+                    You can issue `/player who` to see the owner of the fake-player.
+                    Only the owner can operates the fake-player. (Op can bypass this limit)
+                                        
+                    """)
+                public ArrayList<List<Integer>> caps_limit_rule = new ArrayList<>() {
+                    {
+                        this.add(List.of(1, 0, 2));
+                    }
+                };
+
+                @Documentation("""
+                    How long should we renew when a player issue command `/player renew`
+                                
+                    The command `/player renew` allows the player to manually renew all of his `fake-player`.
+                                
+                    If a fake-player don't gets renew, then it will expired and get killed.
+                                        
+                    Use-case: to avoid some long-term alive fake-player.
+                    """)
+                public int renew_duration_ms = 1000 * 60 * 60 * 12;
+
+                @Documentation("""
+                    The rule to transform the name of fake-player.
+                                        
+                    Use-case: add prefix or suffix for fake-player.
+                    """)
+                public String transform_name = "_fake_%name%";
+
+                @Documentation("""
+                    Should we use local skin for fake-player? 
+                                        
+                    Enable this can prevent fetching skins from mojang official server each time the fake-player is spawned. 
+                    This is mainly used in some network siatuation if your network to mojang official server is bad.
+                    """)
+                public boolean use_local_random_skins_for_fake_player = true;
+            }
+
+            public BetterInfo better_info = new BetterInfo();
+            @Documentation("""
+                Adds nbt query and entity query for carpet command `/info`.
+                """)
+            public class BetterInfo {
                 public boolean enable = true;
             }
 

@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.better_info;
+package io.github.sakurawald.module.initializer.carpet.better_info;
 
 import com.mojang.brigadier.CommandDispatcher;
 import io.github.sakurawald.module.initializer.ModuleInitializer;

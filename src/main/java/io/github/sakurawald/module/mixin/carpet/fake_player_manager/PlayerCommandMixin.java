@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.mixin.fake_player_manager;
+package io.github.sakurawald.module.mixin.carpet.fake_player_manager;
 
 import carpet.commands.PlayerCommand;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -6,7 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.initializer.fake_player_manager.FakePlayerManagerInitializer;
+import io.github.sakurawald.module.initializer.carpet.fake_player_manager.FakePlayerManagerInitializer;
 import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -26,7 +26,7 @@ public abstract class PlayerCommandMixin {
 
     @Unique
     private static String transformFakePlayerName(String fakePlayerName) {
-        return Configs.configHandler.model().modules.fake_player_manager.transform_name.replace("%name%", fakePlayerName);
+        return Configs.configHandler.model().modules.carpet.fake_player_manager.transform_name.replace("%name%", fakePlayerName);
     }
 
     @Redirect(method = "cantSpawn", at = @At(
@@ -56,7 +56,7 @@ public abstract class PlayerCommandMixin {
         }
 
         /* fix: fake-player auth network laggy */
-        if (Configs.configHandler.model().modules.fake_player_manager.use_local_random_skins_for_fake_player) {
+        if (Configs.configHandler.model().modules.carpet.fake_player_manager.use_local_random_skins_for_fake_player) {
             String fakePlayerName = StringArgumentType.getString(context, "player");
             fakePlayerName = transformFakePlayerName(fakePlayerName);
             Fuji.SERVER.getUserCache().add(module.createOfflineGameProfile(fakePlayerName));

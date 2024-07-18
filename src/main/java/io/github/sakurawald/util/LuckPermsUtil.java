@@ -32,32 +32,27 @@ public class LuckPermsUtil {
         return luckPerms;
     }
 
-    public static Tristate checkPermission(String player, String permission) {
-        if (getAPI() == null) {
+    public static Tristate checkPermission(ServerPlayerEntity player, String permission) {
+        if (getAPI() == null || PlayerUtil.isFakePlayer(player)) {
             return Tristate.UNDEFINED;
         }
 
-        return getAPI().getUserManager()
+        return getAPI().getPlayerAdapter(ServerPlayerEntity.class)
                 .getUser(player)
                 .getCachedData()
-                .getPermissionData()
-                .checkPermission(permission);
-    }
-
-    public static Tristate checkPermission(ServerPlayerEntity player, String permission) {
-        return checkPermission(player.getGameProfile().getName(), permission);
+                .getPermissionData().checkPermission(permission);
     }
 
     public static boolean hasPermission(PlayerEntity player, String permission) {
-        return checkPermission(player.getGameProfile().getName(), permission).asBoolean();
+        return checkPermission((ServerPlayerEntity) player, permission).asBoolean();
     }
 
     public static boolean hasPermission(ServerPlayerEntity player, String permission) {
-        return checkPermission(player.getGameProfile().getName(), permission).asBoolean();
+        return checkPermission(player, permission).asBoolean();
     }
 
     public static <T> @NonNull Optional<T> getMeta(ServerPlayerEntity player, String meta, @NonNull Function<String, ? extends T> valueTransformer) {
-        if (getAPI() == null) {
+        if (getAPI() == null || PlayerUtil.isFakePlayer(player)) {
             return Optional.empty();
         }
 
@@ -68,7 +63,7 @@ public class LuckPermsUtil {
     }
 
     public static <T> String getPrefix(ServerPlayerEntity player) {
-        if (getAPI() == null) {
+        if (getAPI() == null || PlayerUtil.isFakePlayer(player)) {
             return null;
         }
 

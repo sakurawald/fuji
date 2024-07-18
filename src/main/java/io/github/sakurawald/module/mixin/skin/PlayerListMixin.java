@@ -42,7 +42,7 @@ public abstract class PlayerListMixin {
     private void onPlayerConnected(ClientConnection connection, ServerPlayerEntity serverPlayer, ConnectedClientData commonListenerCookie, CallbackInfo ci) {
         // if the player isn't a server player entity, it must be someone's fake player
         if (serverPlayer.getClass() != ServerPlayerEntity.class
-                && Configs.configHandler.model().modules.fake_player_manager.use_local_random_skins_for_fake_player) {
+                && Configs.configHandler.model().modules.carpet.fake_player_manager.use_local_random_skins_for_fake_player) {
             SkinRestorer.setSkinAsync(server, Collections.singleton(serverPlayer.getGameProfile()), () -> SkinRestorer.getSkinStorage().getRandomSkin(serverPlayer.getUuid()));
         }
     }
