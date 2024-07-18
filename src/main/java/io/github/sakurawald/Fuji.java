@@ -21,13 +21,12 @@ import static io.github.sakurawald.module.ModuleManager.initializeModules;
 // TODO: spawn module
 // TODO: command warmup module
 // TODO: tppos module
-// TODO: invsee module
-// TODO: powertool module
 // TODO: code review for skin module
 // TODO: hologram module
-// TODO: kit module (/kit <editor/give>)
 
-// TODO: check luckperms with carpet-fabric
+// TODO: kit module (/kit <editor/give>)
+// TODO: invsee module
+// TODO: powertool module
 
 // TODO: a lisp-like DSL (parser and code-walker) for specific command with context and placeholders (%fuji:play_time_total%).
 // TODO: refactor command facility (selector, aop, options, parser)

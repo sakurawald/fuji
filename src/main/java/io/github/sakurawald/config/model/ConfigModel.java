@@ -6,7 +6,6 @@ import io.github.sakurawald.config.annotation.Documentation;
 import io.github.sakurawald.module.initializer.chat.RegexEntry;
 import io.github.sakurawald.module.initializer.command_alias.CommandAliasEntry;
 import io.github.sakurawald.module.initializer.command_rewrite.CommandRewriteEntry;
-import net.minecraft.client.realms.Ping;
 
 import java.util.*;
 
@@ -98,7 +97,6 @@ public class ConfigModel {
         public MultiObsidianPlatform multi_obsidian_platform = new MultiObsidianPlatform();
         public OpProtect op_protect = new OpProtect();
         public Pvp pvp = new Pvp();
-        public FixPlayerListCME fix_player_list_cme = new FixPlayerListCME();
         public Whitelist whitelist = new Whitelist();
         public CommandPermission command_permission = new CommandPermission();
         public Head head = new Head();
@@ -588,13 +586,6 @@ public class ConfigModel {
                 This module provides `/pvp` command.
                 """)
         public class Pvp {
-            public boolean enable = false;
-        }
-
-        @Documentation("""
-                a fix patch for ServerWorld#PlayerList, to avoid CME in player-list (e.g. sometimes tick-entity and tick-block-entity will randomly crash the server because of player-list CME)
-                """)
-        public class FixPlayerListCME {
             public boolean enable = false;
         }
 
