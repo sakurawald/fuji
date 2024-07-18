@@ -6,6 +6,7 @@ import io.github.sakurawald.config.annotation.Documentation;
 import io.github.sakurawald.module.initializer.chat.RegexEntry;
 import io.github.sakurawald.module.initializer.command_alias.CommandAliasEntry;
 import io.github.sakurawald.module.initializer.command_rewrite.CommandRewriteEntry;
+import net.minecraft.client.realms.Ping;
 
 import java.util.*;
 
@@ -106,30 +107,16 @@ public class ConfigModel {
         public Scheduler scheduler = new Scheduler();
         public Config config = new Config();
         public Test test = new Test();
-        public Hat hat = new Hat();
-        public Fly fly = new Fly();
-        public God god = new God();
         public Language language = new Language();
-        public Reply reply = new Reply();
         public Afk afk = new Afk();
-        public Suicide suicide = new Suicide();
         public CommandInteractive command_interactive = new CommandInteractive();
-        public Heal heal = new Heal();
-        public Feed feed = new Feed();
-        public Repair repair = new Repair();
-        public Seen seen = new Seen();
-        public More more = new More();
-        public Extinguish extinguish = new Extinguish();
         public Home home = new Home();
-        public Ping ping = new Ping();
         public SystemMessage system_message = new SystemMessage();
 
-        public Bed bed = new Bed();
         public Sit sit = new Sit();
         public CommandAlias command_alias = new CommandAlias();
         public CommandRewrite command_rewrite = new CommandRewrite();
         public World world = new World();
-        public Realname realname = new Realname();
         public Multiplier multiplier = new Multiplier();
 
         @Documentation("""
@@ -674,20 +661,8 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        @Documentation("This module provides `/hat` command.")
-        public class Hat {
-            public boolean enable = false;
-        }
 
-        @Documentation("This module provides `/fly` command.")
-        public class Fly {
-            public boolean enable = false;
-        }
 
-        @Documentation("This module provides `/god` command.")
-        public class God {
-            public boolean enable = false;
-        }
 
         @Documentation("""
                 This module provides multi-language support for your players.
@@ -709,10 +684,6 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        @Documentation("This module provides `/reply` command, which replys the recent player who `/msg` you")
-        public class Reply {
-            public boolean enable = false;
-        }
 
         @Documentation("""
                 This module provides afk detection.
@@ -739,11 +710,6 @@ public class ConfigModel {
             }
         }
 
-        @Documentation("This module provides `/suicide` command.")
-        public class Suicide {
-
-            public boolean enable = false;
-        }
 
         @Documentation("""
                 This module allows you to write commands in `sign block`.
@@ -785,36 +751,11 @@ public class ConfigModel {
 
         }
 
-        @Documentation("This module provides `/heal` command.")
-        public class Heal {
-            public boolean enable = false;
-        }
 
-        @Documentation("This module provides `/feed` command.")
-        public class Feed {
-            public boolean enable = false;
-        }
 
-        @Documentation("This module provides `/repair` command.")
-        public class Repair {
-            public boolean enable = false;
 
-        }
 
-        @Documentation("This module provides `/seen` command.")
-        public class Seen {
-            public boolean enable = false;
-        }
 
-        @Documentation("This module provides `/more` command.")
-        public class More {
-            public boolean enable = false;
-        }
-
-        @Documentation("This module provides `/extinguish` command.")
-        public class Extinguish {
-            public boolean enable = false;
-        }
 
         @Documentation("""
                 This module provides `/home` command.
@@ -827,10 +768,6 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        @Documentation("This module provides `/ping` command.")
-        public class Ping {
-            public boolean enable = false;
-        }
 
         @Documentation("""
                 This module allows you to custom every system-message defined by mojang in `./assets/minecraft/lang/en_us.json`
@@ -861,11 +798,6 @@ public class ConfigModel {
 
         }
 
-        @Documentation("This module provides `/bed` command, which teleports the player to his bed.")
-        public class Bed {
-
-            public boolean enable = false;
-        }
 
         @Documentation("""
                 This module provides `/sit` command, and the ability to sit by right-click any chair.
@@ -917,11 +849,6 @@ public class ConfigModel {
 
         }
 
-        @Documentation("This module provides `/realname` command.")
-        public class Realname {
-            public boolean enable = false;
-
-        }
 
         @Documentation("""
                 This module provides some `numeric multiplier`.
@@ -1225,12 +1152,98 @@ public class ConfigModel {
             }
         }
 
-        public Top top = new Top();
+
+        public CommandToolbox command_toolbox = new CommandToolbox();
         @Documentation("""
+                This module provies some `simple` commands.
+                We said a `command` is `simple` since its puporse is not big enough to be a standalone `facility`.
+                """)
+        public class CommandToolbox {
+            public boolean enable = false;
+
+            public Bed bed = new Bed();
+            @Documentation("This module provides `/bed` command, which teleports the player to his bed.")
+            public class Bed {
+
+                public boolean enable = true;
+            }
+            public Extinguish extinguish = new Extinguish();
+            @Documentation("This module provides `/extinguish` command.")
+            public class Extinguish {
+                public boolean enable = true;
+            }
+            public Feed feed = new Feed();
+            @Documentation("This module provides `/feed` command.")
+            public class Feed {
+                public boolean enable = true;
+            }
+            public Fly fly = new Fly();
+            @Documentation("This module provides `/fly` command.")
+            public class Fly {
+                public boolean enable = true;
+            }
+            public God god = new God();
+            @Documentation("This module provides `/god` command.")
+            public class God {
+                public boolean enable = true;
+            }
+            public Hat hat = new Hat();
+            @Documentation("This module provides `/hat` command.")
+            public class Hat {
+                public boolean enable = true;
+            }
+            public Heal heal = new Heal();
+            @Documentation("This module provides `/heal` command.")
+            public class Heal {
+                public boolean enable = true;
+            }
+            public More more = new More();
+            @Documentation("This module provides `/more` command.")
+            public class More {
+                public boolean enable = true;
+            }
+            public Ping ping = new Ping();
+            @Documentation("This module provides `/ping` command.")
+            public class Ping {
+                public boolean enable = true;
+            }
+            public Realname realname = new Realname();
+            @Documentation("This module provides `/realname` command.")
+            public class Realname {
+                public boolean enable = true;
+
+            }
+            public Repair repair = new Repair();
+            @Documentation("This module provides `/repair` command.")
+            public class Repair {
+                public boolean enable = true;
+
+            }
+
+            public Reply reply = new Reply();
+            @Documentation("This module provides `/reply` command, which replys the recent player who `/msg` you")
+            public class Reply {
+                public boolean enable = true;
+            }
+
+            public Seen seen = new Seen();
+            @Documentation("This module provides `/seen` command.")
+            public class Seen {
+                public boolean enable = true;
+            }
+            public Suicide suicide = new Suicide();
+            @Documentation("This module provides `/suicide` command.")
+            public class Suicide {
+
+                public boolean enable = true;
+            }
+            public Top top = new Top();
+            @Documentation("""
                 This module provides `/top` command.
                 """)
-        public class Top {
-            public boolean enable = false;
+            public class Top {
+                public boolean enable = true;
+            }
         }
     }
 
