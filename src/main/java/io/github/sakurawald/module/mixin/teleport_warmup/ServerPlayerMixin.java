@@ -18,12 +18,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-
-@Mixin(ServerPlayerEntity.class)
-
+@Mixin(value = ServerPlayerEntity.class, priority = 1000 - 500)
 public abstract class ServerPlayerMixin implements ServerPlayerCombatStateAccessor {
-    @Unique
-    private static final BackInitializer BACK_INITIALIZER = ModuleManager.getInitializer(BackInitializer.class);
+
     @Unique
     private static final TeleportWarmupInitializer module = ModuleManager.getInitializer(TeleportWarmupInitializer.class);
     @Unique
@@ -53,10 +50,6 @@ public abstract class ServerPlayerMixin implements ServerPlayerCombatStateAccess
             }
         }
 
-        // let's do teleport now.
-        if (BACK_INITIALIZER != null) {
-            BACK_INITIALIZER.updatePlayer(player);
-        }
     }
 
     @Inject(method = "damage", at = @At("RETURN"))

@@ -2,7 +2,7 @@ package io.github.sakurawald;
 
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.common.service.BackupService;
+import io.github.sakurawald.module.common.manager.BackupManager;
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.ScheduleUtil;
 import net.fabricmc.api.ModInitializer;
@@ -18,11 +18,12 @@ import static io.github.sakurawald.module.ModuleManager.initializeModules;
 
 // TODO: rank module (track)
 // TODO: tab list module
-// TODO: spawn module
-// TODO: command warmup module
+// TODO: spawn module (facility)
+// TODO: hologram module (facility)
 // TODO: tppos module
 // TODO: code review for skin module
-// TODO: hologram module
+
+// TODO: command warmup module
 
 // TODO: kit module (/kit <editor/give>)
 // TODO: invsee module
@@ -44,7 +45,7 @@ public class Fuji implements ModInitializer {
     @Override
     public void onInitialize() {
         /* backup */
-        BackupService.backup();
+        BackupManager.backup();
 
         /* modules */
         initializeModules();

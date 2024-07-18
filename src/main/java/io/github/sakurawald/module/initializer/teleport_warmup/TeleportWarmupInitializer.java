@@ -16,7 +16,6 @@ public class TeleportWarmupInitializer extends ModuleInitializer {
 
     public final HashMap<String, TeleportTicket> tickets = new HashMap<>();
 
-
     @Override
     public void onInitialize() {
         ServerTickEvents.START_SERVER_TICK.register(this::onServerTick);

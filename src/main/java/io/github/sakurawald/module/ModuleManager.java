@@ -51,7 +51,7 @@ public class ModuleManager {
         });
 
         enabled.sort(String::compareTo);
-        LOGGER.info("Enabled {} modules -> {}", enabled.size(), enabled);
+        LOGGER.info("Enabled {}/{} modules -> {}", enabled.size(), module2enable.size(), enabled);
     }
 
     @ApiStatus.AvailableSince("1.1.5")

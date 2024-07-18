@@ -2,8 +2,9 @@ package io.github.sakurawald.module.mixin.back;
 
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.back.BackInitializer;
-import io.github.sakurawald.module.initializer.teleport_warmup.TeleportWarmupInitializer;
+import lombok.extern.slf4j.Slf4j;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
@@ -11,30 +12,33 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ServerPlayerEntity.class)
+import java.util.Set;
+
+@Mixin(value = ServerPlayerEntity.class)
+@Slf4j
 public abstract class ServerPlayerMixin {
 
+    @Unique
+    ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
     @Unique
     private static final BackInitializer module = ModuleManager.getInitializer(BackInitializer.class);
-    @Unique
-    private static final TeleportWarmupInitializer TELEPORT_WARMUP_INITIALIZER = ModuleManager.getInitializer(TeleportWarmupInitializer.class);
 
     @Inject(method = "onDeath", at = @At("HEAD"))
     public void $onDeath(DamageSource damageSource, CallbackInfo ci) {
-        ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-        module.updatePlayer(player);
+        module.saveCurrentPosition(player);
     }
 
     @Inject(method = "teleport(Lnet/minecraft/server/world/ServerWorld;DDDFF)V", at = @At("HEAD"))
-    public void $teleport(ServerWorld targetWorld, double x, double y, double z, float yaw, float pitch, CallbackInfo ci) {
-        ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+    public void teleport(ServerWorld serverWorld, double d, double e, double f, float g, float h, CallbackInfo ci) {
+        module.saveCurrentPosition(player);
+    }
 
-        // note: if TeleportWarmupModule don't update back-position for us, we do it ourselves.
-        if (TELEPORT_WARMUP_INITIALIZER == null) {
-            module.updatePlayer(player);
-        }
+    @Inject(method = "teleport(Lnet/minecraft/server/world/ServerWorld;DDDLjava/util/Set;FF)Z", at = @At("HEAD"))
+    public void teleport(ServerWorld serverWorld, double d, double e, double f, Set<PositionFlag> set, float g, float h, CallbackInfoReturnable<Boolean> cir) {
+        module.saveCurrentPosition(player);
     }
 
 }

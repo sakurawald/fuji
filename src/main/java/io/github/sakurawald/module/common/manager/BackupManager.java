@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.common.service;
+package io.github.sakurawald.module.common.manager;
 
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
@@ -20,7 +20,7 @@ import java.util.List;
 
 @Slf4j
 @UtilityClass
-public class BackupService {
+public class BackupManager {
 
     public static final Path BACKUP_PATH = Fuji.CONFIG_PATH.resolve("backup");
 

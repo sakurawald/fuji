@@ -9,6 +9,7 @@ import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -16,6 +17,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import java.util.HashMap;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
+@Slf4j
 public class BackInitializer extends ModuleInitializer {
 
     @Getter
@@ -39,7 +41,7 @@ public class BackInitializer extends ModuleInitializer {
         }));
     }
 
-    public void updatePlayer(ServerPlayerEntity player) {
+    public void saveCurrentPosition(ServerPlayerEntity player) {
         Position lastPos = player2lastPos.get(player.getGameProfile().getName());
         double ignoreDistance = Configs.configHandler.model().modules.back.ignore_distance;
         if (lastPos == null

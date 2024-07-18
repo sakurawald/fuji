@@ -226,6 +226,19 @@ public class ConfigModel {
             };
         }
 
+        public CommandWarmup command_warmup = new CommandWarmup();
+        public class CommandWarmup {
+            public boolean enable = false;
+
+            public HashMap<String, Long> regex2ms = new HashMap<>() {
+                {
+                    this.put("back", 3 * 1000L);
+                }
+            };
+
+
+        }
+
         @Documentation("""
                 This module provides the `/chunks` command, which shows the `top laggy chunks` in the server. 
                                 
