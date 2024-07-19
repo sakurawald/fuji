@@ -3,7 +3,7 @@ package io.github.sakurawald.module.common.manager;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.util.DateUtil;
-import io.github.sakurawald.util.FileUtil;
+import io.github.sakurawald.util.IOUtil;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
@@ -59,7 +59,7 @@ public class BackupManager {
     }
 
     private static void trimBackup() {
-        List<Path> latestFiles = FileUtil.getLatestFiles(BACKUP_PATH);
+        List<Path> latestFiles = IOUtil.getLatestFiles(BACKUP_PATH);
         Iterator<Path> iterator = latestFiles.iterator();
         while (iterator.hasNext() && latestFiles.size() > Configs.configHandler.model().common.backup.max_slots - 1) {
             iterator.next().toFile().delete();
@@ -73,7 +73,7 @@ public class BackupManager {
     }
 
     private static void newBackup() {
-        FileUtil.compressFiles(getInputFiles(), getOutputFile());
+        IOUtil.compressFiles(getInputFiles(), getOutputFile());
     }
 
     public static void backup() {

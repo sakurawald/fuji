@@ -17,14 +17,13 @@ import io.github.sakurawald.module.initializer.chat.display.DisplayHelper;
 import io.github.sakurawald.module.initializer.chat.mention.MentionPlayersJob;
 import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.DateUtil;
-import io.github.sakurawald.util.LuckPermsUtil;
+import io.github.sakurawald.util.PermissionUtil;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickCallback;
 import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
@@ -192,7 +191,7 @@ public class ChatInitializer extends ModuleInitializer {
                     if (ctx.player() == null) PlaceholderResult.invalid();
 
                     ServerPlayerEntity player = ctx.player();
-                    String prefix = LuckPermsUtil.getPrefix(player);
+                    String prefix = PermissionUtil.getPrefix(player);
                     return PlaceholderResult.value(MessageUtil.ofText(prefix));
                 });
     }
@@ -204,7 +203,7 @@ public class ChatInitializer extends ModuleInitializer {
                     if (ctx.player() == null) PlaceholderResult.invalid();
 
                     ServerPlayerEntity player = ctx.player();
-                    String prefix = LuckPermsUtil.getSuffix(player);
+                    String prefix = PermissionUtil.getSuffix(player);
                     return PlaceholderResult.value(MessageUtil.ofText(prefix));
                 });
     }

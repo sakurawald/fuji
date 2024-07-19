@@ -23,6 +23,7 @@ import static io.github.sakurawald.Fuji.LOGGER;
 public class ScheduleUtil {
 
     public static final String CRON_EVERY_MINUTE = "0 * * ? * * *";
+
     @Getter
     private static Scheduler scheduler;
 

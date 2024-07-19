@@ -6,6 +6,7 @@ import io.github.sakurawald.module.common.manager.BackupManager;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.ScheduleUtil;
+import lombok.Getter;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;

@@ -10,7 +10,7 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.CommandUtil;
-import io.github.sakurawald.util.FileUtil;
+import io.github.sakurawald.util.IOUtil;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.SneakyThrows;
 import net.minecraft.command.CommandRegistryAccess;
@@ -138,7 +138,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         File output;
         try {
             output = Files.createTempFile(regionName + "#", ".zip").toFile();
-            FileUtil.compressFiles(input, output);
+            IOUtil.compressFiles(input, output);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

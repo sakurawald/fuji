@@ -4,7 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.CommandNode;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.mixin.command_permission.CommandNodeAccessor;
-import io.github.sakurawald.util.LuckPermsUtil;
+import io.github.sakurawald.util.PermissionUtil;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.luckperms.api.util.Tristate;
 import net.minecraft.server.MinecraftServer;
@@ -53,7 +53,7 @@ public class CommandPermissionInitializer extends ModuleInitializer {
 
                    Only valid command has its command path (command-alias also has its path, but it will redirect the execution to the real command-path)
                  */
-                Tristate triState = LuckPermsUtil.checkPermission(source.getPlayer(), "fuji.permission.%s".formatted(commandPath));
+                Tristate triState = PermissionUtil.checkPermission(source.getPlayer(), "fuji.permission.%s".formatted(commandPath));
                 if (triState != Tristate.UNDEFINED) {
                     return triState.asBoolean();
                 }

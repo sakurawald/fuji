@@ -12,7 +12,7 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.MessageUtil;
-import io.github.sakurawald.util.LuckPermsUtil;
+import io.github.sakurawald.util.PermissionUtil;
 import io.github.sakurawald.util.ScheduleUtil;
 import lombok.Getter;
 import net.minecraft.command.CommandRegistryAccess;
@@ -105,7 +105,7 @@ public class HomeInitializer extends ModuleInitializer {
                 }
             }
 
-            Optional<Integer> limit = LuckPermsUtil.getMeta(player, "fuji.home.home_limit", Integer::valueOf);
+            Optional<Integer> limit = PermissionUtil.getMeta(player, "fuji.home.home_limit", Integer::valueOf);
             if (limit.isPresent() && name2position.size() >= limit.get()) {
                 MessageUtil.sendMessage(player, "home.set.fail.limit");
                 return Command.SINGLE_SUCCESS;

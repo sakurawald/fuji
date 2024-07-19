@@ -18,7 +18,7 @@ import java.util.function.Function;
 
 @SuppressWarnings("BooleanMethodIsAlwaysInverted")
 @UtilityClass
-public class LuckPermsUtil {
+public class PermissionUtil {
 
     private static LuckPerms luckPerms;
 
