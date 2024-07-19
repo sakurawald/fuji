@@ -52,7 +52,7 @@ public class PagedHeadsGui extends LayeredGui {
         }
 
         navigationLayer.setSlot(
-                3, new GuiElementBuilder().setItem(Items.PLAYER_HEAD).setName(MessageUtil.ofText(parent.getPlayer(), "previous_page")).setSkullOwner(GuiUtil.PREVIOUS_PAGE_ICON).asStack(),
+                3, GuiUtil.createPreviousPageButton(getPlayer()).asStack(),
                 ((index, type, action) -> {
                     this.page -= 1;
                     if (this.page < 0) {
@@ -64,7 +64,7 @@ public class PagedHeadsGui extends LayeredGui {
         );
 
         navigationLayer.setSlot(
-                5, new GuiElementBuilder().setItem(Items.PLAYER_HEAD).setName(MessageUtil.ofText(parent.getPlayer(), "next_page")).setSkullOwner(GuiUtil.NEXT_PAGE_ICON).asStack(),
+                5, GuiUtil.createNextPageButton(getPlayer()).asStack(),
                 ((index, type, action) -> {
                     this.page += 1;
                     if (this.page >= getMaxPage()) {
@@ -74,7 +74,7 @@ public class PagedHeadsGui extends LayeredGui {
                 })
         );
         navigationLayer.setSlot(4, new GuiElementBuilder(Items.PLAYER_HEAD)
-                .setSkullOwner(GuiUtil.QUESTION_MARK_ICON)
+                .setSkullOwner(GuiUtil.Icon.QUESTION_MARK_ICON)
                 .setName(MessageUtil.ofText(parent.getPlayer(), "head.page", this.page + 1, this.getMaxPage()))
         );
     }

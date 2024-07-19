@@ -5,8 +5,8 @@ import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.works.ScheduleMethod;
 import io.github.sakurawald.module.initializer.works.WorksCache;
-import io.github.sakurawald.module.initializer.works.gui.ConfirmGui;
-import io.github.sakurawald.module.initializer.works.gui.InputSignGui;
+import io.github.sakurawald.module.common.gui.ConfirmGui;
+import io.github.sakurawald.module.common.gui.InputSignGui;
 import io.github.sakurawald.module.mixin.top_chunks.ThreadedAnvilChunkStorageMixin;
 import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.GuiUtil;
@@ -150,11 +150,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
                         }.open()
                 )
         );
-        gui.setSlot(8, new GuiElementBuilder()
-                .setItem(Items.PLAYER_HEAD)
-                .setSkullOwner(GuiUtil.PREVIOUS_PAGE_ICON)
-                .setName(MessageUtil.ofText(player, "back"))
-                .setCallback(parentGui::open)
+        gui.setSlot(8, GuiUtil.createBackButton(player).setCallback(parentGui::open)
         );
 
         gui.open();

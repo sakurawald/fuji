@@ -9,8 +9,8 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.WorksModel;
+import io.github.sakurawald.module.common.gui.InputSignGui;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.works.gui.InputSignGui;
 import io.github.sakurawald.module.initializer.works.work_type.NonProductionWork;
 import io.github.sakurawald.module.initializer.works.work_type.ProductionWork;
 import io.github.sakurawald.module.initializer.works.work_type.Work;
@@ -44,8 +44,8 @@ import java.util.List;
 public class WorksInitializer extends ModuleInitializer {
 
     public static final ConfigHandler<WorksModel> worksHandler = new ObjectConfigHandler<>("works.json", WorksModel.class);
-    private final int PAGE_SIZE = 9 * 5;
 
+    private final int PAGE_SIZE = 9 * 5;
 
     @Override
     public void onInitialize() {
@@ -176,50 +176,39 @@ public class WorksInitializer extends ModuleInitializer {
             gui.setSlot(i, new GuiElementBuilder().setItem(Items.PINK_STAINED_GLASS_PANE));
         }
         List<Work> finalSource = source;
-        gui.setSlot(45, new GuiElementBuilder()
-                .setItem(Items.PLAYER_HEAD)
-                .setName(MessageUtil.ofText(player, "previous_page"))
-                .setSkullOwner(GuiUtil.PREVIOUS_PAGE_ICON)
-                .setCallback(() -> {
+        gui.setSlot(45, GuiUtil.createPreviousPageButton(player).setCallback(() -> {
                     if (page == 0) return;
                     $listWorks(player, finalSource, page - 1);
                 }));
         gui.setSlot(48, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
                 .setName(MessageUtil.ofText(player, "works.list.add"))
-                .setSkullOwner(GuiUtil.PLUS_ICON)
+                .setSkullOwner(GuiUtil.Icon.PLUS_ICON)
                 .setCallback(() -> $addWork(player))
         );
         if (source == worksHandler.model().works) {
             gui.setSlot(49, new GuiElementBuilder()
                     .setItem(Items.PLAYER_HEAD)
                     .setName(MessageUtil.ofText(player, "works.list.my_works"))
-                    .setSkullOwner(GuiUtil.HEART_ICON)
+                    .setSkullOwner(GuiUtil.Icon.HEART_ICON)
                     .setCallback(() -> $myWorks(player))
             );
         } else {
             gui.setSlot(49, new GuiElementBuilder()
                     .setItem(Items.PLAYER_HEAD)
                     .setName(MessageUtil.ofText(player, "works.list.all_works"))
-                    .setSkullOwner(GuiUtil.A_ICON)
+                    .setSkullOwner(GuiUtil.Icon.A_ICON)
                     .setCallback(() -> $listWorks(player, null, 0))
             );
         }
         gui.setSlot(50, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
                 .setName(MessageUtil.ofText(player, "works.list.help"))
-                .setSkullOwner(GuiUtil.QUESTION_MARK_ICON)
+                .setSkullOwner(GuiUtil.Icon.QUESTION_MARK_ICON)
                 .setLore(MessageUtil.ofTextList(player, "works.list.help.lore")));
-        gui.setSlot(52, new GuiElementBuilder()
-                .setItem(Items.COMPASS)
-                .setName(MessageUtil.ofText(player, "search"))
-                .setCallback(() -> $searchWorks(player, finalSource))
+        gui.setSlot(52, GuiUtil.createSearchButton(player).setCallback(() -> $searchWorks(player, finalSource))
         );
-        gui.setSlot(53, new GuiElementBuilder()
-                .setItem(Items.PLAYER_HEAD)
-                .setName(MessageUtil.ofText(player, "next_page"))
-                .setSkullOwner(GuiUtil.NEXT_PAGE_ICON)
-                .setCallback(() -> {
+        gui.setSlot(53, GuiUtil.createNextPageButton(player).setCallback(() -> {
                     if ((page + 1) * PAGE_SIZE >= finalSource.size()) return;
                     $listWorks(player, finalSource, page + 1);
                 })
@@ -233,7 +222,7 @@ public class WorksInitializer extends ModuleInitializer {
             @Override
             public void onClose() {
                 List<Work> filterWorks = null;
-                String key = combineAllLinesReturnNull();
+                String key = getInput();
                 if (key != null) {
                     filterWorks = source.stream().filter(w ->
                             w.creator.contains(key)

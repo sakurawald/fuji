@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.works.gui;
+package io.github.sakurawald.module.common.gui;
 
 import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.server.network.ServerPlayerEntity;

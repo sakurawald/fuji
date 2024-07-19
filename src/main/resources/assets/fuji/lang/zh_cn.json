@@ -66,8 +66,6 @@
   "works.list.all_works": "<#FFA1F5>所有作品",
   "works.list.help": "<#FFA1F5>帮助",
   "works.list.help.lore": "<green> - 左键 -> 参观\n<green> - 右键 -> 打开通用设置\n<green> - SHIFT + 右键 -> 打开特殊设置",
-  "works.list.back": "<#FFA1F5>返回",
-  "works.non_production_work.specialized_settings.not_found": "<#FFA1F5>该作品类型没有特殊设置",
   "works.non_production_work.name": "<green>非生产装置",
   "works.production_work.name": "<red>生产装置",
   "works.production_work.sample.not_exists": "<red>没有任何采样\n<red>请SHIFT + 右键该作品以进行采样",
@@ -181,5 +179,6 @@
   "nickname.unset": "<gold>名称已还原",
   "placeholder.pos": "<#2596be>[%d %d %d, %s]",
   "top": "<gold>已传送到顶部!",
-  "command_warmup.bossbar.name": "<dark_green>命令预热: %s"
+  "command_warmup.bossbar.name": "<dark_green>命令预热: %s",
+  "gui.page.title": " (页数 %d / %d)"
 }

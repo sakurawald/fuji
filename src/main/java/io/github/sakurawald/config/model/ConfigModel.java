@@ -1297,6 +1297,10 @@ public class ConfigModel {
                 public String footer = "<gold>-----------------<newline>TPS: %server:tps_colored% PING: %player:ping_colored%<newline>Memory: %server:used_ram%/%server:max_ram% MB";
             }
         }
-    }
 
+        public Kit kit = new Kit();
+        public class Kit {
+            public boolean enable = true;
+        }
+    }
 }

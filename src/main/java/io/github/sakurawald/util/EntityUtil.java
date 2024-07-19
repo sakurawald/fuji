@@ -4,7 +4,7 @@ import lombok.experimental.UtilityClass;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 @UtilityClass
-public class PlayerUtil {
+public class EntityUtil {
 
     public static boolean isRealPlayer(ServerPlayerEntity player) {
         return player.getClass() == ServerPlayerEntity.class;

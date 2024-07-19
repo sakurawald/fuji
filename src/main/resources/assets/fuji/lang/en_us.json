@@ -66,7 +66,6 @@
   "works.list.all_works": "<#FFA1F5>All works",
   "works.list.help": "<#FFA1F5>Help",
   "works.list.help.lore": "<green> - Left click -> Visit\n<green> - Right click -> Open general settings\n<green> - Shift + Right click -> Open specialized settings",
-  "works.list.back": "<#FFA1F5>Back",
   "works.non_production_work.specialized_settings.not_found": "<#FFA1F5>No specialized settings",
   "works.non_production_work.name": "<green>Non-Production Work",
   "works.production_work.name": "<red>Production Work",
@@ -181,5 +180,6 @@
   "nickname.set": "<gold>Nickname set.",
   "nickname.unset": "<gold>Nickname unset.",
   "top": "<gold>Top!",
-  "command_warmup.bossbar.name": "<dark_green>Command warmup: %s"
+  "command_warmup.bossbar.name": "<dark_green>Command warmup: %s",
+  "gui.page.title": " (Page %d / %d)"
 }

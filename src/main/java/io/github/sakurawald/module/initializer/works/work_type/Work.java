@@ -8,8 +8,8 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;
-import io.github.sakurawald.module.initializer.works.gui.ConfirmGui;
-import io.github.sakurawald.module.initializer.works.gui.InputSignGui;
+import io.github.sakurawald.module.common.gui.ConfirmGui;
+import io.github.sakurawald.module.common.gui.InputSignGui;
 import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.GuiUtil;
 import io.github.sakurawald.util.MessageUtil;
@@ -110,7 +110,7 @@ public abstract class Work {
                 .setCallback(() -> new InputSignGui(player, null) {
                     @Override
                     public void onClose() {
-                        String newValue = this.combineAllLinesReturnNull();
+                        String newValue = this.getInput();
                         if (newValue == null) {
                             MessageUtil.sendActionBar(player, "works.work.add.empty_name");
                             return;
@@ -126,7 +126,7 @@ public abstract class Work {
                 .setCallback(() -> new InputSignGui(player, null) {
                     @Override
                     public void onClose() {
-                        work.introduction = this.combineAllLinesReturnNull();
+                        work.introduction = this.getInput();
                         MessageUtil.sendMessage(player, "works.work.set.done", work.introduction);
                     }
                 }.open())
@@ -172,10 +172,7 @@ public abstract class Work {
 
         );
 
-        gui.setSlot(8, new GuiElementBuilder()
-                .setItem(Items.PLAYER_HEAD)
-                .setSkullOwner(GuiUtil.PREVIOUS_PAGE_ICON)
-                .setName(MessageUtil.ofText(player, "works.list.back"))
+        gui.setSlot(8, GuiUtil.createPreviousPageButton(player)
                 .setCallback(parentGui::open)
         );
 

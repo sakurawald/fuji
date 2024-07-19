@@ -2,7 +2,7 @@ package io.github.sakurawald.module.mixin.newbie_welcome;
 
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.newbie_welcome.NewbieWelcomeInitializer;
-import io.github.sakurawald.util.PlayerUtil;
+import io.github.sakurawald.util.EntityUtil;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ConnectedClientData;
@@ -21,7 +21,7 @@ public abstract class PlayerListMixin {
 
     @Inject(at = @At(value = "TAIL"), method = "onPlayerConnect")
     private void $onPlayerConnect(ClientConnection connection, ServerPlayerEntity serverPlayer, ConnectedClientData commonListenerCookie, CallbackInfo ci) {
-        if (PlayerUtil.isFakePlayer(serverPlayer)) return;
+        if (EntityUtil.isFakePlayer(serverPlayer)) return;
         if (serverPlayer.getStatHandler().getStat(Stats.CUSTOM.getOrCreateStat(Stats.LEAVE_GAME)) < 1) {
             module.welcomeNewbiePlayer(serverPlayer);
         }

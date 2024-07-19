@@ -56,7 +56,7 @@ public class PermissionUtil {
 
     private static User loadUser(@NonNull LuckPerms api, ServerPlayerEntity player) {
         User user;
-        if (PlayerUtil.isFakePlayer(player)) {
+        if (EntityUtil.isFakePlayer(player)) {
             UserManager userManager = api.getUserManager();
             CompletableFuture<User> userFuture = userManager.loadUser(player.getUuid());
             user = userFuture.join();
