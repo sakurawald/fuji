@@ -17,8 +17,7 @@ import java.nio.file.Path;
 
 import static io.github.sakurawald.module.ModuleManager.initializeModules;
 
-// TODO: rank module (track)
-// TODO: tab list module
+// TODO: rank module (track, requirement)
 // TODO: spawn module (facility)
 // TODO: hologram module (facility)
 // TODO: tppos module
@@ -28,7 +27,7 @@ import static io.github.sakurawald.module.ModuleManager.initializeModules;
 // TODO: invsee module
 // TODO: powertool module
 
-// TODO: a lisp-like DSL (parser and code-walker) for specific command with context and placeholders (%fuji:play_time_total%).
+// TODO: a lisp-like DSL (parser and code-walker) for command with context and placeholders (%fuji:play_time_total% / nbt)
 // TODO: refactor command facility (selector, aop, options, parser)
 
 // TODO: a program to generate module reference DAG
@@ -42,10 +41,8 @@ public class Fuji implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        /* backup */
-        BackupManager.backup();
-
         /* managers */
+        BackupManager.backup();
         Managers.getBossBarManager().initialize();
 
         /* modules */

@@ -16,7 +16,7 @@ public class CommandExecuter {
 
     public static void executeCommandsWithContext(MinecraftServer server, List<String> commands) {
         /* context */
-        // ...
+        // ... to write
 
         /* resolve */
         for (String command : commands) {

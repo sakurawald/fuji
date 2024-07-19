@@ -1282,6 +1282,21 @@ public class ConfigModel {
                 public boolean enable = false;
             }
         }
+
+
+        public TabList tab_list = new TabList();
+        @Documentation("""
+                This module provides tab-list custom.
+                """)
+        public class TabList {
+            public boolean enable = false;
+            public int update_tick = 20;
+            public Style style = new Style();
+            public class Style {
+                public String header = "<gold>TabList<newline><gold>------%server:online%/%server:max_players%------";
+                public String footer = "<gold>-----------------<newline>TPS: %server:tps_colored% PING: %player:ping_colored%<newline>Memory: %server:used_ram%/%server:max_ram% MB";
+            }
+        }
     }
 
 }

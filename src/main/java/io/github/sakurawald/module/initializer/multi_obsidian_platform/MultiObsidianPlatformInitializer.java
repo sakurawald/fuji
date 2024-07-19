@@ -4,6 +4,8 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.block.Blocks;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -11,7 +13,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class MultiObsidianPlatformInitializer extends ModuleInitializer {
 
-    private final HashMap<BlockPos, BlockPos> TRANSFORM_CACHE = new HashMap<>();
+    private final Map<BlockPos, BlockPos> TRANSFORM_CACHE = new HashMap<>();
 
     /* this method is used to fix Entity#position() async */
     private BlockPos findNearbyEndPortalBlock(BlockPos bp) {
