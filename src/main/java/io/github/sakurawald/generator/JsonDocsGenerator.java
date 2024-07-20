@@ -7,12 +7,8 @@ import com.google.gson.JsonObject;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.annotation.Documentation;
 import lombok.Getter;
-import lombok.SneakyThrows;
-import org.apache.commons.io.FileUtils;
 
 import java.lang.reflect.Field;
-import java.nio.charset.Charset;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -120,13 +116,7 @@ public class JsonDocsGenerator {
         return clazz.isPrimitive() || clazz == String.class;
     }
 
-    @SneakyThrows
-    private JsonObject writeToFile(Path path, JsonObject json) {
-        FileUtils.writeStringToFile(path.toFile(), gson.toJson(json), Charset.defaultCharset());
-        return json;
-    }
-
-    public JsonObject generate(Path path, Object javaObject) {
-        return writeToFile(path, toJsonObject(javaObject));
+    public JsonObject generate(Object javaObject) {
+        return toJsonObject(javaObject);
     }
 }

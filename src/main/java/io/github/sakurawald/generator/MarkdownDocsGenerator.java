@@ -117,12 +117,7 @@ public class MarkdownDocsGenerator {
         }
     }
 
-    @SneakyThrows
-    private void writeToFile(Path path, String string) {
-        FileUtils.writeStringToFile(path.toFile(), string, Charset.defaultCharset());
-    }
-
-    public void generate(Path path, JsonObject jsonObject) {
-        writeToFile(path, toMarkdown(jsonObject));
+    public String generate(JsonObject jsonObject) {
+        return toMarkdown(jsonObject);
     }
 }
