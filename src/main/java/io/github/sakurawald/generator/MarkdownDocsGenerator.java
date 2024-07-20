@@ -1,5 +1,7 @@
 package io.github.sakurawald.generator;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import lombok.Getter;
@@ -10,6 +12,8 @@ import org.apache.commons.io.FileUtils;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.Set;
+
+import static io.github.sakurawald.generator.JsonDocsGenerator.*;
 
 @Slf4j
 public class MarkdownDocsGenerator {
@@ -40,6 +44,9 @@ public class MarkdownDocsGenerator {
         String[] lines = string.split("\n");
         for (String line : lines) {
             text.append(indent).append(line).append(System.lineSeparator());
+
+            // extra linefeed for markdown translate, so that what you get is what you see in ConfigModel.
+            text.append(indent).append(System.lineSeparator());
         }
 
         // trim redundant linefeed.
@@ -48,12 +55,10 @@ public class MarkdownDocsGenerator {
 
     private String translateJsonPair(String key, JsonElement jsonElement, String indent) {
         StringBuilder text = new StringBuilder();
-
         text.append(indent).append("```json").append(System.lineSeparator())
                 .append(indent).append("\"").append(key).append("\"").append(": ").append(jsonElement).append(System.lineSeparator())
                 .append(indent).append("```").append(System.lineSeparator())
                 .append(indent).append(System.lineSeparator());
-
         return text.toString();
     }
 
@@ -66,33 +71,35 @@ public class MarkdownDocsGenerator {
 
         Set<String> keys = node.keySet();
         for (String key : keys) {
-
             JsonElement value = node.get(key);
 
-            if (key.endsWith("@skip")) continue;
-            if (value.isJsonObject()) {
+            /* process meta json-elements */
+            if (key.endsWith(SKIP_WALK) || key.endsWith(FIELD_DOCUMENTATION)) continue;
+            if (key.endsWith(CLASS_DOCUMENTATION)) {
+                // class documentation
+                sb.append(indent).append("<table><tr><td>").append(System.lineSeparator())
+                        .append(translateDocumentation(value.toString(), indent)).append(System.lineSeparator())
+                        .append(indent).append("</td></tr></table>").append(System.lineSeparator());
+                sb.append(indent).append(System.lineSeparator());
+                continue;
+            }
 
+            /* process normal json-elements */
+            if (value.isJsonObject()) {
                 sb.append(getIndent(level + 1)).append("**%s**".formatted(key)).append(System.lineSeparator())
-                        .append(getIndent(level + 1)).append(System.lineSeparator())
-                ;
+                        .append(getIndent(level + 1)).append(System.lineSeparator());
 
                 // note: skip walk
-                if (keys.contains(key + "@skip")) {
+                if (keys.contains(key + SKIP_WALK)) {
                     sb.append(translateJsonPair(key, value, indent));
                     continue;
                 }
 
                 walk(sb, level + 1, (JsonObject) value);
             } else {
-                if (key.equals("class@documentation")) {
-                    // class documentation
-                    sb.append(indent).append("<table><tr><td>").append(System.lineSeparator())
-                            .append(translateDocumentation(value.toString(), indent)).append(System.lineSeparator())
-                            .append(indent).append("</td></tr></table>").append(System.lineSeparator());
-
-                } else if (keys.contains(key + "@documentation")) {
+                 if (keys.contains(key + FIELD_DOCUMENTATION)) {
                     // field documentation
-                    String documentation = node.get(key + "@documentation").getAsString();
+                    String documentation = node.get(key + FIELD_DOCUMENTATION).getAsString();
                     sb.append(indent).append("<table><tr><td>").append(System.lineSeparator())
                             .append(translateDocumentation(documentation, indent)).append(System.lineSeparator())
                             .append(indent).append(System.lineSeparator())
@@ -100,10 +107,7 @@ public class MarkdownDocsGenerator {
                             .append(translateJsonPair(key, value, indent))
                             .append(indent).append("</td></tr></table>").append(System.lineSeparator());
                 } else {
-
-                    // skip
-                    if (key.endsWith("@documentation")) continue;
-
+                    // no documented field
                     sb.append(translateJsonPair(key, value, indent));
                 }
             }

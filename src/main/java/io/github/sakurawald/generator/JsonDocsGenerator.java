@@ -22,6 +22,9 @@ public class JsonDocsGenerator {
     @Getter
     private static final JsonDocsGenerator instance = new JsonDocsGenerator();
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    public static final String CLASS_DOCUMENTATION = "@class-documentation";
+    public static final String FIELD_DOCUMENTATION = "@field-documentation";
+    public static final String SKIP_WALK = "@skip-walk";
 
     private JsonDocsGenerator() {
     }
@@ -37,7 +40,7 @@ public class JsonDocsGenerator {
 
         // for class
         if (clazz.isAnnotationPresent(Documentation.class)) {
-            root.addProperty("class@documentation", clazz.getAnnotation(Documentation.class).value());
+            root.addProperty(clazz.getSimpleName() + CLASS_DOCUMENTATION, clazz.getAnnotation(Documentation.class).value());
         }
 
         // for fields
@@ -48,7 +51,7 @@ public class JsonDocsGenerator {
 
                 /* insert related comment property */
                 if (field.isAnnotationPresent(Documentation.class)) {
-                    root.addProperty(fieldName + "@documentation", field.getAnnotation(Documentation.class).value());
+                    root.addProperty(fieldName + FIELD_DOCUMENTATION, field.getAnnotation(Documentation.class).value());
                 }
 
                 /* switch type */
@@ -72,7 +75,7 @@ public class JsonDocsGenerator {
                             root.addProperty(fieldName, value.toString());
                         }
                     } else if (List.class.isAssignableFrom(field.getType())) {
-                        root.addProperty(fieldName + "@skip", "list type");
+                        root.addProperty(fieldName + SKIP_WALK, "list type");
                         JsonArray jsonArray = new JsonArray();
                         for (Object elt : (List<?>) value) {
                             if (elt != null) {
@@ -82,7 +85,7 @@ public class JsonDocsGenerator {
                         root.add(fieldName, jsonArray);
                     } else {
                         if (Map.class.isAssignableFrom(field.getType())) {
-                            root.addProperty(fieldName + "@skip", "map type");
+                            root.addProperty(fieldName + SKIP_WALK, "map type");
                             JsonObject jsonObject = new JsonObject();
                             Map<?, ?> map = (Map<?, ?>) value;
                             for (Map.Entry<?, ?> entry : map.entrySet()) {
@@ -92,7 +95,7 @@ public class JsonDocsGenerator {
                             }
                             root.add(fieldName, jsonObject);
                         } else if (Set.class.isAssignableFrom(field.getType())) {
-                            root.addProperty(fieldName + "@skip", "set type");
+                            root.addProperty(fieldName + SKIP_WALK, "set type");
                             JsonArray jsonArray = new JsonArray();
                             Set<?> set = (Set<?>) value;
                             for (Object elt : set) {
