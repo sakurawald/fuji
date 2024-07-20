@@ -21,10 +21,8 @@ import static io.github.sakurawald.module.ModuleManager.initializeModules;
 // TODO: rank module (track, requirement)
 // TODO: spawn module (facility)
 // TODO: hologram module (facility)
-// TODO: tppos module
 // TODO: code review for skin module
 
-// TODO: kit module (/kit <editor/give>)
 // TODO: invsee module
 // TODO: powertool module
 
@@ -32,7 +30,7 @@ import static io.github.sakurawald.module.ModuleManager.initializeModules;
 // TODO: refactor command facility (selector, aop, options, parser)
 
 // TODO: a program to generate module reference DAG
-// TODO: a program to generate config json with documentation
+// TODO: tppos module
 
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";

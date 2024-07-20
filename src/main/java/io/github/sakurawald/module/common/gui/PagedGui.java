@@ -19,7 +19,7 @@ import java.util.List;
 public abstract class PagedGui<T> extends LayeredGui {
 
     @Getter
-    private final @Immutable List<T> entities;
+    private final List<T> entities;
     private final int pageIndex;
     private final Text title;
 
@@ -29,7 +29,7 @@ public abstract class PagedGui<T> extends LayeredGui {
 
     public PagedGui(ServerPlayerEntity player, Text title, List<T> entities, int pageIndex) {
         super(ScreenHandlerType.GENERIC_9X6, player, false);
-        layers.clear();;
+        layers.clear();
 
         // props
         this.title = title;
@@ -72,6 +72,20 @@ public abstract class PagedGui<T> extends LayeredGui {
 
     protected PagedGui<T> search(String keyword) {
         return of(filter(keyword), 0);
+    }
+
+    protected void addEneity(T entity) {
+        this.entities.add(entity);
+        this.reopen();
+    }
+
+    protected void deleteEntity(T entity) {
+        this.entities.remove(entity);
+        this.reopen();
+    }
+
+    protected void reopen() {
+        this.of(this.entities, pageIndex).open();
     }
 
     private PagedGui<T> of(List<T> entities, int pageIndex) {

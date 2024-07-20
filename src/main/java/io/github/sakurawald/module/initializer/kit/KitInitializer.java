@@ -12,6 +12,7 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.kit.gui.KitEditorGui;
 import io.github.sakurawald.util.CommandUtil;
+import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.NbtUtil;
 import lombok.NonNull;
 import lombok.SneakyThrows;
@@ -45,8 +46,8 @@ public class KitInitializer extends ModuleInitializer {
 
     public void writeKit(Kit kit) {
         Path path = STORAGE_PATH.resolve(kit.getName());
-        NbtCompound root = NbtUtil.read(path);
 
+        NbtCompound root = NbtUtil.read(path);
         if (root == null) {
             Fuji.LOGGER.warn("failed to write kit {}", kit);
             return;
@@ -71,17 +72,21 @@ public class KitInitializer extends ModuleInitializer {
 
     public List<Kit> readKits() {
         List<Kit> ret = new ArrayList<>();
-
         for (String name : getKitNameList()) {
             ret.add(readKit(name));
         }
-
         return ret;
+    }
+
+    public void deleteKit(String name) {
+        Path path = STORAGE_PATH.resolve(name);
+        path.toFile().delete();
     }
 
     public @NotNull Kit readKit(String name) {
         Path p = STORAGE_PATH.resolve(name);
         NbtCompound root = NbtUtil.read(p);
+
         if (root == null) {
             return new Kit(p.toFile().getName(), new ArrayList<>());
         }
@@ -132,6 +137,10 @@ public class KitInitializer extends ModuleInitializer {
         String name = StringArgumentType.getString(ctx, "name");
 
         Kit kit = readKit(name);
+        if (kit.getStackList().isEmpty()) {
+            MessageUtil.sendMessage(player,"kit.kit.empty");
+            return 0;
+        }
 
         PlayerInventory playerInventory = player.getInventory();
         for (int i = 0; i < kit.getStackList().size(); i++) {

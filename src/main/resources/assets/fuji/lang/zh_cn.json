@@ -12,6 +12,7 @@
   "back": "<#FFA1F5>返回",
   "empty": "<#FFA1F5>空",
   "confirm": "<#FFA1F5>确认",
+  "deleted": "<red>已删除",
   "minecraft:overworld": "主世界",
   "minecraft:the_nether": "下界",
   "minecraft:the_end": "末地",
@@ -185,5 +186,7 @@
   "command_warmup.bossbar.name": "<dark_green>命令预热: %s",
   "gui.page.title": " (页数 %d / %d)",
   "kit.gui.editor.title": "<blue>工具包编辑器",
-  "kit.gui.editor.kit.title": "<blue>工具包 %s"
+  "kit.gui.editor.kit.title": "<blue>工具包 %s",
+  "kit.gui.editor.help.lore": "<green> - 鼠标左键 -> 编辑工具包<newline><green> - Shift + 鼠标右键 -> 删除工具包",
+  "kit.kit.empty": "<red>工具包为空"
 }

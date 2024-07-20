@@ -184,7 +184,7 @@ public class MessageUtil {
         String lines = getString(audience, key, args);
 
         List<Text> ret = new ArrayList<>();
-        for (String line : lines.split("\n")) {
+        for (String line : lines.split("\n|<newline>")) {
             ret.add(ofText(line));
         }
         return ret;

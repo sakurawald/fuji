@@ -389,6 +389,7 @@ public class ConfigModel {
                     See: https://docs.advntr.dev/minimessage/format.html
                     See: https://placeholders.pb4.eu/user/quicktext
                 - Besides the `server chat format`, each player can use `/chat format set` command to set their `per-player chat format`
+                - This module doesn't `cancel` the vanilla chat events, so it can work with `other chat realvent mods`.
                     
                 Placeholder:
                 - %fuji:item%
@@ -1377,8 +1378,8 @@ public class ConfigModel {
             public Style style = new Style();
 
             public class Style {
-                public String header = "<gold>TabList<newline><gold>------%server:online%/%server:max_players%------";
-                public String footer = "<gold>-----------------<newline>TPS: %server:tps_colored% PING: %player:ping_colored%<newline>Memory: %server:used_ram%/%server:max_ram% MB";
+                public String header = "<#FFA1F5>PlayerList<newline>------%server:online%/%server:max_players%------";
+                public String footer = "<#FFA1F5>-----------------<newline>TPS: %server:tps_colored% PING: %player:ping_colored%<newline><rainbow>Memory: %server:used_ram%/%server:max_ram% MB";
             }
         }
 

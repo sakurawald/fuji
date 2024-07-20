@@ -2,6 +2,8 @@ package io.github.sakurawald.module.initializer.kit.gui;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
+import eu.pb4.sgui.api.gui.layered.Layer;
+import eu.pb4.sgui.api.gui.layered.LayerView;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.common.gui.InputSignGui;
 import io.github.sakurawald.module.common.gui.PagedGui;
@@ -23,7 +25,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -35,13 +36,13 @@ public class KitEditorGui extends PagedGui<Kit> {
         super(player, MessageUtil.ofText(player, true, "kit.gui.editor.title"), entities);
     }
 
-    private void openEditorGui(ServerPlayerEntity player, Kit kit) {
+    private void openEditKitGui(ServerPlayerEntity player, Kit kit) {
         int rows = 5;
         SimpleInventory simpleInventory = new SimpleInventory(rows * 9);
         for (int i = 0; i < kit.getStackList().size(); i++) {
             simpleInventory.setStack(i, kit.getStackList().get(i));
         }
-        
+
         // forbidden
         for (int i = 41; i <= 44; i++) {
             simpleInventory.setStack(i, Items.BARRIER.getDefaultStack());
@@ -73,26 +74,23 @@ public class KitEditorGui extends PagedGui<Kit> {
 
     @Override
     public void onConstructor(PagedGui<Kit> parent) {
+        ServerPlayerEntity player = getPlayer();
+
         SingleLineLayer singleLineLayer = new SingleLineLayer();
-
-        // todo: here
-        singleLineLayer.setSlot(1, GuiUtil.createHelpButton(getPlayer())
-                .setLore(Collections.singletonList(Text.literal("hello"))));
-
-        singleLineLayer.setSlot(4, GuiUtil.createAddButton(getPlayer()).setCallback(() -> {
-            new InputSignGui(getPlayer(), "prompt.input.name") {
-                @Override
-                public void onClose() {
-                    String name = getLine(0).getString().trim();
-                    if (name.isEmpty()) {
-                        MessageUtil.sendActionBar(player, "operation.cancelled");
-                        return;
-                    }
-
-                    openEditorGui(getPlayer(), module.readKit(name));
+        singleLineLayer.setSlot(1, GuiUtil.createHelpButton(player)
+                .setLore(MessageUtil.ofTextList(player, "kit.gui.editor.help.lore")));
+        singleLineLayer.setSlot(4, GuiUtil.createAddButton(player).setCallback(() -> new InputSignGui(player, "prompt.input.name") {
+            @Override
+            public void onClose() {
+                String name = getLine(0).getString().trim();
+                if (name.isEmpty()) {
+                    MessageUtil.sendActionBar(player, "operation.cancelled");
+                    return;
                 }
-            }.open();
-        }));
+
+                openEditKitGui(getPlayer(), module.readKit(name));
+            }
+        }.open()));
         parent.addLayer(singleLineLayer, 0, parent.getHeight() - 1);
     }
 
@@ -100,7 +98,20 @@ public class KitEditorGui extends PagedGui<Kit> {
     public GuiElementInterface toGuiElement(Kit entity) {
         return new GuiElementBuilder().setItem(Items.CHEST)
                 .setName(Text.literal(entity.getName()))
-                .setCallback(() -> openEditorGui(getPlayer(), entity))
+                .setCallback((event) -> {
+
+                    if (event.isLeft) {
+                        openEditKitGui(getPlayer(), entity);
+                    }
+
+                    if (event.shift && event.isRight) {
+                        module.deleteKit(entity.getName());
+                        MessageUtil.sendActionBar(getPlayer(),"deleted");
+
+                        deleteEntity(entity);
+                    }
+
+                })
                 .build();
     }
 
