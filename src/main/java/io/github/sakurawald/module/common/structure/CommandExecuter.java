@@ -15,7 +15,14 @@ import java.util.List;
 public class CommandExecuter {
 
     public static void executeCommandsWithContext(MinecraftServer server, List<String> commands) {
-        /* context */
+        /* context
+        *
+        * !as_console
+        * !as_player
+        * !as_fake_op
+        *
+        *
+        *  */
         // ... to write
 
         /* resolve */

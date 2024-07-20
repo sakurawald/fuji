@@ -119,6 +119,13 @@ public class KitInitializer extends ModuleInitializer {
         });
     }
 
+   /*
+   * - %fuji:check_counter <counter-name> <player>%
+   * - kit give <player>
+   * - %fuji:update_counter <counter-name> <player>%
+   *
+   * counter for: times, cooldown
+   * */
     @SneakyThrows
     private int $give(CommandContext<ServerCommandSource> ctx) {
         ServerPlayerEntity player = EntityArgumentType.getPlayer(ctx, "player");

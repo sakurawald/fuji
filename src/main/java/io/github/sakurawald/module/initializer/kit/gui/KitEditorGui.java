@@ -74,6 +74,8 @@ public class KitEditorGui extends PagedGui<Kit> {
     @Override
     public void onConstructor(PagedGui<Kit> parent) {
         SingleLineLayer singleLineLayer = new SingleLineLayer();
+
+        // todo: here
         singleLineLayer.setSlot(1, GuiUtil.createHelpButton(getPlayer())
                 .setLore(Collections.singletonList(Text.literal("hello"))));
 
@@ -83,7 +85,7 @@ public class KitEditorGui extends PagedGui<Kit> {
                 public void onClose() {
                     String name = getLine(0).getString().trim();
                     if (name.isEmpty()) {
-                        MessageUtil.sendMessage(player, "operation.cancelled");
+                        MessageUtil.sendActionBar(player, "operation.cancelled");
                         return;
                     }
 
