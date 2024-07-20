@@ -11,7 +11,7 @@ import java.util.*;
 
 @SuppressWarnings("ALL")
 @Documentation("""
-        Welcome to fuji-fabric 's offical documentation.
+        Welcome to fuji-fabric 's official documentation.
         This page is the `source code` used to generate the default `config.json` file.
                 
         You can press `CTRL + F` keys in your keyboard, and search any `option key` that you want to konw.

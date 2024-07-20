@@ -2,14 +2,10 @@ package io.github.sakurawald.generator;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.sun.jna.platform.unix.X11;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.nio.charset.Charset;
 import java.nio.file.Path;
@@ -25,47 +21,44 @@ public class MarkdownDocsGenerator {
     }
 
     private String toMarkdown(JsonObject root) {
-        StringBuilder sb = new StringBuilder();
-        walk(sb, 1, root);
-        return sb.toString();
+        StringBuilder text = new StringBuilder();
+        walk(text, 1, root);
+        return text.toString();
     }
 
-    public String translateToMarkdown(String string, String indent) {
-        StringBuilder ret = new StringBuilder();
+    private String translateDocumentation(String string, String indent) {
+        StringBuilder text = new StringBuilder();
+
+        // drop first and last quote
+        if (string.charAt(0) == '\"') string = string.substring(1);
+        if (string.charAt(string.length() - 1) == '\"') string = string.substring(0, string.length() - 1);
+
+        // escape the java """ syntax
+        string = string.translateEscapes();
+
+        // add prefix indent
         String[] lines = string.split("\n");
-
         for (String line : lines) {
-            line = line.replace("\"", "");
-            ret.append(indent).append(line).append(System.lineSeparator());
+            text.append(indent).append(line).append(System.lineSeparator());
         }
 
-        return ret.toString().trim();
+        // trim redundant linefeed.
+        return text.toString().trim();
     }
 
-    private String toJsonPair(String key, JsonElement element){
-        StringBuilder sb = new StringBuilder();
-        sb.append("\"").append(key).append("\"").append(": ");
+    private String translateJsonPair(String key, JsonElement jsonElement, String indent) {
+        StringBuilder text = new StringBuilder();
 
-        if (element.isJsonPrimitive()) {
-            JsonPrimitive primitive = element.getAsJsonPrimitive();
-            if (primitive.isString()) {
-                sb.append(element);
-            }
-            if (primitive.isNumber()) {
-                sb.append(element);
-            }
-            if (primitive.isBoolean()) {
-                sb.append(element);
-            }
-        } else {
-            sb.append(element);
-        }
+        text.append(indent).append("```json").append(System.lineSeparator())
+                .append(indent).append("\"").append(key).append("\"").append(": ").append(jsonElement).append(System.lineSeparator())
+                .append(indent).append("```").append(System.lineSeparator())
+                .append(indent).append(System.lineSeparator());
 
-        return sb.toString();
+        return text.toString();
     }
 
     private String getIndent(int level) {
-        return StringUtils.repeat(">", level) + " ";
+        return ">".repeat(level) + " ";
     }
 
     private void walk(StringBuilder sb, int level, JsonObject node) {
@@ -73,66 +66,55 @@ public class MarkdownDocsGenerator {
 
         Set<String> keys = node.keySet();
         for (String key : keys) {
-            JsonElement jsonElement = node.get(key);
 
             JsonElement value = node.get(key);
+
             if (key.endsWith("@skip")) continue;
-            if (key.endsWith("@documentation")) {
-//                sb.append(indent).append("<table><tr><td>")
-//                        .append(translateToMarkdown(value.toString(), indent)).append(System.lineSeparator())
-//                        .append(indent).append("</td></tr></table>").append(System.lineSeparator())
-//                        .append(indent).append(System.lineSeparator());
+            if (value.isJsonObject()) {
+
+                sb.append(getIndent(level + 1)).append("**%s**".formatted(key)).append(System.lineSeparator())
+                        .append(getIndent(level + 1)).append(System.lineSeparator())
+                ;
+
+                // note: skip walk
+                if (keys.contains(key + "@skip")) {
+                    sb.append(translateJsonPair(key, value, indent));
+                    continue;
+                }
+
+                walk(sb, level + 1, (JsonObject) value);
             } else {
+                if (key.equals("class@documentation")) {
+                    // class documentation
+                    sb.append(indent).append("<table><tr><td>").append(System.lineSeparator())
+                            .append(translateDocumentation(value.toString(), indent)).append(System.lineSeparator())
+                            .append(indent).append("</td></tr></table>").append(System.lineSeparator());
 
-                if (jsonElement.isJsonObject()) {
-                    sb.append(getIndent(level + 1)).append("**%s**".formatted(key)).append(System.lineSeparator())
-                            .append(getIndent(level + 1)).append(System.lineSeparator())
-                            .append(getIndent(level + 1)).append(System.lineSeparator());;
-
-                    // note: skip walk
-                    if (keys.contains(key + "@skip")) {
-                        log.warn("skip key {}", key);
-                        sb.append(indent).append("```json").append(System.lineSeparator())
-                                .append(indent).append(toJsonPair(key, value)).append(System.lineSeparator())
-                                .append(indent).append("```").append(System.lineSeparator())
-                                .append(indent).append(System.lineSeparator());
-                        continue;
-                    }
-
-                    walk(sb, level + 1, (JsonObject) jsonElement);
+                } else if (keys.contains(key + "@documentation")) {
+                    // field documentation
+                    String documentation = node.get(key + "@documentation").getAsString();
+                    sb.append(indent).append("<table><tr><td>").append(System.lineSeparator())
+                            .append(translateDocumentation(documentation, indent)).append(System.lineSeparator())
+                            .append(indent).append(System.lineSeparator())
+                            .append(indent).append(System.lineSeparator())
+                            .append(translateJsonPair(key, value, indent))
+                            .append(indent).append("</td></tr></table>").append(System.lineSeparator());
                 } else {
 
-                    StringBuilder jsonPair = new StringBuilder().append(indent).append("```json").append(System.lineSeparator())
-                            .append(indent).append(toJsonPair(key, value)).append(System.lineSeparator())
-                            .append(indent).append("```").append(System.lineSeparator())
-                            .append(indent).append(System.lineSeparator());
+                    // skip
+                    if (key.endsWith("@documentation")) continue;
 
-                    if (keys.contains(key + "@documentation")) {
-                        String documentation = node.get(key + "@documentation").getAsString();
-                        sb.append(indent).append("<table><tr><td>").append(System.lineSeparator())
-                                .append(translateToMarkdown(documentation, indent)).append(System.lineSeparator())
-                                .append(indent).append(System.lineSeparator())
-                                .append(jsonPair)
-                                .append(indent).append("</td></tr></table>").append(System.lineSeparator());
-                    } else {
-                        sb.append(jsonPair);
-                    }
-
-
+                    sb.append(translateJsonPair(key, value, indent));
                 }
             }
 
-            // same-level
+            // same level
             sb.append(indent).append(System.lineSeparator());
-
         }
-
     }
-
 
     @SneakyThrows
     private void writeToFile(Path path, String string) {
-        path.toFile().getParentFile().mkdirs();
         FileUtils.writeStringToFile(path.toFile(), string, Charset.defaultCharset());
     }
 
