@@ -77,12 +77,12 @@ public class TopChunksInitializer extends ModuleInitializer {
 
             /* send output */
             ConfigModel.Modules.TopChunks topChunks = Configs.configHandler.model().modules.top_chunks;
-            calculateNearestPlayer(ctx.getSource(), PQ, topChunks.rows * topChunks.columns);
+            calculateNearestPlayer(ctx.getSource(), PQ, topChunks.top.rows * topChunks.top.columns);
 
             TextComponent.Builder textComponentBuilder = Component.text();
             outer:
-            for (int j = 0; j < topChunks.rows; j++) {
-                for (int i = 0; i < topChunks.columns; i++) {
+            for (int j = 0; j < topChunks.top.rows; j++) {
+                for (int i = 0; i < topChunks.top.columns; i++) {
                     if (PQ.isEmpty()) break outer;
                     textComponentBuilder.append(PQ.poll().asComponent(ctx.getSource())).appendSpace();
                 }

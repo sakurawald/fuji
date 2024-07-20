@@ -14,7 +14,7 @@ public class ServerPlayNetworkHandlerMixin {
 
     @ModifyVariable(method = "executeCommand", at = @At(value = "HEAD"), ordinal = 0, argsOnly = true)
     public String $execute(String string) {
-        for (CommandRewriteEntry rule : Configs.configHandler.model().modules.command_rewrite.rules) {
+        for (CommandRewriteEntry rule : Configs.configHandler.model().modules.command_rewrite.regex) {
             if (string.matches(rule.from)) {
                 return string.replaceAll(rule.from, rule.to);
             }
