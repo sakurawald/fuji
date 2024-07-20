@@ -7,6 +7,8 @@
   "previous_page": "<#FFA1F5>上一页",
   "next_page": "<#FFA1F5>下一页",
   "search": "<#FFA1F5>搜索",
+  "add": "<#FFA1F5>添加",
+  "help": "<#FFA1F5>帮助",
   "back": "<#FFA1F5>返回",
   "empty": "<#FFA1F5>空",
   "confirm": "<#FFA1F5>确认",
@@ -24,6 +26,7 @@
   "input.limit.error": "<red>输入超出限制",
   "operation.cancelled": "<red>该操作已取消",
   "prompt.input.confirm": "输入confirm",
+  "prompt.input.name": "输入名称",
   "pvp.on": "<dark_aqua>您现在的PvP状态: 启用",
   "pvp.on.already": "<dark_aqua>您已经启用PvP!",
   "pvp.off": "<dark_aqua>您现在的PvP状态: 禁用",
@@ -181,5 +184,6 @@
   "top": "<gold>已传送到顶部!",
   "command_warmup.bossbar.name": "<dark_green>命令预热: %s",
   "gui.page.title": " (页数 %d / %d)",
-  "kit.gui.editor.title": "<blue>工具包编辑器"
+  "kit.gui.editor.title": "<blue>工具包编辑器",
+  "kit.gui.editor.kit.title": "<blue>工具包 %s"
 }

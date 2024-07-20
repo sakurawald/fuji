@@ -11,12 +11,13 @@ import javax.annotation.Nullable;
 
 public class InputSignGui extends SignGui {
 
+
     public InputSignGui(ServerPlayerEntity player, String promptKey) {
         super(player);
         this.setSignType(Blocks.CHERRY_WALL_SIGN);
         this.setColor(DyeColor.BLACK);
         if (promptKey != null) {
-            this.setLine(3, MessageUtil.ofText(promptKey));
+            this.setLine(3, MessageUtil.ofText(player, true, promptKey));
         }
         this.setAutoUpdate(false);
     }
@@ -30,15 +31,16 @@ public class InputSignGui extends SignGui {
         return sb.toString().trim();
     }
 
-    public @Nullable String getInput() {
+    protected @Nullable String reduceInput() {
         String lines = reduce();
         if (lines.isBlank()) return null;
         return lines;
     }
 
-    public @NotNull String getInputOrEmpty() {
+    protected @NotNull String reduceInputOrEmpty() {
         String lines = reduce();
         if (lines.isBlank()) return "";
         return lines;
     }
+
 }

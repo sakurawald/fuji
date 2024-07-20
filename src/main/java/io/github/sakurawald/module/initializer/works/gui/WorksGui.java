@@ -34,10 +34,8 @@ public class WorksGui extends PagedGui<Work> {
         List<Work> entities = parent.getEntities();
 
         Layer controlLayer = new Layer(1, 3);
-        controlLayer.addSlot(new GuiElementBuilder()
-                .setItem(Items.PLAYER_HEAD)
+        controlLayer.addSlot(GuiUtil.createAddButton(player)
                 .setName(MessageUtil.ofText(player, "works.list.add"))
-                .setSkullOwner(GuiUtil.Icon.PLUS_ICON)
                 .setCallback(() -> new AddWorkGui(player).open())
         );
         controlLayer.addSlot(new GuiElementBuilder()
@@ -47,10 +45,8 @@ public class WorksGui extends PagedGui<Work> {
                 .setLore(MessageUtil.ofTextList(player, "works.list.help.lore")));
 
         if (entities == WorksInitializer.worksHandler.model().works) {
-            controlLayer.addSlot(new GuiElementBuilder()
-                    .setItem(Items.PLAYER_HEAD)
+            controlLayer.addSlot(GuiUtil.createHelpButton(player)
                     .setName(MessageUtil.ofText(player, "works.list.my_works"))
-                    .setSkullOwner(GuiUtil.Icon.HEART_ICON)
                     .setCallback(() -> search(player.getGameProfile().getName()).open())
             );
         } else {

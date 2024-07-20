@@ -8,7 +8,9 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.collection.DefaultedList;
+import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -63,7 +65,7 @@ public class NbtUtil {
         return root.get(key);
     }
 
-    public static NbtCompound read(Path path) {
+    public static @Nullable NbtCompound read(Path path) {
         try {
             if (!path.toFile().exists()) {
                 NbtIo.write(new NbtCompound(), path);
@@ -84,14 +86,16 @@ public class NbtUtil {
         }
     }
 
-    public static NbtList writeSlotsNode(NbtList node, DefaultedList<ItemStack> itemStackList) {
+    public static NbtList writeSlotsNode(NbtList node, List<ItemStack> itemStackList) {
         for (ItemStack item : itemStackList) {
             node.add(item.encodeAllowEmpty(RegistryUtil.getDefaultWrapperLookup()));
         }
         return node;
     }
 
-    public static List<ItemStack> readSlotsNode(NbtList node) {
+    public static @NotNull List<ItemStack> readSlotsNode(@Nullable NbtList node) {
+        if (node == null) return new ArrayList<>();
+
         ArrayList<ItemStack> ret = new ArrayList<>();
         for (int i = 0; i < node.size(); i++) {
             ret.add(ItemStack.fromNbtOrEmpty(RegistryUtil.getDefaultWrapperLookup(), node.getCompound(i)));

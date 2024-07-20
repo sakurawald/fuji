@@ -5,9 +5,13 @@ import io.github.sakurawald.util.GuiUtil;
 import net.minecraft.item.ItemStack;
 
 public class SingleLineLayer extends Layer {
-    public SingleLineLayer(ItemStack itemStack) {
-        super(1, 9);
 
+    public SingleLineLayer() {
+        super(1, 9);
+    }
+
+    public SingleLineLayer(ItemStack itemStack) {
+        this();
         for (int i = 0; i < this.getWidth(); i++) {
             this.addSlot(itemStack);
         }

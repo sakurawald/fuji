@@ -7,8 +7,11 @@
   "previous_page": "<#FFA1F5>Previous Page",
   "next_page": "<#FFA1F5>Next Page",
   "search": "<#FFA1F5>Search",
+  "add": "<#FFA1F5>Add",
+  "help": "<#FFA1F5>Help",
   "back": "<#FFA1F5>Back",
   "empty": "<#FFA1F5>Empty",
+  "empty.not_allow": "<red>Can't be empty.",
   "confirm": "<#FFA1F5>Confirm",
   "minecraft:overworld": "overworld",
   "minecraft:the_nether": "the nether",
@@ -24,6 +27,7 @@
   "input.limit.error": "<red>Input limit exceed",
   "operation.cancelled": "<red>This operation is cancelled",
   "prompt.input.confirm": "Input confirm",
+  "prompt.input.name": "Input name",
   "pvp.on": "<dark_aqua>PvP for you is now on",
   "pvp.on.already": "<dark_aqua>You already have PvP on!",
   "pvp.off": "<dark_aqua>PvP for you is now off",
@@ -182,5 +186,6 @@
   "top": "<gold>Top!",
   "command_warmup.bossbar.name": "<dark_green>Command warmup: %s",
   "gui.page.title": " (Page %d / %d)",
-  "kit.gui.editor.title": "<blue>Kit Editor"
+  "kit.gui.editor.title": "<blue>Kit Editor",
+  "kit.gui.editor.kit.title": "<blue>Kit %s"
 }

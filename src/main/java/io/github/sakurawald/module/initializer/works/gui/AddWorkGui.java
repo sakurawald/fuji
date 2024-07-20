@@ -18,7 +18,7 @@ public class AddWorkGui extends InputSignGui {
 
 
     public AddWorkGui(ServerPlayerEntity player) {
-        super(player, MessageUtil.getString(player, "works.work.add.prompt.input.name"));
+        super(player, "works.work.add.prompt.input.name");
     }
 
     @Override
@@ -33,7 +33,7 @@ public class AddWorkGui extends InputSignGui {
         /* input type */
         SimpleGui selectWorkTypeGui = new SimpleGui(ScreenHandlerType.GENERIC_9X3, player, false);
         selectWorkTypeGui.setTitle(MessageUtil.ofText(player, "works.work.add.select_work_type.title"));
-        GuiUtil.fill(selectWorkTypeGui,GuiUtil.Item.PLACEHOLDER);
+        GuiUtil.fill(selectWorkTypeGui, GuiUtil.Item.PLACEHOLDER);
 
         ConfigHandler<WorksModel> worksHandler = WorksInitializer.worksHandler;
         selectWorkTypeGui.setSlot(11, new GuiElementBuilder().setItem(Items.GUNPOWDER).setName(MessageUtil.ofText(player, "works.non_production_work.name")).setCallback(() -> {

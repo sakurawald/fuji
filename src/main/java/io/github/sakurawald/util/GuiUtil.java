@@ -43,6 +43,21 @@ public class GuiUtil {
                 .setName(MessageUtil.ofText(player, "search"));
     }
 
+    public static GuiElementBuilder createAddButton(ServerPlayerEntity player) {
+        return new GuiElementBuilder()
+                .setItem(Items.PLAYER_HEAD)
+                .setName(MessageUtil.ofText(player, "add"))
+                .setSkullOwner(GuiUtil.Icon.PLUS_ICON);
+    }
+
+    public static GuiElementBuilder createHelpButton(ServerPlayerEntity player) {
+        return new GuiElementBuilder()
+                .setItem(Items.PLAYER_HEAD)
+                .setName(MessageUtil.ofText(player, "help"))
+                .setSkullOwner(Icon.HEART_ICON);
+    }
+
+
     public static void fill(SimpleGui gui, ItemStack itemStack) {
         for (int i = 0; i < gui.getSize(); i++) {
             gui.setSlot(i,itemStack );
