@@ -78,6 +78,7 @@ public class MarkdownDocsGenerator {
             if (key.endsWith(CLASS_DOCUMENTATION)) {
                 // class documentation
                 sb.append(indent).append("<table><tr><td>").append(System.lineSeparator())
+                        .append(indent).append(System.lineSeparator())
                         .append(translateDocumentation(value.toString(), indent)).append(System.lineSeparator())
                         .append(indent).append("</td></tr></table>").append(System.lineSeparator());
                 sb.append(indent).append(System.lineSeparator());
@@ -101,6 +102,7 @@ public class MarkdownDocsGenerator {
                     // field documentation
                     String documentation = node.get(key + FIELD_DOCUMENTATION).getAsString();
                     sb.append(indent).append("<table><tr><td>").append(System.lineSeparator())
+                            .append(indent).append(System.lineSeparator())
                             .append(translateDocumentation(documentation, indent)).append(System.lineSeparator())
                             .append(indent).append(System.lineSeparator())
                             .append(indent).append(System.lineSeparator())
