@@ -29,6 +29,7 @@ public abstract class PagedGui<T> extends LayeredGui {
 
     public PagedGui(ServerPlayerEntity player, Text title, List<T> entities, int pageIndex) {
         super(ScreenHandlerType.GENERIC_9X6, player, false);
+        layers.clear();;
 
         // props
         this.title = title;
@@ -49,17 +50,17 @@ public abstract class PagedGui<T> extends LayeredGui {
         SingleLineLayer pageLayer = new SingleLineLayer(GuiUtil.Item.PLACEHOLDER);
         pageLayer.setSlot(0, GuiUtil.createPreviousPageButton(player).setCallback(() -> tryChangePage(pageIndex - 1)));
         pageLayer.setSlot(this.getWidth() - 1, GuiUtil.createPreviousPageButton(player).setCallback(() -> tryChangePage(pageIndex + 1)));
-        pageLayer.setSlot(this.getWidth() - 2, GuiUtil.createSearchButton(player).setCallback(() -> {
-            new InputSignGui(player, null) {
-                @Override
-                public void onClose() {
-                    String keyword = getInput();
-                    of(filter(keyword), 0).open();
-                }
-            }.open();
-        }));
+        pageLayer.setSlot(this.getWidth() - 2, GuiUtil.createSearchButton(player).setCallback(() -> new InputSignGui(player, null) {
+            @Override
+            public void onClose() {
+                String keyword = getInputOrEmpty();
+                search(keyword).open();
+            }
+        }.open()));
+        this.addLayer(pageLayer, 0, this.getHeight() - 1);
 
-        addLayer(pageLayer, 0, this.getHeight() - 1);
+        // events
+        onConstructor(this);
     }
 
     private void tryChangePage(int newPageIndex) {
@@ -69,9 +70,19 @@ public abstract class PagedGui<T> extends LayeredGui {
         of(this.entities, newPageIndex).open();
     }
 
+    protected PagedGui<T> search(String keyword) {
+        return of(filter(keyword), 0);
+    }
+
     private PagedGui<T> of(List<T> entities, int pageIndex) {
         PagedGui<T> that = this;
         return new PagedGui<>(getPlayer(), this.title, entities, pageIndex) {
+
+            @Override
+            public void onConstructor(PagedGui<T> parent) {
+                that.onConstructor(parent);
+            }
+
             @Override
             public GuiElementInterface toGuiElement(T entity) {
                 return that.toGuiElement(entity);
@@ -117,6 +128,8 @@ public abstract class PagedGui<T> extends LayeredGui {
     private int getEntityEndIndex(int pageIndex) {
         return Math.min(getEntityBeginIndex(pageIndex + 1), this.getEntitySize());
     }
+
+    public abstract void onConstructor(PagedGui<T> parent);
 
     public abstract GuiElementInterface toGuiElement(T entity);
 

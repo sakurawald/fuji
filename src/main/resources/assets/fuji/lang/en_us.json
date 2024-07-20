@@ -60,7 +60,7 @@
   "skin.action.affected_player": "<blue>Apply live skin changes for %s",
   "skin.action.failed": "<blue>Failed to set skin",
   "skin.action.ok": "<blue>Skin changed",
-  "works.list.title": "<#6528F7>Works Collection (Page %d)",
+  "works.list.title": "<#6528F7>Works Collection",
   "works.list.add": "<#FFA1F5>Add work",
   "works.list.my_works": "<#FFA1F5>My works",
   "works.list.all_works": "<#FFA1F5>All works",
@@ -181,5 +181,6 @@
   "nickname.unset": "<gold>Nickname unset.",
   "top": "<gold>Top!",
   "command_warmup.bossbar.name": "<dark_green>Command warmup: %s",
-  "gui.page.title": " (Page %d / %d)"
+  "gui.page.title": " (Page %d / %d)",
+  "kit.gui.editor.title": "<blue>Kit Editor"
 }

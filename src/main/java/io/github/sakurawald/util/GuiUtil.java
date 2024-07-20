@@ -1,6 +1,7 @@
 package io.github.sakurawald.util;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
+import eu.pb4.sgui.api.gui.SimpleGui;
 import lombok.experimental.UtilityClass;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -42,6 +43,11 @@ public class GuiUtil {
                 .setName(MessageUtil.ofText(player, "search"));
     }
 
+    public static void fill(SimpleGui gui, ItemStack itemStack) {
+        for (int i = 0; i < gui.getSize(); i++) {
+            gui.setSlot(i,itemStack );
+        }
+    }
 
     public static class Icon {
 

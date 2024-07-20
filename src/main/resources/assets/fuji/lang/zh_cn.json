@@ -60,7 +60,7 @@
   "skin.action.affected_player": "<blue>已为 %s 设置皮肤",
   "skin.action.failed": "<blue>设置皮肤失败",
   "skin.action.ok": "<blue>皮肤已设置",
-  "works.list.title": "<#6528F7>作品集 (第%d页)",
+  "works.list.title": "<#6528F7>作品集",
   "works.list.add": "<#FFA1F5>添加作品",
   "works.list.my_works": "<#FFA1F5>我的作品",
   "works.list.all_works": "<#FFA1F5>所有作品",
@@ -180,5 +180,6 @@
   "placeholder.pos": "<#2596be>[%d %d %d, %s]",
   "top": "<gold>已传送到顶部!",
   "command_warmup.bossbar.name": "<dark_green>命令预热: %s",
-  "gui.page.title": " (页数 %d / %d)"
+  "gui.page.title": " (页数 %d / %d)",
+  "kit.gui.editor.title": "<blue>工具包编辑器"
 }

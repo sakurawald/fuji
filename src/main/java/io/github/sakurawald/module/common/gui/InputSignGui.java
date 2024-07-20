@@ -5,6 +5,7 @@ import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.DyeColor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -32,6 +33,12 @@ public class InputSignGui extends SignGui {
     public @Nullable String getInput() {
         String lines = reduce();
         if (lines.isBlank()) return null;
+        return lines;
+    }
+
+    public @NotNull String getInputOrEmpty() {
+        String lines = reduce();
+        if (lines.isBlank()) return "";
         return lines;
     }
 }
