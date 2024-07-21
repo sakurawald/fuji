@@ -14,6 +14,7 @@ import io.github.sakurawald.module.initializer.head.api.Head;
 import io.github.sakurawald.module.initializer.head.api.HeadDatabaseAPI;
 import io.github.sakurawald.module.initializer.head.gui.HeadGui;
 import io.github.sakurawald.util.CommandUtil;
+import io.github.sakurawald.util.ItemUtil;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.PlayerInventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
@@ -60,7 +61,7 @@ public class HeadInitializer extends ModuleInitializer {
     }
 
     public Item getCostItem() {
-        return Registries.ITEM.get(Identifier.tryParse(headHandler.model().costType));
+        return ItemUtil.getItem(headHandler.model().costType);
     }
 
     @Override

@@ -241,7 +241,9 @@ public class ConfigModel {
                                         
                     Note:
                     - For each player, each command has its cooldown.
-                    - You may want to use some editor for `regex language`. See [regex editor](https://regexr.com/)
+                    - You may want to use some editor for `regex language`. 
+                        See regex editor https://regexr.com/
+                        See regex editor https://regex101.com/
                     """)
             public HashMap<String, Long> regex2ms = new HashMap<>() {
                 {
@@ -267,8 +269,6 @@ public class ConfigModel {
                     this.put("back", 3 * 1000);
                 }
             };
-
-
         }
 
         @Documentation("""

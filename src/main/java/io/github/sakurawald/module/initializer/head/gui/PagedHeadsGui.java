@@ -48,7 +48,7 @@ public class PagedHeadsGui extends LayeredGui {
 
     private void updateNavigation() {
         for (int i = 0; i < 9; i++) {
-            navigationLayer.setSlot(i, Items.PINK_STAINED_GLASS_PANE.getDefaultStack());
+            navigationLayer.setSlot(i, GuiUtil.Item.PLACEHOLDER);
         }
 
         navigationLayer.setSlot(

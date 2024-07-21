@@ -33,7 +33,7 @@ public class ShulkerBoxDisplayGui extends DisplayGuiBuilder {
 
         /* construct base  */
         for (int i = 0; i < 9; i++) {
-            gui.setSlot(i, new GuiElementBuilder().setItem(Items.PINK_STAINED_GLASS_PANE));
+            gui.setSlot(i, GuiUtil.Item.PLACEHOLDER);
         }
         gui.setSlot(4, itemStack);
         if (this.parentGui != null) {
