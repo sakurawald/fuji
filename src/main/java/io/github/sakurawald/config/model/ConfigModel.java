@@ -1313,6 +1313,8 @@ public class ConfigModel {
 
             @Documentation("""
                     This module provides `/top` command.
+                    
+                    Go up to the ground conveniently !
                     """)
             public class Top {
                 public boolean enable = true;
@@ -1367,6 +1369,13 @@ public class ConfigModel {
                 public String enable_warning = "ENABLE THIS MODULE IS POTENTIAL TO HARM YOUR COMPUTER! YOU NEED TO CHANGE THIS FIELD INTO `CONFIRM` TO ENABLE THIS MODULE";
                 public boolean enable = false;
             }
+
+            public TrashCan trashcan = new TrashCan();
+
+            @Documentation("Command: /trashcan")
+            public class TrashCan {
+                public boolean enable = false;
+            }
         }
 
         @Documentation("""
@@ -1391,5 +1400,6 @@ public class ConfigModel {
         public class Kit {
             public boolean enable = false;
         }
+
     }
 }

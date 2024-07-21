@@ -188,5 +188,6 @@
   "kit.gui.editor.title": "<blue>工具包编辑器",
   "kit.gui.editor.kit.title": "<blue>工具包 %s",
   "kit.gui.editor.help.lore": "<green> - 鼠标左键 -> 编辑工具包<newline><green> - Shift + 鼠标右键 -> 删除工具包",
-  "kit.kit.empty": "<red>工具包为空"
+  "kit.kit.empty": "<red>工具包为空",
+  "trashcan.gui.title": "<red>垃圾箱"
 }
