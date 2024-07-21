@@ -158,13 +158,22 @@ tasks.register('generateDocs') {
 }
 tasks.modrinthSyncBody.dependsOn(generateDocs)
 
-tasks.register('generateMixinRegistry') {
+tasks.register('checkMixinRegistryTest') {
     outputs.upToDateWhen { false }
     test {
         filter {
-            includeTestsMatching 'MixinRegistryGenTest.generate'
+            includeTestsMatching 'CheckMixinRegistryTest.test'
         }
     }
 }
-tasks.compileJava.dependsOn(generateMixinRegistry)
+tasks.compileJava.dependsOn(checkMixinRegistryTest)
 
+tasks.register('checkModuleDependencyTest') {
+    outputs.upToDateWhen { false }
+    test {
+        filter {
+            includeTestsMatching 'CheckModuleDependencyTest.test'
+        }
+    }
+}
+tasks.compileJava.dependsOn(checkModuleDependencyTest)

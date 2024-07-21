@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.newbie_welcome;
 
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.newbie_welcome.random_teleport.RandomTeleport;
+import io.github.sakurawald.module.common.random_teleport.RandomTeleport;
 import io.github.sakurawald.util.MessageUtil;
 import net.minecraft.server.network.ServerPlayerEntity;
 

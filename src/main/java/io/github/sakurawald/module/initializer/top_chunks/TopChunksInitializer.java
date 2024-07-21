@@ -6,7 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.mixin.top_chunks.ThreadedAnvilChunkStorageMixin;
+import io.github.sakurawald.module.mixin._internal.low_level.ThreadedAnvilChunkStorageMixin;
 import io.github.sakurawald.util.MessageUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;

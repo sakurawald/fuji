@@ -1,4 +1,4 @@
-package generator;
+package checker;
 
 import com.google.gson.*;
 import io.github.sakurawald.module.ModuleManager;
@@ -12,7 +12,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MixinRegistryGenTest {
+public class CheckMixinRegistryTest {
 
     private List<JsonElement> collectJsonArray(JsonElement jsonElement, String key) {
         JsonObject jsonObject = jsonElement.getAsJsonObject();
@@ -29,7 +29,7 @@ public class MixinRegistryGenTest {
 
     @SneakyThrows
     @Test
-    void generate() {
+    void test() {
 
         /* read file */
         File file = new File("src/main/resources/fuji.mixins.json");

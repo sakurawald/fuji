@@ -8,7 +8,7 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.newbie_welcome.random_teleport.RandomTeleport;
+import io.github.sakurawald.module.common.random_teleport.RandomTeleport;
 import io.github.sakurawald.module.initializer.resource_world.interfaces.DimensionOptionsMixinInterface;
 import io.github.sakurawald.module.common.accessor.SimpleRegistryMixinInterface;
 import io.github.sakurawald.util.CommandUtil;

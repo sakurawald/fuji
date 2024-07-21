@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.mixin.top_chunks;
+package io.github.sakurawald.module.mixin._internal.low_level;
 
 import net.minecraft.server.world.ChunkHolder;
 import net.minecraft.server.world.ServerChunkLoadingManager;

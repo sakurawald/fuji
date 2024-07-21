@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.newbie_welcome.random_teleport;
+package io.github.sakurawald.module.common.random_teleport;
 
 import com.google.common.base.Stopwatch;
 import io.github.sakurawald.Fuji;

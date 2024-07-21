@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.newbie_welcome.random_teleport;
+package io.github.sakurawald.module.common.random_teleport;
 
 import java.util.OptionalInt;
 import net.minecraft.world.chunk.Chunk;

@@ -57,7 +57,7 @@
     "language.ServerPlayerMixin",
     "chat.PlayerListMixin",
     "_internal.low_level.SimpleRegistryMixin",
-    "top_chunks.ThreadedAnvilChunkStorageMixin",
+    "_internal.low_level.ThreadedAnvilChunkStorageMixin",
     "command_permission.CommandNodeAccessor",
     "anti_build.EntityMixin",
     "carpet.fake_player_manager.PlayerListMixin",

@@ -14,7 +14,7 @@ import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.ChatModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.chat.display.DisplayHelper;
-import io.github.sakurawald.module.initializer.chat.mention.MentionPlayersJob;
+import io.github.sakurawald.module.common.job.MentionPlayersJob;
 import io.github.sakurawald.util.CommandUtil;
 import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.PermissionUtil;

@@ -12,7 +12,6 @@ import oshi.annotation.concurrent.Immutable;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("LombokGetterMayBeUsed")
 @Slf4j
 public class BossBarManager {
 

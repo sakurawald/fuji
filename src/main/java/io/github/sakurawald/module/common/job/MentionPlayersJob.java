@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.chat.mention;
+package io.github.sakurawald.module.common.job;
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
