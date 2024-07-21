@@ -85,7 +85,7 @@ public class MarkdownDocsGenerator {
 
                 boolean isModule = value.getAsJsonObject().has("enable");
                 if (isModule) {
-                    sb.append(getIndent(level + 1)).append(" <table><tr><td>module</td></tr></table>").append(System.lineSeparator());
+                    sb.append(getIndent(level + 1)).append(" `module`").append(System.lineSeparator());
                 }
 
                 sb.append(getIndent(level + 1)).append(System.lineSeparator());
