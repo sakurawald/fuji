@@ -19,7 +19,6 @@ public abstract class ServerPlayerEntityMixin {
     @Unique
     ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
-
     @Inject(method = "openEditSignScreen", at = @At("HEAD"))
     private void $onUse(SignBlockEntity signBlockEntity, boolean bl, CallbackInfo ci) {
         if (ci.isCancelled()) return;

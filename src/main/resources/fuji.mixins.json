@@ -3,6 +3,11 @@
   "package": "io.github.sakurawald.module.mixin",
   "compatibilityLevel": "JAVA_17",
   "plugin": "io.github.sakurawald.module.mixin.ModuleMixinConfigPlugin",
+  "server": [
+    "color.sign.SignBlockEntityMixin",
+    "color.sign.ServerPlayerEntityMixin",
+    "color.anvil.AnvilScreenHandlerMixin"
+  ],
   "mixins": [
     "command_warmup.ServerPlayNetworkHandler",
     "anti_build.ServerPlayerInteractionManagerMixin",
@@ -10,7 +15,6 @@
     "whitelist.UserWhiteListMixin",
     "teleport_warmup.ServerPlayerMixin",
     "command_interactive.SignBlockMixin",
-    "color.sign.SignBlockEntityMixin",
     "works.HopperBlockEntityMixin",
     "disabler.chat_speed_disabler.ServerGamePacketListenerImplMixin",
     "carpet.better_info.InfoCommandMixin",
@@ -21,7 +25,6 @@
     "skin.PlayerListMixin",
     "placeholder.ServerPlayNetworkHandlerMixin",
     "anti_build.BlockMixin",
-    "color.sign.ServerPlayerEntityMixin",
     "afk.ServerPlayerMixin",
     "command_toolbox.seen.PlayerListMixin",
     "_internal.low_level.MinecraftServerMixin",
@@ -38,7 +41,6 @@
     "chat.ServerGamePacketListenerImplMixin",
     "system_message.ComponentMixin",
     "disabler.move_speed_disabler.ServerGamePacketListenerImplMixin",
-    "color.anvil.AnvilScreenHandlerMixin",
     "_internal.low_level.ServerPlayerEntityMixin",
     "carpet.fake_player_manager.PlayerCommandMixin",
     "op_protect.ServerPlayNetworkHandlerMixin",
