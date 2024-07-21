@@ -1,16 +1,10 @@
 package io.github.sakurawald.generator;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import lombok.Getter;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 
-import java.nio.charset.Charset;
-import java.nio.file.Path;
 import java.util.Set;
 
 import static io.github.sakurawald.generator.JsonDocsGenerator.*;
@@ -87,8 +81,14 @@ public class MarkdownDocsGenerator {
 
             /* process normal json-elements */
             if (value.isJsonObject()) {
-                sb.append(getIndent(level + 1)).append("**%s**".formatted(key)).append(System.lineSeparator())
-                        .append(getIndent(level + 1)).append(System.lineSeparator());
+                sb.append(getIndent(level + 1)).append("**%s**".formatted(key)).append(System.lineSeparator());
+
+                boolean isModule = value.getAsJsonObject().has("enable");
+                if (isModule) {
+                    sb.append(getIndent(level + 1)).append(" **(module)**").append(System.lineSeparator());
+                }
+
+                sb.append(getIndent(level + 1)).append(System.lineSeparator());
 
                 // note: skip walk
                 if (keys.contains(key + SKIP_WALK)) {
@@ -98,7 +98,7 @@ public class MarkdownDocsGenerator {
 
                 walk(sb, level + 1, (JsonObject) value);
             } else {
-                 if (keys.contains(key + FIELD_DOCUMENTATION)) {
+                if (keys.contains(key + FIELD_DOCUMENTATION)) {
                     // field documentation
                     String documentation = node.get(key + FIELD_DOCUMENTATION).getAsString();
                     sb.append(indent).append("<table><tr><td>").append(System.lineSeparator())

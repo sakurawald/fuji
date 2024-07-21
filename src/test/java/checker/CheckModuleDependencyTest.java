@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 @Slf4j
 public class CheckModuleDependencyTest {
 
-    public static final String COMMON = "common";
+    private static final String COMMON = "common";
     private static final Pattern importPattern = Pattern.compile("import\\s+(\\S+);");
     private static final Pattern staticImportPattern = Pattern.compile("import\\s+static\\s+(\\S+)\\.\\S+;");
     private static final Pattern moduleNamePattern = Pattern.compile("io\\.github\\.sakurawald\\.module\\.(?:initializer|mixin)\\.(\\S+)\\.\\S+;?");
@@ -80,6 +80,7 @@ public class CheckModuleDependencyTest {
         return moduleNameList.getFirst();
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean isRealModulePath(String moduleName) {
         JsonElement root = gson.toJsonTree(new ConfigModel());
         return JsonUtil.existsNode((JsonObject) root, "modules.%s.enable".formatted(moduleName));
