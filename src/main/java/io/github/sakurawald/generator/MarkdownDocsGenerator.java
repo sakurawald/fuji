@@ -16,8 +16,7 @@ public class MarkdownDocsGenerator {
     @Getter
     private static final MarkdownDocsGenerator instance = new MarkdownDocsGenerator();
 
-    private MarkdownDocsGenerator() {
-    }
+    private MarkdownDocsGenerator() {}
 
     private String toMarkdown(JsonObject root) {
         StringBuilder text = new StringBuilder();
