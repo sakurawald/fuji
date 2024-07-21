@@ -11,7 +11,6 @@ import net.kyori.adventure.text.Component;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import oshi.annotation.concurrent.Immutable;
 
 import java.util.List;
 
@@ -43,7 +42,7 @@ public abstract class PagedGui<T> extends LayeredGui {
         int slotIndex = 0;
         for (int i = getEntityBeginIndex(this.pageIndex); i < getEntityEndIndex(this.pageIndex); i++) {
             T entity = entities.get(i);
-            this.setSlot(slotIndex++, toGuiElement(entity));
+            this.setSlot(slotIndex++, toGuiElement(this, entity));
         }
 
         // page layer
@@ -90,23 +89,35 @@ public abstract class PagedGui<T> extends LayeredGui {
 
     private PagedGui<T> of(List<T> entities, int pageIndex) {
         PagedGui<T> that = this;
-        return new PagedGui<>(getPlayer(), this.title, entities, pageIndex) {
+        return new PagedGui<>(getPlayer(), that.title, entities, pageIndex) {
 
             @Override
-            public void onConstructor(PagedGui<T> parent) {
-                that.onConstructor(parent);
+            public void onConstructor(PagedGui<T> the) {
+                that.onConstructor(the);
             }
 
             @Override
-            public GuiElementInterface toGuiElement(T entity) {
-                return that.toGuiElement(entity);
+            public GuiElementInterface toGuiElement(PagedGui<T> the, T entity) {
+                return that.toGuiElement(this, entity);
             }
 
             @Override
             public List<T> filter(String keyword) {
                 return that.filter(keyword);
             }
+
+            /**
+             * used for dynamic binding of click-callback
+             */
+            @Override
+            public PagedGui<T> getThis() {
+                return this;
+            }
         };
+    }
+
+    public PagedGui<T> getThis() {
+        return this;
     }
 
     private void drawTitle() {
@@ -145,7 +156,7 @@ public abstract class PagedGui<T> extends LayeredGui {
 
     public abstract void onConstructor(PagedGui<T> parent);
 
-    public abstract GuiElementInterface toGuiElement(T entity);
+    public abstract GuiElementInterface toGuiElement(PagedGui<T> ref, T entity);
 
     public abstract List<T> filter(String keyword);
 }

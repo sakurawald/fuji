@@ -29,9 +29,9 @@ public class WorksGui extends PagedGui<Work> {
     }
 
     @Override
-    public void onConstructor(PagedGui<Work> parent) {
+    public void onConstructor(PagedGui<Work> the) {
         ServerPlayerEntity player = getPlayer();
-        List<Work> entities = parent.getEntities();
+        List<Work> entities = the.getEntities();
 
         Layer controlLayer = new Layer(1, 3);
         controlLayer.addSlot(GuiUtil.createAddButton(player)
@@ -58,8 +58,8 @@ public class WorksGui extends PagedGui<Work> {
             );
         }
 
-        // note: in this closure, it's important to call `parent.addLayer`, not `this.addLayer() or super.addLayer()`
-        parent.addLayer(controlLayer, 3, this.getHeight() - 1);
+        // note: in this closure, it's important to call `the.addLayer`, not `this.addLayer() or super.addLayer()`
+        the.addLayer(controlLayer, 3, the.getHeight() - 1);
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -68,7 +68,7 @@ public class WorksGui extends PagedGui<Work> {
     }
 
     @Override
-    public GuiElementInterface toGuiElement(Work entity) {
+    public GuiElementInterface toGuiElement(PagedGui<Work> the, Work entity) {
         ServerPlayerEntity player = getPlayer();
         return new GuiElementBuilder()
                 .setItem(entity.asItem())
@@ -80,7 +80,7 @@ public class WorksGui extends PagedGui<Work> {
                         RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(entity.level));
                         ServerWorld level = Fuji.SERVER.getWorld(worldKey);
                         player.teleport(level, entity.x, entity.y, entity.z, entity.yaw, entity.pitch);
-                        this.close();
+                        the.close();
                         return;
                     }
                     /* shift + right click -> specialized settings */
@@ -90,7 +90,7 @@ public class WorksGui extends PagedGui<Work> {
                             return;
                         }
                         entity.openSpecializedSettingsGui(player, gui);
-                        this.close();
+                        the.close();
                         return;
                     }
                     /* right click -> general settings */
@@ -101,14 +101,14 @@ public class WorksGui extends PagedGui<Work> {
                             return;
                         }
                         entity.openGeneralSettingsGui(player, gui);
-                        this.close();
+                        the.close();
                     }
                 }).build();
     }
 
     @Override
     public List<Work> filter(String keyword) {
-        return getEntities().stream().filter(w ->
+        return getThis().getEntities().stream().filter(w ->
                 w.creator.contains(keyword)
                         || w.name.contains(keyword)
                         || (w.introduction != null && w.introduction.contains(keyword))

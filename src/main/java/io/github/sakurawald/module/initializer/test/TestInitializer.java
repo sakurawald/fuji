@@ -80,6 +80,9 @@ public class TestInitializer extends ModuleInitializer {
         var source = ctx.getSource();
         ServerPlayerEntity player = source.getPlayer();
 
+        new GuiElementBuilder().setCallback(() -> {
+
+        });
 
 
         return 1;

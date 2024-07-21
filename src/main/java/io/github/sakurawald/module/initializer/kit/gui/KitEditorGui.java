@@ -95,7 +95,7 @@ public class KitEditorGui extends PagedGui<Kit> {
     }
 
     @Override
-    public GuiElementInterface toGuiElement(Kit entity) {
+    public GuiElementInterface toGuiElement(PagedGui<Kit> ref, Kit entity) {
         return new GuiElementBuilder().setItem(Items.CHEST)
                 .setName(Text.literal(entity.getName()))
                 .setCallback((event) -> {
