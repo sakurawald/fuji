@@ -9,6 +9,7 @@ import java.util.Set;
 
 import static io.github.sakurawald.generator.JsonDocsGenerator.*;
 
+@SuppressWarnings("StringBufferReplaceableByString")
 @Slf4j
 public class MarkdownDocsGenerator {
 
@@ -24,7 +25,11 @@ public class MarkdownDocsGenerator {
         return text.toString();
     }
 
-    private String translateDocumentation(String string, String indent) {
+    private String getIndent(int level) {
+        return ">".repeat(level) + " ";
+    }
+
+    private String makeDocumentation(String string, int level) {
         StringBuilder text = new StringBuilder();
 
         // drop first and last quote
@@ -36,6 +41,7 @@ public class MarkdownDocsGenerator {
 
         // add prefix indent
         String[] lines = string.split("\n");
+        String indent = getIndent(level);
         for (String line : lines) {
             text.append(indent).append(line).append(System.lineSeparator());
 
@@ -47,8 +53,9 @@ public class MarkdownDocsGenerator {
         return text.toString().trim();
     }
 
-    private String translateJsonPair(String key, JsonElement jsonElement, String indent) {
+    private String makeJsonPair(String key, JsonElement jsonElement, int level) {
         StringBuilder text = new StringBuilder();
+        String indent = getIndent(level);
         text.append(indent).append("```json").append(System.lineSeparator())
                 .append(indent).append("\"").append(key).append("\"").append(": ").append(jsonElement).append(System.lineSeparator())
                 .append(indent).append("```").append(System.lineSeparator())
@@ -56,8 +63,47 @@ public class MarkdownDocsGenerator {
         return text.toString();
     }
 
-    private String getIndent(int level) {
-        return ">".repeat(level) + " ";
+    private String makeBoxed(String string, int level) {
+        StringBuilder text = new StringBuilder();
+        String indent = getIndent(level);
+        // class documentation
+        text.append(indent).append("<table><tr><td>").append(System.lineSeparator())
+                .append(indent).append(System.lineSeparator())
+                .append(string)
+                .append(indent).append("</td></tr></table>").append(System.lineSeparator())
+                .append(indent).append(System.lineSeparator());
+
+        return text.toString();
+    }
+
+    private String makeDocumentedJsonPair(JsonObject node, String key, int level) {
+        String documentation = node.get(key + FIELD_DOCUMENTATION).getAsString();
+        String indent = getIndent(level);
+
+        StringBuilder text = new StringBuilder();
+        text.append(indent).append("<table><tr><td>").append(System.lineSeparator())
+                .append(indent).append(System.lineSeparator())
+                // require 2 lines to let the parser work
+                .append(makeDocumentation(documentation, level)).append(System.lineSeparator())
+                .append(indent).append(System.lineSeparator())
+                .append(indent).append(System.lineSeparator())
+                //
+                .append(makeJsonPair(key, node.get(key), level))
+
+                .append(indent).append("</td></tr></table>").append(System.lineSeparator());
+
+
+        return text.toString();
+    }
+
+    private void processJsonPair(StringBuilder text, JsonObject node, String key, int level) {
+        if (node.keySet().contains(key + FIELD_DOCUMENTATION)) {
+            // field documentation
+            text.append(makeDocumentedJsonPair(node, key, level));
+        } else {
+            // no documented field
+            text.append(makeJsonPair(key, node.get(key), level));
+        }
     }
 
     private void walk(StringBuilder sb, int level, JsonObject node) {
@@ -71,11 +117,7 @@ public class MarkdownDocsGenerator {
             if (key.endsWith(SKIP_WALK) || key.endsWith(FIELD_DOCUMENTATION)) continue;
             if (key.endsWith(CLASS_DOCUMENTATION)) {
                 // class documentation
-                sb.append(indent).append("<table><tr><td>").append(System.lineSeparator())
-                        .append(indent).append(System.lineSeparator())
-                        .append(translateDocumentation(value.toString(), indent)).append(System.lineSeparator())
-                        .append(indent).append("</td></tr></table>").append(System.lineSeparator());
-                sb.append(indent).append(System.lineSeparator());
+                sb.append(makeBoxed(makeDocumentation(value.toString(), level) + System.lineSeparator(), level));
                 continue;
             }
 
@@ -92,26 +134,13 @@ public class MarkdownDocsGenerator {
 
                 // note: skip walk
                 if (keys.contains(key + SKIP_WALK)) {
-                    sb.append(translateJsonPair(key, value, indent));
+                    processJsonPair(sb, node, key, level);
                     continue;
                 }
 
                 walk(sb, level + 1, (JsonObject) value);
             } else {
-                if (keys.contains(key + FIELD_DOCUMENTATION)) {
-                    // field documentation
-                    String documentation = node.get(key + FIELD_DOCUMENTATION).getAsString();
-                    sb.append(indent).append("<table><tr><td>").append(System.lineSeparator())
-                            .append(indent).append(System.lineSeparator())
-                            .append(translateDocumentation(documentation, indent)).append(System.lineSeparator())
-                            .append(indent).append(System.lineSeparator())
-                            .append(indent).append(System.lineSeparator())
-                            .append(translateJsonPair(key, value, indent))
-                            .append(indent).append("</td></tr></table>").append(System.lineSeparator());
-                } else {
-                    // no documented field
-                    sb.append(translateJsonPair(key, value, indent));
-                }
+                processJsonPair(sb, node, key, level);
             }
 
             // same level
