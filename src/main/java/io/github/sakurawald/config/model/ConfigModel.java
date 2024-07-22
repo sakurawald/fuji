@@ -756,7 +756,7 @@ public class ConfigModel {
             public boolean enable = false;
 
             @Documentation("The tab-name format when a player is afk")
-            public String format = "<gray>[AFK] <reset>%player:name_visual%";
+            public String format = "<gray>[AFK] %player:displayname_visual";
 
             @Documentation("The afk checker is a timer to check and mark the player's recently active time.")
             public AfkChecker afk_checker = new AfkChecker();
@@ -1388,6 +1388,7 @@ public class ConfigModel {
 
             public class Style {
                 public String header = "<#FFA1F5>PlayerList<newline>------%server:online%/%server:max_players%------";
+                public String body = "<rainbow> %player:displayname_visual%";
                 public String footer = "<#FFA1F5>-----------------<newline>TPS: %server:tps_colored% PING: %player:ping_colored%<newline><rainbow>Memory: %server:used_ram%/%server:max_ram% MB";
             }
         }

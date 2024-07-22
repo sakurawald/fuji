@@ -41,11 +41,9 @@ public abstract class ServerPlayerMixin implements AfkStateAccessor {
         AfkStateAccessor accessor = (AfkStateAccessor) player;
 
         if (accessor.fuji$isAfk()) {
-            cir.setReturnValue(Text.literal("afk " + player.getGameProfile().getName()));
             cir.setReturnValue(ofText(player, false, Configs.configHandler.model().modules.afk.format));
-        } else {
-            cir.setReturnValue(null);
         }
+
     }
 
 
