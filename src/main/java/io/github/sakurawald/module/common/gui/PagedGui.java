@@ -46,7 +46,7 @@ public abstract class PagedGui<T> extends LayeredGui {
         }
 
         // page layer
-        SingleLineLayer pageLayer = new SingleLineLayer(GuiUtil.Item.PLACEHOLDER);
+        SingleLineLayer pageLayer = new SingleLineLayer(GuiUtil.createPlaceholder());
         pageLayer.setSlot(0, GuiUtil.createPreviousPageButton(player).setCallback(() -> tryChangePage(pageIndex - 1)));
         pageLayer.setSlot(this.getWidth() - 1, GuiUtil.createPreviousPageButton(player).setCallback(() -> tryChangePage(pageIndex + 1)));
         pageLayer.setSlot(this.getWidth() - 2, GuiUtil.createSearchButton(player).setCallback(() -> new InputSignGui(player, null) {

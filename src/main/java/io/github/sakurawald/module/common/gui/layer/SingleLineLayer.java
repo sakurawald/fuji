@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.common.gui.layer;
 
+import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.layered.Layer;
 import io.github.sakurawald.util.GuiUtil;
 import net.minecraft.item.ItemStack;
@@ -10,10 +11,10 @@ public class SingleLineLayer extends Layer {
         super(1, 9);
     }
 
-    public SingleLineLayer(ItemStack itemStack) {
+    public SingleLineLayer(GuiElementInterface guiElementInterface) {
         this();
         for (int i = 0; i < this.getWidth(); i++) {
-            this.addSlot(itemStack);
+            this.setSlot(i, guiElementInterface);
         }
     }
 

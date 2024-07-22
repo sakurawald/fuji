@@ -1,6 +1,7 @@
 package io.github.sakurawald.util;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
+import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import lombok.experimental.UtilityClass;
 import net.minecraft.item.Item;
@@ -14,6 +15,12 @@ public class GuiUtil {
     public static class Item {
         public static final ItemStack PLACEHOLDER = Items.GRAY_STAINED_GLASS_PANE.getDefaultStack();
         public static final ItemStack EMPTY = Items.AIR.getDefaultStack();
+    }
+
+    public static GuiElementInterface createPlaceholder() {
+        return new GuiElementBuilder()
+                .setItem(Items.GRAY_STAINED_GLASS_PANE)
+                .hideTooltip().build();
     }
 
     public static GuiElementBuilder createPreviousPageButton(ServerPlayerEntity player) {
