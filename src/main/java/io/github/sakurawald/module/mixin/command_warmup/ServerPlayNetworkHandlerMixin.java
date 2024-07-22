@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.mixin.command_warmup;
 
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.structure.CommandWarmupTicket;
 import io.github.sakurawald.util.MessageUtil;
@@ -20,7 +19,7 @@ import java.util.Map;
 
 @Mixin(net.minecraft.server.network.ServerPlayNetworkHandler.class)
 @Slf4j
-public abstract class ServerPlayNetworkHandler {
+public abstract class ServerPlayNetworkHandlerMixin {
 
     @Shadow
     public abstract ServerPlayerEntity getPlayer();

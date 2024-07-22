@@ -66,6 +66,7 @@ dependencies {
 
     include(implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras_version}")))
     include(implementation "org.apache.commons:commons-compress:${project.apache_commons_compression_version}")
+    include(implementation 'org.apache.commons:commons-rng-simple:1.6')
     include(implementation "commons-io:commons-io:${project.apache_commons_io_version}")
     include(implementation "org.quartz-scheduler:quartz:${project.quartz_version}")
     include(implementation "org.reflections:reflections:${project.reflections_version}")

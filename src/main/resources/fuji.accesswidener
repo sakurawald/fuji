@@ -12,3 +12,5 @@ accessible field net/minecraft/server/MinecraftServer session Lnet/minecraft/wor
 accessible class net/minecraft/registry/RegistryLoader$Loader
 
 accessible method net/minecraft/server/network/ServerPlayNetworkHandler executeCommand (Ljava/lang/String;)V
+
+accessible class carpet/patches/EntityPlayerMPFake

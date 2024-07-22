@@ -38,7 +38,7 @@
     "command_spy.CommandsMixin",
     "command_toolbox.reply.MsgCommandMixin",
     "command_toolbox.seen.PlayerListMixin",
-    "command_warmup.ServerPlayNetworkHandler",
+    "command_warmup.ServerPlayNetworkHandlerMixin",
     "deathlog.ServerPlayerMixin",
     "disabler.chat_speed_disabler.ServerGamePacketListenerImplMixin",
     "disabler.max_player_disabler.DedicatedPlayerManagerMixin",
@@ -63,7 +63,9 @@
     "skin.PlayerListMixin",
     "skin.ServerLoginNetworkHandlerMixin",
     "system_message.ComponentMixin",
+    "tab_list.PlayerManagerMixin",
     "tab_list.ServerPlayerEntityMixin",
+    "tab_list.faker.ServerCommonNetworkHandlerMixin",
     "teleport_warmup.ServerPlayerMixin",
     "whitelist.UserWhiteListMixin",
     "works.HopperBlockEntityMixin"

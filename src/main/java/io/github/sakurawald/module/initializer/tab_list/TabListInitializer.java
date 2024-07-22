@@ -21,6 +21,8 @@ import javax.naming.OperationNotSupportedException;
 @Slf4j
 public class TabListInitializer extends ModuleInitializer {
 
+    public static final String META_SEPARATOR = "@";
+
     @Override
     public void onInitialize() {
         String cron = Configs.configHandler.model().modules.tab_list.update_cron;
