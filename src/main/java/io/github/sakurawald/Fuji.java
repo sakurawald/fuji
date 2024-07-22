@@ -30,7 +30,6 @@ import static io.github.sakurawald.module.ModuleManager.initializeModules;
 
 // TODO: tppos module
 // TODO: fix command alias
-// TODO: tab list name custom
 
 public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";
