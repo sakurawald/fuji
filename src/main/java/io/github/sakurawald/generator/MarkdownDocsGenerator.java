@@ -122,6 +122,12 @@ public class MarkdownDocsGenerator {
 
             /* process normal json-element */
             if (value.isJsonObject()) {
+                // note: skip walk
+                if (keys.contains(key + SKIP_WALK)) {
+                    processJsonPair(sb, node, key, level);
+                    continue;
+                }
+
                 // class documentation
                 sb.append(getIndent(level + 1)).append("**%s**".formatted(key)).append(System.lineSeparator());
                 boolean isModule = value.getAsJsonObject().has("enable");
@@ -130,11 +136,6 @@ public class MarkdownDocsGenerator {
                 }
                 sb.append(getIndent(level + 1)).append(System.lineSeparator());
 
-                // note: skip walk
-                if (keys.contains(key + SKIP_WALK)) {
-                    processJsonPair(sb, node, key, level);
-                    continue;
-                }
 
                 walk(sb, level + 1, (JsonObject) value);
             } else {
