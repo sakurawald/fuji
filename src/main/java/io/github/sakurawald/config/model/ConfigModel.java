@@ -827,6 +827,9 @@ public class ConfigModel {
                 - Player white-list message
                 - ... (and more other system messages)
                         
+                Note:
+                - Some messages in `en_us.json` are only used in the client-side, so you may more interested in keys that start with `multiplayer.`
+                
                 """)
         public class SystemMessage {
             public boolean enable = false;
@@ -835,9 +838,11 @@ public class ConfigModel {
             public Map<String, String> key2value = new HashMap<>() {
                 {
                     this.put("multiplayer.player.joined", "<rainbow>+ %s");
+                    this.put("multiplayer.player.left", "<dark_gray>%s leeeeeeeeft the game");
                     this.put("commands.seed.success", "<rainbow> Seeeeeeeeeeed: %s");
                     this.put("multiplayer.disconnect.not_whitelisted", "<rainbow>Please apply a whitelist first!");
                     this.put("death.attack.explosion.player", "<rainbow>%1$s booooooom because of %2$s");
+                    this.put("multiplayer.disconnect.server_shutdown", "Server closeeeeeeeed");
                 }
             };
 
