@@ -93,51 +93,55 @@ public class ConfigModel {
             e.t. the `placeholder module` can provides some placeholders for `chat module`, `motd module` and other modules to use.
             """)
     public class Modules {
+        public Config config = new Config();
+        public Language language = new Language();
+        public Chat chat = new Chat();
+        public Placeholder placeholder = new Placeholder();
+        public MOTD motd = new MOTD();
+        public TabList tab_list = new TabList();
+        public Tpa tpa = new Tpa();
+        public Back back = new Back();
+        public Home home = new Home();
+        public Pvp pvp = new Pvp();
+        public Afk afk = new Afk();
+        public Works works = new Works();
+        public DeathLog deathlog = new DeathLog();
+        public Functional functional = new Functional();
+        public SystemMessage system_message = new SystemMessage();
+        public Scheduler scheduler = new Scheduler();
+        public CommandPermission command_permission = new CommandPermission();
+        public CommandRewrite command_rewrite = new CommandRewrite();
+        public CommandAlias command_alias = new CommandAlias();
+        public CommandInteractive command_interactive = new CommandInteractive();
+        public CommandWarmup command_warmup = new CommandWarmup();
+        public CommandCooldown command_cooldown = new CommandCooldown();
+        public CommandToolbox command_toolbox = new CommandToolbox();
+        public CommandSpy command_spy = new CommandSpy();
         public ResourceWorld resource_world = new ResourceWorld();
         public NewbieWelcome newbie_welcome = new NewbieWelcome();
         public TeleportWarmup teleport_warmup = new TeleportWarmup();
-        public MOTD motd = new MOTD();
-        public CommandCooldown command_cooldown = new CommandCooldown();
         public TopChunks top_chunks = new TopChunks();
-        public Chat chat = new Chat();
         public Skin skin = new Skin();
-        public Back back = new Back();
-        public Tpa tpa = new Tpa();
-        public Works works = new Works();
         public WorldDownloader world_downloader = new WorldDownloader();
-        public DeathLog deathlog = new DeathLog();
-        public Placeholder placeholder = new Placeholder();
         public MultiObsidianPlatform multi_obsidian_platform = new MultiObsidianPlatform();
         public OpProtect op_protect = new OpProtect();
-        public Pvp pvp = new Pvp();
         public Whitelist whitelist = new Whitelist();
-        public CommandPermission command_permission = new CommandPermission();
         public Head head = new Head();
         public Profiler profiler = new Profiler();
-        public CommandSpy command_spy = new CommandSpy();
-        public Scheduler scheduler = new Scheduler();
-        public Config config = new Config();
         public Test test = new Test();
-        public Language language = new Language();
-        public Afk afk = new Afk();
-        public CommandInteractive command_interactive = new CommandInteractive();
-        public Home home = new Home();
-        public SystemMessage system_message = new SystemMessage();
         public Sit sit = new Sit();
-        public CommandAlias command_alias = new CommandAlias();
-        public CommandRewrite command_rewrite = new CommandRewrite();
         public World world = new World();
         public Multiplier multiplier = new Multiplier();
-        public CommandWarmup command_warmup = new CommandWarmup();
         public Disabler disabler = new Disabler();
         public AntiBuild anti_build = new AntiBuild();
         public Nickname nickname = new Nickname();
         public Color color = new Color();
-        public Functional functional = new Functional();
-        public Carpet carpet = new Carpet();
-        public CommandToolbox command_toolbox = new CommandToolbox();
-        public TabList tab_list = new TabList();
         public Kit kit = new Kit();
+        public Carpet carpet = new Carpet();
+        @Documentation("""
+                This module allows the `server` to execute commands after an `event` occurs.
+                """)
+        public CommandEvent command_event = new CommandEvent();
 
         @Documentation("""
                 This module adds another 3 worlds called `resource world`: resource_overworld, resource_nether, resource_the_end .
@@ -281,23 +285,14 @@ public class ConfigModel {
 
 
             public Top top = new Top();
-
-            @Documentation("The `top chunks` to show in `/chunks` command")
-            public class Top {
-                public int rows = 10;
-                public int columns = 10;
-            }
-
             @Documentation("For a chunk, how much the radius used to search `the nearest player` around the chunk.")
             public int nearest_distance = 128;
-
             @Documentation("""
                     Should we hide the chunk-position for a laggy-chunk?
                                         
                     Hide chunk location to avoid grief or privacy purpose. 
                     """)
             public boolean hide_location = true;
-
             @Documentation("""
                     The dict to define how laggy a type(entity/entity_block) should be.
                                 
@@ -367,6 +362,12 @@ public class ConfigModel {
                     this.put("entity.minecraft.hopper_minecart", 20);
                 }
             };
+
+            @Documentation("The `top chunks` to show in `/chunks` command")
+            public class Top {
+                public int rows = 10;
+                public int columns = 10;
+            }
         }
 
         @Documentation("""
@@ -412,7 +413,7 @@ public class ConfigModel {
             public MentionPlayer mention_player = new MentionPlayer();
             public History history = new History();
             public Display display = new Display();
-            public Pattern pattern = new Pattern();
+            public Rewrite rewrite = new Rewrite();
 
             @Documentation("""
                     New joined players can see the historical chat messages.
@@ -453,8 +454,8 @@ public class ConfigModel {
                                         
                     You can use `regex language` to transform player's chat input (only chat message, no command usage).
                     """)
-            public class Pattern {
-                public List<RegexEntry> list = new ArrayList<>() {
+            public class Rewrite {
+                public List<RegexEntry> regex = new ArrayList<>() {
                     {
                         this.add(new RegexEntry("^BV(\\w{10})", "<underline><blue><hover:show_text:'$1'><click:open_url:'https://www.bilibili.com/video/BV$1'>bilibili $1</click></hover></blue></underline>"));
                         this.add(new RegexEntry("(?<=^|\\s)item(?=\\s|$)", "%fuji:item%"));
@@ -863,9 +864,9 @@ public class ConfigModel {
                                 
                 An alias means we redirect a command-node into another command-node.
                 The requirement of comamnd-node is extended.
-                
+                                
                 The format is: `source command node path` and `destination command node path`
-                
+                                
                 """)
         public class CommandAlias {
             public boolean enable = false;
@@ -947,7 +948,7 @@ public class ConfigModel {
                                 
                 Use `/lp user <player> permission set fuji.anti_build.place_block.bypass.minecraft:tnt` to 
                 allow a player place the tnt.
-                
+                                
                 Tips:
                 - To query `blcok identifier`, use `/setblock ~ ~ ~ ...` command.
                 - To query `entity identifier`, use `/summon ...` command.
@@ -1011,11 +1012,11 @@ public class ConfigModel {
 
         @Documentation("""
                 This module provides `/nickname` command.
-                
+                                
                 Tips:
                 - You can query real name using `realname module`
                 - To show the `nickname`, you need to use `%player:displayname%` or `%player:displayname_visual%` placeholders.
-                
+                                
                 """)
         public class Nickname {
             public boolean enable = false;
@@ -1023,10 +1024,10 @@ public class ConfigModel {
 
         @Documentation("""
                 This module provides colorize for: sign, anvil
-                
+                                
                 Tips:
                 - You can use `mini-message language` to define complex message format. (See more in `chat module`)
-                
+                                
                 """)
         public class Color {
             public boolean enable = false;
@@ -1047,7 +1048,7 @@ public class ConfigModel {
 
         @Documentation("""
                 This module provides commands to open `remote functional blocks`.
-                
+                                
                 Functional blocks:
                 - /workbench 
                 - /enchantment
@@ -1058,7 +1059,7 @@ public class ConfigModel {
                 - /enderchest
                 - /smithing
                 - /loom
-                
+                                
                 """)
         public class Functional {
             public boolean enable = false;
@@ -1237,6 +1238,7 @@ public class ConfigModel {
             public SendActionBar send_actionbar = new SendActionBar();
             public ForEach for_each = new ForEach();
             public Shell shell = new Shell();
+            public TrashCan trashcan = new TrashCan();
 
             @Documentation("This module provides `/bed` command, which teleports the player to his bed.")
             public class Bed {
@@ -1313,7 +1315,7 @@ public class ConfigModel {
 
             @Documentation("""
                     This module provides `/top` command.
-                    
+                                        
                     Go up to the ground conveniently !
                     """)
             public class Top {
@@ -1343,11 +1345,11 @@ public class ConfigModel {
 
             @Documentation("""
                     This module provides `/foreach` command.
-                    
+                                        
                     If a command is only targeted for `single player`, you can use `foreach` to apply it for `all players`
-                    
+                                        
                     Example 1: `/foreach say hello %player:name%`
-                    
+                                        
                     """)
             public class ForEach {
                 public boolean enable = true;
@@ -1355,22 +1357,20 @@ public class ConfigModel {
 
             @Documentation("""
                     This module provides `/shell` command, which executes `command line` in your `host shell`.
-                    
+                                        
                     This module is a powerful and **`dangerous`** module, **not recommended to enable it**.
-                    
+                                        
                     Exmaple 1: `/shell touch %player:name%.dangerous` (Create a file using placeholder)
-                    
+                                        
                     Exmaple 2: `/shell emacs` (Execute a program in the host os)
-                    
+                                        
                     Example 3: `/shell ...` (Possible to download a virus from Internet and execute it!)
-                    
+                                        
                     """)
             public class Shell {
                 public String enable_warning = "ENABLE THIS MODULE IS POTENTIAL TO HARM YOUR COMPUTER! YOU NEED TO CHANGE THIS FIELD INTO `CONFIRM` TO ENABLE THIS MODULE";
                 public boolean enable = false;
             }
-
-            public TrashCan trashcan = new TrashCan();
 
             @Documentation("Command: /trashcan")
             public class TrashCan {
@@ -1394,26 +1394,31 @@ public class ConfigModel {
         }
 
         @Documentation("""
-                
+                                
                 Command: /kit
-                
+                                
                 """)
         public class Kit {
             public boolean enable = false;
         }
 
-        @Documentation("""
-                This module allows the `server` to execute commands after an `event` occurs.
-                """)
-        public CommandEvent command_event = new CommandEvent();
         public class CommandEvent {
 
             public boolean enable = false;
 
             public Event event = new Event();
+
             public class Event {
 
                 public OnPlayerDeath on_player_death = new OnPlayerDeath();
+                public AfterPlayerBreakBlock after_player_break_block = new AfterPlayerBreakBlock();
+                public AfterPlayerPlaceBlock after_player_place_block = new AfterPlayerPlaceBlock();
+                public AfterPlayerRespawn after_player_respawn = new AfterPlayerRespawn();
+                public AfterPlayerChangeWorld after_player_change_world = new AfterPlayerChangeWorld();
+                public OnPlayerFirstJoined on_player_first_joined = new OnPlayerFirstJoined();
+                public OnPlayerJoined on_player_joined = new OnPlayerJoined();
+                public OnPlayerLeft on_player_left = new OnPlayerLeft();
+
                 public class OnPlayerDeath {
                     public List<String> command_list = new ArrayList<>() {
                         {
@@ -1422,7 +1427,6 @@ public class ConfigModel {
                     };
                 }
 
-                public AfterPlayerBreakBlock after_player_break_block = new AfterPlayerBreakBlock();
                 public class AfterPlayerBreakBlock {
                     public List<String> command_list = new ArrayList<>() {
                         {
@@ -1431,7 +1435,6 @@ public class ConfigModel {
                     };
                 }
 
-                public AfterPlayerPlaceBlock after_player_place_block = new AfterPlayerPlaceBlock();
                 public class AfterPlayerPlaceBlock {
                     public List<String> command_list = new ArrayList<>() {
                         {
@@ -1440,7 +1443,6 @@ public class ConfigModel {
                     };
                 }
 
-                public AfterPlayerRespawn after_player_respawn = new AfterPlayerRespawn();
                 public class AfterPlayerRespawn {
                     public List<String> command_list = new ArrayList<>() {
                         {
@@ -1449,7 +1451,6 @@ public class ConfigModel {
                     };
                 }
 
-                public AfterPlayerChangeWorld after_player_change_world = new AfterPlayerChangeWorld();
                 public class AfterPlayerChangeWorld {
                     public List<String> command_list = new ArrayList<>() {
                         {
@@ -1458,7 +1459,6 @@ public class ConfigModel {
                     };
                 }
 
-                public OnPlayerFirstJoined on_player_first_joined = new OnPlayerFirstJoined();
                 public class OnPlayerFirstJoined {
                     public List<String> command_list = new ArrayList<>() {
                         {
@@ -1467,7 +1467,6 @@ public class ConfigModel {
                     };
                 }
 
-                public OnPlayerJoined on_player_joined = new OnPlayerJoined();
                 public class OnPlayerJoined {
                     public List<String> command_list = new ArrayList<>() {
                         {
@@ -1476,7 +1475,6 @@ public class ConfigModel {
                     };
                 }
 
-                public OnPlayerLeft on_player_left = new OnPlayerLeft();
                 public class OnPlayerLeft {
                     public List<String> command_list = new ArrayList<>() {
                         {

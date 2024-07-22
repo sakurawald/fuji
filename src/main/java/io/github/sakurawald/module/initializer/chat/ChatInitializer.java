@@ -83,7 +83,7 @@ public class ChatInitializer extends ModuleInitializer {
     private void compilePatterns() {
         patterns = new HashMap<>();
 
-        for (RegexEntry regexEntry : Configs.configHandler.model().modules.chat.pattern.list) {
+        for (RegexEntry regexEntry : Configs.configHandler.model().modules.chat.rewrite.regex) {
             patterns.put(Pattern.compile(regexEntry.regex), regexEntry.replacement);
         }
 

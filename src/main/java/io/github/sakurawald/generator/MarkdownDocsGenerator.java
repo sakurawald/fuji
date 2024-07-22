@@ -112,7 +112,7 @@ public class MarkdownDocsGenerator {
         for (String key : keys) {
             JsonElement value = node.get(key);
 
-            /* process meta json-elements */
+            /* process meta json-element */
             if (key.endsWith(SKIP_WALK) || key.endsWith(FIELD_DOCUMENTATION)) continue;
             if (key.endsWith(CLASS_DOCUMENTATION)) {
                 // class documentation
@@ -120,25 +120,25 @@ public class MarkdownDocsGenerator {
                 continue;
             }
 
-            /* process normal json-elements */
+            /* process normal json-element */
             if (value.isJsonObject()) {
+                // class documentation
                 sb.append(getIndent(level + 1)).append("**%s**".formatted(key)).append(System.lineSeparator());
-
                 boolean isModule = value.getAsJsonObject().has("enable");
                 if (isModule) {
                     sb.append(getIndent(level + 1)).append(" `module`").append(System.lineSeparator());
                 }
-
                 sb.append(getIndent(level + 1)).append(System.lineSeparator());
 
                 // note: skip walk
                 if (keys.contains(key + SKIP_WALK)) {
-                    processJsonPair(sb, node, key, level);
+                    processJsonPair(sb, node, key, level + 1);
                     continue;
                 }
 
                 walk(sb, level + 1, (JsonObject) value);
             } else {
+                // field documentation
                 processJsonPair(sb, node, key, level);
             }
 
