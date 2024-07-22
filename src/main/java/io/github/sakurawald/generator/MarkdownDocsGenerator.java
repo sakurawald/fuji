@@ -132,7 +132,7 @@ public class MarkdownDocsGenerator {
 
                 // note: skip walk
                 if (keys.contains(key + SKIP_WALK)) {
-                    processJsonPair(sb, node, key, level + 1);
+                    processJsonPair(sb, node, key, level);
                     continue;
                 }
 
