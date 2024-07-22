@@ -79,32 +79,34 @@ public class JsonDocsGenerator {
                             }
                         }
                         root.add(fieldName, jsonArray);
-                    } else {
-                        if (Map.class.isAssignableFrom(field.getType())) {
-                            root.addProperty(fieldName + SKIP_WALK, "map type");
-                            JsonObject jsonObject = new JsonObject();
-                            Map<?, ?> map = (Map<?, ?>) value;
-                            for (Map.Entry<?, ?> entry : map.entrySet()) {
-                                String mapKey = entry.getKey().toString();
-                                Object mapValue = entry.getValue();
-                                jsonObject.add(mapKey, gson.toJsonTree(mapValue));
-                            }
-                            root.add(fieldName, jsonObject);
-                        } else if (Set.class.isAssignableFrom(field.getType())) {
-                            root.addProperty(fieldName + SKIP_WALK, "set type");
-                            JsonArray jsonArray = new JsonArray();
-                            Set<?> set = (Set<?>) value;
-                            for (Object elt : set) {
-                                jsonArray.add(gson.toJsonTree(elt));
-                            }
-                            root.add(fieldName, jsonArray);
-                        } else {
-                            JsonObject jsonObject = new JsonObject();
-                            walk(value, jsonObject);
-                            root.add(fieldName, jsonObject);
+                    } else if (Map.class.isAssignableFrom(field.getType())) {
+                        root.addProperty(fieldName + SKIP_WALK, "map type");
+                        JsonObject jsonObject = new JsonObject();
+                        Map<?, ?> map = (Map<?, ?>) value;
+                        for (Map.Entry<?, ?> entry : map.entrySet()) {
+                            String mapKey = entry.getKey().toString();
+                            Object mapValue = entry.getValue();
+                            jsonObject.add(mapKey, gson.toJsonTree(mapValue));
                         }
+                        root.add(fieldName, jsonObject);
+                    } else if (Set.class.isAssignableFrom(field.getType())) {
+                        root.addProperty(fieldName + SKIP_WALK, "set type");
+                        JsonArray jsonArray = new JsonArray();
+                        Set<?> set = (Set<?>) value;
+                        for (Object elt : set) {
+                            jsonArray.add(gson.toJsonTree(elt));
+                        }
+                        root.add(fieldName, jsonArray);
+                    } else if (field.getType().getName().startsWith("com.mojang")) {
+                        root.addProperty(fieldName + SKIP_WALK, "mojang type");
+                        root.add(fieldName, gson.toJsonTree(value));
+                    } else {
+                        JsonObject jsonObject = new JsonObject();
+                        walk(value, jsonObject);
+                        root.add(fieldName, jsonObject);
                     }
                 }
+
 
             } catch (IllegalAccessException e) {
                 Fuji.LOGGER.warn("failed to get the value of a field, {}", e.toString());
