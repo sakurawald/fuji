@@ -21,9 +21,8 @@ import static io.github.sakurawald.module.ModuleManager.initializeModules;
 // TODO: rank module (track, requirement)
 // TODO: spawn module (facility)
 // TODO: hologram module (facility)
-// TODO: invsee module
+// TODO: invsee module (slot, inv-redirect)
 // TODO: powertool module
-// TODO: command events module
 
 // TODO: a lisp-like DSL (parser and code-walker) for command with context and placeholders (%fuji:play_time_total% / nbt)
 // TODO: refactor command facility (selector, aop, options, parser)

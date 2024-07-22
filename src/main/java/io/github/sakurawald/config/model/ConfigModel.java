@@ -1402,5 +1402,90 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
+        @Documentation("""
+                This module allows the `server` to execute commands after an `event` occurs.
+                """)
+        public CommandEvent command_event = new CommandEvent();
+        public class CommandEvent {
+
+            public boolean enable = false;
+
+            public Event event = new Event();
+            public class Event {
+
+                public OnPlayerDeath on_player_death = new OnPlayerDeath();
+                public class OnPlayerDeath {
+                    public List<String> command_list = new ArrayList<>() {
+                        {
+                            this.add("sendmessage %player:name% you just die.");
+                        }
+                    };
+                }
+
+                public AfterPlayerBreakBlock after_player_break_block = new AfterPlayerBreakBlock();
+                public class AfterPlayerBreakBlock {
+                    public List<String> command_list = new ArrayList<>() {
+                        {
+                            this.add("sendmessage %player:name% you just break a block.");
+                        }
+                    };
+                }
+
+                public AfterPlayerPlaceBlock after_player_place_block = new AfterPlayerPlaceBlock();
+                public class AfterPlayerPlaceBlock {
+                    public List<String> command_list = new ArrayList<>() {
+                        {
+                            this.add("sendmessage %player:name% you just place a block.");
+                        }
+                    };
+                }
+
+                public AfterPlayerRespawn after_player_respawn = new AfterPlayerRespawn();
+                public class AfterPlayerRespawn {
+                    public List<String> command_list = new ArrayList<>() {
+                        {
+                            this.add("give %player:name% minecraft:apple 8");
+                        }
+                    };
+                }
+
+                public AfterPlayerChangeWorld after_player_change_world = new AfterPlayerChangeWorld();
+                public class AfterPlayerChangeWorld {
+                    public List<String> command_list = new ArrayList<>() {
+                        {
+                            this.add("sendmessage %player:name% You are in %world:id% now!");
+                        }
+                    };
+                }
+
+                public OnPlayerFirstJoined on_player_first_joined = new OnPlayerFirstJoined();
+                public class OnPlayerFirstJoined {
+                    public List<String> command_list = new ArrayList<>() {
+                        {
+                            this.add("sendbroadcast <rainbow>welcome new player %player:name% to join us!");
+                        }
+                    };
+                }
+
+                public OnPlayerJoined on_player_joined = new OnPlayerJoined();
+                public class OnPlayerJoined {
+                    public List<String> command_list = new ArrayList<>() {
+                        {
+                            this.add("sendmessage %player:name% welcome to the server.");
+                        }
+                    };
+                }
+
+                public OnPlayerLeft on_player_left = new OnPlayerLeft();
+                public class OnPlayerLeft {
+                    public List<String> command_list = new ArrayList<>() {
+                        {
+                            this.add("sendbroadcast %player:name% left the server.");
+                        }
+                    };
+                }
+            }
+        }
+
     }
 }

@@ -29,6 +29,6 @@ public class ScheduleJob {
         }
 
         List<String> commands = this.commands_list.get(new Random().nextInt(this.commands_list.size()));
-        CommandExecuter.executeCommandsWithContext(Fuji.SERVER, commands);
+        CommandExecuter.executeCommandsAsConsoleWithContext(null, commands);
     }
 }

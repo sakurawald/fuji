@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.common.structure;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import eu.pb4.placeholders.api.PlaceholderContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +15,7 @@ import java.util.List;
 @Slf4j
 public class CommandExecuter {
 
-    public static void executeCommandsWithContext(MinecraftServer server, List<String> commands) {
+    public static void executeCommandsAsConsoleWithContext(ServerPlayerEntity contextPlayer, List<String> commands) {
         /* context
         *
         * !as_console
@@ -27,16 +28,18 @@ public class CommandExecuter {
 
         /* resolve */
         for (String command : commands) {
-            executeCommandAsConsole(null, command);
+            executeCommandAsConsole(contextPlayer, command);
         }
     }
 
-    public static void executeCommandAsConsole(ServerPlayerEntity player, String command) {
+    public static void executeCommandAsConsole(ServerPlayerEntity contextPlayer, String command) {
         MinecraftServer server = Fuji.SERVER;
         try {
             // parse placeholders
-            if (player != null) {
-                command = MessageUtil.ofString(player,command);
+            if (contextPlayer != null) {
+                command = MessageUtil.ofString(contextPlayer,command);
+            } else {
+                command = MessageUtil.ofString(Fuji.SERVER,command);
             }
 
             server.getCommandManager().getDispatcher().execute(command, server.getCommandSource());
