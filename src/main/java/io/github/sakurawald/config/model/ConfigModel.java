@@ -120,6 +120,7 @@ public class ConfigModel {
         public ResourceWorld resource_world = new ResourceWorld();
         public NewbieWelcome newbie_welcome = new NewbieWelcome();
         public TeleportWarmup teleport_warmup = new TeleportWarmup();
+        public CommandEvent command_event = new CommandEvent();
         public TopChunks top_chunks = new TopChunks();
         public Skin skin = new Skin();
         public WorldDownloader world_downloader = new WorldDownloader();
@@ -138,10 +139,6 @@ public class ConfigModel {
         public Color color = new Color();
         public Kit kit = new Kit();
         public Carpet carpet = new Carpet();
-        @Documentation("""
-                This module allows the `server` to execute commands after an `event` occurs.
-                """)
-        public CommandEvent command_event = new CommandEvent();
 
         @Documentation("""
                 This module adds another 3 worlds called `resource world`: resource_overworld, resource_nether, resource_the_end .
@@ -1383,7 +1380,7 @@ public class ConfigModel {
                 """)
         public class TabList {
             public boolean enable = false;
-            public int update_tick = 20;
+            public String update_cron = "* * * ? * *";
             public Style style = new Style();
 
             public class Style {
@@ -1402,6 +1399,9 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
+        @Documentation("""
+                This module allows the `server` to execute commands after an `event` occurs.
+                """)
         public class CommandEvent {
 
             public boolean enable = false;

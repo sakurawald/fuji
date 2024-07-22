@@ -12,6 +12,7 @@ import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.GroupMatcher;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
@@ -36,12 +37,15 @@ public class ScheduleUtil {
         resetScheduler();
     }
 
-    public static void addJob(Class<? extends Job> jobClass, String jobName, String jobGroup, String cron, JobDataMap jobDataMap) {
+    public static void addJob(Class<? extends Job> jobClass, @Nullable String jobName, @Nullable String jobGroup, String cron, @Nullable JobDataMap jobDataMap) {
         if (jobName == null) {
             jobName = UUID.randomUUID().toString();
         }
         if (jobGroup == null) {
             jobGroup = jobClass.getName();
+        }
+        if (jobDataMap == null) {
+            jobDataMap = new JobDataMap();
         }
         LOGGER.debug("addJob() -> jobClass: {}, jobName: {}, jobGroup: {}, cron: {}, jobDataMap: {}", jobClass, jobName, jobGroup, cron, jobDataMap);
 
@@ -54,12 +58,15 @@ public class ScheduleUtil {
         }
     }
 
-    public static void addJob(Class<? extends Job> jobClass, String jobName, String jobGroup, int intervalMs, int repeatCount, JobDataMap jobDataMap) {
+    public static void addJob(Class<? extends Job> jobClass, @Nullable String jobName, @Nullable String jobGroup, int intervalMs, int repeatCount, @Nullable JobDataMap jobDataMap) {
         if (jobName == null) {
             jobName = UUID.randomUUID().toString();
         }
         if (jobGroup == null) {
             jobGroup = jobClass.getName();
+        }
+        if (jobDataMap == null) {
+            jobDataMap = new JobDataMap();
         }
         LOGGER.debug("addJob() -> jobClass: {}, jobName: {}, jobGroup: {}, intervalMs: {}, repeatCount: {}, jobDataMap: {}", jobClass, jobName, jobGroup, intervalMs, repeatCount, jobDataMap);
 

@@ -5,19 +5,26 @@ import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.MessageUtil;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import io.github.sakurawald.util.ScheduleUtil;
+import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.Component;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.quartz.Job;
+import org.quartz.JobDataMap;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
 import javax.naming.OperationNotSupportedException;
 
+@Slf4j
 public class TabListInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        ServerTickEvents.START_SERVER_TICK.register(this::render);
+        String cron = Configs.configHandler.model().modules.tab_list.update_cron;
+        ScheduleUtil.addJob(SyncTabListJob.class, null, null, cron, null);
     }
 
     @Override
@@ -32,17 +39,22 @@ public class TabListInitializer extends ModuleInitializer {
         }
     }
 
-
-    public void render(MinecraftServer server) {
+    private static void render(MinecraftServer server) {
         ConfigModel.Modules.TabList config = Configs.configHandler.model().modules.tab_list;
-        if (server.getTicks() % config.update_tick != 0) return;
 
         String headerControl = config.style.header;
         String footerControl = config.style.footer;
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             Component header = MessageUtil.ofComponent(player, false, headerControl);
             Component footer = MessageUtil.ofComponent(player, false, footerControl);
-            player.sendPlayerListHeaderAndFooter(header,footer);
+            player.sendPlayerListHeaderAndFooter(header, footer);
+        }
+    }
+
+    public static class SyncTabListJob implements Job {
+        @Override
+        public void execute(JobExecutionContext context) throws JobExecutionException {
+            render(Fuji.SERVER);
         }
     }
 }
