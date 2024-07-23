@@ -7,6 +7,7 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.ScheduleUtil;
 import lombok.extern.slf4j.Slf4j;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.kyori.adventure.text.Component;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.MinecraftServer;
@@ -23,7 +24,9 @@ public class TabListInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {
         String cron = Configs.configHandler.model().modules.tab_list.update_cron;
-        ScheduleUtil.addJob(SyncTabListJob.class, null, null, cron, null);
+        ServerLifecycleEvents.SERVER_STARTED.register((server -> {
+            ScheduleUtil.addJob(RenderHeaderAndFooterJob.class, null, null, cron, null);
+        }));
     }
 
     @Override
@@ -38,23 +41,21 @@ public class TabListInitializer extends ModuleInitializer {
         }
     }
 
+    public static class RenderHeaderAndFooterJob implements Job {
+        @Override
+        public void execute(JobExecutionContext context) throws JobExecutionException {
+            render(Fuji.SERVER);
+        }
+    }
+
     private static void render(MinecraftServer server) {
         ConfigModel.Modules.TabList config = Configs.configHandler.model().modules.tab_list;
-
         String headerControl = config.style.header;
         String footerControl = config.style.footer;
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             Component header = MessageUtil.ofComponent(player, false, headerControl);
             Component footer = MessageUtil.ofComponent(player, false, footerControl);
             player.sendPlayerListHeaderAndFooter(header, footer);
-        }
-
-    }
-
-    public static class SyncTabListJob implements Job {
-        @Override
-        public void execute(JobExecutionContext context) throws JobExecutionException {
-            render(Fuji.SERVER);
         }
     }
 

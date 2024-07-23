@@ -39,15 +39,10 @@ public abstract class ServerPlayerMixin implements AfkStateAccessor {
     @ModifyReturnValue(method = "getPlayerListName", at = @At("RETURN"))
     public Text $getPlayerListName(Text original) {
         AfkStateAccessor accessor = (AfkStateAccessor) player;
-
-        Fuji.LOGGER.warn("{} -> getPlayerListName = {}", "afk module", original);
-
         if (accessor.fuji$isAfk()) {
            return ofText(player, false, Configs.configHandler.model().modules.afk.format);
-//            server.getPlayerManager().sendToAll(Pa);
         }
 
-//        cir.setReturnValue(Text.literal("AFK !"));
         return original;
     }
 

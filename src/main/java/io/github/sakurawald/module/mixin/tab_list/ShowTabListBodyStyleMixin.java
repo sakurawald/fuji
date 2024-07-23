@@ -20,8 +20,6 @@ public abstract class ShowTabListBodyStyleMixin {
 
     @ModifyReturnValue(method = "getPlayerListName", at = @At("RETURN"))
     Text modifyPlayerListName(Text original) {
-        log.warn("{} -> getPlayerListName = {}", "tablist module", original);
-
         // respect other's modification.
         if (original == null) {
             return ofText(player, false, Configs.configHandler.model().modules.tab_list.style.body);

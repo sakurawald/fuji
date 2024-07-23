@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static io.github.sakurawald.util.MessageUtil.ofText;
@@ -38,8 +39,6 @@ public abstract class OverrideTabListNameMixin {
      */
     @ModifyReturnValue(method = "getPlayerListName", at = @At("RETURN"))
     Text modifyPlayerListName(Text original) {
-        log.warn("{} -> getPlayerListName: player = {}, original = {}", "tablist.sort module", player, original);
-
         MinecraftServer server = Fuji.SERVER;
         String name = player.getGameProfile().getName();
 

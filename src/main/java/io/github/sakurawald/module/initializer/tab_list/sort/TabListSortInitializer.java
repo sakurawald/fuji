@@ -88,7 +88,6 @@ public class TabListSortInitializer extends ModuleInitializer {
         int index = (maxIndex) - weight;
         index = Math.min(maxIndex, index);
 
-
         // the "zzzz" string is used to force the dummy player listed in the last of `command suggestion`
         String prefix = "zzzz" + AlphaTable.TABLE[index];
         String playerName = player.getGameProfile().getName();
