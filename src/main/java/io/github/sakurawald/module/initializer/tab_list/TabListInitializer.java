@@ -5,6 +5,7 @@ import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.RandomUtil;
 import io.github.sakurawald.util.ScheduleUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -48,8 +49,8 @@ public class TabListInitializer extends ModuleInitializer {
 
     private static void render(MinecraftServer server) {
         ConfigModel.Modules.TabList config = Configs.configHandler.model().modules.tab_list;
-        String headerControl = config.style.header;
-        String footerControl = config.style.footer;
+        String headerControl = RandomUtil.drawList(config.style.header);
+        String footerControl = RandomUtil.drawList(config.style.footer);
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             Component header = MessageUtil.ofComponent(player, false, headerControl);
             Component footer = MessageUtil.ofComponent(player, false, footerControl);

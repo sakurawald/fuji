@@ -49,6 +49,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.RandomUtils;
 
 import java.util.*;
 
@@ -98,7 +99,6 @@ public class TestInitializer extends ModuleInitializer {
         ServerPlayerEntity player = source.getPlayer();
         MinecraftServer server = player.server;
         PlayerManager playerManager = server.getPlayerManager();
-
 
         Random random = new Random();
         ServerPlayerEntity serverPlayerEntity = TabListSortInitializer.makeServerPlayerEntity(server, String.valueOf(random.nextInt(1000)));

@@ -1391,9 +1391,23 @@ public class ConfigModel {
             public Style style = new Style();
 
             public class Style {
-                public String header = "<#FFA1F5>PlayerList<newline>------%server:online%/%server:max_players%------";
-                public String body = "<rainbow>%player:displayname_visual%";
-                public String footer = "<#FFA1F5>-----------------<newline>TPS: %server:tps_colored% PING: %player:ping_colored%<newline><rainbow>Memory: %server:used_ram%/%server:max_ram% MB<newline>%fuji:rotate Welcome to the server. %";
+                public List<String> header = new ArrayList<>() {
+                    {
+                        this.add("<#FFA1F5>PlayerList<newline>------%server:online%/%server:max_players%------");
+                    }
+                };
+                public List<String> body = new ArrayList<>() {
+                    {
+                        this.add("<rainbow>%player:displayname_visual%");
+                    }
+                };
+                public List<String> footer = new ArrayList<>() {
+                    {
+                        this.add("<#FFA1F5>-----------------<newline>TPS: %server:tps_colored% PING: %player:ping_colored%<newline><rainbow>Memory: %server:used_ram%/%server:max_ram% MB<newline>%fuji:rotate Welcome to the server. %");
+                        this.add("<rainbow>This is another one");
+                    }
+
+                };
             }
 
             public Sort sort = new Sort();

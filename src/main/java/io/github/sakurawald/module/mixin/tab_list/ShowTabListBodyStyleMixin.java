@@ -2,6 +2,7 @@ package io.github.sakurawald.module.mixin.tab_list;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.util.RandomUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -22,7 +23,7 @@ public abstract class ShowTabListBodyStyleMixin {
     Text modifyPlayerListName(Text original) {
         // respect other's modification.
         if (original == null) {
-            return ofText(player, false, Configs.configHandler.model().modules.tab_list.style.body);
+            return ofText(player, false, RandomUtil.drawList(Configs.configHandler.model().modules.tab_list.style.body));
         }
 
         return original;
