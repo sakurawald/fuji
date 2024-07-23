@@ -1403,16 +1403,16 @@ public class ConfigModel {
                     
                     The default weight is 0, the range of weight is [0, 675], which means you can set at most 676 sort groups.
                     
-                    Note:
-                    - The faked-entry is just an entry listed in `tab list`, the server faked it to the client.
-                      There is not a real player entity in the server side, so no extra performance problem.
-                    
                     Issue:
-                    - The `tab list` sort method is client-side decided. So the workaround is to send faked-player entry 
+                    - The `tab list` sort method is client-side decided. So the workaround is to send dummy-player entry 
                       to the client-side, and hide the real entry in client-side's tablist.
-                      In this case, the client-side will find that, all `command target selector` will display the faked-entry.
-                      And you can see the faked-entry in client-side's `Player Reporting` UI.
+                      In this case, the client-side will find that, all `command target selector` will display the dummy-entry.
+                      And you can see the dummy-entry in client-side's `Player Reporting` UI.
                     
+                    Note:
+                    - The dummy-entry is just an entry listed in `tab list`, when the client ask the server tab list, the server lie with the dummy-entry list.
+                      There is not a real player entity in the server side, so no extra performance problem.
+                      
                     """)
             public class Sort {
                 public boolean enable = false;

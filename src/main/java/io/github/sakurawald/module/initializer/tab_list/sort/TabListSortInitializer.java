@@ -23,6 +23,7 @@ import java.util.*;
 
 public class TabListSortInitializer extends ModuleInitializer {
 
+    public static final Map<String, String> encoded2name = new HashMap<>();
 
     public static final String META_SEPARATOR = "@";
 
@@ -76,10 +77,8 @@ public class TabListSortInitializer extends ModuleInitializer {
 //        ScheduleUtil.addJob(UpdateEncodedPlayerTablistNameJob.class, null, null, cron, null);
     }
 
-
-    public static String decodeName(String name) {
-        name = name.substring(name.indexOf(META_SEPARATOR) + META_SEPARATOR.length());
-        return name;
+    public static String decodeName(String playerName) {
+        return encoded2name.get(playerName);
     }
 
     public static String encodeName(ServerPlayerEntity player) {
@@ -88,9 +87,16 @@ public class TabListSortInitializer extends ModuleInitializer {
         int maxIndex = AlphaTable.TABLE.length - 1;
         int index = (maxIndex) - weight;
         index = Math.min(maxIndex, index);
-        String prefix = AlphaTable.TABLE[index];
-        String name = player.getGameProfile().getName();
-        return prefix + META_SEPARATOR + name;
+
+
+        // the "zzzz" string is used to force the dummy player listed in the last of `command suggestion`
+        String prefix = "zzzz" + AlphaTable.TABLE[index];
+        String playerName = player.getGameProfile().getName();
+        String hashedName = UUID.nameUUIDFromBytes(playerName.getBytes()).toString().substring(0,8);
+        String encoded = prefix + META_SEPARATOR + hashedName;
+
+        encoded2name.put(encoded, playerName);
+        return encoded;
     }
 
     private static void sync(MinecraftServer server) {

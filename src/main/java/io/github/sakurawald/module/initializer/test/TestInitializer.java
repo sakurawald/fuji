@@ -93,8 +93,6 @@ public class TestInitializer extends ModuleInitializer {
         target.openBook(myBook);
     }
 
-
-
     private static int $run(CommandContext<ServerCommandSource> ctx) {
         var source = ctx.getSource();
         ServerPlayerEntity player = source.getPlayer();

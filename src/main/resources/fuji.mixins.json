@@ -67,8 +67,8 @@
     "tab_list.faker.ServerCommonNetworkHandlerMixin",
     "tab_list.sort.DisableTheClientSideToShowPlayersInTabListMixin",
     "tab_list.sort.OverrideTabListNameMixin",
-    "tab_list.sort.SyncEncodedPlayersOnPlayerDisconnectMixin",
     "tab_list.sort.SyncEncodedPlayersOnPlayerConnectMixin",
+    "tab_list.sort.SyncEncodedPlayersOnPlayerDisconnectMixin",
     "teleport_warmup.ServerPlayerMixin",
     "whitelist.UserWhiteListMixin",
     "works.HopperBlockEntityMixin"

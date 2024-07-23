@@ -40,9 +40,8 @@ public abstract class OverrideTabListNameMixin {
     Text modifyPlayerListName(Text original) {
         log.warn("{} -> getPlayerListName: player = {}, original = {}", "tablist.sort module", player, original);
 
-        ServerPlayerEntity target = player;
         MinecraftServer server = Fuji.SERVER;
-        String name = target.getGameProfile().getName();
+        String name = player.getGameProfile().getName();
 
         /*
          1. only try to modify the encoded-player 's display name. since if tab_list.sort module is enabled,
@@ -54,34 +53,22 @@ public abstract class OverrideTabListNameMixin {
         if (name.contains(TabListSortInitializer.META_SEPARATOR)) {
             name = TabListSortInitializer.decodeName(name);
 
-            // if nobody sets the display name, then we can set it.
-
             Text realPlayerGetDisplayName = realPlayerGetDisplayNameSave.get(name);
-            log.warn("real player get display name save = {}", realPlayerGetDisplayName);
+            // if nobody sets the display name, then we can set it.
             if (realPlayerGetDisplayName == null) {
-                target = Fuji.SERVER.getPlayerManager().getPlayer(name);
-                return ofText(target, false, Configs.configHandler.model().modules.tab_list.style.body);
+                ServerPlayerEntity realPlayer = Fuji.SERVER.getPlayerManager().getPlayer(name);
+                return ofText(realPlayer, false, Configs.configHandler.model().modules.tab_list.style.body);
             } else {
                 // someone else set teh display name, we should respect it.
                 return realPlayerGetDisplayName;
             }
 
-//            ServerPlayerEntity encodedPlayer = TabListSortInitializer.makeServerPlayerEntity(server, player);
-//            server.getPlayerManager().sendToAll(TabListSortInitializer.entryFromEncodedPlayer(List.of(encodedPlayer)));
-
         } else {
-            // listen to real player's get display name invoke
+            // listen to real player's get display name invoke, and sync it to the encoded-player
             realPlayerGetDisplayNameSave.put(name, original);
             ServerPlayerEntity encodedPlayer = TabListSortInitializer.makeServerPlayerEntity(server, player);
             server.getPlayerManager().sendToAll(TabListSortInitializer.entryFromEncodedPlayer(List.of(encodedPlayer)));
         }
-
-//        else {
-//            /* when a real player's display name is queried, we need to sync it to encoded players. */
-//            ServerPlayerEntity encodedPlayer = TabListSortInitializer.makeServerPlayerEntity(server, player);
-//            server.getPlayerManager().sendToAll(TabListSortInitializer.entryFromEncodedPlayer(List.of(encodedPlayer)));
-//        }
-
 
         return original;
     }
