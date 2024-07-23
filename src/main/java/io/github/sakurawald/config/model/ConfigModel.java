@@ -1422,8 +1422,7 @@ public class ConfigModel {
                     The default weight is 0, the range of weight is [0, 675], which means you can set at most 676 sort groups.
                                         
                     Issue:
-                    - The `tab list` sort method is client-side decided. So the workaround is to send dummy-player entry 
-                      to the client-side, and hide the real entry in client-side's tablist.
+                    - The `tab list` sort method is client-side decided. So the workaround is to send dummy-player entry to the client-side, and hide the real entry in client-side's tablist.
                       In this case, the client-side will find that, all `command target selector` will display the dummy-entry.
                       And you can see the dummy-entry in client-side's `Player Reporting` UI.
                     - After you set a new `weight` for a player, the `tab list` will temporary dupe the entry. (Re-connect the server to sovle this)
