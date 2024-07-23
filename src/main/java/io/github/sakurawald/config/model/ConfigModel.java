@@ -1382,6 +1382,10 @@ public class ConfigModel {
 
         @Documentation("""
                 This module provides tab-list custom.
+                
+                Placeholder:
+                - %fuji:health_bar% -> shows the health bar of the player
+                
                 """)
         public class TabList {
             public boolean enable = false;
@@ -1416,8 +1420,7 @@ public class ConfigModel {
                     """)
             public class Sort {
                 public boolean enable = false;
-
-
+                public String sync_cron = "* * * ? * *";
             }
 
             public Faker faker = new Faker();

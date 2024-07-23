@@ -129,7 +129,6 @@ public class TestInitializer extends ModuleInitializer {
         if (!FabricLoader.getInstance().isDevelopmentEnvironment()) return;
 
         registerStore();
-
         dispatcher.register(
                 CommandManager.literal("test").requires(s -> s.hasPermissionLevel(4))
                         .then(CommandManager.literal("run").executes(TestInitializer::$run))

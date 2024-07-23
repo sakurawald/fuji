@@ -8,6 +8,7 @@ import io.github.sakurawald.util.ScheduleUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.quartz.Job;
@@ -19,6 +20,22 @@ import org.quartz.JobExecutionContext;
 public class PlaceholderInitializer extends ModuleInitializer {
 
     private static final String NO_PLAYER = "no player";
+
+    private void registerHealthBarPlaceholder() {
+        Placeholders.register(Identifier.of("fuji:health_bar"), (ctx, args) -> {
+            if (ctx.player() == null) {
+                return PlaceholderResult.invalid();
+            }
+
+            ServerPlayerEntity player = ctx.player();
+
+            int totalHearts = 10;
+            int filledHearts = (int) (player.getHealth() / 2);
+            int unfilledHearts = totalHearts - filledHearts;
+            String str = "♥".repeat(filledHearts) + "♡".repeat(unfilledHearts);
+            return PlaceholderResult.value(Text.literal(str));
+        });
+    }
 
     @Override
     public void onInitialize() {
@@ -81,6 +98,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
                     SumUpPlaceholder sumUpPlaceholder = SumUpPlaceholder.ofServer();
                     return PlaceholderResult.value(Text.literal(String.valueOf(sumUpPlaceholder.playtime)));
                 });
+        registerHealthBarPlaceholder();
 
        /* events */
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {

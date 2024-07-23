@@ -2,9 +2,11 @@ package io.github.sakurawald.module.initializer.tab_list.sort;
 
 import com.mojang.authlib.GameProfile;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.tab_list.structure.AlphaTable;
 import io.github.sakurawald.util.PermissionUtil;
+import io.github.sakurawald.util.ScheduleUtil;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkSide;
 import net.minecraft.network.packet.c2s.common.SyncedClientOptions;
@@ -73,8 +75,8 @@ public class TabListSortInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-//        String cron = Configs.configHandler.model().modules.tab_list.update_cron;
-//        ScheduleUtil.addJob(UpdateEncodedPlayerTablistNameJob.class, null, null, cron, null);
+        String cron = Configs.configHandler.model().modules.tab_list.sort.sync_cron;
+        ScheduleUtil.addJob(UpdateEncodedPlayerTablistNameJob.class, null, null, cron, null);
     }
 
     public static String decodeName(String playerName) {
@@ -91,19 +93,18 @@ public class TabListSortInitializer extends ModuleInitializer {
         // the "zzzz" string is used to force the dummy player listed in the last of `command suggestion`
         String prefix = "zzzz" + AlphaTable.TABLE[index];
         String playerName = player.getGameProfile().getName();
-        String hashedName = UUID.nameUUIDFromBytes(playerName.getBytes()).toString().substring(0,8);
+        String hashedName = UUID.nameUUIDFromBytes(playerName.getBytes()).toString().substring(0, 8);
         String encoded = prefix + META_SEPARATOR + hashedName;
 
         encoded2name.put(encoded, playerName);
         return encoded;
     }
 
-    private static void sync(MinecraftServer server) {
-       /* make encoded player list */
+    private static void syncEncodedPlayers(MinecraftServer server) {
+        /* make encoded player list */
         ArrayList<ServerPlayerEntity> encodedPlayers = new ArrayList<>();
-        List<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
-        for (ServerPlayerEntity player : players) {
-            encodedPlayers.add(TabListSortInitializer.makeServerPlayerEntity(server, player));
+        for (String encodedName : TabListSortInitializer.encoded2name.keySet()) {
+            encodedPlayers.add(makeServerPlayerEntity(server, encodedName));
         }
 
         /* update tab list name for encoded players */
@@ -114,7 +115,7 @@ public class TabListSortInitializer extends ModuleInitializer {
     public static class UpdateEncodedPlayerTablistNameJob implements Job {
         @Override
         public void execute(JobExecutionContext context) throws JobExecutionException {
-            sync(Fuji.SERVER);
+            syncEncodedPlayers(Fuji.SERVER);
         }
     }
 }
