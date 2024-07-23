@@ -12,7 +12,6 @@ import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.quartz.Job;
-import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -20,8 +19,6 @@ import javax.naming.OperationNotSupportedException;
 
 @Slf4j
 public class TabListInitializer extends ModuleInitializer {
-
-    public static final String META_SEPARATOR = "@";
 
     @Override
     public void onInitialize() {
@@ -51,6 +48,7 @@ public class TabListInitializer extends ModuleInitializer {
             Component footer = MessageUtil.ofComponent(player, false, footerControl);
             player.sendPlayerListHeaderAndFooter(header, footer);
         }
+
     }
 
     public static class SyncTabListJob implements Job {
@@ -59,4 +57,5 @@ public class TabListInitializer extends ModuleInitializer {
             render(Fuji.SERVER);
         }
     }
+
 }

@@ -375,7 +375,7 @@ public class ConfigModel {
                 Feature:
                 - You can create your own `regex transformaer` to repalce the input message.
                 - You can insert any `placeholder` like `%world:name%` in the chat message. (See more placeholders in: https://placeholders.pb4.eu/user/default-placeholders/)
-                - You can insert player's prefix and suffix. Just insert `fuji:player_prefix` and `fuji:player_suffix`. 
+                - You can insert player's prefix and suffix. Just insert `%fuji:player_prefix%` and `%fuji:player_suffix%`. 
                     Requires `luckperms` installed. See also: https://luckperms.net/wiki/Prefixes,-Suffixes-&-Meta
                     After you installed `luckperms` mod, just issue `/lp group default meta setprefix <yellow>[awesome]` to assign prefix.
                     Don't forget to change the format of `Chat module`, and issue `/fuji reload`
@@ -1394,16 +1394,40 @@ public class ConfigModel {
                 public String footer = "<#FFA1F5>-----------------<newline>TPS: %server:tps_colored% PING: %player:ping_colored%<newline><rainbow>Memory: %server:used_ram%/%server:max_ram% MB";
             }
 
+            public Sort sort = new Sort();
+            @Documentation("""
+                    If enable this moudle, the `player names` in `tab list` will be sorted by `weight`.
+                    
+                    You can set sort `weight` for a group using `/lp group default meta set fuji.tab_list.sort.weight 1` to set weight to 1.
+                    You can set sort `weight` for a player using `/lp user Steve meta set fuji.tab_list.sort.weight 2`
+                    
+                    The default weight is 0, the range of weight is [0, 675], which means you can set at most 676 sort groups.
+                    
+                    Note:
+                    - The faked-entry is just an entry listed in `tab list`, the server faked it to the client.
+                      There is not a real player entity in the server side, so no extra performance problem.
+                    
+                    Issue:
+                    - The `tab list` sort method is client-side decided. So the workaround is to send faked-player entry 
+                      to the client-side, and hide the real entry in client-side's tablist.
+                      In this case, the client-side will find that, all `command target selector` will display the faked-entry.
+                      And you can see the faked-entry in client-side's `Player Reporting` UI.
+                    
+                    """)
+            public class Sort {
+                public boolean enable = false;
+
+
+            }
+
             public Faker faker = new Faker();
             public class Faker{
                 public boolean enable = true;
-
                 public Ping ping = new Ping();
                 public class Ping {
                     public int min_ping = 15;
                     public int max_ping = 35;
                 }
-
             }
         }
 

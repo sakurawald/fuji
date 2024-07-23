@@ -15,6 +15,7 @@ import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.HotbarGui;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.tab_list.sort.TabListSortInitializer;
 import io.github.sakurawald.util.MessageUtil;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -32,10 +33,12 @@ import net.minecraft.item.Items;
 import net.minecraft.network.NetworkSide;
 import net.minecraft.network.packet.s2c.play.EntitySetHeadYawS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
+import net.minecraft.network.packet.s2c.play.PlayerRemoveS2CPacket;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.PlayerManager;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ConnectedClientData;
@@ -47,10 +50,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameMode;
 import net.minecraft.world.World;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 @Slf4j
@@ -98,24 +98,32 @@ public class TestInitializer extends ModuleInitializer {
     private static int $run(CommandContext<ServerCommandSource> ctx) {
         var source = ctx.getSource();
         ServerPlayerEntity player = source.getPlayer();
-
         MinecraftServer server = player.server;
+        PlayerManager playerManager = server.getPlayerManager();
 
-        ServerPlayerEntity test = server.getPlayerManager().getPlayer("SakuraWald");
-        player.sendMessage(test.getPlayerListName());
 
-//        String playerName = "test";
-//        GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes(playerName.getBytes()), playerName);
-//        ServerPlayerEntity player1 = new ServerPlayerEntity(server, player.getServerWorld(), gameProfile, player.getClientOptions());
-//        PlayerListS2CPacket playerListS2CPacket = new PlayerListS2CPacket(PlayerListS2CPacket.Action.ADD_PLAYER, player1);
-//        server.getPlayerManager().sendToAll(playerListS2CPacket);
-//        server.getPlayerManager().sendToAll(playerListS2CPacket);
-//        server.getPlayerManager().sendToAll(playerListS2CPacket);
-//        player.networkHandler.sendPacket(PlayerListS2CPacket.entryFromPlayer(List.of(player, player)));
-//        RegistryKey<World> dimensionId = player.getWorld().getRegistryKey();
-//        EntityPlayerMPFake.createFake("test",server,new Vec3d(0,0,0),0,0,dimensionId, GameMode.SURVIVAL, false);
+        List<UUID> uuids = new ArrayList<>();
+        for (ServerPlayerEntity serverPlayerEntity : server.getPlayerManager().getPlayerList()) {
+            uuids.add(serverPlayerEntity.getGameProfile().getId());
+        }
+
+        PlayerRemoveS2CPacket playerRemoveS2CPacket = new PlayerRemoveS2CPacket(uuids);
+        playerManager.sendToAll(playerRemoveS2CPacket);
 
         return 1;
+    }
+
+    private static void extracted(MinecraftServer server) {
+        /* make encoded player list */
+        ArrayList<ServerPlayerEntity> encodedPlayers = new ArrayList<>();
+        List<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
+        for (ServerPlayerEntity p : players) {
+            encodedPlayers.add(TabListSortInitializer.makeServerPlayerEntity(server, p));
+        }
+
+        /* update tab list name for encoded players */
+        PlayerListS2CPacket playerListS2CPacket = new PlayerListS2CPacket(EnumSet.of(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME), encodedPlayers);
+        server.getPlayerManager().sendToAll(playerListS2CPacket);
     }
 
     @Override

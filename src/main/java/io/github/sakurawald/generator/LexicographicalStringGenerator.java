@@ -1,11 +1,20 @@
 package io.github.sakurawald.generator;
 
+import com.google.gson.annotations.SerializedName;
+import lombok.SneakyThrows;
+import org.apache.commons.io.FileUtils;
+import oshi.util.FileUtil;
+
+import java.nio.charset.Charset;
+import java.nio.file.Path;
+
 public class LexicographicalStringGenerator {
     private static final StringBuilder output = new StringBuilder();
 
+    @SneakyThrows
     public static void main(String[] args) {
-        generateCombinations(2);
-        System.out.println(output.toString());
+        generateCombinations( 2);
+        FileUtils.writeStringToFile(Path.of("alpha-table.txt").toFile(), String.valueOf(output), Charset.defaultCharset());
     }
 
     public static void generateCombinations(int length) {

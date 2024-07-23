@@ -1,14 +1,14 @@
 package io.github.sakurawald.module.mixin.afk;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.afk.AfkStateAccessor;
 import io.github.sakurawald.util.MessageUtil;
-import net.kyori.adventure.text.Component;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -16,11 +16,11 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static io.github.sakurawald.util.MessageUtil.*;
 
-@Mixin(ServerPlayerEntity.class)
+// to override tab list name in `tab list module`
+@Mixin(value = ServerPlayerEntity.class, priority = 1000 - 250)
 public abstract class ServerPlayerMixin implements AfkStateAccessor {
 
     @Unique
@@ -36,16 +36,20 @@ public abstract class ServerPlayerMixin implements AfkStateAccessor {
     @Unique
     private long lastLastActionTime = 0;
 
-    @Inject(method = "getPlayerListName", at = @At("HEAD"), cancellable = true)
-    public void $getPlayerListName(CallbackInfoReturnable<Text> cir) {
+    @ModifyReturnValue(method = "getPlayerListName", at = @At("RETURN"))
+    public Text $getPlayerListName(Text original) {
         AfkStateAccessor accessor = (AfkStateAccessor) player;
 
+        Fuji.LOGGER.warn("{} -> getPlayerListName = {}", "afk module", original);
+
         if (accessor.fuji$isAfk()) {
-            cir.setReturnValue(ofText(player, false, Configs.configHandler.model().modules.afk.format));
+           return ofText(player, false, Configs.configHandler.model().modules.afk.format);
+//            server.getPlayerManager().sendToAll(Pa);
         }
 
+//        cir.setReturnValue(Text.literal("AFK !"));
+        return original;
     }
-
 
     @Inject(method = "updateLastActionTime", at = @At("HEAD"))
     public void $updateLastActionTime(CallbackInfo ci) {

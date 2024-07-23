@@ -13,4 +13,5 @@ public class EntityUtil {
     public static boolean isFakePlayer(ServerPlayerEntity player) {
         return !isRealPlayer(player);
     }
+
 }
