@@ -614,6 +614,7 @@ public class ConfigModel {
                 - %fuji:player_playtime%
                 - %fuji:server_playtime%
                 - %fuji:health_bar% -> shows the health bar of the player
+                - %fuji:rotate hello% -> rotate the "hello" string each time.
                                 
                 Tips:
                 - You can also use [the default available placeholders](https://placeholders.pb4.eu/user/default-placeholders/) 
@@ -1404,7 +1405,7 @@ public class ConfigModel {
                 public List<String> footer = new ArrayList<>() {
                     {
                         this.add("<#FFA1F5>-----------------<newline>TPS: %server:tps_colored% PING: %player:ping_colored%<newline><rainbow>Memory: %server:used_ram%/%server:max_ram% MB<newline>%fuji:rotate Welcome to the server. %");
-                        this.add("<rainbow>This is another one");
+                        this.add("<#FFA1F5>-----------------<newline><rainbow>This is another one");
                     }
 
                 };

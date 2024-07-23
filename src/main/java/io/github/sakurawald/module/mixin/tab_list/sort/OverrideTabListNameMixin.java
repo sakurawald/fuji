@@ -26,8 +26,6 @@ import static io.github.sakurawald.util.MessageUtil.ofText;
 @Mixin(value = ServerPlayerEntity.class, priority = 1000 - 125)
 @Slf4j
 public abstract class OverrideTabListNameMixin {
-    @Unique
-    TabListSortInitializer module = ModuleManager.getInitializer(TabListSortInitializer.class);
 
     @Unique
     private static Map<String, Text> realPlayerGetDisplayNameSave = new HashMap<>();
