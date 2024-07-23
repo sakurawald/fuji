@@ -100,13 +100,10 @@ public class TestInitializer extends ModuleInitializer {
         PlayerManager playerManager = server.getPlayerManager();
 
 
-        List<UUID> uuids = new ArrayList<>();
-        for (ServerPlayerEntity serverPlayerEntity : server.getPlayerManager().getPlayerList()) {
-            uuids.add(serverPlayerEntity.getGameProfile().getId());
-        }
-
-        PlayerRemoveS2CPacket playerRemoveS2CPacket = new PlayerRemoveS2CPacket(uuids);
-        playerManager.sendToAll(playerRemoveS2CPacket);
+        Random random = new Random();
+        ServerPlayerEntity serverPlayerEntity = TabListSortInitializer.makeServerPlayerEntity(server, String.valueOf(random.nextInt(1000)));
+        EnumSet<PlayerListS2CPacket.Action> enumSet = EnumSet.of(PlayerListS2CPacket.Action.UPDATE_LISTED, PlayerListS2CPacket.Action.UPDATE_LATENCY, PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME);
+        playerManager.sendToAll(new PlayerListS2CPacket(enumSet, List.of(serverPlayerEntity)));
 
         return 1;
     }

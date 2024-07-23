@@ -4,7 +4,6 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.placeholder.PlaceholderInitializer;
 import io.github.sakurawald.util.MessageUtil;
 import io.github.sakurawald.util.ScheduleUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,6 @@ public class TabListInitializer extends ModuleInitializer {
     public void onInitialize() {
         String cron = Configs.configHandler.model().modules.tab_list.update_cron;
         ServerLifecycleEvents.SERVER_STARTED.register((server -> ScheduleUtil.addJob(RenderHeaderAndFooterJob.class, null, null, cron, null)));
-
     }
 
     @Override

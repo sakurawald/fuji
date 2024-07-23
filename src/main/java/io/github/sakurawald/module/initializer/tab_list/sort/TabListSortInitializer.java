@@ -4,7 +4,7 @@ import com.mojang.authlib.GameProfile;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.tab_list.structure.AlphaTable;
+import io.github.sakurawald.module.initializer.tab_list.sort.structure.AlphaTable;
 import io.github.sakurawald.util.PermissionUtil;
 import io.github.sakurawald.util.ScheduleUtil;
 import net.minecraft.network.ClientConnection;

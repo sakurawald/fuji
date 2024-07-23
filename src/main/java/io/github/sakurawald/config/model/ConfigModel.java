@@ -613,7 +613,8 @@ public class ConfigModel {
                 - %fuji:server_moved%
                 - %fuji:player_playtime%
                 - %fuji:server_playtime%
-                                
+                - %fuji:health_bar% -> shows the health bar of the player
+                
                 Tips:
                 - You can also use [the default available placeholders](https://placeholders.pb4.eu/user/default-placeholders/) 
                   in anywhere. (Yeah, you can use `placeholder` in the `en_us.json` language file, it works)
@@ -1382,9 +1383,6 @@ public class ConfigModel {
 
         @Documentation("""
                 This module provides tab-list custom.
-                
-                Placeholder:
-                - %fuji:health_bar% -> shows the health bar of the player
                 
                 """)
         public class TabList {
