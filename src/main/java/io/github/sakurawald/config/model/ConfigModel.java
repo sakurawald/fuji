@@ -614,7 +614,7 @@ public class ConfigModel {
                 - %fuji:player_playtime%
                 - %fuji:server_playtime%
                 - %fuji:health_bar% -> shows the health bar of the player
-                
+                                
                 Tips:
                 - You can also use [the default available placeholders](https://placeholders.pb4.eu/user/default-placeholders/) 
                   in anywhere. (Yeah, you can use `placeholder` in the `en_us.json` language file, it works)
@@ -830,7 +830,7 @@ public class ConfigModel {
                         
                 Note:
                 - Some messages in `en_us.json` are only used in the client-side, so you may more interested in keys that start with `multiplayer.`
-                
+                                
                 """)
         public class SystemMessage {
             public boolean enable = false;
@@ -1383,7 +1383,7 @@ public class ConfigModel {
 
         @Documentation("""
                 This module provides tab-list custom.
-                
+                                
                 """)
         public class TabList {
             public boolean enable = false;
@@ -1393,24 +1393,25 @@ public class ConfigModel {
             public class Style {
                 public String header = "<#FFA1F5>PlayerList<newline>------%server:online%/%server:max_players%------";
                 public String body = "<rainbow>%player:displayname_visual%";
-                public String footer = "<#FFA1F5>-----------------<newline>TPS: %server:tps_colored% PING: %player:ping_colored%<newline><rainbow>Memory: %server:used_ram%/%server:max_ram% MB";
+                public String footer = "<#FFA1F5>-----------------<newline>TPS: %server:tps_colored% PING: %player:ping_colored%<newline><rainbow>Memory: %server:used_ram%/%server:max_ram% MB<newline>%fuji:rotate Welcome to the server. %";
             }
 
             public Sort sort = new Sort();
+
             @Documentation("""
                     If enable this moudle, the `player names` in `tab list` will be sorted by `weight`.
-                    
+                                        
                     You can set sort `weight` for a group using `/lp group default meta set fuji.tab_list.sort.weight 1` to set weight to 1.
                     You can set sort `weight` for a player using `/lp user Steve meta set fuji.tab_list.sort.weight 2`
-                    
+                                        
                     The default weight is 0, the range of weight is [0, 675], which means you can set at most 676 sort groups.
-                    
+                                        
                     Issue:
                     - The `tab list` sort method is client-side decided. So the workaround is to send dummy-player entry 
                       to the client-side, and hide the real entry in client-side's tablist.
                       In this case, the client-side will find that, all `command target selector` will display the dummy-entry.
                       And you can see the dummy-entry in client-side's `Player Reporting` UI.
-                    
+                                        
                     Note:
                     - The dummy-entry is just an entry listed in `tab list`, when the client ask the server tab list, the server lie with the dummy-entry list.
                       There is not a real player entity in the server side, so no extra performance problem.
@@ -1422,9 +1423,11 @@ public class ConfigModel {
             }
 
             public Faker faker = new Faker();
-            public class Faker{
-                public boolean enable = true;
+
+            public class Faker {
+                public boolean enable = false;
                 public Ping ping = new Ping();
+
                 public class Ping {
                     public int min_ping = 15;
                     public int max_ping = 35;
