@@ -9,7 +9,7 @@ import net.minecraft.server.command.ServerCommandSource;
 
 import javax.naming.OperationNotSupportedException;
 
-public abstract class ModuleInitializer {
+public class ModuleInitializer {
 
     public final void initialize() {
         CommandRegistrationCallback.EVENT.register(this::registerCommand);

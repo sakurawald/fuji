@@ -2,6 +2,7 @@ package io.github.sakurawald.module.mixin.skin;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.skin.SkinRestorer;
 import io.github.sakurawald.module.initializer.skin.provider.MojangSkinProvider;
 import org.jetbrains.annotations.Nullable;
@@ -21,10 +22,6 @@ import net.minecraft.server.network.ServerLoginNetworkHandler;
 public abstract class ServerLoginNetworkHandlerMixin {
 
     @Shadow
-    @Final
-    static Logger LOGGER;
-
-    @Shadow
     @Nullable
     private GameProfile profile;
 
@@ -42,7 +39,7 @@ public abstract class ServerLoginNetworkHandlerMixin {
                 // the first time the player join, his skin is DEFAULT_SKIN (see #applyRestoredSkinHook)
                 // then we try to get skin from mojang-server. if this failed, then set his skin to DEFAULT_SKIN
                 // note: a fake-player will not trigger waitForSkin()
-                LOGGER.info("Fetch skin for {}", profile.getName());
+                Fuji.LOGGER.info("Fetch skin for {}", profile.getName());
 
                 if (SkinRestorer.getSkinStorage().getSkin(profile.getId()) == SkinRestorer.getSkinStorage().getDefaultSkin()) {
                     SkinRestorer.getSkinStorage().setSkin(profile.getId(), MojangSkinProvider.getSkin(profile.getName()));

@@ -9,6 +9,7 @@
     "color.sign.SignBlockEntityMixin"
   ],
   "mixins": [
+    "_internal.low_level.A",
     "_internal.low_level.MinecraftServerMixin",
     "_internal.low_level.ServerPlayerEntityMixin",
     "_internal.low_level.SimpleRegistryMixin",

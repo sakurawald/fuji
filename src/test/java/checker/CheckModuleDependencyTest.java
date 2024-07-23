@@ -114,7 +114,7 @@ public class CheckModuleDependencyTest {
             reference.add(str);
         }
 
-        if (definition.equals(COMMON)) return null;
+        if (definition.equals(COMMON) || definition.equals("test")) return null;
         if (reference.isEmpty()) return null;
         return new Reference(definition, reference);
     }

@@ -27,7 +27,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
     private static final String NO_PLAYER = "no player";
 
     private void registerHealthBarPlaceholder() {
-        Placeholders.register(Identifier.of("fuji:health_bar"), (ctx, args) -> {
+        Placeholders.register(Identifier.of(Fuji.MOD_ID, "health_bar"), (ctx, args) -> {
             if (ctx.player() == null) {
                 return PlaceholderResult.invalid();
             }
@@ -43,9 +43,9 @@ public class PlaceholderInitializer extends ModuleInitializer {
     }
 
     private void registerRotatePlaceholder() {
-        Placeholders.register(Identifier.of("fuji:rotate"), (ctx, args) -> {
+        Placeholders.register(Identifier.of(Fuji.MOD_ID, "rotate"), (ctx, args) -> {
             String namespace = "default";
-            if (ctx.hasPlayer()) {
+            if (ctx.player() != null) {
                 namespace = ctx.player().getGameProfile().getName();
             }
 

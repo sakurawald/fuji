@@ -27,12 +27,16 @@ import static io.github.sakurawald.module.ModuleManager.initializeModules;
 // TODO: a lisp-like DSL (parser and code-walker) for command with context and placeholders (%fuji:play_time_total% / nbt)
 // TODO: refactor command facility (selector, aop, options, parser)
 // TODO: tppos module
-
 public class Fuji implements ModInitializer {
+
     public static final String MOD_ID = "fuji";
     public static final Logger LOGGER = LogUtil.createLogger(StringUtils.capitalize(MOD_ID));
     public static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve(MOD_ID).toAbsolutePath();
     public static MinecraftServer SERVER;
+
+    public void test() {
+
+    }
 
     @Override
     public void onInitialize() {
