@@ -1426,6 +1426,7 @@ public class ConfigModel {
                       to the client-side, and hide the real entry in client-side's tablist.
                       In this case, the client-side will find that, all `command target selector` will display the dummy-entry.
                       And you can see the dummy-entry in client-side's `Player Reporting` UI.
+                    - After you set a new `weight` for a player, the `tab list` will temporary dupe the entry. (Re-connect the server to sovle this)
                                         
                     Note:
                     - The dummy-entry is just an entry listed in `tab list`, when the client ask the server tab list, the server lie with the dummy-entry list.
