@@ -108,7 +108,7 @@ public class ConfigModel {
         public DeathLog deathlog = new DeathLog();
         public Functional functional = new Functional();
         public SystemMessage system_message = new SystemMessage();
-        public Scheduler scheduler = new Scheduler();
+        public CommandScheduler command_scheduler = new CommandScheduler();
         public CommandPermission command_permission = new CommandPermission();
         public CommandRewrite command_rewrite = new CommandRewrite();
         public CommandAlias command_alias = new CommandAlias();
@@ -696,8 +696,9 @@ public class ConfigModel {
                 This module provides scheduler for auto-run jobs, and `/schudler_trigger` command.
                                 
                 You can add schedule jobs by `cron expression`, set the random command-list to be executed.
+                
                 """)
-        public class Scheduler {
+        public class CommandScheduler {
             public boolean enable = false;
         }
 

@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.scheduler;
+package io.github.sakurawald.module.initializer.command_scheduler;
 
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.common.structure.CommandExecuter;
@@ -25,7 +25,7 @@ public class ScheduleJob {
             if (left_trigger_times == 0) {
                 this.enable = false;
             }
-            SchedulerInitializer.schedulerHandler.saveToDisk();
+            CommandSchedulerInitializer.schedulerHandler.saveToDisk();
         }
 
         List<String> commands = this.commands_list.get(new Random().nextInt(this.commands_list.size()));

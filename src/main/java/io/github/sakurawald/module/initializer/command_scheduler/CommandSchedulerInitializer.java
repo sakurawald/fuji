@@ -1,6 +1,5 @@
-package io.github.sakurawald.module.initializer.scheduler;
+package io.github.sakurawald.module.initializer.command_scheduler;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -26,7 +25,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import static net.minecraft.server.command.CommandManager.argument;
 
 
-public class SchedulerInitializer extends ModuleInitializer {
+public class CommandSchedulerInitializer extends ModuleInitializer {
 
     public static final ConfigHandler<SchedulerModel> schedulerHandler = new ObjectConfigHandler<>("scheduler.json", SchedulerModel.class);
 

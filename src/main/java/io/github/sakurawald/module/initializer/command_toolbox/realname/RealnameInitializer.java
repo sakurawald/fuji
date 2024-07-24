@@ -3,6 +3,7 @@ package io.github.sakurawald.module.initializer.command_toolbox.realname;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
