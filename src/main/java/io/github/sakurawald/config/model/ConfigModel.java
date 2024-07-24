@@ -17,6 +17,10 @@ import java.util.*;
         - You can press `CTRL + F` keys in your keyboard, and search any `configuration key` that you want to konw.
         - If anything is unclear, please create an issue in github.
                 
+        Note:
+        - Most of the configuration files use `.json` file format, so you might want to use a better `text-editor` to highlight the file. 
+          A good editor for json edit is `visual studio code`: [Visual Studio Code - Web Online Editor](https://vscode.dev/)
+          
         """)
 public class ConfigModel {
 
