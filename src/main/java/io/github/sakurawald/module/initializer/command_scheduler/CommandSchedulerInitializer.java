@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.initializer.command_scheduler;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
@@ -13,16 +12,16 @@ import io.github.sakurawald.config.model.SchedulerModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.ScheduleUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
+import net.minecraft.command.CommandRegistryAccess;
+import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.command.ServerCommandSource;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
 import java.util.concurrent.CompletableFuture;
-import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
 
-import static net.minecraft.server.command.CommandManager.argument;
+import static net.minecraft.server.command.CommandManager.literal;
 
 
 public class CommandSchedulerInitializer extends ModuleInitializer {
@@ -58,18 +57,20 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
 
     @Override
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("scheduler_trigger").requires(s -> s.hasPermissionLevel(4))
-                .then(argument("name", StringArgumentType.word()).suggests(new SchedulerJobSuggestionProvider()).executes(this::$scheduler_trigger)));
+        dispatcher.register(literal("scheduler").requires(s -> s.hasPermissionLevel(4))
+                .then(literal("trigger")
+                        .then(CommandHelper.Argument.name().suggests(new SchedulerJobSuggestionProvider()).executes(this::$trigger))));
     }
 
-    private int $scheduler_trigger(CommandContext<ServerCommandSource> ctx) {
-        String name = StringArgumentType.getString(ctx, "name");
+    private int $trigger(CommandContext<ServerCommandSource> ctx) {
+        String name = CommandHelper.Argument.name(ctx);
 
         schedulerHandler.model().scheduleJobs.forEach(job -> {
             if (job.name.equals(name)) {
                 job.trigger();
             }
         });
+
         return CommandHelper.Return.SUCCESS;
     }
 

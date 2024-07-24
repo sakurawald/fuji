@@ -116,10 +116,10 @@ public class ConfigModel {
         public CommandCooldown command_cooldown = new CommandCooldown();
         public CommandToolbox command_toolbox = new CommandToolbox();
         public CommandSpy command_spy = new CommandSpy();
+        public CommandEvent command_event = new CommandEvent();
         public ResourceWorld resource_world = new ResourceWorld();
         public NewbieWelcome newbie_welcome = new NewbieWelcome();
         public TeleportWarmup teleport_warmup = new TeleportWarmup();
-        public CommandEvent command_event = new CommandEvent();
         public TopChunks top_chunks = new TopChunks();
         public Skin skin = new Skin();
         public WorldDownloader world_downloader = new WorldDownloader();
@@ -692,9 +692,12 @@ public class ConfigModel {
         }
 
         @Documentation("""
-                This module provides scheduler for auto-run jobs, and `/schudler_trigger` command.
+                This module provides scheduler for auto-run jobs.
                                 
                 You can add schedule jobs by `cron expression`, set the random command-list to be executed.
+                
+                Command:
+                - /scheduler
                 
                 """)
         public class CommandScheduler {
@@ -1506,6 +1509,7 @@ public class ConfigModel {
                     public List<String> command_list = new ArrayList<>() {
                         {
                             this.add("sendmessage %player:name% you just break a block.");
+                            this.add("experience add %player:name% %fuji:random 2 8%");
                         }
                     };
                 }

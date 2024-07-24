@@ -29,6 +29,7 @@ public class CommandHelper {
         public static final String ARGUMENT_NAME_ENTITY = "entity";
         public static final String ARGUMENT_NAME_PLAYER = "player";
         public static final String ARGUMENT_NAME_REST = "rest";
+        public static final String ARGUMENT_NAME_NAME = "name";
 
         public static RequiredArgumentBuilder<ServerCommandSource, String> offlinePlayer(String argumentName) {
             return argument(argumentName, StringArgumentType.string())
@@ -59,8 +60,24 @@ public class CommandHelper {
             return argument(ARGUMENT_NAME_REST, StringArgumentType.greedyString());
         }
 
+        public static String string(CommandContext<ServerCommandSource> ctx, String argumentName) {
+            return StringArgumentType.getString(ctx, argumentName);
+        }
+
         public static String rest(CommandContext<ServerCommandSource> ctx) {
-            return StringArgumentType.getString(ctx, ARGUMENT_NAME_REST);
+            return string(ctx, ARGUMENT_NAME_REST);
+        }
+
+        public static RequiredArgumentBuilder<ServerCommandSource, String> word(String argumentName) {
+            return argument(argumentName, StringArgumentType.word());
+        }
+
+        public static RequiredArgumentBuilder<ServerCommandSource, String> name() {
+            return word(ARGUMENT_NAME_NAME);
+        }
+
+        public static String name(CommandContext<ServerCommandSource> ctx) {
+            return string(ctx,ARGUMENT_NAME_NAME);
         }
     }
 
