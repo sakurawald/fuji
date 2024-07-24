@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_scheduler;
 
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.common.structure.CommandExecuter;
+import io.github.sakurawald.util.LogUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -18,7 +18,7 @@ public class ScheduleJob {
     List<List<String>> commands_list;
 
     public void trigger() {
-        Fuji.LOGGER.info("Trigger ScheduleJob {}", this.getName());
+        LogUtil.info("Trigger ScheduleJob {}", this.getName());
 
         if (left_trigger_times > 0) {
             left_trigger_times--;

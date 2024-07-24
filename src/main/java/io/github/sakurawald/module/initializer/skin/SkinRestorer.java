@@ -25,7 +25,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-import static io.github.sakurawald.Fuji.LOGGER;
+import static io.github.sakurawald.util.LogUtil.LOGGER;
 
 // Thanks to: https://modrinth.com/mod/skinrestorer
 

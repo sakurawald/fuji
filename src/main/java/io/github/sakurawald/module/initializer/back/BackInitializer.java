@@ -19,7 +19,6 @@ import java.util.HashMap;
 import static net.minecraft.server.command.CommandManager.literal;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
-@Slf4j
 public class BackInitializer extends ModuleInitializer {
 
     @Getter

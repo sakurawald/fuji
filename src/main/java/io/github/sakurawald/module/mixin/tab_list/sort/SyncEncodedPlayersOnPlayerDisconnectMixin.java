@@ -19,7 +19,6 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 @Mixin(ServerPlayNetworkHandler.class)
-@Slf4j
 public class SyncEncodedPlayersOnPlayerDisconnectMixin {
 
     @Shadow

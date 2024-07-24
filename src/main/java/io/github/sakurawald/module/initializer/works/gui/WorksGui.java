@@ -21,7 +21,6 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-@Slf4j
 public class WorksGui extends PagedGui<Work> {
 
     public WorksGui(ServerPlayerEntity player, List<Work> entities) {

@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.annotation.Documentation;
+import io.github.sakurawald.util.LogUtil;
 import lombok.Getter;
 
 import java.lang.reflect.Field;
@@ -109,7 +109,7 @@ public class JsonDocsGenerator {
 
 
             } catch (IllegalAccessException e) {
-                Fuji.LOGGER.warn("failed to get the value of a field, {}", e.toString());
+                LogUtil.warn("failed to get the value of a field, {}", e.toString());
             }
         }
     }

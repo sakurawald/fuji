@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(SignBlockEntity.class)
-@Slf4j
 public class SignBlockEntityMixin {
 
     @ModifyVariable(method = "setText", at = @At("HEAD"), argsOnly = true)

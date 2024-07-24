@@ -10,7 +10,6 @@ import java.util.Set;
 import static io.github.sakurawald.generator.JsonDocsGenerator.*;
 
 @SuppressWarnings("StringBufferReplaceableByString")
-@Slf4j
 public class MarkdownDocsGenerator {
 
     @Getter

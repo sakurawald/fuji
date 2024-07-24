@@ -14,7 +14,6 @@ import java.util.List;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
-@Slf4j
 public class CommandAliasInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {

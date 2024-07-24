@@ -1,9 +1,9 @@
 package io.github.sakurawald.module.mixin.works;
 
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.works.WorksCache;
 import io.github.sakurawald.module.initializer.works.work_type.ProductionWork;
 import io.github.sakurawald.module.initializer.works.work_type.Work;
+import io.github.sakurawald.util.LogUtil;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -61,7 +61,7 @@ public abstract class HopperBlockEntityMixin extends LootableContainerBlockEntit
         } else if (container2 instanceof HopperMinecartEntity mh) {
             works = WorksCache.getEntity2works().get(mh.getId());
         } else {
-            Fuji.LOGGER.warn("addItem() found an unknown container: {}", container2);
+            LogUtil.warn("addItem() found an unknown container: {}", container2);
             return;
         }
         if (works == null) return;

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Set;
 
 
-@Slf4j
 public class ModuleMixinConfigPlugin implements IMixinConfigPlugin {
 
     private static final JsonElement mixinConfigs;

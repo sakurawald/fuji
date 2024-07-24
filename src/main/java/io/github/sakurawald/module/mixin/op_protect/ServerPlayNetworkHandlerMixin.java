@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.op_protect;
 
 
-import io.github.sakurawald.Fuji;
+import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.network.DisconnectionInfo;
@@ -24,7 +24,7 @@ public class ServerPlayNetworkHandlerMixin {
     private void $onDisconnected(DisconnectionInfo disconnectionInfo, CallbackInfo ci) {
         if (ServerHelper.getDefaultServer().getPlayerManager().isOperator(player.getGameProfile())
         && !FabricLoader.getInstance().isDevelopmentEnvironment()) {
-            Fuji.LOGGER.info("op protect -> deop {}", player.getGameProfile().getName());
+            LogUtil.info("op protect -> deop {}", player.getGameProfile().getName());
             ServerHelper.getDefaultServer().getPlayerManager().removeFromOperators(player.getGameProfile());
         }
     }

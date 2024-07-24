@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import javax.imageio.ImageIO;
 
@@ -45,7 +46,7 @@ public class MotdInitializer extends ModuleInitializer {
         ICON_FOLDER.mkdirs();
         File[] icons = ICON_FOLDER.listFiles();
         if (icons == null || icons.length == 0) {
-            Fuji.LOGGER.warn("No icons found in {}", ICON_FOLDER.getAbsolutePath());
+            LogUtil.warn("No icons found in {}", ICON_FOLDER.getAbsolutePath());
             return Optional.empty();
         }
 
@@ -58,7 +59,7 @@ public class MotdInitializer extends ModuleInitializer {
             byteArrayOutputStream = new ByteArrayOutputStream();
             ImageIO.write(bufferedImage, "PNG", byteArrayOutputStream);
         } catch (IOException e) {
-            Fuji.LOGGER.warn("Failed to encode favicon", e);
+            LogUtil.warn("Failed to encode favicon", e);
             return Optional.empty();
         }
         return Optional.of(new ServerMetadata.Favicon(byteArrayOutputStream.toByteArray()));

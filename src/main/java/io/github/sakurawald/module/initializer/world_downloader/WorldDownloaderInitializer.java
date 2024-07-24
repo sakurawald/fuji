@@ -1,14 +1,13 @@
 package io.github.sakurawald.module.initializer.world_downloader;
 
 import com.google.common.collect.EvictingQueue;
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.IOUtil;
 import io.github.sakurawald.util.minecraft.MessageHelper;
@@ -31,6 +30,8 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static net.minecraft.server.command.CommandManager.literal;
 
 public class WorldDownloaderInitializer extends ModuleInitializer {
 
@@ -57,14 +58,14 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
             server = HttpServer.create(new InetSocketAddress(Configs.configHandler.model().modules.world_downloader.port), 0);
             server.start();
         } catch (IOException e) {
-            Fuji.LOGGER.error("Failed to start http server: " + e.getMessage());
+            LogUtil.error("Failed to start http server: {}", e.getMessage());
         }
     }
 
     @SuppressWarnings("unused")
     @Override
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("download").executes(this::$download));
+        dispatcher.register(literal("download").executes(this::$download));
     }
 
     public void safelyRemoveContext(String path) {
@@ -90,7 +91,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
 
             /* remove redundant contexts */
             if (contextQueue.remainingCapacity() == 0) {
-                Fuji.LOGGER.info("contexts is full, remove the oldest context. {}", contextQueue.peek());
+                LogUtil.info("contexts is full, remove the oldest context. {}", contextQueue.peek());
                 safelyRemoveContext(contextQueue.poll());
             }
 
@@ -142,7 +143,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Fuji.LOGGER.info("Generate region file: {}", output.getAbsolutePath());
+        LogUtil.info("Generate region file: {}", output.getAbsolutePath());
         return output;
     }
 

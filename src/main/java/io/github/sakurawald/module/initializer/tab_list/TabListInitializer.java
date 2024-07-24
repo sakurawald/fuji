@@ -19,7 +19,6 @@ import org.quartz.JobExecutionException;
 
 import javax.naming.OperationNotSupportedException;
 
-@Slf4j
 public class TabListInitializer extends ModuleInitializer {
 
     @Override

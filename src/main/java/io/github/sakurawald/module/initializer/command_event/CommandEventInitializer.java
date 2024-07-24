@@ -13,7 +13,6 @@ import net.minecraft.server.world.ServerWorld;
 
 import java.util.List;
 
-@Slf4j
 public class CommandEventInitializer extends ModuleInitializer {
 
     @Override

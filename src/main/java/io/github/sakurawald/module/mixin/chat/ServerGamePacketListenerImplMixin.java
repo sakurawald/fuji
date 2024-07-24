@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(value = ServerPlayNetworkHandler.class, priority = 1000 + 1)
-@Slf4j
 public abstract class ServerGamePacketListenerImplMixin {
 
     @Unique

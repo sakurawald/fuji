@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.github.sakurawald.Fuji.LOGGER;
+import static io.github.sakurawald.util.LogUtil.LOGGER;
 
 @UtilityClass
 public class IOUtil {

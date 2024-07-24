@@ -21,7 +21,6 @@ import static io.github.sakurawald.util.minecraft.MessageHelper.ofText;
 
 // the last to check the return value
 @Mixin(value = ServerPlayerEntity.class, priority = 1000 - 125)
-@Slf4j
 public abstract class OverrideTabListNameMixin {
 
     @Unique

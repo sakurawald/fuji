@@ -1,9 +1,9 @@
 package io.github.sakurawald.module.initializer.command_meta.shell;
 
 import com.mojang.brigadier.CommandDispatcher;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
@@ -23,7 +23,7 @@ public class ShellCommand extends ModuleInitializer {
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         // confirm
         if (!Configs.configHandler.model().modules.command_meta.shell.enable_warning.equals("CONFIRM")) {
-            Fuji.LOGGER.warn("refuse to enable `shell` module");
+            LogUtil.warn("refuse to enable `shell` module");
             return;
         }
 
@@ -36,7 +36,7 @@ public class ShellCommand extends ModuleInitializer {
 
                                     CompletableFuture.runAsync(() -> {
                                         try {
-                                            Fuji.LOGGER.info("shell exec: {}", rest);
+                                            LogUtil.info("shell exec: {}", rest);
 
                                             Process process = Runtime.getRuntime().exec(rest, null, null);
                                             InputStream inputStream = process.getInputStream();
@@ -50,10 +50,10 @@ public class ShellCommand extends ModuleInitializer {
                                             process.waitFor();
 
                                             // output
-                                            Fuji.LOGGER.info(output.toString());
+                                            LogUtil.info(output.toString());
                                             ctx.getSource().sendMessage(Text.literal(output.toString()));
                                         } catch (IOException | InterruptedException e) {
-                                            Fuji.LOGGER.error(e.toString());
+                                            LogUtil.cryLoudly("Failed to execute a shell command.", e);
                                         }
                                     });
 

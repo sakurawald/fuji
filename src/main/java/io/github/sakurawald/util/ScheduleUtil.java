@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
 
-import static io.github.sakurawald.Fuji.LOGGER;
+import static io.github.sakurawald.util.LogUtil.LOGGER;
 
 
 @UtilityClass

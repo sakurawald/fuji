@@ -1,6 +1,6 @@
 package io.github.sakurawald.util.minecraft;
 
-import io.github.sakurawald.Fuji;
+import io.github.sakurawald.util.LogUtil;
 import lombok.experimental.UtilityClass;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -51,7 +51,7 @@ public class NbtHelper {
             String node = nodes[i];
 
             if (!root.contains(node)) {
-                Fuji.LOGGER.error("Nbt {} don't has path {}", root, path);
+                LogUtil.error("Nbt {} don't has path {}", root, path);
             }
 
             root = root.getCompound(node);
@@ -69,7 +69,7 @@ public class NbtHelper {
             }
             return NbtIo.read(path);
         } catch (IOException e) {
-            Fuji.LOGGER.error("failed to create nbt file in {}", path);
+            LogUtil.error("failed to create nbt file in {}", path);
         }
 
         return null;
@@ -79,7 +79,7 @@ public class NbtHelper {
         try {
             NbtIo.write(root, path);
         } catch (IOException e) {
-            Fuji.LOGGER.error("failed to write nbt file in {}", path);
+            LogUtil.error("failed to write nbt file in {}", path);
         }
     }
 

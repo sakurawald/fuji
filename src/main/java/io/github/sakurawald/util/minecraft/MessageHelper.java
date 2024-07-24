@@ -12,6 +12,7 @@ import eu.pb4.placeholders.api.parsers.tag.TextTag;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.handler.ResourceConfigHandler;
+import io.github.sakurawald.util.LogUtil;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
@@ -37,7 +38,6 @@ import java.util.List;
 import java.util.Map;
 
 @UtilityClass
-@Slf4j
 public class MessageHelper {
     public static final NodeParser POWERFUL_PARSER = NodeParser.builder()
             .quickText()
@@ -83,9 +83,9 @@ public class MessageHelper {
             is = FileUtils.openInputStream(Fuji.CONFIG_PATH.resolve("lang").resolve(lang + ".json").toFile());
             JsonObject jsonObject = JsonParser.parseReader(new InputStreamReader(is)).getAsJsonObject();
             lang2json.put(lang, jsonObject);
-            Fuji.LOGGER.info("Language {} loaded.", lang);
+            LogUtil.info("Language {} loaded.", lang);
         } catch (IOException e) {
-            Fuji.LOGGER.error("Failed to load language '{}'", lang);
+            LogUtil.error("Failed to load language '{}'", lang);
             lang2json.put(lang, UNSUPPORTED_LANGUAGE);
         }
     }
@@ -131,7 +131,7 @@ public class MessageHelper {
         }
 
         String errorString = "Language '%s' miss the key '%s'".formatted(lang, key);
-        Fuji.LOGGER.error(errorString);
+        LogUtil.error(errorString);
         return errorString;
     }
 
@@ -212,7 +212,7 @@ public class MessageHelper {
 
     public static void sendBroadcast(@NotNull String key, Object... args) {
         // fix: log broadcast for console
-        Fuji.LOGGER.info(PlainTextComponentSerializer.plainText().serialize(ofComponent(null, key, args)));
+        LogUtil.info(PlainTextComponentSerializer.plainText().serialize(ofComponent(null, key, args)));
 
         for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
             sendMessage(player, key, args);

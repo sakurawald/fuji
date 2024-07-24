@@ -1,11 +1,11 @@
 package io.github.sakurawald.module.initializer.multi_obsidian_platform;
 
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.world.ServerWorld;
@@ -34,7 +34,7 @@ public class MultiObsidianPlatformInitializer extends ModuleInitializer {
             }
         }
 
-        Fuji.LOGGER.warn("BlockPos {} is not END_PORTAL and we can't find a nearby END_PORTAL block !", bp);
+        LogUtil.warn("BlockPos {} is not END_PORTAL and we can't find a nearby END_PORTAL block !", bp);
         return bp;
     }
 

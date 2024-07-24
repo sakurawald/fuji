@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 
-@Slf4j
 public class DocsGeneratorTest {
 
     @SneakyThrows

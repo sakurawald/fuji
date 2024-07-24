@@ -25,7 +25,6 @@ import net.minecraft.util.Identifier;
 import java.util.*;
 
 
-@Slf4j
 public class TesterInitializer extends ModuleInitializer {
 
     void registerStore() {

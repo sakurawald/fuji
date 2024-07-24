@@ -17,7 +17,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Map;
 import java.util.Set;
 
-import static io.github.sakurawald.Fuji.LOGGER;
+import static io.github.sakurawald.util.LogUtil.LOGGER;
 
 
 public abstract class ConfigHandler<T> {

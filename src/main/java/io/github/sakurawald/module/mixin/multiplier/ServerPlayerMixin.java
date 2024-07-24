@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import java.util.Optional;
 
 @Mixin(ServerPlayerEntity.class)
-@Slf4j
 public abstract class ServerPlayerMixin {
 
     @Unique

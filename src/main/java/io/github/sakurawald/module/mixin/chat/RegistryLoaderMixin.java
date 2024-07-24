@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 @Mixin(value = RegistryLoader.class)
-@Slf4j
 public class RegistryLoaderMixin {
 
     /**

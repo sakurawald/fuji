@@ -42,7 +42,6 @@ import java.util.regex.Pattern;
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
-@Slf4j
 public class ChatInitializer extends ModuleInitializer {
     public static final ConfigHandler<ChatModel> chatHandler = new ObjectConfigHandler<>("chat.json", ChatModel.class);
 

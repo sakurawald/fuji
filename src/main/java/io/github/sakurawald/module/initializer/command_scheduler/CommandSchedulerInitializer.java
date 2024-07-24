@@ -5,11 +5,11 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.SchedulerModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.ScheduleUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import net.minecraft.command.CommandRegistryAccess;
@@ -38,7 +38,7 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
                         this.put("job", scheduleJob);
                     }
                 }));
-                Fuji.LOGGER.info("SchedulerModule: Add ScheduleJob {}", scheduleJob);
+                LogUtil.info("SchedulerModule: Add ScheduleJob {}", scheduleJob);
             }
         });
     }

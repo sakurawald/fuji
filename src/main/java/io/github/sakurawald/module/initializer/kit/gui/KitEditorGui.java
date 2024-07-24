@@ -25,7 +25,6 @@ import net.minecraft.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 public class KitEditorGui extends PagedGui<Kit> {
 
     private static final KitInitializer module = ModuleManager.getInitializer(KitInitializer.class);

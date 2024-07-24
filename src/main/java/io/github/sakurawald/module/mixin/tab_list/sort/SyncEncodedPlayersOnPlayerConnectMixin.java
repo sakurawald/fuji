@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Mixin(PlayerManager.class)
-@Slf4j
 // https://wiki.vg/Protocol#Player_Info_Remove
 public abstract class SyncEncodedPlayersOnPlayerConnectMixin {
 

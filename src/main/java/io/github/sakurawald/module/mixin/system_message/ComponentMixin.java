@@ -15,7 +15,7 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableTextContent;
 
-import static io.github.sakurawald.Fuji.LOGGER;
+import static io.github.sakurawald.util.LogUtil.LOGGER;
 
 @Mixin(Text.class)
 public interface ComponentMixin {

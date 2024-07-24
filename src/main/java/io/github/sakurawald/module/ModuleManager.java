@@ -2,19 +2,16 @@ package io.github.sakurawald.module;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import lombok.extern.slf4j.Slf4j;
+import io.github.sakurawald.util.LogUtil;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.ApiStatus;
 import org.reflections.Reflections;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.*;
-import java.util.stream.Collectors;
 
-@Slf4j
 public class ModuleManager {
     private static final Map<Class<? extends ModuleInitializer>, ModuleInitializer> initializers = new HashMap<>();
     private static final Map<List<String>, Boolean> module2enable = new HashMap<>();
@@ -36,7 +33,7 @@ public class ModuleManager {
                     } catch (OperationNotSupportedException e) {
                         // no-op
                     } catch (Exception e) {
-                        Fuji.LOGGER.error("Failed to reload module -> {}", e.getMessage());
+                        LogUtil.cryLoudly("Failed to reload module.", e);
                     }
                 }
         );
@@ -49,7 +46,7 @@ public class ModuleManager {
         });
 
         enabled.sort(String::compareTo);
-        Fuji.LOGGER.info("Enabled {}/{} modules -> {}", enabled.size(), module2enable.size(), enabled);
+        LogUtil.info("Enabled {}/{} modules -> {}", enabled.size(), module2enable.size(), enabled);
     }
 
     @ApiStatus.AvailableSince("1.1.5")
@@ -72,7 +69,7 @@ public class ModuleManager {
                     moduleInitializer.initialize();
                     initializers.put(clazz, moduleInitializer);
                 } catch (Exception e) {
-                    Fuji.LOGGER.error(e.toString());
+                    LogUtil.error("Failed to initialize module {}.", clazz.getName());
                 }
             }
         }
@@ -85,7 +82,7 @@ public class ModuleManager {
         }
 
         if (!isRequiredModsInstalled(packagePath)) {
-            Fuji.LOGGER.warn("Can't load module {} (reason: the required dependency mod isn't installed)", packagePath);
+            LogUtil.warn("Can't load module {} (reason: the required dependency mod isn't installed)", packagePath);
             module2enable.put(packagePath, false);
             return false;
         }

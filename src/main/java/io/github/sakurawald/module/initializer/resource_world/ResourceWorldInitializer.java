@@ -3,13 +3,13 @@ package io.github.sakurawald.module.initializer.resource_world;
 import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.common.accessor.SimpleRegistryMixinInterface;
 import io.github.sakurawald.module.common.random_teleport.RandomTeleport;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.resource_world.interfaces.DimensionOptionsMixinInterface;
+import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.ScheduleUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
@@ -253,7 +253,7 @@ public class ResourceWorldInitializer extends ModuleInitializer {
             // IMPORTANT: only delete the world if it's a resource world
             if (!namespace.equals(DEFAULT_RESOURCE_WORLD_NAMESPACE)) return;
 
-            Fuji.LOGGER.info("onWorldUnload() -> Creating world {} ...", path);
+            LogUtil.info("onWorldUnload() -> Creating world {} ...", path);
             long seed = Configs.configHandler.model().modules.resource_world.seed;
             this.createWorld(server, this.getDimensionTypeRegistryKeyByPath(path), path, seed);
         }
@@ -263,7 +263,7 @@ public class ResourceWorldInitializer extends ModuleInitializer {
 
         @Override
         public void execute(JobExecutionContext context) {
-            Fuji.LOGGER.info("Start to reset resource worlds.");
+            LogUtil.info("Start to reset resource worlds.");
             MinecraftServer server = (MinecraftServer) context.getJobDetail().getJobDataMap().get(MinecraftServer.class.getName());
             ResourceWorldInitializer module = (ResourceWorldInitializer) context.getJobDetail().getJobDataMap().get(ResourceWorldInitializer.class.getName());
             server.execute(() -> module.resetWorlds(server));

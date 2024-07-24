@@ -14,7 +14,6 @@ import net.minecraft.text.Text;
 
 import java.util.List;
 
-@Slf4j
 public abstract class PagedGui<T> extends LayeredGui {
 
     @Getter

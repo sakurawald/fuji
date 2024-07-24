@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.mixin._internal.low_level;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.common.accessor.SimpleRegistryMixinInterface;
+import io.github.sakurawald.util.LogUtil;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import it.unimi.dsi.fastutil.objects.Reference2IntMap;
 import net.minecraft.registry.MutableRegistry;
@@ -74,7 +74,7 @@ public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInter
             this.keyToEntryInfo.remove(this.key);
             return true;
         } catch (Throwable e) {
-            Fuji.LOGGER.error("Failed to remove entry: {}", entry.toString());
+            LogUtil.error("Failed to remove entry: {}", entry.toString());
             return false;
         }
     }

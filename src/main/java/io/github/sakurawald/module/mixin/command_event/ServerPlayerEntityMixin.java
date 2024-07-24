@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 @Mixin(ServerPlayerEntity.class)
-@Slf4j
 public class ServerPlayerEntityMixin {
 
     @Inject(method = "onDeath", at = @At("HEAD"))

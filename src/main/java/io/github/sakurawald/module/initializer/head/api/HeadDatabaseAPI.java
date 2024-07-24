@@ -7,12 +7,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.util.LogUtil;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URLConnection;
@@ -34,16 +34,16 @@ public class HeadDatabaseAPI {
     private void refreshCacheFromAPI() {
         for (Category category : Category.values()) {
             try {
-                Fuji.LOGGER.info("Saving {} heads to cache", category.name);
+                LogUtil.info("Saving {} heads to cache", category.name);
                 URLConnection connection = URI.create(String.format(API, category.name)).toURL().openConnection();
                 var stream = new BufferedInputStream(connection.getInputStream());
                 FileUtils.copyInputStreamToFile(stream, STORAGE_PATH.resolve(category.name + ".json").toFile());
             } catch (IOException e) {
-                Fuji.LOGGER.warn("Failed to save new heads to cache");
+                LogUtil.warn("Failed to save new heads to cache");
             }
 
             if (!Files.exists(STORAGE_PATH.resolve(category.name + ".json"))) {
-                Fuji.LOGGER.info("Loading fallback {} heads", category.name);
+                LogUtil.info("Loading fallback {} heads", category.name);
                 try {
                     Files.createDirectories(STORAGE_PATH);
                     Files.copy(
@@ -51,7 +51,7 @@ public class HeadDatabaseAPI {
                             STORAGE_PATH.resolve(category.name + ".json")
                     );
                 } catch (IOException e) {
-                    Fuji.LOGGER.warn("Failed to load fallback heads", e);
+                    LogUtil.warn("Failed to load fallback heads", e);
                 }
             }
         }
@@ -62,7 +62,7 @@ public class HeadDatabaseAPI {
         Gson gson = new Gson();
         for (Category category : Category.values()) {
             try {
-                Fuji.LOGGER.info("Loading {} heads from cache", category.name);
+                LogUtil.info("Loading {} heads from cache", category.name);
                 var stream = Files.newInputStream(STORAGE_PATH.resolve(category.name + ".json"));
                 JsonArray headsJson = JsonParser.parseReader(new InputStreamReader(stream)).getAsJsonArray();
                 for (JsonElement headJson : headsJson) {
@@ -70,14 +70,14 @@ public class HeadDatabaseAPI {
                         Head head = gson.fromJson(headJson, Head.class);
                         heads.put(category, head);
                     } catch (Exception e) {
-                        Fuji.LOGGER.warn("Invalid head: " + headJson);
+                        LogUtil.warn("Invalid head: " + headJson);
                     }
                 }
             } catch (IOException e) {
-                Fuji.LOGGER.warn("Failed to load heads from cache", e);
+                LogUtil.warn("Failed to load heads from cache", e);
             }
         }
-        Fuji.LOGGER.info("Finished loading {} heads", heads.size());
+        LogUtil.info("Finished loading {} heads", heads.size());
         return heads;
     }
 }

@@ -68,7 +68,6 @@ public class TpaInitializer extends ModuleInitializer {
         return doResponse(ctx, ResponseStatus.CANCEL);
     }
 
-    @SuppressWarnings("SameReturnValue")
     private int doResponse(CommandContext<ServerCommandSource> ctx, ResponseStatus status) {
         return CommandHelper.playerOnlyCommand(ctx, source -> {
             ServerPlayerEntity target;
@@ -76,7 +75,7 @@ public class TpaInitializer extends ModuleInitializer {
                 target = CommandHelper.Argument.player(ctx);
             } catch (CommandSyntaxException e) {
                 MessageHelper.sendActionBar(source, "tpa.player_not_found");
-                return CommandHelper.Return.SUCCESS;
+                return CommandHelper.Return.ERROR;
             }
 
             /* resolve relative request */
@@ -88,7 +87,7 @@ public class TpaInitializer extends ModuleInitializer {
                     .findFirst();
             if (requestOptional.isEmpty()) {
                 MessageHelper.sendActionBar(source, "tpa.no_relative_ticket");
-                return CommandHelper.Return.SUCCESS;
+                return CommandHelper.Return.ERROR;
             }
 
             TpaRequest request = requestOptional.get();
@@ -114,7 +113,6 @@ public class TpaInitializer extends ModuleInitializer {
         });
     }
 
-    @SuppressWarnings("SameReturnValue")
     private int doRequest(CommandContext<ServerCommandSource> ctx, boolean tpahere) {
         return CommandHelper.playerOnlyCommand(ctx, source -> {
             ServerPlayerEntity target;
@@ -122,7 +120,7 @@ public class TpaInitializer extends ModuleInitializer {
                 target = CommandHelper.Argument.player(ctx);
             } catch (CommandSyntaxException e) {
                 MessageHelper.sendActionBar(source, "tpa.player_not_found");
-                return CommandHelper.Return.SUCCESS;
+                return CommandHelper.Return.ERROR;
             }
 
             /* add request */
@@ -132,12 +130,12 @@ public class TpaInitializer extends ModuleInitializer {
             if (request.getSender().equals(request.getReceiver())) {
                 MessageHelper.sendActionBar(request.getSender(), "tpa.request_to_self");
 
-                return CommandHelper.Return.SUCCESS;
+                return CommandHelper.Return.ERROR;
             }
 
             if (requests.stream().anyMatch(request::similarTo)) {
                 MessageHelper.sendActionBar(request.getSender(), "tpa.similar_request_exists");
-                return CommandHelper.Return.SUCCESS;
+                return CommandHelper.Return.ERROR;
             }
 
             requests.add(request);

@@ -23,9 +23,9 @@
  */
 package io.github.sakurawald.module.mixin.motd;
 
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.motd.MotdInitializer;
+import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.server.network.ServerQueryNetworkHandler;
 import org.spongepowered.asm.mixin.Mixin;
@@ -46,7 +46,7 @@ abstract class ServerQueryNetworkHandlerMixin {
     public ServerMetadata $handleStatusRequest(final net.minecraft.server.network.ServerQueryNetworkHandler instance) {
         ServerMetadata vanillaStatus = ServerHelper.getDefaultServer().getServerMetadata();
         if (vanillaStatus == null) {
-            Fuji.LOGGER.warn("Can't inject into the vanilla server status. (reason: the vanilla one is null)");
+            LogUtil.warn("Can't inject into the vanilla server status. (reason: the vanilla one is null)");
             return new ServerMetadata(module.getRandomDescription(), Optional.empty(), Optional.empty(), module.getRandomIcon(), false);
         }
 

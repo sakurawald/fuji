@@ -18,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Map;
 
 @Mixin(net.minecraft.server.network.ServerPlayNetworkHandler.class)
-@Slf4j
 public abstract class ServerPlayNetworkHandlerMixin {
 
     @Shadow

@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.command_spy;
 
 import com.mojang.brigadier.ParseResults;
-import io.github.sakurawald.Fuji;
+import io.github.sakurawald.util.LogUtil;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -9,7 +9,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(CommandManager.class)
 
@@ -22,6 +21,6 @@ public class CommandsMixin {
         if (player == null) return;
 
         // fix: fabric console will not log the command issue
-        Fuji.LOGGER.info("{} issued server command: {}", player.getGameProfile().getName(), string);
+        LogUtil.info("{} issued server command: {}", player.getGameProfile().getName(), string);
     }
 }

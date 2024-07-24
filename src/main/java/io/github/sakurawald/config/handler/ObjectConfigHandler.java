@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonWriter;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.util.LogUtil;
 import lombok.Cleanup;
 
 import java.io.*;
@@ -47,7 +48,7 @@ public class ObjectConfigHandler<T> extends ConfigHandler<T> {
 
         } catch (IOException | NoSuchMethodException | InstantiationException | IllegalAccessException |
                  InvocationTargetException e) {
-            Fuji.LOGGER.error("Load config failed: " + e.getMessage());
+            LogUtil.cryLoudly("Load config failed: ", e);
         }
     }
 

@@ -5,6 +5,7 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.kit.gui.KitEditorGui;
+import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.NbtHelper;
@@ -28,7 +29,6 @@ import java.util.List;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
-@Slf4j
 public class KitInitializer extends ModuleInitializer {
 
     public static final String INVENTORY = "inventory";
@@ -39,7 +39,7 @@ public class KitInitializer extends ModuleInitializer {
 
         NbtCompound root = NbtHelper.read(path);
         if (root == null) {
-            Fuji.LOGGER.warn("failed to write kit {}", kit);
+            LogUtil.warn("failed to write kit {}", kit);
             return;
         }
 
@@ -55,7 +55,7 @@ public class KitInitializer extends ModuleInitializer {
         try {
             Files.list(STORAGE_PATH).forEach(p -> ret.add(p.toFile().getName()));
         } catch (IOException e) {
-            Fuji.LOGGER.error("failed to list kits {}", e.toString());
+            LogUtil.error("failed to list kits {}", e.toString());
         }
         return ret;
     }

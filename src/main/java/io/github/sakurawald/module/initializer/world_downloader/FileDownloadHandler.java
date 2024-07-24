@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.world_downloader;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import io.github.sakurawald.Fuji;
+import io.github.sakurawald.util.LogUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 
@@ -24,7 +24,7 @@ public class FileDownloadHandler implements HttpHandler {
     @Override
     @SneakyThrows
     public void handle(HttpExchange exchange) {
-        Fuji.LOGGER.info("Download file: {}", file.getAbsolutePath());
+        LogUtil.info("Download file: {}", file.getAbsolutePath());
 
         /* consume this context */
         module.safelyRemoveContext(exchange.getHttpContext());
@@ -53,7 +53,7 @@ public class FileDownloadHandler implements HttpHandler {
                                     / bytesPerSecond;
                             Thread.sleep(TimeUnit.NANOSECONDS.toMillis(sleepTime));
                         } catch (InterruptedException e) {
-                            Fuji.LOGGER.warn("Interrupted while sleeping for throttling", e);
+                            LogUtil.warn("Interrupted while sleeping for throttling", e);
                             return;
                         }
                     }
@@ -71,6 +71,6 @@ public class FileDownloadHandler implements HttpHandler {
                 os.close();
             }
         }
-        Fuji.LOGGER.info("Delete file: {} -> {}", file.getAbsolutePath(), file.delete());
+        LogUtil.info("Delete file: {} -> {}", file.getAbsolutePath(), file.delete());
     }
 }

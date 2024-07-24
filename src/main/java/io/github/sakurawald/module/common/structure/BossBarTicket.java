@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-@Slf4j
 public abstract class BossBarTicket {
     private final List<Audience> audiences;
     @Getter
