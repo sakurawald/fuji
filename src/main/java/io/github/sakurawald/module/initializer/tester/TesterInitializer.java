@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.test;
+package io.github.sakurawald.module.initializer.tester;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
@@ -12,7 +12,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.inventory.Book;
 import net.kyori.adventure.text.Component;
-import net.minecraft.client.realms.util.JsonUtils;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.MinecraftServer;
@@ -21,13 +20,12 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.JsonReaderUtils;
 
 import java.util.*;
 
 
 @Slf4j
-public class TestInitializer extends ModuleInitializer {
+public class TesterInitializer extends ModuleInitializer {
 
     void registerStore() {
         Placeholders.register(Identifier.of("fuji", "store"), (ctx, args) -> {
@@ -99,8 +97,8 @@ public class TestInitializer extends ModuleInitializer {
 
         registerStore();
         dispatcher.register(
-                CommandManager.literal("test").requires(s -> s.hasPermissionLevel(4))
-                        .then(CommandManager.literal("run").executes(TestInitializer::$run))
+                CommandManager.literal("tester").requires(s -> s.hasPermissionLevel(4))
+                        .then(CommandManager.literal("run").executes(TesterInitializer::$run))
         );
     }
 }

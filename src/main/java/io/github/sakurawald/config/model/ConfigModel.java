@@ -129,7 +129,7 @@ public class ConfigModel {
         public Whitelist whitelist = new Whitelist();
         public Head head = new Head();
         public Profiler profiler = new Profiler();
-        public Test test = new Test();
+        public Tester tester = new Tester();
         public Sit sit = new Sit();
         public World world = new World();
         public Multiplier multiplier = new Multiplier();
@@ -719,7 +719,7 @@ public class ConfigModel {
                 This module only works in development-environment.
                 If you enable this module in a production-environment, then nothing will happen.
                 """)
-        public class Test {
+        public class Tester {
             public boolean enable = false;
         }
 
