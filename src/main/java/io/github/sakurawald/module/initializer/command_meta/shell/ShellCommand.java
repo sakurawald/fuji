@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.command_toolbox.shell;
+package io.github.sakurawald.module.initializer.command_meta.shell;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
@@ -24,7 +24,7 @@ public class ShellCommand extends ModuleInitializer {
     @Override
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         // confirm
-        if (!Configs.configHandler.model().modules.command_toolbox.shell.enable_warning.equals("CONFIRM")) {
+        if (!Configs.configHandler.model().modules.command_meta.shell.enable_warning.equals("CONFIRM")) {
             Fuji.LOGGER.warn("refuse to enable `shell` module");
             return;
         }

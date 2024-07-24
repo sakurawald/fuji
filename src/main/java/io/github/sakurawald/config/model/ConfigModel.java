@@ -1215,13 +1215,56 @@ public class ConfigModel {
             }
         }
 
+        public CommandMeta command_meta = new CommandMeta();
+
+        @Documentation("""
+                This module provides commands to run commands to run commands to run commands...
+                
+                """)
+        public class CommandMeta {
+
+
+            public ForEach for_each = new ForEach();
+            public Shell shell = new Shell();
+
+            @Documentation("""
+                    This module provides `/foreach` command.
+                                        
+                    If a command is only targeted for `single player`, you can use `foreach` to apply it for `all players`
+                                        
+                    Example 1: `/foreach say hello %player:name%`
+                                        
+                    """)
+            public class ForEach {
+                public boolean enable = true;
+            }
+
+
+            @Documentation("""
+                    This module provides `/shell` command, which executes `command line` in your `host shell`.
+                                        
+                    This module is a powerful and **`dangerous`** module, **not recommended to enable it**.
+                                        
+                    Exmaple 1: `/shell touch %player:name%.dangerous` (Create a file using placeholder)
+                                        
+                    Exmaple 2: `/shell emacs` (Execute a program in the host os)
+                                        
+                    Example 3: `/shell ...` (Possible to download a virus from Internet and execute it!)
+                                        
+                    """)
+            public class Shell {
+                public String enable_warning = "ENABLE THIS MODULE IS POTENTIAL TO HARM YOUR COMPUTER! YOU NEED TO CHANGE THIS FIELD INTO `CONFIRM` TO ENABLE THIS MODULE";
+                public boolean enable = false;
+            }
+
+        }
+
         @Documentation("""
                 This module provies some `simple` commands.
                 We said a `command` is `simple` since its puporse is not big enough to be a standalone `facility`.
                 """)
         public class CommandToolbox {
             public boolean enable = false;
-
             public Bed bed = new Bed();
             public Extinguish extinguish = new Extinguish();
             public Feed feed = new Feed();
@@ -1240,8 +1283,6 @@ public class ConfigModel {
             public SendMessage send_message = new SendMessage();
             public SendBroadcast send_broadcast = new SendBroadcast();
             public SendActionBar send_actionbar = new SendActionBar();
-            public ForEach for_each = new ForEach();
-            public Shell shell = new Shell();
             public TrashCan trashcan = new TrashCan();
 
             @Documentation("This module provides `/bed` command, which teleports the player to his bed.")
@@ -1345,35 +1386,6 @@ public class ConfigModel {
                     """)
             public class SendActionBar {
                 public boolean enable = true;
-            }
-
-            @Documentation("""
-                    This module provides `/foreach` command.
-                                        
-                    If a command is only targeted for `single player`, you can use `foreach` to apply it for `all players`
-                                        
-                    Example 1: `/foreach say hello %player:name%`
-                                        
-                    """)
-            public class ForEach {
-                public boolean enable = true;
-            }
-
-            @Documentation("""
-                    This module provides `/shell` command, which executes `command line` in your `host shell`.
-                                        
-                    This module is a powerful and **`dangerous`** module, **not recommended to enable it**.
-                                        
-                    Exmaple 1: `/shell touch %player:name%.dangerous` (Create a file using placeholder)
-                                        
-                    Exmaple 2: `/shell emacs` (Execute a program in the host os)
-                                        
-                    Example 3: `/shell ...` (Possible to download a virus from Internet and execute it!)
-                                        
-                    """)
-            public class Shell {
-                public String enable_warning = "ENABLE THIS MODULE IS POTENTIAL TO HARM YOUR COMPUTER! YOU NEED TO CHANGE THIS FIELD INTO `CONFIRM` TO ENABLE THIS MODULE";
-                public boolean enable = false;
             }
 
             @Documentation("Command: /trashcan")

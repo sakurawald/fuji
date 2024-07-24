@@ -14,7 +14,6 @@
     "_internal.low_level.SimpleRegistryMixin",
     "_internal.low_level.ThreadedAnvilChunkStorageMixin",
     "_internal.low_level.UserCacheMixin",
-    "_internal.meta.A",
     "afk.PlayerListMixin",
     "afk.ServerPlayerMixin",
     "anti_build.BlockItemMixin",

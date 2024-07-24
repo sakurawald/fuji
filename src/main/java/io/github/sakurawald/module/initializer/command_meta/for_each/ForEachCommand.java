@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.command_toolbox.for_each;
+package io.github.sakurawald.module.initializer.command_meta.for_each;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
