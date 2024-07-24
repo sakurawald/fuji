@@ -14,6 +14,7 @@ import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.PermissionHelper;
 import lombok.Getter;
+import net.minecraft.command.CommandAction;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -22,7 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static net.minecraft.server.command.CommandManager.*;
+import static net.minecraft.server.command.CommandManager.RegistrationEnvironment;
+import static net.minecraft.server.command.CommandManager.literal;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
 public class HomeInitializer extends ModuleInitializer {
@@ -63,7 +65,7 @@ public class HomeInitializer extends ModuleInitializer {
     private int $tp(CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.playerOnlyCommand(ctx, player -> {
             Map<String, Position> name2position = getHomes(player);
-            String homeName = StringArgumentType.getString(ctx, "name");
+            String homeName = CommandHelper.Argument.name(ctx);
             if (!name2position.containsKey(homeName)) {
                 MessageHelper.sendMessage(player, "home.no_found", homeName);
                 return 0;
@@ -78,7 +80,7 @@ public class HomeInitializer extends ModuleInitializer {
     private int $unset(CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.playerOnlyCommand(ctx, player -> {
             Map<String, Position> name2position = getHomes(player);
-            String homeName = StringArgumentType.getString(ctx, "name");
+            String homeName = CommandHelper.Argument.name(ctx);
             if (!name2position.containsKey(homeName)) {
                 MessageHelper.sendMessage(player, "home.no_found", homeName);
                 return 0;
@@ -93,7 +95,7 @@ public class HomeInitializer extends ModuleInitializer {
     private int $set(CommandContext<ServerCommandSource> ctx, boolean override) {
         return CommandHelper.playerOnlyCommand(ctx, player -> {
             Map<String, Position> name2position = getHomes(player);
-            String homeName = StringArgumentType.getString(ctx, "name");
+            String homeName = CommandHelper.Argument.name(ctx);
             if (name2position.containsKey(homeName)) {
                 if (!override) {
                     MessageHelper.sendMessage(player, "home.set.fail.need_override", homeName);
@@ -121,7 +123,7 @@ public class HomeInitializer extends ModuleInitializer {
     }
 
     public RequiredArgumentBuilder<ServerCommandSource, String> myHomesArgument() {
-        return argument("name", StringArgumentType.string())
+        return CommandHelper.Argument.name()
                 .suggests((context, builder) -> {
                             ServerPlayerEntity player = context.getSource().getPlayer();
                             if (player == null) return builder.buildFuture();

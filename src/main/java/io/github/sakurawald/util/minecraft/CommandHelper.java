@@ -72,12 +72,12 @@ public class CommandHelper {
             return string(ctx, ARGUMENT_NAME_REST);
         }
 
-        public static RequiredArgumentBuilder<ServerCommandSource, String> word(String argumentName) {
-            return argument(argumentName, StringArgumentType.word());
+        public static RequiredArgumentBuilder<ServerCommandSource, String> string(String argumentName) {
+            return argument(argumentName, StringArgumentType.string());
         }
 
         public static RequiredArgumentBuilder<ServerCommandSource, String> name() {
-            return word(ARGUMENT_NAME_NAME);
+            return string(ARGUMENT_NAME_NAME);
         }
 
         public static String name(CommandContext<ServerCommandSource> ctx) {
