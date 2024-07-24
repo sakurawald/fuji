@@ -5,7 +5,6 @@ import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.config.annotation.Documentation;
 import io.github.sakurawald.module.common.structure.RegexRewriteEntry;
 import io.github.sakurawald.module.initializer.command_alias.structure.CommandAliasEntry;
-import io.github.sakurawald.module.initializer.command_rewrite.CommandRewriteEntry;
 
 import java.util.*;
 
@@ -888,9 +887,9 @@ public class ConfigModel {
                 """)
         public class CommandRewrite {
             public boolean enable = false;
-            public List<CommandRewriteEntry> regex = new ArrayList<>() {
+            public List<RegexRewriteEntry> regex = new ArrayList<>() {
                 {
-                    this.add(new CommandRewriteEntry("home", "home tp default"));
+                    this.add(new RegexRewriteEntry("home", "home tp default"));
                 }
             };
 

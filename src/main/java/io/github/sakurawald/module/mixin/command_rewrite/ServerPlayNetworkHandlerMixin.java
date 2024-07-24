@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.command_rewrite;
 
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.module.initializer.command_rewrite.CommandRewriteEntry;
+import io.github.sakurawald.module.common.structure.RegexRewriteEntry;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,9 +14,9 @@ public class ServerPlayNetworkHandlerMixin {
 
     @ModifyVariable(method = "executeCommand", at = @At(value = "HEAD"), ordinal = 0, argsOnly = true)
     public String $execute(String string) {
-        for (CommandRewriteEntry rule : Configs.configHandler.model().modules.command_rewrite.regex) {
-            if (string.matches(rule.from)) {
-                return string.replaceAll(rule.from, rule.to);
+        for (RegexRewriteEntry entry : Configs.configHandler.model().modules.command_rewrite.regex) {
+            if (string.matches(entry.regex)) {
+                return string.replaceAll(entry.regex, entry.replacement);
             }
         }
 
