@@ -54,6 +54,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
         registerGetMetaPlaceholder();
         registerRandomPlayerPlaceholder();
         registerRandomPlaceholder();
+        registerEscapePlaceholder();
 
         /* events */
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
@@ -65,6 +66,10 @@ public class PlaceholderInitializer extends ModuleInitializer {
                 }
             });
         });
+    }
+
+    private void registerEscapePlaceholder() {
+        Placeholders.register(Identifier.of(Fuji.MOD_ID, "escape"), (ctx, args) -> PlaceholderResult.value(Text.literal("%" + args + "%")));
     }
 
     private void registerHasPermissionPlaceholder() {

@@ -15,13 +15,13 @@ public class CommandExecuter {
 
     public static void executeCommandsAsConsoleWithContext(ServerPlayerEntity contextPlayer, List<String> commands) {
         /* context
-        *
-        * !as_console
-        * !as_player
-        * !as_fake_op
-        *
-        *
-        *  */
+         *
+         * !as_console
+         * !as_player
+         * !as_fake_op
+         *
+         *
+         *  */
         // ... to write
 
         /* resolve */
@@ -35,9 +35,9 @@ public class CommandExecuter {
         try {
             // parse placeholders
             if (contextPlayer != null) {
-                command = MessageHelper.ofString(contextPlayer,command);
+                command = MessageHelper.ofString(contextPlayer, command);
             } else {
-                command = MessageHelper.ofString(ServerHelper.getDefaultServer(),command);
+                command = MessageHelper.ofString(ServerHelper.getDefaultServer(), command);
             }
 
             server.getCommandManager().getDispatcher().execute(command, server.getCommandSource());

@@ -1260,7 +1260,13 @@ public class ConfigModel {
                     If a command is only targeted for `single player`, you can use `foreach` to apply it for `all players`
                                         
                     Example 1: `/foreach say hello %player:name%`
-                                        
+                    
+                    Note:
+                    - If you use `foreach` in `scheduler module`, then you should `escape` (Write `%fuji:escape player:name%` insted of `%player:name%`) the `placeholder` by `double quote`. 
+                        It's because the scheduler module will try to parse the placeholder, and you need to escape the placeholder,
+                        so that the placeholder can be parsed by foreach commnad. 
+                        Here is an example about `escape` the `foreach command` in scheduler command list: `foreach give %fuji:escape player:name% minecraft:diamond 16`
+                      
                     """)
             public class ForEach {
                 public boolean enable = true;
