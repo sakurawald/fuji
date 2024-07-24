@@ -681,9 +681,9 @@ public class ConfigModel {
                     
                     Also, each `command node` has its `requirement`, which is a condition to check if the `command user`
                     can use the `command node`.
-                
+                                
                 This module can `override` the `requirement` of a `command node` into a `permission` with prefix `fuji.permission.<command_node_path>`.
-                
+                                
                 See [permission](https://github.com/sakurawald/fuji-fabric/wiki/Permission)
                 """)
         public class CommandPermission {
@@ -716,10 +716,10 @@ public class ConfigModel {
                 This module provides scheduler for auto-run jobs.
                                 
                 You can add schedule jobs by `cron expression`, set the random command-list to be executed.
-                
+                                
                 Command:
                 - /scheduler
-                
+                                
                 """)
         public class CommandScheduler {
             public boolean enable = false;
@@ -1177,7 +1177,7 @@ public class ConfigModel {
                     Enable this module requires `carpet-fabric` mod installed.
                                     
                     This module provides some management for `fake-player`.
-                    
+                                        
                     Command:
                     - /player who -> query the owner of the fake-player.
                     - /player renew -> renew all of your fake-players.
@@ -1251,8 +1251,27 @@ public class ConfigModel {
                 """)
         public class CommandMeta {
             public boolean enable = false;
+            public Run run = new Run();
             public ForEach for_each = new ForEach();
             public Shell shell = new Shell();
+
+            @Documentation("""
+                    This module provides `/run` command, which can run a `command` with `context`.
+                                        
+                    Example 1
+                    Give random diamonds to all online players: `/run as console give @a minecraft:diamond %fuji:random 8 32%`
+                    
+                    Example 3
+                    Give all online players random diamonds: `/run as console foreach give %fuji:escape player:name% minecraft:diamond %fuji:escape fuji:random 8 32%`
+                    
+                    Example 2
+                    Execute as a player, to run other commands. (Similar to `/execute as ...`): `/run as player Steve back`
+                                        
+                    """)
+            public class Run {
+                public boolean enable = true;
+            }
+
 
             @Documentation("""
                     This module provides `/foreach` command.
@@ -1260,7 +1279,7 @@ public class ConfigModel {
                     If a command is only targeted for `single player`, you can use `foreach` to apply it for `all players`
                                         
                     Example 1: `/foreach say hello %player:name%`
-                    
+                                        
                     Note:
                     - If you use `foreach` in `scheduler module`, then you should `escape` (Write `%fuji:escape player:name%` insted of `%player:name%`) the `placeholder` by `double quote`. 
                         It's because the scheduler module will try to parse the placeholder, and you need to escape the placeholder,
@@ -1271,7 +1290,6 @@ public class ConfigModel {
             public class ForEach {
                 public boolean enable = true;
             }
-
 
             @Documentation("""
                     This module provides `/shell` command, which executes `command line` in your `host shell`.
