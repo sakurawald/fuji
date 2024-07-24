@@ -1,41 +1,34 @@
 package io.github.sakurawald.module.initializer.command_toolbox.ping;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
+import lombok.SneakyThrows;
 import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import static net.minecraft.server.command.CommandManager.argument;
+import static net.minecraft.server.command.CommandManager.RegistrationEnvironment;
+import static net.minecraft.server.command.CommandManager.literal;
 
 
 public class PingInitializer extends ModuleInitializer {
 
-
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("ping").executes(this::$ping)
-                .then(argument("player", EntityArgumentType.player()).executes(this::$ping))
+    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
+        dispatcher.register(literal("ping").then(CommandHelper.Argument.player().executes(this::$ping))
         );
     }
 
-    @SuppressWarnings("SameReturnValue")
+    @SneakyThrows
     private int $ping(CommandContext<ServerCommandSource> ctx) {
+        ServerPlayerEntity target = CommandHelper.Argument.getPlayer(ctx);
+        String name = target.getGameProfile().getName();
 
-        try {
-            ServerPlayerEntity target = EntityArgumentType.getPlayer(ctx, "player");
-            String name = target.getGameProfile().getName();
-            int latency = target.networkHandler.getLatency();
-            MessageHelper.sendMessage(ctx.getSource(), "ping.player", name, latency);
-        } catch (Exception e) {
-            MessageHelper.sendMessage(ctx.getSource(), "entity.no_found");
-        }
+        int latency = target.networkHandler.getLatency();
+        MessageHelper.sendMessage(ctx.getSource(), "ping.player", name, latency);
 
         return CommandHelper.Return.SUCCESS;
     }

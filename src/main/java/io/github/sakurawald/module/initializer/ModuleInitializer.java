@@ -24,6 +24,11 @@ public class ModuleInitializer {
         throw new OperationNotSupportedException("This module don't support reload");
     }
 
+    /**
+     * Tips:
+     * 1. Don't catch and handle the command exception, just use @SneakThrow and CommandSyntaxException.
+     * 2. Use CommandHelper.Return to provide useful return value.
+     */
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         // no-op
     }

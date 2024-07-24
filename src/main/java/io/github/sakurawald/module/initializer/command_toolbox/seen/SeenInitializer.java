@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.command_toolbox.seen;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -35,7 +34,7 @@ public class SeenInitializer extends ModuleInitializer {
 
     @Override
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("seen").then(CommandHelper.Argument.offlinePlayerArgument().executes(this::$seen)));
+        dispatcher.register(CommandManager.literal("seen").then(CommandHelper.Argument.offlinePlayer().executes(this::$seen)));
     }
 
     @SuppressWarnings("SameReturnValue")

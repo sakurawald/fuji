@@ -4,7 +4,9 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.common.accessor.GameProfileCacheEx;
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+import net.minecraft.command.EntitySelector;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.command.ServerCommandSource;
@@ -27,7 +29,7 @@ public class CommandHelper {
         public static final String ARGUMENT_NAME_ENTITY = "entity";
         public static final String ARGUMENT_NAME_PLAYER = "player";
 
-        public static RequiredArgumentBuilder<ServerCommandSource, String> offlinePlayerArgument(String argumentName) {
+        public static RequiredArgumentBuilder<ServerCommandSource, String> offlinePlayer(String argumentName) {
             return argument(argumentName, StringArgumentType.string())
                     .suggests((context, builder) -> {
                                 UserCache gameProfileCache = ServerHelper.getDefaultServer().getUserCache();
@@ -39,8 +41,17 @@ public class CommandHelper {
                     );
         }
 
-        public static RequiredArgumentBuilder<ServerCommandSource, String> offlinePlayerArgument() {
-            return offlinePlayerArgument("player");
+        public static RequiredArgumentBuilder<ServerCommandSource, String> offlinePlayer() {
+            return offlinePlayer(ARGUMENT_NAME_PLAYER);
+        }
+
+        public static RequiredArgumentBuilder<ServerCommandSource, EntitySelector> player() {
+            return argument(ARGUMENT_NAME_PLAYER, EntityArgumentType.player());
+        }
+
+        @SneakyThrows
+        public static ServerPlayerEntity getPlayer(CommandContext<ServerCommandSource> ctx) {
+            return EntityArgumentType.getPlayer(ctx, ARGUMENT_NAME_PLAYER);
         }
     }
 

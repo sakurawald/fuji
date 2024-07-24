@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.deathlog;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -62,9 +61,9 @@ public class DeathLogInitializer extends ModuleInitializer {
         dispatcher.register(
                 literal("deathlog").requires(s -> s.hasPermissionLevel(4))
                         .then(literal("view")
-                                .then(CommandHelper.Argument.offlinePlayerArgument("from").executes(this::$view)))
+                                .then(CommandHelper.Argument.offlinePlayer("from").executes(this::$view)))
                         .then(literal("restore")
-                                .then(CommandHelper.Argument.offlinePlayerArgument("from")
+                                .then(CommandHelper.Argument.offlinePlayer("from")
                                         .then(argument("index", IntegerArgumentType.integer())
                                                 .then(argument("to", EntityArgumentType.player()).executes(this::$restore))))
                         ));
