@@ -1,14 +1,10 @@
+/* gradle env */
 plugins {
     id 'fabric-loom' version '1.6.+'
     id 'maven-publish'
     id "com.modrinth.minotaur" version "2.+"
-}
-
-version = project.mod_version
-group = project.maven_group
-
-base {
-    archivesName = project.archives_base_name
+    id 'java'
+    id 'idea'
 }
 
 repositories {
@@ -21,6 +17,15 @@ repositories {
     maven { url 'https://projectlombok.org/edge-releases' }
 }
 
+/* project props */
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+/* fabric env */
 loom {
 // fix: adventure mod error in runServer()
 //    splitEnvironmentSourceSets()
@@ -42,8 +47,8 @@ loom {
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings_version}"
+    modImplementation "net.fabricmc:fabric-loader:${project.fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
     compileOnly "org.projectlombok:lombok:${project.lombok_version}"
@@ -51,43 +56,35 @@ dependencies {
     testCompileOnly "org.projectlombok:lombok:${project.lombok_version}"
     testAnnotationProcessor "org.projectlombok:lombok:${project.lombok_version}"
 
-    implementation group: 'com.google.code.gson', name: 'gson', version: "${project.gson_version}"
+    implementation "com.google.code.gson:gson:${project.gson_version}"
 
     modImplementation("carpet:fabric-carpet:${project.carpet_core_version}")
 
-    include(implementation 'net.luckperms:api:5.4')
+    include(implementation "net.luckperms:api:${project.luckperms_api_version}")
 
-    modImplementation include("net.kyori:adventure-platform-fabric:${project.adventure_platform_fabric_version}")
+    include(modImplementation("net.kyori:adventure-platform-fabric:${project.adventure_platform_fabric_version}"))
     include(implementation "net.kyori:adventure-text-minimessage:${project.adventure_api_version}")
 
-    modImplementation include("eu.pb4:sgui:${project.sgui_version}")
+    include(modImplementation("eu.pb4:sgui:${project.sgui_version}"))
+    include(modImplementation("eu.pb4:placeholder-api:${project.placeholder_api_version}"))
 
-    implementation "me.lucko:spark-api:${project.spark_version}"
+    implementation "me.lucko:spark-api:${project.spark_api_version}"
 
     include(implementation "org.apache.commons:commons-compress:${project.apache_commons_compression_version}")
     include(implementation 'org.apache.commons:commons-rng-simple:1.6')
     include(implementation "commons-io:commons-io:${project.apache_commons_io_version}")
 
     include(implementation "org.quartz-scheduler:quartz:${project.quartz_version}")
+
     include(implementation "org.reflections:reflections:${project.reflections_version}")
     include(implementation "org.javassist:javassist:${project.javaassist_version}")
 
-//    implementation("com.google.guava:guava:33.2.1-jre")
-
-    testImplementation(platform('org.junit:junit-bom:5.10.2'))
-    testImplementation('org.junit.jupiter:junit-jupiter')
-    testRuntimeOnly('org.junit.platform:junit-platform-launcher')
-
-    modImplementation(include("eu.pb4:placeholder-api:${project.placeholder_api_version}"))
+    testImplementation(platform("org.junit:junit-bom:${project.junit_version}"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-processResources {
-    inputs.property "version", project.version
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
-    }
-}
-
+/* compile */
 tasks.withType(JavaCompile).configureEach {
     it.options.release.set(21)
 }
@@ -101,12 +98,21 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 
+/* build */
+processResources {
+    inputs.property "version", project.version
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
 jar {
     from("LICENSE") {
         rename { "${it}-mc${minecraft_version}-${project.base.archivesName.get()}" }
     }
 }
 
+/* publish */
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -115,15 +121,9 @@ publishing {
     }
 
     // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
-    }
+    repositories {}
 }
 
-// modrinth
 modrinth {
     token = "$System.env.MODRINTH_TOKEN"
     projectId = "1TowMm2v"
@@ -142,13 +142,13 @@ modrinth {
 }
 tasks.modrinth.dependsOn(tasks.modrinthSyncBody)
 
-// test framework
+/* test framework */
 test {
     useJUnitPlatform()
-    filter {
-    }
+    filter {}
 }
 
+/* docs generator is used to generate the `configuration files` docs. */
 tasks.register('generateDocs') {
     outputs.upToDateWhen { false }
     test {
@@ -159,6 +159,7 @@ tasks.register('generateDocs') {
 }
 tasks.modrinthSyncBody.dependsOn(generateDocs)
 
+/* mixin Registry checker is used to check the un-registered mixins, to avoid un-expected circumstance. */
 tasks.register('checkMixinRegistryTest') {
     outputs.upToDateWhen { false }
     test {
@@ -169,6 +170,14 @@ tasks.register('checkMixinRegistryTest') {
 }
 tasks.compileJava.dependsOn(checkMixinRegistryTest)
 
+/* module dependency checker is used to check whether a `module` reference another `module` directly or in-directly.
+*
+*  Our design objective is that: a module should be standalone, and should no reference other modules.
+*  If two modules share the same code or the logic, then:
+*    1. They should be re-organized as sub-module relation.
+*    2. Or just extract the common codes into the `common` package.
+*
+* */
 tasks.register('checkModuleDependencyTest') {
     outputs.upToDateWhen { false }
     test {

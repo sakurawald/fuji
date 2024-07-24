@@ -3,15 +3,27 @@
   "id": "fuji",
   "version": "${version}",
   "name": "Fuji",
-  "description": "A mod that provides many essential and useful modules for vanilla survival.",
-  "authors": [
-    "SakuraWald"
-  ],
-  "contact": {
-    "homepage": "https://github.com/SakuraWald"
-  },
-  "license": "CC0-1.0",
   "icon": "assets/fuji/icon.png",
+  "description": "A mod that provides many essential and useful modules for vanilla survival.",
+  "license": "CC0-1.0",
+  "contact": {
+    "homepage": "https://github.com/SakuraWald",
+    "sources": "https://github.com/sakurawald/fuji-fabric/",
+    "issues": "https://github.com/sakurawald/fuji-fabric/issues"
+  },
+  "authors": [
+    {
+      "name": "SakuraWald",
+      "contact": {
+        "email": "sakurawald@gmail.com"
+      }
+    }
+  ],
+  "contributors": [
+    {
+      "name": "mcjunshi"
+    }
+  ],
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -23,7 +35,7 @@
     "fuji.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.14.22",
+    "fabricloader": ">=0.15.11",
     "minecraft": "~1.21",
     "java": ">=17",
     "fabric-api": "*"
