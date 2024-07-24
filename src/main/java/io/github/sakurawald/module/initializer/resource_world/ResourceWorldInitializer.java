@@ -91,7 +91,7 @@ public class ResourceWorldInitializer extends ModuleInitializer {
 
     private int $reset(CommandContext<ServerCommandSource> ctx) {
         resetWorlds(ctx.getSource().getServer());
-        return Command.SINGLE_SUCCESS;
+        return CommandHelper.Return.SUCCESS;
     }
 
     private void resetWorlds(MinecraftServer server) {
@@ -223,7 +223,7 @@ public class ResourceWorldInitializer extends ModuleInitializer {
                 RandomTeleport.randomTeleport(player, world, false);
             }
 
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 
@@ -244,7 +244,7 @@ public class ResourceWorldInitializer extends ModuleInitializer {
     private int $delete(CommandContext<ServerCommandSource> ctx) {
         String path = ctx.getNodes().get(2).getNode().getName();
         deleteWorld(ctx.getSource().getServer(), path);
-        return Command.SINGLE_SUCCESS;
+        return CommandHelper.Return.SUCCESS;
     }
 
     public void onWorldUnload(MinecraftServer server, ServerWorld world) {

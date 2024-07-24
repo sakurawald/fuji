@@ -1,14 +1,13 @@
 package io.github.sakurawald.module.initializer.afk;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.ScheduleUtil;
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
@@ -48,7 +47,7 @@ public class AfkInitializer extends ModuleInitializer {
             // note: issue command will update lastLastActionTime, so it's impossible to use /afk to disable afk
             ((AfkStateAccessor) player).fuji$setAfk(true);
             MessageHelper.sendMessage(player, "afk.on");
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         }));
     }
 
@@ -56,7 +55,7 @@ public class AfkInitializer extends ModuleInitializer {
 
         @Override
         public void execute(JobExecutionContext context) throws JobExecutionException {
-            for (ServerPlayerEntity player : Fuji.SERVER.getPlayerManager().getPlayerList()) {
+            for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
                 AfkStateAccessor afk_player = (AfkStateAccessor) player;
 
                 // get last action time

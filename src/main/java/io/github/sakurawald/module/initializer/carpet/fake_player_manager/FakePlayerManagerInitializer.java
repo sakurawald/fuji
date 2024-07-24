@@ -1,16 +1,15 @@
 package io.github.sakurawald.module.initializer.carpet.fake_player_manager;
 
 import com.mojang.authlib.GameProfile;
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.ScheduleUtil;
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.kyori.adventure.text.Component;
 import net.minecraft.command.CommandRegistryAccess;
@@ -53,7 +52,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
     private int $renew(CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.playerOnlyCommand(ctx, player -> {
             renewFakePlayers(player);
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 
@@ -75,7 +74,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         }
         ServerCommandSource source = context.getSource();
         source.sendMessage(MessageHelper.ofComponent(source, "fake_player_manager.who.header").append(Component.text(builder.toString())));
-        return Command.SINGLE_SUCCESS;
+        return CommandHelper.Return.SUCCESS;
     }
 
     public boolean hasFakePlayers(ServerPlayerEntity player) {
@@ -104,7 +103,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
                 continue;
             }
             myFakePlayers.removeIf(name -> {
-                ServerPlayerEntity fakePlayer = Fuji.SERVER.getPlayerManager().getPlayer(name);
+                ServerPlayerEntity fakePlayer = ServerHelper.getDefaultServer().getPlayerManager().getPlayer(name);
                 return fakePlayer == null || fakePlayer.isRemoved();
             });
         }
@@ -133,7 +132,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         if (player == null) return true;
 
         // bypass: op
-        if (Fuji.SERVER.getPlayerManager().isOperator(player.getGameProfile())) return true;
+        if (ServerHelper.getDefaultServer().getPlayerManager().isOperator(player.getGameProfile())) return true;
 
         ArrayList<String> myFakePlayers = this.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), CONSTANT_EMPTY_LIST);
         return myFakePlayers.contains(fakePlayer);
@@ -185,14 +184,14 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
                 ArrayList<String> fakePlayers = module.player2fakePlayers.getOrDefault(playerName, module.CONSTANT_EMPTY_LIST);
                 if (expiration <= currentTimeMS) {
                     /* auto-renew for online-playerName */
-                    ServerPlayerEntity playerByName = Fuji.SERVER.getPlayerManager().getPlayer(playerName);
+                    ServerPlayerEntity playerByName = ServerHelper.getDefaultServer().getPlayerManager().getPlayer(playerName);
                     if (playerByName != null) {
                         module.renewFakePlayers(playerByName);
                         continue;
                     }
 
                     for (String fakePlayerName : fakePlayers) {
-                        ServerPlayerEntity fakePlayer = Fuji.SERVER.getPlayerManager().getPlayer(fakePlayerName);
+                        ServerPlayerEntity fakePlayer = ServerHelper.getDefaultServer().getPlayerManager().getPlayer(fakePlayerName);
                         if (fakePlayer == null) return;
                         fakePlayer.kill();
                         MessageHelper.sendBroadcast("fake_player_manager.kick_for_expiration", fakePlayer.getGameProfile().getName(), playerName);
@@ -206,7 +205,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
 
                 /* check for amount limits */
                 for (int i = fakePlayers.size() - 1; i >= limit; i--) {
-                    ServerPlayerEntity fakePlayer = Fuji.SERVER.getPlayerManager().getPlayer(fakePlayers.get(i));
+                    ServerPlayerEntity fakePlayer = ServerHelper.getDefaultServer().getPlayerManager().getPlayer(fakePlayers.get(i));
                     if (fakePlayer == null) continue;
                     fakePlayer.kill();
 

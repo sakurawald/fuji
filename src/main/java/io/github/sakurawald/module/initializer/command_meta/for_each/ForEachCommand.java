@@ -5,6 +5,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import io.github.sakurawald.module.common.structure.CommandExecuter;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.util.minecraft.CommandHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
@@ -28,7 +29,7 @@ public class ForEachCommand extends ModuleInitializer {
                                     for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
                                         CommandExecuter.executeCommandAsConsole(player, rest);
                                     }
-                                    return Command.SINGLE_SUCCESS;
+                                    return CommandHelper.Return.SUCCESS;
                                 })
                         )
         );

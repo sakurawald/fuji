@@ -6,6 +6,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.util.minecraft.CommandHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -59,7 +60,7 @@ public class ShellCommand extends ModuleInitializer {
                                         }
                                     });
 
-                                    return Command.SINGLE_SUCCESS;
+                                    return CommandHelper.Return.SUCCESS;
                                 })
                         )
         );

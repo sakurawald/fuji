@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.placeholder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.github.sakurawald.Fuji;
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import lombok.Getter;
 import lombok.ToString;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -34,7 +34,7 @@ public class SumUpPlaceholder {
     public int moved;
 
     private static Path getStatPath() {
-        return Fuji.SERVER.getSavePath(WorldSavePath.STATS);
+        return ServerHelper.getDefaultServer().getSavePath(WorldSavePath.STATS);
     }
 
     public static SumUpPlaceholder ofPlayer(String uuid) {

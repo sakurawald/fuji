@@ -1,15 +1,15 @@
 package io.github.sakurawald.module.initializer.command_toolbox.reply;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import java.util.HashMap;
+
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -39,12 +39,12 @@ public class ReplyInitializer extends ModuleInitializer {
             String message = StringArgumentType.getString(ctx, "message");
 
             try {
-                Fuji.SERVER.getCommandManager().getDispatcher().execute("msg %s %s".formatted(target, message), player.getCommandSource());
+                ServerHelper.getDefaultServer().getCommandManager().getDispatcher().execute("msg %s %s".formatted(target, message), player.getCommandSource());
             } catch (CommandSyntaxException e) {
                 MessageHelper.sendMessage(player, "reply.no_target");
             }
 
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 

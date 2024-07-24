@@ -13,6 +13,7 @@ import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.SchedulerModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.ScheduleUtil;
+import io.github.sakurawald.util.minecraft.CommandHelper;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -70,7 +71,7 @@ public class SchedulerInitializer extends ModuleInitializer {
                 job.trigger();
             }
         });
-        return Command.SINGLE_SUCCESS;
+        return CommandHelper.Return.SUCCESS;
     }
 
 

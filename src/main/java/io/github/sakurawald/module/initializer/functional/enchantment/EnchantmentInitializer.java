@@ -22,7 +22,7 @@ public class EnchantmentInitializer extends ModuleInitializer {
         return CommandHelper.playerOnlyCommand(ctx, player -> {
             player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> new MyEnchantmentScreenHandler(i, inventory, ScreenHandlerContext.create(p.getWorld(), p.getBlockPos())) {
             }, Text.translatable("container.enchant")));
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 }

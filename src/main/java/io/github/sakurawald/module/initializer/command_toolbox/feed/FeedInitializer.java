@@ -29,7 +29,7 @@ public class FeedInitializer extends ModuleInitializer {
             foodData.setExhaustion(0);
 
             MessageHelper.sendMessage(player, "feed");
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 

@@ -24,7 +24,7 @@ public class MoreInitializer extends ModuleInitializer {
         return CommandHelper.playerOnlyCommand(ctx, (player -> {
             ItemStack mainHandItem = player.getMainHandStack();
             mainHandItem.setCount(mainHandItem.getMaxCount());
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         }));
     }
 

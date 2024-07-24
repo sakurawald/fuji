@@ -27,7 +27,7 @@ public class GodInitializer extends ModuleInitializer {
             player.sendAbilitiesUpdate();
 
             MessageHelper.sendMessage(player, flag ? "god.on" : "god.off");
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 

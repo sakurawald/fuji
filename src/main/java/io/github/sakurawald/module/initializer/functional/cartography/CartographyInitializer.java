@@ -30,7 +30,7 @@ public class CartographyInitializer extends ModuleInitializer {
                 }
             }, Text.translatable("container.cartography_table")));
             player.incrementStat(Stats.INTERACT_WITH_CARTOGRAPHY_TABLE);
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 }

@@ -28,7 +28,7 @@ public class EnderChestInitializer extends ModuleInitializer {
             EnderChestInventory enderChestInventory = player.getEnderChestInventory();
             player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> GenericContainerScreenHandler.createGeneric9x3(i, inventory, enderChestInventory), Text.translatable("container.enderchest")));
             player.incrementStat(Stats.OPEN_ENDERCHEST);
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 }

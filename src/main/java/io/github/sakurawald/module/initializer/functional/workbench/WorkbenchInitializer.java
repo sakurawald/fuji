@@ -30,7 +30,7 @@ public class WorkbenchInitializer extends ModuleInitializer {
                 }
             }, Text.translatable("container.crafting")));
             player.incrementStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 }

@@ -1,12 +1,12 @@
 package io.github.sakurawald.module.initializer.tab_list.sort;
 
 import com.mojang.authlib.GameProfile;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.tab_list.sort.structure.AlphaTable;
 import io.github.sakurawald.util.minecraft.PermissionHelper;
 import io.github.sakurawald.util.ScheduleUtil;
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkSide;
 import net.minecraft.network.packet.c2s.common.SyncedClientOptions;
@@ -115,7 +115,7 @@ public class TabListSortInitializer extends ModuleInitializer {
     public static class UpdateEncodedPlayerTablistNameJob implements Job {
         @Override
         public void execute(JobExecutionContext context) throws JobExecutionException {
-            syncEncodedPlayers(Fuji.SERVER);
+            syncEncodedPlayers(ServerHelper.getDefaultServer());
         }
     }
 }

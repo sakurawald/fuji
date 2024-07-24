@@ -28,7 +28,7 @@ public class TrashCanInitializer extends ModuleInitializer {
         return CommandHelper.playerOnlyCommand(ctx, player -> {
             player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> new GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X3, i,inventory, simpleInventory, rows), MessageHelper.ofText(player, "trashcan.gui.title")));
             player.incrementStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 }

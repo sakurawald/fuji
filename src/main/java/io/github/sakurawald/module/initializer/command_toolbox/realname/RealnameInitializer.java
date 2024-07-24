@@ -1,10 +1,9 @@
 package io.github.sakurawald.module.initializer.command_toolbox.realname;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.minecraft.command.CommandRegistryAccess;
@@ -24,7 +23,7 @@ public class RealnameInitializer extends ModuleInitializer {
     private int $realname(CommandContext<ServerCommandSource> ctx) {
         TextComponent.Builder builder = Component.empty().toBuilder();
 
-        for (ServerPlayerEntity player : Fuji.SERVER.getPlayerManager().getPlayerList()) {
+        for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
             Text displayName = player.getDisplayName();
             if (displayName == null) continue;
 
@@ -38,7 +37,7 @@ public class RealnameInitializer extends ModuleInitializer {
         }
 
         ctx.getSource().sendMessage(builder.build());
-        return Command.SINGLE_SUCCESS;
+        return CommandHelper.Return.SUCCESS;
     }
 
 }

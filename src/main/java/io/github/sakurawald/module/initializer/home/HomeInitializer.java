@@ -75,7 +75,7 @@ public class HomeInitializer extends ModuleInitializer {
 
             Position position = name2position.get(homeName);
             position.teleport(player);
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 
@@ -90,7 +90,7 @@ public class HomeInitializer extends ModuleInitializer {
 
             name2position.remove(homeName);
             MessageHelper.sendMessage(player, "home.unset.success", homeName);
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 
@@ -101,26 +101,26 @@ public class HomeInitializer extends ModuleInitializer {
             if (name2position.containsKey(homeName)) {
                 if (!override) {
                     MessageHelper.sendMessage(player, "home.set.fail.need_override", homeName);
-                    return Command.SINGLE_SUCCESS;
+                    return CommandHelper.Return.SUCCESS;
                 }
             }
 
             Optional<Integer> limit = PermissionHelper.getMeta(player, "fuji.home.home_limit", Integer::valueOf);
             if (limit.isPresent() && name2position.size() >= limit.get()) {
                 MessageHelper.sendMessage(player, "home.set.fail.limit");
-                return Command.SINGLE_SUCCESS;
+                return CommandHelper.Return.SUCCESS;
             }
 
             name2position.put(homeName, Position.of(player));
             MessageHelper.sendMessage(player, "home.set.success", homeName);
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 
     private int $list(CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.playerOnlyCommand(ctx, player -> {
             MessageHelper.sendMessage(player, "home.list", getHomes(player).keySet());
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 

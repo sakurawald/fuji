@@ -3,11 +3,11 @@ package io.github.sakurawald.module.mixin.carpet.fake_player_manager;
 import carpet.commands.PlayerCommand;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.carpet.fake_player_manager.FakePlayerManagerInitializer;
 import io.github.sakurawald.util.minecraft.MessageHelper;
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -59,7 +59,7 @@ public abstract class PlayerCommandMixin {
         if (Configs.configHandler.model().modules.carpet.fake_player_manager.use_local_random_skins_for_fake_player) {
             String fakePlayerName = StringArgumentType.getString(context, "player");
             fakePlayerName = transformFakePlayerName(fakePlayerName);
-            Fuji.SERVER.getUserCache().add(module.createOfflineGameProfile(fakePlayerName));
+            ServerHelper.getDefaultServer().getUserCache().add(module.createOfflineGameProfile(fakePlayerName));
         }
     }
 

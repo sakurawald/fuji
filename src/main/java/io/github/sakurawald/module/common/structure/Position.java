@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.common.structure;
 
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.util.minecraft.MessageHelper;
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import lombok.Data;
 import lombok.With;
 import net.minecraft.registry.RegistryKey;
@@ -58,7 +58,7 @@ public class Position {
 
     public void teleport(ServerPlayerEntity player) {
         RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(this.level));
-        ServerWorld serverLevel = Fuji.SERVER.getWorld(worldKey);
+        ServerWorld serverLevel = ServerHelper.getDefaultServer().getWorld(worldKey);
         if (serverLevel == null) {
             MessageHelper.sendMessage(player, "level.no_exists", this.level);
             return;

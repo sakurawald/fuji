@@ -29,7 +29,7 @@ public class TopInitializer extends ModuleInitializer {
             position.teleport(player);
 
             MessageHelper.sendMessage(player,  "top");
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 

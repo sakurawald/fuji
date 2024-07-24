@@ -1,10 +1,10 @@
 package io.github.sakurawald.module.mixin.tab_list.sort;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.tab_list.sort.TabListSortInitializer;
 import io.github.sakurawald.util.RandomUtil;
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -35,7 +35,7 @@ public abstract class OverrideTabListNameMixin {
      */
     @ModifyReturnValue(method = "getPlayerListName", at = @At("RETURN"))
     Text modifyPlayerListName(Text original) {
-        MinecraftServer server = Fuji.SERVER;
+        MinecraftServer server = ServerHelper.getDefaultServer();
         String name = player.getGameProfile().getName();
 
         /*
@@ -51,7 +51,7 @@ public abstract class OverrideTabListNameMixin {
             Text realPlayerGetDisplayName = realPlayerGetDisplayNameSave.get(name);
             // if nobody sets the display name, then we can set it.
             if (realPlayerGetDisplayName == null) {
-                ServerPlayerEntity realPlayer = Fuji.SERVER.getPlayerManager().getPlayer(name);
+                ServerPlayerEntity realPlayer = ServerHelper.getDefaultServer().getPlayerManager().getPlayer(name);
                 return ofText(realPlayer, false, RandomUtil.drawList(Configs.configHandler.model().modules.tab_list.style.body));
             } else {
                 // someone else set teh display name, we should respect it.

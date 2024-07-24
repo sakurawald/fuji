@@ -114,7 +114,7 @@ public class KitInitializer extends ModuleInitializer {
         return CommandHelper.playerOnlyCommand(ctx, player -> {
             List<Kit> kits = readKits();
             new KitEditorGui(player, kits).open();
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 

@@ -2,9 +2,9 @@ package io.github.sakurawald.module.initializer.command_alias;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.command.ServerCommandSource;
@@ -18,7 +18,7 @@ public class CommandAliasInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register((server -> {
-            CommandDispatcher<ServerCommandSource> dispatcher = Fuji.SERVER.getCommandManager().getDispatcher();
+            CommandDispatcher<ServerCommandSource> dispatcher = ServerHelper.getDefaultServer().getCommandManager().getDispatcher();
             for (CommandAliasEntry entry : Configs.configHandler.model().modules.command_alias.alias) {
                 registerCommandAliasEntry(dispatcher, entry);
             }

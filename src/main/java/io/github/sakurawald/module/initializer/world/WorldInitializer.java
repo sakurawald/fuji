@@ -21,20 +21,20 @@ public class WorldInitializer extends ModuleInitializer {
 
     @Override
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("world").then(argument(CommandHelper.ARGUMENT_NAME_DIMENSION, DimensionArgumentType.dimension()).executes(this::$world)));
+        dispatcher.register(CommandManager.literal("world").then(argument(CommandHelper.Argument.ARGUMENT_NAME_DIMENSION, DimensionArgumentType.dimension()).executes(this::$world)));
     }
 
     private int $world(CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.playerOnlyCommand(ctx, player -> {
 
             try {
-                ServerWorld serverWorld = DimensionArgumentType.getDimensionArgument(ctx, CommandHelper.ARGUMENT_NAME_DIMENSION);
+                ServerWorld serverWorld = DimensionArgumentType.getDimensionArgument(ctx, CommandHelper.Argument.ARGUMENT_NAME_DIMENSION);
                 Position.of(player, serverWorld).teleport(player);
             } catch (CommandSyntaxException e) {
                 MessageHelper.sendMessage(player,"dimension.no_found");
             }
 
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 }

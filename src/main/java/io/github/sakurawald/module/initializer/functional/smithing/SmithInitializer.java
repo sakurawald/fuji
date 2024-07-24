@@ -29,7 +29,7 @@ public class SmithInitializer extends ModuleInitializer {
                 }
             }, Text.translatable("block.minecraft.smithing_table")));
             player.incrementStat(Stats.INTERACT_WITH_SMITHING_TABLE);
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 }

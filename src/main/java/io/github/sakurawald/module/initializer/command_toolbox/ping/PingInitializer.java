@@ -4,6 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
@@ -36,7 +37,7 @@ public class PingInitializer extends ModuleInitializer {
             MessageHelper.sendMessage(ctx.getSource(), "entity.no_found");
         }
 
-        return Command.SINGLE_SUCCESS;
+        return CommandHelper.Return.SUCCESS;
     }
 
 }

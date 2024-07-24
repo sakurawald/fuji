@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.initializer.chat;
 
 import com.google.common.collect.EvictingQueue;
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -19,6 +18,7 @@ import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.minecraft.PermissionHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.Component;
@@ -241,7 +241,7 @@ public class ChatInitializer extends ModuleInitializer {
                         builder.match("%message%").replacement(MessageHelper.ofComponent(player, "chat.format.show"));
                     });
             player.sendMessage(component);
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 
@@ -251,7 +251,7 @@ public class ChatInitializer extends ModuleInitializer {
             chatHandler.model().format.player2format.remove(name);
             chatHandler.saveToDisk();
             MessageHelper.sendMessage(player, "chat.format.reset");
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 
@@ -270,7 +270,7 @@ public class ChatInitializer extends ModuleInitializer {
         /* resolve player tag */
         ArrayList<ServerPlayerEntity> mentionedPlayers = new ArrayList<>();
 
-        String[] playerNames = Fuji.SERVER.getPlayerNames();
+        String[] playerNames = ServerHelper.getDefaultServer().getPlayerNames();
         // fix: mention the longest name first
         Arrays.sort(playerNames, Comparator.comparingInt(String::length).reversed());
 
@@ -278,7 +278,7 @@ public class ChatInitializer extends ModuleInitializer {
             // here we must continue so that mentionPlayers will not be added
             if (!string.contains(playerName)) continue;
             string = string.replace(playerName, "<aqua>%s</aqua>".formatted(playerName));
-            mentionedPlayers.add(Fuji.SERVER.getPlayerManager().getPlayer(playerName));
+            mentionedPlayers.add(ServerHelper.getDefaultServer().getPlayerManager().getPlayer(playerName));
         }
 
         /* run mention player task */

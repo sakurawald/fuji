@@ -49,7 +49,7 @@ public class MessageHelper {
     public static final NodeParser PLACEHOLDER_PARSER = NodeParser.builder()
             .globalPlaceholders().build();
 
-    private static final FabricServerAudiences adventure = FabricServerAudiences.of(Fuji.SERVER);
+    private static final FabricServerAudiences adventure = FabricServerAudiences.of(ServerHelper.getDefaultServer());
     @Getter
     private static final Map<String, String> player2lang = new HashMap<>();
     @Getter
@@ -156,7 +156,7 @@ public class MessageHelper {
         if (audience instanceof PlayerEntity playerEntity) {
             placeholderContext = PlaceholderContext.of(playerEntity);
         } else {
-            placeholderContext = PlaceholderContext.of(Fuji.SERVER);
+            placeholderContext = PlaceholderContext.of(ServerHelper.getDefaultServer());
         }
         ParserContext parserContext = ParserContext.of(PlaceholderContext.KEY, placeholderContext);
 
@@ -214,7 +214,7 @@ public class MessageHelper {
         // fix: log broadcast for console
         Fuji.LOGGER.info(PlainTextComponentSerializer.plainText().serialize(ofComponent(null, key, args)));
 
-        for (ServerPlayerEntity player : Fuji.SERVER.getPlayerManager().getPlayerList()) {
+        for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
             sendMessage(player, key, args);
         }
     }

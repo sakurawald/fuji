@@ -23,7 +23,7 @@ public class RepairInitializer extends ModuleInitializer {
         return CommandHelper.playerOnlyCommand(ctx, player -> {
             player.getMainHandStack().setDamage(0);
             MessageHelper.sendMessage(player, "repair");
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 

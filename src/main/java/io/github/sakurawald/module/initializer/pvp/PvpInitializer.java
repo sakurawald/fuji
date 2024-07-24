@@ -51,11 +51,11 @@ public class PvpInitializer extends ModuleInitializer {
 
                 MessageHelper.sendMessage(player, "pvp.on");
 
-                return Command.SINGLE_SUCCESS;
+                return CommandHelper.Return.SUCCESS;
             }
 
             MessageHelper.sendMessage(player, "pvp.on.already");
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 
@@ -68,7 +68,7 @@ public class PvpInitializer extends ModuleInitializer {
                 pvpHandler.saveToDisk();
 
                 MessageHelper.sendMessage(player, "pvp.off");
-                return Command.SINGLE_SUCCESS;
+                return CommandHelper.Return.SUCCESS;
             }
 
             MessageHelper.sendMessage(player, "pvp.off.already");
@@ -82,14 +82,14 @@ public class PvpInitializer extends ModuleInitializer {
             HashSet<String> whitelist = pvpHandler.model().whitelist;
             player.sendMessage(MessageHelper.ofComponent(player, "pvp.status")
                     .append(whitelist.contains(player.getGameProfile().getName()) ? MessageHelper.ofComponent(player, "on") : MessageHelper.ofComponent(player, "off")));
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 
     private int $list(CommandContext<ServerCommandSource> ctx) {
         HashSet<String> whitelist = pvpHandler.model().whitelist;
         MessageHelper.sendMessage(ctx.getSource(), "pvp.list", whitelist);
-        return Command.SINGLE_SUCCESS;
+        return CommandHelper.Return.SUCCESS;
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")

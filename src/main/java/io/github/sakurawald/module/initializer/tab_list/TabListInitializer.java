@@ -1,12 +1,12 @@
 package io.github.sakurawald.module.initializer.tab_list;
 
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.RandomUtil;
 import io.github.sakurawald.util.ScheduleUtil;
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.kyori.adventure.text.Component;
@@ -34,7 +34,7 @@ public class TabListInitializer extends ModuleInitializer {
     }
 
     private void syncDisplayName() {
-        MinecraftServer server = Fuji.SERVER;
+        MinecraftServer server = ServerHelper.getDefaultServer();
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             server.getPlayerManager().sendToAll(new PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME, player));
         }
@@ -43,7 +43,7 @@ public class TabListInitializer extends ModuleInitializer {
     public static class RenderHeaderAndFooterJob implements Job {
         @Override
         public void execute(JobExecutionContext context) throws JobExecutionException {
-            render(Fuji.SERVER);
+            render(ServerHelper.getDefaultServer());
         }
     }
 

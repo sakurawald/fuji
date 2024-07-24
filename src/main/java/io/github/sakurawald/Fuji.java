@@ -6,14 +6,10 @@ import io.github.sakurawald.module.common.manager.BackupManager;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.ScheduleUtil;
-import lombok.Getter;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.server.MinecraftServer;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.CalendarUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
@@ -35,11 +31,9 @@ public class Fuji implements ModInitializer {
     public static final String MOD_ID = "fuji";
     public static final Logger LOGGER = LogUtil.createLogger(StringUtils.capitalize(MOD_ID));
     public static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve(MOD_ID).toAbsolutePath();
-    public static MinecraftServer SERVER;
 
     @Override
     public void onInitialize() {
-
         /* managers */
         BackupManager.backup();
         Managers.getBossBarManager().initialize();

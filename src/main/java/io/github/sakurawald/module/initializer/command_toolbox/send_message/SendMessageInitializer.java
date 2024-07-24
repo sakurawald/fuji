@@ -4,6 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
@@ -27,7 +28,7 @@ public class SendMessageInitializer extends ModuleInitializer {
                                             String message = StringArgumentType.getString(ctx, "message");
 
                                             player.sendMessage(MessageHelper.ofText(player, false,message));
-                                            return Command.SINGLE_SUCCESS;
+                                            return CommandHelper.Return.SUCCESS;
                                         })
                                 )
                         )

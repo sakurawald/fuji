@@ -29,7 +29,7 @@ public class FlyInitializer extends ModuleInitializer {
 
             player.sendAbilitiesUpdate();
             MessageHelper.sendMessage(player, flag ? "fly.on" : "fly.off");
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 }

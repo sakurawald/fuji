@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.mixin.system_message;
 
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.util.minecraft.MessageHelper;
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -36,7 +36,7 @@ public interface ComponentMixin {
     private static @Nullable MutableText transform(String key, Object... args) {
         Map<String, String> key2value = Configs.configHandler.model().modules.system_message.key2value;
         if (key2value.containsKey(key)) {
-            if (Fuji.SERVER == null) {
+            if (ServerHelper.getDefaultServer() == null) {
                 LOGGER.warn("Server is null currently -> cannot hijack message key: {}", key);
                 return null;
             }

@@ -62,9 +62,9 @@ public class DeathLogInitializer extends ModuleInitializer {
         dispatcher.register(
                 literal("deathlog").requires(s -> s.hasPermissionLevel(4))
                         .then(literal("view")
-                                .then(CommandHelper.offlinePlayerArgument("from").executes(this::$view)))
+                                .then(CommandHelper.Argument.offlinePlayerArgument("from").executes(this::$view)))
                         .then(literal("restore")
-                                .then(CommandHelper.offlinePlayerArgument("from")
+                                .then(CommandHelper.Argument.offlinePlayerArgument("from")
                                         .then(argument("index", IntegerArgumentType.integer())
                                                 .then(argument("to", EntityArgumentType.player()).executes(this::$restore))))
                         ));
@@ -95,7 +95,7 @@ public class DeathLogInitializer extends ModuleInitializer {
         // check the player's inventory for safety
         if (!to.getInventory().isEmpty()) {
             source.sendMessage(Component.text("To player's inventory is not empty!"));
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         }
 
         /* restore inventory */
@@ -117,7 +117,7 @@ public class DeathLogInitializer extends ModuleInitializer {
         to.experienceProgress = inventoryNode.getFloat(XP_PROGRESS);
 
         source.sendMessage(Component.text("Restore %s's death log %d for %s".formatted(from, index, to.getGameProfile().getName())));
-        return Command.SINGLE_SUCCESS;
+        return CommandHelper.Return.SUCCESS;
     }
 
     private String getFileName(String playerName) {
@@ -142,7 +142,7 @@ public class DeathLogInitializer extends ModuleInitializer {
             }
 
             player.sendMessage(builder.asComponent());
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 

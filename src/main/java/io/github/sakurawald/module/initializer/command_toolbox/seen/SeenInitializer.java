@@ -35,7 +35,7 @@ public class SeenInitializer extends ModuleInitializer {
 
     @Override
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("seen").then(CommandHelper.offlinePlayerArgument().executes(this::$seen)));
+        dispatcher.register(CommandManager.literal("seen").then(CommandHelper.Argument.offlinePlayerArgument().executes(this::$seen)));
     }
 
     @SuppressWarnings("SameReturnValue")
@@ -47,7 +47,7 @@ public class SeenInitializer extends ModuleInitializer {
         } else {
             MessageHelper.sendMessage(ctx.getSource(), "seen.fail");
         }
-        return Command.SINGLE_SUCCESS;
+        return CommandHelper.Return.SUCCESS;
     }
 
 }

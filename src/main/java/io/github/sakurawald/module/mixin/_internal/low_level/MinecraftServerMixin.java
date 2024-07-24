@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin._internal.low_level;
 
-import io.github.sakurawald.Fuji;
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,6 +16,6 @@ public class MinecraftServerMixin {
     private void $init(CallbackInfo ci) {
         MinecraftServer server = (MinecraftServer) (Object) this;
         LOGGER.debug("MinecraftServerMixin: $init: {}", server);
-        Fuji.SERVER = server;
+        ServerHelper.setServer(server);
     }
 }

@@ -22,7 +22,7 @@ public class ExtinguishInitializer extends ModuleInitializer {
     private int $extinguish(CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.playerOnlyCommand(ctx, player -> {
             player.setFireTicks(0);
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 

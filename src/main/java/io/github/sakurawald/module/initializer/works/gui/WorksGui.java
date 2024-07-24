@@ -3,13 +3,13 @@ package io.github.sakurawald.module.initializer.works.gui;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.layered.Layer;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.common.gui.PagedGui;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;
 import io.github.sakurawald.module.initializer.works.work_type.ProductionWork;
 import io.github.sakurawald.module.initializer.works.work_type.Work;
 import io.github.sakurawald.util.minecraft.GuiHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKey;
@@ -78,7 +78,7 @@ public class WorksGui extends PagedGui<Work> {
                     /* left click -> visit */
                     if (clickType.isLeft) {
                         RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(entity.level));
-                        ServerWorld level = Fuji.SERVER.getWorld(worldKey);
+                        ServerWorld level = ServerHelper.getDefaultServer().getWorld(worldKey);
                         player.teleport(level, entity.x, entity.y, entity.z, entity.yaw, entity.pitch);
                         the.close();
                         return;

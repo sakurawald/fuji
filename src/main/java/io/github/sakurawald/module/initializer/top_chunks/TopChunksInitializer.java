@@ -7,6 +7,7 @@ import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.mixin._internal.low_level.ThreadedAnvilChunkStorageMixin;
+import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -92,7 +93,7 @@ public class TopChunksInitializer extends ModuleInitializer {
             ctx.getSource().sendMessage(textComponentBuilder.asComponent());
         });
 
-        return Command.SINGLE_SUCCESS;
+        return CommandHelper.Return.SUCCESS;
     }
 
     private void calculateNearestPlayer(ServerCommandSource source, PriorityQueue<ChunkScore> PQ, int limit) {

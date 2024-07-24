@@ -72,7 +72,6 @@ public class TestInitializer extends ModuleInitializer {
         MinecraftServer server = player.server;
         PlayerManager playerManager = server.getPlayerManager();
 
-
 //        Random random = new Random();
 //        ServerPlayerEntity serverPlayerEntity = TabListSortInitializer.makeServerPlayerEntity(server, String.valueOf(random.nextInt(1000)));
 //        EnumSet<PlayerListS2CPacket.Action> enumSet = EnumSet.of(PlayerListS2CPacket.Action.UPDATE_LISTED, PlayerListS2CPacket.Action.UPDATE_LATENCY, PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME);

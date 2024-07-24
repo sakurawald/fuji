@@ -22,7 +22,7 @@ public class SuicideInitializer extends ModuleInitializer {
     private int $suicide(CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.playerOnlyCommand(ctx, player -> {
             player.kill();
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 

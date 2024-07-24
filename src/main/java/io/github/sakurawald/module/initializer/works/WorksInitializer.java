@@ -57,7 +57,7 @@ public class WorksInitializer extends ModuleInitializer {
     private int $works(CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.playerOnlyCommand(ctx, player -> {
             new WorksGui(player,worksHandler.model().works).open();
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 

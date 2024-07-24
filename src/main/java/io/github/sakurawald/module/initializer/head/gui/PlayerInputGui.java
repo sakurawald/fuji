@@ -6,10 +6,10 @@ import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.yggdrasil.ProfileResult;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.AnvilInputGui;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.head.HeadInitializer;
 import io.github.sakurawald.util.minecraft.MessageHelper;
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.MinecraftServer;
@@ -77,7 +77,7 @@ class PlayerInputGui extends AnvilInputGui {
                     builder.addLoreLine(MessageHelper.ofText(player, "head.price").copy().append(module.getCost()));
                 }
 
-                builder.setSkullOwner(profile, Fuji.SERVER);
+                builder.setSkullOwner(profile, ServerHelper.getDefaultServer());
 
                 ItemStack stack = builder.asStack();
 

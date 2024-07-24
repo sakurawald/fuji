@@ -33,11 +33,11 @@ public class BackInitializer extends ModuleInitializer {
             Position lastPos = player2lastPos.get(player.getName().getString());
             if (lastPos == null) {
                 MessageHelper.sendActionBar(player, "back.no_previous_position");
-                return Command.SINGLE_SUCCESS;
+                return CommandHelper.Return.SUCCESS;
             }
 
             lastPos.teleport(player);
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         }));
     }
 

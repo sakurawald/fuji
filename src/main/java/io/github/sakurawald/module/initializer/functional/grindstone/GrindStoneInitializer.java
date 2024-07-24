@@ -28,7 +28,7 @@ public class GrindStoneInitializer extends ModuleInitializer {
                     return true;
                 }
             }, Text.translatable("container.grindstone_title")));
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 }

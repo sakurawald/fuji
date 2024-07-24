@@ -51,7 +51,7 @@ public class SitInitializer extends ModuleInitializer {
             CHAIRS.add(entity);
             player.startRiding(entity, true);
 
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 

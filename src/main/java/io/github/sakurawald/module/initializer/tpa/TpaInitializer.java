@@ -75,7 +75,7 @@ public class TpaInitializer extends ModuleInitializer {
                 target = EntityArgumentType.getPlayer(ctx, "player");
             } catch (CommandSyntaxException e) {
                 MessageHelper.sendActionBar(source, "tpa.player_not_found");
-                return Command.SINGLE_SUCCESS;
+                return CommandHelper.Return.SUCCESS;
             }
 
             /* resolve relative request */
@@ -87,7 +87,7 @@ public class TpaInitializer extends ModuleInitializer {
                     .findFirst();
             if (requestOptional.isEmpty()) {
                 MessageHelper.sendActionBar(source, "tpa.no_relative_ticket");
-                return Command.SINGLE_SUCCESS;
+                return CommandHelper.Return.SUCCESS;
             }
 
             TpaRequest request = requestOptional.get();
@@ -109,7 +109,7 @@ public class TpaInitializer extends ModuleInitializer {
 
             request.cancelTimeout();
             requests.remove(request);
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 
@@ -121,7 +121,7 @@ public class TpaInitializer extends ModuleInitializer {
                 target = EntityArgumentType.getPlayer(ctx, "player");
             } catch (CommandSyntaxException e) {
                 MessageHelper.sendActionBar(source, "tpa.player_not_found");
-                return Command.SINGLE_SUCCESS;
+                return CommandHelper.Return.SUCCESS;
             }
 
             /* add request */
@@ -131,12 +131,12 @@ public class TpaInitializer extends ModuleInitializer {
             if (request.getSender().equals(request.getReceiver())) {
                 MessageHelper.sendActionBar(request.getSender(), "tpa.request_to_self");
 
-                return Command.SINGLE_SUCCESS;
+                return CommandHelper.Return.SUCCESS;
             }
 
             if (requests.stream().anyMatch(request::similarTo)) {
                 MessageHelper.sendActionBar(request.getSender(), "tpa.similar_request_exists");
-                return Command.SINGLE_SUCCESS;
+                return CommandHelper.Return.SUCCESS;
             }
 
             requests.add(request);
@@ -146,7 +146,7 @@ public class TpaInitializer extends ModuleInitializer {
             request.getReceiver().sendMessage(request.asReceiverComponent$Sent());
             MentionPlayersJob.scheduleJob(request.getReceiver());
             request.getSender().sendMessage(request.asSenderComponent$Sent());
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 

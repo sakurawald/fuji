@@ -3,6 +3,7 @@ package io.github.sakurawald.module.common.structure;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.util.minecraft.MessageHelper;
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.network.packet.c2s.play.CommandExecutionC2SPacket;
 import net.minecraft.server.MinecraftServer;
@@ -32,13 +33,13 @@ public class CommandExecuter {
     }
 
     public static void executeCommandAsConsole(ServerPlayerEntity contextPlayer, String command) {
-        MinecraftServer server = Fuji.SERVER;
+        MinecraftServer server = ServerHelper.getDefaultServer();
         try {
             // parse placeholders
             if (contextPlayer != null) {
                 command = MessageHelper.ofString(contextPlayer,command);
             } else {
-                command = MessageHelper.ofString(Fuji.SERVER,command);
+                command = MessageHelper.ofString(ServerHelper.getDefaultServer(),command);
             }
 
             server.getCommandManager().getDispatcher().execute(command, server.getCommandSource());

@@ -83,7 +83,7 @@ public class HeadInitializer extends ModuleInitializer {
     public int $head(CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.playerOnlyCommand(ctx, player -> {
             new HeadGui(player).open();
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 

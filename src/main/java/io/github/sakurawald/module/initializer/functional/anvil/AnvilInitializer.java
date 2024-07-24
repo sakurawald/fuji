@@ -28,7 +28,7 @@ public class AnvilInitializer extends ModuleInitializer {
                     return true;
                 }
             }, Text.translatable("container.repair")));
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 }

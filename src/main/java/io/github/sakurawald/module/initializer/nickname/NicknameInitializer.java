@@ -51,7 +51,7 @@ public class NicknameInitializer extends ModuleInitializer {
             nicknameHandler.saveToDisk();
 
             MessageHelper.sendMessage(player,"nickname.set");
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 
@@ -62,7 +62,7 @@ public class NicknameInitializer extends ModuleInitializer {
             nicknameHandler.saveToDisk();
 
             MessageHelper.sendMessage(player,"nickname.unset");
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 }

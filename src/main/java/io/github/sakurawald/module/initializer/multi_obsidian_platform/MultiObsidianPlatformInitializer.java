@@ -6,6 +6,7 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -17,7 +18,7 @@ public class MultiObsidianPlatformInitializer extends ModuleInitializer {
 
     /* this method is used to fix Entity#position() async */
     private BlockPos findNearbyEndPortalBlock(BlockPos bp) {
-        ServerWorld overworld = Fuji.SERVER.getOverworld();
+        ServerWorld overworld = ServerHelper.getDefaultServer().getOverworld();
 
         // should we find nearby END_PORTAL block ?
         if (overworld.getBlockState(bp) == Blocks.END_PORTAL.getDefaultState()) return bp;
@@ -38,7 +39,7 @@ public class MultiObsidianPlatformInitializer extends ModuleInitializer {
     }
 
     private BlockPos findCenterEndPortalBlock(BlockPos bp) {
-        ServerWorld overworld = Fuji.SERVER.getOverworld();
+        ServerWorld overworld = ServerHelper.getDefaultServer().getOverworld();
         if (overworld.getBlockState(bp.north()) != Blocks.END_PORTAL.getDefaultState()) {
             if (overworld.getBlockState(bp.west()) != Blocks.END_PORTAL.getDefaultState()) {
                 return bp.south().east();

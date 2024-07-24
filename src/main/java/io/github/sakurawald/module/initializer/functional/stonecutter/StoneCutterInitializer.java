@@ -28,7 +28,7 @@ public class StoneCutterInitializer extends ModuleInitializer {
                     return true;
                 }
             }, Text.translatable("container.stonecutter")));
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 }

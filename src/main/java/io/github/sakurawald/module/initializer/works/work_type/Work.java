@@ -6,13 +6,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;
 import io.github.sakurawald.module.common.gui.ConfirmGui;
 import io.github.sakurawald.module.common.gui.InputSignGui;
 import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.minecraft.GuiHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import lombok.Data;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -185,7 +185,7 @@ public abstract class Work {
         rootTag.putString("id", this.getIcon());
         rootTag.putInt("Count", 1);
 
-        return ItemStack.fromNbt(Fuji.SERVER.getRegistryManager(),rootTag).get().getItem();
+        return ItemStack.fromNbt(ServerHelper.getDefaultServer().getRegistryManager(),rootTag).get().getItem();
     }
 
     public @NotNull String getIcon() {

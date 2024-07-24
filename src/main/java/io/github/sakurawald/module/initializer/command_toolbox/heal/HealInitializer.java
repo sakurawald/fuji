@@ -24,7 +24,7 @@ public class HealInitializer extends ModuleInitializer {
         return CommandHelper.playerOnlyCommand(ctx, player -> {
             player.setHealth(player.getMaxHealth());
             MessageHelper.sendMessage(player, "heal");
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 

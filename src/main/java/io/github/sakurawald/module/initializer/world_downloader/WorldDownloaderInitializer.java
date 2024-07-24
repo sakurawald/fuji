@@ -109,7 +109,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
             MessageHelper.sendBroadcast("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
             server.createContext(path, new FileDownloadHandler(this, file, Configs.configHandler.model().modules.world_downloader.bytes_per_second_limit));
             MessageHelper.sendMessage(player, "world_downloader.response", url);
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 

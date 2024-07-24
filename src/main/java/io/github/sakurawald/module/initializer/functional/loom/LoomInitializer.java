@@ -28,7 +28,7 @@ public class LoomInitializer extends ModuleInitializer {
                 }
             }, Text.translatable("container.loom")));
             player.incrementStat(Stats.INTERACT_WITH_LOOM);
-            return Command.SINGLE_SUCCESS;
+            return CommandHelper.Return.SUCCESS;
         });
     }
 }
