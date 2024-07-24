@@ -2,16 +2,14 @@ package io.github.sakurawald.module.initializer.kit.gui;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
-import eu.pb4.sgui.api.gui.layered.Layer;
-import eu.pb4.sgui.api.gui.layered.LayerView;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.common.gui.InputSignGui;
 import io.github.sakurawald.module.common.gui.PagedGui;
 import io.github.sakurawald.module.common.gui.layer.SingleLineLayer;
 import io.github.sakurawald.module.initializer.kit.Kit;
 import io.github.sakurawald.module.initializer.kit.KitInitializer;
-import io.github.sakurawald.util.GuiUtil;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.GuiHelper;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SimpleInventory;
@@ -33,7 +31,7 @@ public class KitEditorGui extends PagedGui<Kit> {
     private static final KitInitializer module = ModuleManager.getInitializer(KitInitializer.class);
 
     public KitEditorGui(ServerPlayerEntity player, List<Kit> entities) {
-        super(player, MessageUtil.ofText(player, true, "kit.gui.editor.title"), entities);
+        super(player, MessageHelper.ofText(player, true, "kit.gui.editor.title"), entities);
     }
 
     private void openEditKitGui(ServerPlayerEntity player, Kit kit) {
@@ -67,7 +65,7 @@ public class KitEditorGui extends PagedGui<Kit> {
                         module.writeKit(kit.withStackList(itemStacks));
                     }
 
-                }, MessageUtil.ofText(player, true, "kit.gui.editor.kit.title", kit.getName()));
+                }, MessageHelper.ofText(player, true, "kit.gui.editor.kit.title", kit.getName()));
 
         player.openHandledScreen(simpleNamedScreenHandlerFactory);
     }
@@ -77,14 +75,14 @@ public class KitEditorGui extends PagedGui<Kit> {
         ServerPlayerEntity player = getPlayer();
 
         SingleLineLayer singleLineLayer = new SingleLineLayer();
-        singleLineLayer.setSlot(1, GuiUtil.createHelpButton(player)
-                .setLore(MessageUtil.ofTextList(player, "kit.gui.editor.help.lore")));
-        singleLineLayer.setSlot(4, GuiUtil.createAddButton(player).setCallback(() -> new InputSignGui(player, "prompt.input.name") {
+        singleLineLayer.setSlot(1, GuiHelper.createHelpButton(player)
+                .setLore(MessageHelper.ofTextList(player, "kit.gui.editor.help.lore")));
+        singleLineLayer.setSlot(4, GuiHelper.createAddButton(player).setCallback(() -> new InputSignGui(player, "prompt.input.name") {
             @Override
             public void onClose() {
                 String name = getLine(0).getString().trim();
                 if (name.isEmpty()) {
-                    MessageUtil.sendActionBar(player, "operation.cancelled");
+                    MessageHelper.sendActionBar(player, "operation.cancelled");
                     return;
                 }
 
@@ -106,7 +104,7 @@ public class KitEditorGui extends PagedGui<Kit> {
 
                     if (event.shift && event.isRight) {
                         module.deleteKit(entity.getName());
-                        MessageUtil.sendActionBar(getPlayer(),"deleted");
+                        MessageHelper.sendActionBar(getPlayer(),"deleted");
 
                         deleteEntity(entity);
                     }

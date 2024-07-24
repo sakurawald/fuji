@@ -7,9 +7,9 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.CommandUtil;
+import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.DateUtil;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.ScheduleUtil;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.kyori.adventure.text.Component;
@@ -51,7 +51,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int $renew(CommandContext<ServerCommandSource> ctx) {
-        return CommandUtil.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.playerOnlyCommand(ctx, player -> {
             renewFakePlayers(player);
             return Command.SINGLE_SUCCESS;
         });
@@ -74,7 +74,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
             builder.append("\n");
         }
         ServerCommandSource source = context.getSource();
-        source.sendMessage(MessageUtil.ofComponent(source, "fake_player_manager.who.header").append(Component.text(builder.toString())));
+        source.sendMessage(MessageHelper.ofComponent(source, "fake_player_manager.who.header").append(Component.text(builder.toString())));
         return Command.SINGLE_SUCCESS;
     }
 
@@ -88,7 +88,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         int duration = Configs.configHandler.model().modules.carpet.fake_player_manager.renew_duration_ms;
         long newTime = System.currentTimeMillis() + duration;
         player2expiration.put(name, newTime);
-        MessageUtil.sendMessage(player, "fake_player_manager.renew.success", DateUtil.toStandardDateFormat(newTime));
+        MessageHelper.sendMessage(player, "fake_player_manager.renew.success", DateUtil.toStandardDateFormat(newTime));
     }
 
     private void validateFakePlayers() {
@@ -195,7 +195,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
                         ServerPlayerEntity fakePlayer = Fuji.SERVER.getPlayerManager().getPlayer(fakePlayerName);
                         if (fakePlayer == null) return;
                         fakePlayer.kill();
-                        MessageUtil.sendBroadcast("fake_player_manager.kick_for_expiration", fakePlayer.getGameProfile().getName(), playerName);
+                        MessageHelper.sendBroadcast("fake_player_manager.kick_for_expiration", fakePlayer.getGameProfile().getName(), playerName);
                     }
                     // remove entry
                     module.player2expiration.remove(playerName);
@@ -210,7 +210,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
                     if (fakePlayer == null) continue;
                     fakePlayer.kill();
 
-                    MessageUtil.sendBroadcast("fake_player_manager.kick_for_amount", fakePlayer.getGameProfile().getName(), playerName);
+                    MessageHelper.sendBroadcast("fake_player_manager.kick_for_amount", fakePlayer.getGameProfile().getName(), playerName);
                 }
             }
         }

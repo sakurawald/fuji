@@ -6,8 +6,8 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.common.job.MentionPlayersJob;
-import io.github.sakurawald.util.CommandUtil;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.Getter;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
@@ -69,12 +69,12 @@ public class TpaInitializer extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int doResponse(CommandContext<ServerCommandSource> ctx, ResponseStatus status) {
-        return CommandUtil.playerOnlyCommand(ctx, source -> {
+        return CommandHelper.playerOnlyCommand(ctx, source -> {
             ServerPlayerEntity target;
             try {
                 target = EntityArgumentType.getPlayer(ctx, "player");
             } catch (CommandSyntaxException e) {
-                MessageUtil.sendActionBar(source, "tpa.player_not_found");
+                MessageHelper.sendActionBar(source, "tpa.player_not_found");
                 return Command.SINGLE_SUCCESS;
             }
 
@@ -86,7 +86,7 @@ public class TpaInitializer extends ModuleInitializer {
                                     : (request.getSender().equals(target) && request.getReceiver().equals(source)))
                     .findFirst();
             if (requestOptional.isEmpty()) {
-                MessageUtil.sendActionBar(source, "tpa.no_relative_ticket");
+                MessageHelper.sendActionBar(source, "tpa.no_relative_ticket");
                 return Command.SINGLE_SUCCESS;
             }
 
@@ -115,12 +115,12 @@ public class TpaInitializer extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int doRequest(CommandContext<ServerCommandSource> ctx, boolean tpahere) {
-        return CommandUtil.playerOnlyCommand(ctx, source -> {
+        return CommandHelper.playerOnlyCommand(ctx, source -> {
             ServerPlayerEntity target;
             try {
                 target = EntityArgumentType.getPlayer(ctx, "player");
             } catch (CommandSyntaxException e) {
-                MessageUtil.sendActionBar(source, "tpa.player_not_found");
+                MessageHelper.sendActionBar(source, "tpa.player_not_found");
                 return Command.SINGLE_SUCCESS;
             }
 
@@ -129,13 +129,13 @@ public class TpaInitializer extends ModuleInitializer {
 
             /* has similar request ? */
             if (request.getSender().equals(request.getReceiver())) {
-                MessageUtil.sendActionBar(request.getSender(), "tpa.request_to_self");
+                MessageHelper.sendActionBar(request.getSender(), "tpa.request_to_self");
 
                 return Command.SINGLE_SUCCESS;
             }
 
             if (requests.stream().anyMatch(request::similarTo)) {
-                MessageUtil.sendActionBar(request.getSender(), "tpa.similar_request_exists");
+                MessageHelper.sendActionBar(request.getSender(), "tpa.similar_request_exists");
                 return Command.SINGLE_SUCCESS;
             }
 

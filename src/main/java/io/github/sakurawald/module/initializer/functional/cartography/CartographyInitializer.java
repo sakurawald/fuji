@@ -4,7 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.CommandUtil;
+import io.github.sakurawald.util.minecraft.CommandHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.CartographyTableScreenHandler;
@@ -22,7 +22,7 @@ public class CartographyInitializer extends ModuleInitializer {
     }
 
     private int $cartography(CommandContext<ServerCommandSource> ctx) {
-        return CommandUtil.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.playerOnlyCommand(ctx, player -> {
             player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> new CartographyTableScreenHandler(i, inventory, ScreenHandlerContext.create(p.getWorld(), p.getBlockPos())) {
                 @Override
                 public boolean canUse(PlayerEntity player) {

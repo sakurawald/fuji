@@ -9,8 +9,8 @@ import io.github.sakurawald.module.common.gui.ConfirmGui;
 import io.github.sakurawald.module.common.gui.InputSignGui;
 import io.github.sakurawald.module.mixin._internal.low_level.ThreadedAnvilChunkStorageMixin;
 import io.github.sakurawald.util.DateUtil;
-import io.github.sakurawald.util.GuiUtil;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.GuiHelper;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.NoArgsConstructor;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.minecraft.block.entity.BlockEntity;
@@ -59,13 +59,13 @@ public class ProductionWork extends Work implements ScheduleMethod {
         sortedStream.forEach(entry -> {
             String key = entry.getKey();
             double rate = entry.getValue() * ((double) (3600 * 1000) / ((Math.min(this.sample.sampleEndTimeMS, currentTimeMS)) - this.sample.sampleStartTimeMS));
-            net.kyori.adventure.text.Component component = MessageUtil.ofComponent(player, "works.production_work.prop.sample_counter.entry", entry.getValue(), rate)
+            net.kyori.adventure.text.Component component = MessageHelper.ofComponent(player, "works.production_work.prop.sample_counter.entry", entry.getValue(), rate)
                     .replaceText(TextReplacementConfig.builder().matchLiteral("[item]").replacement(Text.translatable(key)).build());
-            ret.add(MessageUtil.toText(component));
+            ret.add(MessageHelper.toText(component));
         });
 
         if (ret.isEmpty()) {
-            ret.add(MessageUtil.ofText(player, "works.production_work.prop.sample_counter.empty"));
+            ret.add(MessageHelper.ofText(player, "works.production_work.prop.sample_counter.empty"));
         }
         return ret;
     }
@@ -76,15 +76,15 @@ public class ProductionWork extends Work implements ScheduleMethod {
         List<Text> ret = super.asLore(player);
         // note: hide sample info in lore if sample not exists
         if (this.sample.sampleStartTimeMS == 0) {
-            ret.addAll((MessageUtil.ofTextList(player, "works.production_work.sample.not_exists")));
+            ret.addAll((MessageHelper.ofTextList(player, "works.production_work.sample.not_exists")));
             return ret;
         }
 
-        ret.add(MessageUtil.ofText(player, "works.production_work.prop.sample_start_time", DateUtil.toStandardDateFormat(this.sample.sampleStartTimeMS)));
-        ret.add(MessageUtil.ofText(player, "works.production_work.prop.sample_end_time", DateUtil.toStandardDateFormat(this.sample.sampleEndTimeMS)));
-        ret.add(MessageUtil.ofText(player, "works.production_work.prop.sample_dimension", this.sample.sampleDimension));
-        ret.add(MessageUtil.ofText(player, "works.production_work.prop.sample_coordinate", this.sample.sampleX, this.sample.sampleY, this.sample.sampleZ));
-        ret.add(MessageUtil.ofText(player, "works.production_work.prop.sample_distance", this.sample.sampleDistance));
+        ret.add(MessageHelper.ofText(player, "works.production_work.prop.sample_start_time", DateUtil.toStandardDateFormat(this.sample.sampleStartTimeMS)));
+        ret.add(MessageHelper.ofText(player, "works.production_work.prop.sample_end_time", DateUtil.toStandardDateFormat(this.sample.sampleEndTimeMS)));
+        ret.add(MessageHelper.ofText(player, "works.production_work.prop.sample_dimension", this.sample.sampleDimension));
+        ret.add(MessageHelper.ofText(player, "works.production_work.prop.sample_coordinate", this.sample.sampleX, this.sample.sampleY, this.sample.sampleZ));
+        ret.add(MessageHelper.ofText(player, "works.production_work.prop.sample_distance", this.sample.sampleDistance));
 
         // check npe to avoid broken
         if (this.sample.sampleCounter != null) {
@@ -92,7 +92,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
             if (this.sample.sampleCounter.size() > Configs.configHandler.model().modules.works.sample_counter_top_n) {
                 trimCounter();
             }
-            ret.add(MessageUtil.ofText(player, "works.production_work.prop.sample_counter"));
+            ret.add(MessageHelper.ofText(player, "works.production_work.prop.sample_counter"));
             ret.addAll(formatSampleCounter(player));
         }
         return ret;
@@ -104,7 +104,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
     }
 
     public void openInputSampleDistanceGui(ServerPlayerEntity player) {
-        new InputSignGui(player, MessageUtil.getString(player, "works.production_work.prompt.input.sample_distance")) {
+        new InputSignGui(player, MessageHelper.getString(player, "works.production_work.prompt.input.sample_distance")) {
             @Override
             public void onClose() {
                 int limit = Configs.configHandler.model().modules.works.sample_distance_limit;
@@ -112,12 +112,12 @@ public class ProductionWork extends Work implements ScheduleMethod {
                 try {
                     current = Integer.parseInt(this.getLine(0).getString());
                 } catch (NumberFormatException e) {
-                    MessageUtil.sendActionBar(player, "input.syntax.error");
+                    MessageHelper.sendActionBar(player, "input.syntax.error");
                     return;
                 }
 
                 if (current > limit) {
-                    MessageUtil.sendActionBar(player, "input.limit.error");
+                    MessageHelper.sendActionBar(player, "input.limit.error");
                     return;
                 }
 
@@ -136,12 +136,12 @@ public class ProductionWork extends Work implements ScheduleMethod {
     @Override
     public void openSpecializedSettingsGui(ServerPlayerEntity player, SimpleGui parentGui) {
         final SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X1, player, false);
-        gui.setTitle(MessageUtil.ofText(player, "works.work.set.specialized_settings.title"));
+        gui.setTitle(MessageHelper.ofText(player, "works.work.set.specialized_settings.title"));
         gui.setLockPlayerInventory(true);
         gui.addSlot(new GuiElementBuilder()
                 .setItem(Items.CLOCK)
-                .setName(MessageUtil.ofText(player, "works.production_work.set.sample"))
-                .setLore(MessageUtil.ofTextList(player, "works.production_work.set.sample.lore"))
+                .setName(MessageHelper.ofText(player, "works.production_work.set.sample"))
+                .setLore(MessageHelper.ofTextList(player, "works.production_work.set.sample.lore"))
                 .setCallback(() -> new ConfirmGui(player) {
                             @Override
                             public void onConfirm() {
@@ -150,7 +150,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
                         }.open()
                 )
         );
-        gui.setSlot(8, GuiUtil.createBackButton(player).setCallback(parentGui::open)
+        gui.setSlot(8, GuiHelper.createBackButton(player).setCallback(parentGui::open)
         );
 
         gui.open();
@@ -213,7 +213,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
             }
         }
 
-        MessageUtil.sendMessage(player, "works.production_work.sample.resolve_hoppers.response", hopperBlockCount, minecartHopperCount);
+        MessageHelper.sendMessage(player, "works.production_work.sample.resolve_hoppers.response", hopperBlockCount, minecartHopperCount);
         return hopperBlockCount + minecartHopperCount;
     }
 
@@ -233,17 +233,17 @@ public class ProductionWork extends Work implements ScheduleMethod {
         this.sample.sampleZ = player.getZ();
         this.sample.sampleCounter = new HashMap<>();
         if (this.resolveHoppers(player) == 0) {
-            MessageUtil.sendMessage(player, "operation.cancelled");
+            MessageHelper.sendMessage(player, "operation.cancelled");
             return;
         }
 
-        MessageUtil.sendBroadcast("works.production_work.sample.start", name, this.creator);
+        MessageHelper.sendBroadcast("works.production_work.sample.start", name, this.creator);
     }
 
     public void endSample() {
         // unbind all block pos
         WorksCache.unbind(this);
-        MessageUtil.sendBroadcast("works.production_work.sample.end", this.name, this.creator);
+        MessageHelper.sendBroadcast("works.production_work.sample.end", this.name, this.creator);
 
         // trim counter to avoid spam
         trimCounter();

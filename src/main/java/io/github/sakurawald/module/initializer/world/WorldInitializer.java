@@ -6,8 +6,8 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.CommandUtil;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.DimensionArgumentType;
 import net.minecraft.server.command.CommandManager;
@@ -21,17 +21,17 @@ public class WorldInitializer extends ModuleInitializer {
 
     @Override
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("world").then(argument(CommandUtil.ARGUMENT_NAME_DIMENSION, DimensionArgumentType.dimension()).executes(this::$world)));
+        dispatcher.register(CommandManager.literal("world").then(argument(CommandHelper.ARGUMENT_NAME_DIMENSION, DimensionArgumentType.dimension()).executes(this::$world)));
     }
 
     private int $world(CommandContext<ServerCommandSource> ctx) {
-        return CommandUtil.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.playerOnlyCommand(ctx, player -> {
 
             try {
-                ServerWorld serverWorld = DimensionArgumentType.getDimensionArgument(ctx, CommandUtil.ARGUMENT_NAME_DIMENSION);
+                ServerWorld serverWorld = DimensionArgumentType.getDimensionArgument(ctx, CommandHelper.ARGUMENT_NAME_DIMENSION);
                 Position.of(player, serverWorld).teleport(player);
             } catch (CommandSyntaxException e) {
-                MessageUtil.sendMessage(player,"dimension.no_found");
+                MessageHelper.sendMessage(player,"dimension.no_found");
             }
 
             return Command.SINGLE_SUCCESS;

@@ -3,42 +3,24 @@ package io.github.sakurawald.module.initializer.works;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import eu.pb4.sgui.api.elements.GuiElementBuilder;
-import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.WorksModel;
-import io.github.sakurawald.module.common.gui.InputSignGui;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.works.gui.WorksGui;
-import io.github.sakurawald.module.initializer.works.work_type.NonProductionWork;
-import io.github.sakurawald.module.initializer.works.work_type.ProductionWork;
 import io.github.sakurawald.module.initializer.works.work_type.Work;
-import io.github.sakurawald.util.CommandUtil;
-import io.github.sakurawald.util.GuiUtil;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.ScheduleUtil;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.item.Items;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings("SameReturnValue")
@@ -73,7 +55,7 @@ public class WorksInitializer extends ModuleInitializer {
     }
 
     private int $works(CommandContext<ServerCommandSource> ctx) {
-        return CommandUtil.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.playerOnlyCommand(ctx, player -> {
             new WorksGui(player,worksHandler.model().works).open();
             return Command.SINGLE_SUCCESS;
         });

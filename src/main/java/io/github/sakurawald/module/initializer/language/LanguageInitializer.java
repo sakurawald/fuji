@@ -1,14 +1,14 @@
 package io.github.sakurawald.module.initializer.language;
 
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 
 
 public class LanguageInitializer extends ModuleInitializer {
 
     @Override
     public void onReload() {
-        MessageUtil.getLang2json().clear();
+        MessageHelper.getLang2json().clear();
     }
 
 }

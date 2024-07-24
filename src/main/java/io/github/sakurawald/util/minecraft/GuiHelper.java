@@ -1,16 +1,15 @@
-package io.github.sakurawald.util;
+package io.github.sakurawald.util.minecraft;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import lombok.experimental.UtilityClass;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 @UtilityClass
-public class GuiUtil {
+public class GuiHelper {
 
     public static class Item {
         public static final ItemStack PLACEHOLDER = Items.GRAY_STAINED_GLASS_PANE.getDefaultStack();
@@ -26,41 +25,41 @@ public class GuiUtil {
     public static GuiElementBuilder createPreviousPageButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(MessageUtil.ofText(player, "previous_page"))
+                .setName(MessageHelper.ofText(player, "previous_page"))
                 .setSkullOwner(Icon.PREVIOUS_PAGE_ICON);
     }
 
     public static GuiElementBuilder createNextPageButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(MessageUtil.ofText(player, "next_page"))
+                .setName(MessageHelper.ofText(player, "next_page"))
                 .setSkullOwner(Icon.NEXT_PAGE_ICON);
     }
 
     public static GuiElementBuilder createBackButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(MessageUtil.ofText(player, "back"))
+                .setName(MessageHelper.ofText(player, "back"))
                 .setSkullOwner(Icon.PREVIOUS_PAGE_ICON);
     }
 
     public static GuiElementBuilder createSearchButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
                 .setItem(Items.COMPASS)
-                .setName(MessageUtil.ofText(player, "search"));
+                .setName(MessageHelper.ofText(player, "search"));
     }
 
     public static GuiElementBuilder createAddButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(MessageUtil.ofText(player, "add"))
-                .setSkullOwner(GuiUtil.Icon.PLUS_ICON);
+                .setName(MessageHelper.ofText(player, "add"))
+                .setSkullOwner(GuiHelper.Icon.PLUS_ICON);
     }
 
     public static GuiElementBuilder createHelpButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(MessageUtil.ofText(player, "help"))
+                .setName(MessageHelper.ofText(player, "help"))
                 .setSkullOwner(Icon.HEART_ICON);
     }
 

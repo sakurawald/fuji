@@ -4,17 +4,12 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.suggestion.SuggestionProvider;
-import com.mojang.brigadier.suggestion.Suggestions;
-import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.kit.gui.KitEditorGui;
-import io.github.sakurawald.util.CommandUtil;
-import io.github.sakurawald.util.MessageUtil;
-import io.github.sakurawald.util.NbtUtil;
-import lombok.NonNull;
+import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.util.minecraft.MessageHelper;
+import io.github.sakurawald.util.minecraft.NbtHelper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.command.CommandRegistryAccess;
@@ -33,7 +28,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -47,17 +41,17 @@ public class KitInitializer extends ModuleInitializer {
     public void writeKit(Kit kit) {
         Path path = STORAGE_PATH.resolve(kit.getName());
 
-        NbtCompound root = NbtUtil.read(path);
+        NbtCompound root = NbtHelper.read(path);
         if (root == null) {
             Fuji.LOGGER.warn("failed to write kit {}", kit);
             return;
         }
 
         NbtList nbtList = new NbtList();
-        NbtUtil.writeSlotsNode(nbtList, kit.getStackList());
+        NbtHelper.writeSlotsNode(nbtList, kit.getStackList());
 
         root.put(INVENTORY, nbtList);
-        NbtUtil.write(root, path);
+        NbtHelper.write(root, path);
     }
 
     public List<String> getKitNameList() {
@@ -85,14 +79,14 @@ public class KitInitializer extends ModuleInitializer {
 
     public @NotNull Kit readKit(String name) {
         Path p = STORAGE_PATH.resolve(name);
-        NbtCompound root = NbtUtil.read(p);
+        NbtCompound root = NbtHelper.read(p);
 
         if (root == null) {
             return new Kit(p.toFile().getName(), new ArrayList<>());
         }
 
         NbtList nbtList = (NbtList) root.get(INVENTORY);
-        List<ItemStack> itemStacks = NbtUtil.readSlotsNode(nbtList);
+        List<ItemStack> itemStacks = NbtHelper.readSlotsNode(nbtList);
         return new Kit(p.toFile().getName(), itemStacks);
     }
 
@@ -117,7 +111,7 @@ public class KitInitializer extends ModuleInitializer {
     }
 
     private int $editor(CommandContext<ServerCommandSource> ctx) {
-        return CommandUtil.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.playerOnlyCommand(ctx, player -> {
             List<Kit> kits = readKits();
             new KitEditorGui(player, kits).open();
             return Command.SINGLE_SUCCESS;
@@ -138,7 +132,7 @@ public class KitInitializer extends ModuleInitializer {
 
         Kit kit = readKit(name);
         if (kit.getStackList().isEmpty()) {
-            MessageUtil.sendMessage(player,"kit.kit.empty");
+            MessageHelper.sendMessage(player,"kit.kit.empty");
             return 0;
         }
 

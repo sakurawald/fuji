@@ -1,11 +1,9 @@
 package io.github.sakurawald.module.initializer.chat.display.gui;
 
-import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.util.GuiUtil;
+import io.github.sakurawald.util.minecraft.GuiHelper;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -35,7 +33,7 @@ public class InventoryDisplayGui extends DisplayGuiBuilder {
         gui.setTitle(this.title);
 
         for (int i = 0; i < LINE_SIZE * 2; i++) {
-            gui.setSlot(i, GuiUtil.Item.PLACEHOLDER);
+            gui.setSlot(i, GuiHelper.Item.PLACEHOLDER);
         }
 
         /* construct armor */

@@ -1,9 +1,9 @@
 package io.github.sakurawald.module.mixin.anti_build;
 
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.util.IdentifierUtil;
-import io.github.sakurawald.util.PermissionUtil;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.IdentifierHelper;
+import io.github.sakurawald.util.minecraft.PermissionHelper;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -35,11 +35,11 @@ public class ServerPlayerInteractionManagerMixin {
     void $tryBreak(BlockPos blockPos, CallbackInfoReturnable<Boolean> cir) {
         BlockState blockState = this.world.getBlockState(blockPos);
 
-        String id = IdentifierUtil.getBlockStateIdentifier(blockState);
+        String id = IdentifierHelper.ofString(blockState);
         if (Configs.configHandler.model().modules.anti_build.anti.break_block.id.contains(id)
-                && !PermissionUtil.hasPermission(player, "fuji.anti_build.%s.bypass.%s".formatted("break_block", id))
+                && !PermissionHelper.hasPermission(player, "fuji.anti_build.%s.bypass.%s".formatted("break_block", id))
         ) {
-            MessageUtil.sendMessage(player, "anti_build.disallow");
+            MessageHelper.sendMessage(player, "anti_build.disallow");
             cir.setReturnValue(false);
         }
 
@@ -47,12 +47,12 @@ public class ServerPlayerInteractionManagerMixin {
 
     @Inject(method = "interactItem", at = @At("HEAD"), cancellable = true)
     void $interactItem(ServerPlayerEntity serverPlayerEntity, World world, ItemStack itemStack, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        String id = IdentifierUtil.getItemStackIdentifier(itemStack);
+        String id = IdentifierHelper.ofString(itemStack);
 
         if (Configs.configHandler.model().modules.anti_build.anti.interact_item.id.contains(id)
-                && !PermissionUtil.hasPermission(player, "fuji.anti_build.%s.bypass.%s".formatted("interact_item", id))
+                && !PermissionHelper.hasPermission(player, "fuji.anti_build.%s.bypass.%s".formatted("interact_item", id))
         ) {
-            MessageUtil.sendMessage(player, "anti_build.disallow");
+            MessageHelper.sendMessage(player, "anti_build.disallow");
             cir.setReturnValue(ActionResult.FAIL);
         }
     }
@@ -61,12 +61,12 @@ public class ServerPlayerInteractionManagerMixin {
     void $interactBlock(ServerPlayerEntity serverPlayerEntity, World world, ItemStack itemStack, Hand hand, BlockHitResult blockHitResult, CallbackInfoReturnable<ActionResult> cir) {
         BlockPos blockPos = blockHitResult.getBlockPos();
         BlockState blockState = world.getBlockState(blockPos);
-        String id = IdentifierUtil.getBlockStateIdentifier(blockState);
+        String id = IdentifierHelper.ofString(blockState);
 
         if (Configs.configHandler.model().modules.anti_build.anti.interact_block.id.contains(id)
-                && !PermissionUtil.hasPermission(player, "fuji.anti_build.%s.bypass.%s".formatted("interact_block", id))
+                && !PermissionHelper.hasPermission(player, "fuji.anti_build.%s.bypass.%s".formatted("interact_block", id))
         ) {
-            MessageUtil.sendMessage(player, "anti_build.disallow");
+            MessageHelper.sendMessage(player, "anti_build.disallow");
             cir.setReturnValue(ActionResult.FAIL);
         }
     }

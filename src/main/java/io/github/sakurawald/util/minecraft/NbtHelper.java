@@ -1,4 +1,4 @@
-package io.github.sakurawald.util;
+package io.github.sakurawald.util.minecraft;
 
 import io.github.sakurawald.Fuji;
 import lombok.experimental.UtilityClass;
@@ -7,7 +7,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.util.collection.DefaultedList;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -17,8 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @UtilityClass
-public class NbtUtil {
-
+public class NbtHelper {
 
     public static void set(NbtCompound root, String path, NbtElement value) {
         // search the path
@@ -45,7 +43,6 @@ public class NbtUtil {
 
         return get(root, path);
     }
-
 
     public static NbtElement get(NbtCompound root, String path) {
         // search the path
@@ -88,7 +85,7 @@ public class NbtUtil {
 
     public static NbtList writeSlotsNode(NbtList node, List<ItemStack> itemStackList) {
         for (ItemStack item : itemStackList) {
-            node.add(item.encodeAllowEmpty(RegistryUtil.getDefaultWrapperLookup()));
+            node.add(item.encodeAllowEmpty(RegistryHelper.getDefaultWrapperLookup()));
         }
         return node;
     }
@@ -98,7 +95,7 @@ public class NbtUtil {
 
         ArrayList<ItemStack> ret = new ArrayList<>();
         for (int i = 0; i < node.size(); i++) {
-            ret.add(ItemStack.fromNbtOrEmpty(RegistryUtil.getDefaultWrapperLookup(), node.getCompound(i)));
+            ret.add(ItemStack.fromNbtOrEmpty(RegistryHelper.getDefaultWrapperLookup(), node.getCompound(i)));
         }
         return ret;
     }

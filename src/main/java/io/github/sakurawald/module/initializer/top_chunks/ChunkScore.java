@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.top_chunks;
 
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -95,7 +95,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
     private Component formatTypes(ServerCommandSource source) {
         TextComponent.Builder ret = Component.text();
         this.type2amount.forEach((k, v) -> {
-            Component component = MessageUtil.ofComponent(source, "top_chunks.prop.types.entry", v)
+            Component component = MessageHelper.ofComponent(source, "top_chunks.prop.types.entry", v)
                     .replaceText(TextReplacementConfig.builder().matchLiteral("[type]").replacement(Component.translatable(k)).build());
             ret.append(component);
         });
@@ -106,24 +106,24 @@ public class ChunkScore implements Comparable<ChunkScore> {
 
         String chunkLocation;
         if (Configs.configHandler.model().modules.top_chunks.hide_location) {
-            chunkLocation = MessageUtil.getString(source, "top_chunks.prop.hidden");
+            chunkLocation = MessageHelper.getString(source, "top_chunks.prop.hidden");
             if (source.hasPermissionLevel(4)) {
-                chunkLocation = MessageUtil.getString(source, "top_chunks.prop.hidden.bypass", this.getChunkPos().toString());
+                chunkLocation = MessageHelper.getString(source, "top_chunks.prop.hidden.bypass", this.getChunkPos().toString());
             }
         } else {
             chunkLocation = this.getChunkPos().toString();
         }
 
         Component hoverTextComponent = Component.text().color(NamedTextColor.GOLD)
-                .append(MessageUtil.ofComponent(source, "top_chunks.prop.dimension", this.dimension.getRegistryKey().getValue()))
+                .append(MessageHelper.ofComponent(source, "top_chunks.prop.dimension", this.dimension.getRegistryKey().getValue()))
                 .append(Component.newline())
-                .append(MessageUtil.ofComponent(source, "top_chunks.prop.chunk", chunkLocation))
+                .append(MessageHelper.ofComponent(source, "top_chunks.prop.chunk", chunkLocation))
                 .append(Component.newline())
-                .append(MessageUtil.ofComponent(source, "top_chunks.prop.score", this.score))
+                .append(MessageHelper.ofComponent(source, "top_chunks.prop.score", this.score))
                 .append(Component.newline())
-                .append(MessageUtil.ofComponent(source, "top_chunks.prop.players", this.players))
+                .append(MessageHelper.ofComponent(source, "top_chunks.prop.players", this.players))
                 .append(Component.newline())
-                .append(MessageUtil.ofComponent(source, "top_chunks.prop.types"))
+                .append(MessageHelper.ofComponent(source, "top_chunks.prop.types"))
                 .append(formatTypes(source)).build();
         return Component.text()
                 .color(this.players.isEmpty() ? NamedTextColor.GRAY : NamedTextColor.DARK_GREEN)

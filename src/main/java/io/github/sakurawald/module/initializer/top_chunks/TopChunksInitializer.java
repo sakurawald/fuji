@@ -7,7 +7,7 @@ import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.mixin._internal.low_level.ThreadedAnvilChunkStorageMixin;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.minecraft.block.entity.BlockEntity;
@@ -105,7 +105,7 @@ public class TopChunksInitializer extends ModuleInitializer {
             BlockPos blockPos = chunkPos.getStartPos();
             PlayerEntity nearestPlayer = world.getClosestPlayer(blockPos.getX(), blockPos.getY(), blockPos.getZ(), Configs.configHandler.model().modules.top_chunks.nearest_distance, false);
             if (nearestPlayer != null) {
-                chunkScore.getPlayers().add(MessageUtil.getString(source, "top_chunks.prop.players.nearest", nearestPlayer.getGameProfile().getName()));
+                chunkScore.getPlayers().add(MessageHelper.getString(source, "top_chunks.prop.players.nearest", nearestPlayer.getGameProfile().getName()));
             }
         }
     }

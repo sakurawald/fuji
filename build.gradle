@@ -57,6 +57,7 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:${project.lombok_version}"
 
     implementation "com.google.code.gson:gson:${project.gson_version}"
+    // json path library ...
 
     modImplementation("carpet:fabric-carpet:${project.carpet_core_version}")
 

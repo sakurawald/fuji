@@ -3,7 +3,6 @@ package io.github.sakurawald.module.mixin.tab_list.sort;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.tab_list.sort.TabListSortInitializer;
 import io.github.sakurawald.util.RandomUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +16,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
-import static io.github.sakurawald.util.MessageUtil.ofText;
+import static io.github.sakurawald.util.minecraft.MessageHelper.ofText;
 
 // the last to check the return value
 @Mixin(value = ServerPlayerEntity.class, priority = 1000 - 125)

@@ -3,7 +3,7 @@ package io.github.sakurawald.module.mixin.command_warmup;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.structure.CommandWarmupTicket;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.bossbar.BossBar;
 import net.minecraft.network.packet.c2s.play.CommandExecutionC2SPacket;
@@ -41,7 +41,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
 
         int ms = getMs(string);
         if (ms > 0) {
-            BossBar bossbar = BossBar.bossBar(MessageUtil.ofText(player, "command_warmup.bossbar.name", string), 0f, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS);
+            BossBar bossbar = BossBar.bossBar(MessageHelper.ofText(player, "command_warmup.bossbar.name", string), 0f, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS);
             Managers.getBossBarManager().addTicket(new CommandWarmupTicket(bossbar, ms, player, string) {
                 @Override
                 public void onComplete() {

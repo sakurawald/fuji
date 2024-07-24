@@ -1,4 +1,4 @@
-package io.github.sakurawald.util;
+package io.github.sakurawald.util.minecraft;
 
 import lombok.experimental.UtilityClass;
 import net.minecraft.block.Block;
@@ -9,21 +9,22 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 
 @UtilityClass
-public class IdentifierUtil {
+public class IdentifierHelper {
 
-    public static String getItemStackIdentifier(ItemStack itemStack) {
+    public static String ofString(ItemStack itemStack) {
         Item item = itemStack.getItem().asItem();
         return Registries.ITEM.getId(item).toString();
     }
 
-    public static String getBlockStateIdentifier(BlockState blockState) {
-        return getBlockIdentifier(blockState.getBlock());
+    public static String ofString(BlockState blockState) {
+        return ofString(blockState.getBlock());
     }
 
-    public static String getBlockIdentifier(Block block) {
+    public static String ofString(Block block) {
         return Registries.BLOCK.getId(block).toString();
     }
-    public static String getEntityTypeIdentifier(Entity entity) {
+
+    public static String ofString(Entity entity) {
         return Registries.ENTITY_TYPE.getId(entity.getType()).toString();
     }
 

@@ -5,8 +5,8 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.CommandUtil;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.command.CommandManager;
@@ -24,17 +24,17 @@ public class BedInitializer extends ModuleInitializer {
     }
 
     private int $bed(CommandContext<ServerCommandSource> ctx) {
-        return CommandUtil.playerOnlyCommand(ctx, (player) -> {
+        return CommandHelper.playerOnlyCommand(ctx, (player) -> {
             BlockPos respawnPosition = player.getSpawnPointPosition();
             RegistryKey<World> respawnDimension = player.getSpawnPointDimension();
             ServerWorld serverLevel = Fuji.SERVER.getWorld(respawnDimension);
             if (respawnPosition == null || serverLevel == null) {
-                MessageUtil.sendMessage(player, "bed.not_found");
+                MessageHelper.sendMessage(player, "bed.not_found");
                 return Command.SINGLE_SUCCESS;
             }
 
             player.teleport(serverLevel, respawnPosition.getX(), respawnPosition.getY(), respawnPosition.getZ(), player.getYaw(), player.getPitch());
-            MessageUtil.sendMessage(player, "bed.success");
+            MessageHelper.sendMessage(player, "bed.success");
             return Command.SINGLE_SUCCESS;
         });
     }

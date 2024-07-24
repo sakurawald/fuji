@@ -7,8 +7,8 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.CommandUtil;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import java.util.HashMap;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
@@ -33,7 +33,7 @@ public class ReplyInitializer extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int $reply(CommandContext<ServerCommandSource> ctx) {
-        return CommandUtil.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.playerOnlyCommand(ctx, player -> {
 
             String target = this.player2target.get(player.getGameProfile().getName());
             String message = StringArgumentType.getString(ctx, "message");
@@ -41,7 +41,7 @@ public class ReplyInitializer extends ModuleInitializer {
             try {
                 Fuji.SERVER.getCommandManager().getDispatcher().execute("msg %s %s".formatted(target, message), player.getCommandSource());
             } catch (CommandSyntaxException e) {
-                MessageUtil.sendMessage(player, "reply.no_target");
+                MessageHelper.sendMessage(player, "reply.no_target");
             }
 
             return Command.SINGLE_SUCCESS;

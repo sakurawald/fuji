@@ -3,7 +3,7 @@ package io.github.sakurawald.module.mixin.carpet.fake_player_manager;
 import carpet.patches.EntityPlayerMPFake;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.carpet.fake_player_manager.FakePlayerManagerInitializer;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -42,7 +42,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
                 // main-hand and off-hand will both trigger this event
                 if (hand == Hand.MAIN_HAND) {
-                    MessageUtil.sendMessage(source, "fake_player_manager.manipulate.forbidden");
+                    MessageHelper.sendMessage(source, "fake_player_manager.manipulate.forbidden");
                 }
             }
         }

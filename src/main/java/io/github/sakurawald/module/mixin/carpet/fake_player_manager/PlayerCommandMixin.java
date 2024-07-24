@@ -7,7 +7,7 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.carpet.fake_player_manager.FakePlayerManagerInitializer;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -51,7 +51,7 @@ public abstract class PlayerCommandMixin {
         if (player == null) return;
 
         if (!module.canSpawnFakePlayer(player)) {
-            MessageUtil.sendMessage(player, "fake_player_manager.spawn.limit_exceed");
+            MessageHelper.sendMessage(player, "fake_player_manager.spawn.limit_exceed");
             cir.setReturnValue(0);
         }
 
@@ -76,7 +76,7 @@ public abstract class PlayerCommandMixin {
     private static void $cantManipulate(CommandContext<ServerCommandSource> context, CallbackInfoReturnable<Boolean> cir) {
         String fakePlayerName = StringArgumentType.getString(context, "player");
         if (!module.canManipulateFakePlayer(context, fakePlayerName)) {
-            MessageUtil.sendMessage(context.getSource(), "fake_player_manager.manipulate.forbidden");
+            MessageHelper.sendMessage(context.getSource(), "fake_player_manager.manipulate.forbidden");
             cir.setReturnValue(true);
         }
     }

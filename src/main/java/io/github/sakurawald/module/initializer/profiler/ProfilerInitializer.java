@@ -4,7 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import me.lucko.spark.api.Spark;
 import me.lucko.spark.api.SparkProvider;
 import me.lucko.spark.api.gc.GarbageCollector;
@@ -54,7 +54,7 @@ public class ProfilerInitializer extends ModuleInitializer {
             } catch (Exception ignored) {
             }
             if (spark == null) {
-                MessageUtil.sendMessage(source, "profiler.spark.no_instance");
+                MessageHelper.sendMessage(source, "profiler.spark.no_instance");
                 return;
             }
 
@@ -114,7 +114,7 @@ public class ProfilerInitializer extends ModuleInitializer {
             double cpu_system_15m = cpuSystem.poll(StatisticWindow.CpuUsage.MINUTES_15) * 100;
 
             Map<String, GarbageCollector> gc = spark.gc();
-            Component gcComponent = MessageUtil.ofComponent(source, "profiler.format.gc.head");
+            Component gcComponent = MessageHelper.ofComponent(source, "profiler.format.gc.head");
             int i = 0;
             for (GarbageCollector garbageCollector : gc.values()) {
                 String name = garbageCollector.name();
@@ -122,11 +122,11 @@ public class ProfilerInitializer extends ModuleInitializer {
                 double avgTime = garbageCollector.avgTime();
                 long totalCollections = garbageCollector.totalCollections();
                 long totalTime = garbageCollector.totalTime();
-                gcComponent = gcComponent.append(MessageUtil.ofComponent(source, i == gc.values().size() - 1 ? "profiler.format.gc.last" : "profiler.format.gc.no_last", name, avgFrequency, avgTime, totalCollections, totalTime));
+                gcComponent = gcComponent.append(MessageHelper.ofComponent(source, i == gc.values().size() - 1 ? "profiler.format.gc.last" : "profiler.format.gc.no_last", name, avgFrequency, avgTime, totalCollections, totalTime));
                 i++;
             }
 
-            Component memComponent = MessageUtil.ofComponent(source, "profiler.format.mem.head");
+            Component memComponent = MessageHelper.ofComponent(source, "profiler.format.mem.head");
             List<MemoryPoolMXBean> memoryPoolMXBeans = ManagementFactory.getMemoryPoolMXBeans();
             i = 0;
             for (MemoryPoolMXBean memoryPoolMXBean : memoryPoolMXBeans) {
@@ -137,12 +137,12 @@ public class ProfilerInitializer extends ModuleInitializer {
                 String used = formatBytes(memoryUsage.getUsed());
                 String committed = formatBytes(memoryUsage.getCommitted());
                 String max = formatBytes(memoryUsage.getMax());
-                memComponent = memComponent.append(MessageUtil.ofComponent(source, i == memoryPoolMXBeans.size() - 1 ? "profiler.format.mem.last" : "profiler.format.mem.no_last", name, type, init, used, committed, max));
+                memComponent = memComponent.append(MessageHelper.ofComponent(source, i == memoryPoolMXBeans.size() - 1 ? "profiler.format.mem.last" : "profiler.format.mem.no_last", name, type, init, used, committed, max));
                 i++;
             }
 
             /* output */
-            Component formatComponent = MessageUtil.ofComponent(source, "profiler.format"
+            Component formatComponent = MessageHelper.ofComponent(source, "profiler.format"
                     , os_name, os_version, os_arch
                     , vmName, vmVersion
                     , tps_5s, tps_10s, tps_1m, tps_5m, tps_15m

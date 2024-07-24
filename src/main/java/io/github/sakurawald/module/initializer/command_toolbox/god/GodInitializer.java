@@ -4,8 +4,8 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.CommandUtil;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -21,12 +21,12 @@ public class GodInitializer extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int $god(CommandContext<ServerCommandSource> ctx) {
-        return CommandUtil.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.playerOnlyCommand(ctx, player -> {
             boolean flag = !player.getAbilities().invulnerable;
             player.getAbilities().invulnerable = flag;
             player.sendAbilitiesUpdate();
 
-            MessageUtil.sendMessage(player, flag ? "god.on" : "god.off");
+            MessageHelper.sendMessage(player, flag ? "god.on" : "god.off");
             return Command.SINGLE_SUCCESS;
         });
     }

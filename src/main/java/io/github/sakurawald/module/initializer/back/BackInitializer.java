@@ -6,8 +6,8 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.common.structure.Position;
-import io.github.sakurawald.util.CommandUtil;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.command.CommandRegistryAccess;
@@ -29,10 +29,10 @@ public class BackInitializer extends ModuleInitializer {
     }
 
     private int $back(CommandContext<ServerCommandSource> ctx) {
-        return CommandUtil.playerOnlyCommand(ctx, (player -> {
+        return CommandHelper.playerOnlyCommand(ctx, (player -> {
             Position lastPos = player2lastPos.get(player.getName().getString());
             if (lastPos == null) {
-                MessageUtil.sendActionBar(player, "back.no_previous_position");
+                MessageHelper.sendActionBar(player, "back.no_previous_position");
                 return Command.SINGLE_SUCCESS;
             }
 

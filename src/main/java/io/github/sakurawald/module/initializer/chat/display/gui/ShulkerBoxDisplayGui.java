@@ -1,13 +1,10 @@
 package io.github.sakurawald.module.initializer.chat.display.gui;
 
-import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.util.GuiUtil;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.GuiHelper;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -33,11 +30,11 @@ public class ShulkerBoxDisplayGui extends DisplayGuiBuilder {
 
         /* construct base  */
         for (int i = 0; i < 9; i++) {
-            gui.setSlot(i, GuiUtil.Item.PLACEHOLDER);
+            gui.setSlot(i, GuiHelper.Item.PLACEHOLDER);
         }
         gui.setSlot(4, itemStack);
         if (this.parentGui != null) {
-            gui.setSlot(LINE_SIZE - 1,  GuiUtil.createBackButton(player).setCallback(parentGui::open));
+            gui.setSlot(LINE_SIZE - 1,  GuiHelper.createBackButton(player).setCallback(parentGui::open));
         }
 
         /* construct items */

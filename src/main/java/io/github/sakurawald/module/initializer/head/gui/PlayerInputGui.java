@@ -9,7 +9,7 @@ import eu.pb4.sgui.api.gui.AnvilInputGui;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.head.HeadInitializer;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.MinecraftServer;
@@ -31,7 +31,7 @@ class PlayerInputGui extends AnvilInputGui {
         this.setDefaultInputValue("");
         this.setSlot(1, Items.PLAYER_HEAD.getDefaultStack());
         this.resetSearchResult();
-        this.setTitle(MessageUtil.ofText(player, "head.category.player"));
+        this.setTitle(MessageHelper.ofText(player, "head.category.player"));
     }
 
     private void resetSearchResult() {
@@ -74,7 +74,7 @@ class PlayerInputGui extends AnvilInputGui {
                 GuiElementBuilder builder = new GuiElementBuilder().setItem(Items.PLAYER_HEAD);
                 if (HeadInitializer.headHandler.model().economyType != HeadInitializer.EconomyType.FREE) {
                     builder.addLoreLine(Text.empty());
-                    builder.addLoreLine(MessageUtil.ofText(player, "head.price").copy().append(module.getCost()));
+                    builder.addLoreLine(MessageHelper.ofText(player, "head.price").copy().append(module.getCost()));
                 }
 
                 builder.setSkullOwner(profile, Fuji.SERVER);

@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import javax.imageio.ImageIO;
 
 import lombok.Setter;
@@ -65,7 +65,7 @@ public class MotdInitializer extends ModuleInitializer {
     }
 
     public Text getRandomDescription() {
-        return MessageUtil.ofText(motd.get(new Random().nextInt(motd.size())));
+        return MessageHelper.ofText(motd.get(new Random().nextInt(motd.size())));
     }
 
 }

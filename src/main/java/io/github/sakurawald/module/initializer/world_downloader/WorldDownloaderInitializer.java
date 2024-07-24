@@ -9,9 +9,9 @@ import com.sun.net.httpserver.HttpServer;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.CommandUtil;
+import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.IOUtil;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.SneakyThrows;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.registry.RegistryKey;
@@ -82,7 +82,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
     @SuppressWarnings("SameReturnValue")
     @SneakyThrows
     private int $download(CommandContext<ServerCommandSource> ctx) {
-        return CommandUtil.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.playerOnlyCommand(ctx, player -> {
             /* init server */
             if (server == null) {
                 initServer();
@@ -106,9 +106,9 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
             contextQueue.add(path);
             File file = compressRegionFile(player);
             double BYTE_TO_MEGABYTE = 1.0 * 1024 * 1024;
-            MessageUtil.sendBroadcast("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
+            MessageHelper.sendBroadcast("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
             server.createContext(path, new FileDownloadHandler(this, file, Configs.configHandler.model().modules.world_downloader.bytes_per_second_limit));
-            MessageUtil.sendMessage(player, "world_downloader.response", url);
+            MessageHelper.sendMessage(player, "world_downloader.response", url);
             return Command.SINGLE_SUCCESS;
         });
     }

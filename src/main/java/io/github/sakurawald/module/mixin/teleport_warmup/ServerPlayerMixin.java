@@ -4,8 +4,8 @@ import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.structure.BossBarTicket;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.common.structure.TeleportTicket;
-import io.github.sakurawald.util.MessageUtil;
-import io.github.sakurawald.util.EntityUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
+import io.github.sakurawald.util.minecraft.EntityHelper;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -40,7 +40,7 @@ public abstract class ServerPlayerMixin {
 
         // If we try to spawn a fake-player in the end or nether, the fake-player will initially spawn in overworld
         // and teleport to the target world. This will cause the teleport warmup to be triggered.
-        if (EntityUtil.isFakePlayer(player)) return;
+        if (EntityHelper.isNonRealPlayer(player)) return;
 
         TeleportTicket ticket = getTeleportTicket(player);
         if (ticket == null) {
@@ -52,7 +52,7 @@ public abstract class ServerPlayerMixin {
             ci.cancel();
         } else {
             if (!ticket.isReady()) {
-                MessageUtil.sendActionBar(player, "teleport_warmup.another_teleportation_in_progress");
+                MessageHelper.sendActionBar(player, "teleport_warmup.another_teleportation_in_progress");
                 ci.cancel();
             }
         }
@@ -65,7 +65,7 @@ public abstract class ServerPlayerMixin {
         // If damage was actually applied...
         if (cir.getReturnValue()) {
             ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-            if (EntityUtil.isFakePlayer(player)) return;
+            if (EntityHelper.isNonRealPlayer(player)) return;
 
             TeleportTicket ticket = getTeleportTicket(player);
             if (ticket != null) {

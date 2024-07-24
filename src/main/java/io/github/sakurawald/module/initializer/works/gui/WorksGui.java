@@ -8,8 +8,8 @@ import io.github.sakurawald.module.common.gui.PagedGui;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;
 import io.github.sakurawald.module.initializer.works.work_type.ProductionWork;
 import io.github.sakurawald.module.initializer.works.work_type.Work;
-import io.github.sakurawald.util.GuiUtil;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.GuiHelper;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKey;
@@ -25,7 +25,7 @@ import java.util.List;
 public class WorksGui extends PagedGui<Work> {
 
     public WorksGui(ServerPlayerEntity player, List<Work> entities) {
-        super(player, MessageUtil.ofText(player, "works.list.title"), entities);
+        super(player, MessageHelper.ofText(player, "works.list.title"), entities);
     }
 
     @Override
@@ -34,26 +34,26 @@ public class WorksGui extends PagedGui<Work> {
         List<Work> entities = the.getEntities();
 
         Layer controlLayer = new Layer(1, 3);
-        controlLayer.addSlot(GuiUtil.createAddButton(player)
-                .setName(MessageUtil.ofText(player, "works.list.add"))
+        controlLayer.addSlot(GuiHelper.createAddButton(player)
+                .setName(MessageHelper.ofText(player, "works.list.add"))
                 .setCallback(() -> new AddWorkGui(player).open())
         );
         controlLayer.addSlot(new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(MessageUtil.ofText(player, "works.list.help"))
-                .setSkullOwner(GuiUtil.Icon.QUESTION_MARK_ICON)
-                .setLore(MessageUtil.ofTextList(player, "works.list.help.lore")));
+                .setName(MessageHelper.ofText(player, "works.list.help"))
+                .setSkullOwner(GuiHelper.Icon.QUESTION_MARK_ICON)
+                .setLore(MessageHelper.ofTextList(player, "works.list.help.lore")));
 
         if (entities == WorksInitializer.worksHandler.model().works) {
-            controlLayer.addSlot(GuiUtil.createHelpButton(player)
-                    .setName(MessageUtil.ofText(player, "works.list.my_works"))
+            controlLayer.addSlot(GuiHelper.createHelpButton(player)
+                    .setName(MessageHelper.ofText(player, "works.list.my_works"))
                     .setCallback(() -> search(player.getGameProfile().getName()).open())
             );
         } else {
             controlLayer.addSlot(new GuiElementBuilder()
                     .setItem(Items.PLAYER_HEAD)
-                    .setName(MessageUtil.ofText(player, "works.list.all_works"))
-                    .setSkullOwner(GuiUtil.Icon.A_ICON)
+                    .setName(MessageHelper.ofText(player, "works.list.all_works"))
+                    .setSkullOwner(GuiHelper.Icon.A_ICON)
                     .setCallback(() -> new WorksGui(player, WorksInitializer.worksHandler.model().works).open())
             );
         }
@@ -72,7 +72,7 @@ public class WorksGui extends PagedGui<Work> {
         ServerPlayerEntity player = getPlayer();
         return new GuiElementBuilder()
                 .setItem(entity.asItem())
-                .setName(MessageUtil.ofText(entity.name))
+                .setName(MessageHelper.ofText(entity.name))
                 .setLore(entity.asLore(player))
                 .setCallback((index, clickType, actionType) -> {
                     /* left click -> visit */
@@ -86,7 +86,7 @@ public class WorksGui extends PagedGui<Work> {
                     /* shift + right click -> specialized settings */
                     if (clickType.isRight && clickType.shift) {
                         if (!hasPermission(player, entity)) {
-                            MessageUtil.sendActionBar(player, "works.work.set.no_perm");
+                            MessageHelper.sendActionBar(player, "works.work.set.no_perm");
                             return;
                         }
                         entity.openSpecializedSettingsGui(player, gui);
@@ -97,7 +97,7 @@ public class WorksGui extends PagedGui<Work> {
                     if (clickType.isRight) {
                         // check permission
                         if (!hasPermission(player, entity)) {
-                            MessageUtil.sendActionBar(player, "works.work.set.no_perm");
+                            MessageHelper.sendActionBar(player, "works.work.set.no_perm");
                             return;
                         }
                         entity.openGeneralSettingsGui(player, gui);

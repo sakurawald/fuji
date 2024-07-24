@@ -10,9 +10,9 @@ import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.HomeModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.common.structure.Position;
-import io.github.sakurawald.util.CommandUtil;
-import io.github.sakurawald.util.MessageUtil;
-import io.github.sakurawald.util.PermissionUtil;
+import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.util.minecraft.MessageHelper;
+import io.github.sakurawald.util.minecraft.PermissionHelper;
 import io.github.sakurawald.util.ScheduleUtil;
 import lombok.Getter;
 import net.minecraft.command.CommandRegistryAccess;
@@ -65,11 +65,11 @@ public class HomeInitializer extends ModuleInitializer {
     }
 
     private int $tp(CommandContext<ServerCommandSource> ctx) {
-        return CommandUtil.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.playerOnlyCommand(ctx, player -> {
             Map<String, Position> name2position = getHomes(player);
             String homeName = StringArgumentType.getString(ctx, "name");
             if (!name2position.containsKey(homeName)) {
-                MessageUtil.sendMessage(player, "home.no_found", homeName);
+                MessageHelper.sendMessage(player, "home.no_found", homeName);
                 return 0;
             }
 
@@ -80,46 +80,46 @@ public class HomeInitializer extends ModuleInitializer {
     }
 
     private int $unset(CommandContext<ServerCommandSource> ctx) {
-        return CommandUtil.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.playerOnlyCommand(ctx, player -> {
             Map<String, Position> name2position = getHomes(player);
             String homeName = StringArgumentType.getString(ctx, "name");
             if (!name2position.containsKey(homeName)) {
-                MessageUtil.sendMessage(player, "home.no_found", homeName);
+                MessageHelper.sendMessage(player, "home.no_found", homeName);
                 return 0;
             }
 
             name2position.remove(homeName);
-            MessageUtil.sendMessage(player, "home.unset.success", homeName);
+            MessageHelper.sendMessage(player, "home.unset.success", homeName);
             return Command.SINGLE_SUCCESS;
         });
     }
 
     private int $set(CommandContext<ServerCommandSource> ctx, boolean override) {
-        return CommandUtil.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.playerOnlyCommand(ctx, player -> {
             Map<String, Position> name2position = getHomes(player);
             String homeName = StringArgumentType.getString(ctx, "name");
             if (name2position.containsKey(homeName)) {
                 if (!override) {
-                    MessageUtil.sendMessage(player, "home.set.fail.need_override", homeName);
+                    MessageHelper.sendMessage(player, "home.set.fail.need_override", homeName);
                     return Command.SINGLE_SUCCESS;
                 }
             }
 
-            Optional<Integer> limit = PermissionUtil.getMeta(player, "fuji.home.home_limit", Integer::valueOf);
+            Optional<Integer> limit = PermissionHelper.getMeta(player, "fuji.home.home_limit", Integer::valueOf);
             if (limit.isPresent() && name2position.size() >= limit.get()) {
-                MessageUtil.sendMessage(player, "home.set.fail.limit");
+                MessageHelper.sendMessage(player, "home.set.fail.limit");
                 return Command.SINGLE_SUCCESS;
             }
 
             name2position.put(homeName, Position.of(player));
-            MessageUtil.sendMessage(player, "home.set.success", homeName);
+            MessageHelper.sendMessage(player, "home.set.success", homeName);
             return Command.SINGLE_SUCCESS;
         });
     }
 
     private int $list(CommandContext<ServerCommandSource> ctx) {
-        return CommandUtil.playerOnlyCommand(ctx, player -> {
-            MessageUtil.sendMessage(player, "home.list", getHomes(player).keySet());
+        return CommandHelper.playerOnlyCommand(ctx, player -> {
+            MessageHelper.sendMessage(player, "home.list", getHomes(player).keySet());
             return Command.SINGLE_SUCCESS;
         });
     }

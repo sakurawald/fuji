@@ -6,8 +6,8 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.CommandUtil;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.ScheduleUtil;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.command.CommandRegistryAccess;
@@ -44,10 +44,10 @@ public class AfkInitializer extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int $afk(CommandContext<ServerCommandSource> ctx) {
-        return CommandUtil.playerOnlyCommand(ctx, (player -> {
+        return CommandHelper.playerOnlyCommand(ctx, (player -> {
             // note: issue command will update lastLastActionTime, so it's impossible to use /afk to disable afk
             ((AfkStateAccessor) player).fuji$setAfk(true);
-            MessageUtil.sendMessage(player, "afk.on");
+            MessageHelper.sendMessage(player, "afk.on");
             return Command.SINGLE_SUCCESS;
         }));
     }
@@ -75,7 +75,7 @@ public class AfkInitializer extends ModuleInitializer {
 
                     afk_player.fuji$setAfk(true);
                     if (Configs.configHandler.model().modules.afk.afk_checker.kick_player) {
-                        player.networkHandler.disconnect(MessageUtil.ofText(player, "afk.kick"));
+                        player.networkHandler.disconnect(MessageHelper.ofText(player, "afk.kick"));
                     }
                 }
             }

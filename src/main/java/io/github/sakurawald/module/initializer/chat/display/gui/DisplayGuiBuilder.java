@@ -5,7 +5,7 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import eu.pb4.sgui.api.gui.SlotGuiInterface;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
@@ -18,7 +18,7 @@ public abstract class DisplayGuiBuilder {
     protected static void $setSlot(SimpleGui gui, int i, ItemStack itemStack, SlotClickForDeeperDisplayCallback slotClickForDeeperDisplayCallback) {
         GuiElementBuilder guiElementBuilder = GuiElementBuilder.from(itemStack).setCallback(slotClickForDeeperDisplayCallback);
         if (isShulkerBox(itemStack)) {
-            guiElementBuilder.addLoreLine(MessageUtil.ofText(gui.getPlayer(), "display.click.prompt"));
+            guiElementBuilder.addLoreLine(MessageHelper.ofText(gui.getPlayer(), "display.click.prompt"));
         }
         gui.setSlot(i, guiElementBuilder.build());
     }
@@ -35,7 +35,7 @@ public abstract class DisplayGuiBuilder {
         public void click(int i, ClickType clickType, net.minecraft.screen.slot.SlotActionType clickType1, SlotGuiInterface slotGuiInterface) {
             ItemStack itemStack = slotGuiInterface.getSlot(i).getItemStack();
             if (isShulkerBox(itemStack)) {
-                ShulkerBoxDisplayGui shulkerBoxDisplayGui = new ShulkerBoxDisplayGui(MessageUtil.ofText(player, "display.gui.title", player.getGameProfile().getName()), itemStack, parentGui);
+                ShulkerBoxDisplayGui shulkerBoxDisplayGui = new ShulkerBoxDisplayGui(MessageHelper.ofText(player, "display.gui.title", player.getGameProfile().getName()), itemStack, parentGui);
                 shulkerBoxDisplayGui.build(player).open();
             }
         }

@@ -1,4 +1,4 @@
-package io.github.sakurawald.util;
+package io.github.sakurawald.util.minecraft;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -38,7 +38,7 @@ import java.util.Map;
 
 @UtilityClass
 @Slf4j
-public class MessageUtil {
+public class MessageHelper {
     public static final NodeParser POWERFUL_PARSER = NodeParser.builder()
             .quickText()
             .simplifiedTextFormat()
@@ -168,7 +168,7 @@ public class MessageUtil {
     }
 
     public static String ofString(@Nullable Audience audience, String string) {
-        return PlainTextComponentSerializer.plainText().serialize(MessageUtil.ofText(PLACEHOLDER_PARSER, audience, false, string).asComponent());
+        return PlainTextComponentSerializer.plainText().serialize(MessageHelper.ofText(PLACEHOLDER_PARSER, audience, false, string).asComponent());
     }
 
 

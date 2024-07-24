@@ -8,9 +8,9 @@ import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.SeenModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.CommandUtil;
+import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.DateUtil;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.Getter;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
@@ -35,7 +35,7 @@ public class SeenInitializer extends ModuleInitializer {
 
     @Override
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("seen").then(CommandUtil.offlinePlayerArgument().executes(this::$seen)));
+        dispatcher.register(CommandManager.literal("seen").then(CommandHelper.offlinePlayerArgument().executes(this::$seen)));
     }
 
     @SuppressWarnings("SameReturnValue")
@@ -43,9 +43,9 @@ public class SeenInitializer extends ModuleInitializer {
         String target = StringArgumentType.getString(ctx, "player");
         if (data.model().player2seen.containsKey(target)) {
             Long time = data.model().player2seen.get(target);
-            MessageUtil.sendMessage(ctx.getSource(), "seen.success", target, DateUtil.toStandardDateFormat(time));
+            MessageHelper.sendMessage(ctx.getSource(), "seen.success", target, DateUtil.toStandardDateFormat(time));
         } else {
-            MessageUtil.sendMessage(ctx.getSource(), "seen.fail");
+            MessageHelper.sendMessage(ctx.getSource(), "seen.fail");
         }
         return Command.SINGLE_SUCCESS;
     }

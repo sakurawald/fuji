@@ -11,8 +11,8 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.common.random_teleport.RandomTeleport;
 import io.github.sakurawald.module.initializer.resource_world.interfaces.DimensionOptionsMixinInterface;
 import io.github.sakurawald.module.common.accessor.SimpleRegistryMixinInterface;
-import io.github.sakurawald.util.CommandUtil;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.ScheduleUtil;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
@@ -95,7 +95,7 @@ public class ResourceWorldInitializer extends ModuleInitializer {
     }
 
     private void resetWorlds(MinecraftServer server) {
-        MessageUtil.sendBroadcast("resource_world.world.reset");
+        MessageHelper.sendBroadcast("resource_world.world.reset");
         Configs.configHandler.model().modules.resource_world.seed = RandomSeed.getSeed();
         Configs.configHandler.saveToDisk();
         deleteWorld(server, DEFAULT_OVERWORLD_PATH);
@@ -195,7 +195,7 @@ public class ResourceWorldInitializer extends ModuleInitializer {
         server.worlds.put(world.getRegistryKey(), world);
         ServerWorldEvents.LOAD.invoker().onWorldLoad(server, world);
         world.tick(() -> true);
-        MessageUtil.sendBroadcast("resource_world.world.created", path);
+        MessageHelper.sendBroadcast("resource_world.world.created", path);
     }
 
     private ServerWorld getResourceWorldByPath(MinecraftServer server, String path) {
@@ -204,11 +204,11 @@ public class ResourceWorldInitializer extends ModuleInitializer {
     }
 
     private int $tp(CommandContext<ServerCommandSource> ctx) {
-        return CommandUtil.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.playerOnlyCommand(ctx, player -> {
             String path = ctx.getNodes().get(2).getNode().getName();
             ServerWorld world = getResourceWorldByPath(ctx.getSource().getServer(), path);
             if (world == null) {
-                MessageUtil.sendMessage(ctx.getSource(), "resource_world.world.not_found", path);
+                MessageHelper.sendMessage(ctx.getSource(), "resource_world.world.not_found", path);
                 return 0;
             }
 
@@ -219,7 +219,7 @@ public class ResourceWorldInitializer extends ModuleInitializer {
                 BlockPos endSpawnPos = ServerWorld.END_SPAWN_POS;
                 player.teleport(world, endSpawnPos.getX() + 0.5, endSpawnPos.getY(), endSpawnPos.getZ() + 0.5, 90, 0);
             } else {
-                MessageUtil.sendActionBar(player, "resource_world.world.tp.tip");
+                MessageHelper.sendActionBar(player, "resource_world.world.tp.tip");
                 RandomTeleport.randomTeleport(player, world, false);
             }
 
@@ -238,7 +238,7 @@ public class ResourceWorldInitializer extends ModuleInitializer {
         if (world == null) return;
 
         ResourceWorldManager.enqueueWorldDeletion(world);
-        MessageUtil.sendBroadcast("resource_world.world.deleted", path);
+        MessageHelper.sendBroadcast("resource_world.world.deleted", path);
     }
 
     private int $delete(CommandContext<ServerCommandSource> ctx) {

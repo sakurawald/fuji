@@ -1,4 +1,4 @@
-package io.github.sakurawald.util;
+package io.github.sakurawald.util.minecraft;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -16,7 +16,7 @@ import net.minecraft.util.UserCache;
 import static net.minecraft.server.command.CommandManager.argument;
 
 @UtilityClass
-public class CommandUtil {
+public class CommandHelper {
 
     public static final String ARGUMENT_NAME_DIMENSION = "dimension";
     public static final String ARGUMENT_NAME_ENTITY = "entity";
@@ -42,7 +42,7 @@ public class CommandUtil {
     public static int playerOnlyCommand(CommandContext<ServerCommandSource> ctx, PlayerOnlyCommandFunction function) {
         ServerPlayerEntity player = ctx.getSource().getPlayer();
         if (player == null) {
-            MessageUtil.sendMessage(ctx.getSource(), "command.player_only");
+            MessageHelper.sendMessage(ctx.getSource(), "command.player_only");
             return Command.SINGLE_SUCCESS;
         }
 
@@ -52,9 +52,9 @@ public class CommandUtil {
     public static int acceptEntity(CommandContext<ServerCommandSource> ctx, AcceptEntityFunction function) {
         Entity entity;
         try {
-            entity = EntityArgumentType.getEntity(ctx, CommandUtil.ARGUMENT_NAME_ENTITY);
+            entity = EntityArgumentType.getEntity(ctx, CommandHelper.ARGUMENT_NAME_ENTITY);
         } catch (Exception e) {
-            MessageUtil.sendMessage(ctx.getSource(), "entity.no_found");
+            MessageHelper.sendMessage(ctx.getSource(), "entity.no_found");
             return Command.SINGLE_SUCCESS;
         }
 
@@ -64,9 +64,9 @@ public class CommandUtil {
     public static int acceptPlayer(CommandContext<ServerCommandSource> ctx, AcceptPlayerFunction function) {
         ServerPlayerEntity player;
         try {
-            player = EntityArgumentType.getPlayer(ctx, CommandUtil.ARGUMENT_NAME_PLAYER);
+            player = EntityArgumentType.getPlayer(ctx, CommandHelper.ARGUMENT_NAME_PLAYER);
         } catch (Exception e) {
-            MessageUtil.sendMessage(ctx.getSource(), "player.no_found");
+            MessageHelper.sendMessage(ctx.getSource(), "player.no_found");
             return Command.SINGLE_SUCCESS;
         }
 

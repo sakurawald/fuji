@@ -5,7 +5,7 @@ import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.head.HeadInitializer;
 import io.github.sakurawald.module.initializer.head.api.Category;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import java.util.ArrayList;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
@@ -25,14 +25,14 @@ public class HeadGui extends SimpleGui {
             addCategoryButton(index, category);
             ++index;
         }
-        this.setTitle(MessageUtil.ofText(player, "head.title"));
+        this.setTitle(MessageHelper.ofText(player, "head.title"));
         this.setSlot(this.getSize() - 1, new GuiElementBuilder()
                 .setItem(Items.COMPASS)
-                .setName(MessageUtil.ofText(player, "search"))
+                .setName(MessageHelper.ofText(player, "search"))
                 .setCallback((index1, type1, action) -> new SearchInputGui(this).open()));
         this.setSlot(this.getSize() - 2, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(MessageUtil.ofText(player, "head.category.player"))
+                .setName(MessageHelper.ofText(player, "head.category.player"))
                 .setCallback((index1, type1, action) -> new PlayerInputGui(this).open()));
     }
 

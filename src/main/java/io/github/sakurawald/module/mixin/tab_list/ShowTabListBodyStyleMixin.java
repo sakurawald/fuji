@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
-import static io.github.sakurawald.util.MessageUtil.ofText;
+import static io.github.sakurawald.util.minecraft.MessageHelper.ofText;
 
 @Mixin(value = ServerPlayerEntity.class)
 @Slf4j

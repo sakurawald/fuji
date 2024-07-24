@@ -2,9 +2,8 @@ package io.github.sakurawald.module.common.structure;
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.accessor.ServerPlayerCombatStateAccessor;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.Getter;
-import lombok.Setter;
 import net.kyori.adventure.bossbar.BossBar;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -17,7 +16,7 @@ public class TeleportTicket extends BossBarTicket {
     private final Position destination;
 
     private TeleportTicket(ServerPlayerEntity player, Position source, Position destination, float progress) {
-        super(BossBar.bossBar(MessageUtil.ofComponent(player, "teleport_warmup.bossbar.name"), progress, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS), Configs.configHandler.model().modules.teleport_warmup.warmup_second * 1000, List.of(player)
+        super(BossBar.bossBar(MessageHelper.ofComponent(player, "teleport_warmup.bossbar.name"), progress, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS), Configs.configHandler.model().modules.teleport_warmup.warmup_second * 1000, List.of(player)
         );
         this.player = player;
         this.source = source;
@@ -37,7 +36,7 @@ public class TeleportTicket extends BossBarTicket {
 
         // check combat
         if (((ServerPlayerCombatStateAccessor) player).fuji$inCombat()) {
-            MessageUtil.sendActionBar(player, "teleport_warmup.in_combat");
+            MessageHelper.sendActionBar(player, "teleport_warmup.in_combat");
             return false;
         }
 

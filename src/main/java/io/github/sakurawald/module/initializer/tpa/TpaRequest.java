@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.tpa;
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.Getter;
 import lombok.ToString;
 import net.kyori.adventure.text.Component;
@@ -71,14 +71,14 @@ public class TpaRequest {
     }
 
     public Component asSenderComponent$Description() {
-        return tpahere ? MessageUtil.ofComponent(getSender(), "tpa.others_to_you", receiver.getGameProfile().getName())
-                : MessageUtil.ofComponent(getSender(), "tpa.you_to_others", receiver.getGameProfile().getName());
+        return tpahere ? MessageHelper.ofComponent(getSender(), "tpa.others_to_you", receiver.getGameProfile().getName())
+                : MessageHelper.ofComponent(getSender(), "tpa.you_to_others", receiver.getGameProfile().getName());
     }
 
     public Component asSenderComponent$Sent() {
         TextComponent cancelComponent = Component
                 .text(CROSS).color(NamedTextColor.RED)
-                .hoverEvent(HoverEvent.showText(MessageUtil.ofComponent(getSender(), "cancel")))
+                .hoverEvent(HoverEvent.showText(MessageHelper.ofComponent(getSender(), "cancel")))
                 .clickEvent(ClickEvent.runCommand("/tpacancel %s".formatted(getReceiver().getGameProfile().getName())));
 
         return asSenderComponent$Description()
@@ -87,16 +87,16 @@ public class TpaRequest {
     }
 
     public Component asReceiverComponent$Description() {
-        return tpahere ? MessageUtil.ofComponent(getReceiver(), "tpa.you_to_others", sender.getGameProfile().getName())
-                : MessageUtil.ofComponent(getReceiver(), "tpa.others_to_you", sender.getGameProfile().getName());
+        return tpahere ? MessageHelper.ofComponent(getReceiver(), "tpa.you_to_others", sender.getGameProfile().getName())
+                : MessageHelper.ofComponent(getReceiver(), "tpa.others_to_you", sender.getGameProfile().getName());
     }
 
     public Component asReceiverComponent$Sent() {
         Component acceptComponent = Component.text(TICK).color(NamedTextColor.GREEN)
-                .hoverEvent(HoverEvent.showText(MessageUtil.ofComponent(getReceiver(), "accept")))
+                .hoverEvent(HoverEvent.showText(MessageHelper.ofComponent(getReceiver(), "accept")))
                 .clickEvent(ClickEvent.runCommand("/tpaaccept %s".formatted(sender.getGameProfile().getName())));
         Component denyComponent = Component.text(CROSS).color(NamedTextColor.RED)
-                .hoverEvent(HoverEvent.showText(MessageUtil.ofComponent(getReceiver(), "deny")))
+                .hoverEvent(HoverEvent.showText(MessageHelper.ofComponent(getReceiver(), "deny")))
                 .clickEvent(ClickEvent.runCommand("/tpadeny %s".formatted(sender.getGameProfile().getName())));
         return asReceiverComponent$Description()
                 .appendSpace()

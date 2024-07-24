@@ -7,8 +7,8 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.CommandUtil;
-import io.github.sakurawald.util.NbtUtil;
+import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.util.minecraft.NbtHelper;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -62,9 +62,9 @@ public class DeathLogInitializer extends ModuleInitializer {
         dispatcher.register(
                 literal("deathlog").requires(s -> s.hasPermissionLevel(4))
                         .then(literal("view")
-                                .then(CommandUtil.offlinePlayerArgument("from").executes(this::$view)))
+                                .then(CommandHelper.offlinePlayerArgument("from").executes(this::$view)))
                         .then(literal("restore")
-                                .then(CommandUtil.offlinePlayerArgument("from")
+                                .then(CommandHelper.offlinePlayerArgument("from")
                                         .then(argument("index", IntegerArgumentType.integer())
                                                 .then(argument("to", EntityArgumentType.player()).executes(this::$restore))))
                         ));
@@ -80,13 +80,13 @@ public class DeathLogInitializer extends ModuleInitializer {
         ServerPlayerEntity to = EntityArgumentType.getPlayer(ctx, "to");
 
         Path path = STORAGE_PATH.resolve(getFileName(from));
-        NbtCompound root = NbtUtil.read(path);
+        NbtCompound root = NbtHelper.read(path);
         if (root == null || root.isEmpty()) {
             source.sendMessage(Component.text("No deathlog found."));
             return 0;
         }
 
-        NbtList deathsNode = (NbtList) NbtUtil.getOrDefault(root,DEATHS,new NbtList());
+        NbtList deathsNode = (NbtList) NbtHelper.getOrDefault(root,DEATHS,new NbtList());
         if (index >= deathsNode.size()) {
             source.sendMessage(Component.text("Index out of bound."));
             return 0;
@@ -100,15 +100,15 @@ public class DeathLogInitializer extends ModuleInitializer {
 
         /* restore inventory */
         NbtCompound inventoryNode = deathsNode.getCompound(index).getCompound(INVENTORY);
-        List<ItemStack> item = NbtUtil.readSlotsNode((NbtList) inventoryNode.get(ITEM));
+        List<ItemStack> item = NbtHelper.readSlotsNode((NbtList) inventoryNode.get(ITEM));
         for (int i = 0; i < item.size(); i++) {
             to.getInventory().main.set(i, item.get(i));
         }
-        List<ItemStack> armor = NbtUtil.readSlotsNode((NbtList) inventoryNode.get(ARMOR));
+        List<ItemStack> armor = NbtHelper.readSlotsNode((NbtList) inventoryNode.get(ARMOR));
         for (int i = 0; i < armor.size(); i++) {
             to.getInventory().armor.set(i, armor.get(i));
         }
-        List<ItemStack> offhand = NbtUtil.readSlotsNode((NbtList) inventoryNode.get(OFFHAND));
+        List<ItemStack> offhand = NbtHelper.readSlotsNode((NbtList) inventoryNode.get(OFFHAND));
         for (int i = 0; i < offhand.size(); i++) {
             to.getInventory().offHand.set(i, offhand.get(i));
         }
@@ -125,16 +125,16 @@ public class DeathLogInitializer extends ModuleInitializer {
     }
 
     private int $view(CommandContext<ServerCommandSource> ctx) {
-        return CommandUtil.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.playerOnlyCommand(ctx, player -> {
             String from = StringArgumentType.getString(ctx, "from");
 
-            NbtCompound root = NbtUtil.read(STORAGE_PATH.resolve(getFileName(from)));
+            NbtCompound root = NbtHelper.read(STORAGE_PATH.resolve(getFileName(from)));
             if (root == null || root.isEmpty()) {
                 player.sendMessage(Component.text("No deathlog found."));
                 return 0;
             }
 
-            NbtList deaths = (NbtList) NbtUtil.getOrDefault(root, DEATHS, new NbtList());
+            NbtList deaths = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
             TextComponent.Builder builder = Component.text();
             String to = player.getGameProfile().getName();
             for (int i = 0; i < deaths.size(); i++) {
@@ -171,10 +171,10 @@ public class DeathLogInitializer extends ModuleInitializer {
     public void store(ServerPlayerEntity player) {
         Path path = STORAGE_PATH.resolve(getFileName(player.getGameProfile().getName()));
 
-        NbtCompound root = NbtUtil.read(path);
-        NbtList deathsNode = (NbtList) NbtUtil.getOrDefault(root, DEATHS, new NbtList());
+        NbtCompound root = NbtHelper.read(path);
+        NbtList deathsNode = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
         deathsNode.add(createDeathNode(player));
-        NbtUtil.write(root, path);
+        NbtHelper.write(root, path);
     }
 
     private NbtCompound createDeathNode(ServerPlayerEntity player) {
@@ -203,9 +203,9 @@ public class DeathLogInitializer extends ModuleInitializer {
     private void writeInventoryNode(NbtCompound node, ServerPlayerEntity player) {
         NbtCompound inventoryTag = new NbtCompound();
         PlayerInventory inventory = player.getInventory();
-        inventoryTag.put(ARMOR, NbtUtil.writeSlotsNode(new NbtList(), inventory.armor));
-        inventoryTag.put(OFFHAND, NbtUtil.writeSlotsNode(new NbtList(), inventory.offHand));
-        inventoryTag.put(ITEM, NbtUtil.writeSlotsNode(new NbtList(), inventory.main));
+        inventoryTag.put(ARMOR, NbtHelper.writeSlotsNode(new NbtList(), inventory.armor));
+        inventoryTag.put(OFFHAND, NbtHelper.writeSlotsNode(new NbtList(), inventory.offHand));
+        inventoryTag.put(ITEM, NbtHelper.writeSlotsNode(new NbtList(), inventory.main));
         inventoryTag.putInt(SCORE, player.getScore());
         inventoryTag.putInt(XP_LEVEL, player.experienceLevel);
         inventoryTag.putFloat(XP_PROGRESS, player.experienceProgress);

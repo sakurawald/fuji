@@ -8,8 +8,8 @@ import eu.pb4.sgui.api.gui.layered.LayeredGui;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.head.HeadInitializer;
 import io.github.sakurawald.module.initializer.head.api.Head;
-import io.github.sakurawald.util.GuiUtil;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.GuiHelper;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
@@ -48,11 +48,11 @@ public class PagedHeadsGui extends LayeredGui {
 
     private void updateNavigation() {
         for (int i = 0; i < 9; i++) {
-            navigationLayer.setSlot(i, GuiUtil.Item.PLACEHOLDER);
+            navigationLayer.setSlot(i, GuiHelper.Item.PLACEHOLDER);
         }
 
         navigationLayer.setSlot(
-                3, GuiUtil.createPreviousPageButton(getPlayer()).asStack(),
+                3, GuiHelper.createPreviousPageButton(getPlayer()).asStack(),
                 ((index, type, action) -> {
                     this.page -= 1;
                     if (this.page < 0) {
@@ -64,7 +64,7 @@ public class PagedHeadsGui extends LayeredGui {
         );
 
         navigationLayer.setSlot(
-                5, GuiUtil.createNextPageButton(getPlayer()).asStack(),
+                5, GuiHelper.createNextPageButton(getPlayer()).asStack(),
                 ((index, type, action) -> {
                     this.page += 1;
                     if (this.page >= getMaxPage()) {
@@ -74,8 +74,8 @@ public class PagedHeadsGui extends LayeredGui {
                 })
         );
         navigationLayer.setSlot(4, new GuiElementBuilder(Items.PLAYER_HEAD)
-                .setSkullOwner(GuiUtil.Icon.QUESTION_MARK_ICON)
-                .setName(MessageUtil.ofText(parent.getPlayer(), "head.page", this.page + 1, this.getMaxPage()))
+                .setSkullOwner(GuiHelper.Icon.QUESTION_MARK_ICON)
+                .setName(MessageHelper.ofText(parent.getPlayer(), "head.page", this.page + 1, this.getMaxPage()))
         );
     }
 
@@ -86,7 +86,7 @@ public class PagedHeadsGui extends LayeredGui {
                 var builder = GuiElementBuilder.from(head.of());
                 if (HeadInitializer.headHandler.model().economyType != HeadInitializer.EconomyType.FREE) {
                     builder.addLoreLine(Text.empty());
-                    builder.addLoreLine(MessageUtil.ofText(parent.getPlayer(), "head.price").copy().append(module.getCost()));
+                    builder.addLoreLine(MessageHelper.ofText(parent.getPlayer(), "head.price").copy().append(module.getCost()));
                 }
 
                 contentLayer.setSlot(i, builder.asStack(), (index, type, action) -> processHeadClick(head, type));

@@ -13,19 +13,18 @@ import io.github.sakurawald.module.initializer.head.api.Category;
 import io.github.sakurawald.module.initializer.head.api.Head;
 import io.github.sakurawald.module.initializer.head.api.HeadDatabaseAPI;
 import io.github.sakurawald.module.initializer.head.gui.HeadGui;
-import io.github.sakurawald.util.CommandUtil;
-import io.github.sakurawald.util.ItemUtil;
+import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.util.minecraft.ItemHelper;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.PlayerInventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+
 import java.util.concurrent.CompletableFuture;
 
 // Thanks to: https://modrinth.com/mod/headindex
@@ -61,7 +60,7 @@ public class HeadInitializer extends ModuleInitializer {
     }
 
     public Item getCostItem() {
-        return ItemUtil.getItem(headHandler.model().costType);
+        return ItemHelper.ofItem(headHandler.model().costType);
     }
 
     @Override
@@ -82,7 +81,7 @@ public class HeadInitializer extends ModuleInitializer {
     }
 
     public int $head(CommandContext<ServerCommandSource> ctx) {
-        return CommandUtil.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.playerOnlyCommand(ctx, player -> {
             new HeadGui(player).open();
             return Command.SINGLE_SUCCESS;
         });

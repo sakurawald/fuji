@@ -3,8 +3,8 @@ package io.github.sakurawald.module.common.gui;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.layered.LayeredGui;
 import io.github.sakurawald.module.common.gui.layer.SingleLineLayer;
-import io.github.sakurawald.util.GuiUtil;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.GuiHelper;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.Component;
@@ -46,10 +46,10 @@ public abstract class PagedGui<T> extends LayeredGui {
         }
 
         // page layer
-        SingleLineLayer pageLayer = new SingleLineLayer(GuiUtil.createPlaceholder());
-        pageLayer.setSlot(0, GuiUtil.createPreviousPageButton(player).setCallback(() -> tryChangePage(pageIndex - 1)));
-        pageLayer.setSlot(this.getWidth() - 1, GuiUtil.createPreviousPageButton(player).setCallback(() -> tryChangePage(pageIndex + 1)));
-        pageLayer.setSlot(this.getWidth() - 2, GuiUtil.createSearchButton(player).setCallback(() -> new InputSignGui(player, null) {
+        SingleLineLayer pageLayer = new SingleLineLayer(GuiHelper.createPlaceholder());
+        pageLayer.setSlot(0, GuiHelper.createPreviousPageButton(player).setCallback(() -> tryChangePage(pageIndex - 1)));
+        pageLayer.setSlot(this.getWidth() - 1, GuiHelper.createPreviousPageButton(player).setCallback(() -> tryChangePage(pageIndex + 1)));
+        pageLayer.setSlot(this.getWidth() - 2, GuiHelper.createSearchButton(player).setCallback(() -> new InputSignGui(player, null) {
             @Override
             public void onClose() {
                 String keyword = reduceInputOrEmpty();
@@ -122,8 +122,8 @@ public abstract class PagedGui<T> extends LayeredGui {
 
     private void drawTitle() {
         Component formatted = this.title.asComponent()
-                .append(MessageUtil.ofText(getPlayer(), true, "gui.page.title", this.getCurrentPageNumber(), this.getMaxPageNumber()));
-        this.setTitle(MessageUtil.toText(formatted));
+                .append(MessageHelper.ofText(getPlayer(), true, "gui.page.title", this.getCurrentPageNumber(), this.getMaxPageNumber()));
+        this.setTitle(MessageHelper.toText(formatted));
     }
 
     private int getEntitySize() {

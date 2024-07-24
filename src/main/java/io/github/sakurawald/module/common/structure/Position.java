@@ -1,8 +1,7 @@
 package io.github.sakurawald.module.common.structure;
 
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.util.MessageUtil;
-import lombok.Builder;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.Data;
 import lombok.With;
 import net.minecraft.registry.RegistryKey;
@@ -61,7 +60,7 @@ public class Position {
         RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(this.level));
         ServerWorld serverLevel = Fuji.SERVER.getWorld(worldKey);
         if (serverLevel == null) {
-            MessageUtil.sendMessage(player, "level.no_exists", this.level);
+            MessageHelper.sendMessage(player, "level.no_exists", this.level);
             return;
         }
 

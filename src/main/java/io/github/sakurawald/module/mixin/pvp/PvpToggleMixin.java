@@ -3,7 +3,7 @@ package io.github.sakurawald.module.mixin.pvp;
 import com.mojang.authlib.GameProfile;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.pvp.PvpInitializer;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -31,13 +31,13 @@ public abstract class PvpToggleMixin extends PlayerEntity {
         if (player == null) return;
 
         if (!module.contains(sourcePlayer.getGameProfile().getName())) {
-            MessageUtil.sendMessage(player, "pvp.check.off.me");
+            MessageHelper.sendMessage(player, "pvp.check.off.me");
             cir.setReturnValue(false);
             return;
         }
 
         if (!module.contains(this.getGameProfile().getName())) {
-            MessageUtil.sendMessage(player, "pvp.check.off.others", this.getGameProfile().getName());
+            MessageHelper.sendMessage(player, "pvp.check.off.others", this.getGameProfile().getName());
             cir.setReturnValue(false);
         }
     }

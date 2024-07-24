@@ -4,10 +4,9 @@ import eu.pb4.placeholders.api.PlaceholderResult;
 import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.PermissionUtil;
+import io.github.sakurawald.util.minecraft.PermissionHelper;
 import io.github.sakurawald.util.RandomUtil;
 import io.github.sakurawald.util.ScheduleUtil;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
@@ -37,7 +36,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
                 return PlaceholderResult.invalid();
             }
 
-            boolean value = PermissionUtil.hasPermission(ctx.player(), args);
+            boolean value = PermissionHelper.hasPermission(ctx.player(), args);
             return PlaceholderResult.value(Text.literal(String.valueOf(value)));
         });
     }
@@ -48,7 +47,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
                 return PlaceholderResult.invalid();
             }
 
-            Optional<String> o = PermissionUtil.getMeta(ctx.player(), args, String::valueOf);
+            Optional<String> o = PermissionHelper.getMeta(ctx.player(), args, String::valueOf);
             String value = o.orElse("NO_EXIST");
             return PlaceholderResult.value(Text.literal(value));
         });

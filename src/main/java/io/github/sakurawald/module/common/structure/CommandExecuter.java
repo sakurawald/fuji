@@ -1,9 +1,8 @@
 package io.github.sakurawald.module.common.structure;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import eu.pb4.placeholders.api.PlaceholderContext;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.network.packet.c2s.play.CommandExecutionC2SPacket;
 import net.minecraft.server.MinecraftServer;
@@ -37,9 +36,9 @@ public class CommandExecuter {
         try {
             // parse placeholders
             if (contextPlayer != null) {
-                command = MessageUtil.ofString(contextPlayer,command);
+                command = MessageHelper.ofString(contextPlayer,command);
             } else {
-                command = MessageUtil.ofString(Fuji.SERVER,command);
+                command = MessageHelper.ofString(Fuji.SERVER,command);
             }
 
             server.getCommandManager().getDispatcher().execute(command, server.getCommandSource());
@@ -49,7 +48,7 @@ public class CommandExecuter {
     }
 
     public static void executeCommandAsPlayer(ServerPlayerEntity player, String command) {
-        command = MessageUtil.ofString(player, command);
+        command = MessageHelper.ofString(player, command);
         player.networkHandler.onCommandExecution(new CommandExecutionC2SPacket(command));
     }
 

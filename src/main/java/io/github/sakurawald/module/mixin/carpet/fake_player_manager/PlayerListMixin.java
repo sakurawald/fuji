@@ -2,7 +2,7 @@ package io.github.sakurawald.module.mixin.carpet.fake_player_manager;
 
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.carpet.fake_player_manager.FakePlayerManagerInitializer;
-import io.github.sakurawald.util.EntityUtil;
+import io.github.sakurawald.util.minecraft.EntityHelper;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ConnectedClientData;
@@ -20,7 +20,7 @@ public abstract class PlayerListMixin {
 
     @Inject(at = @At(value = "TAIL"), method = "onPlayerConnect")
     private void $onPlayerConnect(ClientConnection connection, ServerPlayerEntity serverPlayer, ConnectedClientData commonListenerCookie, CallbackInfo ci) {
-        if (EntityUtil.isFakePlayer(serverPlayer)) return;
+        if (EntityHelper.isNonRealPlayer(serverPlayer)) return;
         if (module.hasFakePlayers(serverPlayer)) {
             module.renewFakePlayers(serverPlayer);
         }

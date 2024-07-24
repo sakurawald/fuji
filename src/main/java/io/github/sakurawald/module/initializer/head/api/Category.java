@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.head.api;
 
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import java.util.UUID;
 
 import net.minecraft.component.DataComponentTypes;
@@ -81,6 +81,6 @@ public enum Category {
     }
 
     public Text getDisplayName(ServerPlayerEntity player) {
-        return MessageUtil.ofText(player, "head.category." + name);
+        return MessageHelper.ofText(player, "head.category." + name);
     }
 }

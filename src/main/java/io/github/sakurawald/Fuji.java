@@ -12,6 +12,8 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.CalendarUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
@@ -27,6 +29,7 @@ import static io.github.sakurawald.module.ModuleManager.initializeModules;
 // TODO: a lisp-like DSL (parser and code-walker) for command with context and placeholders (%fuji:play_time_total% / nbt)
 // TODO: refactor command facility (selector, aop, options, parser)
 // TODO: tppos module
+
 public class Fuji implements ModInitializer {
 
     public static final String MOD_ID = "fuji";
@@ -34,12 +37,9 @@ public class Fuji implements ModInitializer {
     public static final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve(MOD_ID).toAbsolutePath();
     public static MinecraftServer SERVER;
 
-    public void test() {
-
-    }
-
     @Override
     public void onInitialize() {
+
         /* managers */
         BackupManager.backup();
         Managers.getBossBarManager().initialize();

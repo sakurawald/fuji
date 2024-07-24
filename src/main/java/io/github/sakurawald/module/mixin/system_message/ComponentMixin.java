@@ -2,7 +2,7 @@ package io.github.sakurawald.module.mixin.system_message;
 
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -42,7 +42,7 @@ public interface ComponentMixin {
             }
             String value = key2value.get(key);
             String miniMessageSource = MutableText.of(new TranslatableTextContent("force_fallback", value, args)).getString();
-            return MessageUtil.ofText(miniMessageSource).copy();
+            return MessageHelper.ofText(miniMessageSource).copy();
         }
         return null;
     }

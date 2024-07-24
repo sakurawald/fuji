@@ -1,4 +1,4 @@
-package io.github.sakurawald.util;
+package io.github.sakurawald.util.minecraft;
 
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
@@ -18,7 +18,7 @@ import java.util.function.Function;
 
 @SuppressWarnings("BooleanMethodIsAlwaysInverted")
 @UtilityClass
-public class PermissionUtil {
+public class PermissionHelper {
 
     private static LuckPerms luckPerms;
 
@@ -56,7 +56,7 @@ public class PermissionUtil {
 
     private static User loadUser(@NonNull LuckPerms api, ServerPlayerEntity player) {
         User user;
-        if (EntityUtil.isFakePlayer(player)) {
+        if (EntityHelper.isNonRealPlayer(player)) {
             UserManager userManager = api.getUserManager();
             CompletableFuture<User> userFuture = userManager.loadUser(player.getUuid());
             user = userFuture.join();

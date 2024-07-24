@@ -4,7 +4,7 @@ import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.MessageUtil;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.CommandManager;
@@ -31,9 +31,9 @@ public class PingInitializer extends ModuleInitializer {
             ServerPlayerEntity target = EntityArgumentType.getPlayer(ctx, "player");
             String name = target.getGameProfile().getName();
             int latency = target.networkHandler.getLatency();
-            MessageUtil.sendMessage(ctx.getSource(), "ping.player", name, latency);
+            MessageHelper.sendMessage(ctx.getSource(), "ping.player", name, latency);
         } catch (Exception e) {
-            MessageUtil.sendMessage(ctx.getSource(), "entity.no_found");
+            MessageHelper.sendMessage(ctx.getSource(), "entity.no_found");
         }
 
         return Command.SINGLE_SUCCESS;
