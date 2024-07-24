@@ -16,6 +16,8 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import java.util.HashMap;
 
+import static net.minecraft.server.command.CommandManager.literal;
+
 @SuppressWarnings("LombokGetterMayBeUsed")
 @Slf4j
 public class BackInitializer extends ModuleInitializer {
@@ -25,7 +27,7 @@ public class BackInitializer extends ModuleInitializer {
 
     @Override
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("back").executes(this::$back));
+        dispatcher.register(literal("back").executes(this::$back));
     }
 
     private int $back(CommandContext<ServerCommandSource> ctx) {
@@ -33,7 +35,7 @@ public class BackInitializer extends ModuleInitializer {
             Position lastPos = player2lastPos.get(player.getName().getString());
             if (lastPos == null) {
                 MessageHelper.sendActionBar(player, "back.no_previous_position");
-                return CommandHelper.Return.SUCCESS;
+                return CommandHelper.Return.ERROR;
             }
 
             lastPos.teleport(player);

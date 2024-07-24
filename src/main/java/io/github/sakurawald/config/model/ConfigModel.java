@@ -3,8 +3,8 @@ package io.github.sakurawald.config.model;
 
 import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.config.annotation.Documentation;
-import io.github.sakurawald.module.initializer.chat.RegexEntry;
-import io.github.sakurawald.module.initializer.command_alias.CommandAliasEntry;
+import io.github.sakurawald.module.common.structure.RegexRewriteEntry;
+import io.github.sakurawald.module.initializer.command_alias.structure.CommandAliasEntry;
 import io.github.sakurawald.module.initializer.command_rewrite.CommandRewriteEntry;
 
 import java.util.*;
@@ -452,14 +452,14 @@ public class ConfigModel {
                     You can use `regex language` to transform player's chat input (only chat message, no command usage).
                     """)
             public class Rewrite {
-                public List<RegexEntry> regex = new ArrayList<>() {
+                public List<RegexRewriteEntry> regex = new ArrayList<>() {
                     {
-                        this.add(new RegexEntry("^BV(\\w{10})", "<underline><blue><hover:show_text:'$1'><click:open_url:'https://www.bilibili.com/video/BV$1'>bilibili $1</click></hover></blue></underline>"));
-                        this.add(new RegexEntry("(?<=^|\\s)item(?=\\s|$)", "%fuji:item%"));
-                        this.add(new RegexEntry("(?<=^|\\s)inv(?=\\s|$)", "%fuji:inv%"));
-                        this.add(new RegexEntry("(?<=^|\\s)ender(?=\\s|$)", "%fuji:ender%"));
-                        this.add(new RegexEntry("(?<=^|\\s)pos(?=\\s|$)", "%fuji:pos%"));
-                        this.add(new RegexEntry("((https?)://[^\\s/$.?#].\\S*)", "<underline><blue><hover:show_text:'$1'><click:open_url:'$1'>$1</click></hover></blue></underline>"));
+                        this.add(new RegexRewriteEntry("^BV(\\w{10})", "<underline><blue><hover:show_text:'$1'><click:open_url:'https://www.bilibili.com/video/BV$1'>bilibili $1</click></hover></blue></underline>"));
+                        this.add(new RegexRewriteEntry("(?<=^|\\s)item(?=\\s|$)", "%fuji:item%"));
+                        this.add(new RegexRewriteEntry("(?<=^|\\s)inv(?=\\s|$)", "%fuji:inv%"));
+                        this.add(new RegexRewriteEntry("(?<=^|\\s)ender(?=\\s|$)", "%fuji:ender%"));
+                        this.add(new RegexRewriteEntry("(?<=^|\\s)pos(?=\\s|$)", "%fuji:pos%"));
+                        this.add(new RegexRewriteEntry("((https?)://[^\\s/$.?#].\\S*)", "<underline><blue><hover:show_text:'$1'><click:open_url:'$1'>$1</click></hover></blue></underline>"));
                     }
                 };
 
@@ -1153,7 +1153,11 @@ public class ConfigModel {
             @Documentation("""
                     Enable this module requires `carpet-fabric` mod installed.
                                     
-                    This module provides some management for `fake-player` and `/player who` command.
+                    This module provides some management for `fake-player`.
+                    
+                    Command:
+                    - /player who -> query the owner of the fake-player.
+                    - /player renew -> renew all of your fake-players.
                     """)
             public class FakePlayerManager {
                 public boolean enable = true;

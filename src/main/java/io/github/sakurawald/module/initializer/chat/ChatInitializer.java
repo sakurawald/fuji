@@ -11,13 +11,14 @@ import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.ChatModel;
+import io.github.sakurawald.module.common.job.MentionPlayersJob;
+import io.github.sakurawald.module.common.structure.RegexRewriteEntry;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.chat.display.DisplayHelper;
-import io.github.sakurawald.module.common.job.MentionPlayersJob;
-import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.DateUtil;
-import io.github.sakurawald.util.minecraft.PermissionHelper;
+import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
+import io.github.sakurawald.util.minecraft.PermissionHelper;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -83,8 +84,8 @@ public class ChatInitializer extends ModuleInitializer {
     private void compilePatterns() {
         patterns = new HashMap<>();
 
-        for (RegexEntry regexEntry : Configs.configHandler.model().modules.chat.rewrite.regex) {
-            patterns.put(Pattern.compile(regexEntry.regex), regexEntry.replacement);
+        for (RegexRewriteEntry regexRewriteEntry : Configs.configHandler.model().modules.chat.rewrite.regex) {
+            patterns.put(Pattern.compile(regexRewriteEntry.regex), regexRewriteEntry.replacement);
         }
 
     }
@@ -240,6 +241,7 @@ public class ChatInitializer extends ModuleInitializer {
                     .replaceText(builder -> {
                         builder.match("%message%").replacement(MessageHelper.ofComponent(player, "chat.format.show"));
                     });
+
             player.sendMessage(component);
             return CommandHelper.Return.SUCCESS;
         });

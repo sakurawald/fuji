@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.command_alias;
+package io.github.sakurawald.module.initializer.command_alias.structure;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -5,10 +5,10 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.DateUtil;
-import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.ScheduleUtil;
+import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.kyori.adventure.text.Component;
@@ -26,6 +26,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
+import static net.minecraft.server.command.CommandManager.literal;
+
 public class FakePlayerManagerInitializer extends ModuleInitializer {
     private final ArrayList<String> CONSTANT_EMPTY_LIST = new ArrayList<>();
     private final HashMap<String, ArrayList<String>> player2fakePlayers = new HashMap<>();
@@ -40,10 +42,10 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
     @Override
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(
-                CommandManager.literal("player").then(
-                        CommandManager.literal("who").executes(this::$who)
+                literal("player").then(
+                        literal("who").executes(this::$who)
                 ).then(
-                        CommandManager.literal("renew").executes(this::$renew)
+                        literal("renew").executes(this::$renew)
                 )
         );
     }

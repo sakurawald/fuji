@@ -28,6 +28,7 @@ public class CommandHelper {
         public static final String ARGUMENT_NAME_DIMENSION = "dimension";
         public static final String ARGUMENT_NAME_ENTITY = "entity";
         public static final String ARGUMENT_NAME_PLAYER = "player";
+        public static final String ARGUMENT_NAME_REST = "rest";
 
         public static RequiredArgumentBuilder<ServerCommandSource, String> offlinePlayer(String argumentName) {
             return argument(argumentName, StringArgumentType.string())
@@ -53,8 +54,15 @@ public class CommandHelper {
         public static ServerPlayerEntity getPlayer(CommandContext<ServerCommandSource> ctx) {
             return EntityArgumentType.getPlayer(ctx, ARGUMENT_NAME_PLAYER);
         }
-    }
 
+        public static RequiredArgumentBuilder<ServerCommandSource, String> rest() {
+            return argument(ARGUMENT_NAME_REST, StringArgumentType.greedyString());
+        }
+
+        public static String rest(CommandContext<ServerCommandSource> ctx) {
+            return StringArgumentType.getString(ctx, ARGUMENT_NAME_REST);
+        }
+    }
 
     public static int playerOnlyCommand(CommandContext<ServerCommandSource> ctx, PlayerOnlyCommandFunction function) {
         ServerPlayerEntity player = ctx.getSource().getPlayer();

@@ -1,8 +1,6 @@
 package io.github.sakurawald.module.initializer.command_meta.for_each;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import io.github.sakurawald.module.common.structure.CommandExecuter;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
@@ -12,7 +10,6 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class ForEachCommand extends ModuleInitializer {
@@ -22,16 +19,16 @@ public class ForEachCommand extends ModuleInitializer {
         dispatcher.register(
                 literal("foreach")
                         .requires(ctx -> ctx.hasPermissionLevel(4))
-                        .then(argument("rest", StringArgumentType.greedyString())
+                        .then(CommandHelper.Argument.rest()
                                 .executes((ctx) -> {
-                                    String rest = StringArgumentType.getString(ctx, "rest");
+                                    String rest = CommandHelper.Argument.rest(ctx);
                                     MinecraftServer server = ctx.getSource().getServer();
+
                                     for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
                                         CommandExecuter.executeCommandAsConsole(player, rest);
                                     }
                                     return CommandHelper.Return.SUCCESS;
                                 })
-                        )
-        );
+                        ));
     }
 }

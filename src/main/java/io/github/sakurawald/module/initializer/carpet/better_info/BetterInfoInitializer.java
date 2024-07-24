@@ -7,14 +7,16 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 
+import static net.minecraft.server.command.CommandManager.*;
+
 
 public class BetterInfoInitializer extends ModuleInitializer {
 
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
         dispatcher.register(
-                CommandManager.literal("info").then(
+                literal("info").then(
                         dispatcher.findNode(List.of("data", "get", "entity"))
                 )
         );

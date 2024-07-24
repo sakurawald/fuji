@@ -1,8 +1,6 @@
 package io.github.sakurawald.module.initializer.command_meta.shell;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -18,7 +16,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.concurrent.CompletableFuture;
 
-import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class ShellCommand extends ModuleInitializer {
@@ -33,9 +30,9 @@ public class ShellCommand extends ModuleInitializer {
         dispatcher.register(
                 literal("shell")
                         .requires(ctx -> ctx.hasPermissionLevel(4))
-                        .then(argument("rest", StringArgumentType.greedyString())
+                        .then(CommandHelper.Argument.rest()
                                 .executes((ctx) -> {
-                                    String rest = StringArgumentType.getString(ctx, "rest");
+                                    String rest = CommandHelper.Argument.rest(ctx);
 
                                     CompletableFuture.runAsync(() -> {
                                         try {
@@ -62,7 +59,6 @@ public class ShellCommand extends ModuleInitializer {
 
                                     return CommandHelper.Return.SUCCESS;
                                 })
-                        )
-        );
+                        ));
     }
 }
