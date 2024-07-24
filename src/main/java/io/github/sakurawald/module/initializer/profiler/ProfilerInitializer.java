@@ -27,7 +27,8 @@ import java.util.concurrent.CompletableFuture;
 
 
 public class ProfilerInitializer extends ModuleInitializer {
-    public String formatBytes(long bytes) {
+
+    private String formatBytes(long bytes) {
         if (bytes == -1) return "N/A";
         if (bytes < 1024) {
             return bytes + "B";

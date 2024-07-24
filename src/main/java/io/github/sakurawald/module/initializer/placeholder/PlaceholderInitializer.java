@@ -4,6 +4,7 @@ import eu.pb4.placeholders.api.PlaceholderResult;
 import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.placeholder.structure.SumUpPlaceholder;
 import io.github.sakurawald.util.RandomUtil;
 import io.github.sakurawald.util.ScheduleUtil;
 import io.github.sakurawald.util.minecraft.PermissionHelper;

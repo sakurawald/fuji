@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.top_chunks;
+package io.github.sakurawald.module.initializer.top_chunks.structure;
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.util.minecraft.MessageHelper;

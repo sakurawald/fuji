@@ -22,13 +22,15 @@ import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
+import static net.minecraft.server.command.CommandManager.*;
+
 public class SitInitializer extends ModuleInitializer {
 
     public final Set<Entity> CHAIRS = new HashSet<>();
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("sit").executes(this::$sit));
+    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
+        dispatcher.register(literal("sit").executes(this::$sit));
     }
 
     @Override

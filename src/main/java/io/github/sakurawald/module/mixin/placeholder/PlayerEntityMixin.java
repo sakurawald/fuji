@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.placeholder;
 
-import io.github.sakurawald.module.initializer.placeholder.SumUpPlaceholder;
+import io.github.sakurawald.module.initializer.placeholder.structure.SumUpPlaceholder;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;

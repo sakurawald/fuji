@@ -1,11 +1,11 @@
 package io.github.sakurawald.module.initializer.tpa;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.common.job.MentionPlayersJob;
+import io.github.sakurawald.module.initializer.tpa.structure.TpaRequest;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.Getter;
@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import static net.minecraft.server.command.CommandManager.argument;
+import static net.minecraft.server.command.CommandManager.literal;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
 
@@ -31,19 +32,19 @@ public class TpaInitializer extends ModuleInitializer {
     @Override
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(
-                CommandManager.literal("tpa").then(argument("player", EntityArgumentType.player()).executes(this::$tpa))
+                literal("tpa").then(CommandHelper.Argument.player().executes(this::$tpa))
         );
         dispatcher.register(
-                CommandManager.literal("tpahere").then(argument("player", EntityArgumentType.player()).executes(this::$tpahere))
+                literal("tpahere").then(CommandHelper.Argument.player().executes(this::$tpahere))
         );
         dispatcher.register(
-                CommandManager.literal("tpaaccept").then(argument("player", EntityArgumentType.player()).executes(this::$tpaaccept))
+                literal("tpaaccept").then(CommandHelper.Argument.player().executes(this::$tpaaccept))
         );
         dispatcher.register(
-                CommandManager.literal("tpadeny").then(argument("player", EntityArgumentType.player()).executes(this::$tpadeny))
+                literal("tpadeny").then(CommandHelper.Argument.player().executes(this::$tpadeny))
         );
         dispatcher.register(
-                CommandManager.literal("tpacancel").then(argument("player", EntityArgumentType.player()).executes(this::$tpacancel))
+                literal("tpacancel").then(CommandHelper.Argument.player().executes(this::$tpacancel))
         );
     }
 
@@ -72,7 +73,7 @@ public class TpaInitializer extends ModuleInitializer {
         return CommandHelper.playerOnlyCommand(ctx, source -> {
             ServerPlayerEntity target;
             try {
-                target = EntityArgumentType.getPlayer(ctx, "player");
+                target = CommandHelper.Argument.player(ctx);
             } catch (CommandSyntaxException e) {
                 MessageHelper.sendActionBar(source, "tpa.player_not_found");
                 return CommandHelper.Return.SUCCESS;
@@ -118,7 +119,7 @@ public class TpaInitializer extends ModuleInitializer {
         return CommandHelper.playerOnlyCommand(ctx, source -> {
             ServerPlayerEntity target;
             try {
-                target = EntityArgumentType.getPlayer(ctx, "player");
+                target = CommandHelper.Argument.player(ctx);
             } catch (CommandSyntaxException e) {
                 MessageHelper.sendActionBar(source, "tpa.player_not_found");
                 return CommandHelper.Return.SUCCESS;

@@ -24,7 +24,7 @@ public class PingInitializer extends ModuleInitializer {
 
     @SneakyThrows
     private int $ping(CommandContext<ServerCommandSource> ctx) {
-        ServerPlayerEntity target = CommandHelper.Argument.getPlayer(ctx);
+        ServerPlayerEntity target = CommandHelper.Argument.player(ctx);
         String name = target.getGameProfile().getName();
 
         int latency = target.networkHandler.getLatency();

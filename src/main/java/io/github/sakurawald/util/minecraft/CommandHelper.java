@@ -3,6 +3,7 @@ package io.github.sakurawald.util.minecraft;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.module.common.accessor.GameProfileCacheEx;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
@@ -56,14 +57,8 @@ public class CommandHelper {
             return argument(ARGUMENT_NAME_PLAYER, EntityArgumentType.player());
         }
 
-        @SneakyThrows
-        public static ServerPlayerEntity player(CommandContext<ServerCommandSource> ctx) {
+        public static ServerPlayerEntity player(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
             return EntityArgumentType.getPlayer(ctx,ARGUMENT_NAME_PLAYER);
-        }
-
-        @SneakyThrows
-        public static ServerPlayerEntity getPlayer(CommandContext<ServerCommandSource> ctx) {
-            return EntityArgumentType.getPlayer(ctx, ARGUMENT_NAME_PLAYER);
         }
 
         public static RequiredArgumentBuilder<ServerCommandSource, String> rest() {

@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.placeholder;
+package io.github.sakurawald.module.initializer.placeholder.structure;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -6,9 +6,6 @@ import com.google.gson.JsonParser;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import lombok.Getter;
 import lombok.ToString;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.stat.ServerStatHandler;
-import net.minecraft.stat.Stats;
 import net.minecraft.util.WorldSavePath;
 
 import java.io.File;
@@ -37,6 +34,7 @@ public class SumUpPlaceholder {
         return ServerHelper.getDefaultServer().getSavePath(WorldSavePath.STATS);
     }
 
+    @SuppressWarnings("UnnecessaryLocalVariable")
     public static SumUpPlaceholder ofPlayer(String uuid) {
        if (uuid2stats.containsKey(uuid)) {
            return uuid2stats.get(uuid);
@@ -88,7 +86,7 @@ public class SumUpPlaceholder {
         for (File playerStatFile : files) {
             String uuid = playerStatFile.getName().replace(".json", "");
             SumUpPlaceholder playerMainStats = ofPlayer(uuid);
-            ofServer.add(playerMainStats);
+            ofServer.plus(playerMainStats);
         }
 
         // save
@@ -109,29 +107,7 @@ public class SumUpPlaceholder {
         return count;
     }
 
-    public SumUpPlaceholder updatePlayer(ServerPlayerEntity player) {
-        this.playtime = player.getStatHandler().getStat((Stats.CUSTOM.getOrCreateStat(Stats.PLAY_TIME))) / GT_TO_H_DIVISOR;
-        this.killed = player.getStatHandler().getStat(Stats.CUSTOM.getOrCreateStat(Stats.MOB_KILLS));
-        ServerStatHandler statHandler = player.getStatHandler();
-        this.moved = (statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.WALK_ONE_CM))
-                + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.CROUCH_ONE_CM))
-                + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.SPRINT_ONE_CM))
-                + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.WALK_ON_WATER_ONE_CM))
-                + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.FALL_ONE_CM))
-                + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.CLIMB_ONE_CM))
-                + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.FLY_ONE_CM))
-                + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.WALK_UNDER_WATER_ONE_CM))
-                + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.MINECART_ONE_CM))
-                + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.BOAT_ONE_CM))
-                + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.PIG_ONE_CM))
-                + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.HORSE_ONE_CM))
-                + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.AVIATE_ONE_CM))
-                + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.SWIM_ONE_CM))
-                + statHandler.getStat(Stats.CUSTOM.getOrCreateStat(Stats.STRIDER_ONE_CM))) / CM_TO_KM_DIVISOR;
-        return this;
-    }
-
-    public void add(SumUpPlaceholder other) {
+    public void plus(SumUpPlaceholder other) {
         this.playtime += other.playtime;
         this.mined += other.mined;
         this.placed += other.placed;

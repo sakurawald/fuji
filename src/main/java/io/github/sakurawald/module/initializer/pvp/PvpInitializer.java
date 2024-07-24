@@ -14,6 +14,8 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 
+import static net.minecraft.server.command.CommandManager.*;
+
 
 public class PvpInitializer extends ModuleInitializer {
 
@@ -31,13 +33,13 @@ public class PvpInitializer extends ModuleInitializer {
 
     @SuppressWarnings("unused")
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
         dispatcher.register(
-                CommandManager.literal("pvp")
-                        .then(CommandManager.literal("on").executes(this::$on))
-                        .then(CommandManager.literal("off").executes(this::$off))
-                        .then(CommandManager.literal("list").executes(this::$list))
-                        .then(CommandManager.literal("status").executes(this::$status))
+                literal("pvp")
+                        .then(literal("on").executes(this::$on))
+                        .then(literal("off").executes(this::$off))
+                        .then(literal("list").executes(this::$list))
+                        .then(literal("status").executes(this::$status))
         );
     }
 

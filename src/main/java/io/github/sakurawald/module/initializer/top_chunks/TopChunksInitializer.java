@@ -1,11 +1,11 @@
 package io.github.sakurawald.module.initializer.top_chunks;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.top_chunks.structure.ChunkScore;
 import io.github.sakurawald.module.mixin._internal.low_level.ThreadedAnvilChunkStorageMixin;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
@@ -28,14 +28,15 @@ import java.util.HashMap;
 import java.util.PriorityQueue;
 import java.util.concurrent.CompletableFuture;
 
+import static net.minecraft.server.command.CommandManager.*;
+
 
 public class TopChunksInitializer extends ModuleInitializer {
 
-
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
         dispatcher.register(
-                CommandManager.literal("chunks").executes(this::$chunks)
+                literal("chunks").executes(this::$chunks)
         );
     }
 

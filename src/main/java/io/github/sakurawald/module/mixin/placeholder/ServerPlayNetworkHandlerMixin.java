@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.placeholder;
 
 
-import io.github.sakurawald.module.initializer.placeholder.SumUpPlaceholder;
+import io.github.sakurawald.module.initializer.placeholder.structure.SumUpPlaceholder;
 import net.minecraft.network.DisconnectionInfo;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;

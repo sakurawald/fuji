@@ -1,7 +1,8 @@
-package io.github.sakurawald.module.initializer.tpa;
+package io.github.sakurawald.module.initializer.tpa.structure;
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
+import io.github.sakurawald.module.initializer.tpa.TpaInitializer;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.Getter;
 import lombok.ToString;
@@ -21,7 +22,9 @@ public class TpaRequest {
     private static final String CIRCLE = "●";
     private static final String TICK = "[✔]";
     private static final String CROSS = "[❌]";
+
     private static final TpaInitializer module = ModuleManager.getInitializer(TpaInitializer.class);
+
     @Getter
     private final ServerPlayerEntity sender;
     @Getter
@@ -36,7 +39,7 @@ public class TpaRequest {
         this.tpahere = tpahere;
     }
 
-    boolean similarTo(TpaRequest other) {
+    public boolean similarTo(TpaRequest other) {
         return (this.sender.equals(other.sender) && this.receiver.equals(other.receiver)) ||
                 (this.sender.equals(other.receiver) && this.receiver.equals(other.sender));
     }
