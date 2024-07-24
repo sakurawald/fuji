@@ -1219,11 +1219,10 @@ public class ConfigModel {
 
         @Documentation("""
                 This module provides commands to run commands to run commands to run commands...
-                
+                                
                 """)
         public class CommandMeta {
-
-
+            public boolean enable = false;
             public ForEach for_each = new ForEach();
             public Shell shell = new Shell();
 
