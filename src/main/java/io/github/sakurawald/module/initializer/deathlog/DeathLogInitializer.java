@@ -82,19 +82,19 @@ public class DeathLogInitializer extends ModuleInitializer {
         NbtCompound root = NbtHelper.read(path);
         if (root == null || root.isEmpty()) {
             source.sendMessage(Component.text("No deathlog found."));
-            return 0;
+            return CommandHelper.Return.ERROR;
         }
 
-        NbtList deathsNode = (NbtList) NbtHelper.getOrDefault(root,DEATHS,new NbtList());
+        NbtList deathsNode = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
         if (index >= deathsNode.size()) {
             source.sendMessage(Component.text("Index out of bound."));
-            return 0;
+            return CommandHelper.Return.ERROR;
         }
 
         // check the player's inventory for safety
         if (!to.getInventory().isEmpty()) {
             source.sendMessage(Component.text("To player's inventory is not empty!"));
-            return CommandHelper.Return.SUCCESS;
+            return CommandHelper.Return.ERROR;
         }
 
         /* restore inventory */
@@ -130,7 +130,7 @@ public class DeathLogInitializer extends ModuleInitializer {
             NbtCompound root = NbtHelper.read(STORAGE_PATH.resolve(getFileName(from)));
             if (root == null || root.isEmpty()) {
                 player.sendMessage(Component.text("No deathlog found."));
-                return 0;
+                return CommandHelper.Return.ERROR;
             }
 
             NbtList deaths = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());

@@ -78,7 +78,7 @@ public abstract class ConfigHandler<T> {
         }
     }
 
-    public void autoSave(String cron) {
+    public void setAutoSaveJob(String cron) {
         String jobName = this.file.getName();
         String jobGroup = ConfigHandlerAutoSaveJob.class.getName();
         ScheduleUtil.removeJobs(jobGroup, jobName);

@@ -1,8 +1,6 @@
 package io.github.sakurawald.module.initializer.kit;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -13,7 +11,6 @@ import io.github.sakurawald.util.minecraft.NbtHelper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -29,7 +26,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 @Slf4j
@@ -101,8 +97,8 @@ public class KitInitializer extends ModuleInitializer {
                 literal("kit").requires(s -> s.hasPermissionLevel(4))
                         .then(literal("editor").executes(this::$editor))
                         .then(literal("give")
-                                .then(argument("player", EntityArgumentType.player())
-                                        .then(argument("name", StringArgumentType.greedyString())
+                                .then(CommandHelper.Argument.player()
+                                        .then(CommandHelper.Argument.name()
                                                 .suggests((context, builder) -> {
                                                     getKitNameList().forEach(builder::suggest);
                                                     return builder.buildFuture();
@@ -118,22 +114,22 @@ public class KitInitializer extends ModuleInitializer {
         });
     }
 
-   /*
-   * - %fuji:check_counter <counter-name> <player>%
-   * - kit give <player>
-   * - %fuji:update_counter <counter-name> <player>%
-   *
-   * counter for: times, cooldown
-   * */
+    /*
+     * - %fuji:check_counter <counter-name> <player>%
+     * - kit give <player>
+     * - %fuji:update_counter <counter-name> <player>%
+     *
+     * counter for: times, cooldown
+     * */
     @SneakyThrows
     private int $give(CommandContext<ServerCommandSource> ctx) {
-        ServerPlayerEntity player = EntityArgumentType.getPlayer(ctx, "player");
-        String name = StringArgumentType.getString(ctx, "name");
+        ServerPlayerEntity player = CommandHelper.Argument.player(ctx);
+        String name = CommandHelper.Argument.name(ctx);
 
         Kit kit = readKit(name);
         if (kit.getStackList().isEmpty()) {
-            MessageHelper.sendMessage(player,"kit.kit.empty");
-            return 0;
+            MessageHelper.sendMessage(player, "kit.kit.empty");
+            return CommandHelper.Return.ERROR;
         }
 
         PlayerInventory playerInventory = player.getInventory();
@@ -147,7 +143,7 @@ public class KitInitializer extends ModuleInitializer {
             }
         }
 
-        return 0;
+        return CommandHelper.Return.SUCCESS;
     }
 
 }

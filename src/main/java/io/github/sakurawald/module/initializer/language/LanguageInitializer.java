@@ -8,6 +8,7 @@ public class LanguageInitializer extends ModuleInitializer {
 
     @Override
     public void onReload() {
+        // clear the map to remove `UNSUPPORTED LANGUAGE`
         MessageHelper.getLang2json().clear();
     }
 

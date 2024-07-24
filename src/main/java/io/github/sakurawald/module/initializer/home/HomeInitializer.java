@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.home;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
@@ -8,52 +7,49 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.HomeModel;
-import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.common.structure.Position;
+import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.util.ScheduleUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.PermissionHelper;
-import io.github.sakurawald.util.ScheduleUtil;
 import lombok.Getter;
 import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static net.minecraft.server.command.CommandManager.argument;
-import static net.minecraft.server.command.CommandManager.literal;
+import static net.minecraft.server.command.CommandManager.*;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
-
 public class HomeInitializer extends ModuleInitializer {
-
 
     @Getter
     private final ConfigHandler<HomeModel> data = new ObjectConfigHandler<>("home.json", HomeModel.class);
 
     public void onInitialize() {
         data.loadFromDisk();
-        data.autoSave(ScheduleUtil.CRON_EVERY_MINUTE);
+        data.setAutoSaveJob(ScheduleUtil.CRON_EVERY_MINUTE);
     }
 
     @Override
     public void onReload() {
         data.loadFromDisk();
-        data.autoSave(ScheduleUtil.CRON_EVERY_MINUTE);
+        data.setAutoSaveJob(ScheduleUtil.CRON_EVERY_MINUTE);
     }
 
     @SuppressWarnings({"UnusedReturnValue", "unused"})
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
         dispatcher.register(
-                CommandManager.literal("home")
-                        .then(CommandManager.literal("set").then(myHomesArgument().executes(ctx -> $set(ctx, false)).then(literal("override").executes(ctx -> $set(ctx, true)))))
-                        .then(CommandManager.literal("tp").then(myHomesArgument().executes(this::$tp)))
-                        .then(CommandManager.literal("unset").then(myHomesArgument().executes(this::$unset)))
-                        .then(CommandManager.literal("list").executes(this::$list))
+                literal("home")
+                        .then(literal("set").then(myHomesArgument().executes(ctx -> $set(ctx, false)).then(literal("override").executes(ctx -> $set(ctx, true)))))
+                        .then(literal("tp").then(myHomesArgument().executes(this::$tp)))
+                        .then(literal("unset").then(myHomesArgument().executes(this::$unset)))
+                        .then(literal("list").executes(this::$list))
         );
     }
 

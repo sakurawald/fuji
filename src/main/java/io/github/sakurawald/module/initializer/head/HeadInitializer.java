@@ -34,7 +34,6 @@ public class HeadInitializer extends ModuleInitializer {
     public final HeadDatabaseAPI HEAD_DATABASE = new HeadDatabaseAPI();
     public Multimap<Category, Head> heads = HashMultimap.create();
 
-    @SuppressWarnings("UnstableApiUsage")
     public void tryPurchase(ServerPlayerEntity player, int amount, Runnable onPurchase) {
         int trueAmount = amount * headHandler.model().costAmount;
         switch (headHandler.model().economyType) {
@@ -91,6 +90,5 @@ public class HeadInitializer extends ModuleInitializer {
         ITEM,
         FREE
     }
-
 
 }

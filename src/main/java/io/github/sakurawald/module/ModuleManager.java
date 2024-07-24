@@ -14,8 +14,6 @@ import javax.naming.OperationNotSupportedException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static io.github.sakurawald.Fuji.LOGGER;
-
 @Slf4j
 public class ModuleManager {
     private static final Map<Class<? extends ModuleInitializer>, ModuleInitializer> initializers = new HashMap<>();
@@ -38,7 +36,7 @@ public class ModuleManager {
                     } catch (OperationNotSupportedException e) {
                         // no-op
                     } catch (Exception e) {
-                        LOGGER.error("Failed to reload module -> {}", e.getMessage());
+                        Fuji.LOGGER.error("Failed to reload module -> {}", e.getMessage());
                     }
                 }
         );
@@ -51,7 +49,7 @@ public class ModuleManager {
         });
 
         enabled.sort(String::compareTo);
-        LOGGER.info("Enabled {}/{} modules -> {}", enabled.size(), module2enable.size(), enabled);
+        Fuji.LOGGER.info("Enabled {}/{} modules -> {}", enabled.size(), module2enable.size(), enabled);
     }
 
     @ApiStatus.AvailableSince("1.1.5")
@@ -74,7 +72,7 @@ public class ModuleManager {
                     moduleInitializer.initialize();
                     initializers.put(clazz, moduleInitializer);
                 } catch (Exception e) {
-                    LOGGER.error(e.toString());
+                    Fuji.LOGGER.error(e.toString());
                 }
             }
         }
