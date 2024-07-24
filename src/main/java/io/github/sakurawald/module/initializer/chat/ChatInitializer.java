@@ -21,7 +21,6 @@ import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.PermissionHelper;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickCallback;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -55,7 +54,7 @@ public class ChatInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {
         chatHandler.loadFromDisk();
-        chatHistory = EvictingQueue.create(Configs.configHandler.model().modules.chat.history.cache_size);
+        chatHistory = EvictingQueue.create(Configs.configHandler.model().modules.chat.history.buffer_size);
 
         compilePatterns();
 
@@ -72,7 +71,7 @@ public class ChatInitializer extends ModuleInitializer {
     public void onReload() {
         chatHandler.loadFromDisk();
 
-        EvictingQueue<Component> newQueue = EvictingQueue.create(Configs.configHandler.model().modules.chat.history.cache_size);
+        EvictingQueue<Component> newQueue = EvictingQueue.create(Configs.configHandler.model().modules.chat.history.buffer_size);
         newQueue.addAll(chatHistory);
         chatHistory.clear();
         chatHistory = newQueue;

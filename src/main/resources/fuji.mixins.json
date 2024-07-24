@@ -45,7 +45,7 @@
     "disabler.move_speed_disabler.ServerGamePacketListenerImplMixin",
     "functional.enchantment.EnchantmentScreenHandlerMixin",
     "language.ServerPlayerMixin",
-    "motd.ServerQueryNetworkHandlerMixin",
+    "motd.icon.ServerQueryNetworkHandlerMixin",
     "multi_obsidian_platform.EndPortalBlockMixin",
     "multiplier.ServerPlayerMixin",
     "newbie_welcome.PlayerListMixin",

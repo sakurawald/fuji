@@ -39,7 +39,7 @@ public class MotdInitializer extends ModuleInitializer {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public Optional<ServerMetadata.Favicon> getRandomIcon() {
-        if (!Configs.configHandler.model().modules.motd.enable_custom_server_icon) {
+        if (!Configs.configHandler.model().modules.motd.icon.enable) {
             return Optional.empty();
         }
 

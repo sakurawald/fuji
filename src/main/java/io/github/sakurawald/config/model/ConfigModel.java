@@ -93,7 +93,11 @@ public class ConfigModel {
             All the module can work standalone, you can enable or disable `any module` if you like.
                 
             Some modules can work together to achieve more purpose. 
-            e.t. the `placeholder module` can provides some placeholders for `chat module`, `motd module` and other modules to use.
+            e.g. the `placeholder module` can provides some placeholders for `chat module`, `motd module` and other modules to use.
+                        
+            Q: How can I konw which is a `module` ?
+            A: All the modules will has an option called `enable`, or you can see a `module` tag right in the field.
+                        
             """)
     public class Modules {
         public Config config = new Config();
@@ -142,6 +146,7 @@ public class ConfigModel {
         public Color color = new Color();
         public Kit kit = new Kit();
         public Carpet carpet = new Carpet();
+        public CommandMeta command_meta = new CommandMeta();
 
         @Documentation("""
                 This module adds another 3 worlds called `resource world`: resource_overworld, resource_nether, resource_the_end .
@@ -182,8 +187,6 @@ public class ConfigModel {
         public class MOTD {
             public boolean enable = false;
 
-            public boolean enable_custom_server_icon = true;
-
             @Documentation("""
                     Fuji will `randomly` pick a motd each time the player refresh server list.
                                         
@@ -195,6 +198,12 @@ public class ConfigModel {
                     this.add("<gradient:#FF66B2:#FFB5CC>Pure Survival %server:version% / Up %server:uptime% ❤ Discord Group XXX</gradient><newline><gradient:#99CCFF:#BBDFFF>%fuji:server_playtime%🔥 %fuji:server_mined%⛏ %fuji:server_placed%🔳 %fuji:server_killed%🗡 %fuji:server_moved%🌍");
                 }
             };
+
+            public Icon icon = new Icon();
+            public class Icon {
+                public boolean enable = true;
+
+            }
         }
 
         @Documentation("""
@@ -380,8 +389,8 @@ public class ConfigModel {
                 - You can insert any `placeholder` like `%world:name%` in the chat message. (See more placeholders in: https://placeholders.pb4.eu/user/default-placeholders/)
                 - You can insert player's prefix and suffix. Just insert `%fuji:player_prefix%` and `%fuji:player_suffix%`. 
                     Requires `luckperms` installed. See also: https://luckperms.net/wiki/Prefixes,-Suffixes-&-Meta
-                    After you installed `luckperms` mod, just issue `/lp group default meta setprefix <yellow>[awesome]` to assign prefix.
-                    Don't forget to change the format of `Chat module`, and issue `/fuji reload`
+                      After you installed `luckperms` mod, just issue `/lp group default meta setprefix <yellow>[awesome]` to assign prefix.
+                      Don't forget to change the format of `Chat module`, and issue `/fuji reload`
                 - You can insert `item`, `inv` and `ender` to display your `item in your hand`, `your inventory` and `your enderchest`
                 - You can insert `Steve` to mention another player named `Steve`.
                 - You can insert `pos` to show the position.
@@ -410,17 +419,17 @@ public class ConfigModel {
                     """)
             public String format = "<#B1B2FF>[%fuji:player_playtime%\uD83D\uDD25 %fuji:player_mined%⛏ %fuji:player_placed%\uD83D\uDD33 %fuji:player_killed%\uD83D\uDDE1 %fuji:player_moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:'/msg %player:name% '><hover:show_text:'Time: %fuji:date%<newline><italic>Click to Message'>%player:displayname_visual%</hover></click></dark_green>> %message%";
 
-            public MentionPlayer mention_player = new MentionPlayer();
-            public History history = new History();
-            public Display display = new Display();
             public Rewrite rewrite = new Rewrite();
+            public MentionPlayer mention_player = new MentionPlayer();
+            public Display display = new Display();
+            public History history = new History();
 
             @Documentation("""
                     New joined players can see the historical chat messages.
                     """)
             public class History {
-                @Documentation("How many chat components should we save, so that we can send for a new-join player.")
-                public int cache_size = 50;
+                @Documentation("How many chat messages should we save, so that we can send for a new-joined player.")
+                public int buffer_size = 50;
             }
 
             @Documentation("""
@@ -618,10 +627,16 @@ public class ConfigModel {
                 - %fuji:server_playtime%
                 - %fuji:health_bar% -> shows the health bar of the player
                 - %fuji:rotate hello% -> rotate the "hello" string each time.
+                - %fuji:has_permission <permission>% -> check luckperms permission
+                - %fuji:get_meta <meta>% -> get luckperms meta
+                - %fuji:random_player% -> get a random player from online players
+                - %fuji:random <min> <max>% -> get a random number
+                - %fuji:escape <placeholer-name>% -> escape a placeholder
                                 
                 Tips:
                 - You can also use [the default available placeholders](https://placeholders.pb4.eu/user/default-placeholders/) 
                   in anywhere. (Yeah, you can use `placeholder` in the `en_us.json` language file, it works)
+                - There are some mods also provides extra placeholders, see: [other mods that provides extra placeholders](https://placeholders.pb4.eu/user/mod-placeholders/)
                   
                 """)
         public class Placeholder {
@@ -1247,8 +1262,6 @@ public class ConfigModel {
             }
         }
 
-        public CommandMeta command_meta = new CommandMeta();
-
         @Documentation("""
                 This module provides commands to run commands to run commands to run commands...
                                 
@@ -1264,11 +1277,11 @@ public class ConfigModel {
                                         
                     Example 1
                     Give random diamonds to all online players: `/run as console give @a minecraft:diamond %fuji:random 8 32%`
-                    
-                    Example 3
-                    Give all online players random diamonds: `/run as console foreach give %fuji:escape player:name% minecraft:diamond %fuji:escape fuji:random 8 32%`
-                    
+                                        
                     Example 2
+                    Give all online players random diamonds: `/run as console foreach give %fuji:escape player:name% minecraft:diamond %fuji:escape fuji:random 8 32%`
+                                        
+                    Example 3
                     Execute as a player, to run other commands. (Similar to `/execute as ...`): `/run as player Steve back`
                                         
                     """)
@@ -1286,8 +1299,7 @@ public class ConfigModel {
                                         
                     Note:
                     - If you use `foreach` in `scheduler module`, then you should `escape` (Write `%fuji:escape player:name%` insted of `%player:name%`) the `placeholder` by `double quote`. 
-                        It's because the scheduler module will try to parse the placeholder, and you need to escape the placeholder,
-                        so that the placeholder can be parsed by foreach commnad. 
+                        It's because the scheduler module will try to parse the placeholder, and you need to escape the placeholder, so that the placeholder can be parsed by foreach commnad. 
                         Here is an example about `escape` the `foreach command` in scheduler command list: `foreach give %fuji:escape player:name% minecraft:diamond 16`
                       
                     """)
@@ -1457,6 +1469,8 @@ public class ConfigModel {
             public boolean enable = false;
             public String update_cron = "* * * ? * *";
             public Style style = new Style();
+            public Sort sort = new Sort();
+            public Faker faker = new Faker();
 
             public class Style {
                 public List<String> header = new ArrayList<>() {
@@ -1477,8 +1491,6 @@ public class ConfigModel {
 
                 };
             }
-
-            public Sort sort = new Sort();
 
             @Documentation("""
                     If enable this moudle, the `player names` in `tab list` will be sorted by `weight`.
@@ -1503,8 +1515,6 @@ public class ConfigModel {
                 public boolean enable = false;
                 public String sync_cron = "* * * ? * *";
             }
-
-            public Faker faker = new Faker();
 
             public class Faker {
                 public boolean enable = false;

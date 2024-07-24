@@ -20,11 +20,9 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import org.apache.commons.lang3.StringEscapeUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 
 import static net.minecraft.server.command.CommandManager.RegistrationEnvironment;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -74,6 +72,7 @@ public class TesterInitializer extends ModuleInitializer {
         ServerPlayerEntity player = source.getPlayer();
         MinecraftServer server = player.server;
         PlayerManager playerManager = server.getPlayerManager();
+
 
         return -1;
     }
