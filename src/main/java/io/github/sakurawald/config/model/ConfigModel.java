@@ -780,7 +780,7 @@ public class ConfigModel {
             public boolean enable = false;
 
             @Documentation("The tab-name format when a player is afk")
-            public String format = "<gray>[AFK] %player:displayname_visual";
+            public String format = "<gray>[AFK] %player:displayname_visual%";
 
             @Documentation("The afk checker is a timer to check and mark the player's recently active time.")
             public AfkChecker afk_checker = new AfkChecker();

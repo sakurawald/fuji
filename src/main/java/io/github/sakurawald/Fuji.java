@@ -20,7 +20,7 @@ import static io.github.sakurawald.module.ModuleManager.initializeModules;
 // TODO: powertool module
 
 // TODO: a lisp-like DSL (parser and code-walker) for command with context and placeholders (%fuji:play_time_total% / nbt)
-// TODO: refactor command facility (selector, aop, options, parser, redirect/option)
+// TODO: refactor command facility (selector, aop, options, parser, redirect/option, operation-argument-type)
 // TODO: tppos module
 
 public class Fuji implements ModInitializer {
