@@ -9,12 +9,12 @@
     "color.sign.SignBlockEntityMixin"
   ],
   "mixins": [
-    "_internal.low_level.A",
     "_internal.low_level.MinecraftServerMixin",
     "_internal.low_level.ServerPlayerEntityMixin",
     "_internal.low_level.SimpleRegistryMixin",
     "_internal.low_level.ThreadedAnvilChunkStorageMixin",
     "_internal.low_level.UserCacheMixin",
+    "_internal.meta.A",
     "afk.PlayerListMixin",
     "afk.ServerPlayerMixin",
     "anti_build.BlockItemMixin",
