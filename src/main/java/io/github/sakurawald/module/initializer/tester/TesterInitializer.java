@@ -2,13 +2,12 @@ package io.github.sakurawald.module.initializer.tester;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.tree.LiteralCommandNode;
 import eu.pb4.placeholders.api.PlaceholderResult;
 import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.tab_list.sort.TabListSortInitializer;
-import io.github.sakurawald.util.minecraft.CommandHelper;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.loader.api.FabricLoader;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.inventory.Book;
@@ -17,12 +16,18 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.List;
+
+import static net.minecraft.server.command.CommandManager.RegistrationEnvironment;
+import static net.minecraft.server.command.CommandManager.literal;
 
 
 public class TesterInitializer extends ModuleInitializer {
@@ -54,9 +59,9 @@ public class TesterInitializer extends ModuleInitializer {
         Component bookAuthor = Component.text("kashike");
         Collection<Component> bookPages = new ArrayList<>() {
             {
-                this.add(Component.text("first" ));
-                this.add(Component.text("second" ));
-                this.add(Component.text("third" ));
+                this.add(Component.text("first"));
+                this.add(Component.text("second"));
+                this.add(Component.text("third"));
             }
         };
 
@@ -69,11 +74,6 @@ public class TesterInitializer extends ModuleInitializer {
         ServerPlayerEntity player = source.getPlayer();
         MinecraftServer server = player.server;
         PlayerManager playerManager = server.getPlayerManager();
-
-//        Random random = new Random();
-//        ServerPlayerEntity serverPlayerEntity = TabListSortInitializer.makeServerPlayerEntity(server, String.valueOf(random.nextInt(1000)));
-//        EnumSet<PlayerListS2CPacket.Action> enumSet = EnumSet.of(PlayerListS2CPacket.Action.UPDATE_LISTED, PlayerListS2CPacket.Action.UPDATE_LATENCY, PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME);
-//        playerManager.sendToAll(new PlayerListS2CPacket(enumSet, List.of(serverPlayerEntity)));
 
         return -1;
     }
@@ -92,13 +92,15 @@ public class TesterInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
         if (!FabricLoader.getInstance().isDevelopmentEnvironment()) return;
 
         registerStore();
         dispatcher.register(
-                CommandManager.literal("tester").requires(s -> s.hasPermissionLevel(4))
-                        .then(CommandManager.literal("run").executes(TesterInitializer::$run))
+                literal("tester").requires(s -> s.hasPermissionLevel(4))
+                        .then(literal("run").executes(TesterInitializer::$run))
         );
+
     }
+
 }

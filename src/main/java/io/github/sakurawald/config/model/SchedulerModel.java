@@ -11,8 +11,10 @@ public class SchedulerModel {
         {
             this.add(new ScheduleJob("example_job", false, 3, List.of("0 0 * ? * *"),
                     List.of(
-                            List.of("send_broadcast nobody gets the gift"),
-                            List.of("all players get the gift!", "foreach give %player:name% minecraft:diamond 16")
+                            List.of("sendbroadcast nobody gets the gift"),
+                            List.of("sendbroadcast all players get the gift!", "give @a minecraft:diamond 16")
+                            // todo: double placeholder parse
+
 //                            List.of("a random player gets the gift", "give !random_player! minecraft:diamond 1")
                     )));
         }
