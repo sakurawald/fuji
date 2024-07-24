@@ -21,11 +21,11 @@ public class SendMessageInitializer extends ModuleInitializer {
         dispatcher.register(
                 literal("sendmessage")
                         .requires(ctx -> ctx.hasPermissionLevel(4))
-                        .then(argument("player", EntityArgumentType.player())
-                                .then(argument("message", StringArgumentType.greedyString())
+                        .then(CommandHelper.Argument.player()
+                                .then(CommandHelper.Argument.rest()
                                         .executes((ctx) -> {
-                                            ServerPlayerEntity player = EntityArgumentType.getPlayer(ctx, "player");
-                                            String message = StringArgumentType.getString(ctx, "message");
+                                            ServerPlayerEntity player = CommandHelper.Argument.player(ctx);
+                                            String message = CommandHelper.Argument.rest(ctx);
 
                                             player.sendMessage(MessageHelper.ofText(player, false,message));
                                             return CommandHelper.Return.SUCCESS;

@@ -39,7 +39,8 @@ public class SeenInitializer extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int $seen(CommandContext<ServerCommandSource> ctx) {
-        String target = StringArgumentType.getString(ctx, "player");
+        String target = CommandHelper.Argument.offlinePlayer(ctx);
+
         if (data.model().player2seen.containsKey(target)) {
             Long time = data.model().player2seen.get(target);
             MessageHelper.sendMessage(ctx.getSource(), "seen.success", target, DateUtil.toStandardDateFormat(time));
