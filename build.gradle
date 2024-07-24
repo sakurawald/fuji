@@ -1,10 +1,10 @@
 /* gradle env */
 plugins {
-    id 'fabric-loom' version '1.6.+'
-    id 'maven-publish'
+    id "fabric-loom" version "1.6.+"
+    id "maven-publish"
     id "com.modrinth.minotaur" version "2.+"
-    id 'java'
-    id 'idea'
+    id "java"
+    id "idea"
 }
 
 repositories {
@@ -12,9 +12,9 @@ repositories {
     maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     maven { url "https://jitpack.io" }
-    maven { url 'https://masa.dy.fi/maven' }
-    maven { url 'https://maven.nucleoid.xyz' }
-    maven { url 'https://projectlombok.org/edge-releases' }
+    maven { url "https://masa.dy.fi/maven" }
+    maven { url "https://maven.nucleoid.xyz" }
+    maven { url "https://projectlombok.org/edge-releases" }
 }
 
 /* project props */
@@ -71,7 +71,7 @@ dependencies {
     implementation "me.lucko:spark-api:${project.spark_api_version}"
 
     include(implementation "org.apache.commons:commons-compress:${project.apache_commons_compression_version}")
-    include(implementation 'org.apache.commons:commons-rng-simple:1.6')
+    include(implementation "org.apache.commons:commons-rng-simple:${project.apache_commons_rng_version}")
     include(implementation "commons-io:commons-io:${project.apache_commons_io_version}")
 
     include(implementation "org.quartz-scheduler:quartz:${project.quartz_version}")
@@ -130,7 +130,7 @@ modrinth {
     versionNumber = "$mod_version"
     versionType = "release"
     uploadFile = remapJar
-    gameVersions = ['1.21']
+    gameVersions = ["1.21"]
     loaders = ["fabric"]
     dependencies {
         required.project "fabric-api"
@@ -149,22 +149,22 @@ test {
 }
 
 /* docs generator is used to generate the `configuration files` docs. */
-tasks.register('generateDocs') {
+tasks.register("generateDocs") {
     outputs.upToDateWhen { false }
     test {
         filter {
-            includeTestsMatching 'DocsGeneratorTest.generate'
+            includeTestsMatching "DocsGeneratorTest.generate"
         }
     }
 }
 tasks.modrinthSyncBody.dependsOn(generateDocs)
 
 /* mixin Registry checker is used to check the un-registered mixins, to avoid un-expected circumstance. */
-tasks.register('checkMixinRegistryTest') {
+tasks.register("checkMixinRegistryTest") {
     outputs.upToDateWhen { false }
     test {
         filter {
-            includeTestsMatching 'CheckMixinRegistryTest.test'
+            includeTestsMatching "CheckMixinRegistryTest.test"
         }
     }
 }
@@ -178,11 +178,11 @@ tasks.compileJava.dependsOn(checkMixinRegistryTest)
 *    2. Or just extract the common codes into the `common` package.
 *
 * */
-tasks.register('checkModuleDependencyTest') {
+tasks.register("checkModuleDependencyTest") {
     outputs.upToDateWhen { false }
     test {
         filter {
-            includeTestsMatching 'CheckModuleDependencyTest.test'
+            includeTestsMatching "CheckModuleDependencyTest.test"
         }
     }
 }
