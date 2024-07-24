@@ -6,6 +6,7 @@ import eu.pb4.placeholders.api.PlaceholderResult;
 import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.tab_list.sort.TabListSortInitializer;
+import io.github.sakurawald.util.minecraft.CommandHelper;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.loader.api.FabricLoader;
@@ -75,7 +76,7 @@ public class TesterInitializer extends ModuleInitializer {
 //        EnumSet<PlayerListS2CPacket.Action> enumSet = EnumSet.of(PlayerListS2CPacket.Action.UPDATE_LISTED, PlayerListS2CPacket.Action.UPDATE_LATENCY, PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME);
 //        playerManager.sendToAll(new PlayerListS2CPacket(enumSet, List.of(serverPlayerEntity)));
 
-        return 1;
+        return CommandHelper.Return.ERROR;
     }
 
     private static void extracted(MinecraftServer server) {

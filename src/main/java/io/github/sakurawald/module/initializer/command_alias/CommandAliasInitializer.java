@@ -27,6 +27,11 @@ public class CommandAliasInitializer extends ModuleInitializer {
     }
 
     private LiteralArgumentBuilder<ServerCommandSource> walk(CommandDispatcher<ServerCommandSource> dispatcher, LiteralArgumentBuilder<ServerCommandSource> parent, CommandAliasEntry entry, int level) {
+        // edge case
+        if (entry.from.size() == 1) {
+            return literal(entry.from.getFirst()).redirect(dispatcher.findNode(entry.to));
+        }
+
         List<String> names = entry.from;
         String name = names.get(level);
 
@@ -36,7 +41,6 @@ public class CommandAliasInitializer extends ModuleInitializer {
         }
 
         LiteralArgumentBuilder<ServerCommandSource> child = literal(name);
-
         if (level + 1 == names.size()) {
             child.redirect(dispatcher.findNode(entry.to));
             return parent.then(child);

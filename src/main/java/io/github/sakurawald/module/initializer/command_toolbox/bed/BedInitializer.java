@@ -26,10 +26,11 @@ public class BedInitializer extends ModuleInitializer {
         return CommandHelper.playerOnlyCommand(ctx, (player) -> {
             BlockPos respawnPosition = player.getSpawnPointPosition();
             RegistryKey<World> respawnDimension = player.getSpawnPointDimension();
+
             ServerWorld serverLevel = ServerHelper.getDefaultServer().getWorld(respawnDimension);
             if (respawnPosition == null || serverLevel == null) {
                 MessageHelper.sendMessage(player, "bed.not_found");
-                return CommandHelper.Return.SUCCESS;
+                return CommandHelper.Return.ERROR;
             }
 
             player.teleport(serverLevel, respawnPosition.getX(), respawnPosition.getY(), respawnPosition.getZ(), player.getYaw(), player.getPitch());
