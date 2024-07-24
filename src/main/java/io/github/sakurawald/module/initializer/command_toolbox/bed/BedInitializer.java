@@ -30,7 +30,7 @@ public class BedInitializer extends ModuleInitializer {
             ServerWorld serverLevel = ServerHelper.getDefaultServer().getWorld(respawnDimension);
             if (respawnPosition == null || serverLevel == null) {
                 MessageHelper.sendMessage(player, "bed.not_found");
-                return CommandHelper.Return.ERROR;
+                return CommandHelper.Return.FAIL;
             }
 
             player.teleport(serverLevel, respawnPosition.getX(), respawnPosition.getY(), respawnPosition.getZ(), player.getYaw(), player.getPitch());

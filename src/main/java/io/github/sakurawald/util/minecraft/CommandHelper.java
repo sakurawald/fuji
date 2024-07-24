@@ -5,7 +5,6 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.module.common.accessor.GameProfileCacheEx;
-import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import net.minecraft.command.EntitySelector;
 import net.minecraft.command.argument.EntityArgumentType;
@@ -20,9 +19,9 @@ import static net.minecraft.server.command.CommandManager.argument;
 public class CommandHelper {
 
     public static class Return {
-        public static final int ERROR = 0;
+        public static final int FAIL = -1;
+        public static final int PASS = 0;
         public static final int SUCCESS = 1;
-
     }
 
     public static class Argument {

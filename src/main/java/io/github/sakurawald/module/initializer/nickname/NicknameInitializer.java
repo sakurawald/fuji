@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.nickname;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -33,14 +32,10 @@ public class NicknameInitializer extends ModuleInitializer {
         dispatcher.register(
                 literal("nickname")
                         .then(literal("reset")
-                                .executes(this::$reset)
-                        )
+                                .executes(this::$reset))
                         .then(literal("set")
                                 .then(argument("format", StringArgumentType.greedyString())
-                                        .executes(this::$set)
-                                )
-                        )
-        );
+                                        .executes(this::$set))));
     }
 
     private int $set(CommandContext<ServerCommandSource> ctx) {
@@ -50,7 +45,7 @@ public class NicknameInitializer extends ModuleInitializer {
             nicknameHandler.model().format.player2format.put(name, format);
             nicknameHandler.saveToDisk();
 
-            MessageHelper.sendMessage(player,"nickname.set");
+            MessageHelper.sendMessage(player, "nickname.set");
             return CommandHelper.Return.SUCCESS;
         });
     }
@@ -61,7 +56,7 @@ public class NicknameInitializer extends ModuleInitializer {
             nicknameHandler.model().format.player2format.remove(name);
             nicknameHandler.saveToDisk();
 
-            MessageHelper.sendMessage(player,"nickname.unset");
+            MessageHelper.sendMessage(player, "nickname.unset");
             return CommandHelper.Return.SUCCESS;
         });
     }

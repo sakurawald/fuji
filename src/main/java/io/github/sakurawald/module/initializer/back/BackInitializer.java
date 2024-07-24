@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.back;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.Configs;
@@ -9,7 +8,6 @@ import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -34,7 +32,7 @@ public class BackInitializer extends ModuleInitializer {
             Position lastPos = player2lastPos.get(player.getName().getString());
             if (lastPos == null) {
                 MessageHelper.sendActionBar(player, "back.no_previous_position");
-                return CommandHelper.Return.ERROR;
+                return CommandHelper.Return.FAIL;
             }
 
             lastPos.teleport(player);

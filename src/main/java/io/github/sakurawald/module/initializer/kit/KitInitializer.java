@@ -10,7 +10,6 @@ import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.NbtHelper;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -129,7 +128,7 @@ public class KitInitializer extends ModuleInitializer {
         Kit kit = readKit(name);
         if (kit.getStackList().isEmpty()) {
             MessageHelper.sendMessage(player, "kit.kit.empty");
-            return CommandHelper.Return.ERROR;
+            return CommandHelper.Return.FAIL;
         }
 
         PlayerInventory playerInventory = player.getInventory();

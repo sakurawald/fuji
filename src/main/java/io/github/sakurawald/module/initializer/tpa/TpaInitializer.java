@@ -10,7 +10,6 @@ import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.Getter;
 import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -18,7 +17,6 @@ import net.minecraft.server.world.ServerWorld;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
@@ -75,7 +73,7 @@ public class TpaInitializer extends ModuleInitializer {
                 target = CommandHelper.Argument.player(ctx);
             } catch (CommandSyntaxException e) {
                 MessageHelper.sendActionBar(source, "tpa.player_not_found");
-                return CommandHelper.Return.ERROR;
+                return CommandHelper.Return.FAIL;
             }
 
             /* resolve relative request */
@@ -87,7 +85,7 @@ public class TpaInitializer extends ModuleInitializer {
                     .findFirst();
             if (requestOptional.isEmpty()) {
                 MessageHelper.sendActionBar(source, "tpa.no_relative_ticket");
-                return CommandHelper.Return.ERROR;
+                return CommandHelper.Return.FAIL;
             }
 
             TpaRequest request = requestOptional.get();
@@ -120,7 +118,7 @@ public class TpaInitializer extends ModuleInitializer {
                 target = CommandHelper.Argument.player(ctx);
             } catch (CommandSyntaxException e) {
                 MessageHelper.sendActionBar(source, "tpa.player_not_found");
-                return CommandHelper.Return.ERROR;
+                return CommandHelper.Return.FAIL;
             }
 
             /* add request */
@@ -130,12 +128,12 @@ public class TpaInitializer extends ModuleInitializer {
             if (request.getSender().equals(request.getReceiver())) {
                 MessageHelper.sendActionBar(request.getSender(), "tpa.request_to_self");
 
-                return CommandHelper.Return.ERROR;
+                return CommandHelper.Return.FAIL;
             }
 
             if (requests.stream().anyMatch(request::similarTo)) {
                 MessageHelper.sendActionBar(request.getSender(), "tpa.similar_request_exists");
-                return CommandHelper.Return.ERROR;
+                return CommandHelper.Return.FAIL;
             }
 
             requests.add(request);

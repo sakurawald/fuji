@@ -75,7 +75,7 @@ public class TesterInitializer extends ModuleInitializer {
 //        EnumSet<PlayerListS2CPacket.Action> enumSet = EnumSet.of(PlayerListS2CPacket.Action.UPDATE_LISTED, PlayerListS2CPacket.Action.UPDATE_LATENCY, PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME);
 //        playerManager.sendToAll(new PlayerListS2CPacket(enumSet, List.of(serverPlayerEntity)));
 
-        return CommandHelper.Return.ERROR;
+        return -1;
     }
 
     private static void extracted(MinecraftServer server) {

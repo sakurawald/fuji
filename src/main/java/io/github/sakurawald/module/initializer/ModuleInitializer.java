@@ -28,6 +28,7 @@ public class ModuleInitializer {
      * Tips:
      * 1. Don't catch and handle the command exception, just use @SneakThrow and CommandSyntaxException.
      * 2. Use CommandHelper.Return to provide useful return value.
+     * 3. If you use source.sendFeedback() method, then it will be controlled by game rule `sendCommandFeedback`
      */
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         // no-op
