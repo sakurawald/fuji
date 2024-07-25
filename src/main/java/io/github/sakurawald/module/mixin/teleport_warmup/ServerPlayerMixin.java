@@ -1,15 +1,18 @@
 package io.github.sakurawald.module.mixin.teleport_warmup;
 
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.structure.BossBarTicket;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.common.structure.TeleportTicket;
+import io.github.sakurawald.util.minecraft.IdentifierHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.EntityHelper;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -20,6 +23,8 @@ import javax.annotation.Nullable;
 
 @Mixin(value = ServerPlayerEntity.class, priority = 1000 - 500)
 public abstract class ServerPlayerMixin {
+
+    @Shadow public abstract void requestTeleport(double d, double e, double f);
 
     @Unique
     public @Nullable TeleportTicket getTeleportTicket(ServerPlayerEntity player) {
@@ -36,6 +41,11 @@ public abstract class ServerPlayerMixin {
 
     @Inject(method = "teleport(Lnet/minecraft/server/world/ServerWorld;DDDFF)V", at = @At("HEAD"), cancellable = true)
     public void $teleport(ServerWorld targetWorld, double x, double y, double z, float yaw, float pitch, CallbackInfo ci) {
+
+        if (!Configs.configHandler.model().modules.teleport_warmup.dimension.list.contains(IdentifierHelper.ofString(targetWorld))) {
+            return;
+        }
+
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
         // If we try to spawn a fake-player in the end or nether, the fake-player will initially spawn in overworld

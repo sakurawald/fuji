@@ -244,6 +244,21 @@ public class ConfigModel {
 
             @Documentation("How far should we cancel the teleportation.")
             public double interrupt_distance = 1d;
+
+            public Dimension dimension = new Dimension();
+
+            @Documentation("""
+                    Only allowed in the following dimensions.
+                    """)
+            public class Dimension {
+                public Set<String> list = new HashSet<>() {
+                    {
+                        this.add("minecraft:overworld");
+                        this.add("minecraft:the_nether");
+                        this.add("minecraft:the_end");
+                    }
+                };
+            }
         }
 
         @Documentation("""
