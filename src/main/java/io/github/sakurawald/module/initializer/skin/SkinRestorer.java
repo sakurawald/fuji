@@ -7,6 +7,7 @@ import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.skin.io.SkinIO;
 import io.github.sakurawald.module.initializer.skin.io.SkinStorage;
+import io.github.sakurawald.util.LogUtil;
 import it.unimi.dsi.fastutil.Pair;
 import lombok.Getter;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -25,8 +26,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-import static io.github.sakurawald.util.LogUtil.LOGGER;
-
 // Thanks to: https://modrinth.com/mod/skinrestorer
 
 public class SkinRestorer {
@@ -41,9 +40,9 @@ public class SkinRestorer {
             HashSet<GameProfile> acceptedProfiles = new HashSet<>();
             Property skin = skinSupplier.get();
 
-            LOGGER.debug("skinSupplier.get() -> skin = {}", skin);
+            LogUtil.debug("skinSupplier.get() -> skin = {}", skin);
             if (skin == null) {
-                LOGGER.error("Cannot get the skin for {}", targets.stream().findFirst().orElseThrow());
+                LogUtil.error("Cannot get the skin for {}", targets.stream().findFirst().orElseThrow());
                 return Pair.of(null, Collections.emptySet());
             }
 
@@ -113,7 +112,7 @@ public class SkinRestorer {
             jy.remove("timestamp");
             return x.equals(jy);
         } catch (Exception ex) {
-            LOGGER.info("Can not compare skin", ex);
+            LogUtil.info("Can not compare skin", ex);
             return false;
         }
     }

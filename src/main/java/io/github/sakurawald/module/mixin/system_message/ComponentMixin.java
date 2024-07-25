@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.mixin.system_message;
 
 import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import org.jetbrains.annotations.Nullable;
@@ -14,8 +15,6 @@ import java.util.Map;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableTextContent;
-
-import static io.github.sakurawald.util.LogUtil.LOGGER;
 
 @Mixin(Text.class)
 public interface ComponentMixin {
@@ -37,7 +36,7 @@ public interface ComponentMixin {
         Map<String, String> key2value = Configs.configHandler.model().modules.system_message.key2value;
         if (key2value.containsKey(key)) {
             if (ServerHelper.getDefaultServer() == null) {
-                LOGGER.warn("Server is null currently -> cannot hijack message key: {}", key);
+                LogUtil.warn("Server is null currently -> cannot hijack message key: {}", key);
                 return null;
             }
             String value = key2value.get(key);

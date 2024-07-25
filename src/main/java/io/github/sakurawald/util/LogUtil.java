@@ -11,7 +11,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 @UtilityClass
 public class LogUtil {
 
-    public static final Logger LOGGER = createLogger(StringUtils.capitalize(Fuji.MOD_ID));
+    private static final Logger LOGGER = createLogger(StringUtils.capitalize(Fuji.MOD_ID));
 
     public static Logger getDefaultLogger() {
         return LOGGER;

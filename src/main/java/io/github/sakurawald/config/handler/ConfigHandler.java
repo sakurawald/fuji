@@ -3,6 +3,7 @@ package io.github.sakurawald.config.handler;
 import assets.fuji.Cat;
 import com.google.gson.*;
 import io.github.sakurawald.module.initializer.works.work_type.Work;
+import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.ScheduleUtil;
 import lombok.Cleanup;
 import lombok.Getter;
@@ -16,9 +17,6 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Map;
 import java.util.Set;
-
-import static io.github.sakurawald.util.LogUtil.LOGGER;
-
 
 public abstract class ConfigHandler<T> {
 
@@ -44,7 +42,7 @@ public abstract class ConfigHandler<T> {
             @Cleanup Reader reader = new BufferedReader(new InputStreamReader(inputStream));
             return JsonParser.parseReader(reader);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            LogUtil.error(e.getMessage());
         }
 
         return null;
@@ -74,7 +72,7 @@ public abstract class ConfigHandler<T> {
         try {
             Files.copy(file.toPath(), backupFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            LOGGER.error("Backup file failed: {}", e.getMessage());
+            LogUtil.error("Backup file failed: {}", e.getMessage());
         }
     }
 
@@ -108,7 +106,7 @@ public abstract class ConfigHandler<T> {
                 // note: for JsonArray, we will not directly set array elements, but we will add new properties for every array element (language default empty-value). e.g. For List<ExamplePojo>, we will never change the size of this list, but we will add missing properties for every ExamplePojo with the language default empty-value.
                 if (!currentJson.has(key)) {
                     currentJson.add(key, value);
-                    LOGGER.warn("Add missing json property: file = {}, key = {}, value = {}", this.file.getName(), key, value);
+                    LogUtil.warn("Add missing json property: file = {}, key = {}, value = {}", this.file.getName(), key, value);
                 }
             }
         }
@@ -117,7 +115,7 @@ public abstract class ConfigHandler<T> {
     public static class ConfigHandlerAutoSaveJob implements Job {
         @Override
         public void execute(JobExecutionContext context) throws JobExecutionException {
-            LOGGER.debug("AutoSave ConfigWrapper {}", context.getJobDetail().getKey().getName());
+            LogUtil.debug("AutoSave ConfigWrapper {}", context.getJobDetail().getKey().getName());
             ConfigHandler<?> configHandler = (ConfigHandler<?>) context.getJobDetail().getJobDataMap().get(ConfigHandler.class.getName());
             configHandler.saveToDisk();
         }

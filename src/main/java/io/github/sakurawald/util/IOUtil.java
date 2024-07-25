@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static io.github.sakurawald.util.LogUtil.LOGGER;
-
 @UtilityClass
 public class IOUtil {
 
@@ -76,7 +74,7 @@ public class IOUtil {
     }
 
     public static String post(URI uri, String param) throws IOException {
-        LOGGER.debug("post() -> uri = {}, param = {}", uri, param);
+        LogUtil.debug("post() -> uri = {}, param = {}", uri, param);
 
         HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
         connection.setRequestMethod("POST");
@@ -91,7 +89,7 @@ public class IOUtil {
     }
 
     public static String get(URI uri) throws IOException {
-        LOGGER.debug("get() -> uri = {}", uri);
+        LogUtil.debug("get() -> uri = {}", uri);
 
         HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
         connection.setRequestMethod("GET");

@@ -17,8 +17,6 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
 
-import static io.github.sakurawald.util.LogUtil.LOGGER;
-
 
 @UtilityClass
 public class ScheduleUtil {
@@ -47,14 +45,14 @@ public class ScheduleUtil {
         if (jobDataMap == null) {
             jobDataMap = new JobDataMap();
         }
-        LOGGER.debug("addJob() -> jobClass: {}, jobName: {}, jobGroup: {}, cron: {}, jobDataMap: {}", jobClass, jobName, jobGroup, cron, jobDataMap);
+        LogUtil.debug("addJob() -> jobClass: {}, jobName: {}, jobGroup: {}, cron: {}, jobDataMap: {}", jobClass, jobName, jobGroup, cron, jobDataMap);
 
         JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName, jobGroup).usingJobData(jobDataMap).build();
         CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(jobName, jobGroup).withSchedule(CronScheduleBuilder.cronSchedule(cron)).build();
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            LOGGER.error("Exception in ScheduleUtil.addJob", e);
+            LogUtil.error("Exception in ScheduleUtil.addJob", e);
         }
     }
 
@@ -68,34 +66,34 @@ public class ScheduleUtil {
         if (jobDataMap == null) {
             jobDataMap = new JobDataMap();
         }
-        LOGGER.debug("addJob() -> jobClass: {}, jobName: {}, jobGroup: {}, intervalMs: {}, repeatCount: {}, jobDataMap: {}", jobClass, jobName, jobGroup, intervalMs, repeatCount, jobDataMap);
+        LogUtil.debug("addJob() -> jobClass: {}, jobName: {}, jobGroup: {}, intervalMs: {}, repeatCount: {}, jobDataMap: {}", jobClass, jobName, jobGroup, intervalMs, repeatCount, jobDataMap);
 
         JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName, jobGroup).usingJobData(jobDataMap).build();
         SimpleTrigger trigger = TriggerBuilder.newTrigger().withIdentity(jobName, jobGroup).withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMilliseconds(intervalMs).withRepeatCount(repeatCount - 1)).build();
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
-            LOGGER.error("Exception in ScheduleUtil.addJob", e);
+            LogUtil.error("Exception in ScheduleUtil.addJob", e);
         }
     }
 
     public static void removeJobs(String jobGroup, String jobName) {
-        LOGGER.debug("removeJobs() -> jobGroup: {}, jobName: {}", jobGroup, jobName);
+        LogUtil.debug("removeJobs() -> jobGroup: {}, jobName: {}", jobGroup, jobName);
 
         try {
             scheduler.deleteJob(new JobKey(jobName, jobGroup));
         } catch (SchedulerException e) {
-            LOGGER.error("Exception in ScheduleUtil.removeJobs", e);
+            LogUtil.error("Exception in ScheduleUtil.removeJobs", e);
         }
     }
 
     public static void removeJobs(String jobGroup) {
-        LOGGER.debug("removeJobs() -> jobGroup: {}", jobGroup);
+        LogUtil.debug("removeJobs() -> jobGroup: {}", jobGroup);
 
         try {
             scheduler.deleteJobs(getJobKeys(jobGroup).stream().toList());
         } catch (SchedulerException e) {
-            LOGGER.error("Exception in ScheduleUtil.removeJobs", e);
+            LogUtil.error("Exception in ScheduleUtil.removeJobs", e);
         }
     }
 
@@ -104,7 +102,7 @@ public class ScheduleUtil {
         try {
             return scheduler.getJobKeys(groupMatcher);
         } catch (SchedulerException e) {
-            LOGGER.error("Exception in ScheduleUtil.getJobKeys", e);
+            LogUtil.error("Exception in ScheduleUtil.getJobKeys", e);
         }
         return Collections.emptySet();
     }
@@ -114,7 +112,7 @@ public class ScheduleUtil {
             try {
                 scheduler.triggerJob(jobKey);
             } catch (SchedulerException e) {
-                LOGGER.error("Exception in ScheduleUtil.triggerJobs", e);
+                LogUtil.error("Exception in ScheduleUtil.triggerJobs", e);
             }
         });
     }
@@ -134,7 +132,7 @@ public class ScheduleUtil {
         try {
             scheduler.start();
         } catch (SchedulerException e) {
-            LOGGER.error("Exception in ScheduleUtil.startScheduler", e);
+            LogUtil.error("Exception in ScheduleUtil.startScheduler", e);
         }
     }
 
@@ -148,7 +146,7 @@ public class ScheduleUtil {
             }
 
         } catch (SchedulerException e) {
-            LOGGER.error("Exception in ScheduleUtil.shutdownScheduler", e);
+            LogUtil.error("Exception in ScheduleUtil.shutdownScheduler", e);
         }
     }
 }
