@@ -729,19 +729,6 @@ public class ConfigModel {
                     
                     In this system, all commands are build into a tree strucutre.
                     
-                    For example, like the command `/gamemode creative Steve` is composed by 3 `command node`:
-                      - `literal command node` -> "gamemode"
-                      - `argument command node` -> a valid gamemode
-                      - `argument command node` -> a valid player
-                    
-                    And the `command node path` stands the `tree node path`.
-                    For `/gamemode creative Steve`, the path is ["gamemode", "gamemode", "target"].
-                    
-                    You can query a command path using `/lp group default permission set fuji.permission...` way.
-                    
-                    Also, each `command node` has its `requirement`, which is a condition to check if the `command user` can use the `command node`.
-                                
-                This module can `override` the `requirement` of a `command node` into a `permission` with prefix `fuji.permission.<command_node_path>`.
                                 
                 See [permission](https://github.com/sakurawald/fuji-fabric/wiki/Permission)
                 """)
