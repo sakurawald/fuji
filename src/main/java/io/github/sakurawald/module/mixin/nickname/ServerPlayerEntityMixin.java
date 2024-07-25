@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.nickname;
 
-import io.github.sakurawald.module.initializer.nickname.NicknameInitializer;
+import io.github.sakurawald.module.initializer.command_toolbox.nickname.NicknameInitializer;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;

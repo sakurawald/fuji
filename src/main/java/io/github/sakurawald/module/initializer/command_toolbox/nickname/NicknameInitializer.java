@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.nickname;
+package io.github.sakurawald.module.initializer.command_toolbox.nickname;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;

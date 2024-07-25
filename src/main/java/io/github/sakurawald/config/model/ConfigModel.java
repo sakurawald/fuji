@@ -140,7 +140,6 @@ public class ConfigModel {
         public Multiplier multiplier = new Multiplier();
         public Disabler disabler = new Disabler();
         public AntiBuild anti_build = new AntiBuild();
-        public Nickname nickname = new Nickname();
         public Color color = new Color();
         public Kit kit = new Kit();
         public Carpet carpet = new Carpet();
@@ -1097,17 +1096,6 @@ public class ConfigModel {
             }
         }
 
-        @Documentation("""
-                This module provides `/nickname` command.
-                                
-                Tips:
-                - You can query real name using `realname module`
-                - To show the `nickname`, you need to use `%player:displayname%` or `%player:displayname_visual%` placeholders.
-                                
-                """)
-        public class Nickname {
-            public boolean enable = false;
-        }
 
         @Documentation("""
                 This module provides colorize for: sign, anvil
@@ -1408,6 +1396,7 @@ public class ConfigModel {
             public More more = new More();
             public Ping ping = new Ping();
             public Realname realname = new Realname();
+            public Nickname nickname = new Nickname();
             public Repair repair = new Repair();
             public Reply reply = new Reply();
             public Seen seen = new Seen();
@@ -1494,6 +1483,18 @@ public class ConfigModel {
             public class Realname {
                 public boolean enable = true;
 
+            }
+
+            @Documentation("""
+                This module provides `/nickname` command.
+                                
+                Tips:
+                - You can query real name using `realname module`
+                - To show the `nickname`, you need to use `%player:displayname%` or `%player:displayname_visual%` placeholders.
+                                
+                """)
+            public class Nickname {
+                public boolean enable = false;
             }
 
             @Documentation("This module provides `/repair` command.")
