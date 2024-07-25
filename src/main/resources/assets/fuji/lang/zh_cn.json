@@ -45,7 +45,6 @@
   "fake_player_manager.manipulate.forbidden": "<red>您无法操作该假人",
   "command_cooldown.cooldown": "<yellow>%d 秒",
   "reload": "重载完成",
-  "newbie_welcome.welcome_message": "<light_purple>欢迎新玩家 %s 加入我们~",
   "world.dimension.created": "<gold>资源世界 %s 已创建",
   "world.dimension.exist": "<red>资源世界已经存在",
   "world.dimension.not_found": "<red>资源世界 %s 不存在",

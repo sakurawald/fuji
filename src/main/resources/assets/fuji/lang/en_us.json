@@ -46,7 +46,6 @@
   "fake_player_manager.manipulate.forbidden": "<red>You can't manipulate this player",
   "command_cooldown.cooldown": "<yellow>%d s",
   "reload": "Reload successfully.",
-  "newbie_welcome.welcome_message": "<light_purple>Welcome new player %s to join us!",
   "world.dimension.created": "<gold>Create resource world %s done",
   "world.dimension.exist": "<red>World already exist",
   "world.dimension.not_found": "<red>Target resource world %s doesn't exist",

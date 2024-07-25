@@ -128,7 +128,6 @@ public class ConfigModel {
         public CommandSpy command_spy = new CommandSpy();
         public CommandEvent command_event = new CommandEvent();
         public World world = new World();
-        public NewbieWelcome newbie_welcome = new NewbieWelcome();
         public TeleportWarmup teleport_warmup = new TeleportWarmup();
         public TopChunks top_chunks = new TopChunks();
         public Skin skin = new Skin();
@@ -221,24 +220,6 @@ public class ConfigModel {
             public class Icon {
                 public boolean enable = true;
 
-            }
-        }
-
-        @Documentation("""
-                This module provides some jobs to trigger when a player is the first time to join the server. 
-                """)
-        public class NewbieWelcome {
-            public boolean enable = false;
-
-            public RandomSpawnPoint random_spawn_point = new RandomSpawnPoint();
-
-            @Documentation("""
-                    Random teleport the newbie player, and set his bed location.                       
-                    """)
-            public class RandomSpawnPoint {
-                public boolean enable = true;
-                public TeleportSetup setup = new TeleportSetup("minecraft:overworld", 0, 0, false, 2000, 5000, 64, 128, 16);
-                ;
             }
         }
 
@@ -1630,6 +1611,19 @@ public class ConfigModel {
 
         @Documentation("""
                 This module allows the `server` to execute commands after an `event` occurs.
+                
+                Example 1:
+                Let's say you want welcome and random teleport a newbie player.
+                You can write the command list in player first join event
+                ```
+                "on_player_first_joined": {
+                  "command_list": [
+                    "sendbroadcast <light_purple>Welcome new player %player:name% to join us!",
+                    "execute as %player:name% rtp"
+                  ]
+                },
+                ```
+                
                 """)
         public class CommandEvent {
 
