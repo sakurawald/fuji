@@ -2,13 +2,6 @@ package io.github.sakurawald.module.common.structure.random_teleport;
 
 import com.google.common.base.Stopwatch;
 import io.github.sakurawald.config.Configs;
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.OptionalInt;
-import java.util.Random;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
 import io.github.sakurawald.util.LogUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -19,20 +12,19 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.chunk.Chunk;
 
-// Thanks to https://github.com/John-Paul-R/Essential-Commands
+import java.util.Iterator;
+import java.util.Optional;
+import java.util.OptionalInt;
+import java.util.Random;
 
+// Thanks to https://github.com/John-Paul-R/Essential-Commands
 public class RandomTeleport {
-    private static final Executor threadExecutor = Executors.newCachedThreadPool(runnable -> {
-        var thread = new Thread(runnable, "RTP Location Calculator Thread");
-        thread.setUncaughtExceptionHandler((t, e) -> LogUtil.error("Exception in RTP calculator thread", e));
-        return thread;
-    });
 
     public static void randomTeleport(ServerPlayerEntity player, ServerWorld world, boolean shouldSetSpawnPoint) {
-        threadExecutor.execute(() -> exec(player, world, shouldSetSpawnPoint));
+        $rtp(player, world, shouldSetSpawnPoint);
     }
 
-    private static void exec(ServerPlayerEntity player, ServerWorld world, boolean shouldSetSpawnPoint) {
+    private static void $rtp(ServerPlayerEntity player, ServerWorld world, boolean shouldSetSpawnPoint) {
         LogUtil.info("Starting RTP location search for {}", player.getGameProfile().getName());
         Stopwatch timer = Stopwatch.createStarted();
 
@@ -65,6 +57,7 @@ public class RandomTeleport {
         player.teleport(world, pos.get().getX() + 0.5, pos.get().getY(), pos.get().getZ() + 0.5, 0, 0);
 
         var cost = timer.stop();
+
         LogUtil.info("RTP: {} has been teleported to ({} {} {} {}) (cost = {})", player.getGameProfile().getName(), world.getRegistryKey().getValue(), pos.get().getX(), pos.get().getY(), pos.get().getZ(), cost);
     }
 
@@ -97,7 +90,6 @@ public class RandomTeleport {
     }
 
     private static BlockPos getRandomXZ(Vec3i center) {
-        // Calculate position on circle perimeter
         var rand = new Random();
         int r_max = Configs.configHandler.model().modules.newbie_welcome.random_teleport.max_distance;
         int r_min = Configs.configHandler.model().modules.newbie_welcome.random_teleport.min_distance;
