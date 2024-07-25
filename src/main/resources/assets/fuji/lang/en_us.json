@@ -197,5 +197,6 @@
   "rtp.dimension.disallow": "<red>Not allowed to rtp in dimension %s",
   "rtp.success": "<gold>Rtp finished.",
   "rtp.fail": "<gold>Rtp failed, try again.",
-  "item.empty": "<red>Item can't be empty"
+  "item.empty": "<red>Item can't be empty",
+  "command.args.number_not_match": "<red>The number of args not matched."
 }

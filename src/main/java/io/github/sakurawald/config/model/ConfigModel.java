@@ -1309,6 +1309,7 @@ public class ConfigModel {
             public boolean enable = false;
             public Run run = new Run();
             public ForEach for_each = new ForEach();
+            public Chain chain = new Chain();
             public Shell shell = new Shell();
 
             @Documentation("""
@@ -1343,6 +1344,25 @@ public class ConfigModel {
                       
                     """)
             public class ForEach {
+                public boolean enable = true;
+            }
+
+            @Documentation("""
+                    A chain command allows you to run another 2 commands, the first is any command, and the second is the chain command. 
+                    
+                    Example 1: 
+                    The command will be executed one by one.
+                    `/chain say 1 chain say 2 chain say 3`
+                    
+                    Example 2: 
+                    The chain will `break` if the previous command `failed`.
+                    `/chain bad command here chain say 2`
+                    
+                    Note:
+                    - In vanilla minecraft, the `return value` of command, are `failed`, `pass` and `success`
+                    
+                    """)
+            public class Chain {
                 public boolean enable = true;
             }
 
