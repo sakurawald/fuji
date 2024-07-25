@@ -249,6 +249,12 @@ public class ConfigModel {
 
             @Documentation("""
                     Only allowed in the following dimensions.
+                    
+                    Note:
+                      - Some other mods will add extra `dimension` (like, the mod `the-bumblezone-fabric`). Their dimension portal will work in a different way, so `teleport warmup module` may not compatibility with these mods.
+                      
+                        In the default options, we only allow teleport warmup works in the `vanilla miencraft` dimensions.
+                    
                     """)
             public class Dimension {
                 public Set<String> list = new HashSet<>() {
