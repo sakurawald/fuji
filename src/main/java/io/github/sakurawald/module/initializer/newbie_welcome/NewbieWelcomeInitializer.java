@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.newbie_welcome;
 
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.structure.random_teleport.RandomTeleport;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.IdentifierHelper;
@@ -15,7 +16,7 @@ public class NewbieWelcomeInitializer extends ModuleInitializer {
         MessageHelper.sendBroadcast("newbie_welcome.welcome_message", player.getGameProfile().getName());
 
         /* random teleport */
-        RandomTeleport.randomTeleport(player, player.getServerWorld(), (position -> {
+        RandomTeleport.request(player, Configs.configHandler.model().modules.newbie_welcome.random_spawn_point.setup, (position -> {
             Identifier identifier = Identifier.of(position.getLevel());
             player.setSpawnPoint(IdentifierHelper.ofRegistryKey(identifier), position.ofBlockPos(), 0, true, false);
         }));

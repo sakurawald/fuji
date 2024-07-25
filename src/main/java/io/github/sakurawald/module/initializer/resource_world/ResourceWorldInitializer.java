@@ -6,6 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.common.accessor.SimpleRegistryMixinInterface;
+import io.github.sakurawald.module.common.structure.TeleportSetup;
 import io.github.sakurawald.module.common.structure.random_teleport.RandomTeleport;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.resource_world.interfaces.DimensionOptionsMixinInterface;
@@ -44,6 +45,7 @@ import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
+import java.util.List;
 import java.util.Optional;
 
 import static net.minecraft.server.command.CommandManager.literal;
@@ -221,7 +223,14 @@ public class ResourceWorldInitializer extends ModuleInitializer {
                 player.teleport(world, endSpawnPos.getX() + 0.5, endSpawnPos.getY(), endSpawnPos.getZ() + 0.5, 90, 0);
             } else {
                 MessageHelper.sendActionBar(player, "resource_world.world.tp.tip");
-                RandomTeleport.randomTeleport(player, world, null);
+
+                Optional<TeleportSetup> tpSetup = TeleportSetup.of(world);
+                if (tpSetup.isEmpty()) {
+                    MessageHelper.sendMessage(player, "rtp.dimension.disallow", IdentifierHelper.ofString(world));
+                    return CommandHelper.Return.FAIL;
+                }
+
+                RandomTeleport.request(player, tpSetup.get(), null);
             }
 
             return CommandHelper.Return.SUCCESS;

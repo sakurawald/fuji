@@ -190,5 +190,6 @@
   "kit.gui.editor.help.lore": "<green> - 鼠标左键 -> 编辑工具包<newline><green> - Shift + 鼠标右键 -> 删除工具包",
   "kit.kit.empty": "<red>工具包为空",
   "trashcan.gui.title": "<red>垃圾箱",
-  "rtp.dimension.disallow": "<red>不允许在 %s 维度进行随机传送"
+  "rtp.dimension.disallow": "<red>不允许在 %s 维度进行随机传送",
+  "rtp.success": "<gold>随机传送完成!"
 }

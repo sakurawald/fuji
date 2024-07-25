@@ -5,6 +5,7 @@ import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.config.annotation.Documentation;
 import io.github.sakurawald.module.common.structure.RegexRewriteEntry;
 import io.github.sakurawald.module.common.structure.TeleportSetup;
+import io.github.sakurawald.module.common.structure.random_teleport.RandomTeleport;
 import io.github.sakurawald.module.initializer.command_alias.structure.CommandAliasEntry;
 
 import java.util.*;
@@ -202,6 +203,7 @@ public class ConfigModel {
             };
 
             public Icon icon = new Icon();
+
             public class Icon {
                 public boolean enable = true;
 
@@ -215,13 +217,15 @@ public class ConfigModel {
         public class NewbieWelcome {
             public boolean enable = false;
 
-            public RandomTeleport random_teleport = new RandomTeleport();
+            public RandomSpawnPoint random_spawn_point = new RandomSpawnPoint();
 
-            @Documentation("Random teleport the newbie player, and set his bed location.")
-            public class RandomTeleport {
-                public int max_try_times = 32;
-                public int min_distance = 5000;
-                public int max_distance = 40000;
+            @Documentation("""
+                        Random teleport the newbie player, and set his bed location.                       
+                    """)
+            public class RandomSpawnPoint {
+                public boolean enable = true;
+                public TeleportSetup setup = new TeleportSetup("minecraft:overworld", 0, 0, 2000, 5000, 64, 128, 16);
+                ;
             }
         }
 
@@ -821,15 +825,16 @@ public class ConfigModel {
 
             public boolean enable = true;
 
-            public int max_try_times = 16;
-
             public Dimension dimension = new Dimension();
+
             public class Dimension {
 
-                public List<TeleportSetup> list = new ArrayList(){
+                public List<TeleportSetup> list = new ArrayList() {
 
                     {
-                        this.add(new TeleportSetup("minecraft:overworld", 0,0,1000,5000,64, 128));
+                        this.add(new TeleportSetup("minecraft:overworld", 0, 0, 1000, 5000, -64, 320, 16));
+                        this.add(new TeleportSetup("minecraft:overworld", 0, 0, 1000, 5000, 64, 128, 16));
+                        this.add(new TeleportSetup("resource_world:overworld", 0, 0, 1000, 5000, 64, 128, 16));
                     }
 
                 };
