@@ -26,22 +26,17 @@ public class ChainInitializer extends ModuleInitializer {
     }
 
     private int chain(CommandContext<ServerCommandSource> ctx) {
-
         String rest = CommandHelper.Argument.rest(ctx);
-        LogUtil.warn("rest = {}",rest);
 
         Matcher matcher = CHAIN_COMMAND_PARSER.matcher(rest);
         if (matcher.find()) {
             String first = matcher.group(1);
             String second = matcher.group(2);
-            LogUtil.warn("first = {}, second = {}", first, second);
             int value = CommandExecuter.executeCommandAsConsole(null, first);
-
             // break chain, if command `fail`.
             if (value >= 0) {
                 CommandExecuter.executeCommandAsConsole(null, second);
             }
-
         } else {
             CommandExecuter.executeCommandAsConsole(null, rest);
         }
