@@ -650,7 +650,8 @@ public class ConfigModel {
                 - %fuji:get_meta <meta>% -> get luckperms meta
                 - %fuji:random_player% -> get a random player from online players
                 - %fuji:random <min> <max>% -> get a random number
-                - %fuji:escape <placeholer-name>% -> escape a placeholder
+                - %fuji:escape <placeholer-name>% -> escape a placeholder.
+                  You can use multi-level escape in a convenient way: `%fuji:escape player:name%` = `%fuji:escape player:name 1`
                                 
                 Tips:
                 - You can also use [the default available placeholders](https://placeholders.pb4.eu/user/default-placeholders/) 
@@ -1632,13 +1633,14 @@ public class ConfigModel {
                 This module allows the `server` to execute commands after an `event` occurs.
                 
                 Example 1:
-                Let's say you want welcome and random teleport a newbie player.
+                Let's say you want to send broadcast and set random spawnpoint of a newbie player.
                 You can write the command list in player first join event
                 ```
                 "on_player_first_joined": {
                   "command_list": [
                     "sendbroadcast <light_purple>Welcome new player %player:name% to join us!",
-                    "execute as %player:name% rtp"
+                    "execute as %player:name% run rtp",
+                    "delay 10 spawnpoint %player:name%"
                   ]
                 },
                 ```

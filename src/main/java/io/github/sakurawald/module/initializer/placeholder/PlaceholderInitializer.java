@@ -22,12 +22,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class PlaceholderInitializer extends ModuleInitializer {
     private final Map<String, Map<String, String>> rotate = new HashMap<>();
 
     private static final String NO_PLAYER = "no player";
+    private static final Pattern ESCAPE_PARSER = Pattern.compile("\\s*(\\S+)\\s+(\\d+)\\s*");
 
     @Override
     public void onInitialize() {
@@ -69,7 +72,21 @@ public class PlaceholderInitializer extends ModuleInitializer {
     }
 
     private void registerEscapePlaceholder() {
-        Placeholders.register(Identifier.of(Fuji.MOD_ID, "escape"), (ctx, args) -> PlaceholderResult.value(Text.literal("%" + args + "%")));
+        Placeholders.register(Identifier.of(Fuji.MOD_ID, "escape"), (ctx, args) -> {
+            if (args == null) return PlaceholderResult.invalid();
+
+            Matcher matcher = ESCAPE_PARSER.matcher(args);
+            if (matcher.find()) {
+                String placeholder = matcher.group(1);
+                int level = Integer.parseInt(matcher.group(2));
+
+                if (level == 1) return PlaceholderResult.value(Text.literal("%" + placeholder + "%"));
+                if (level > 1) return PlaceholderResult.value(Text.literal("%fuji:escape " + placeholder + " " + (level - 1) + "%"));
+
+            }
+
+            return PlaceholderResult.value(Text.literal("%" + args + "%"));
+        });
     }
 
     private void registerHasPermissionPlaceholder() {
