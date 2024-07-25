@@ -165,11 +165,10 @@ public class ConfigModel {
                 Reset the extra dimension with random seed: `/world reset fuji:my_nether`
                                 
                 Note:
-                - `dimension type` is used to create `dimension`, there are 4 `dimension type` in vanilla minecraft: `minecraft:overworld`, `minecraft:overworld_caves`, `minecraft:the_nether` and `minecraft:the_end`
-                - This module will ignore the vanilla minecraft worlds which prefix with `minecraft:`
-                - In order to create extra dimensions of a `dimension type`, you need to at least exist one dimension of that dimension type.
                 - In vanilla minecraft, 1 world contains 3 dimensions (minecraft:overworld, minecraft:the_nether, minecraft:the_end)
                   You can see the `dimension` of a `world` in `world/level.dat` file.
+                - `dimension type` is used to create `dimension`, there are 4 `dimension type` in vanilla minecraft: `minecraft:overworld`, `minecraft:overworld_caves`, `minecraft:the_nether` and `minecraft:the_end`
+                - In order to create extra dimensions of a `dimension type`, you need to at least exist one dimension of that dimension type.
                 - Instead of writing data into the file `world/level.dat`, fuji will load the extra dimensions in game dynamically.
                 - The file `server.properties` is used for the default `world properties` of extra dimensions
                                 
