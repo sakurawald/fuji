@@ -157,7 +157,7 @@ public class ConfigModel {
                 Example 1
                 To create another the_nether world: `/world create my_nether minecraft:the_nether`
                   - This will create anohter `dimension` named `fuji:my_nether`, whose `dimension type` is `minecraft:the_nether`
-                
+                                
                 Example 2
                 Delete the extra dimension: `/world delete fuji:my_nether`
                                 
@@ -184,7 +184,7 @@ public class ConfigModel {
 
             @Documentation("""
                     The dimensions in the `blacklist` will not be operated by this module.
-                    
+                                        
                     Use `blacklist` to avoid mis-operation.
                     """)
             public class Blacklist {
@@ -739,8 +739,7 @@ public class ConfigModel {
                     
                     You can query a command path using `/lp group default permission set fuji.permission...` way.
                     
-                    Also, each `command node` has its `requirement`, which is a condition to check if the `command user`
-                    can use the `command node`.
+                    Also, each `command node` has its `requirement`, which is a condition to check if the `command user` can use the `command node`.
                                 
                 This module can `override` the `requirement` of a `command node` into a `permission` with prefix `fuji.permission.<command_node_path>`.
                                 
