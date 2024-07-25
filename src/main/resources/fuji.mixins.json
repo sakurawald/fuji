@@ -48,7 +48,7 @@
     "motd.icon.ServerQueryNetworkHandlerMixin",
     "multi_obsidian_platform.EndPortalBlockMixin",
     "multiplier.ServerPlayerMixin",
-    "nickname.ServerPlayerEntityMixin",
+    "command_toolbox.nickname.ServerPlayerEntityMixin",
     "placeholder.PlayerEntityMixin",
     "placeholder.ServerPlayNetworkHandlerMixin",
     "pvp.PvpToggleMixin",

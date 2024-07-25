@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.mixin.nickname;
+package io.github.sakurawald.module.mixin.command_toolbox.nickname;
 
 import io.github.sakurawald.module.initializer.command_toolbox.nickname.NicknameInitializer;
 import io.github.sakurawald.util.minecraft.MessageHelper;
