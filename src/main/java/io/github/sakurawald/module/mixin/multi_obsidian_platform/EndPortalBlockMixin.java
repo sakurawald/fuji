@@ -34,7 +34,7 @@ public class EndPortalBlockMixin {
         /* This method will NOT be called when an entity (including player, item and other entities) jump into overworld's ender-portal-frame */
     BlockPos $createTeleportTarget(@Local(argsOnly = true) Entity entity) {
         if (getEntityCurrentLevel(entity).getRegistryKey() != World.OVERWORLD) {
-            // modify: resource_world:overworld -> minecraft:the_end (default obsidian platform)
+            // modify: world:overworld -> minecraft:the_end (default obsidian platform)
             // feature: https://bugs.mojang.com/browse/MC-252361
             return ServerWorld.END_SPAWN_POS;
         }

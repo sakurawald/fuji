@@ -23,7 +23,6 @@ public class ShellCommand extends ModuleInitializer {
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         // confirm
         if (!Configs.configHandler.model().modules.command_meta.shell.enable_warning.equals("CONFIRM")) {
-            LogUtil.warn("refuse to enable `shell` module");
             return;
         }
 

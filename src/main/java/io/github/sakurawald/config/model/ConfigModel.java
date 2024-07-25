@@ -127,7 +127,7 @@ public class ConfigModel {
         public CommandToolbox command_toolbox = new CommandToolbox();
         public CommandSpy command_spy = new CommandSpy();
         public CommandEvent command_event = new CommandEvent();
-        public ResourceWorld resource_world = new ResourceWorld();
+        public World world = new World();
         public NewbieWelcome newbie_welcome = new NewbieWelcome();
         public TeleportWarmup teleport_warmup = new TeleportWarmup();
         public TopChunks top_chunks = new TopChunks();
@@ -140,7 +140,6 @@ public class ConfigModel {
         public Profiler profiler = new Profiler();
         public Tester tester = new Tester();
         public Sit sit = new Sit();
-        public World world = new World();
         public Multiplier multiplier = new Multiplier();
         public Disabler disabler = new Disabler();
         public AntiBuild anti_build = new AntiBuild();
@@ -151,36 +150,52 @@ public class ConfigModel {
         public CommandMeta command_meta = new CommandMeta();
 
         @Documentation("""
-                This module adds another 3 worlds called `resource world`: resource_overworld, resource_nether, resource_the_end .
+                This module allows you to create extra `dimension` of a specific `dimension type`.
                                 
-                Command: /rw
+                Command: /world
                                 
-                Use-case: you have 3 permanent-world which is boundary-limited, and you want to provides infinite
-                resource for the newbie players, then you can use `resource world` while keeping the permanent-world.
+                Example 1
+                To create another the_nether world: `/world create my_nether minecraft:the_nether`
+                  - This will create anohter `dimension` named `fuji:my_nether`, whose `dimension type` is `minecraft:the_nether`
+                
+                Example 2
+                Delete the extra dimension: `/world delete fuji:my_nether`
+                                
+                Example 3
+                Reset the extra dimension with random seed: `/world reset fuji:my_nether`
+                                
+                Note:
+                - `dimension type` is used to create `dimension`, there are 4 `dimension type` in vanilla minecraft: `minecraft:overworld`, `minecraft:overworld_caves`, `minecraft:the_nether` and `minecraft:the_end`
+                - This module will ignore the vanilla minecraft worlds which prefix with `minecraft:`
+                - In order to create extra dimensions of a `dimension type`, you need to at least exist one dimension of that dimension type.
+                - In vanilla minecraft, 1 world contains 3 dimensions (minecraft:overworld, minecraft:the_nether, minecraft:the_end)
+                  You can see the `dimension` of a `world` in `world/level.dat` file.
+                - Instead of writ.suggests(CommandHelper.Suggestion.dimension());ing data into the file `world/level.dat`, fuji will load the extra dimensions in game dynamically.
+                - The file `server.properties` is used for the default `world properties` of extra dimensions
+                                
                 """)
-        public class ResourceWorld {
+        public class World {
             public boolean enable = false;
-            public ResourceWorlds resource_worlds = new ResourceWorlds();
 
             @Documentation("When to auto reset resource worlds")
-            public String auto_reset_cron = "0 0 20 * * ?";
+            public String reset_cron = "0 0 20 * * ?";
+
+            public Blacklist blacklist = new Blacklist();
 
             @Documentation("""
-                    The seed for resource worlds: overworld, the_nether and the_end.
-                                
-                    You don't need to input the seed, since the `seed` field will randomly generated and write every time resource worlds gets reset.
+                    The dimensions in the `blacklist` will not be operated by this module.
+                    
+                    Use `blacklist` to avoid mis-operation.
                     """)
-            public long seed = 0L;
-
-            @Documentation("""
-                    What dimension type of resource worlds do you want to add?
-                    """)
-            public class ResourceWorlds {
-                public boolean enable_overworld = true;
-                public boolean enable_the_nether = true;
-                public boolean enable_the_end = true;
+            public class Blacklist {
+                public List<String> dimension_list = new ArrayList<>() {
+                    {
+                        this.add("minecraft:overworld");
+                        this.add("minecraft:the_nether");
+                        this.add("minecraft:the_end");
+                    }
+                };
             }
-
         }
 
         @Documentation("""
@@ -249,12 +264,12 @@ public class ConfigModel {
 
             @Documentation("""
                     Only allowed in the following dimensions.
-                    
+                                        
                     Note:
                       - Some other mods will add extra `dimension` (like, the mod `the-bumblezone-fabric`). Their dimension portal will work in a different way, so `teleport warmup module` may not compatibility with these mods.
                       
                         In the default options, we only allow teleport warmup works in the `vanilla miencraft` dimensions.
-                    
+                                        
                     """)
             public class Dimension {
                 public Set<String> list = new HashSet<>() {
@@ -849,6 +864,8 @@ public class ConfigModel {
                 Note:
                 - It's highly recommended to pre-gen the world chunks. To gen a new chunk during rtp rquires about 2~10 seconds.
                   If a chunk is pre-gen, then it will be fast.
+                - If you are using rtp in the_end, and the chunks are not generated, then it will be very very slow.
+                  If it's so, you can adjust the range of the_end to a small number.
                                 
                 """)
         public class Rtp {
@@ -864,9 +881,9 @@ public class ConfigModel {
                         this.add(new TeleportSetup("minecraft:overworld", 0, 0, false, 1000, 5000, -64, 320, 16));
                         this.add(new TeleportSetup("minecraft:the_nether", 0, 0, false, 1000, 5000, 0, 128, 16));
                         this.add(new TeleportSetup("minecraft:the_end", 0, 0, false, 1000, 5000, 0, 256, 16));
-                        this.add(new TeleportSetup("resource_world:overworld", 0, 0, false, 1000, 5000, -64, 320, 16));
-                        this.add(new TeleportSetup("resource_world:the_nether", 0, 0, false, 1000, 5000, 0, 128, 16));
-                        this.add(new TeleportSetup("resource_world:the_end", 0, 0, false, 0, 48, 0, 256, 16));
+                        this.add(new TeleportSetup("world:overworld", 0, 0, false, 1000, 5000, -64, 320, 16));
+                        this.add(new TeleportSetup("world:the_nether", 0, 0, false, 1000, 5000, 0, 128, 16));
+                        this.add(new TeleportSetup("world:the_end", 0, 0, false, 0, 48, 0, 256, 16));
                     }
 
                 };
@@ -999,11 +1016,6 @@ public class ConfigModel {
                 }
             };
 
-        }
-
-        @Documentation("This module provides `/world` command, which teleport the player to target dimension.")
-        public class World {
-            public boolean enable = false;
         }
 
         @Documentation("""

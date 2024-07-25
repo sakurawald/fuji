@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.resource_world;
+package io.github.sakurawald.module.initializer.world.structure;
 
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
@@ -29,6 +29,6 @@ public class MyServerWorld extends ServerWorld {
      */
     @Override
     public long getSeed() {
-        return ((ResourceWorldProperties) this.properties).getSeed();
+        return ((MyWorldProperties) this.properties).getSeed();
     }
 }

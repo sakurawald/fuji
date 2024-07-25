@@ -24,8 +24,6 @@ import javax.annotation.Nullable;
 @Mixin(value = ServerPlayerEntity.class, priority = 1000 - 500)
 public abstract class ServerPlayerMixin {
 
-    @Shadow public abstract void requestTeleport(double d, double e, double f);
-
     @Unique
     public @Nullable TeleportTicket getTeleportTicket(ServerPlayerEntity player) {
         for (BossBarTicket ticket : Managers.getBossBarManager().getTickets()) {

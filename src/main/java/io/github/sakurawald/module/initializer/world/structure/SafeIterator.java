@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.resource_world;
+package io.github.sakurawald.module.initializer.world.structure;
 
 import java.util.Collection;
 import java.util.Iterator;

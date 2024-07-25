@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.mixin.resource_world;
+package io.github.sakurawald.module.mixin.world;
 
 import net.minecraft.network.packet.Packet;
 import net.minecraft.server.PlayerManager;

@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.mixin.resource_world;
+package io.github.sakurawald.module.mixin.world;
 
 import net.minecraft.block.entity.EndGatewayBlockEntity;
 import net.minecraft.registry.RegistryKey;
