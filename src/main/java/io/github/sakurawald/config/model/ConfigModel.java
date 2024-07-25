@@ -170,7 +170,7 @@ public class ConfigModel {
                 - In order to create extra dimensions of a `dimension type`, you need to at least exist one dimension of that dimension type.
                 - In vanilla minecraft, 1 world contains 3 dimensions (minecraft:overworld, minecraft:the_nether, minecraft:the_end)
                   You can see the `dimension` of a `world` in `world/level.dat` file.
-                - Instead of writ.suggests(CommandHelper.Suggestion.dimension());ing data into the file `world/level.dat`, fuji will load the extra dimensions in game dynamically.
+                - Instead of writing data into the file `world/level.dat`, fuji will load the extra dimensions in game dynamically.
                 - The file `server.properties` is used for the default `world properties` of extra dimensions
                                 
                 """)
