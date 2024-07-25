@@ -69,7 +69,7 @@ public class ModuleManager {
                     moduleInitializer.initialize();
                     initializers.put(clazz, moduleInitializer);
                 } catch (Exception e) {
-                    LogUtil.error("Failed to initialize module {}.", clazz.getName());
+                    LogUtil.cryLoudly("Failed to initialize module %s.".formatted(clazz.getSimpleName()), e);
                 }
             }
         }
