@@ -731,9 +731,9 @@ public class ConfigModel {
                   In this system, all commands are build into a tree strucutre.
                   
                   For example, like the command `/gamemode creative Steve` is composed by 3 `command node`:
-                    - `literal command node` -> "gamemode"
-                    - `argument command node` -> a valid gamemode
-                    - `argument command node` -> a valid player
+                  - `literal command node` -> "gamemode"
+                  - `argument command node` -> a valid gamemode
+                  - `argument command node` -> a valid player
                   
                   And the `command node path` stands the `tree node path`.
                   For `/gamemode creative Steve`, the path is ["gamemode", "gamemode", "target"].
