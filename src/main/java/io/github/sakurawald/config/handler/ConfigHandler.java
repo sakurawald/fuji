@@ -120,7 +120,7 @@ public abstract class ConfigHandler<T> {
 
                 } else {
 
-                    LogUtil.error("""
+                    LogUtil.warn("""
                                                        
                             # What happened ?
                             There is an incompatibility issue in the configuration file `{}`.
