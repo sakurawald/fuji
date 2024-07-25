@@ -133,7 +133,6 @@ public class ConfigModel {
         public Skin skin = new Skin();
         public WorldDownloader world_downloader = new WorldDownloader();
         public MultiObsidianPlatform multi_obsidian_platform = new MultiObsidianPlatform();
-        public OpProtect op_protect = new OpProtect();
         public Whitelist whitelist = new Whitelist();
         public Head head = new Head();
         public Profiler profiler = new Profiler();
@@ -681,11 +680,6 @@ public class ConfigModel {
                     The coordination-convertion factor between overworld and the_end.
                     In vanilla minecraft, the factor between overworld and the_nether is 8.""")
             public double factor = 4;
-        }
-
-        @Documentation("auto deop an op-player when he leaves the server.")
-        public class OpProtect {
-            public boolean enable = false;
         }
 
         @Documentation("""
