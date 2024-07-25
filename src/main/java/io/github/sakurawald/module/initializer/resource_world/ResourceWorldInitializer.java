@@ -12,6 +12,7 @@ import io.github.sakurawald.module.initializer.resource_world.interfaces.Dimensi
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.ScheduleUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.util.minecraft.IdentifierHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
@@ -78,10 +79,12 @@ public class ResourceWorldInitializer extends ModuleInitializer {
         dispatcher.register(
                 CommandManager.literal("rw")
                         .then(literal("reset").requires(source -> source.hasPermissionLevel(4)).executes(this::$reset))
-                        .then(literal("delete").requires(source -> source.hasPermissionLevel(4)).then(literal(DEFAULT_OVERWORLD_PATH).executes(this::$delete))
+                        .then(literal("delete").requires(source -> source.hasPermissionLevel(4))
+                                .then(literal(DEFAULT_OVERWORLD_PATH).executes(this::$delete))
                                 .then(literal(DEFAULT_THE_NETHER_PATH).executes(this::$delete))
                                 .then(literal(DEFAULT_THE_END_PATH).executes(this::$delete)))
-                        .then(literal("tp").then(literal(DEFAULT_OVERWORLD_PATH).executes(this::$tp))
+                        .then(literal("tp")
+                                .then(literal(DEFAULT_OVERWORLD_PATH).executes(this::$tp))
                                 .then(literal(DEFAULT_THE_NETHER_PATH).executes(this::$tp))
                                 .then(literal(DEFAULT_THE_END_PATH).executes(this::$tp))
                         )
@@ -162,7 +165,7 @@ public class ResourceWorldInitializer extends ModuleInitializer {
         ResourceWorldProperties resourceWorldProperties = new ResourceWorldProperties(server.getSaveProperties(), seed);
         RegistryKey<World> worldRegistryKey = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(DEFAULT_RESOURCE_WORLD_NAMESPACE, path));
         DimensionOptions dimensionOptions = createDimensionOptions(server, dimensionTypeRegistryKey);
-        ServerWorld world = new ResourceWorld(server,
+        ServerWorld world = new MyServerWorld(server,
                 Util.getMainWorkerExecutor(),
                 server.session,
                 resourceWorldProperties,
@@ -193,13 +196,12 @@ public class ResourceWorldInitializer extends ModuleInitializer {
 
         server.worlds.put(world.getRegistryKey(), world);
         ServerWorldEvents.LOAD.invoker().onWorldLoad(server, world);
-        world.tick(() -> true);
+//        world.tick(() -> true);
         MessageHelper.sendBroadcast("resource_world.world.created", path);
     }
 
     private ServerWorld getResourceWorldByPath(MinecraftServer server, String path) {
-        RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(DEFAULT_RESOURCE_WORLD_NAMESPACE, path));
-        return server.getWorld(worldKey);
+        return IdentifierHelper.ofServerWorld(Identifier.of(DEFAULT_RESOURCE_WORLD_NAMESPACE, path));
     }
 
     private int $tp(CommandContext<ServerCommandSource> ctx) {
@@ -219,7 +221,7 @@ public class ResourceWorldInitializer extends ModuleInitializer {
                 player.teleport(world, endSpawnPos.getX() + 0.5, endSpawnPos.getY(), endSpawnPos.getZ() + 0.5, 90, 0);
             } else {
                 MessageHelper.sendActionBar(player, "resource_world.world.tp.tip");
-                RandomTeleport.randomTeleport(player, world, false);
+                RandomTeleport.randomTeleport(player, world, null);
             }
 
             return CommandHelper.Return.SUCCESS;
