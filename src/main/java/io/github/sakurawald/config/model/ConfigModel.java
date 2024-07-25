@@ -1310,6 +1310,7 @@ public class ConfigModel {
             public Run run = new Run();
             public ForEach for_each = new ForEach();
             public Chain chain = new Chain();
+            public Delay delay = new Delay();
             public Shell shell = new Shell();
 
             @Documentation("""
@@ -1328,7 +1329,6 @@ public class ConfigModel {
             public class Run {
                 public boolean enable = true;
             }
-
 
             @Documentation("""
                     This module provides `/foreach` command.
@@ -1363,6 +1363,10 @@ public class ConfigModel {
                     
                     """)
             public class Chain {
+                public boolean enable = true;
+            }
+
+            public class Delay {
                 public boolean enable = true;
             }
 

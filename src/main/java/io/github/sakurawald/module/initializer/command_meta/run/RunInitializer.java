@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.command_meta.run;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.module.common.structure.CommandExecuter;
+import io.github.sakurawald.module.common.structure.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import lombok.SneakyThrows;
@@ -26,7 +26,7 @@ public class RunInitializer extends ModuleInitializer {
     private int runAsConsole(CommandContext<ServerCommandSource> ctx) {
         String rest = CommandHelper.Argument.rest(ctx);
 
-        CommandExecuter.executeCommandAsConsole(null, rest);
+        CommandExecutor.executeCommandAsConsole(null, rest);
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -35,7 +35,7 @@ public class RunInitializer extends ModuleInitializer {
         ServerPlayerEntity player = CommandHelper.Argument.player(ctx);
         String rest = CommandHelper.Argument.rest(ctx);
 
-        CommandExecuter.executeCommandAsPlayer(player, rest);
+        CommandExecutor.executeCommandAsPlayer(player, rest);
         return CommandHelper.Return.SUCCESS;
     }
 }

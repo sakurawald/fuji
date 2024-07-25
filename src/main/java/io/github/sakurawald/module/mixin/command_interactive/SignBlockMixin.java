@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.mixin.command_interactive;
 
-import io.github.sakurawald.Fuji;
-import io.github.sakurawald.module.common.structure.CommandExecuter;
+import io.github.sakurawald.module.common.structure.CommandExecutor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -44,7 +43,7 @@ public class SignBlockMixin {
                     cir.setReturnValue(ActionResult.CONSUME);
                     List<String> commands = splitCommands(text);
 
-                    commands.forEach(command -> CommandExecuter.executeCommandAsPlayer(serverPlayer,command));
+                    commands.forEach(command -> CommandExecutor.executeCommandAsPlayer(serverPlayer,command));
                 }
             }
         }

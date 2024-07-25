@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_meta.for_each;
 
 import com.mojang.brigadier.CommandDispatcher;
-import io.github.sakurawald.module.common.structure.CommandExecuter;
+import io.github.sakurawald.module.common.structure.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import net.minecraft.command.CommandRegistryAccess;
@@ -25,7 +25,7 @@ public class ForEachInitializer extends ModuleInitializer {
                                     MinecraftServer server = ctx.getSource().getServer();
 
                                     for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-                                        CommandExecuter.executeCommandAsConsole(player, rest);
+                                        CommandExecutor.executeCommandAsConsole(player, rest);
                                     }
                                     return CommandHelper.Return.SUCCESS;
                                 })
