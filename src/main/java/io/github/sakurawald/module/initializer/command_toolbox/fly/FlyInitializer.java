@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.command_toolbox.fly;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -19,7 +18,7 @@ public class FlyInitializer extends ModuleInitializer {
     }
 
     private int $fly(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, (player) -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, (player) -> {
             boolean flag = !player.getAbilities().allowFlying;
             player.getAbilities().allowFlying = flag;
 

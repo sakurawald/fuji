@@ -24,7 +24,7 @@ public class RtpInitializer extends ModuleInitializer {
     }
 
     private int $rtp(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             ServerWorld serverWorld = player.getServerWorld();
 
             Optional<TeleportSetup> first = TeleportSetup.of(serverWorld);

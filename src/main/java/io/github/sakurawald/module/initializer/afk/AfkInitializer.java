@@ -43,7 +43,7 @@ public class AfkInitializer extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int $afk(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, (player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, (player -> {
             // note: issue command will update lastLastActionTime, so it's impossible to use /afk to disable afk
             ((AfkStateAccessor) player).fuji$setAfk(true);
             MessageHelper.sendMessage(player, "afk.on");

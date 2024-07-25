@@ -33,7 +33,7 @@ public class ReplyInitializer extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int $reply(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
 
             String target = this.player2target.get(player.getGameProfile().getName());
             String message = StringArgumentType.getString(ctx, "message");

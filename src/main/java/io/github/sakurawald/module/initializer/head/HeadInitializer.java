@@ -2,7 +2,6 @@ package io.github.sakurawald.module.initializer.head;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.handler.ConfigHandler;
@@ -80,7 +79,7 @@ public class HeadInitializer extends ModuleInitializer {
     }
 
     public int $head(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             new HeadGui(player).open();
             return CommandHelper.Return.SUCCESS;
         });

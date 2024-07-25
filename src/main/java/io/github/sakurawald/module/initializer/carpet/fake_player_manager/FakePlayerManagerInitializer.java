@@ -52,7 +52,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int $renew(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             renewFakePlayers(player);
             return CommandHelper.Return.SUCCESS;
         });

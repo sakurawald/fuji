@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.command_toolbox.hat;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -24,7 +23,7 @@ public class HatInitializer extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int $hat(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             ItemStack mainHandItem = player.getMainHandStack();
             ItemStack headSlotItem = player.getEquippedStack(EquipmentSlot.HEAD);
 

@@ -6,13 +6,12 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import io.github.sakurawald.module.common.accessor.GameProfileCacheEx;
-import io.github.sakurawald.util.LogUtil;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import net.minecraft.command.EntitySelector;
 import net.minecraft.command.argument.DimensionArgumentType;
 import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -23,6 +22,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.UserCache;
 
 import java.util.Iterator;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static net.minecraft.server.command.CommandManager.argument;
@@ -113,7 +113,8 @@ public class CommandHelper {
             return argument(ARGUMENT_NAME_DIMENSION, DimensionArgumentType.dimension()).suggests(CommandHelper.Suggestion.dimension());
         }
 
-        public static ServerWorld dimension(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
+        @SneakyThrows
+        public static ServerWorld dimension(CommandContext<ServerCommandSource> ctx) {
             return DimensionArgumentType.getDimensionArgument(ctx, ARGUMENT_NAME_DIMENSION);
         }
 
@@ -149,49 +150,31 @@ public class CommandHelper {
         }
     }
 
-    @SneakyThrows
-    public static int playerOnlyCommand(CommandContext<ServerCommandSource> ctx, PlayerFunction consumer) {
-        ServerPlayerEntity player = ctx.getSource().getPlayer();
-        if (player == null) {
-            MessageHelper.sendMessage(ctx.getSource(), "command.player_only");
-            return CommandHelper.Return.SUCCESS;
+    public static class Pattern {
+
+        @SneakyThrows
+        public static int playerOnlyCommand(CommandContext<ServerCommandSource> ctx, Function<ServerPlayerEntity, Integer> function) {
+            ServerPlayerEntity player = ctx.getSource().getPlayer();
+            if (player == null) {
+                MessageHelper.sendMessage(ctx.getSource(), "command.player_only");
+                return Return.SUCCESS;
+            }
+
+            return function.apply(player);
         }
 
-        return consumer.run(player);
-    }
-
-    public static int acceptEntity(CommandContext<ServerCommandSource> ctx, EntityFunction function) {
-        Entity entity;
-        try {
-            entity = EntityArgumentType.getEntity(ctx, Argument.ARGUMENT_NAME_ENTITY);
-        } catch (Exception e) {
-            MessageHelper.sendMessage(ctx.getSource(), "entity.no_found");
-            return CommandHelper.Return.SUCCESS;
+        @SneakyThrows
+        public static int itemOnHandCommand(CommandContext<ServerCommandSource> ctx, BiFunction<ServerPlayerEntity, ItemStack, Integer> consumer) {
+            return playerOnlyCommand(ctx, player -> {
+                ItemStack mainHandStack = player.getMainHandStack();
+                if (mainHandStack.isEmpty()) {
+                    MessageHelper.sendMessage(player, "item.empty");
+                    return Return.FAIL;
+                }
+                return consumer.apply(player, mainHandStack);
+            });
         }
 
-        return function.run(entity);
-    }
-
-    public static int acceptPlayer(CommandContext<ServerCommandSource> ctx, Function<ServerPlayerEntity, Integer> function) {
-        ServerPlayerEntity player;
-        try {
-            player = EntityArgumentType.getPlayer(ctx, Argument.ARGUMENT_NAME_PLAYER);
-        } catch (Exception e) {
-            MessageHelper.sendMessage(ctx.getSource(), "player.no_found");
-            return CommandHelper.Return.SUCCESS;
-        }
-
-        return function.apply(player);
-    }
-
-    @FunctionalInterface
-    public interface PlayerFunction {
-        int run(ServerPlayerEntity player) throws CommandSyntaxException;
-    }
-
-    @FunctionalInterface
-    public interface EntityFunction {
-        int run(Entity entity);
     }
 
 }

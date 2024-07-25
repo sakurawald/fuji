@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.functional.enchantment;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -19,7 +18,7 @@ public class EnchantmentInitializer extends ModuleInitializer {
     }
 
     private int $enchantment(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> new MyEnchantmentScreenHandler(i, inventory, ScreenHandlerContext.create(p.getWorld(), p.getBlockPos())) {
             }, Text.translatable("container.enchant")));
             return CommandHelper.Return.SUCCESS;

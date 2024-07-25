@@ -83,7 +83,7 @@ public class ChatInitializer extends ModuleInitializer {
         patterns = new HashMap<>();
 
         for (RegexRewriteEntry regexRewriteEntry : Configs.configHandler.model().modules.chat.rewrite.regex) {
-            patterns.put(Pattern.compile(regexRewriteEntry.regex), regexRewriteEntry.replacement);
+            patterns.put(java.util.regex.Pattern.compile(regexRewriteEntry.regex), regexRewriteEntry.replacement);
         }
 
     }
@@ -226,7 +226,7 @@ public class ChatInitializer extends ModuleInitializer {
     }
 
     private int $format(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             /* save the format*/
             String format = StringArgumentType.getString(ctx, "format");
             String name = player.getGameProfile().getName();
@@ -246,7 +246,7 @@ public class ChatInitializer extends ModuleInitializer {
     }
 
     private int $reset(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             String name = player.getGameProfile().getName();
             chatHandler.model().format.player2format.remove(name);
             chatHandler.saveToDisk();

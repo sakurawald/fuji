@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.command_toolbox.top;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.common.structure.Position;
@@ -21,7 +20,7 @@ public class TopInitializer extends ModuleInitializer {
     }
 
     private static int $top(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             World world = player.getWorld();
             BlockPos topPosition = world.getTopPosition(Heightmap.Type.MOTION_BLOCKING, player.getBlockPos());
 

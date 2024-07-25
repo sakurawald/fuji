@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.works;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.handler.ConfigHandler;
@@ -55,7 +54,7 @@ public class WorksInitializer extends ModuleInitializer {
     }
 
     private int $works(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             new WorksGui(player,worksHandler.model().works).open();
             return CommandHelper.Return.SUCCESS;
         });

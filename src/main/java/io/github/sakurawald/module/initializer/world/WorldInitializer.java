@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.initializer.world;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.handler.ConfigHandler;
@@ -21,7 +20,6 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.command.argument.DimensionArgumentType;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
@@ -35,8 +33,6 @@ import org.quartz.JobExecutionContext;
 
 import java.util.Optional;
 
-import static io.github.sakurawald.util.minecraft.CommandHelper.Argument.ARGUMENT_NAME_DIMENSION;
-import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
 
 /*
@@ -50,6 +46,7 @@ import static net.minecraft.server.command.CommandManager.literal;
  * public static final RegistryKey<Registry<DimensionOptions>> DIMENSION = RegistryKeys.of("dimension");
  */
 
+@SuppressWarnings("LombokGetterMayBeUsed")
 public class WorldInitializer extends ModuleInitializer {
 
     @Getter
@@ -58,22 +55,7 @@ public class WorldInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {
         storage.loadFromDisk();
-
-        ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
-            this.loadWorlds(server);
-            this.registerScheduleTask(server);
-        });
-
-        storage.loadFromDisk();
-    }
-
-    public void registerScheduleTask(MinecraftServer server) {
-        ScheduleUtil.addJob(ResourceWorldAutoResetJob.class, null, null, Configs.configHandler.model().modules.world.reset_cron, new JobDataMap() {
-            {
-                this.put(MinecraftServer.class.getName(), server);
-                this.put(WorldInitializer.class.getName(), WorldInitializer.this);
-            }
-        });
+        ServerLifecycleEvents.SERVER_STARTED.register(this::loadWorlds);
     }
 
     @Override
@@ -103,9 +85,8 @@ public class WorldInitializer extends ModuleInitializer {
         }
     }
 
-
     private int $tp(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             ServerWorld world = CommandHelper.Argument.dimension(ctx);
 
             MessageHelper.sendActionBar(player, "world.dimension.tp.tip");
@@ -191,19 +172,5 @@ public class WorldInitializer extends ModuleInitializer {
         WorldManager.requestToCreateWorld(ServerHelper.getDefaultServer(), Identifier.of(identifier), Identifier.of(first.get().getDimensionType()), first.get().getSeed());
 
         return CommandHelper.Return.SUCCESS;
-    }
-
-    public static class ResourceWorldAutoResetJob implements Job {
-
-        @Override
-        public void execute(JobExecutionContext context) {
-            LogUtil.info("Start to reset resource worlds.");
-            MinecraftServer server = (MinecraftServer) context.getJobDetail().getJobDataMap().get(MinecraftServer.class.getName());
-            WorldInitializer module = (WorldInitializer) context.getJobDetail().getJobDataMap().get(WorldInitializer.class.getName());
-            server.execute(() -> {
-
-
-            });
-        }
     }
 }

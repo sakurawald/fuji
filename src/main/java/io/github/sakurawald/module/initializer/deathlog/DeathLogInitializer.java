@@ -124,7 +124,7 @@ public class DeathLogInitializer extends ModuleInitializer {
     }
 
     private int $view(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             String from = StringArgumentType.getString(ctx, "from");
 
             NbtCompound root = NbtHelper.read(STORAGE_PATH.resolve(getFileName(from)));

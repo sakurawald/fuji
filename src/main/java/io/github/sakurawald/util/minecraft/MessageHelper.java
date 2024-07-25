@@ -16,7 +16,6 @@ import io.github.sakurawald.util.LogUtil;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.platform.fabric.FabricServerAudiences;
 import net.kyori.adventure.text.Component;
@@ -180,14 +179,18 @@ public class MessageHelper {
         return ofText(null, false, str, args);
     }
 
-    public static List<Text> ofTextList(@Nullable Audience audience, String key, Object... args) {
-        String lines = getString(audience, key, args);
+    public static List<Text> ofTextList(@Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
+        String lines = isKey ? getString(audience, keyOrString, args) : keyOrString;
 
         List<Text> ret = new ArrayList<>();
         for (String line : lines.split("\n|<newline>")) {
             ret.add(ofText(line));
         }
         return ret;
+    }
+
+    public static List<Text> ofTextList(@Nullable Audience audience, String key, Object... args) {
+        return ofTextList(audience, true, key, args);
     }
 
     public static @NotNull Text toText(Component component) {

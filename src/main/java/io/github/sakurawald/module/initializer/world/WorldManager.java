@@ -1,6 +1,8 @@
 package io.github.sakurawald.module.initializer.world;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.common.accessor.SimpleRegistryMixinInterface;
@@ -12,6 +14,7 @@ import io.github.sakurawald.module.initializer.world.structure.VoidWorldGenerati
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
+import lombok.SneakyThrows;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.entity.boss.dragon.EnderDragonFight;
@@ -20,6 +23,7 @@ import net.minecraft.registry.entry.RegistryEntryInfo;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
@@ -125,20 +129,13 @@ public class WorldManager {
      * we must create new instance.
      *
      */
-    private static DimensionOptions makeDimensionOptions(Registry<DimensionOptions> registry, Identifier dimensionTypeIdentifier)  {
-        /*
-         note: the vanilla minecraft dimension types (the_nether and the_end) will not register in the Registry<DimensionOptions>,
-         so we have to hard-code them.
-         */
-//        if (DimensionTypes.OVERWORLD_ID.equals(dimensionTypeIdentifier)) return registry.get(DimensionOptions.OVERWORLD);
-//        if (DimensionTypes.THE_NETHER_ID.equals(dimensionTypeIdentifier)) return registry.get(DimensionOptions.NETHER);
-//        if (DimensionTypes.THE_END_ID.equals(dimensionTypeIdentifier)) {
-//            LogUtil.warn("it's end");
-//
-//            return registry.get(DimensionOptions.END);
-//        }
-
+    @SneakyThrows
+    private static DimensionOptions makeDimensionOptions(Registry<DimensionOptions> registry, Identifier dimensionTypeIdentifier) {
         DimensionOptions template = registry.get(dimensionTypeIdentifier);
+        if (template == null) {
+            throw new SimpleCommandExceptionType(Text.of("The dimension type %s can't be used as template.".formatted(dimensionTypeIdentifier))).create();
+        }
+
         return new DimensionOptions(template.dimensionTypeEntry(), template.chunkGenerator());
     }
 

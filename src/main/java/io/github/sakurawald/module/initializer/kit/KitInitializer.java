@@ -106,7 +106,7 @@ public class KitInitializer extends ModuleInitializer {
     }
 
     private int $editor(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             List<Kit> kits = readKits();
             new KitEditorGui(player, kits).open();
             return CommandHelper.Return.SUCCESS;

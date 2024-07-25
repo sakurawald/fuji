@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.functional.anvil;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -21,7 +20,7 @@ public class AnvilInitializer extends ModuleInitializer {
     }
 
     private int $anvil(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> new AnvilScreenHandler(i, inventory, ScreenHandlerContext.create(p.getWorld(), p.getBlockPos())) {
                 @Override
                 public boolean canUse(PlayerEntity player) {

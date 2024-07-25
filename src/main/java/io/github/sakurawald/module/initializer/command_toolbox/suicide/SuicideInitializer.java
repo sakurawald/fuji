@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.command_toolbox.suicide;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -20,7 +19,7 @@ public class SuicideInitializer extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int $suicide(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             player.kill();
             return CommandHelper.Return.SUCCESS;
         });

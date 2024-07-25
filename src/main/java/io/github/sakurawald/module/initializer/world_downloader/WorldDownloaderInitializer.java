@@ -83,7 +83,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
     @SuppressWarnings("SameReturnValue")
     @SneakyThrows
     private int $download(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             /* init server */
             if (server == null) {
                 initServer();

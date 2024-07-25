@@ -67,7 +67,7 @@ public class TpaInitializer extends ModuleInitializer {
     }
 
     private int doResponse(CommandContext<ServerCommandSource> ctx, ResponseStatus status) {
-        return CommandHelper.playerOnlyCommand(ctx, source -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, source -> {
             ServerPlayerEntity target;
             try {
                 target = CommandHelper.Argument.player(ctx);
@@ -112,7 +112,7 @@ public class TpaInitializer extends ModuleInitializer {
     }
 
     private int doRequest(CommandContext<ServerCommandSource> ctx, boolean tpahere) {
-        return CommandHelper.playerOnlyCommand(ctx, source -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, source -> {
             ServerPlayerEntity target;
             try {
                 target = CommandHelper.Argument.player(ctx);

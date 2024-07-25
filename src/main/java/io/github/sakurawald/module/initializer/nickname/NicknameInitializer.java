@@ -39,7 +39,7 @@ public class NicknameInitializer extends ModuleInitializer {
     }
 
     private int $set(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, (player) -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, (player) -> {
             String name = player.getGameProfile().getName();
             String format = StringArgumentType.getString(ctx, "format");
             nicknameHandler.model().format.player2format.put(name, format);
@@ -51,7 +51,7 @@ public class NicknameInitializer extends ModuleInitializer {
     }
 
     private int $reset(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, (player) -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, (player) -> {
             String name = player.getGameProfile().getName();
             nicknameHandler.model().format.player2format.remove(name);
             nicknameHandler.saveToDisk();

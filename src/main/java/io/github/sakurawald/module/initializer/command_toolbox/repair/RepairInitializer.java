@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.command_toolbox.repair;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -20,7 +19,7 @@ public class RepairInitializer extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int $repair(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             player.getMainHandStack().setDamage(0);
             MessageHelper.sendMessage(player, "repair");
             return CommandHelper.Return.SUCCESS;

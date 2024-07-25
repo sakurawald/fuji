@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.functional.enderchest;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -24,7 +23,7 @@ public class EnderChestInitializer extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int $enderchest(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             EnderChestInventory enderChestInventory = player.getEnderChestInventory();
             player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> GenericContainerScreenHandler.createGeneric9x3(i, inventory, enderChestInventory), Text.translatable("container.enderchest")));
             player.incrementStat(Stats.OPEN_ENDERCHEST);

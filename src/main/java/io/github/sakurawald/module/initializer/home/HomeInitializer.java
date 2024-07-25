@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.initializer.home;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.handler.ConfigHandler;
@@ -14,7 +13,6 @@ import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.PermissionHelper;
 import lombok.Getter;
-import net.minecraft.command.CommandAction;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -63,7 +61,7 @@ public class HomeInitializer extends ModuleInitializer {
     }
 
     private int $tp(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             Map<String, Position> name2position = getHomes(player);
             String homeName = CommandHelper.Argument.name(ctx);
             if (!name2position.containsKey(homeName)) {
@@ -78,7 +76,7 @@ public class HomeInitializer extends ModuleInitializer {
     }
 
     private int $unset(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             Map<String, Position> name2position = getHomes(player);
             String homeName = CommandHelper.Argument.name(ctx);
             if (!name2position.containsKey(homeName)) {
@@ -93,7 +91,7 @@ public class HomeInitializer extends ModuleInitializer {
     }
 
     private int $set(CommandContext<ServerCommandSource> ctx, boolean override) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             Map<String, Position> name2position = getHomes(player);
             String homeName = CommandHelper.Argument.name(ctx);
             if (name2position.containsKey(homeName)) {
@@ -116,7 +114,7 @@ public class HomeInitializer extends ModuleInitializer {
     }
 
     private int $list(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             MessageHelper.sendMessage(player, "home.list", getHomes(player).keySet());
             return CommandHelper.Return.SUCCESS;
         });

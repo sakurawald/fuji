@@ -163,6 +163,10 @@ public class ConfigModel {
                                 
                 Example 3
                 Reset the extra dimension with random seed: `/world reset fuji:my_nether`
+                
+                Tips:
+                - The `/world tp` command use the `setup` list defined by `rtp module`.
+                - If you want to run `/world reset ...` command automatically, just use `command scheduler module`
                                 
                 Note:
                 - In vanilla minecraft, 1 world contains 3 dimensions (minecraft:overworld, minecraft:the_nether, minecraft:the_end)
@@ -175,9 +179,6 @@ public class ConfigModel {
                 """)
         public class World {
             public boolean enable = false;
-
-            @Documentation("When to auto reset resource worlds")
-            public String reset_cron = "0 0 20 * * ?";
 
             public Blacklist blacklist = new Blacklist();
 
@@ -882,9 +883,9 @@ public class ConfigModel {
                         this.add(new TeleportSetup("minecraft:overworld", 0, 0, false, 1000, 5000, -64, 320, 16));
                         this.add(new TeleportSetup("minecraft:the_nether", 0, 0, false, 1000, 5000, 0, 128, 16));
                         this.add(new TeleportSetup("minecraft:the_end", 0, 0, false, 1000, 5000, 0, 256, 16));
-                        this.add(new TeleportSetup("world:overworld", 0, 0, false, 1000, 5000, -64, 320, 16));
-                        this.add(new TeleportSetup("world:the_nether", 0, 0, false, 1000, 5000, 0, 128, 16));
-                        this.add(new TeleportSetup("world:the_end", 0, 0, false, 0, 48, 0, 256, 16));
+                        this.add(new TeleportSetup("fuji:overworld", 0, 0, false, 1000, 5000, -64, 320, 16));
+                        this.add(new TeleportSetup("fuji:the_nether", 0, 0, false, 1000, 5000, 0, 128, 16));
+                        this.add(new TeleportSetup("fuji:the_end", 0, 0, false, 0, 48, 0, 256, 16));
                     }
 
                 };
@@ -1415,6 +1416,7 @@ public class ConfigModel {
             public God god = new God();
             public Hat hat = new Hat();
             public Heal heal = new Heal();
+            public Lore lore = new Lore();
             public More more = new More();
             public Ping ping = new Ping();
             public Realname realname = new Realname();
@@ -1460,6 +1462,20 @@ public class ConfigModel {
 
             @Documentation("This module provides `/heal` command.")
             public class Heal {
+                public boolean enable = true;
+            }
+
+            @Documentation("""
+                    Allows you to custom lore in your hand.
+                    
+                    Command: /lore
+                    
+                    Example 1: `/lore set <rainbow>the first line<newline><bold><green>the second`
+                    
+                    
+                    
+                    """)
+            public class Lore {
                 public boolean enable = true;
             }
 

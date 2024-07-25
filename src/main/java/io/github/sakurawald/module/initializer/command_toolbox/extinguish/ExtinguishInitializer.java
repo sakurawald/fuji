@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.command_toolbox.extinguish;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -20,7 +19,7 @@ public class ExtinguishInitializer extends ModuleInitializer {
 
     @SuppressWarnings("SameReturnValue")
     private int $extinguish(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             player.setFireTicks(0);
             return CommandHelper.Return.SUCCESS;
         });

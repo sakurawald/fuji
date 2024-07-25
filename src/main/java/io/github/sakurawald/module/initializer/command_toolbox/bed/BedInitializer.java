@@ -23,7 +23,7 @@ public class BedInitializer extends ModuleInitializer {
     }
 
     private int $bed(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, (player) -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, (player) -> {
             BlockPos respawnPosition = player.getSpawnPointPosition();
             RegistryKey<World> respawnDimension = player.getSpawnPointDimension();
 

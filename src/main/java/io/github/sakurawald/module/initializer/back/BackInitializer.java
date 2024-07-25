@@ -28,7 +28,7 @@ public class BackInitializer extends ModuleInitializer {
     }
 
     private int $back(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.playerOnlyCommand(ctx, (player -> {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, (player -> {
             Position lastPos = player2lastPos.get(player.getName().getString());
             if (lastPos == null) {
                 MessageHelper.sendActionBar(player, "back.no_previous_position");
