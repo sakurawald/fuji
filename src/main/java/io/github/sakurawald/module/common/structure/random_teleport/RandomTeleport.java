@@ -5,6 +5,7 @@ import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.common.structure.TeleportSetup;
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.IdentifierHelper;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -20,26 +21,27 @@ import java.util.OptionalInt;
 import java.util.Random;
 import java.util.function.Consumer;
 
-// Thanks to https://github.com/John-Paul-R/Essential-Commands
+/**
+ * We reference the rtp code from https://github.com/John-Paul-R/Essential-Commands at the early stage of this project.
+ */
 public class RandomTeleport {
 
     public static void request(ServerPlayerEntity player, TeleportSetup setup, Consumer<Position> postConsumer) {
-        LogUtil.info("Starting RTP location search for {}", player.getGameProfile().getName());
+        LogUtil.info("Request rtp: {}", player.getGameProfile().getName());
         Stopwatch timer = Stopwatch.createStarted();
 
         ServerWorld world = IdentifierHelper.ofServerWorld(Identifier.of(setup.getDimension()));
-
-        final HeightFindingStrategy heightFinder = HeightFindingStrategy.forWorld(world);
 
         Optional<BlockPos> result;
 
         int tryiedTimes = 0;
         do {
             tryiedTimes++;
-            result = findRtpPosition(setup, heightFinder);
+            result = searchPosition(setup);
         } while (result.isEmpty() && tryiedTimes <= setup.getMaxTryTimes());
 
         if (result.isEmpty()) {
+            MessageHelper.sendMessage(player, "rtp.fail");
             return;
         }
 
@@ -54,24 +56,28 @@ public class RandomTeleport {
 
         // cost
         var cost = timer.stop();
-        LogUtil.info("RTP: {} has been teleported to ({} {} {} {}) (cost = {})", player.getGameProfile().getName(), world.getRegistryKey().getValue(), result.get().getX(), result.get().getY(), result.get().getZ(), cost);
+        LogUtil.info("Response rtp: {} has been teleported to ({} {} {} {}) (cost = {})", player.getGameProfile().getName(), world.getRegistryKey().getValue(), result.get().getX(), result.get().getY(), result.get().getZ(), cost);
     }
 
-    private static Optional<BlockPos> findRtpPosition(TeleportSetup setup, HeightFinder heightFinder) {
+    private static Optional<BlockPos> searchPosition(TeleportSetup setup) {
         // Search for a valid y-level (not in a block, underwater, out of the world, etc.)
         final BlockPos targetXZ = getRandomXZ(setup);
-        final Chunk chunk = setup.ofWorld().getChunk(targetXZ);
+
+        ServerWorld serverWorld = setup.ofWorld();
+        final Chunk chunk = serverWorld.getChunk(targetXZ);
 
         for (BlockPos.Mutable candidateBlock : getChunkCandidateBlocks(chunk.getPos())) {
             final int x = candidateBlock.getX();
             final int z = candidateBlock.getZ();
+
+            HeightFinder heightFinder = HeightFindingStrategy.forWorld(setup.ofWorld());
             final OptionalInt yOpt = heightFinder.getY(chunk, x, z);
             if (yOpt.isEmpty()) {
                 continue;
             }
             final int y = yOpt.getAsInt();
 
-            if (isSafePosition(setup, chunk, new BlockPos(x, y - 2, z))) {
+            if (isSatisfied(setup, chunk, new BlockPos(x, y - 2, z))) {
                 return Optional.of(new BlockPos(x, y, z));
             }
         }
@@ -80,35 +86,44 @@ public class RandomTeleport {
     }
 
     private static BlockPos getRandomXZ(TeleportSetup setup) {
+        return setup.isCircle() ? getRandomXZWithCircle(setup) : getRandomXZWithRect(setup);
+    }
+
+    private static BlockPos getRandomXZWithCircle(TeleportSetup setup) {
         var rand = new Random();
 
         int r_min = setup.getMinRange();
         int r_max = setup.getMaxRange();
-        int r = r_max == r_min
+        int r = (r_max == r_min
                 ? r_max
-                : rand.nextInt(r_min, r_max);
+                : rand.nextInt(r_min, r_max));
         final double angle = rand.nextDouble() * 2 * Math.PI;
         final double delta_x = r * Math.cos(angle);
         final double delta_z = r * Math.sin(angle);
-
-        int new_x = setup.getCenterX() + (int) delta_x;
-        int new_z = setup.getCenterZ() + (int) delta_z;
-        return new BlockPos(new_x, 0, new_z);
+        int x = setup.getCenterX() + (int) delta_x;
+        int z = setup.getCenterZ() + (int) delta_z;
+        return new BlockPos(x, 0, z);
     }
 
-    private static boolean isSafePosition(TeleportSetup setup, Chunk chunk, BlockPos pos) {
-        if (pos.getY() <= chunk.getBottomY()) {
-            return false;
-        }
+    private static BlockPos getRandomXZWithRect(TeleportSetup setup) {
+        var rand = new Random();
+        int r_min = setup.getMinRange();
+        int r_max = setup.getMaxRange();
 
+        int x = setup.getCenterX() + rand.nextInt(r_min, r_max);
+        int z = setup.getCenterZ() + rand.nextInt(r_min, r_max);
+        return new BlockPos(x, 0, z);
+    }
+
+    private static boolean isSatisfied(TeleportSetup setup, Chunk chunk, BlockPos pos) {
         BlockState blockState = chunk.getBlockState(pos);
-        int worldTopY = setup.ofWorld().getTopY();
-        int worldBottomY = setup.ofWorld().getBottomY();
-        return pos.getY() < worldTopY
-                && pos.getY() > worldBottomY
+        return pos.getY() >= setup.getMinY()
+                && pos.getY() <= setup.getMaxY()
                 && blockState.getFluidState().isEmpty()
                 && blockState.getBlock() != Blocks.POWDER_SNOW
-                && blockState.getBlock() != Blocks.FIRE;
+                && blockState.getBlock() != Blocks.FIRE
+                && pos.getY() >= chunk.getBottomY()
+                && pos.getY() <= chunk.getTopY();
     }
 
     public static Iterable<BlockPos.Mutable> getChunkCandidateBlocks(ChunkPos chunkPos) {

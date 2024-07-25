@@ -25,13 +25,11 @@ public class RtpInitializer extends ModuleInitializer {
 
     private int $rtp(CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.playerOnlyCommand(ctx, player -> {
-
             ServerWorld serverWorld = player.getServerWorld();
-            String dimension = IdentifierHelper.ofString(serverWorld);
 
             Optional<TeleportSetup> first = TeleportSetup.of(serverWorld);
             if (first.isEmpty()) {
-                MessageHelper.sendMessage(player, "rtp.dimension.disallow", dimension);
+                MessageHelper.sendMessage(player, "rtp.dimension.disallow", IdentifierHelper.ofString(serverWorld));
                 return CommandHelper.Return.FAIL;
             }
 

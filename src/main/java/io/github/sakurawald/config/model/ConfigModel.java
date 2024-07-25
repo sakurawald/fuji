@@ -5,7 +5,6 @@ import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.config.annotation.Documentation;
 import io.github.sakurawald.module.common.structure.RegexRewriteEntry;
 import io.github.sakurawald.module.common.structure.TeleportSetup;
-import io.github.sakurawald.module.common.structure.random_teleport.RandomTeleport;
 import io.github.sakurawald.module.initializer.command_alias.structure.CommandAliasEntry;
 
 import java.util.*;
@@ -224,7 +223,7 @@ public class ConfigModel {
                     """)
             public class RandomSpawnPoint {
                 public boolean enable = true;
-                public TeleportSetup setup = new TeleportSetup("minecraft:overworld", 0, 0, 2000, 5000, 64, 128, 16);
+                public TeleportSetup setup = new TeleportSetup("minecraft:overworld", 0, 0, false, 2000, 5000, 64, 128, 16);
                 ;
             }
         }
@@ -820,21 +819,33 @@ public class ConfigModel {
 
         @Documentation("""
                 Command: /rtp
+                                
+                Feature:
+                - Per dimension configurable.
+                - Ignore flulid blocks (water, lava...).
+                - Ignore powered snow
+                                
+                Note:
+                - It's highly recommended to pre-gen the world chunks. To gen a new chunk during rtp rquires about 2~10 seconds.
+                  If a chunk is pre-gen, then it will be fast.
+                                
                 """)
         public class Rtp {
 
             public boolean enable = true;
 
-            public Dimension dimension = new Dimension();
+            public Setup setup = new Setup();
 
-            public class Dimension {
-
-                public List<TeleportSetup> list = new ArrayList() {
+            public class Setup {
+                public List<TeleportSetup> dimension = new ArrayList() {
 
                     {
-                        this.add(new TeleportSetup("minecraft:overworld", 0, 0, 1000, 5000, -64, 320, 16));
-                        this.add(new TeleportSetup("minecraft:overworld", 0, 0, 1000, 5000, 64, 128, 16));
-                        this.add(new TeleportSetup("resource_world:overworld", 0, 0, 1000, 5000, 64, 128, 16));
+                        this.add(new TeleportSetup("minecraft:overworld", 0, 0, false, 1000, 5000, -64, 320, 16));
+                        this.add(new TeleportSetup("minecraft:the_nether", 0, 0, false, 1000, 5000, 0, 128, 16));
+                        this.add(new TeleportSetup("minecraft:the_end", 0, 0, false, 1000, 5000, 0, 256, 16));
+                        this.add(new TeleportSetup("resource_world:overworld", 0, 0, false, 1000, 5000, -64, 320, 16));
+                        this.add(new TeleportSetup("resource_world:the_nether", 0, 0, false, 1000, 5000, 0, 128, 16));
+                        this.add(new TeleportSetup("resource_world:the_end", 0, 0, false, 0, 48, 0, 256, 16));
                     }
 
                 };

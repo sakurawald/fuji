@@ -191,5 +191,6 @@
   "kit.kit.empty": "<red>工具包为空",
   "trashcan.gui.title": "<red>垃圾箱",
   "rtp.dimension.disallow": "<red>不允许在 %s 维度进行随机传送",
-  "rtp.success": "<gold>随机传送完成!"
+  "rtp.success": "<gold>随机传送完成!",
+  "rtp.fail": "<gold>随机传送失败，请重新尝试."
 }

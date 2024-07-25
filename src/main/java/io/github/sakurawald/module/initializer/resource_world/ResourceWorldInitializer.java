@@ -45,7 +45,6 @@ import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
-import java.util.List;
 import java.util.Optional;
 
 import static net.minecraft.server.command.CommandManager.literal;
@@ -209,29 +208,23 @@ public class ResourceWorldInitializer extends ModuleInitializer {
     private int $tp(CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.playerOnlyCommand(ctx, player -> {
             String path = ctx.getNodes().get(2).getNode().getName();
+
             ServerWorld world = getResourceWorldByPath(ctx.getSource().getServer(), path);
             if (world == null) {
                 MessageHelper.sendMessage(ctx.getSource(), "resource_world.world.not_found", path);
                 return 0;
             }
 
-            Optional<RegistryKey<DimensionType>> type = world.getDimensionEntry().getKey();
-            if (type.isPresent() && type.get() == DimensionTypes.THE_END) {
-                this.createEndSpawnPlatform(world);
+            MessageHelper.sendActionBar(player, "resource_world.world.tp.tip");
 
-                BlockPos endSpawnPos = ServerWorld.END_SPAWN_POS;
-                player.teleport(world, endSpawnPos.getX() + 0.5, endSpawnPos.getY(), endSpawnPos.getZ() + 0.5, 90, 0);
-            } else {
-                MessageHelper.sendActionBar(player, "resource_world.world.tp.tip");
-
-                Optional<TeleportSetup> tpSetup = TeleportSetup.of(world);
-                if (tpSetup.isEmpty()) {
-                    MessageHelper.sendMessage(player, "rtp.dimension.disallow", IdentifierHelper.ofString(world));
-                    return CommandHelper.Return.FAIL;
-                }
-
-                RandomTeleport.request(player, tpSetup.get(), null);
+            Optional<TeleportSetup> tpSetup = TeleportSetup.of(world);
+            if (tpSetup.isEmpty()) {
+                MessageHelper.sendMessage(player, "rtp.dimension.disallow", IdentifierHelper.ofString(world));
+                return CommandHelper.Return.FAIL;
             }
+
+            RandomTeleport.request(player, tpSetup.get(), null);
+
 
             return CommandHelper.Return.SUCCESS;
         });
