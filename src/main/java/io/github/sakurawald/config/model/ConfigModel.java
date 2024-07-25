@@ -874,6 +874,10 @@ public class ConfigModel {
 
             public Setup setup = new Setup();
 
+            @Documentation("""
+                    Teleport setup per dimension. Dimensions that are not in the list will be disabled to rtp.
+                    
+                    """)
             public class Setup {
                 public List<TeleportSetup> dimension = new ArrayList() {
 
