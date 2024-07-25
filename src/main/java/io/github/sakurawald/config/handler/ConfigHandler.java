@@ -2,11 +2,14 @@ package io.github.sakurawald.config.handler;
 
 import assets.fuji.Cat;
 import com.google.gson.*;
+import io.github.sakurawald.module.common.manager.BackupRescueManager;
 import io.github.sakurawald.module.initializer.works.work_type.Work;
+import io.github.sakurawald.util.JsonUtil;
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.ScheduleUtil;
 import lombok.Cleanup;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -16,6 +19,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 
 public abstract class ConfigHandler<T> {
@@ -30,6 +34,7 @@ public abstract class ConfigHandler<T> {
 
     protected File file;
     protected T model;
+    protected boolean alreadyBackup;
 
     public ConfigHandler(File file) {
         this.file = file;
@@ -91,17 +96,75 @@ public abstract class ConfigHandler<T> {
         if (!oldJson.isJsonObject() || !newJson.isJsonObject()) {
             throw new IllegalArgumentException("Both elements must be JSON objects.");
         }
-        mergeFields(oldJson.getAsJsonObject(), newJson.getAsJsonObject());
+        mergeFields("", oldJson.getAsJsonObject(), newJson.getAsJsonObject());
     }
 
-    private void mergeFields(JsonObject currentJson, JsonObject defaultJson) {
+    private void mergeFields(String parentPath, JsonObject currentJson, JsonObject defaultJson) {
         Set<Map.Entry<String, JsonElement>> entrySet = defaultJson.entrySet();
         for (Map.Entry<String, JsonElement> entry : entrySet) {
             String key = entry.getKey();
             JsonElement value = entry.getValue();
 
-            if (currentJson.has(key) && currentJson.get(key).isJsonObject() && value.isJsonObject()) {
-                mergeFields(currentJson.getAsJsonObject(key), value.getAsJsonObject());
+            // test -> missing keys
+            if (currentJson.has(key)) {
+
+                String currentPath = StringUtils.strip(parentPath + "." + key, ".");
+
+                // test -> same type
+                if (JsonUtil.sameType(currentJson.get(key), value)) {
+
+                    // test -> both are JsonObject
+                    if (currentJson.get(key).isJsonObject() && value.isJsonObject()) {
+                        mergeFields(currentPath, currentJson.getAsJsonObject(key), value.getAsJsonObject());
+                    }
+
+                } else {
+
+                    LogUtil.warn("""
+                                                       
+                            # What happened ?
+                            There is an incompatibility issue in the configuration file `{}`.
+                              - Actual value of key `{}` does not match the expected type.
+                                                        
+                            Possible reason:
+                              1. In the new version of fuji, the key has changed its type.
+                              2. The configuration file was been accidentally modified.
+                                                        
+                            How can I solve this ?
+                                                        
+                              - Manually:
+                                1. Backup the folder `<your-server-root>/config/fuji`
+                                2. Use your `text-editor` to open the file `{}`
+                                3. Find the `key` in path `{}`
+                                4. Make sure again you have backup your folder in `step 1`
+                                5. Delete the `key`, and re-start the server. Fuji will re-generate the missing keys.
+                                                        
+                              - Automatically:
+                                If you want to `back up the folder` and `delete the key`, press "y" and enter. (y/n)
+                                                        
+                            """, file.getAbsoluteFile(), currentPath, file.getAbsoluteFile(), currentPath);
+
+                    /* query loop */
+                    Scanner scanner = new Scanner(System.in);
+                    while (true) {
+                        String input = scanner.next().trim();
+                        if (input.equalsIgnoreCase("y")) {
+                            if (!this.alreadyBackup) {
+                                BackupRescueManager.backup();
+                                LogUtil.warn("Backup the `config/fuji` folder into `config/fuji/backup_rescue` folder successfully.");
+                                this.alreadyBackup = true;
+                            }
+
+                            currentJson.remove(key);
+                            currentJson.add(key, value);
+                            break;
+                        } else {
+                            // exit the JVM with error code
+                            System.exit(-1);
+                        }
+                    }
+                }
+
             } else {
                 // note: for JsonArray, we will not directly set array elements, but we will add new properties for every array element (language default empty-value). e.g. For List<ExamplePojo>, we will never change the size of this list, but we will add missing properties for every ExamplePojo with the language default empty-value.
                 if (!currentJson.has(key)) {
