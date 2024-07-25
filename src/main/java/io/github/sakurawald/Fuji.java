@@ -23,6 +23,7 @@ import static io.github.sakurawald.module.ModuleManager.initializeModules;
 // TODO: refactor command facility (selector, aop, options, parser, redirect/option, operation-argument-type)
 // TODO: tppos module
 
+
 public class Fuji implements ModInitializer {
 
     public static final String MOD_ID = "fuji";

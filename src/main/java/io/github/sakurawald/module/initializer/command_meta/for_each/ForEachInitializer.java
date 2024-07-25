@@ -12,7 +12,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
-public class ForEachCommand extends ModuleInitializer {
+public class ForEachInitializer extends ModuleInitializer {
     @Override
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
 

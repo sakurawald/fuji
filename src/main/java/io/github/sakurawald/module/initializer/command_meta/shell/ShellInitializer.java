@@ -18,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
-public class ShellCommand extends ModuleInitializer {
+public class ShellInitializer extends ModuleInitializer {
     @Override
     public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         // confirm
