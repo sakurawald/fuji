@@ -1296,6 +1296,7 @@ public class ConfigModel {
                 """)
         public class CommandMeta {
             public boolean enable = false;
+
             public Run run = new Run();
             public ForEach for_each = new ForEach();
             public Chain chain = new Chain();
@@ -1355,6 +1356,14 @@ public class ConfigModel {
                 public boolean enable = true;
             }
 
+            @Documentation("""
+                    Delay command allows you to ............................ execute a command.
+                    
+                    Example 1: `/delay 3 say three seconds passed`
+                    
+                    Example 2: `/delay 1 delay 2 delay 3 say 6 seconds passed.`
+                    
+                    """)
             public class Delay {
                 public boolean enable = true;
             }
