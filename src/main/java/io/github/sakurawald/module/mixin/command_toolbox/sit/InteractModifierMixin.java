@@ -1,8 +1,8 @@
-package io.github.sakurawald.module.mixin.sit;
+package io.github.sakurawald.module.mixin.command_toolbox.sit;
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.initializer.sit.SitInitializer;
+import io.github.sakurawald.module.initializer.command_toolbox.sit.SitInitializer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SideShapeType;
@@ -57,7 +57,7 @@ public class InteractModifierMixin {
 
     @Inject(method = "interactBlock(Lnet/minecraft/server/network/ServerPlayerEntity;Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;", at = @At("HEAD"), cancellable = true)
     public void inject(ServerPlayerEntity player, World world, ItemStack stack, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> callbackInfoReturnable) {
-        var config = Configs.configHandler.model().modules.sit;
+        var config = Configs.configHandler.model().modules.command_toolbox.sit;
 
         if (!config.allow_right_click_sit) return;
 

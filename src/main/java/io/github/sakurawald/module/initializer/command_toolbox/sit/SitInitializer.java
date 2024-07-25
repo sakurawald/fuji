@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.sit;
+package io.github.sakurawald.module.initializer.command_toolbox.sit;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;

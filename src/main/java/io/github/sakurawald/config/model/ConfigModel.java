@@ -137,7 +137,6 @@ public class ConfigModel {
         public Head head = new Head();
         public Profiler profiler = new Profiler();
         public Tester tester = new Tester();
-        public Sit sit = new Sit();
         public Multiplier multiplier = new Multiplier();
         public Disabler disabler = new Disabler();
         public AntiBuild anti_build = new AntiBuild();
@@ -950,18 +949,6 @@ public class ConfigModel {
 
         }
 
-        @Documentation("""
-                This module provides `/sit` command, and the ability to sit by right-click any chair.
-                """)
-        public class Sit {
-            public boolean enable = false;
-            public boolean allow_right_click_sit = true;
-            public int max_distance_to_sit = -1;
-            public boolean must_be_stairs = true;
-            public boolean required_empty_hand = false;
-            public boolean allow_sneaking = false;
-            public boolean no_opaque_block_above = false;
-        }
 
         @Documentation("""
                 This module provides command alias.
@@ -1390,6 +1377,7 @@ public class ConfigModel {
             public Fly fly = new Fly();
             public God god = new God();
             public Hat hat = new Hat();
+            public Sit sit = new Sit();
             public Heal heal = new Heal();
             public Lore lore = new Lore();
             public More more = new More();
@@ -1452,6 +1440,19 @@ public class ConfigModel {
                     """)
             public class Lore {
                 public boolean enable = true;
+            }
+
+            @Documentation("""
+                This module provides `/sit` command, and the ability to sit by right-click any chair.
+                """)
+            public class Sit {
+                public boolean enable = false;
+                public boolean allow_right_click_sit = true;
+                public int max_distance_to_sit = -1;
+                public boolean must_be_stairs = true;
+                public boolean required_empty_hand = false;
+                public boolean allow_sneaking = false;
+                public boolean no_opaque_block_above = false;
             }
 
             @Documentation("This module provides `/more` command.")
@@ -1617,6 +1618,9 @@ public class ConfigModel {
                   ]
                 },
                 ```
+                
+                Note:
+                - You can use placeholders provided by `placeholder module`.
                 
                 """)
         public class CommandEvent {
