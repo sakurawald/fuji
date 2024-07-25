@@ -226,7 +226,6 @@ public class ConfigModel {
 
         @Documentation("""
                 This module provides some jobs to trigger when a player is the first time to join the server. 
-                                
                 """)
         public class NewbieWelcome {
             public boolean enable = false;
@@ -234,7 +233,7 @@ public class ConfigModel {
             public RandomSpawnPoint random_spawn_point = new RandomSpawnPoint();
 
             @Documentation("""
-                        Random teleport the newbie player, and set his bed location.                       
+                    Random teleport the newbie player, and set his bed location.                       
                     """)
             public class RandomSpawnPoint {
                 public boolean enable = true;
@@ -723,7 +722,7 @@ public class ConfigModel {
         }
 
         @Documentation("""
-                
+                                
                 Background:
                   The vanilla minecraft use a command system called `brigadier`.
                   All the commands are `registered`, `parsed` and `executed` by `brigadier`.
@@ -876,7 +875,6 @@ public class ConfigModel {
 
             @Documentation("""
                     Teleport setup per dimension. Dimensions that are not in the list will be disabled to rtp.
-                    
                     """)
             public class Setup {
                 public List<TeleportSetup> dimension = new ArrayList() {
