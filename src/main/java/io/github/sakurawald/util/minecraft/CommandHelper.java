@@ -13,6 +13,8 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.UserCache;
 
+import java.util.function.Function;
+
 import static net.minecraft.server.command.CommandManager.argument;
 
 @UtilityClass
@@ -57,7 +59,7 @@ public class CommandHelper {
         }
 
         public static ServerPlayerEntity player(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
-            return EntityArgumentType.getPlayer(ctx,ARGUMENT_NAME_PLAYER);
+            return EntityArgumentType.getPlayer(ctx, ARGUMENT_NAME_PLAYER);
         }
 
         public static RequiredArgumentBuilder<ServerCommandSource, String> rest() {
@@ -81,22 +83,22 @@ public class CommandHelper {
         }
 
         public static String name(CommandContext<ServerCommandSource> ctx) {
-            return string(ctx,ARGUMENT_NAME_NAME);
+            return string(ctx, ARGUMENT_NAME_NAME);
         }
 
     }
 
-    public static int playerOnlyCommand(CommandContext<ServerCommandSource> ctx, PlayerOnlyCommandFunction function) {
+    public static int playerOnlyCommand(CommandContext<ServerCommandSource> ctx, PlayerFunction consumer) {
         ServerPlayerEntity player = ctx.getSource().getPlayer();
         if (player == null) {
             MessageHelper.sendMessage(ctx.getSource(), "command.player_only");
             return CommandHelper.Return.SUCCESS;
         }
 
-        return function.run(player);
+        return consumer.run(player);
     }
 
-    public static int acceptEntity(CommandContext<ServerCommandSource> ctx, AcceptEntityFunction function) {
+    public static int acceptEntity(CommandContext<ServerCommandSource> ctx, EntityFunction function) {
         Entity entity;
         try {
             entity = EntityArgumentType.getEntity(ctx, Argument.ARGUMENT_NAME_ENTITY);
@@ -108,7 +110,7 @@ public class CommandHelper {
         return function.run(entity);
     }
 
-    public static int acceptPlayer(CommandContext<ServerCommandSource> ctx, AcceptPlayerFunction function) {
+    public static int acceptPlayer(CommandContext<ServerCommandSource> ctx, Function<ServerPlayerEntity, Integer> function) {
         ServerPlayerEntity player;
         try {
             player = EntityArgumentType.getPlayer(ctx, Argument.ARGUMENT_NAME_PLAYER);
@@ -117,21 +119,17 @@ public class CommandHelper {
             return CommandHelper.Return.SUCCESS;
         }
 
-        return function.run(player);
+        return function.apply(player);
     }
 
     @FunctionalInterface
-    public interface PlayerOnlyCommandFunction {
+    public interface PlayerFunction {
         int run(ServerPlayerEntity player);
     }
 
     @FunctionalInterface
-    public interface AcceptEntityFunction {
+    public interface EntityFunction {
         int run(Entity entity);
     }
 
-    @FunctionalInterface
-    public interface AcceptPlayerFunction {
-        int run(ServerPlayerEntity player);
-    }
 }

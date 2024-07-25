@@ -4,6 +4,7 @@ package io.github.sakurawald.config.model;
 import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.config.annotation.Documentation;
 import io.github.sakurawald.module.common.structure.RegexRewriteEntry;
+import io.github.sakurawald.module.common.structure.TeleportSetup;
 import io.github.sakurawald.module.initializer.command_alias.structure.CommandAliasEntry;
 
 import java.util.*;
@@ -111,6 +112,7 @@ public class ConfigModel {
         public Home home = new Home();
         public Pvp pvp = new Pvp();
         public Afk afk = new Afk();
+        public Rtp rtp = new Rtp();
         public Works works = new Works();
         public DeathLog deathlog = new DeathLog();
         public Functional functional = new Functional();
@@ -810,6 +812,30 @@ public class ConfigModel {
                 @Documentation("Should we kick a player if he is afk ?")
                 public boolean kick_player = false;
             }
+        }
+
+        @Documentation("""
+                Command: /rtp
+                """)
+        public class Rtp {
+
+            public boolean enable = true;
+
+            public int max_try_times = 16;
+
+            public Dimension dimension = new Dimension();
+            public class Dimension {
+
+                public List<TeleportSetup> list = new ArrayList(){
+
+                    {
+                        this.add(new TeleportSetup("minecraft:overworld", 0,0,1000,5000,64, 128));
+                    }
+
+                };
+            }
+
+
         }
 
         @Documentation("""

@@ -2,6 +2,7 @@ package io.github.sakurawald.module.common.structure.random_teleport;
 
 import com.google.common.base.Stopwatch;
 import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.util.LogUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -11,20 +12,24 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.chunk.Chunk;
+import org.apache.http.protocol.ExecutionContext;
 
+import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.Random;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 // Thanks to https://github.com/John-Paul-R/Essential-Commands
 public class RandomTeleport {
 
-    public static void randomTeleport(ServerPlayerEntity player, ServerWorld world, boolean shouldSetSpawnPoint) {
-        $rtp(player, world, shouldSetSpawnPoint);
+    public static void randomTeleport(ServerPlayerEntity player, ServerWorld world, Consumer<Position> postConsumer) {
+        $rtp(player, world, postConsumer);
     }
 
-    private static void $rtp(ServerPlayerEntity player, ServerWorld world, boolean shouldSetSpawnPoint) {
+    private static void $rtp(ServerPlayerEntity player, ServerWorld world, @Nullable Consumer<Position> postConsumer) {
         LogUtil.info("Starting RTP location search for {}", player.getGameProfile().getName());
         Stopwatch timer = Stopwatch.createStarted();
 
@@ -48,16 +53,17 @@ public class RandomTeleport {
             return;
         }
 
-        // set spawn point
-        if (shouldSetSpawnPoint) {
-            player.setSpawnPoint(world.getRegistryKey(), pos.get(), 0, true, false);
+        // teleport the player
+        Position position = new Position(world, pos.get().getX() + 0.5, pos.get().getY(), pos.get().getZ() + 0.5, 0, 0);
+        position.teleport(player);
+
+        // post consumer
+        if (postConsumer != null) {
+            postConsumer.accept(position);
         }
 
-        // teleport the player
-        player.teleport(world, pos.get().getX() + 0.5, pos.get().getY(), pos.get().getZ() + 0.5, 0, 0);
-
+        // cost
         var cost = timer.stop();
-
         LogUtil.info("RTP: {} has been teleported to ({} {} {} {}) (cost = {})", player.getGameProfile().getName(), world.getRegistryKey().getValue(), pos.get().getX(), pos.get().getY(), pos.get().getZ(), cost);
     }
 

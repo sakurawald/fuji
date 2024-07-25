@@ -191,5 +191,6 @@
   "kit.gui.editor.kit.title": "<blue>Kit %s",
   "kit.gui.editor.help.lore": "<green> - Left click -> edit a kit<newline> - Shift + Right click -> delete a kit",
   "kit.kit.empty": "<red>The kit is empty",
-  "trashcan.gui.title": "<red>Trash can"
+  "trashcan.gui.title": "<red>Trash can",
+  "rtp.dimension.disallow": "<red>Not allowed to rtp in dimension %s"
 }

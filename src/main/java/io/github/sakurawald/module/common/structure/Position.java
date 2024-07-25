@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.common.structure;
 
+import io.github.sakurawald.util.minecraft.IdentifierHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import lombok.Data;
@@ -42,6 +43,14 @@ public class Position {
     public static Position of(ServerPlayerEntity player, ServerWorld world) {
         BlockPos spawnPos = world.getSpawnPos();
         return new Position(world, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), player.getYaw(), player.getPitch());
+    }
+
+    public ServerWorld ofDimension() {
+        return IdentifierHelper.ofServerWorld(Identifier.of(this.level));
+    }
+
+    public BlockPos ofBlockPos() {
+        return new BlockPos((int) this.x, (int) this.y, (int) this.z);
     }
 
     public boolean sameLevel(World level) {
