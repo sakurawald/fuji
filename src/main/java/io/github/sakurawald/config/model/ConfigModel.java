@@ -723,12 +723,12 @@ public class ConfigModel {
         }
 
         @Documentation("""
+                
                 Background:
-                    The vanilla minecraft use a command system called `brigadier`.
-                    All the commands are `registered`, `parsed` and `executed` by `brigadier`.
+                  The vanilla minecraft use a command system called `brigadier`.
+                  All the commands are `registered`, `parsed` and `executed` by `brigadier`.
                     
-                    In this system, all commands are build into a tree strucutre.
-                    
+                  In this system, all commands are build into a tree strucutre.
                                 
                 See [permission](https://github.com/sakurawald/fuji-fabric/wiki/Permission)
                 """)
