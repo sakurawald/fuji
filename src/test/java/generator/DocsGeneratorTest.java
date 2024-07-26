@@ -47,18 +47,18 @@ public class DocsGeneratorTest {
     }
 
     @SneakyThrows
-    private void generate(Path jsonFile, String configFileName, String languageCode) {
+    private void generate(Path jsonFile, String languageCode) {
         JsonReader jsonReader = new JsonReader(new FileReader(jsonFile.toFile()));
         JsonObject jsonObject = GSON.fromJson(jsonReader, JsonObject.class);
         System.out.println(jsonObject);
-        generate(jsonObject, configFileName, languageCode);
+        generate(jsonObject, jsonFile.toFile().getName(), languageCode);
     }
 
     @Test
     void generate() {
         generate(new ConfigModel(), "config.json", EN_US);
         generate(new SchedulerModel(), "scheduler.json", EN_US);
-        generate(LOCALE_PATH.resolve("zh-cn").resolve("config.json"), "config.json", "zh_cn");
+        generate(LOCALE_PATH.resolve("zh_cn").resolve("config.json"), "zh_cn");
     }
 
 }
