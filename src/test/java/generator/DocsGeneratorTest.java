@@ -58,7 +58,7 @@ public class DocsGeneratorTest {
     void generate() {
         generate(new ConfigModel(), "config.json", EN_US);
         generate(new SchedulerModel(), "scheduler.json", EN_US);
-        generate(LOCALE_PATH.resolve("zh-cn").resolve("config.json"), "a.json", "zh-cn");
+        generate(LOCALE_PATH.resolve("zh-cn").resolve("config.json"), "config.json", "zh-cn");
     }
 
 }
