@@ -19,7 +19,7 @@ import static io.github.sakurawald.module.ModuleManager.initializeModules;
 // TODO: invsee module (slot, inv-redirect)
 // TODO: powertool module (composed, meta)
 
-// TODO: a lisp-like DSL (parser, code-walker, transformer, nbt selector)
+// TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector)
 // TODO: refactor command facility (tui, selector, aop, options, parser, redirect/option, modifier, operation-argument-type, suggestion)
 // TODO: tppos module
 
