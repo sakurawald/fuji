@@ -2,10 +2,10 @@
 One-stop essential mod for fabric.
 
 ![github workflow build job](https://img.shields.io/github/actions/workflow/status/sakurawald/fuji-fabric/build.yml)
-![github license](https://img.shields.io/github/license/sakurawald/fuji-fabric)
-![github release](https://img.shields.io/github/v/release/sakurawald/fuji-fabric)
-![modrinth download counter](https://img.shields.io/modrinth/dt/1TowMm2v)
 ![github last commit](https://img.shields.io/github/last-commit/sakurawald/fuji-fabric)
+![modrinth download counter](https://img.shields.io/modrinth/dt/1TowMm2v)
+![github release](https://img.shields.io/github/v/release/sakurawald/fuji-fabric)
+![github license](https://img.shields.io/github/license/sakurawald/fuji-fabric)
 
 ## Description
 Fuji is a minecraft mod that provides many essential and useful modules for vanilla survival.
