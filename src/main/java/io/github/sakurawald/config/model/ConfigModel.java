@@ -21,7 +21,7 @@ import java.util.*;
                 
         Note:
         - Most of the configuration files use `.json` file format, so you might want to use a better `text-editor` to highlight the file. 
-          A good editor for json edit is `visual studio code`: [Visual Studio Code - Web Online Editor](https://vscode.dev/)
+          A good editor for json is `visual studio code`: [Visual Studio Code - Web Online Editor](https://vscode.dev/)
           
         """)
 public class ConfigModel {
@@ -844,7 +844,7 @@ public class ConfigModel {
                 """)
         public class Rtp {
 
-            public boolean enable = true;
+            public boolean enable = false;
 
             public @NotNull Setup setup = new Setup();
 

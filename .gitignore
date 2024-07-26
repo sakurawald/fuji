@@ -1,5 +1,4 @@
 # gradle
-
 .gradle/
 local.properties
 build/
@@ -7,18 +6,15 @@ out/
 classes/
 
 # eclipse
-
 *.launch
 
 # idea
-
 .idea/
 *.iml
 *.ipr
 *.iws
 
 # vscode
-
 .settings/
 .vscode/
 bin/
@@ -26,14 +22,12 @@ bin/
 .project
 
 # macos
-
 *.DS_Store
 
 # fabric
 /run/
 
 # java
-
 hs_err_*.log
 replay_*.log
 *.hprof

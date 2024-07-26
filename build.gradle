@@ -87,6 +87,7 @@ dependencies {
 
 /* compile */
 tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
     it.options.release.set(21)
 }
 
@@ -108,6 +109,9 @@ processResources {
 }
 
 jar {
+//    def gitProps = new Properties()
+//    file("git.properties").withInputStream { gitProps.load(it) }
+
     from("LICENSE") {
         rename { "${it}-mc${minecraft_version}-${project.base.archivesName.get()}" }
     }
