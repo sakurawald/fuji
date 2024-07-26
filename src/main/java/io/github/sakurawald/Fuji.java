@@ -17,12 +17,11 @@ import static io.github.sakurawald.module.ModuleManager.initializeModules;
 // TODO: spawn module (facility)
 // TODO: hologram module (facility)
 // TODO: invsee module (slot, inv-redirect)
-// TODO: powertool module
+// TODO: powertool module (composed, meta)
 
-// TODO: a lisp-like DSL (parser and code-walker) for command with context and placeholders (%fuji:play_time_total% / nbt)
-// TODO: refactor command facility (selector, aop, options, parser, redirect/option, operation-argument-type)
+// TODO: a lisp-like DSL (parser, code-walker, transformer, nbt selector)
+// TODO: refactor command facility (tui, selector, aop, options, parser, redirect/option, modifier, operation-argument-type, suggestion)
 // TODO: tppos module
-
 
 public class Fuji implements ModInitializer {
 

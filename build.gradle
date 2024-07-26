@@ -142,6 +142,7 @@ modrinth {
         optional.project "luckperms"
         optional.project "carpet"
         optional.project "spark"
+        embedded.project "placeholder-api"
     }
     syncBodyFrom = rootProject.file("README.md").text
 }
