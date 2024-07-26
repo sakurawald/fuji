@@ -654,8 +654,7 @@ public class ConfigModel {
                   You can use multi-level escape in a convenient way: `%fuji:escape player:name%` = `%fuji:escape player:name 1`
                                 
                 Tips:
-                - You can also use [the default available placeholders](https://placeholders.pb4.eu/user/default-placeholders/) 
-                  in anywhere. (Yeah, you can use `placeholder` in the `en_us.json` language file, it works)
+                - You can also use [the default available placeholders](https://placeholders.pb4.eu/user/default-placeholders/) in anywhere. (Yeah, you can use `placeholder` in the `en_us.json` language file, it works)
                 - There are some mods also provides extra placeholders, see: [other mods that provides extra placeholders](https://placeholders.pb4.eu/user/mod-placeholders/)
                   
                 """)

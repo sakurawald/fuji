@@ -26,7 +26,6 @@ public class DocsGeneratorTest {
         return fileName.toLowerCase();
     }
 
-
     @SneakyThrows
     private void generate(JsonObject jsonObject, String configFileName, String languageCode) {
         Path outputPath = LOCALE_PATH.resolve(languageCode);
@@ -50,7 +49,6 @@ public class DocsGeneratorTest {
     private void generate(Path jsonFile, String languageCode) {
         JsonReader jsonReader = new JsonReader(new FileReader(jsonFile.toFile()));
         JsonObject jsonObject = GSON.fromJson(jsonReader, JsonObject.class);
-        System.out.println(jsonObject);
         generate(jsonObject, jsonFile.toFile().getName(), languageCode);
     }
 
