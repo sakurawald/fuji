@@ -1,7 +1,7 @@
 # Fuji-Fabric
 ![github workflow build job](https://img.shields.io/github/actions/workflow/status/sakurawald/fuji-fabric/build.yml)
 ![github license](https://img.shields.io/github/license/sakurawald/fuji-fabric)
-![github commits since latest release](https://img.shields.io/github/commits-since/sakurawald/fuji-fabric/latest)
+![github release](https://img.shields.io/github/v/release/sakurawald/fuji-fabric)
 ![modrinth download counter](https://img.shields.io/modrinth/dt/1TowMm2v)
 
 ## Description
