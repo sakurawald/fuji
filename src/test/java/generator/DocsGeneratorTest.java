@@ -19,7 +19,7 @@ import java.nio.file.Path;
 public class DocsGeneratorTest {
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final Path LOCALE_PATH = Path.of("fuji-fabric.wiki", "locale");
-    private static final String EN_US = "en-us";
+    private static final String EN_US = "en_us";
 
     private String getLanguageCode(String fileName) {
         fileName = fileName.replace(".json", "");
@@ -58,7 +58,7 @@ public class DocsGeneratorTest {
     void generate() {
         generate(new ConfigModel(), "config.json", EN_US);
         generate(new SchedulerModel(), "scheduler.json", EN_US);
-        generate(LOCALE_PATH.resolve("zh-cn").resolve("config.json"), "config.json", "zh-cn");
+        generate(LOCALE_PATH.resolve("zh-cn").resolve("config.json"), "config.json", "zh_cn");
     }
 
 }
