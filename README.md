@@ -21,6 +21,8 @@ Fuji is a minecraft mod that provides many essential and useful modules for vani
 4. **Easy-to-Use**: a text-based per-field-explained auto-generated always-up-to-date documentation is provided. (Our configuration use lots of mini-language and generators to provide a unified setup.)
 
 ## Documentation
+Other language available: [中文](https://github.com/sakurawald/fuji-fabric/wiki/%5Bconfig.json%5D-%5Bzh_cn%5D)
+
 See [configuration](https://github.com/sakurawald/fuji-fabric/wiki/Configuration)
 
 See [permission](https://github.com/sakurawald/fuji-fabric/wiki/Permission)
