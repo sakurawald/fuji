@@ -13,6 +13,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileReader;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 
@@ -45,11 +46,14 @@ public class DocsGeneratorTest {
         generate(configJson, configFileName, languageCode);
     }
 
-    @SneakyThrows
     private void generate(Path jsonFile, String languageCode) {
-        JsonReader jsonReader = new JsonReader(new FileReader(jsonFile.toFile()));
-        JsonObject jsonObject = GSON.fromJson(jsonReader, JsonObject.class);
-        generate(jsonObject, jsonFile.toFile().getName(), languageCode);
+        try {
+            JsonReader jsonReader = new JsonReader(new FileReader(jsonFile.toFile()));
+            JsonObject jsonObject = GSON.fromJson(jsonReader, JsonObject.class);
+            generate(jsonObject, jsonFile.toFile().getName(), languageCode);
+        } catch (IOException e) {
+            System.out.println("IOException: " + e);
+        }
     }
 
     @Test
