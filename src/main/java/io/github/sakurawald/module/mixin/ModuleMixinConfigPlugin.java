@@ -4,6 +4,8 @@ import com.google.gson.JsonElement;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -27,12 +29,12 @@ public class ModuleMixinConfigPlugin implements IMixinConfigPlugin {
     }
 
     @Override
-    public String getRefMapperConfig() {
+    public @Nullable String getRefMapperConfig() {
         return null;
     }
 
     @Override
-    public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+    public boolean shouldApplyMixin(String targetClassName, @NotNull String mixinClassName) {
         List<String> packagePath = ModuleManager.getPackagePath(this.getClass(), mixinClassName);
 
         // bypass
@@ -47,7 +49,7 @@ public class ModuleMixinConfigPlugin implements IMixinConfigPlugin {
     }
 
     @Override
-    public List<String> getMixins() {
+    public @Nullable List<String> getMixins() {
         return null;
     }
 

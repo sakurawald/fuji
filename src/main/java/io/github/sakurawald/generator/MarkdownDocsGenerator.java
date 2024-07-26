@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
@@ -17,17 +18,17 @@ public class MarkdownDocsGenerator {
 
     private MarkdownDocsGenerator() {}
 
-    private String toMarkdown(JsonObject root) {
+    private @NotNull String toMarkdown(@NotNull JsonObject root) {
         StringBuilder text = new StringBuilder();
         walk(text, 1, root);
         return text.toString();
     }
 
-    private String getIndent(int level) {
+    private @NotNull String getIndent(int level) {
         return ">".repeat(level) + " ";
     }
 
-    private String makeDocumentation(String string, int level) {
+    private @NotNull String makeDocumentation(@NotNull String string, int level) {
         StringBuilder text = new StringBuilder();
 
         // drop first and last quote
@@ -51,7 +52,7 @@ public class MarkdownDocsGenerator {
         return text.toString().trim();
     }
 
-    private String makeJsonPair(String key, JsonElement jsonElement, int level) {
+    private @NotNull String makeJsonPair(String key, JsonElement jsonElement, int level) {
         StringBuilder text = new StringBuilder();
         String indent = getIndent(level);
         text.append(indent).append("```json").append(System.lineSeparator())
@@ -61,7 +62,7 @@ public class MarkdownDocsGenerator {
         return text.toString();
     }
 
-    private String makeBoxed(String string, int level) {
+    private @NotNull String makeBoxed(String string, int level) {
         StringBuilder text = new StringBuilder();
         String indent = getIndent(level);
         // class documentation
@@ -74,7 +75,7 @@ public class MarkdownDocsGenerator {
         return text.toString();
     }
 
-    private String makeDocumentedJsonPair(JsonObject node, String key, int level) {
+    private @NotNull String makeDocumentedJsonPair(@NotNull JsonObject node, String key, int level) {
         String documentation = node.get(key + FIELD_DOCUMENTATION).getAsString();
         String indent = getIndent(level);
 
@@ -94,7 +95,7 @@ public class MarkdownDocsGenerator {
         return text.toString();
     }
 
-    private void processJsonPair(StringBuilder text, JsonObject node, String key, int level) {
+    private void processJsonPair(@NotNull StringBuilder text, @NotNull JsonObject node, String key, int level) {
         if (node.keySet().contains(key + FIELD_DOCUMENTATION)) {
             // field documentation
             text.append(makeDocumentedJsonPair(node, key, level));
@@ -104,7 +105,7 @@ public class MarkdownDocsGenerator {
         }
     }
 
-    private void walk(StringBuilder sb, int level, JsonObject node) {
+    private void walk(@NotNull StringBuilder sb, int level, @NotNull JsonObject node) {
         String indent = getIndent(level);
 
         Set<String> keys = node.keySet();
@@ -147,7 +148,7 @@ public class MarkdownDocsGenerator {
         }
     }
 
-    public String generate(JsonObject jsonObject) {
+    public @NotNull String generate(@NotNull JsonObject jsonObject) {
         return toMarkdown(jsonObject);
     }
 }

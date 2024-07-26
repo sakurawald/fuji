@@ -209,7 +209,7 @@ public class ChatInitializer extends ModuleInitializer {
 
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(
                 literal("chat")
                         .then(literal("format")
@@ -225,7 +225,7 @@ public class ChatInitializer extends ModuleInitializer {
         );
     }
 
-    private int $format(CommandContext<ServerCommandSource> ctx) {
+    private int $format(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             /* save the format*/
             String format = StringArgumentType.getString(ctx, "format");
@@ -245,7 +245,7 @@ public class ChatInitializer extends ModuleInitializer {
         });
     }
 
-    private int $reset(CommandContext<ServerCommandSource> ctx) {
+    private int $reset(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             String name = player.getGameProfile().getName();
             chatHandler.model().format.player2format.remove(name);
@@ -266,7 +266,7 @@ public class ChatInitializer extends ModuleInitializer {
                 .uses(Integer.MAX_VALUE).build());
     }
 
-    private String resolveMentionTag(String string) {
+    private String resolveMentionTag(@NotNull String string) {
         /* resolve player tag */
         ArrayList<ServerPlayerEntity> mentionedPlayers = new ArrayList<>();
 
@@ -296,7 +296,7 @@ public class ChatInitializer extends ModuleInitializer {
         return string;
     }
 
-    public Text parseText(ServerPlayerEntity player, String message) {
+    public @NotNull Text parseText(@NotNull ServerPlayerEntity player, String message) {
         /* parse message */
         message = resolvePatterns(message);
         message = resolveMentionTag(message);

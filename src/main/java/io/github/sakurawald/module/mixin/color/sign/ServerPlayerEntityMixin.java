@@ -6,6 +6,7 @@ import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.block.entity.SignText;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,10 +17,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ServerPlayerEntityMixin {
 
     @Unique
+    @NotNull
     ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
     @Inject(method = "openEditSignScreen", at = @At("HEAD"))
-    private void $onUse(SignBlockEntity signBlockEntity, boolean bl, CallbackInfo ci) {
+    private void $onUse(@NotNull SignBlockEntity signBlockEntity, boolean bl, @NotNull CallbackInfo ci) {
         if (ci.isCancelled()) return;
 
         boolean facing = signBlockEntity.isPlayerFacingFront(player);

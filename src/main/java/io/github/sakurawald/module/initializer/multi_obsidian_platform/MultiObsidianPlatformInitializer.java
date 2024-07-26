@@ -10,6 +10,7 @@ import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import org.jetbrains.annotations.NotNull;
 
 
 public class MultiObsidianPlatformInitializer extends ModuleInitializer {
@@ -17,7 +18,7 @@ public class MultiObsidianPlatformInitializer extends ModuleInitializer {
     private final Map<BlockPos, BlockPos> TRANSFORM_CACHE = new HashMap<>();
 
     /* this method is used to fix Entity#position() async */
-    private BlockPos findNearbyEndPortalBlock(BlockPos bp) {
+    private BlockPos findNearbyEndPortalBlock(@NotNull BlockPos bp) {
         ServerWorld overworld = ServerHelper.getDefaultServer().getOverworld();
 
         // should we find nearby END_PORTAL block ?
@@ -38,7 +39,7 @@ public class MultiObsidianPlatformInitializer extends ModuleInitializer {
         return bp;
     }
 
-    private BlockPos findCenterEndPortalBlock(BlockPos bp) {
+    private BlockPos findCenterEndPortalBlock(@NotNull BlockPos bp) {
         ServerWorld overworld = ServerHelper.getDefaultServer().getOverworld();
         if (overworld.getBlockState(bp.north()) != Blocks.END_PORTAL.getDefaultState()) {
             if (overworld.getBlockState(bp.west()) != Blocks.END_PORTAL.getDefaultState()) {

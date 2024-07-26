@@ -14,6 +14,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 import java.util.Optional;
@@ -26,7 +28,7 @@ import java.util.function.Consumer;
  */
 public class RandomTeleport {
 
-    public static void request(ServerPlayerEntity player, TeleportSetup setup, Consumer<Position> postConsumer) {
+    public static void request(@NotNull ServerPlayerEntity player, @NotNull TeleportSetup setup, @Nullable Consumer<Position> postConsumer) {
         LogUtil.info("Request rtp: {}", player.getGameProfile().getName());
         Stopwatch timer = Stopwatch.createStarted();
 
@@ -59,7 +61,7 @@ public class RandomTeleport {
         LogUtil.info("Response rtp: {} has been teleported to ({} {} {} {}) (cost = {})", player.getGameProfile().getName(), world.getRegistryKey().getValue(), result.get().getX(), result.get().getY(), result.get().getZ(), cost);
     }
 
-    private static Optional<BlockPos> searchPosition(TeleportSetup setup) {
+    private static @NotNull Optional<BlockPos> searchPosition(@NotNull TeleportSetup setup) {
         // Search for a valid y-level (not in a block, underwater, out of the world, etc.)
         final BlockPos targetXZ = getRandomXZ(setup);
 
@@ -85,11 +87,11 @@ public class RandomTeleport {
         return Optional.empty();
     }
 
-    private static BlockPos getRandomXZ(TeleportSetup setup) {
+    private static @NotNull BlockPos getRandomXZ(@NotNull TeleportSetup setup) {
         return setup.isCircle() ? getRandomXZWithCircle(setup) : getRandomXZWithRect(setup);
     }
 
-    private static BlockPos getRandomXZWithCircle(TeleportSetup setup) {
+    private static @NotNull BlockPos getRandomXZWithCircle(@NotNull TeleportSetup setup) {
         var rand = new Random();
 
         int r_min = setup.getMinRange();
@@ -105,7 +107,7 @@ public class RandomTeleport {
         return new BlockPos(x, 0, z);
     }
 
-    private static BlockPos getRandomXZWithRect(TeleportSetup setup) {
+    private static @NotNull BlockPos getRandomXZWithRect(@NotNull TeleportSetup setup) {
         var rand = new Random();
         int r_min = setup.getMinRange();
         int r_max = setup.getMaxRange();
@@ -115,7 +117,7 @@ public class RandomTeleport {
         return new BlockPos(x, 0, z);
     }
 
-    private static boolean isSatisfied(TeleportSetup setup, Chunk chunk, BlockPos pos) {
+    private static boolean isSatisfied(@NotNull TeleportSetup setup, @NotNull Chunk chunk, @NotNull BlockPos pos) {
         BlockState blockState = chunk.getBlockState(pos);
         return pos.getY() >= setup.getMinY()
                 && pos.getY() <= setup.getMaxY()
@@ -126,7 +128,7 @@ public class RandomTeleport {
                 && pos.getY() <= chunk.getTopY();
     }
 
-    public static Iterable<BlockPos.Mutable> getChunkCandidateBlocks(ChunkPos chunkPos) {
+    public static @NotNull Iterable<BlockPos.Mutable> getChunkCandidateBlocks(@NotNull ChunkPos chunkPos) {
         return () -> new Iterator<>() {
             private final BlockPos.Mutable bp = new BlockPos.Mutable();
             private int i = -1;

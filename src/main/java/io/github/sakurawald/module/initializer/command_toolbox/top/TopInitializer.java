@@ -12,14 +12,15 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 public class TopInitializer extends ModuleInitializer {
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(CommandManager.literal("top").executes(TopInitializer::$top));
     }
 
-    private static int $top(CommandContext<ServerCommandSource> ctx) {
+    private static int $top(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             World world = player.getWorld();
             BlockPos topPosition = world.getTopPosition(Heightmap.Type.MOTION_BLOCKING, player.getBlockPos());

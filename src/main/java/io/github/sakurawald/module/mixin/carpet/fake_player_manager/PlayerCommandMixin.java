@@ -10,6 +10,7 @@ import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,7 +26,7 @@ public abstract class PlayerCommandMixin {
     private static final FakePlayerManagerInitializer module = ModuleManager.getInitializer(FakePlayerManagerInitializer.class);
 
     @Unique
-    private static String transformFakePlayerName(String fakePlayerName) {
+    private static @NotNull String transformFakePlayerName(@NotNull String fakePlayerName) {
         return Configs.configHandler.model().modules.carpet.fake_player_manager.transform_name.replace("%name%", fakePlayerName);
     }
 
@@ -33,7 +34,7 @@ public abstract class PlayerCommandMixin {
             value = "INVOKE",
             target = "Lcom/mojang/brigadier/arguments/StringArgumentType;getString(Lcom/mojang/brigadier/context/CommandContext;Ljava/lang/String;)Ljava/lang/String;"
     ), remap = false)
-    private static String $canSpawn(final CommandContext<?> context, final String name) {
+    private static @NotNull String $canSpawn(final @NotNull CommandContext<?> context, final String name) {
         return transformFakePlayerName(StringArgumentType.getString(context, name));
     }
 
@@ -41,12 +42,12 @@ public abstract class PlayerCommandMixin {
             value = "INVOKE",
             target = "Lcom/mojang/brigadier/arguments/StringArgumentType;getString(Lcom/mojang/brigadier/context/CommandContext;Ljava/lang/String;)Ljava/lang/String;"
     ), remap = false)
-    private static String $spawn(final CommandContext<?> context, final String name) {
+    private static @NotNull String $spawn(final @NotNull CommandContext<?> context, final String name) {
         return transformFakePlayerName(StringArgumentType.getString(context, name));
     }
 
     @Inject(method = "spawn", at = @At("HEAD"), remap = false, cancellable = true)
-    private static void $spawn_head(CommandContext<ServerCommandSource> context, CallbackInfoReturnable<Integer> cir) {
+    private static void $spawn_head(@NotNull CommandContext<ServerCommandSource> context, @NotNull CallbackInfoReturnable<Integer> cir) {
         ServerPlayerEntity player = context.getSource().getPlayer();
         if (player == null) return;
 
@@ -64,7 +65,7 @@ public abstract class PlayerCommandMixin {
     }
 
     @Inject(method = "spawn", at = @At("TAIL"), remap = false)
-    private static void $spawn_tail(CommandContext<ServerCommandSource> context, CallbackInfoReturnable<Integer> cir) {
+    private static void $spawn_tail(@NotNull CommandContext<ServerCommandSource> context, CallbackInfoReturnable<Integer> cir) {
         ServerPlayerEntity player = context.getSource().getPlayer();
         String fakePlayerName = StringArgumentType.getString(context, "player");
         fakePlayerName = transformFakePlayerName(fakePlayerName);
@@ -73,7 +74,7 @@ public abstract class PlayerCommandMixin {
     }
 
     @Inject(method = "cantManipulate", at = @At("HEAD"), remap = false, cancellable = true)
-    private static void $cantManipulate(CommandContext<ServerCommandSource> context, CallbackInfoReturnable<Boolean> cir) {
+    private static void $cantManipulate(@NotNull CommandContext<ServerCommandSource> context, @NotNull CallbackInfoReturnable<Boolean> cir) {
         String fakePlayerName = StringArgumentType.getString(context, "player");
         if (!module.canManipulateFakePlayer(context, fakePlayerName)) {
             MessageHelper.sendMessage(context.getSource(), "fake_player_manager.manipulate.forbidden");

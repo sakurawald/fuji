@@ -7,11 +7,12 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
+import org.jetbrains.annotations.Nullable;
 
 @UtilityClass
 public class LogUtil {
 
-    private static final Logger LOGGER = createLogger(StringUtils.capitalize(Fuji.MOD_ID));
+    private static final @Nullable Logger LOGGER = createLogger(StringUtils.capitalize(Fuji.MOD_ID));
 
     public static Logger getDefaultLogger() {
         return LOGGER;
@@ -33,7 +34,7 @@ public class LogUtil {
         LOGGER.error(message,args);
     }
 
-    public static Logger createLogger(String name) {
+    public static @Nullable Logger createLogger(String name) {
         Logger logger = LogManager.getLogger(name);
         try {
             String level = System.getProperty("%s.level".formatted(Fuji.MOD_ID));

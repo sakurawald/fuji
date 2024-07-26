@@ -12,14 +12,15 @@ import net.minecraft.screen.StonecutterScreenHandler;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 
 public class StoneCutterInitializer extends ModuleInitializer {
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(CommandManager.literal("stonecutter").executes(this::$stonecutter));
     }
 
-    private int $stonecutter(CommandContext<ServerCommandSource> ctx) {
+    private int $stonecutter(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> new StonecutterScreenHandler(i, inventory, ScreenHandlerContext.create(p.getWorld(), p.getBlockPos())) {
                 @Override

@@ -18,7 +18,7 @@ import java.util.List;
 @UtilityClass
 public class NbtHelper {
 
-    public static void set(NbtCompound root, String path, NbtElement value) {
+    public static void set(@NotNull NbtCompound root, @NotNull String path, NbtElement value) {
         // search the path
         String[] nodes = path.split("\\.");
         for (int i = 0; i < nodes.length - 1; i++) {
@@ -36,7 +36,7 @@ public class NbtHelper {
         root.put(key, value);
     }
 
-    public static NbtElement getOrDefault(NbtCompound root, String path, NbtElement defaultValue) {
+    public static NbtElement getOrDefault(@NotNull NbtCompound root, @NotNull String path, NbtElement defaultValue) {
         if (get(root, path) == null) {
             set(root, path, defaultValue);
         }
@@ -44,7 +44,7 @@ public class NbtHelper {
         return get(root, path);
     }
 
-    public static NbtElement get(NbtCompound root, String path) {
+    public static @org.jetbrains.annotations.Nullable NbtElement get(@NotNull NbtCompound root, @NotNull String path) {
         // search the path
         String[] nodes = path.split("\\.");
         for (int i = 0; i < nodes.length - 1; i++) {
@@ -62,7 +62,7 @@ public class NbtHelper {
         return root.get(key);
     }
 
-    public static @Nullable NbtCompound read(Path path) {
+    public static @Nullable NbtCompound read(@NotNull Path path) {
         try {
             if (!path.toFile().exists()) {
                 NbtIo.write(new NbtCompound(), path);
@@ -75,7 +75,7 @@ public class NbtHelper {
         return null;
     }
 
-    public static void write(NbtCompound root, Path path) {
+    public static void write(@NotNull NbtCompound root, @NotNull Path path) {
         try {
             NbtIo.write(root, path);
         } catch (IOException e) {
@@ -83,7 +83,7 @@ public class NbtHelper {
         }
     }
 
-    public static NbtList writeSlotsNode(NbtList node, List<ItemStack> itemStackList) {
+    public static NbtList writeSlotsNode(@NotNull NbtList node, @NotNull List<ItemStack> itemStackList) {
         for (ItemStack item : itemStackList) {
             node.add(item.encodeAllowEmpty(RegistryHelper.getDefaultWrapperLookup()));
         }

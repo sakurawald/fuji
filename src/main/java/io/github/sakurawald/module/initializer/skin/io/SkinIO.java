@@ -3,6 +3,7 @@ package io.github.sakurawald.module.initializer.skin.io;
 import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.util.LogUtil;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class SkinIO {
         this.savePath = savePath;
     }
 
-    public Property loadSkin(UUID uuid) {
+    public @Nullable Property loadSkin(UUID uuid) {
         File file = savePath.resolve(uuid + FILE_EXTENSION).toFile();
         try {
             String string = org.apache.commons.io.FileUtils.readFileToString(file, StandardCharsets.UTF_8);

@@ -8,6 +8,7 @@ import io.github.sakurawald.util.minecraft.CommandHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,11 +19,11 @@ public class ChainInitializer extends ModuleInitializer {
     private static final Pattern CHAIN_COMMAND_PARSER = Pattern.compile("(.+?)\\s+(chain .+)");
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(literal("chain").then(CommandHelper.Argument.rest().executes(this::chain)));
     }
 
-    private int chain(CommandContext<ServerCommandSource> ctx) {
+    private int chain(@NotNull CommandContext<ServerCommandSource> ctx) {
         String rest = CommandHelper.Argument.rest(ctx);
 
         Matcher matcher = CHAIN_COMMAND_PARSER.matcher(rest);

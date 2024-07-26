@@ -14,18 +14,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class PagedHeadsGui extends LayeredGui {
     public final List<Head> heads;
-    final GuiInterface parent;
-    final Layer contentLayer;
-    final Layer navigationLayer;
+    final @NotNull GuiInterface parent;
+    final @NotNull Layer contentLayer;
+    final @NotNull Layer navigationLayer;
     final HeadInitializer module = ModuleManager.getInitializer(HeadInitializer.class);
     public int page = 0;
 
-    public PagedHeadsGui(GuiInterface parent, List<Head> heads) {
+    public PagedHeadsGui(@NotNull GuiInterface parent, List<Head> heads) {
         super(ScreenHandlerType.GENERIC_9X6, parent.getPlayer(), false);
         this.heads = heads;
         this.parent = parent;
@@ -96,7 +97,7 @@ public class PagedHeadsGui extends LayeredGui {
         }
     }
 
-    private void processHeadClick(Head head, ClickType type) {
+    private void processHeadClick(@NotNull Head head, @NotNull ClickType type) {
         var player = getPlayer();
 
         ItemStack cursorStack = getPlayer().currentScreenHandler.getCursorStack();

@@ -13,6 +13,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntry.Reference;
 import net.minecraft.registry.entry.RegistryEntryInfo;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -59,7 +60,7 @@ public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInter
 
 
     @Override
-    public boolean fuji$remove(T entry) {
+    public boolean fuji$remove(@NotNull T entry) {
         var registryEntry = this.valueToEntry.get(entry);
         int rawId = this.entryToRawId.removeInt(entry);
         if (rawId == -1) {
@@ -96,7 +97,7 @@ public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInter
     }
 
     @ModifyReturnValue(method = "streamEntries", at = @At("RETURN"))
-    public Stream<Reference<T>> fixEntryStream(Stream<RegistryEntry.Reference<T>> original) {
+    public Stream<Reference<T>> fixEntryStream(@NotNull Stream<RegistryEntry.Reference<T>> original) {
         return original.filter(Objects::nonNull);
     }
 }

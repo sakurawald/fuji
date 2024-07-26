@@ -11,6 +11,7 @@ import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import org.jetbrains.annotations.NotNull;
 
 
 public class ConfigInitializer extends ModuleInitializer {
@@ -23,7 +24,7 @@ public class ConfigInitializer extends ModuleInitializer {
 
     @SuppressWarnings("unused")
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(
                 CommandManager.literal("fuji").requires(source -> source.hasPermissionLevel(4)).then(
                         CommandManager.literal("reload").executes(this::$reload)
@@ -31,7 +32,7 @@ public class ConfigInitializer extends ModuleInitializer {
         );
     }
 
-    private int $reload(CommandContext<ServerCommandSource> ctx) {
+    private int $reload(@NotNull CommandContext<ServerCommandSource> ctx) {
         // reload modules
         ModuleManager.reloadModules();
 

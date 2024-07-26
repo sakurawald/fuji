@@ -4,12 +4,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import lombok.experimental.UtilityClass;
+import org.jetbrains.annotations.NotNull;
 
 @UtilityClass
 public class JsonUtil {
 
     @SuppressWarnings("RedundantIfStatement")
-    public static boolean sameType(JsonElement a, JsonElement b) {
+    public static boolean sameType(@NotNull JsonElement a, @NotNull JsonElement b) {
         if (a.isJsonObject() && b.isJsonObject()) return true;
         if (a.isJsonArray() && b.isJsonArray()) return true;
         if (a.isJsonNull() && b.isJsonNull()) return true;
@@ -25,7 +26,7 @@ public class JsonUtil {
         return false;
     }
 
-    public static boolean existsNode(JsonObject root, String path){
+    public static boolean existsNode(@NotNull JsonObject root, @NotNull String path){
         String[] nodes = path.split("\\.");
         for (int i = 0; i < nodes.length - 1; i++) {
             String node = nodes[i];

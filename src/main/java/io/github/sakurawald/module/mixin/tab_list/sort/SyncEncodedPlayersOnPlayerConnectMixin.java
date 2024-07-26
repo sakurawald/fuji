@@ -9,6 +9,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ConnectedClientData;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -36,7 +37,7 @@ public abstract class SyncEncodedPlayersOnPlayerConnectMixin {
     public abstract void sendToAll(Packet<?> packet);
 
     @Inject(method = "onPlayerConnect", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 5, shift = At.Shift.AFTER))
-    void sendEncodedTabListToNewPlayer(ClientConnection clientConnection, ServerPlayerEntity serverPlayerEntity, ConnectedClientData connectedClientData, CallbackInfo ci) {
+    void sendEncodedTabListToNewPlayer(ClientConnection clientConnection, @NotNull ServerPlayerEntity serverPlayerEntity, ConnectedClientData connectedClientData, CallbackInfo ci) {
         CompletableFuture.runAsync(() -> {
             List<ServerPlayerEntity> encodedOtherPlayers = new ArrayList<>();
             // note: at the time point, the new joined player still don't put into the PlayerManager's players list.

@@ -7,18 +7,19 @@ import io.github.sakurawald.util.minecraft.CommandHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import org.jetbrains.annotations.NotNull;
 
 
 public class SuicideInitializer extends ModuleInitializer {
 
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(CommandManager.literal("suicide").executes(this::$suicide));
     }
 
     @SuppressWarnings("SameReturnValue")
-    private int $suicide(CommandContext<ServerCommandSource> ctx) {
+    private int $suicide(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             player.kill();
             return CommandHelper.Return.SUCCESS;

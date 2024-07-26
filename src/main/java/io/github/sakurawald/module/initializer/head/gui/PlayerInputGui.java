@@ -15,17 +15,18 @@ import net.minecraft.item.Items;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.Text;
 import net.minecraft.util.UserCache;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 class PlayerInputGui extends AnvilInputGui {
     final HeadInitializer module = ModuleManager.getInitializer(HeadInitializer.class);
-    private final HeadGui parentGui;
+    private final @NotNull HeadGui parentGui;
     private long apiDebounce = 0;
     private final ItemStack DEFAULT_PLAYER_HEAD = Items.PLAYER_HEAD.getDefaultStack();
 
-    public PlayerInputGui(HeadGui parentGui) {
+    public PlayerInputGui(@NotNull HeadGui parentGui) {
         super(parentGui.player, false);
         this.parentGui = parentGui;
         this.setDefaultInputValue("");

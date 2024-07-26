@@ -24,6 +24,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.WorldChunk;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 import java.util.PriorityQueue;
 import java.util.concurrent.CompletableFuture;
@@ -34,13 +36,13 @@ import static net.minecraft.server.command.CommandManager.*;
 public class TopChunksInitializer extends ModuleInitializer {
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
         dispatcher.register(
                 literal("chunks").executes(this::$chunks)
         );
     }
 
-    private int $chunks(CommandContext<ServerCommandSource> ctx) {
+    private int $chunks(@NotNull CommandContext<ServerCommandSource> ctx) {
         CompletableFuture.runAsync(() -> {
             PriorityQueue<ChunkScore> PQ = new PriorityQueue<>();
             /* iter worlds */
@@ -97,7 +99,7 @@ public class TopChunksInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    private void calculateNearestPlayer(ServerCommandSource source, PriorityQueue<ChunkScore> PQ, int limit) {
+    private void calculateNearestPlayer(ServerCommandSource source, @NotNull PriorityQueue<ChunkScore> PQ, int limit) {
         int count = 0;
         for (ChunkScore chunkScore : PQ) {
             if (count++ >= limit) break;

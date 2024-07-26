@@ -28,6 +28,7 @@ import io.github.sakurawald.module.initializer.motd.MotdInitializer;
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.server.network.ServerQueryNetworkHandler;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -43,7 +44,7 @@ abstract class ServerQueryNetworkHandlerMixin {
     private static final MotdInitializer module = ModuleManager.getInitializer(MotdInitializer.class);
 
     @Redirect(method = "onRequest", at = @At(value = "FIELD", target = "Lnet/minecraft/server/network/ServerQueryNetworkHandler;metadata:Lnet/minecraft/server/ServerMetadata;"))
-    public ServerMetadata $handleStatusRequest(final net.minecraft.server.network.ServerQueryNetworkHandler instance) {
+    public @NotNull ServerMetadata $handleStatusRequest(final net.minecraft.server.network.ServerQueryNetworkHandler instance) {
         ServerMetadata vanillaStatus = ServerHelper.getDefaultServer().getServerMetadata();
         if (vanillaStatus == null) {
             LogUtil.warn("Can't inject into the vanilla server status. (reason: the vanilla one is null)");

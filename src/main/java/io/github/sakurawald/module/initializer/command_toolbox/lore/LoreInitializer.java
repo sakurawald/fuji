@@ -11,6 +11,7 @@ import net.minecraft.component.type.LoreComponent;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -19,13 +20,13 @@ import static net.minecraft.server.command.CommandManager.literal;
 public class LoreInitializer extends ModuleInitializer {
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(literal("lore")
                 .then(literal("set").then(CommandHelper.Argument.rest().executes(this::$set)))
                 .then(literal("unset").executes(this::$unset)));
     }
 
-    private int $unset(CommandContext<ServerCommandSource> ctx) {
+    private int $unset(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.itemOnHandCommand(ctx, (player, item) -> {
             LoreComponent loreComponent = new LoreComponent(List.of());
             item.set(DataComponentTypes.LORE, loreComponent);
@@ -33,7 +34,7 @@ public class LoreInitializer extends ModuleInitializer {
         });
     }
 
-    private int $set(CommandContext<ServerCommandSource> ctx) {
+    private int $set(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.itemOnHandCommand(ctx, (player, item) -> {
             String rest = CommandHelper.Argument.rest(ctx);
             List<Text> texts = MessageHelper.ofTextList(player, false, rest);

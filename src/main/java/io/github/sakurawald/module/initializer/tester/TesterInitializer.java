@@ -34,6 +34,7 @@ import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.dimension.DimensionTypes;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -64,7 +65,7 @@ public class TesterInitializer extends ModuleInitializer {
 
     }
 
-    private static int $run(CommandContext<ServerCommandSource> ctx) {
+    private static int $run(@NotNull CommandContext<ServerCommandSource> ctx) {
         var source = ctx.getSource();
         ServerPlayerEntity player = source.getPlayer();
         MinecraftServer server = player.server;
@@ -84,7 +85,7 @@ public class TesterInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
         if (!FabricLoader.getInstance().isDevelopmentEnvironment()) return;
 
         registerStore();

@@ -22,6 +22,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.level.storage.LevelStorage;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,7 +65,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
 
     @SuppressWarnings("unused")
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(literal("download").executes(this::$download));
     }
 
@@ -76,13 +77,13 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         }
     }
 
-    public void safelyRemoveContext(HttpContext httpContext) {
+    public void safelyRemoveContext(@NotNull HttpContext httpContext) {
         safelyRemoveContext(httpContext.getPath());
     }
 
     @SuppressWarnings("SameReturnValue")
     @SneakyThrows
-    private int $download(CommandContext<ServerCommandSource> ctx) {
+    private int $download(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             /* init server */
             if (server == null) {
@@ -114,7 +115,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         });
     }
 
-    public File compressRegionFile(ServerPlayerEntity player) {
+    public @NotNull File compressRegionFile(@NotNull ServerPlayerEntity player) {
         /* get region location */
         ChunkPos chunkPos = player.getChunkPos();
         int regionX = chunkPos.getRegionX();

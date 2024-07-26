@@ -15,6 +15,7 @@ import io.github.sakurawald.util.minecraft.CommandHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import org.jetbrains.annotations.NotNull;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -56,13 +57,13 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(literal("scheduler").requires(s -> s.hasPermissionLevel(4))
                 .then(literal("trigger")
                         .then(CommandHelper.Argument.name().suggests(new SchedulerJobSuggestionProvider()).executes(this::$trigger))));
     }
 
-    private int $trigger(CommandContext<ServerCommandSource> ctx) {
+    private int $trigger(@NotNull CommandContext<ServerCommandSource> ctx) {
         String name = CommandHelper.Argument.name(ctx);
 
         schedulerHandler.model().scheduleJobs.forEach(job -> {
@@ -78,7 +79,7 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
     private static class SchedulerJobSuggestionProvider implements SuggestionProvider<ServerCommandSource> {
 
         @Override
-        public CompletableFuture<Suggestions> getSuggestions(CommandContext context, SuggestionsBuilder builder) {
+        public CompletableFuture<Suggestions> getSuggestions(CommandContext context, @NotNull SuggestionsBuilder builder) {
             schedulerHandler.model().scheduleJobs.forEach(job -> builder.suggest(job.name));
             return builder.buildFuture();
         }
@@ -87,7 +88,7 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
     public static class ScheduleJobJob implements Job {
 
         @Override
-        public void execute(JobExecutionContext context) {
+        public void execute(@NotNull JobExecutionContext context) {
             ScheduleJob job = (ScheduleJob) context.getJobDetail().getJobDataMap().get("job");
             job.trigger();
         }

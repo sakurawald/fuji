@@ -13,6 +13,7 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -37,12 +38,12 @@ public class AfkInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(CommandManager.literal("afk").executes(this::$afk));
     }
 
     @SuppressWarnings("SameReturnValue")
-    private int $afk(CommandContext<ServerCommandSource> ctx) {
+    private int $afk(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, (player -> {
             // note: issue command will update lastLastActionTime, so it's impossible to use /afk to disable afk
             ((AfkStateAccessor) player).fuji$setAfk(true);

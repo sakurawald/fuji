@@ -10,6 +10,8 @@ import io.github.sakurawald.util.ScheduleUtil;
 import lombok.Cleanup;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -33,14 +35,14 @@ public abstract class ConfigHandler<T> {
             .create();
 
     protected File file;
-    protected T model;
+    protected @Nullable T model;
     protected boolean alreadyBackup;
 
     public ConfigHandler(File file) {
         this.file = file;
     }
 
-    public static JsonElement getJsonElement(String resourcePath) {
+    public static @Nullable JsonElement getJsonElement(@NotNull String resourcePath) {
         try {
             InputStream inputStream = Cat.class.getResourceAsStream(resourcePath);
             assert inputStream != null;
@@ -81,7 +83,7 @@ public abstract class ConfigHandler<T> {
         }
     }
 
-    public void setAutoSaveJob(String cron) {
+    public void setAutoSaveJob(@NotNull String cron) {
         String jobName = this.file.getName();
         String jobGroup = ConfigHandlerAutoSaveJob.class.getName();
         ScheduleUtil.removeJobs(jobGroup, jobName);
@@ -92,14 +94,14 @@ public abstract class ConfigHandler<T> {
         });
     }
 
-    public void mergeJson(JsonElement oldJson, JsonElement newJson) {
+    public void mergeJson(@NotNull JsonElement oldJson, @NotNull JsonElement newJson) {
         if (!oldJson.isJsonObject() || !newJson.isJsonObject()) {
             throw new IllegalArgumentException("Both elements must be JSON objects.");
         }
         mergeFields("", oldJson.getAsJsonObject(), newJson.getAsJsonObject());
     }
 
-    private void mergeFields(String parentPath, JsonObject currentJson, JsonObject defaultJson) {
+    private void mergeFields(String parentPath, @NotNull JsonObject currentJson, @NotNull JsonObject defaultJson) {
         Set<Map.Entry<String, JsonElement>> entrySet = defaultJson.entrySet();
         for (Map.Entry<String, JsonElement> entry : entrySet) {
             String key = entry.getKey();
@@ -177,7 +179,7 @@ public abstract class ConfigHandler<T> {
 
     public static class ConfigHandlerAutoSaveJob implements Job {
         @Override
-        public void execute(JobExecutionContext context) throws JobExecutionException {
+        public void execute(@NotNull JobExecutionContext context) throws JobExecutionException {
             LogUtil.debug("AutoSave ConfigWrapper {}", context.getJobDetail().getKey().getName());
             ConfigHandler<?> configHandler = (ConfigHandler<?>) context.getJobDetail().getJobDataMap().get(ConfigHandler.class.getName());
             configHandler.saveToDisk();

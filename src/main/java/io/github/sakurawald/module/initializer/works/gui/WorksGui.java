@@ -18,17 +18,18 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class WorksGui extends PagedGui<Work> {
 
-    public WorksGui(ServerPlayerEntity player, List<Work> entities) {
+    public WorksGui(ServerPlayerEntity player, @NotNull List<Work> entities) {
         super(player, MessageHelper.ofText(player, "works.list.title"), entities);
     }
 
     @Override
-    public void onConstructor(PagedGui<Work> the) {
+    public void onConstructor(@NotNull PagedGui<Work> the) {
         ServerPlayerEntity player = getPlayer();
         List<Work> entities = the.getEntities();
 
@@ -62,12 +63,12 @@ public class WorksGui extends PagedGui<Work> {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private boolean hasPermission(ServerPlayerEntity player, Work work) {
+    private boolean hasPermission(@NotNull ServerPlayerEntity player, @NotNull Work work) {
         return player.getGameProfile().getName().equals(work.creator) || player.hasPermissionLevel(4);
     }
 
     @Override
-    public GuiElementInterface toGuiElement(PagedGui<Work> the, Work entity) {
+    public GuiElementInterface toGuiElement(@NotNull PagedGui<Work> the, @NotNull Work entity) {
         ServerPlayerEntity player = getPlayer();
         return new GuiElementBuilder()
                 .setItem(entity.asItem())
@@ -106,7 +107,7 @@ public class WorksGui extends PagedGui<Work> {
     }
 
     @Override
-    public List<Work> filter(String keyword) {
+    public @NotNull List<Work> filter(@NotNull String keyword) {
         return getThis().getEntities().stream().filter(w ->
                 w.creator.contains(keyword)
                         || w.name.contains(keyword)

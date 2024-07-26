@@ -2,6 +2,7 @@ package io.github.sakurawald.module.mixin.color.anvil;
 
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.screen.AnvilScreenHandler;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,12 +15,12 @@ public abstract class AnvilScreenHandlerMixin {
     private String newItemName;
 
     @ModifyArg(method = "updateResult", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;set(Lnet/minecraft/component/ComponentType;Ljava/lang/Object;)Ljava/lang/Object;", ordinal = 0))
-    public Object updateResult(Object text) {
+    public @NotNull Object updateResult(Object text) {
         return MessageHelper.ofText(newItemName);
     }
 
     @ModifyArg(method = "setNewItemName", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;set(Lnet/minecraft/component/ComponentType;Ljava/lang/Object;)Ljava/lang/Object;", ordinal = 0))
-    public Object newItemName(Object text) {
+    public @NotNull Object newItemName(Object text) {
         return MessageHelper.ofText(newItemName);
     }
 }

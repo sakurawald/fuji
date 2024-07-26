@@ -5,13 +5,14 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class CommandCooldownInitializer extends ModuleInitializer {
 
     private final HashMap<ServerPlayerEntity, HashMap<String, Long>> map = new HashMap<>();
 
 
-    public long calculateCommandCooldown(ServerPlayerEntity player, String commandLine) {
+    public long calculateCommandCooldown(ServerPlayerEntity player, @NotNull String commandLine) {
 
         // find the matched cooldown-entry
         HashMap<String, Long> commandRegex2LastExecutedTimeMS = map.computeIfAbsent(player, k -> new HashMap<>());

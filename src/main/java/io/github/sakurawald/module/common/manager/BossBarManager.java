@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.kyori.adventure.audience.Audience;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 import oshi.annotation.concurrent.Immutable;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class BossBarManager {
         ServerTickEvents.START_SERVER_TICK.register(this::onServerTick);
     }
 
-    public @Immutable List<BossBarTicket> getTickets() {
+    public @Immutable @NotNull List<BossBarTicket> getTickets() {
         return ImmutableList.copyOf(this.tickets);
     }
 
@@ -29,7 +30,7 @@ public class BossBarManager {
         this.addedTickets.add(ticket);
     }
 
-    private void abortTicket(BossBarTicket ticket) {
+    private void abortTicket(@NotNull BossBarTicket ticket) {
         ticket.clearAudiences();
         this.tickets.remove(ticket);
     }

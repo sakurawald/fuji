@@ -12,6 +12,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,13 +28,13 @@ public abstract class PlayerMixin extends LivingEntity {
     @Unique
     private static final FakePlayerManagerInitializer FAKE_PLAYER_MANAGER_MODULE = ModuleManager.getInitializer(FakePlayerManagerInitializer.class);
 
-    protected PlayerMixin(EntityType<? extends LivingEntity> entityType, World level) {
+    protected PlayerMixin(@NotNull EntityType<? extends LivingEntity> entityType, World level) {
         super(entityType, level);
     }
 
     @SuppressWarnings("DataFlowIssue")
     @Inject(method = "interact", at = @At("HEAD"), cancellable = true)
-    private void $interact(Entity target, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
+    private void $interact(Entity target, Hand hand, @NotNull CallbackInfoReturnable<ActionResult> cir) {
         if (target instanceof EntityPlayerMPFake fakePlayer) {
             ServerPlayerEntity source = (ServerPlayerEntity) (Object) this;
             if (!FAKE_PLAYER_MANAGER_MODULE.isMyFakePlayer(source, fakePlayer)) {

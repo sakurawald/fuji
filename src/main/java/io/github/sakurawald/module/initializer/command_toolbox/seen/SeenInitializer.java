@@ -14,6 +14,7 @@ import lombok.Getter;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
 
@@ -33,12 +34,12 @@ public class SeenInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(CommandManager.literal("seen").then(CommandHelper.Argument.offlinePlayer().executes(this::$seen)));
     }
 
     @SuppressWarnings("SameReturnValue")
-    private int $seen(CommandContext<ServerCommandSource> ctx) {
+    private int $seen(@NotNull CommandContext<ServerCommandSource> ctx) {
         String target = CommandHelper.Argument.offlinePlayer(ctx);
 
         if (data.model().player2seen.containsKey(target)) {

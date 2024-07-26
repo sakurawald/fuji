@@ -1,13 +1,15 @@
 package io.github.sakurawald.module.initializer.world.structure;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Collection;
 import java.util.Iterator;
 
 public final class SafeIterator<T> implements Iterator<T> {
-    private final Object[] values;
+    private final Object @NotNull [] values;
     private int index = 0;
 
-    public SafeIterator(Collection<T> source) {
+    public SafeIterator(@NotNull Collection<T> source) {
         this.values = source.toArray();
     }
 

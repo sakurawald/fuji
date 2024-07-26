@@ -41,16 +41,16 @@ public class ProductionWork extends Work implements ScheduleMethod {
 
     public @NotNull Sample sample = new Sample();
 
-    public ProductionWork(ServerPlayerEntity player, String name) {
+    public ProductionWork(@NotNull ServerPlayerEntity player, String name) {
         super(player, name);
     }
 
     @Override
-    protected String getType() {
+    protected @NotNull String getType() {
         return WorkTypeAdapter.WorkType.ProductionWork.name();
     }
 
-    private List<Text> formatSampleCounter(ServerPlayerEntity player) {
+    private @NotNull List<Text> formatSampleCounter(ServerPlayerEntity player) {
         List<Text> ret = new ArrayList<>();
         long currentTimeMS = System.currentTimeMillis();
 
@@ -71,7 +71,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
     }
 
     @Override
-    public List<Text> asLore(ServerPlayerEntity player) {
+    public @NotNull List<Text> asLore(ServerPlayerEntity player) {
         /* construct lore */
         List<Text> ret = super.asLore(player);
         // note: hide sample info in lore if sample not exists
@@ -99,11 +99,11 @@ public class ProductionWork extends Work implements ScheduleMethod {
     }
 
     @Override
-    protected String getDefaultIcon() {
+    protected @NotNull String getDefaultIcon() {
         return "minecraft:redstone";
     }
 
-    public void openInputSampleDistanceGui(ServerPlayerEntity player) {
+    public void openInputSampleDistanceGui(@NotNull ServerPlayerEntity player) {
         new InputSignGui(player, MessageHelper.getString(player, "works.production_work.prompt.input.sample_distance")) {
             @Override
             public void onClose() {
@@ -134,7 +134,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
     }
 
     @Override
-    public void openSpecializedSettingsGui(ServerPlayerEntity player, SimpleGui parentGui) {
+    public void openSpecializedSettingsGui(ServerPlayerEntity player, @NotNull SimpleGui parentGui) {
         final SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X1, player, false);
         gui.setTitle(MessageHelper.ofText(player, "works.work.set.specialized_settings.title"));
         gui.setLockPlayerInventory(true);
@@ -165,14 +165,14 @@ public class ProductionWork extends Work implements ScheduleMethod {
         return super.asItem();
     }
 
-    private boolean insideSampleDistance(BlockPos position, BlockPos blockPos) {
+    private boolean insideSampleDistance(@NotNull BlockPos position, @NotNull BlockPos blockPos) {
         float deltaX = Math.abs(blockPos.getX() - position.getX());
         float deltaZ = Math.abs(blockPos.getZ() - position.getZ());
         return deltaX <= this.sample.sampleDistance && deltaZ <= this.sample.sampleDistance;
     }
 
     @SuppressWarnings("unused")
-    private String formatBlockPosList(ArrayList<BlockPos> blockPosList) {
+    private @NotNull String formatBlockPosList(@NotNull ArrayList<BlockPos> blockPosList) {
         StringBuilder sb = new StringBuilder();
         for (BlockPos blockPos : blockPosList) {
             sb.append("(").append(blockPos.getX()).append(",").append(blockPos.getY()).append(",").append(blockPos.getZ()).append(")").append(" ");
@@ -180,7 +180,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
         return sb.toString();
     }
 
-    public int resolveHoppers(ServerPlayerEntity player) {
+    public int resolveHoppers(@NotNull ServerPlayerEntity player) {
         // clear cache entry
         WorksCache.unbind(this);
 
@@ -224,7 +224,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
         }
     }
 
-    public void startSample(ServerPlayerEntity player) {
+    public void startSample(@NotNull ServerPlayerEntity player) {
         this.sample.sampleStartTimeMS = System.currentTimeMillis();
         this.sample.sampleEndTimeMS = this.sample.sampleStartTimeMS + Configs.configHandler.model().modules.works.sample_time_ms;
         this.sample.sampleDimension = player.getServerWorld().getRegistryKey().getValue().toString();
@@ -262,7 +262,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
         }
     }
 
-    public void addCounter(ItemStack itemStack) {
+    public void addCounter(@NotNull ItemStack itemStack) {
         HashMap<String, Long> counter = this.sample.sampleCounter;
         String key = itemStack.getTranslationKey();
         counter.put(key, counter.getOrDefault(key, 0L) + itemStack.getCount());

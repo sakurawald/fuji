@@ -13,11 +13,12 @@ import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class AddWorkGui extends InputSignGui {
 
 
-    public AddWorkGui(ServerPlayerEntity player) {
+    public AddWorkGui(@NotNull ServerPlayerEntity player) {
         super(player, "works.work.add.prompt.input.name");
     }
 

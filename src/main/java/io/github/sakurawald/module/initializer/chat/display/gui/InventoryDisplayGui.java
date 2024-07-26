@@ -8,6 +8,7 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
+import org.jetbrains.annotations.NotNull;
 
 
 public class InventoryDisplayGui extends DisplayGuiBuilder {
@@ -17,7 +18,7 @@ public class InventoryDisplayGui extends DisplayGuiBuilder {
     private final DefaultedList<ItemStack> offhand = DefaultedList.of();
     private final DefaultedList<ItemStack> items = DefaultedList.of();
 
-    public InventoryDisplayGui(Text title, ServerPlayerEntity player) {
+    public InventoryDisplayGui(Text title, @NotNull ServerPlayerEntity player) {
         this.title = title;
         PlayerInventory inventory = player.getInventory();
         inventory.armor.forEach(itemStack -> armor.add(itemStack.copy()));
@@ -26,7 +27,7 @@ public class InventoryDisplayGui extends DisplayGuiBuilder {
     }
 
     @Override
-    public SimpleGui build(ServerPlayerEntity player) {
+    public @NotNull SimpleGui build(ServerPlayerEntity player) {
         /* construct base */
         SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X6, player, false);
         gui.setLockPlayerInventory(true);

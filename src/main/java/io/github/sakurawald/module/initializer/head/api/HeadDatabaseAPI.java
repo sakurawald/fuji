@@ -10,6 +10,7 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.util.LogUtil;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.commons.io.FileUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -25,7 +26,7 @@ public class HeadDatabaseAPI {
     private final String API = "https://minecraft-heads.com/scripts/api.php?cat=%s&tags=true";
     private final Path STORAGE_PATH = Fuji.CONFIG_PATH.resolve("head").toAbsolutePath();
 
-    public Multimap<Category, Head> getHeads() {
+    public @NotNull Multimap<Category, Head> getHeads() {
         refreshCacheFromAPI();
         return loadCache();
     }
@@ -57,7 +58,7 @@ public class HeadDatabaseAPI {
         }
     }
 
-    private Multimap<Category, Head> loadCache() {
+    private @NotNull Multimap<Category, Head> loadCache() {
         Multimap<Category, Head> heads = HashMultimap.create();
         Gson gson = new Gson();
         for (Category category : Category.values()) {

@@ -134,14 +134,14 @@ public class MessageHelper {
         return errorString;
     }
 
-    private static @NotNull String formatString(String string, Object... args) {
+    private static @NotNull String formatString(@NotNull String string, Object @NotNull ... args) {
         if (args.length > 0) {
             return String.format(string, args);
         }
         return string;
     }
 
-    public static void sendMessageToPlayerEntity(PlayerEntity player, String key, Object... args) {
+    public static void sendMessageToPlayerEntity(@NotNull PlayerEntity player, String key, Object... args) {
         player.sendMessage(adventure.toNative(ofComponent(null, false, getString(player, key), args)));
     }
 
@@ -166,7 +166,7 @@ public class MessageHelper {
         return ofText(POWERFUL_PARSER, audience, isKey, keyOrString, args);
     }
 
-    public static String ofString(@Nullable Audience audience, String string) {
+    public static @NotNull String ofString(@Nullable Audience audience, String string) {
         return PlainTextComponentSerializer.plainText().serialize(MessageHelper.ofText(PLACEHOLDER_PARSER, audience, false, string).asComponent());
     }
 
@@ -179,7 +179,7 @@ public class MessageHelper {
         return ofText(null, false, str, args);
     }
 
-    public static List<Text> ofTextList(@Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
+    public static @NotNull List<Text> ofTextList(@Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
         String lines = isKey ? getString(audience, keyOrString, args) : keyOrString;
 
         List<Text> ret = new ArrayList<>();
@@ -189,11 +189,11 @@ public class MessageHelper {
         return ret;
     }
 
-    public static List<Text> ofTextList(@Nullable Audience audience, String key, Object... args) {
+    public static @NotNull List<Text> ofTextList(@Nullable Audience audience, String key, Object... args) {
         return ofTextList(audience, true, key, args);
     }
 
-    public static @NotNull Text toText(Component component) {
+    public static @NotNull Text toText(@NotNull Component component) {
         return adventure.toNative(component);
     }
 

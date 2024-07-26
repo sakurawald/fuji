@@ -6,6 +6,7 @@ import io.github.sakurawald.util.ScheduleUtil;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -35,7 +36,7 @@ public class MentionPlayersJob implements Job {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void execute(JobExecutionContext context) {
+    public void execute(@NotNull JobExecutionContext context) {
         ArrayList<ServerPlayerEntity> players = (ArrayList<ServerPlayerEntity>) context.getJobDetail().getJobDataMap().get(ArrayList.class.getName());
         Sound sound = (Sound) context.getJobDetail().getJobDataMap().get(Sound.class.getName());
         for (ServerPlayerEntity player : players) {

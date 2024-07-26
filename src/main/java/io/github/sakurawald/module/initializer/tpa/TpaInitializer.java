@@ -14,6 +14,8 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -28,7 +30,7 @@ public class TpaInitializer extends ModuleInitializer {
 
     @SuppressWarnings("unused")
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(
                 literal("tpa").then(CommandHelper.Argument.player().executes(this::$tpa))
         );
@@ -46,27 +48,27 @@ public class TpaInitializer extends ModuleInitializer {
         );
     }
 
-    private int $tpa(CommandContext<ServerCommandSource> ctx) {
+    private int $tpa(@NotNull CommandContext<ServerCommandSource> ctx) {
         return doRequest(ctx, false);
     }
 
-    private int $tpahere(CommandContext<ServerCommandSource> ctx) {
+    private int $tpahere(@NotNull CommandContext<ServerCommandSource> ctx) {
         return doRequest(ctx, true);
     }
 
-    private int $tpaaccept(CommandContext<ServerCommandSource> ctx) {
+    private int $tpaaccept(@NotNull CommandContext<ServerCommandSource> ctx) {
         return doResponse(ctx, ResponseStatus.ACCEPT);
     }
 
-    private int $tpadeny(CommandContext<ServerCommandSource> ctx) {
+    private int $tpadeny(@NotNull CommandContext<ServerCommandSource> ctx) {
         return doResponse(ctx, ResponseStatus.DENY);
     }
 
-    private int $tpacancel(CommandContext<ServerCommandSource> ctx) {
+    private int $tpacancel(@NotNull CommandContext<ServerCommandSource> ctx) {
         return doResponse(ctx, ResponseStatus.CANCEL);
     }
 
-    private int doResponse(CommandContext<ServerCommandSource> ctx, ResponseStatus status) {
+    private int doResponse(@NotNull CommandContext<ServerCommandSource> ctx, ResponseStatus status) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, source -> {
             ServerPlayerEntity target;
             try {
@@ -111,7 +113,7 @@ public class TpaInitializer extends ModuleInitializer {
         });
     }
 
-    private int doRequest(CommandContext<ServerCommandSource> ctx, boolean tpahere) {
+    private int doRequest(@NotNull CommandContext<ServerCommandSource> ctx, boolean tpahere) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, source -> {
             ServerPlayerEntity target;
             try {

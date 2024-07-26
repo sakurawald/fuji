@@ -8,6 +8,7 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.block.entity.SignText;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -16,7 +17,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class SignBlockEntityMixin {
 
     @ModifyVariable(method = "setText", at = @At("HEAD"), argsOnly = true)
-    SignText method(SignText signText) {
+    @NotNull
+    SignText method(@NotNull SignText signText) {
         Text[] messages = signText.getMessages(false);
         Text[] newMessages = new Text[messages.length];
         for (int i = 0; i < messages.length; i++) {

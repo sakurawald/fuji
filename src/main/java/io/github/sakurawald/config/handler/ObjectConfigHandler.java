@@ -6,6 +6,7 @@ import com.google.gson.stream.JsonWriter;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.util.LogUtil;
 import lombok.Cleanup;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -21,7 +22,7 @@ public class ObjectConfigHandler<T> extends ConfigHandler<T> {
         this.configClass = configClass;
     }
 
-    public ObjectConfigHandler(String child, Class<T> configClass) {
+    public ObjectConfigHandler(@NotNull String child, Class<T> configClass) {
         this(new File(Fuji.CONFIG_PATH.toString(), child), configClass);
     }
 

@@ -11,6 +11,8 @@ import net.luckperms.api.node.types.MetaNode;
 import net.luckperms.api.util.Tristate;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -22,7 +24,7 @@ public class PermissionHelper {
 
     private static LuckPerms luckPerms;
 
-    private static LuckPerms getAPI() {
+    private static @Nullable LuckPerms getAPI() {
         if (luckPerms == null) {
             try {
                 luckPerms = LuckPermsProvider.get();
@@ -34,7 +36,7 @@ public class PermissionHelper {
         return luckPerms;
     }
 
-    public static Tristate checkPermission(ServerPlayerEntity player, String permission) {
+    public static @NotNull Tristate checkPermission(@NotNull ServerPlayerEntity player, @NotNull String permission) {
         LuckPerms api = getAPI();
         if (api == null) {
             return Tristate.UNDEFINED;
@@ -46,15 +48,15 @@ public class PermissionHelper {
                 .getPermissionData().checkPermission(permission);
     }
 
-    public static boolean hasPermission(PlayerEntity player, String permission) {
+    public static boolean hasPermission(PlayerEntity player, @NotNull String permission) {
         return checkPermission((ServerPlayerEntity) player, permission).asBoolean();
     }
 
-    public static boolean hasPermission(ServerPlayerEntity player, String permission) {
+    public static boolean hasPermission(@NotNull ServerPlayerEntity player, @NotNull String permission) {
         return checkPermission(player, permission).asBoolean();
     }
 
-    private static User loadUser(@NonNull LuckPerms api, ServerPlayerEntity player) {
+    private static User loadUser(@NonNull LuckPerms api, @NotNull ServerPlayerEntity player) {
         User user;
         if (EntityHelper.isNonRealPlayer(player)) {
             UserManager userManager = api.getUserManager();
@@ -68,7 +70,7 @@ public class PermissionHelper {
         return user;
     }
 
-    public static <T> @NonNull Optional<T> getMeta(ServerPlayerEntity player, String meta, @NonNull Function<String, ? extends T> valueTransformer) {
+    public static <T> @NonNull Optional<T> getMeta(@NotNull ServerPlayerEntity player, @NotNull String meta, @NonNull Function<String, ? extends T> valueTransformer) {
         LuckPerms api = getAPI();
         if (api == null) {
             return Optional.empty();
@@ -81,7 +83,7 @@ public class PermissionHelper {
 
     }
 
-    public static String getPrefix(ServerPlayerEntity player) {
+    public static @Nullable String getPrefix(@NotNull ServerPlayerEntity player) {
         LuckPerms api = getAPI();
         if (api == null) {
             return null;
@@ -96,7 +98,7 @@ public class PermissionHelper {
 
     }
 
-    public static <T> String getSuffix(ServerPlayerEntity player) {
+    public static <T> @Nullable String getSuffix(@NotNull ServerPlayerEntity player) {
         LuckPerms api = getAPI();
         if (api == null) {
             return null;
@@ -111,7 +113,7 @@ public class PermissionHelper {
 
     }
 
-    public static void saveMeta(ServerPlayerEntity player, String key, String value) {
+    public static void saveMeta(@NotNull ServerPlayerEntity player, @NotNull String key, @NotNull String value) {
         LuckPerms api = getAPI();
         if (api == null) {
             throw new RuntimeException("Failed to save meta");

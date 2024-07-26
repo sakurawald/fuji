@@ -13,16 +13,17 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 
 public class BedInitializer extends ModuleInitializer {
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(CommandManager.literal("bed").executes(this::$bed));
     }
 
-    private int $bed(CommandContext<ServerCommandSource> ctx) {
+    private int $bed(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, (player) -> {
             BlockPos respawnPosition = player.getSpawnPointPosition();
             RegistryKey<World> respawnDimension = player.getSpawnPointDimension();

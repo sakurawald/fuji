@@ -5,6 +5,7 @@ import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.module.initializer.skin.SkinRestorer;
 import io.github.sakurawald.module.initializer.skin.provider.MojangSkinProvider;
 import io.github.sakurawald.util.LogUtil;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,13 +26,13 @@ public abstract class ServerLoginNetworkHandlerMixin {
 
     private CompletableFuture<Property> pendingSkins;
 
-    private static void applyRestoredSkin(GameProfile gameProfile, Property skin) {
+    private static void applyRestoredSkin(@NotNull GameProfile gameProfile, Property skin) {
         gameProfile.getProperties().removeAll("textures");
         gameProfile.getProperties().put("textures", skin);
     }
 
     @Inject(method = "tickVerify", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;checkCanJoin(Ljava/net/SocketAddress;Lcom/mojang/authlib/GameProfile;)Lnet/minecraft/text/Text;"), cancellable = true)
-    public void waitForSkin(CallbackInfo ci) {
+    public void waitForSkin(@NotNull CallbackInfo ci) {
         if (pendingSkins == null) {
             pendingSkins = CompletableFuture.supplyAsync(() -> {
                 // the first time the player join, his skin is DEFAULT_SKIN (see #applyRestoredSkinHook)
@@ -53,7 +54,7 @@ public abstract class ServerLoginNetworkHandlerMixin {
     }
 
     @Inject(method = "sendSuccessPacket", at = @At("HEAD"))
-    public void applyRestoredSkinHook(GameProfile gameProfile, CallbackInfo ci) {
+    public void applyRestoredSkinHook(@NotNull GameProfile gameProfile, CallbackInfo ci) {
         if (pendingSkins != null)
             applyRestoredSkin(gameProfile, pendingSkins.getNow(SkinRestorer.getSkinStorage().getDefaultSkin()));
     }

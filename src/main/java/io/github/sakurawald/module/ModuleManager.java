@@ -7,6 +7,7 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.LogUtil;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 
 import javax.naming.OperationNotSupportedException;
@@ -60,7 +61,7 @@ public class ModuleManager {
      * hod will also return null, but the module doesn't extend AbstractModule, then this method will also return null.)
      */
     @ApiStatus.AvailableSince("1.1.5")
-    public static <T extends ModuleInitializer> T getInitializer(Class<T> clazz) {
+    public static <T extends ModuleInitializer> T getInitializer(@NotNull Class<T> clazz) {
         JsonElement config = Configs.configHandler.toJsonElement();
         if (!initializers.containsKey(clazz)) {
             if (shouldEnableModule(config, getPackagePath(ModuleInitializer.class, clazz.getName()))) {
@@ -76,7 +77,7 @@ public class ModuleManager {
         return clazz.cast(initializers.get(clazz));
     }
 
-    public static boolean shouldEnableModule(JsonElement config, List<String> packagePath) {
+    public static boolean shouldEnableModule(@NotNull JsonElement config, @NotNull List<String> packagePath) {
         if (module2enable.containsKey(packagePath)) {
             return module2enable.get(packagePath);
         }
@@ -106,7 +107,7 @@ public class ModuleManager {
         return enable;
     }
 
-    public static List<String> getPackagePath(Class<?> rootPackageClass, String className) {
+    public static @NotNull List<String> getPackagePath(@NotNull Class<?> rootPackageClass, @NotNull String className) {
         String ret;
         int left = rootPackageClass.getPackageName().length() + 1;
         ret = className.substring(left);
@@ -118,7 +119,7 @@ public class ModuleManager {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean isRequiredModsInstalled(List<String> packagePath) {
+    public static boolean isRequiredModsInstalled(@NotNull List<String> packagePath) {
         String basePackagePath = packagePath.getFirst();
 
         if (basePackagePath.equals("carpet")) {

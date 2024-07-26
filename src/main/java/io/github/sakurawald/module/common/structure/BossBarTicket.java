@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public abstract class BossBarTicket {
-    private final List<Audience> audiences;
+    private final @NotNull List<Audience> audiences;
     @Getter
     private final float maxValue;
     @Getter
@@ -29,7 +29,7 @@ public abstract class BossBarTicket {
     @Setter
     private boolean aborted;
 
-    public BossBarTicket(BossBar bossbar, int totalMS, List<Audience> audiences) {
+    public BossBarTicket(BossBar bossbar, int totalMS, @NotNull List<Audience> audiences) {
         this.bossbar = bossbar;
         this.maxValue = 20 * ((float) totalMS / 1000);
         this.deltaValue = 1F / this.maxValue;
@@ -41,7 +41,7 @@ public abstract class BossBarTicket {
         this.aborted = false;
     }
 
-    public @Immutable List<Audience> getAudiences() {
+    public @Immutable @NotNull List<Audience> getAudiences() {
         return ImmutableList.copyOf(this.audiences);
     }
 
@@ -53,12 +53,12 @@ public abstract class BossBarTicket {
         return this.bossbar.progress(progress);
     }
 
-    public void addAudience(Audience audience) {
+    public void addAudience(@NotNull Audience audience) {
         this.bossbar.addViewer(audience);
         this.audiences.add(audience);
     }
 
-    public void removeAudience(Audience audience) {
+    public void removeAudience(@NotNull Audience audience) {
         this.bossbar.removeViewer(audience);
         this.audiences.remove(audience);
     }

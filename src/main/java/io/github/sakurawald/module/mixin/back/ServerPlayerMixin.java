@@ -7,6 +7,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,6 +21,7 @@ import java.util.Set;
 public abstract class ServerPlayerMixin {
 
     @Unique
+    @NotNull
     ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
     @Unique

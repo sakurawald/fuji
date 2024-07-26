@@ -7,6 +7,7 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 
 public enum Category {
     ALPHABET("alphabet",
@@ -75,12 +76,12 @@ public enum Category {
         this.icon = icon;
     }
 
-    public ItemStack of(ServerPlayerEntity player) {
+    public @NotNull ItemStack of(ServerPlayerEntity player) {
         icon.set(DataComponentTypes.CUSTOM_NAME, getDisplayName(player));
         return icon;
     }
 
-    public Text getDisplayName(ServerPlayerEntity player) {
+    public @NotNull Text getDisplayName(ServerPlayerEntity player) {
         return MessageHelper.ofText(player, "head.category." + name);
     }
 }

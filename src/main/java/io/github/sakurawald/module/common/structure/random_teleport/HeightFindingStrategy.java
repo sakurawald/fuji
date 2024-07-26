@@ -12,6 +12,7 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.dimension.DimensionTypes;
+import org.jetbrains.annotations.NotNull;
 
 public enum HeightFindingStrategy implements HeightFinder {
     SKY_TO_SURFACE__FIRST_SOLID(HeightFindingStrategy::findYTopBottom),
@@ -24,7 +25,7 @@ public enum HeightFindingStrategy implements HeightFinder {
         this.heightFinder = heightFinder;
     }
 
-    private static int calculateMaxY(Chunk chunk) {
+    private static int calculateMaxY(@NotNull Chunk chunk) {
         final int maxY = chunk.getTopY();
         ChunkSection[] sections = chunk.getSectionArray();
         int maxSectionIndex = Math.min(sections.length - 1, maxY >> 4);
@@ -38,7 +39,7 @@ public enum HeightFindingStrategy implements HeightFinder {
         return Integer.MAX_VALUE;
     }
 
-    public static HeightFindingStrategy forWorld(ServerWorld world) {
+    public static @NotNull HeightFindingStrategy forWorld(@NotNull ServerWorld world) {
         Optional<RegistryKey<DimensionType>> dt = world.getDimensionEntry().getKey();
         if (dt.get() == DimensionTypes.OVERWORLD || dt.get() == DimensionTypes.THE_END) {
             return HeightFindingStrategy.SKY_TO_SURFACE__FIRST_SOLID;
@@ -51,7 +52,7 @@ public enum HeightFindingStrategy implements HeightFinder {
         return HeightFindingStrategy.SKY_TO_SURFACE__FIRST_SOLID;
     }
 
-    public static OptionalInt findYTopBottom(Chunk chunk, int x, int z) {
+    public static @NotNull OptionalInt findYTopBottom(@NotNull Chunk chunk, int x, int z) {
         final int maxY = calculateMaxY(chunk);
         final int bottomY = chunk.getBottomY();
         if (maxY <= bottomY) {
@@ -77,7 +78,7 @@ public enum HeightFindingStrategy implements HeightFinder {
     }
 
     @SuppressWarnings("deprecation")
-    private static OptionalInt findYBottomUp(Chunk chunk, int x, int z) {
+    private static @NotNull OptionalInt findYBottomUp(@NotNull Chunk chunk, int x, int z) {
         final int topY = getChunkHighestNonEmptySectionYOffsetOrTopY(chunk);
         final int bottomY = chunk.getBottomY();
         if (topY <= bottomY) {
@@ -102,7 +103,7 @@ public enum HeightFindingStrategy implements HeightFinder {
         return OptionalInt.empty();
     }
 
-    public static int getChunkHighestNonEmptySectionYOffsetOrTopY(Chunk chunk) {
+    public static int getChunkHighestNonEmptySectionYOffsetOrTopY(@NotNull Chunk chunk) {
         int i = chunk.getHighestNonEmptySection();
         return i == chunk.getTopY() ? chunk.getBottomY() : ChunkSectionPos.getBlockCoord(chunk.sectionIndexToCoord(i));
     }

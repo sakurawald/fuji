@@ -8,18 +8,19 @@ import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import org.jetbrains.annotations.NotNull;
 
 
 public class GodInitializer extends ModuleInitializer {
 
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(CommandManager.literal("god").executes(this::$god));
     }
 
     @SuppressWarnings("SameReturnValue")
-    private int $god(CommandContext<ServerCommandSource> ctx) {
+    private int $god(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             boolean flag = !player.getAbilities().invulnerable;
             player.getAbilities().invulnerable = flag;

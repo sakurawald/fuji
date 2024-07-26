@@ -21,6 +21,7 @@ import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +30,11 @@ public class KitEditorGui extends PagedGui<Kit> {
 
     private static final KitInitializer module = ModuleManager.getInitializer(KitInitializer.class);
 
-    public KitEditorGui(ServerPlayerEntity player, List<Kit> entities) {
+    public KitEditorGui(ServerPlayerEntity player, @NotNull List<Kit> entities) {
         super(player, MessageHelper.ofText(player, true, "kit.gui.editor.title"), entities);
     }
 
-    private void openEditKitGui(ServerPlayerEntity player, Kit kit) {
+    private void openEditKitGui(@NotNull ServerPlayerEntity player, @NotNull Kit kit) {
         int rows = 5;
         SimpleInventory simpleInventory = new SimpleInventory(rows * 9);
         for (int i = 0; i < kit.getStackList().size(); i++) {
@@ -70,7 +71,7 @@ public class KitEditorGui extends PagedGui<Kit> {
     }
 
     @Override
-    public void onConstructor(PagedGui<Kit> parent) {
+    public void onConstructor(@NotNull PagedGui<Kit> parent) {
         ServerPlayerEntity player = getPlayer();
 
         SingleLineLayer singleLineLayer = new SingleLineLayer();
@@ -92,7 +93,7 @@ public class KitEditorGui extends PagedGui<Kit> {
     }
 
     @Override
-    public GuiElementInterface toGuiElement(PagedGui<Kit> ref, Kit entity) {
+    public GuiElementInterface toGuiElement(PagedGui<Kit> ref, @NotNull Kit entity) {
         return new GuiElementBuilder().setItem(Items.CHEST)
                 .setName(Text.literal(entity.getName()))
                 .setCallback((event) -> {
@@ -113,7 +114,7 @@ public class KitEditorGui extends PagedGui<Kit> {
     }
 
     @Override
-    public List<Kit> filter(String keyword) {
+    public @NotNull List<Kit> filter(@NotNull String keyword) {
         return getEntities().stream().filter(e -> e.toString().contains(keyword)).toList();
     }
 }

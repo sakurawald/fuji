@@ -19,10 +19,10 @@ import net.minecraft.util.Identifier;
 
 @SuppressWarnings({"unused", "InfiniteRecursion", "LombokGetterMayBeUsed"})
 public class FilteredRegistry<T> extends SimpleRegistry<T> {
-    private final Registry<T> source;
+    private final @NotNull Registry<T> source;
     private final Predicate<T> check;
 
-    public FilteredRegistry(Registry<T> source, Predicate<T> check) {
+    public FilteredRegistry(@NotNull Registry<T> source, Predicate<T> check) {
         super(source.getKey(), source.getLifecycle());
         this.source = source;
         this.check = check;
@@ -82,7 +82,7 @@ public class FilteredRegistry<T> extends SimpleRegistry<T> {
     }
 
     @Override
-    public Set<Map.Entry<RegistryKey<T>, T>> getEntrySet() {
+    public @NotNull Set<Map.Entry<RegistryKey<T>, T>> getEntrySet() {
         Set<Map.Entry<RegistryKey<T>, T>> set = new HashSet<>();
         for (Map.Entry<RegistryKey<T>, T> e : this.source.getEntrySet()) {
             if (this.check.test(e.getValue())) {
@@ -93,12 +93,12 @@ public class FilteredRegistry<T> extends SimpleRegistry<T> {
     }
 
     @Override
-    public Set<RegistryKey<T>> getKeys() {
+    public @Nullable Set<RegistryKey<T>> getKeys() {
         return null;
     }
 
     @Override
-    public Optional<RegistryEntry.Reference<T>> getRandom(net.minecraft.util.math.random.Random random) {
+    public @NotNull Optional<RegistryEntry.Reference<T>> getRandom(net.minecraft.util.math.random.Random random) {
         return Optional.empty();
     }
 
@@ -113,12 +113,12 @@ public class FilteredRegistry<T> extends SimpleRegistry<T> {
     }
 
     @Override
-    public Registry<T> freeze() {
+    public @NotNull Registry<T> freeze() {
         return this;
     }
 
     @Override
-    public RegistryEntry.Reference<T> createEntry(T value) {
+    public RegistryEntry.@Nullable Reference<T> createEntry(T value) {
         return null;
     }
 
@@ -138,22 +138,22 @@ public class FilteredRegistry<T> extends SimpleRegistry<T> {
     }
 
     @Override
-    public Optional<RegistryEntryList.Named<T>> getEntryList(TagKey<T> tag) {
+    public @NotNull Optional<RegistryEntryList.Named<T>> getEntryList(TagKey<T> tag) {
         return Optional.empty();
     }
 
     @Override
-    public RegistryEntryList.Named<T> getOrCreateEntryList(TagKey<T> tag) {
+    public RegistryEntryList.@Nullable Named<T> getOrCreateEntryList(TagKey<T> tag) {
         return null;
     }
 
     @Override
-    public Stream<Pair<TagKey<T>, RegistryEntryList.Named<T>>> streamTagsAndEntries() {
+    public @Nullable Stream<Pair<TagKey<T>, RegistryEntryList.Named<T>>> streamTagsAndEntries() {
         return null;
     }
 
     @Override
-    public Stream<TagKey<T>> streamTags() {
+    public @Nullable Stream<TagKey<T>> streamTags() {
         return null;
     }
 

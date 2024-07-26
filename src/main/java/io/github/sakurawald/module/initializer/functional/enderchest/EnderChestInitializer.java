@@ -12,17 +12,18 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 
 
 public class EnderChestInitializer extends ModuleInitializer {
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(CommandManager.literal("enderchest").executes(this::$enderchest));
     }
 
     @SuppressWarnings("SameReturnValue")
-    private int $enderchest(CommandContext<ServerCommandSource> ctx) {
+    private int $enderchest(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             EnderChestInventory enderChestInventory = player.getEnderChestInventory();
             player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> GenericContainerScreenHandler.createGeneric9x3(i, inventory, enderChestInventory), Text.translatable("container.enderchest")));

@@ -7,6 +7,7 @@ import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ConnectedClientData;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -16,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class PlayerListManagerMixin {
 
     @Inject(method = "onPlayerConnect", at = @At("TAIL"))
-    void onPlayerJoined(ClientConnection clientConnection, ServerPlayerEntity player, ConnectedClientData connectedClientData, CallbackInfo ci) {
+    void onPlayerJoined(ClientConnection clientConnection, @NotNull ServerPlayerEntity player, ConnectedClientData connectedClientData, CallbackInfo ci) {
 
         CommandExecutor.executeCommandsAsConsoleWithContext(player, Configs.configHandler.model().modules.command_event.event.on_player_joined.command_list);
 

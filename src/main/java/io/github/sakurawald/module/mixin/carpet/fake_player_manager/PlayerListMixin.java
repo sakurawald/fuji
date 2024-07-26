@@ -7,6 +7,7 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ConnectedClientData;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,7 +20,7 @@ public abstract class PlayerListMixin {
     private static final FakePlayerManagerInitializer module = ModuleManager.getInitializer(FakePlayerManagerInitializer.class);
 
     @Inject(at = @At(value = "TAIL"), method = "onPlayerConnect")
-    private void $onPlayerConnect(ClientConnection connection, ServerPlayerEntity serverPlayer, ConnectedClientData commonListenerCookie, CallbackInfo ci) {
+    private void $onPlayerConnect(ClientConnection connection, @NotNull ServerPlayerEntity serverPlayer, ConnectedClientData commonListenerCookie, CallbackInfo ci) {
         if (EntityHelper.isNonRealPlayer(serverPlayer)) return;
         if (module.hasFakePlayers(serverPlayer)) {
             module.renewFakePlayers(serverPlayer);

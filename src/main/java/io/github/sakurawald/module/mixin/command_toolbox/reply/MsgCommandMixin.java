@@ -2,6 +2,7 @@ package io.github.sakurawald.module.mixin.command_toolbox.reply;
 
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.command_toolbox.reply.ReplyInitializer;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,7 +22,7 @@ public class MsgCommandMixin {
     private static final ReplyInitializer module = ModuleManager.getInitializer(ReplyInitializer.class);
 
     @Inject(method = "execute", at = @At("HEAD"))
-    private static void $execute(ServerCommandSource commandSourceStack, Collection<ServerPlayerEntity> collection, SignedMessage playerChatMessage, CallbackInfo ci) {
+    private static void $execute(@NotNull ServerCommandSource commandSourceStack, @NotNull Collection<ServerPlayerEntity> collection, SignedMessage playerChatMessage, CallbackInfo ci) {
         ServerPlayerEntity source = commandSourceStack.getPlayer();
         if (source == null) return;
 

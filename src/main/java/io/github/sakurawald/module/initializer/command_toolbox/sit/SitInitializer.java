@@ -15,6 +15,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.HashSet;
@@ -27,7 +28,7 @@ public class SitInitializer extends ModuleInitializer {
     public final Set<Entity> CHAIRS = new HashSet<>();
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
         dispatcher.register(literal("sit").executes(this::$sit));
     }
 
@@ -40,7 +41,7 @@ public class SitInitializer extends ModuleInitializer {
         });
     }
 
-    private int $sit(CommandContext<ServerCommandSource> ctx) {
+    private int $sit(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, (player) -> {
 
             BlockState blockState = player.getEntityWorld().getBlockState(new BlockPos(player.getBlockX(), player.getBlockY() - 1, player.getBlockZ()));
@@ -55,7 +56,7 @@ public class SitInitializer extends ModuleInitializer {
         });
     }
 
-    public Entity createChair(World world, BlockPos blockPos, Vec3d blockPosOffset, @Nullable Vec3d target, boolean boundToBlock) {
+    public @NotNull Entity createChair(@NotNull World world, @NotNull BlockPos blockPos, @NotNull Vec3d blockPosOffset, @Nullable Vec3d target, boolean boundToBlock) {
         ArmorStandEntity entity = new ArmorStandEntity(world, 0.5d + blockPos.getX() + blockPosOffset.getX(), blockPos.getY() + blockPosOffset.getY(), 0.5d + blockPos.getZ() + blockPosOffset.getZ()) {
             private boolean v = false;
 

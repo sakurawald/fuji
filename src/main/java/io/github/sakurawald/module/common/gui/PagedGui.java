@@ -11,6 +11,7 @@ import net.kyori.adventure.text.Component;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -21,11 +22,11 @@ public abstract class PagedGui<T> extends LayeredGui {
     private final int pageIndex;
     private final Text title;
 
-    public PagedGui(ServerPlayerEntity player, Text title, List<T> entities) {
+    public PagedGui(ServerPlayerEntity player, Text title, @NotNull List<T> entities) {
         this(player, title, entities, 0);
     }
 
-    public PagedGui(ServerPlayerEntity player, Text title, List<T> entities, int pageIndex) {
+    public PagedGui(ServerPlayerEntity player, Text title, @NotNull List<T> entities, int pageIndex) {
         super(ScreenHandlerType.GENERIC_9X6, player, false);
         layers.clear();
 
@@ -68,7 +69,7 @@ public abstract class PagedGui<T> extends LayeredGui {
         of(this.entities, newPageIndex).open();
     }
 
-    protected PagedGui<T> search(String keyword) {
+    protected @NotNull PagedGui<T> search(String keyword) {
         return of(filter(keyword), 0);
     }
 
@@ -86,7 +87,7 @@ public abstract class PagedGui<T> extends LayeredGui {
         this.of(this.entities, pageIndex).open();
     }
 
-    private PagedGui<T> of(List<T> entities, int pageIndex) {
+    private @NotNull PagedGui<T> of(@NotNull List<T> entities, int pageIndex) {
         PagedGui<T> that = this;
         return new PagedGui<>(getPlayer(), that.title, entities, pageIndex) {
 
@@ -109,13 +110,13 @@ public abstract class PagedGui<T> extends LayeredGui {
              * used for dynamic binding of click-callback
              */
             @Override
-            public PagedGui<T> getThis() {
+            public @NotNull PagedGui<T> getThis() {
                 return this;
             }
         };
     }
 
-    public PagedGui<T> getThis() {
+    public @NotNull PagedGui<T> getThis() {
         return this;
     }
 

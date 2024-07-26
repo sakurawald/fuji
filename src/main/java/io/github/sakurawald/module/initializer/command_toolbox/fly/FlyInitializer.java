@@ -8,16 +8,17 @@ import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import org.jetbrains.annotations.NotNull;
 
 
 public class FlyInitializer extends ModuleInitializer {
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(CommandManager.literal("fly").executes(this::$fly));
     }
 
-    private int $fly(CommandContext<ServerCommandSource> ctx) {
+    private int $fly(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, (player) -> {
             boolean flag = !player.getAbilities().allowFlying;
             player.getAbilities().allowFlying = flag;

@@ -27,6 +27,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.random.RandomSeed;
+import org.jetbrains.annotations.NotNull;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -59,7 +60,7 @@ public class WorldInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(
                 literal("world")
                         .then(literal("create").requires(source -> source.hasPermissionLevel(4))
@@ -74,7 +75,7 @@ public class WorldInitializer extends ModuleInitializer {
         );
     }
 
-    public void loadWorlds(MinecraftServer server) {
+    public void loadWorlds(@NotNull MinecraftServer server) {
         for (DimensionEntry dimensionEntry : storage.model().dimension_list) {
             if (!dimensionEntry.isEnable()) continue;
 
@@ -85,7 +86,7 @@ public class WorldInitializer extends ModuleInitializer {
         }
     }
 
-    private int $tp(CommandContext<ServerCommandSource> ctx) {
+    private int $tp(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             ServerWorld world = CommandHelper.Argument.dimension(ctx);
 
@@ -102,7 +103,7 @@ public class WorldInitializer extends ModuleInitializer {
     }
 
     @SneakyThrows
-    private int $create(CommandContext<ServerCommandSource> ctx) {
+    private int $create(@NotNull CommandContext<ServerCommandSource> ctx) {
         Identifier dimensionTypeIdentifier = Identifier.of(CommandHelper.Argument.identifier(ctx));
         String name = CommandHelper.Argument.name(ctx);
         String FUJI_DIMENSION_NAMESPACE = "fuji";
@@ -125,7 +126,7 @@ public class WorldInitializer extends ModuleInitializer {
 
 
     @SneakyThrows
-    private int $delete(CommandContext<ServerCommandSource> ctx) {
+    private int $delete(@NotNull CommandContext<ServerCommandSource> ctx) {
         ServerWorld world = CommandHelper.Argument.dimension(ctx);
         String identifier = IdentifierHelper.ofString(world);
         if (Configs.configHandler.model().modules.world.blacklist.dimension_list.contains(identifier)) {
@@ -148,7 +149,7 @@ public class WorldInitializer extends ModuleInitializer {
     }
 
     @SneakyThrows
-    private int $reset(CommandContext<ServerCommandSource> ctx) {
+    private int $reset(@NotNull CommandContext<ServerCommandSource> ctx) {
         // draw seed and save
         ServerWorld world = CommandHelper.Argument.dimension(ctx);
         String identifier = IdentifierHelper.ofString(world);

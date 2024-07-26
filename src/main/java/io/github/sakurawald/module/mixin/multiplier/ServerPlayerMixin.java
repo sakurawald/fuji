@@ -5,6 +5,7 @@ import io.github.sakurawald.util.minecraft.PermissionHelper;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,16 +17,17 @@ import java.util.Optional;
 public abstract class ServerPlayerMixin {
 
     @Unique
+    @NotNull
     ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
     @Unique
-    float transform(ServerPlayerEntity player, String type, String key, float f) {
+    float transform(@NotNull ServerPlayerEntity player, String type, String key, float f) {
         Optional<Float> meta = PermissionHelper.getMeta(player, "fuji.multiplier.%s.%s".formatted(type, key), Float::valueOf);
         return meta.map(factor -> f * factor).orElse(f);
     }
 
     @ModifyVariable(method = "damage", at = @At(value = "HEAD"), argsOnly = true)
-    public float transformDamage(float damage, @Local(argsOnly = true) DamageSource damageSource) {
+    public float transformDamage(float damage, @Local(argsOnly = true) @NotNull DamageSource damageSource) {
         damage = transform(player, "damage", "all", damage);
         damage = transform(player, "damage", damageSource.getTypeRegistryEntry().getIdAsString(), damage);
         return damage;

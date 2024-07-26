@@ -16,6 +16,7 @@ import lombok.Getter;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class HomeInitializer extends ModuleInitializer {
 
     @SuppressWarnings({"UnusedReturnValue", "unused"})
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
         dispatcher.register(
                 literal("home")
                         .then(literal("set").then(myHomesArgument().executes(ctx -> $set(ctx, false)).then(literal("override").executes(ctx -> $set(ctx, true)))))
@@ -53,14 +54,14 @@ public class HomeInitializer extends ModuleInitializer {
         );
     }
 
-    private Map<String, Position> getHomes(ServerPlayerEntity player) {
+    private Map<String, Position> getHomes(@NotNull ServerPlayerEntity player) {
         String playerName = player.getGameProfile().getName();
         Map<String, Map<String, Position>> homes = data.model().homes;
         homes.computeIfAbsent(playerName, k -> new HashMap<>());
         return homes.get(playerName);
     }
 
-    private int $tp(CommandContext<ServerCommandSource> ctx) {
+    private int $tp(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             Map<String, Position> name2position = getHomes(player);
             String homeName = CommandHelper.Argument.name(ctx);
@@ -75,7 +76,7 @@ public class HomeInitializer extends ModuleInitializer {
         });
     }
 
-    private int $unset(CommandContext<ServerCommandSource> ctx) {
+    private int $unset(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             Map<String, Position> name2position = getHomes(player);
             String homeName = CommandHelper.Argument.name(ctx);
@@ -90,7 +91,7 @@ public class HomeInitializer extends ModuleInitializer {
         });
     }
 
-    private int $set(CommandContext<ServerCommandSource> ctx, boolean override) {
+    private int $set(@NotNull CommandContext<ServerCommandSource> ctx, boolean override) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             Map<String, Position> name2position = getHomes(player);
             String homeName = CommandHelper.Argument.name(ctx);
@@ -113,7 +114,7 @@ public class HomeInitializer extends ModuleInitializer {
         });
     }
 
-    private int $list(CommandContext<ServerCommandSource> ctx) {
+    private int $list(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             MessageHelper.sendMessage(player, "home.list", getHomes(player).keySet());
             return CommandHelper.Return.SUCCESS;

@@ -9,6 +9,8 @@ import io.github.sakurawald.util.minecraft.ServerHelper;
 import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.command.ServerCommandSource;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class CommandAliasInitializer extends ModuleInitializer {
         }));
     }
 
-    private LiteralArgumentBuilder<ServerCommandSource> walk(CommandDispatcher<ServerCommandSource> dispatcher, LiteralArgumentBuilder<ServerCommandSource> parent, CommandAliasEntry entry, int level) {
+    private LiteralArgumentBuilder<ServerCommandSource> walk(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, @Nullable LiteralArgumentBuilder<ServerCommandSource> parent, @NotNull CommandAliasEntry entry, int level) {
         // edge case
         if (entry.from.size() == 1) {
             return literal(entry.from.getFirst()).redirect(dispatcher.findNode(entry.to));
@@ -49,7 +51,7 @@ public class CommandAliasInitializer extends ModuleInitializer {
         return parent.then(value);
     }
 
-    private void registerCommandAliasEntry(CommandDispatcher<ServerCommandSource> dispatcher, CommandAliasEntry entry) {
+    private void registerCommandAliasEntry(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, @NotNull CommandAliasEntry entry) {
         LiteralArgumentBuilder<ServerCommandSource> root = walk(dispatcher, null, entry, 0);
         dispatcher.register(root);
     }

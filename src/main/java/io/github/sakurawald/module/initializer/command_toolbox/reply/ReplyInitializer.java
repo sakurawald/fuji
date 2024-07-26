@@ -13,6 +13,7 @@ import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import org.jetbrains.annotations.NotNull;
 
 import static net.minecraft.server.command.CommandManager.argument;
 
@@ -27,12 +28,12 @@ public class ReplyInitializer extends ModuleInitializer {
 
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(CommandManager.literal("reply").then(argument("message", StringArgumentType.greedyString()).executes(this::$reply)));
     }
 
     @SuppressWarnings("SameReturnValue")
-    private int $reply(CommandContext<ServerCommandSource> ctx) {
+    private int $reply(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
 
             String target = this.player2target.get(player.getGameProfile().getName());

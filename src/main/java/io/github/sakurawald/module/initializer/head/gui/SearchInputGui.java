@@ -8,12 +8,13 @@ import io.github.sakurawald.util.minecraft.MessageHelper;
 
 import java.util.stream.Collectors;
 import net.minecraft.item.Items;
+import org.jetbrains.annotations.NotNull;
 
 class SearchInputGui extends AnvilInputGui {
     final HeadInitializer module = ModuleManager.getInitializer(HeadInitializer.class);
-    private final HeadGui parentGui;
+    private final @NotNull HeadGui parentGui;
 
-    public SearchInputGui(HeadGui parentGui) {
+    public SearchInputGui(@NotNull HeadGui parentGui) {
         super(parentGui.player, false);
         this.parentGui = parentGui;
 

@@ -8,6 +8,7 @@ import net.minecraft.network.message.SignedMessage;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -24,7 +25,7 @@ public abstract class ServerGamePacketListenerImplMixin {
 
 
     @ModifyVariable(method = "handleDecoratedMessage", at = @At(value = "HEAD"), argsOnly = true)
-    public SignedMessage handleChat(SignedMessage before) {
+    public @NotNull SignedMessage handleChat(@NotNull SignedMessage before) {
         Text text = module.parseText(player, before.getContent().getString());
         module.getChatHistory().add(text.asComponent());
 

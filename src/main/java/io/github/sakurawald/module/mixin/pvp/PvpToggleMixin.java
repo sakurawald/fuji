@@ -8,6 +8,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,12 +20,12 @@ public abstract class PvpToggleMixin extends PlayerEntity {
     @Unique
     private static final PvpInitializer module = ModuleManager.getInitializer(PvpInitializer.class);
 
-    public PvpToggleMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
+    public PvpToggleMixin(@NotNull World world, @NotNull BlockPos pos, float yaw, @NotNull GameProfile gameProfile) {
         super(world, pos, yaw, gameProfile);
     }
 
     @Inject(method = "shouldDamagePlayer", at = @At("HEAD"), cancellable = true)
-    public void $shouldDamagePlayer(PlayerEntity sourcePlayer, CallbackInfoReturnable<Boolean> cir) {
+    public void $shouldDamagePlayer(@NotNull PlayerEntity sourcePlayer, @NotNull CallbackInfoReturnable<Boolean> cir) {
         if (this == sourcePlayer) return;
 
         ServerPlayerEntity player = sourcePlayer.getCommandSource().getPlayer();

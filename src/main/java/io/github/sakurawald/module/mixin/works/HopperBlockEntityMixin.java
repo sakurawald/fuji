@@ -4,6 +4,8 @@ import io.github.sakurawald.module.initializer.works.WorksCache;
 import io.github.sakurawald.module.initializer.works.work_type.ProductionWork;
 import io.github.sakurawald.module.initializer.works.work_type.Work;
 import io.github.sakurawald.util.LogUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,18 +29,18 @@ import net.minecraft.util.math.Direction;
 
 public abstract class HopperBlockEntityMixin extends LootableContainerBlockEntity {
 
-    protected HopperBlockEntityMixin(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
+    protected HopperBlockEntityMixin(BlockEntityType<?> blockEntityType, @NotNull BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
     }
 
     @Inject(method = "transfer(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/inventory/Inventory;Lnet/minecraft/item/ItemStack;ILnet/minecraft/util/math/Direction;)Lnet/minecraft/item/ItemStack;", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/Inventory;setStack(ILnet/minecraft/item/ItemStack;)V", shift = At.Shift.AFTER))
-    private static void $ifHopperHasEmptySlot(Inventory container, Inventory container2, ItemStack itemStack, int i, Direction direction, CallbackInfoReturnable<ItemStack> cir) {
+    private static void $ifHopperHasEmptySlot(Inventory container, Inventory container2, @NotNull ItemStack itemStack, int i, Direction direction, CallbackInfoReturnable<ItemStack> cir) {
         count(container, container2, itemStack, direction, cir);
     }
 
 
     @Inject(method = "transfer(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/inventory/Inventory;Lnet/minecraft/item/ItemStack;ILnet/minecraft/util/math/Direction;)Lnet/minecraft/item/ItemStack;", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;decrement(I)V", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void $ifHopperHasMergableSlot(Inventory container, Inventory container2, ItemStack itemStack, int i, Direction direction, CallbackInfoReturnable<ItemStack> cir, ItemStack itemStack2, boolean bl, boolean bl2, int j, int k) {
+    private static void $ifHopperHasMergableSlot(Inventory container, Inventory container2, @NotNull ItemStack itemStack, int i, Direction direction, CallbackInfoReturnable<ItemStack> cir, ItemStack itemStack2, boolean bl, boolean bl2, int j, int k) {
         // Note: here we must copy the itemstack before ItemStack#shrink.
         // If the count of itemStack is shark to 0, then it may become AIR, and then we can't count it any more.
         ItemStack copy = itemStack.copy();
@@ -49,7 +51,7 @@ public abstract class HopperBlockEntityMixin extends LootableContainerBlockEntit
 
     @SuppressWarnings("unused")
     @Unique
-    private static void count(Inventory container, Inventory container2, ItemStack itemStack, Direction direction, CallbackInfoReturnable<ItemStack> cir) {
+    private static void count(@Nullable Inventory container, Inventory container2, @NotNull ItemStack itemStack, Direction direction, CallbackInfoReturnable<ItemStack> cir) {
         // note: if the container == null, then means it's the source-hopper
         if (container != null) return;
         if (itemStack.isEmpty()) return;

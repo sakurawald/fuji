@@ -6,16 +6,17 @@ import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.Getter;
 import net.kyori.adventure.bossbar.BossBar;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 @Getter
 public class TeleportTicket extends BossBarTicket {
-    private final ServerPlayerEntity player;
+    private final @NotNull ServerPlayerEntity player;
     private final Position source;
     private final Position destination;
 
-    private TeleportTicket(ServerPlayerEntity player, Position source, Position destination, float progress) {
+    private TeleportTicket(@NotNull ServerPlayerEntity player, Position source, Position destination, float progress) {
         super(BossBar.bossBar(MessageHelper.ofComponent(player, "teleport_warmup.bossbar.name"), progress, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS), Configs.configHandler.model().modules.teleport_warmup.warmup_second * 1000, List.of(player)
         );
         this.player = player;
@@ -23,11 +24,11 @@ public class TeleportTicket extends BossBarTicket {
         this.destination = destination;
     }
 
-    public static TeleportTicket of(ServerPlayerEntity player, Position source, Position destination) {
+    public static @NotNull TeleportTicket of(@NotNull ServerPlayerEntity player, Position source, Position destination) {
         return new TeleportTicket(player, source, destination, 0f);
     }
 
-    public static TeleportTicket ofInstantTicket(ServerPlayerEntity player, Position source, Position destination) {
+    public static @NotNull TeleportTicket ofInstantTicket(@NotNull ServerPlayerEntity player, Position source, Position destination) {
         return new TeleportTicket(player, source, destination, 1f);
     }
 

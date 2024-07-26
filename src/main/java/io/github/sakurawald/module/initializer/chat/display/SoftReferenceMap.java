@@ -1,5 +1,7 @@
 package io.github.sakurawald.module.initializer.chat.display;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +15,7 @@ public class SoftReferenceMap<K, V> {
         map.put(key, softRef);
     }
 
-    public V get(K key) {
+    public @Nullable V get(K key) {
         SoftReference<V> softRef = map.get(key);
         if (softRef != null) {
             return softRef.get();

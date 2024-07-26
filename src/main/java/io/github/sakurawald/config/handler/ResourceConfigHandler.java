@@ -6,6 +6,7 @@ import com.google.gson.stream.JsonWriter;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.util.LogUtil;
 import lombok.Cleanup;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 
@@ -20,7 +21,7 @@ public class ResourceConfigHandler extends ConfigHandler<JsonElement> {
         this.resourcePath = resourcePath;
     }
 
-    public ResourceConfigHandler(String resourcePath) {
+    public ResourceConfigHandler(@NotNull String resourcePath) {
         this(Fuji.CONFIG_PATH.resolve(resourcePath).toFile(), resourcePath);
     }
 

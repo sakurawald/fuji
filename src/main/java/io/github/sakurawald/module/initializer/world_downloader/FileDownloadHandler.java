@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import io.github.sakurawald.util.LogUtil;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,14 +17,14 @@ import java.util.concurrent.TimeUnit;
 public class FileDownloadHandler implements HttpHandler {
 
     private static final long NANO_TO_S = 1000000000L;
-    private final WorldDownloaderInitializer module;
-    private final File file;
+    private final @NotNull WorldDownloaderInitializer module;
+    private final @NotNull File file;
     private final int bytesPerSecond;
 
     @SuppressWarnings("BusyWait")
     @Override
     @SneakyThrows
-    public void handle(HttpExchange exchange) {
+    public void handle(@NotNull HttpExchange exchange) {
         LogUtil.info("Download file: {}", file.getAbsolutePath());
 
         /* consume this context */

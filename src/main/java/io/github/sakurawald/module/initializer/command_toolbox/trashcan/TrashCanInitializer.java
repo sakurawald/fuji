@@ -12,14 +12,15 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.stat.Stats;
+import org.jetbrains.annotations.NotNull;
 
 public class TrashCanInitializer extends ModuleInitializer {
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(CommandManager.literal("trashcan").executes(this::$trashcan));
     }
 
-    private int $trashcan(CommandContext<ServerCommandSource> ctx) {
+    private int $trashcan(@NotNull CommandContext<ServerCommandSource> ctx) {
 
         int rows = 3;
         SimpleInventory simpleInventory = new SimpleInventory(rows * 9);

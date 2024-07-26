@@ -4,6 +4,7 @@ import lombok.Getter;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -11,11 +12,11 @@ import java.util.List;
 @Getter
 public abstract class CommandWarmupTicket extends BossBarTicket{
 
-    private final ServerPlayerEntity player;
+    private final @NotNull ServerPlayerEntity player;
 
     private final String command;
 
-    public CommandWarmupTicket(BossBar bossbar, int totalMS, ServerPlayerEntity player, String command) {
+    public CommandWarmupTicket(BossBar bossbar, int totalMS, @NotNull ServerPlayerEntity player, String command) {
         super(bossbar, totalMS, List.of(player));
         this.player = player;
         this.command = command;

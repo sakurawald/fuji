@@ -6,6 +6,8 @@ import io.github.sakurawald.util.RandomUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,7 +21,8 @@ public abstract class ShowTabListBodyStyleMixin {
     private final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
     @ModifyReturnValue(method = "getPlayerListName", at = @At("RETURN"))
-    Text modifyPlayerListName(Text original) {
+    @NotNull
+    Text modifyPlayerListName(@Nullable Text original) {
         // respect other's modification.
         if (original == null) {
             return ofText(player, false, RandomUtil.drawList(Configs.configHandler.model().modules.tab_list.style.body));

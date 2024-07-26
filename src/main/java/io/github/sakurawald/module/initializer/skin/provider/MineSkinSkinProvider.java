@@ -5,6 +5,8 @@ import com.google.gson.JsonParser;
 import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.module.initializer.skin.enums.SkinVariant;
 import io.github.sakurawald.util.IOUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.URI;
@@ -15,7 +17,7 @@ public class MineSkinSkinProvider {
     private static final String USER_AGENT = "SkinRestorer";
     private static final String TYPE = "application/json";
 
-    public static Property getSkin(String url, SkinVariant variant) {
+    public static @Nullable Property getSkin(String url, @NotNull SkinVariant variant) {
         try {
             String param = ("{\"variant\":\"%s\",\"name\":\"%s\",\"visibility\":%d,\"url\":\"%s\"}")
                     .formatted(variant.toString(), "none", 1, url);

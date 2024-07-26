@@ -6,6 +6,7 @@ import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,7 +27,7 @@ import java.util.stream.Stream;
 public class IOUtil {
 
     @SneakyThrows
-    public static void compressFiles(List<File> input, File output) {
+    public static void compressFiles(@NotNull List<File> input, @NotNull File output) {
         if (!output.exists()) {
             output.createNewFile();
         }
@@ -50,11 +51,11 @@ public class IOUtil {
         }
     }
 
-    private static String getEntryName(File file) {
+    private static @NotNull String getEntryName(@NotNull File file) {
         return file.getParentFile().getName() + File.separator + file.getName();
     }
 
-    public static List<Path> getLatestFiles(Path path) {
+    public static @NotNull List<Path> getLatestFiles(@NotNull Path path) {
         try (Stream<Path> files = Files.list(path)) {
             return files
                     .filter(Files::isRegularFile)
@@ -73,7 +74,7 @@ public class IOUtil {
         }
     }
 
-    public static String post(URI uri, String param) throws IOException {
+    public static String post(@NotNull URI uri, @NotNull String param) throws IOException {
         LogUtil.debug("post() -> uri = {}, param = {}", uri, param);
 
         HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
@@ -88,7 +89,7 @@ public class IOUtil {
         return IOUtils.toString(connection.getInputStream(), StandardCharsets.UTF_8);
     }
 
-    public static String get(URI uri) throws IOException {
+    public static String get(@NotNull URI uri) throws IOException {
         LogUtil.debug("get() -> uri = {}", uri);
 
         HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();

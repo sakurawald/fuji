@@ -18,6 +18,7 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Uuids;
+import org.jetbrains.annotations.NotNull;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -40,7 +41,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
 
     @SuppressWarnings("unused")
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(
                 literal("player").then(
                         literal("who").executes(this::$who)
@@ -51,7 +52,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
     }
 
     @SuppressWarnings("SameReturnValue")
-    private int $renew(CommandContext<ServerCommandSource> ctx) {
+    private int $renew(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             renewFakePlayers(player);
             return CommandHelper.Return.SUCCESS;
@@ -59,7 +60,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
     }
 
 
-    private int $who(CommandContext<ServerCommandSource> context) {
+    private int $who(@NotNull CommandContext<ServerCommandSource> context) {
         /* validate */
         validateFakePlayers();
 
@@ -79,12 +80,12 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    public boolean hasFakePlayers(ServerPlayerEntity player) {
+    public boolean hasFakePlayers(@NotNull ServerPlayerEntity player) {
         validateFakePlayers();
         return player2fakePlayers.containsKey(player.getGameProfile().getName());
     }
 
-    public void renewFakePlayers(ServerPlayerEntity player) {
+    public void renewFakePlayers(@NotNull ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
         int duration = Configs.configHandler.model().modules.carpet.fake_player_manager.renew_duration_ms;
         long newTime = System.currentTimeMillis() + duration;
@@ -111,7 +112,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         }
     }
 
-    public boolean canSpawnFakePlayer(ServerPlayerEntity player) {
+    public boolean canSpawnFakePlayer(@NotNull ServerPlayerEntity player) {
         /* validate */
         validateFakePlayers();
 
@@ -121,11 +122,11 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         return current < limit;
     }
 
-    public void addFakePlayer(ServerPlayerEntity player, String fakePlayer) {
+    public void addFakePlayer(@NotNull ServerPlayerEntity player, String fakePlayer) {
         this.player2fakePlayers.computeIfAbsent(player.getGameProfile().getName(), k -> new ArrayList<>()).add(fakePlayer);
     }
 
-    public boolean canManipulateFakePlayer(CommandContext<ServerCommandSource> ctx, String fakePlayer) {
+    public boolean canManipulateFakePlayer(@NotNull CommandContext<ServerCommandSource> ctx, String fakePlayer) {
         // IMPORTANT: disable /player ... shadow command for online-player
         if (ctx.getNodes().get(2).getNode().getName().equals("shadow")) return false;
 
@@ -161,11 +162,11 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         });
     }
 
-    public boolean isMyFakePlayer(ServerPlayerEntity player, ServerPlayerEntity fakePlayer) {
+    public boolean isMyFakePlayer(@NotNull ServerPlayerEntity player, @NotNull ServerPlayerEntity fakePlayer) {
         return player2fakePlayers.getOrDefault(player.getGameProfile().getName(), CONSTANT_EMPTY_LIST).contains(fakePlayer.getGameProfile().getName());
     }
 
-    public GameProfile createOfflineGameProfile(String fakePlayerName) {
+    public @NotNull GameProfile createOfflineGameProfile(@NotNull String fakePlayerName) {
         UUID offlinePlayerUUID = Uuids.getOfflinePlayerUuid(fakePlayerName);
         return new GameProfile(offlinePlayerUUID, fakePlayerName);
     }
@@ -173,7 +174,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
     public static class ManageFakePlayersJob implements Job {
 
         @Override
-        public void execute(JobExecutionContext context) {
+        public void execute(@NotNull JobExecutionContext context) {
             /* validate */
             FakePlayerManagerInitializer module = (FakePlayerManagerInitializer) context.getJobDetail().getJobDataMap().get(FakePlayerManagerInitializer.class.getName());
             module.validateFakePlayers();

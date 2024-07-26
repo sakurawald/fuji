@@ -13,6 +13,7 @@ import lombok.Getter;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import org.jetbrains.annotations.NotNull;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -28,7 +29,7 @@ public class NicknameInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(
                 literal("nickname")
                         .then(literal("reset")
@@ -38,7 +39,7 @@ public class NicknameInitializer extends ModuleInitializer {
                                         .executes(this::$set))));
     }
 
-    private int $set(CommandContext<ServerCommandSource> ctx) {
+    private int $set(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, (player) -> {
             String name = player.getGameProfile().getName();
             String format = StringArgumentType.getString(ctx, "format");
@@ -50,7 +51,7 @@ public class NicknameInitializer extends ModuleInitializer {
         });
     }
 
-    private int $reset(CommandContext<ServerCommandSource> ctx) {
+    private int $reset(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, (player) -> {
             String name = player.getGameProfile().getName();
             nicknameHandler.model().format.player2format.remove(name);

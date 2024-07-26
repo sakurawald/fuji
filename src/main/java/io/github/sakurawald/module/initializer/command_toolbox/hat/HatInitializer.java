@@ -11,18 +11,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.Hand;
+import org.jetbrains.annotations.NotNull;
 
 
 public class HatInitializer extends ModuleInitializer {
 
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(CommandManager.literal("hat").executes(this::$hat));
     }
 
     @SuppressWarnings("SameReturnValue")
-    private int $hat(CommandContext<ServerCommandSource> ctx) {
+    private int $hat(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             ItemStack mainHandItem = player.getMainHandStack();
             ItemStack headSlotItem = player.getEquippedStack(EquipmentSlot.HEAD);

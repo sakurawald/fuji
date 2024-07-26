@@ -8,6 +8,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
+import org.jetbrains.annotations.NotNull;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.GroupMatcher;
@@ -35,7 +36,7 @@ public class ScheduleUtil {
         resetScheduler();
     }
 
-    public static void addJob(Class<? extends Job> jobClass, @Nullable String jobName, @Nullable String jobGroup, String cron, @Nullable JobDataMap jobDataMap) {
+    public static void addJob(@NotNull Class<? extends Job> jobClass, @Nullable String jobName, @Nullable String jobGroup, @NotNull String cron, @Nullable JobDataMap jobDataMap) {
         if (jobName == null) {
             jobName = UUID.randomUUID().toString();
         }
@@ -56,7 +57,7 @@ public class ScheduleUtil {
         }
     }
 
-    public static void addJob(Class<? extends Job> jobClass, @Nullable String jobName, @Nullable String jobGroup, int intervalMs, int repeatCount, @Nullable JobDataMap jobDataMap) {
+    public static void addJob(@NotNull Class<? extends Job> jobClass, @Nullable String jobName, @Nullable String jobGroup, int intervalMs, int repeatCount, @Nullable JobDataMap jobDataMap) {
         if (jobName == null) {
             jobName = UUID.randomUUID().toString();
         }
@@ -77,7 +78,7 @@ public class ScheduleUtil {
         }
     }
 
-    public static void removeJobs(String jobGroup, String jobName) {
+    public static void removeJobs(String jobGroup, @NotNull String jobName) {
         LogUtil.debug("removeJobs() -> jobGroup: {}, jobName: {}", jobGroup, jobName);
 
         try {
@@ -87,7 +88,7 @@ public class ScheduleUtil {
         }
     }
 
-    public static void removeJobs(String jobGroup) {
+    public static void removeJobs(@NotNull String jobGroup) {
         LogUtil.debug("removeJobs() -> jobGroup: {}", jobGroup);
 
         try {
@@ -97,7 +98,7 @@ public class ScheduleUtil {
         }
     }
 
-    private static Set<JobKey> getJobKeys(String jobGroup) {
+    private static Set<JobKey> getJobKeys(@NotNull String jobGroup) {
         GroupMatcher<JobKey> groupMatcher = GroupMatcher.groupEquals(jobGroup);
         try {
             return scheduler.getJobKeys(groupMatcher);
@@ -107,7 +108,7 @@ public class ScheduleUtil {
         return Collections.emptySet();
     }
 
-    public static void triggerJobs(String jobGroup) {
+    public static void triggerJobs(@NotNull String jobGroup) {
         getJobKeys(jobGroup).forEach(jobKey -> {
             try {
                 scheduler.triggerJob(jobKey);

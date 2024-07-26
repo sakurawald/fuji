@@ -6,6 +6,7 @@ import io.github.sakurawald.config.annotation.Documentation;
 import io.github.sakurawald.module.common.structure.RegexRewriteEntry;
 import io.github.sakurawald.module.common.structure.TeleportSetup;
 import io.github.sakurawald.module.initializer.command_alias.structure.CommandAliasEntry;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -25,17 +26,17 @@ import java.util.*;
         """)
 public class ConfigModel {
 
-    public Common common = new Common();
-    public Modules modules = new Modules();
+    public @NotNull Common common = new Common();
+    public @NotNull Modules modules = new Modules();
 
     @Documentation("""
             Common options for this mod, which will influence `all modules`.
             """)
     public class Common {
 
-        public Quartz quartz = new Quartz();
-        public Backup backup = new Backup();
-        public Language language = new Language();
+        public @NotNull Quartz quartz = new Quartz();
+        public @NotNull Backup backup = new Backup();
+        public @NotNull Language language = new Language();
 
         @Documentation("""
                 Fuji use `quartz` library as scheduler, all the timer are managed by quartz.
@@ -54,7 +55,7 @@ public class ConfigModel {
                     Note:
                     - It's recommended to set at least `WARN`, to avoid `console spam`
                     """)
-            public String logger_level = "WARN";
+            public @NotNull String logger_level = "WARN";
         }
 
         @Documentation("""
@@ -69,7 +70,7 @@ public class ConfigModel {
                                         
                     Insert `head` means skip the folder `config/fuji/head`.
                     """)
-            public List<String> skip = new ArrayList<>() {
+            public @NotNull List<String> skip = new ArrayList<>() {
                 {
                     this.add("head");
                 }
@@ -84,7 +85,7 @@ public class ConfigModel {
                 Also, if the server can't support client-side's language, it will fallback to the `deafult_language`
                 """)
         public class Language {
-            public String default_language = "en_us";
+            public @NotNull String default_language = "en_us";
         }
     }
 
@@ -101,49 +102,49 @@ public class ConfigModel {
                         
             """)
     public class Modules {
-        public Config config = new Config();
-        public Language language = new Language();
-        public Chat chat = new Chat();
-        public Placeholder placeholder = new Placeholder();
-        public MOTD motd = new MOTD();
-        public TabList tab_list = new TabList();
-        public Tpa tpa = new Tpa();
-        public Back back = new Back();
-        public Home home = new Home();
-        public Pvp pvp = new Pvp();
-        public Afk afk = new Afk();
-        public Rtp rtp = new Rtp();
-        public Works works = new Works();
-        public DeathLog deathlog = new DeathLog();
-        public Functional functional = new Functional();
-        public SystemMessage system_message = new SystemMessage();
-        public CommandScheduler command_scheduler = new CommandScheduler();
-        public CommandPermission command_permission = new CommandPermission();
-        public CommandRewrite command_rewrite = new CommandRewrite();
-        public CommandAlias command_alias = new CommandAlias();
-        public CommandInteractive command_interactive = new CommandInteractive();
-        public CommandWarmup command_warmup = new CommandWarmup();
-        public CommandCooldown command_cooldown = new CommandCooldown();
-        public CommandToolbox command_toolbox = new CommandToolbox();
-        public CommandSpy command_spy = new CommandSpy();
-        public CommandEvent command_event = new CommandEvent();
-        public World world = new World();
-        public TeleportWarmup teleport_warmup = new TeleportWarmup();
-        public TopChunks top_chunks = new TopChunks();
-        public Skin skin = new Skin();
-        public WorldDownloader world_downloader = new WorldDownloader();
-        public MultiObsidianPlatform multi_obsidian_platform = new MultiObsidianPlatform();
-        public Whitelist whitelist = new Whitelist();
-        public Head head = new Head();
-        public Profiler profiler = new Profiler();
-        public Tester tester = new Tester();
-        public Multiplier multiplier = new Multiplier();
-        public Disabler disabler = new Disabler();
-        public AntiBuild anti_build = new AntiBuild();
-        public Color color = new Color();
-        public Kit kit = new Kit();
-        public Carpet carpet = new Carpet();
-        public CommandMeta command_meta = new CommandMeta();
+        public @NotNull Config config = new Config();
+        public @NotNull Language language = new Language();
+        public @NotNull Chat chat = new Chat();
+        public @NotNull Placeholder placeholder = new Placeholder();
+        public @NotNull MOTD motd = new MOTD();
+        public @NotNull TabList tab_list = new TabList();
+        public @NotNull Tpa tpa = new Tpa();
+        public @NotNull Back back = new Back();
+        public @NotNull Home home = new Home();
+        public @NotNull Pvp pvp = new Pvp();
+        public @NotNull Afk afk = new Afk();
+        public @NotNull Rtp rtp = new Rtp();
+        public @NotNull Works works = new Works();
+        public @NotNull DeathLog deathlog = new DeathLog();
+        public @NotNull Functional functional = new Functional();
+        public @NotNull SystemMessage system_message = new SystemMessage();
+        public @NotNull CommandScheduler command_scheduler = new CommandScheduler();
+        public @NotNull CommandPermission command_permission = new CommandPermission();
+        public @NotNull CommandRewrite command_rewrite = new CommandRewrite();
+        public @NotNull CommandAlias command_alias = new CommandAlias();
+        public @NotNull CommandInteractive command_interactive = new CommandInteractive();
+        public @NotNull CommandWarmup command_warmup = new CommandWarmup();
+        public @NotNull CommandCooldown command_cooldown = new CommandCooldown();
+        public @NotNull CommandToolbox command_toolbox = new CommandToolbox();
+        public @NotNull CommandSpy command_spy = new CommandSpy();
+        public @NotNull CommandEvent command_event = new CommandEvent();
+        public @NotNull World world = new World();
+        public @NotNull TeleportWarmup teleport_warmup = new TeleportWarmup();
+        public @NotNull TopChunks top_chunks = new TopChunks();
+        public @NotNull Skin skin = new Skin();
+        public @NotNull WorldDownloader world_downloader = new WorldDownloader();
+        public @NotNull MultiObsidianPlatform multi_obsidian_platform = new MultiObsidianPlatform();
+        public @NotNull Whitelist whitelist = new Whitelist();
+        public @NotNull Head head = new Head();
+        public @NotNull Profiler profiler = new Profiler();
+        public @NotNull Tester tester = new Tester();
+        public @NotNull Multiplier multiplier = new Multiplier();
+        public @NotNull Disabler disabler = new Disabler();
+        public @NotNull AntiBuild anti_build = new AntiBuild();
+        public @NotNull Color color = new Color();
+        public @NotNull Kit kit = new Kit();
+        public @NotNull Carpet carpet = new Carpet();
+        public @NotNull CommandMeta command_meta = new CommandMeta();
 
         @Documentation("""
                 This module allows you to create extra `dimension` of a specific `dimension type`.
@@ -176,7 +177,7 @@ public class ConfigModel {
         public class World {
             public boolean enable = false;
 
-            public Blacklist blacklist = new Blacklist();
+            public @NotNull Blacklist blacklist = new Blacklist();
 
             @Documentation("""
                     The dimensions in the `blacklist` will not be operated by this module.
@@ -184,7 +185,7 @@ public class ConfigModel {
                     Use `blacklist` to avoid mis-operation.
                     """)
             public class Blacklist {
-                public List<String> dimension_list = new ArrayList<>() {
+                public @NotNull List<String> dimension_list = new ArrayList<>() {
                     {
                         this.add("minecraft:overworld");
                         this.add("minecraft:the_nether");
@@ -206,13 +207,13 @@ public class ConfigModel {
                     Tips:
                     - You may need to enable `placeholder` to support some placeholders.
                     """)
-            public List<String> list = new ArrayList<>() {
+            public @NotNull List<String> list = new ArrayList<>() {
                 {
                     this.add("<gradient:#FF66B2:#FFB5CC>Pure Survival %server:version% / Up %server:uptime% ❤ Discord Group XXX</gradient><newline><gradient:#99CCFF:#BBDFFF>%fuji:server_playtime%🔥 %fuji:server_mined%⛏ %fuji:server_placed%🔳 %fuji:server_killed%🗡 %fuji:server_moved%🌍");
                 }
             };
 
-            public Icon icon = new Icon();
+            public @NotNull Icon icon = new Icon();
 
             public class Icon {
                 public boolean enable = true;
@@ -237,7 +238,7 @@ public class ConfigModel {
             @Documentation("How far should we cancel the teleportation.")
             public double interrupt_distance = 1d;
 
-            public Dimension dimension = new Dimension();
+            public @NotNull Dimension dimension = new Dimension();
 
             @Documentation("""
                     Only allowed in the following dimensions.
@@ -249,7 +250,7 @@ public class ConfigModel {
                                         
                     """)
             public class Dimension {
-                public Set<String> list = new HashSet<>() {
+                public @NotNull Set<String> list = new HashSet<>() {
                     {
                         this.add("minecraft:overworld");
                         this.add("minecraft:the_nether");
@@ -276,7 +277,7 @@ public class ConfigModel {
                         See regex editor https://regexr.com/
                         See regex editor https://regex101.com/
                     """)
-            public HashMap<String, Long> regex2ms = new HashMap<>() {
+            public @NotNull HashMap<String, Long> regex2ms = new HashMap<>() {
                 {
                     this.put("rw tp (overworld|the_nether|the_end)", 120 * 1000L);
                     this.put("chunks\\s*", 60 * 1000L);
@@ -295,7 +296,7 @@ public class ConfigModel {
             public boolean enable = false;
 
             @Documentation("See `command_cooldown module`")
-            public HashMap<String, Integer> regex2ms = new HashMap<>() {
+            public @NotNull HashMap<String, Integer> regex2ms = new HashMap<>() {
                 {
                     this.put("back", 3 * 1000);
                 }
@@ -311,7 +312,7 @@ public class ConfigModel {
             public boolean enable = false;
 
 
-            public Top top = new Top();
+            public @NotNull Top top = new Top();
             @Documentation("For a chunk, how much the radius used to search `the nearest player` around the chunk.")
             public int nearest_distance = 128;
             @Documentation("""
@@ -329,7 +330,7 @@ public class ConfigModel {
                                 
                     Any other types not inside the dict used the score defined for type `default`
                     """)
-            public HashMap<String, Integer> type2score = new HashMap<>() {
+            public @NotNull HashMap<String, Integer> type2score = new HashMap<>() {
                 {
                     this.put("default", 1);
                     this.put("block.minecraft.chest", 1);
@@ -435,12 +436,12 @@ public class ConfigModel {
             @Documentation("""
                     The server chat format for all players.
                     """)
-            public String format = "<#B1B2FF>[%fuji:player_playtime%\uD83D\uDD25 %fuji:player_mined%⛏ %fuji:player_placed%\uD83D\uDD33 %fuji:player_killed%\uD83D\uDDE1 %fuji:player_moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:'/msg %player:name% '><hover:show_text:'Time: %fuji:date%<newline><italic>Click to Message'>%player:displayname_visual%</hover></click></dark_green>> %message%";
+            public @NotNull String format = "<#B1B2FF>[%fuji:player_playtime%\uD83D\uDD25 %fuji:player_mined%⛏ %fuji:player_placed%\uD83D\uDD33 %fuji:player_killed%\uD83D\uDDE1 %fuji:player_moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:'/msg %player:name% '><hover:show_text:'Time: %fuji:date%<newline><italic>Click to Message'>%player:displayname_visual%</hover></click></dark_green>> %message%";
 
-            public Rewrite rewrite = new Rewrite();
-            public MentionPlayer mention_player = new MentionPlayer();
-            public Display display = new Display();
-            public History history = new History();
+            public @NotNull Rewrite rewrite = new Rewrite();
+            public @NotNull MentionPlayer mention_player = new MentionPlayer();
+            public @NotNull Display display = new Display();
+            public @NotNull History history = new History();
 
             @Documentation("""
                     New joined players can see the historical chat messages.
@@ -455,7 +456,7 @@ public class ConfigModel {
                     """)
             public class MentionPlayer {
                 @Documentation("You can query all the `sound identifier` using `/playsound ...` command.")
-                public String sound = "entity.experience_orb.pickup";
+                public @NotNull String sound = "entity.experience_orb.pickup";
                 public float volume = 100f;
                 public float pitch = 1f;
                 @Documentation("The sound repeat count.")
@@ -482,7 +483,7 @@ public class ConfigModel {
                     You can use `regex language` to transform player's chat input (only chat message, no command usage).
                     """)
             public class Rewrite {
-                public List<RegexRewriteEntry> regex = new ArrayList<>() {
+                public @NotNull List<RegexRewriteEntry> regex = new ArrayList<>() {
                     {
                         this.add(new RegexRewriteEntry("^BV(\\w{10})", "<underline><blue><hover:show_text:'$1'><click:open_url:'https://www.bilibili.com/video/BV$1'>bilibili $1</click></hover></blue></underline>"));
                         this.add(new RegexRewriteEntry("(?<=^|\\s)item(?=\\s|$)", "%fuji:item%"));
@@ -503,11 +504,11 @@ public class ConfigModel {
             public boolean enable = false;
 
             @Documentation("The `default skin` used for player who has no skin set.")
-            public Property default_skin = new Property("textures", "eyJ0aW1lc3RhbXAiOjE1ODYzMjc4ODA1NjYsInByb2ZpbGVJZCI6ImI3MzY3YzA2MjYxYzRlYjBiN2Y3OGY3YzUxNzBiNzQ4IiwicHJvZmlsZU5hbWUiOiJFbXB0eUlyb255Iiwic2lnbmF0dXJlUmVxdWlyZWQiOnRydWUsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS84NWZmZjI1ZDY2NzIwNmYyZTQ2ZDQ0MmNmMzU4YjNmMWVjMzYxMzgzOTE3NTFiYTZlZGY5NjVmZmM4M2I4NjAzIiwibWV0YWRhdGEiOnsibW9kZWwiOiJzbGltIn19fX0=",
+            public @NotNull Property default_skin = new Property("textures", "eyJ0aW1lc3RhbXAiOjE1ODYzMjc4ODA1NjYsInByb2ZpbGVJZCI6ImI3MzY3YzA2MjYxYzRlYjBiN2Y3OGY3YzUxNzBiNzQ4IiwicHJvZmlsZU5hbWUiOiJFbXB0eUlyb255Iiwic2lnbmF0dXJlUmVxdWlyZWQiOnRydWUsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS84NWZmZjI1ZDY2NzIwNmYyZTQ2ZDQ0MmNmMzU4YjNmMWVjMzYxMzgzOTE3NTFiYTZlZGY5NjVmZmM4M2I4NjAzIiwibWV0YWRhdGEiOnsibW9kZWwiOiJzbGltIn19fX0=",
                     "PoUf4TsNx6SVHTWZJ6Iwk3acWyiDk84VeKBVcOeqimaSBAGYKfeuXRTFV8c9IBE9cjsRAVaTGC/mwRfHlcD/rmxeDDOkhsFVidr8UL+91afIO8d+EnyoBghmnbZonqpcjCv+nkxQ5SP93qTDelD3jd8xF1FAU97BBvrx0yK+QNn5rPg2RUGGoUZUg75KlEJds1dNftpHc8IyAHz/FQIywlkohu26ghOqFStjok4WPHD3ok0z7Kwcjk7u58PYf67TkEGnGbmxTUDlNbLmxUqjxCr4NshS+e3y3jRfJN0nP82dbYh/NP2Fx8m7pSMsQtm/Ta2MN7JC0Pm2yvZB/APNoNHVSZZ2SOITbPF/yAkIdHrk+ieCKqDbeuc8TFs2n+6FktYdwPXcqrK266CzlSTPycVZQeyrgrOI+fqU1HwCz+MgdlcsAdAoyuFlFPaVqDesI46YPsSJzA3C3CNhjvuebOn357U9Po82eSFAPYbtBPVNjiNgiqn5l+1x8ZVHImwpGv/toa5/fUyfMmlxijwG/C9gQ4mE+buutMn9nfE1y/AisU/2DWeFBESw3eRAICcmVVi875N8kT+Wja8WsbpDCw+pV2wZC3x3nEdOceAdXtDEb0oy3bQPW3TSZ+Wnp68qwSxjI/aDosqVuyyqqlm+w/irUmNHGL+t7g/kD932g0Q=");
 
             @Documentation("Random skin for fake-player, if you enable the local skin for fake-player. See: FakePlayerManagerModule")
-            public ArrayList<Property> random_skins = new ArrayList<>() {
+            public @NotNull ArrayList<Property> random_skins = new ArrayList<>() {
                 {
                     this.add(new Property("textures", "eyJ0aW1lc3RhbXAiOjE1ODYzMjc4ODA1NjYsInByb2ZpbGVJZCI6ImI3MzY3YzA2MjYxYzRlYjBiN2Y3OGY3YzUxNzBiNzQ4IiwicHJvZmlsZU5hbWUiOiJFbXB0eUlyb255Iiwic2lnbmF0dXJlUmVxdWlyZWQiOnRydWUsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS84NWZmZjI1ZDY2NzIwNmYyZTQ2ZDQ0MmNmMzU4YjNmMWVjMzYxMzgzOTE3NTFiYTZlZGY5NjVmZmM4M2I4NjAzIiwibWV0YWRhdGEiOnsibW9kZWwiOiJzbGltIn19fX0=", "PoUf4TsNx6SVHTWZJ6Iwk3acWyiDk84VeKBVcOeqimaSBAGYKfeuXRTFV8c9IBE9cjsRAVaTGC/mwRfHlcD/rmxeDDOkhsFVidr8UL+91afIO8d+EnyoBghmnbZonqpcjCv+nkxQ5SP93qTDelD3jd8xF1FAU97BBvrx0yK+QNn5rPg2RUGGoUZUg75KlEJds1dNftpHc8IyAHz/FQIywlkohu26ghOqFStjok4WPHD3ok0z7Kwcjk7u58PYf67TkEGnGbmxTUDlNbLmxUqjxCr4NshS+e3y3jRfJN0nP82dbYh/NP2Fx8m7pSMsQtm/Ta2MN7JC0Pm2yvZB/APNoNHVSZZ2SOITbPF/yAkIdHrk+ieCKqDbeuc8TFs2n+6FktYdwPXcqrK266CzlSTPycVZQeyrgrOI+fqU1HwCz+MgdlcsAdAoyuFlFPaVqDesI46YPsSJzA3C3CNhjvuebOn357U9Po82eSFAPYbtBPVNjiNgiqn5l+1x8ZVHImwpGv/toa5/fUyfMmlxijwG/C9gQ4mE+buutMn9nfE1y/AisU/2DWeFBESw3eRAICcmVVi875N8kT+Wja8WsbpDCw+pV2wZC3x3nEdOceAdXtDEb0oy3bQPW3TSZ+Wnp68qwSxjI/aDosqVuyyqqlm+w/irUmNHGL+t7g/kD932g0Q="));
                     this.add(new Property("textures", "ewogICJ0aW1lc3RhbXAiIDogMTYyMDIyMDc4MTQyNCwKICAicHJvZmlsZUlkIiA6ICJiYjdjY2E3MTA0MzQ0NDEyOGQzMDg5ZTEzYmRmYWI1OSIsCiAgInByb2ZpbGVOYW1lIiA6ICJsYXVyZW5jaW8zMDMiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjVmMTcyMGM3ODBhNzk1OGI0MWYxNTNlNTA2OWRiNjg2MWJkMjgxYmU0MzJlN2JjNzk0MTE0YTdmNGVjNTJmZCIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9", "olnQih89nZxKFe0UzWiXU8+wlndGBClUqXxAabwEm6j15SZH9ue7Xd2OM2kRKBiHoqbT+2TSg4xG7cBeAeapVN4vpRP5NPujERl/JI41jYNhMb+DmskreS59fh0QfZPAxOpj/rmmAJVfNN1QblxRM3wlMGaEgS5TH9HfeehgLrBaaDM8/JAgnas4Yh6L0uRoNebjXHrhqgguVBMF3xsWpvpAPCzQCYX2vjCCF3WtOEy7EEUF4u5Lo4teQhr9yfnYGBc/ktE4I0MByqTaKrLqvF45n4jOShPP0RcmLh9JpOXyrScRuaUDhQ8bd8xhkWEb94HMzwznvDLNh1/nbNybCMb5GydYf51hJVfqjU5TMWID71F8FTTBJrCZDBRESFIP+QZ3czYP+urgzmfLgDmcoPIukMaHWLU6qFpTF0QazAgF4u5Fe4J6QEZSyZz0B2kqQG3vN1dXxLgHItjQbEeceChNYNjuZFOTleXzpYkg5/4Zqy6Oek3bMscTYY7IPBV56WiO8eGw5JYMfyDeM3iyh4ZxLEC3HDRtOTBHo7WxWPR/AUOU9HP9CdmKQbGThGAUuqlqRJzbg5XNRvKIcnngI329VZV5RmAnt+G5Vfy6uqBagpMQZ3720PXPG6H5q4SBuXmHt1ccKgJvQv9lTh20EymuIALTnCodr8qDbnRfdrI="));
@@ -578,7 +579,7 @@ public class ConfigModel {
             public boolean enable = false;
 
             @Documentation("The url format used to broadcast")
-            public String url_format = "http://example.com:%port%%path%";
+            public @NotNull String url_format = "http://example.com:%port%%path%";
 
             public int port = 22222;
 
@@ -595,9 +596,9 @@ public class ConfigModel {
         public class Disabler {
             public boolean enable = false;
 
-            public ChatSpeedDisabler chat_speed_disabler = new ChatSpeedDisabler();
-            public MoveSpeedDisabler move_speed_disabler = new MoveSpeedDisabler();
-            public MaxPlayerDisabler max_player_disabler = new MaxPlayerDisabler();
+            public @NotNull ChatSpeedDisabler chat_speed_disabler = new ChatSpeedDisabler();
+            public @NotNull MoveSpeedDisabler move_speed_disabler = new MoveSpeedDisabler();
+            public @NotNull MaxPlayerDisabler max_player_disabler = new MaxPlayerDisabler();
 
             @Documentation("Disable `Kicked for spamming`")
             public class ChatSpeedDisabler {
@@ -813,14 +814,14 @@ public class ConfigModel {
             public boolean enable = false;
 
             @Documentation("The tab-name format when a player is afk")
-            public String format = "<gray>[AFK] %player:displayname_visual%";
+            public @NotNull String format = "<gray>[AFK] %player:displayname_visual%";
 
             @Documentation("The afk checker is a timer to check and mark the player's recently active time.")
-            public AfkChecker afk_checker = new AfkChecker();
+            public @NotNull AfkChecker afk_checker = new AfkChecker();
 
             public class AfkChecker {
                 @Documentation("The cron to define how the afk_checker is triggered.")
-                public String cron = "0 0/5 * ? * *";
+                public @NotNull String cron = "0 0/5 * ? * *";
                 @Documentation("Should we kick a player if he is afk ?")
                 public boolean kick_player = false;
             }
@@ -845,13 +846,13 @@ public class ConfigModel {
 
             public boolean enable = true;
 
-            public Setup setup = new Setup();
+            public @NotNull Setup setup = new Setup();
 
             @Documentation("""
                     Teleport setup per dimension. Dimensions that are not in the list will be disabled to rtp.
                     """)
             public class Setup {
-                public List<TeleportSetup> dimension = new ArrayList() {
+                public @NotNull List<TeleportSetup> dimension = new ArrayList() {
 
                     {
                         this.add(new TeleportSetup("minecraft:overworld", 0, 0, false, 1000, 5000, -64, 320, 16));
@@ -936,7 +937,7 @@ public class ConfigModel {
             public boolean enable = false;
 
             @Documentation("The language keys to modify.")
-            public Map<String, String> key2value = new HashMap<>() {
+            public @NotNull Map<String, String> key2value = new HashMap<>() {
                 {
                     this.put("multiplayer.player.joined", "<rainbow>+ %s");
                     this.put("multiplayer.player.left", "<dark_gray>%s leeeeeeeeft the game");
@@ -961,7 +962,7 @@ public class ConfigModel {
                 """)
         public class CommandAlias {
             public boolean enable = false;
-            public List<CommandAliasEntry> alias = new ArrayList<>() {
+            public @NotNull List<CommandAliasEntry> alias = new ArrayList<>() {
                 {
                     this.add(new CommandAliasEntry(List.of("r"), List.of("reply")));
                     this.add(new CommandAliasEntry(List.of("i", "want", "to", "modify", "chat"), List.of("chat", "format")));
@@ -974,7 +975,7 @@ public class ConfigModel {
                 """)
         public class CommandRewrite {
             public boolean enable = false;
-            public List<RegexRewriteEntry> regex = new ArrayList<>() {
+            public @NotNull List<RegexRewriteEntry> regex = new ArrayList<>() {
                 {
                     this.add(new RegexRewriteEntry("home", "home tp default"));
                 }
@@ -1044,17 +1045,17 @@ public class ConfigModel {
         public class AntiBuild {
             public boolean enable = false;
 
-            public Anti anti = new Anti();
+            public @NotNull Anti anti = new Anti();
 
             public class Anti {
-                public Break break_block = new Break();
-                public Place place_block = new Place();
-                public InteractItem interact_item = new InteractItem();
-                public InteractBlock interact_block = new InteractBlock();
-                public InteractEntity interact_entity = new InteractEntity();
+                public @NotNull Break break_block = new Break();
+                public @NotNull Place place_block = new Place();
+                public @NotNull InteractItem interact_item = new InteractItem();
+                public @NotNull InteractBlock interact_block = new InteractBlock();
+                public @NotNull InteractEntity interact_entity = new InteractEntity();
 
                 public class Break {
-                    public Set<String> id = new HashSet<>() {
+                    public @NotNull Set<String> id = new HashSet<>() {
                         {
                             this.add("minecraft:gold_block");
                         }
@@ -1062,7 +1063,7 @@ public class ConfigModel {
                 }
 
                 public class Place {
-                    public Set<String> id = new HashSet<>() {
+                    public @NotNull Set<String> id = new HashSet<>() {
                         {
                             this.add("minecraft:tnt");
                         }
@@ -1070,7 +1071,7 @@ public class ConfigModel {
                 }
 
                 public class InteractItem {
-                    public Set<String> id = new HashSet<>() {
+                    public @NotNull Set<String> id = new HashSet<>() {
                         {
                             this.add("minecraft:lava_bucket");
                         }
@@ -1078,7 +1079,7 @@ public class ConfigModel {
                 }
 
                 public class InteractBlock {
-                    public Set<String> id = new HashSet<>() {
+                    public @NotNull Set<String> id = new HashSet<>() {
                         {
                             this.add("minecraft:lever");
                         }
@@ -1086,7 +1087,7 @@ public class ConfigModel {
                 }
 
                 public class InteractEntity {
-                    public Set<String> id = new HashSet<>() {
+                    public @NotNull Set<String> id = new HashSet<>() {
                         {
                             this.add("minecraft:villager");
                         }
@@ -1107,8 +1108,8 @@ public class ConfigModel {
         public class Color {
             public boolean enable = false;
 
-            public Sign sign = new Sign();
-            public Anvil anvil = new Anvil();
+            public @NotNull Sign sign = new Sign();
+            public @NotNull Anvil anvil = new Anvil();
 
             @Documentation("Enable `color` for all sign blocks.")
             public class Sign {
@@ -1139,15 +1140,15 @@ public class ConfigModel {
         public class Functional {
             public boolean enable = false;
 
-            public Workbench workbench = new Workbench();
-            public Enchantment enchantment = new Enchantment();
-            public GrindStone grindstone = new GrindStone();
-            public StoneCutter stonecutter = new StoneCutter();
-            public Anvil anvil = new Anvil();
-            public Cartography cartography = new Cartography();
-            public EnderChest enderchest = new EnderChest();
-            public Smithing smithing = new Smithing();
-            public Loom loom = new Loom();
+            public @NotNull Workbench workbench = new Workbench();
+            public @NotNull Enchantment enchantment = new Enchantment();
+            public @NotNull GrindStone grindstone = new GrindStone();
+            public @NotNull StoneCutter stonecutter = new StoneCutter();
+            public @NotNull Anvil anvil = new Anvil();
+            public @NotNull Cartography cartography = new Cartography();
+            public @NotNull EnderChest enderchest = new EnderChest();
+            public @NotNull Smithing smithing = new Smithing();
+            public @NotNull Loom loom = new Loom();
 
             @Documentation("This module provides `/workbench` command.")
             public class Workbench {
@@ -1160,7 +1161,7 @@ public class ConfigModel {
                 public boolean enable = true;
 
                 @Documentation("Should we override the power of proviers for the opened enchant table?")
-                public OverridePower override_power = new OverridePower();
+                public @NotNull OverridePower override_power = new OverridePower();
 
                 public class OverridePower {
 
@@ -1217,8 +1218,8 @@ public class ConfigModel {
         public class Carpet {
             public boolean enable = false;
 
-            public FakePlayerManager fake_player_manager = new FakePlayerManager();
-            public BetterInfo better_info = new BetterInfo();
+            public @NotNull FakePlayerManager fake_player_manager = new FakePlayerManager();
+            public @NotNull BetterInfo better_info = new BetterInfo();
 
             @Documentation("""
                     Enable this module requires `carpet-fabric` mod installed.
@@ -1248,7 +1249,7 @@ public class ConfigModel {
                         Only the owner can operates the fake-player. (Op can bypass this limit)
                                             
                         """)
-                public ArrayList<List<Integer>> caps_limit_rule = new ArrayList<>() {
+                public @NotNull ArrayList<List<Integer>> caps_limit_rule = new ArrayList<>() {
                     {
                         this.add(List.of(1, 0, 2));
                     }
@@ -1270,7 +1271,7 @@ public class ConfigModel {
                                             
                         Use-case: add prefix or suffix for fake-player.
                         """)
-                public String transform_name = "_fake_%name%";
+                public @NotNull String transform_name = "_fake_%name%";
 
                 @Documentation("""
                         Should we use local skin for fake-player? 
@@ -1297,11 +1298,11 @@ public class ConfigModel {
         public class CommandMeta {
             public boolean enable = false;
 
-            public Run run = new Run();
-            public ForEach for_each = new ForEach();
-            public Chain chain = new Chain();
-            public Delay delay = new Delay();
-            public Shell shell = new Shell();
+            public @NotNull Run run = new Run();
+            public @NotNull ForEach for_each = new ForEach();
+            public @NotNull Chain chain = new Chain();
+            public @NotNull Delay delay = new Delay();
+            public @NotNull Shell shell = new Shell();
 
             @Documentation("""
                     This module provides `/run` command, which can run a `command` with `context`.
@@ -1381,7 +1382,7 @@ public class ConfigModel {
                                         
                     """)
             public class Shell {
-                public String enable_warning = "ENABLE THIS MODULE IS POTENTIAL TO HARM YOUR COMPUTER! YOU NEED TO CHANGE THIS FIELD INTO `CONFIRM` TO ENABLE THIS MODULE";
+                public @NotNull String enable_warning = "ENABLE THIS MODULE IS POTENTIAL TO HARM YOUR COMPUTER! YOU NEED TO CHANGE THIS FIELD INTO `CONFIRM` TO ENABLE THIS MODULE";
                 public boolean enable = false;
             }
 
@@ -1393,28 +1394,28 @@ public class ConfigModel {
                 """)
         public class CommandToolbox {
             public boolean enable = false;
-            public Bed bed = new Bed();
-            public Extinguish extinguish = new Extinguish();
-            public Feed feed = new Feed();
-            public Fly fly = new Fly();
-            public God god = new God();
-            public Hat hat = new Hat();
-            public Sit sit = new Sit();
-            public Heal heal = new Heal();
-            public Lore lore = new Lore();
-            public More more = new More();
-            public Ping ping = new Ping();
-            public Realname realname = new Realname();
-            public Nickname nickname = new Nickname();
-            public Repair repair = new Repair();
-            public Reply reply = new Reply();
-            public Seen seen = new Seen();
-            public Suicide suicide = new Suicide();
-            public Top top = new Top();
-            public SendMessage send_message = new SendMessage();
-            public SendBroadcast send_broadcast = new SendBroadcast();
-            public SendActionBar send_actionbar = new SendActionBar();
-            public TrashCan trashcan = new TrashCan();
+            public @NotNull Bed bed = new Bed();
+            public @NotNull Extinguish extinguish = new Extinguish();
+            public @NotNull Feed feed = new Feed();
+            public @NotNull Fly fly = new Fly();
+            public @NotNull God god = new God();
+            public @NotNull Hat hat = new Hat();
+            public @NotNull Sit sit = new Sit();
+            public @NotNull Heal heal = new Heal();
+            public @NotNull Lore lore = new Lore();
+            public @NotNull More more = new More();
+            public @NotNull Ping ping = new Ping();
+            public @NotNull Realname realname = new Realname();
+            public @NotNull Nickname nickname = new Nickname();
+            public @NotNull Repair repair = new Repair();
+            public @NotNull Reply reply = new Reply();
+            public @NotNull Seen seen = new Seen();
+            public @NotNull Suicide suicide = new Suicide();
+            public @NotNull Top top = new Top();
+            public @NotNull SendMessage send_message = new SendMessage();
+            public @NotNull SendBroadcast send_broadcast = new SendBroadcast();
+            public @NotNull SendActionBar send_actionbar = new SendActionBar();
+            public @NotNull TrashCan trashcan = new TrashCan();
 
             @Documentation("This module provides `/bed` command, which teleports the player to his bed.")
             public class Bed {
@@ -1570,23 +1571,23 @@ public class ConfigModel {
                 """)
         public class TabList {
             public boolean enable = false;
-            public String update_cron = "* * * ? * *";
-            public Style style = new Style();
-            public Sort sort = new Sort();
-            public Faker faker = new Faker();
+            public @NotNull String update_cron = "* * * ? * *";
+            public @NotNull Style style = new Style();
+            public @NotNull Sort sort = new Sort();
+            public @NotNull Faker faker = new Faker();
 
             public class Style {
-                public List<String> header = new ArrayList<>() {
+                public @NotNull List<String> header = new ArrayList<>() {
                     {
                         this.add("<#FFA1F5>PlayerList<newline>------%server:online%/%server:max_players%------");
                     }
                 };
-                public List<String> body = new ArrayList<>() {
+                public @NotNull List<String> body = new ArrayList<>() {
                     {
                         this.add("<rainbow>%player:displayname_visual%");
                     }
                 };
-                public List<String> footer = new ArrayList<>() {
+                public @NotNull List<String> footer = new ArrayList<>() {
                     {
                         this.add("<#FFA1F5>-----------------<newline>TPS: %server:tps_colored% PING: %player:ping_colored%<newline><rainbow>Memory: %server:used_ram%/%server:max_ram% MB<newline>%fuji:rotate Welcome to the server. %");
                         this.add("<#FFA1F5>-----------------<newline><rainbow>This is another one");
@@ -1616,12 +1617,12 @@ public class ConfigModel {
                     """)
             public class Sort {
                 public boolean enable = false;
-                public String sync_cron = "* * * ? * *";
+                public @NotNull String sync_cron = "* * * ? * *";
             }
 
             public class Faker {
                 public boolean enable = false;
-                public Ping ping = new Ping();
+                public @NotNull Ping ping = new Ping();
 
                 public class Ping {
                     public int min_ping = 15;
@@ -1663,21 +1664,21 @@ public class ConfigModel {
 
             public boolean enable = false;
 
-            public Event event = new Event();
+            public @NotNull Event event = new Event();
 
             public class Event {
 
-                public OnPlayerDeath on_player_death = new OnPlayerDeath();
-                public AfterPlayerBreakBlock after_player_break_block = new AfterPlayerBreakBlock();
-                public AfterPlayerPlaceBlock after_player_place_block = new AfterPlayerPlaceBlock();
-                public AfterPlayerRespawn after_player_respawn = new AfterPlayerRespawn();
-                public AfterPlayerChangeWorld after_player_change_world = new AfterPlayerChangeWorld();
-                public OnPlayerFirstJoined on_player_first_joined = new OnPlayerFirstJoined();
-                public OnPlayerJoined on_player_joined = new OnPlayerJoined();
-                public OnPlayerLeft on_player_left = new OnPlayerLeft();
+                public @NotNull OnPlayerDeath on_player_death = new OnPlayerDeath();
+                public @NotNull AfterPlayerBreakBlock after_player_break_block = new AfterPlayerBreakBlock();
+                public @NotNull AfterPlayerPlaceBlock after_player_place_block = new AfterPlayerPlaceBlock();
+                public @NotNull AfterPlayerRespawn after_player_respawn = new AfterPlayerRespawn();
+                public @NotNull AfterPlayerChangeWorld after_player_change_world = new AfterPlayerChangeWorld();
+                public @NotNull OnPlayerFirstJoined on_player_first_joined = new OnPlayerFirstJoined();
+                public @NotNull OnPlayerJoined on_player_joined = new OnPlayerJoined();
+                public @NotNull OnPlayerLeft on_player_left = new OnPlayerLeft();
 
                 public class OnPlayerDeath {
-                    public List<String> command_list = new ArrayList<>() {
+                    public @NotNull List<String> command_list = new ArrayList<>() {
                         {
                             this.add("sendmessage %player:name% you just die.");
                         }
@@ -1685,7 +1686,7 @@ public class ConfigModel {
                 }
 
                 public class AfterPlayerBreakBlock {
-                    public List<String> command_list = new ArrayList<>() {
+                    public @NotNull List<String> command_list = new ArrayList<>() {
                         {
                             this.add("sendmessage %player:name% you just break a block.");
                             this.add("experience add %player:name% %fuji:random 2 8%");
@@ -1694,7 +1695,7 @@ public class ConfigModel {
                 }
 
                 public class AfterPlayerPlaceBlock {
-                    public List<String> command_list = new ArrayList<>() {
+                    public @NotNull List<String> command_list = new ArrayList<>() {
                         {
                             this.add("sendmessage %player:name% you just place a block.");
                         }
@@ -1702,7 +1703,7 @@ public class ConfigModel {
                 }
 
                 public class AfterPlayerRespawn {
-                    public List<String> command_list = new ArrayList<>() {
+                    public @NotNull List<String> command_list = new ArrayList<>() {
                         {
                             this.add("give %player:name% minecraft:apple 8");
                         }
@@ -1710,7 +1711,7 @@ public class ConfigModel {
                 }
 
                 public class AfterPlayerChangeWorld {
-                    public List<String> command_list = new ArrayList<>() {
+                    public @NotNull List<String> command_list = new ArrayList<>() {
                         {
                             this.add("sendmessage %player:name% You are in %world:id% now!");
                         }
@@ -1718,7 +1719,7 @@ public class ConfigModel {
                 }
 
                 public class OnPlayerFirstJoined {
-                    public List<String> command_list = new ArrayList<>() {
+                    public @NotNull List<String> command_list = new ArrayList<>() {
                         {
                             this.add("sendbroadcast <rainbow>welcome new player %player:name% to join us!");
                         }
@@ -1726,7 +1727,7 @@ public class ConfigModel {
                 }
 
                 public class OnPlayerJoined {
-                    public List<String> command_list = new ArrayList<>() {
+                    public @NotNull List<String> command_list = new ArrayList<>() {
                         {
                             this.add("sendmessage %player:name% welcome to the server.");
                         }
@@ -1734,7 +1735,7 @@ public class ConfigModel {
                 }
 
                 public class OnPlayerLeft {
-                    public List<String> command_list = new ArrayList<>() {
+                    public @NotNull List<String> command_list = new ArrayList<>() {
                         {
                             this.add("sendbroadcast %player:name% left the server.");
                         }

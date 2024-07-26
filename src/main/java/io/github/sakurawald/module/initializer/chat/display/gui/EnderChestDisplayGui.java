@@ -8,6 +8,7 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
+import org.jetbrains.annotations.NotNull;
 
 
 public class EnderChestDisplayGui extends DisplayGuiBuilder {
@@ -15,13 +16,13 @@ public class EnderChestDisplayGui extends DisplayGuiBuilder {
     private final Text title;
     private final DefaultedList<ItemStack> items = DefaultedList.of();
 
-    public EnderChestDisplayGui(Text title, ServerPlayerEntity serverPlayer) {
+    public EnderChestDisplayGui(Text title, @NotNull ServerPlayerEntity serverPlayer) {
         this.title = title;
         serverPlayer.getEnderChestInventory().getHeldStacks().forEach(itemStack -> this.items.add(itemStack.copy()));
     }
 
     @Override
-    public SimpleGui build(ServerPlayerEntity player) {
+    public @NotNull SimpleGui build(ServerPlayerEntity player) {
         SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X4, player, false);
         gui.setLockPlayerInventory(true);
         gui.setTitle(this.title);

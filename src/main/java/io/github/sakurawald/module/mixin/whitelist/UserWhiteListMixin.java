@@ -5,6 +5,7 @@ import net.minecraft.network.ClientConnection;
 import net.minecraft.server.Whitelist;
 import net.minecraft.server.network.ConnectedClientData;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -31,7 +32,7 @@ public class UserWhiteListMixin {
      * @see net.minecraft.util.UserCache#add(GameProfile)
      **/
     @Inject(method = "toString*", at = @At("HEAD"), cancellable = true)
-    void $getKeyForUser(GameProfile gameProfile, CallbackInfoReturnable<String> ci) {
+    void $getKeyForUser(@NotNull GameProfile gameProfile, @NotNull CallbackInfoReturnable<String> ci) {
         String ret = gameProfile.getName();
         ci.setReturnValue(ret);
     }

@@ -17,6 +17,8 @@ import net.kyori.adventure.text.Component;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryPoolMXBean;
 import java.lang.management.MemoryType;
@@ -28,7 +30,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class ProfilerInitializer extends ModuleInitializer {
 
-    private String formatBytes(long bytes) {
+    private @NotNull String formatBytes(long bytes) {
         if (bytes == -1) return "N/A";
         if (bytes < 1024) {
             return bytes + "B";
@@ -42,11 +44,11 @@ public class ProfilerInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(CommandManager.literal("profiler").executes(this::$profiler));
     }
 
-    private int $profiler(CommandContext<ServerCommandSource> ctx) {
+    private int $profiler(@NotNull CommandContext<ServerCommandSource> ctx) {
         ServerCommandSource source = ctx.getSource();
         CompletableFuture.runAsync(() -> {
             /* get instance */

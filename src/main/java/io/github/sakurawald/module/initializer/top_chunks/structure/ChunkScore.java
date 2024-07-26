@@ -49,7 +49,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
         this.chunkPos = chunkPos;
     }
 
-    public void addEntity(Entity entity) {
+    public void addEntity(@NotNull Entity entity) {
         String type = entity.getType().getTranslationKey();
         type = type2transform_type.getOrDefault(type, type);
 
@@ -61,7 +61,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
         }
     }
 
-    public void addBlockEntity(BlockEntity blockEntity) {
+    public void addBlockEntity(@NotNull BlockEntity blockEntity) {
         Identifier id = BlockEntityType.getId(blockEntity.getType());
         if (id == null) return;
 
@@ -82,7 +82,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return String.format("%-5d", this.score);
     }
 
@@ -92,7 +92,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
     }
 
 
-    private Component formatTypes(ServerCommandSource source) {
+    private @NotNull Component formatTypes(ServerCommandSource source) {
         TextComponent.Builder ret = Component.text();
         this.type2amount.forEach((k, v) -> {
             Component component = MessageHelper.ofComponent(source, "top_chunks.prop.types.entry", v)
@@ -102,7 +102,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
         return ret.asComponent();
     }
 
-    public Component asComponent(ServerCommandSource source) {
+    public @NotNull Component asComponent(@NotNull ServerCommandSource source) {
 
         String chunkLocation;
         if (Configs.configHandler.model().modules.top_chunks.hide_location) {

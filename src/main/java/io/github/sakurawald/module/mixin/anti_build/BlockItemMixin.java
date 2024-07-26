@@ -9,6 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class BlockItemMixin {
 
     @Inject(method = "canPlace", at = @At("RETURN"), cancellable = true)
-    public void $canPlace(ItemPlacementContext itemPlacementContext, BlockState blockState, CallbackInfoReturnable<Boolean> cir) {
+    public void $canPlace(@NotNull ItemPlacementContext itemPlacementContext, BlockState blockState, @NotNull CallbackInfoReturnable<Boolean> cir) {
         PlayerEntity player = itemPlacementContext.getPlayer();
         if (!(player instanceof ServerPlayerEntity)) return;
 

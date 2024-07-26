@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import io.github.sakurawald.config.annotation.Documentation;
 import io.github.sakurawald.util.LogUtil;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -25,13 +26,13 @@ public class JsonDocsGenerator {
     private JsonDocsGenerator() {
     }
 
-    private JsonObject toJsonObject(Object javaObject) {
+    private @NotNull JsonObject toJsonObject(@NotNull Object javaObject) {
         JsonObject root = new JsonObject();
         walk(javaObject, root);
         return root;
     }
 
-    private void walk(Object obj, JsonObject root) {
+    private void walk(@NotNull Object obj, @NotNull JsonObject root) {
         Class<?> clazz = obj.getClass();
 
         // for class
@@ -114,11 +115,11 @@ public class JsonDocsGenerator {
         }
     }
 
-    private boolean isPrimitiveOrString(Class<?> clazz) {
+    private boolean isPrimitiveOrString(@NotNull Class<?> clazz) {
         return clazz.isPrimitive() || clazz == String.class;
     }
 
-    public JsonObject generate(Object javaObject) {
+    public @NotNull JsonObject generate(@NotNull Object javaObject) {
         return toJsonObject(javaObject);
     }
 }

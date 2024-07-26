@@ -11,13 +11,15 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 
 public class CommandExecutor {
 
-    public static void executeCommandsAsConsoleWithContext(ServerPlayerEntity contextPlayer, List<String> commands) {
+    public static void executeCommandsAsConsoleWithContext(ServerPlayerEntity contextPlayer, @NotNull List<String> commands) {
         /* context
          *
          * !as_console
@@ -34,7 +36,7 @@ public class CommandExecutor {
         }
     }
 
-    public static int executeCommandAsConsole(ServerPlayerEntity contextPlayer, String command) {
+    public static int executeCommandAsConsole(@Nullable ServerPlayerEntity contextPlayer, String command) {
         MinecraftServer server = ServerHelper.getDefaultServer();
         try {
             // parse placeholders
@@ -51,7 +53,7 @@ public class CommandExecutor {
         return CommandHelper.Return.FAIL;
     }
 
-    public static int executeCommandAsPlayer(ServerPlayerEntity player, String command) {
+    public static int executeCommandAsPlayer(@NotNull ServerPlayerEntity player, String command) {
         command = MessageHelper.ofString(player, command);
 
         CommandManager commandManager = ServerHelper.getDefaultServer().getCommandManager();

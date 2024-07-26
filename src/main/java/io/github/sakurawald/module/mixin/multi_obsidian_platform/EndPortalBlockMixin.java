@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,19 +21,19 @@ public class EndPortalBlockMixin {
     private static final MultiObsidianPlatformInitializer module = ModuleManager.getInitializer(MultiObsidianPlatformInitializer.class);
 
     @Unique
-    BlockPos getTransformedEndSpawnPoint(Entity entity) {
+    BlockPos getTransformedEndSpawnPoint(@NotNull Entity entity) {
         return module.transform(entity.getBlockPos());
     }
 
     @Unique
-    World getEntityCurrentLevel(Entity entity) {
+    World getEntityCurrentLevel(@NotNull Entity entity) {
         return entity.getWorld();
     }
 
     @Redirect(method = "createTeleportTarget", at = @At(value = "FIELD", target = "Lnet/minecraft/server/world/ServerWorld;END_SPAWN_POS:Lnet/minecraft/util/math/BlockPos;")
     )
         /* This method will NOT be called when an entity (including player, item and other entities) jump into overworld's ender-portal-frame */
-    BlockPos $createTeleportTarget(@Local(argsOnly = true) Entity entity) {
+    BlockPos $createTeleportTarget(@Local(argsOnly = true) @NotNull Entity entity) {
         if (getEntityCurrentLevel(entity).getRegistryKey() != World.OVERWORLD) {
             // modify: world:overworld -> minecraft:the_end (default obsidian platform)
             // feature: https://bugs.mojang.com/browse/MC-252361

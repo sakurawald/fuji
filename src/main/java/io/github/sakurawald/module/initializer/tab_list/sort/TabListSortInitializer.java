@@ -16,6 +16,7 @@ import net.minecraft.server.network.ConnectedClientData;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import org.jetbrains.annotations.NotNull;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -29,7 +30,7 @@ public class TabListSortInitializer extends ModuleInitializer {
 
     public static final String META_SEPARATOR = "@";
 
-    public static PlayerListS2CPacket entryFromEncodedPlayer(Collection<ServerPlayerEntity> collection) {
+    public static @NotNull PlayerListS2CPacket entryFromEncodedPlayer(@NotNull Collection<ServerPlayerEntity> collection) {
         /*
             For a player, we need to remove `Action.UPDATE_LISTED` so avoid the entry to be listed in client-side's tab list.
             For an encoded-player, we need to remove `Action.ADD_PLAYER` to
@@ -41,7 +42,7 @@ public class TabListSortInitializer extends ModuleInitializer {
         return new PlayerListS2CPacket(enumSet, collection);
     }
 
-    public static ServerPlayerEntity makeServerPlayerEntity(MinecraftServer server, String playerName) {
+    public static @NotNull ServerPlayerEntity makeServerPlayerEntity(@NotNull MinecraftServer server, @NotNull String playerName) {
         ServerWorld world = server.getWorlds().iterator().next();
         GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes(playerName.getBytes()), playerName);
         SyncedClientOptions syncedClientOptions = SyncedClientOptions.createDefault();
@@ -53,12 +54,12 @@ public class TabListSortInitializer extends ModuleInitializer {
     }
 
     @Unique
-    public static ServerPlayerEntity makeServerPlayerEntity(MinecraftServer server, ServerPlayerEntity player) {
+    public static @NotNull ServerPlayerEntity makeServerPlayerEntity(@NotNull MinecraftServer server, @NotNull ServerPlayerEntity player) {
         String encodedName = encodeName(player);
         return makeServerPlayerEntity(server, encodedName);
     }
 
-    public static Map<String, Integer> getWeightMap(List<ServerPlayerEntity> players) {
+    public static @NotNull Map<String, Integer> getWeightMap(@NotNull List<ServerPlayerEntity> players) {
         Map<String, Integer> ret = new HashMap<>();
         for (ServerPlayerEntity player : players) {
             String name = player.getGameProfile().getName();
@@ -68,7 +69,7 @@ public class TabListSortInitializer extends ModuleInitializer {
         return ret;
     }
 
-    public static Integer getWeight(ServerPlayerEntity player) {
+    public static @NotNull Integer getWeight(@NotNull ServerPlayerEntity player) {
         Optional<Integer> weight = PermissionHelper.getMeta(player, "fuji.tab_list.sort.weight", Integer::valueOf);
         return weight.orElse(0);
     }
@@ -83,7 +84,7 @@ public class TabListSortInitializer extends ModuleInitializer {
         return encoded2name.get(playerName);
     }
 
-    public static String encodeName(ServerPlayerEntity player) {
+    public static @NotNull String encodeName(@NotNull ServerPlayerEntity player) {
         int weight = getWeight(player);
         // reverse weight
         int maxIndex = AlphaTable.TABLE.length - 1;
@@ -100,7 +101,7 @@ public class TabListSortInitializer extends ModuleInitializer {
         return encoded;
     }
 
-    private static void syncEncodedPlayers(MinecraftServer server) {
+    private static void syncEncodedPlayers(@NotNull MinecraftServer server) {
         /* make encoded player list */
         ArrayList<ServerPlayerEntity> encodedPlayers = new ArrayList<>();
         for (String encodedName : TabListSortInitializer.encoded2name.keySet()) {

@@ -7,6 +7,8 @@ import io.github.sakurawald.util.minecraft.ServerHelper;
 import lombok.Getter;
 import lombok.ToString;
 import net.minecraft.util.WorldSavePath;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileReader;
@@ -77,7 +79,7 @@ public class SumUpPlaceholder {
         return ret;
     }
 
-    public static SumUpPlaceholder ofServer() {
+    public static @NotNull SumUpPlaceholder ofServer() {
         SumUpPlaceholder ofServer = new SumUpPlaceholder();
         File file = getStatPath().toFile();
         File[] files = file.listFiles();
@@ -95,7 +97,7 @@ public class SumUpPlaceholder {
         return ofServer;
     }
 
-    private static int sumUpStats(JsonObject jsonObject, String regex) {
+    private static int sumUpStats(@Nullable JsonObject jsonObject, @NotNull String regex) {
         if (jsonObject == null) return 0;
         int count = 0;
         Pattern pattern = Pattern.compile(regex);
@@ -107,7 +109,7 @@ public class SumUpPlaceholder {
         return count;
     }
 
-    public void plus(SumUpPlaceholder other) {
+    public void plus(@NotNull SumUpPlaceholder other) {
         this.playtime += other.playtime;
         this.mined += other.mined;
         this.placed += other.placed;

@@ -5,6 +5,7 @@ import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.IOUtil;
 import lombok.experimental.UtilityClass;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,20 +23,20 @@ public class BackupRescueManager {
 
     public static final Path BACKUP_PATH = Fuji.CONFIG_PATH.resolve("backup_rescue");
 
-    private static List<File> getInputFiles() {
+    private static @NotNull List<File> getInputFiles() {
         List<File> files = new ArrayList<>();
         try {
             Files.walkFileTree(Fuji.CONFIG_PATH, new SimpleFileVisitor<>() {
 
                 @Override
-                public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
+                public @NotNull FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
                     if (BACKUP_PATH.equals(dir)) return FileVisitResult.SKIP_SUBTREE;
 
                     return FileVisitResult.CONTINUE;
                 }
 
                 @Override
-                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+                public @NotNull FileVisitResult visitFile(@NotNull Path file, BasicFileAttributes attrs) {
                     files.add(file.toFile());
                     return FileVisitResult.CONTINUE;
                 }
@@ -47,7 +48,7 @@ public class BackupRescueManager {
         return files;
     }
 
-    private static File getOutputFile() {
+    private static @NotNull File getOutputFile() {
         String fileName = DateUtil.getCurrentDate() + ".zip";
         return BACKUP_PATH.resolve(fileName).toFile();
     }

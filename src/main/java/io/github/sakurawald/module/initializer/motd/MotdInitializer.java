@@ -11,6 +11,8 @@ import javax.imageio.ImageIO;
 import lombok.Setter;
 import net.minecraft.server.ServerMetadata;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
+
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -25,7 +27,7 @@ public class MotdInitializer extends ModuleInitializer {
     private final File ICON_FOLDER = Fuji.CONFIG_PATH.resolve("motd").resolve("icon").toFile();
 
     @Setter
-    private List<String> motd = new ArrayList<>();
+    private @NotNull List<String> motd = new ArrayList<>();
 
     @Override
     public void onInitialize() {
@@ -38,7 +40,7 @@ public class MotdInitializer extends ModuleInitializer {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public Optional<ServerMetadata.Favicon> getRandomIcon() {
+    public @NotNull Optional<ServerMetadata.Favicon> getRandomIcon() {
         if (!Configs.configHandler.model().modules.motd.icon.enable) {
             return Optional.empty();
         }
@@ -65,7 +67,7 @@ public class MotdInitializer extends ModuleInitializer {
         return Optional.of(new ServerMetadata.Favicon(byteArrayOutputStream.toByteArray()));
     }
 
-    public Text getRandomDescription() {
+    public @NotNull Text getRandomDescription() {
         return MessageHelper.ofText(motd.get(new Random().nextInt(motd.size())));
     }
 

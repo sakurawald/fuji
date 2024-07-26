@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +29,7 @@ public class TeleportSetup {
         return IdentifierHelper.ofServerWorld(Identifier.of(this.dimension));
     }
 
-    public static Optional<TeleportSetup> of(ServerWorld world) {
+    public static @NotNull Optional<TeleportSetup> of(@NotNull ServerWorld world) {
         List<TeleportSetup> list = Configs.configHandler.model().modules.rtp.setup.dimension;
         String dimension = IdentifierHelper.ofString(world);
         return list.stream().filter(o -> o.getDimension().equals(dimension)).findFirst();

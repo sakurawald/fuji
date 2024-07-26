@@ -31,6 +31,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionTypes;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class WorldManager {
         ServerTickEvents.START_SERVER_TICK.register(server -> tick());
     }
 
-    public static void requestToDeleteWorld(ServerWorld world) {
+    public static void requestToDeleteWorld(@NotNull ServerWorld world) {
         MinecraftServer server = world.getServer();
         server.submit(() -> {
             deletionQueue.add(world);
@@ -58,7 +59,7 @@ public class WorldManager {
         }
     }
 
-    private static boolean tryDeleteWorld(ServerWorld world) {
+    private static boolean tryDeleteWorld(@NotNull ServerWorld world) {
         if (isWorldUnloaded(world)) {
             deleteWorld(world);
             return true;
@@ -68,7 +69,7 @@ public class WorldManager {
         }
     }
 
-    private static void kickPlayers(ServerWorld world) {
+    private static void kickPlayers(@NotNull ServerWorld world) {
         if (world.getPlayers().isEmpty()) {
             return;
         }
@@ -87,16 +88,16 @@ public class WorldManager {
         }
     }
 
-    private static boolean isWorldUnloaded(ServerWorld world) {
+    private static boolean isWorldUnloaded(@NotNull ServerWorld world) {
         return world.getPlayers().isEmpty() && world.getChunkManager().getLoadedChunkCount() <= 0;
     }
 
-    private static SimpleRegistry<DimensionOptions> getDimensionRegistry(MinecraftServer server) {
+    private static SimpleRegistry<DimensionOptions> getDimensionRegistry(@NotNull MinecraftServer server) {
         DynamicRegistryManager registryManager = server.getCombinedDynamicRegistries().getCombinedRegistryManager();
         return (SimpleRegistry<DimensionOptions>) registryManager.get(RegistryKeys.DIMENSION);
     }
 
-    private static void deleteWorld(ServerWorld world) {
+    private static void deleteWorld(@NotNull ServerWorld world) {
         MinecraftServer server = world.getServer();
 
         RegistryKey<World> dimensionKey = world.getRegistryKey();
@@ -110,7 +111,7 @@ public class WorldManager {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private static void cleanFiles(File file) {
+    private static void cleanFiles(@NotNull File file) {
         if (file.exists() && file.isDirectory()) {
             File[] files = file.listFiles();
             if (files == null) return;
@@ -130,7 +131,7 @@ public class WorldManager {
      *
      */
     @SneakyThrows
-    private static DimensionOptions makeDimensionOptions(Registry<DimensionOptions> registry, Identifier dimensionTypeIdentifier) {
+    private static @NotNull DimensionOptions makeDimensionOptions(@NotNull Registry<DimensionOptions> registry, Identifier dimensionTypeIdentifier) {
         DimensionOptions template = registry.get(dimensionTypeIdentifier);
         if (template == null) {
             throw new SimpleCommandExceptionType(Text.of("The dimension type %s can't be used as template.".formatted(dimensionTypeIdentifier))).create();
@@ -139,7 +140,7 @@ public class WorldManager {
         return new DimensionOptions(template.dimensionTypeEntry(), template.chunkGenerator());
     }
 
-    public static void requestToCreateWorld(MinecraftServer server, Identifier dimensionIdentifier, Identifier dimenstionTypeIdentifier, long seed) {
+    public static void requestToCreateWorld(@NotNull MinecraftServer server, Identifier dimensionIdentifier, @NotNull Identifier dimenstionTypeIdentifier, long seed) {
         /* create the world */
         // note: we use the same WorldData from OVERWORLD
         MyWorldProperties resourceWorldProperties = new MyWorldProperties(server.getSaveProperties(), seed);

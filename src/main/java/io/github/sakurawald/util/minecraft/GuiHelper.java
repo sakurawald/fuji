@@ -7,6 +7,7 @@ import lombok.experimental.UtilityClass;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 
 @UtilityClass
 public class GuiHelper {
@@ -64,7 +65,7 @@ public class GuiHelper {
     }
 
 
-    public static void fill(SimpleGui gui, ItemStack itemStack) {
+    public static void fill(@NotNull SimpleGui gui, ItemStack itemStack) {
         for (int i = 0; i < gui.getSize(); i++) {
             gui.setSlot(i,itemStack );
         }

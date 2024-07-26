@@ -53,7 +53,7 @@ public abstract class Work {
         // for gson
     }
 
-    public Work(ServerPlayerEntity player, String name) {
+    public Work(@NotNull ServerPlayerEntity player, String name) {
         this.type = getType();
         this.id = generateID();
         this.createTimeMS = System.currentTimeMillis();
@@ -69,7 +69,7 @@ public abstract class Work {
         this.icon = null;
     }
 
-    private static Work getWorkByID(String uuid) {
+    private static @Nullable Work getWorkByID(String uuid) {
         List<Work> works = WorksInitializer.worksHandler.model().works;
         for (Work work : works) {
             if (work.getId().equals(uuid)) {
@@ -82,7 +82,7 @@ public abstract class Work {
     protected abstract String getType();
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Work work = (Work) o;
@@ -99,7 +99,7 @@ public abstract class Work {
     public abstract void openSpecializedSettingsGui(ServerPlayerEntity player, SimpleGui parentGui);
 
 
-    public void openGeneralSettingsGui(ServerPlayerEntity player, SimpleGui parentGui) {
+    public void openGeneralSettingsGui(@NotNull ServerPlayerEntity player, @NotNull SimpleGui parentGui) {
         Work work = this;
         final SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X1, player, false);
         gui.setLockPlayerInventory(true);
@@ -203,7 +203,7 @@ public abstract class Work {
         return ret;
     }
 
-    private String generateID() {
+    private @NotNull String generateID() {
         String ret = null;
         while (ret == null || getWorkByID(ret) != null) {
             ret = UUID.randomUUID().toString().substring(0, 8);
@@ -214,7 +214,7 @@ public abstract class Work {
 
     public static class WorkTypeAdapter implements JsonDeserializer<Work> {
         @Override
-        public Work deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        public @Nullable Work deserialize(@NotNull JsonElement json, Type typeOfT, @NotNull JsonDeserializationContext context) throws JsonParseException {
             String type = json.getAsJsonObject().get("type").getAsString();
             if (type.equals(WorkType.NonProductionWork.name()))
                 return context.deserialize(json, NonProductionWork.class);

@@ -17,6 +17,7 @@ import net.minecraft.command.argument.GameProfileArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -26,7 +27,7 @@ public class SkinInitializer extends ModuleInitializer {
 
     @SuppressWarnings("unused")
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess commandBuildContext, CommandManager.RegistrationEnvironment commandSelection) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess commandBuildContext, CommandManager.RegistrationEnvironment commandSelection) {
         dispatcher.register(literal("skin")
                 .then(literal("set")
                         .then(literal("mojang")
@@ -67,7 +68,7 @@ public class SkinInitializer extends ModuleInitializer {
         );
     }
 
-    private int skinAction(ServerCommandSource src, Collection<GameProfile> targets, boolean setByOperator, Supplier<Property> skinSupplier) {
+    private int skinAction(@NotNull ServerCommandSource src, @NotNull Collection<GameProfile> targets, boolean setByOperator, @NotNull Supplier<Property> skinSupplier) {
         SkinRestorer.setSkinAsync(src.getServer(), targets, skinSupplier).thenAccept(pair -> {
             Collection<GameProfile> profiles = pair.right();
             Collection<ServerPlayerEntity> players = pair.left();
@@ -88,7 +89,7 @@ public class SkinInitializer extends ModuleInitializer {
         return targets.size();
     }
 
-    private int skinAction(ServerCommandSource src, Supplier<Property> skinSupplier) {
+    private int skinAction(@NotNull ServerCommandSource src, @NotNull Supplier<Property> skinSupplier) {
         if (src.getPlayer() == null)
             return 0;
 

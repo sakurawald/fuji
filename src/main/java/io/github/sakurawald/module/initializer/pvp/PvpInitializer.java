@@ -11,6 +11,7 @@ import io.github.sakurawald.util.minecraft.MessageHelper;
 import java.util.HashSet;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.ServerCommandSource;
+import org.jetbrains.annotations.NotNull;
 
 import static net.minecraft.server.command.CommandManager.*;
 
@@ -31,7 +32,7 @@ public class PvpInitializer extends ModuleInitializer {
 
     @SuppressWarnings("unused")
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
         dispatcher.register(
                 literal("pvp")
                         .then(literal("on").executes(this::$on))
@@ -41,7 +42,7 @@ public class PvpInitializer extends ModuleInitializer {
         );
     }
 
-    private int $on(CommandContext<ServerCommandSource> ctx) {
+    private int $on(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             HashSet<String> whitelist = pvpHandler.model().whitelist;
             String name = player.getGameProfile().getName();
@@ -59,7 +60,7 @@ public class PvpInitializer extends ModuleInitializer {
         });
     }
 
-    private int $off(CommandContext<ServerCommandSource> ctx) {
+    private int $off(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             HashSet<String> whitelist = pvpHandler.model().whitelist;
             String name = player.getGameProfile().getName();
@@ -77,7 +78,7 @@ public class PvpInitializer extends ModuleInitializer {
     }
 
     @SuppressWarnings("SameReturnValue")
-    private int $status(CommandContext<ServerCommandSource> ctx) {
+    private int $status(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             HashSet<String> whitelist = pvpHandler.model().whitelist;
             player.sendMessage(MessageHelper.ofComponent(player, "pvp.status")
@@ -86,7 +87,7 @@ public class PvpInitializer extends ModuleInitializer {
         });
     }
 
-    private int $list(CommandContext<ServerCommandSource> ctx) {
+    private int $list(@NotNull CommandContext<ServerCommandSource> ctx) {
         HashSet<String> whitelist = pvpHandler.model().whitelist;
         MessageHelper.sendMessage(ctx.getSource(), "pvp.list", whitelist);
         return CommandHelper.Return.SUCCESS;

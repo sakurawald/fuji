@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.luckperms.api.util.Tristate;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Predicate;
 
@@ -21,18 +22,18 @@ public class CommandPermissionInitializer extends ModuleInitializer {
         );
     }
 
-    public void alterCommandPermission(MinecraftServer server) {
+    public void alterCommandPermission(@NotNull MinecraftServer server) {
         CommandDispatcher<ServerCommandSource> dispatcher = server.getCommandManager().getDispatcher();
         alterCommandNode(dispatcher, dispatcher.getRoot());
     }
 
-    private String buildCommandNodePath(CommandDispatcher<ServerCommandSource> dispatcher, CommandNode<ServerCommandSource> node) {
+    private @NotNull String buildCommandNodePath(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandNode<ServerCommandSource> node) {
         String[] array = dispatcher.getPath(node).toArray(new String[]{});
         return String.join(".", array);
     }
 
     @SuppressWarnings("unchecked")
-    private void alterCommandNode(CommandDispatcher<ServerCommandSource> dispatcher, CommandNode<ServerCommandSource> node) {
+    private void alterCommandNode(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, @NotNull CommandNode<ServerCommandSource> node) {
         var commandPath = buildCommandNodePath(dispatcher, node);
         for (CommandNode<ServerCommandSource> child : node.getChildren()) {
             alterCommandNode(dispatcher, child);
@@ -40,7 +41,7 @@ public class CommandPermissionInitializer extends ModuleInitializer {
         ((CommandNodeAccessor<ServerCommandSource>) node).setRequirement(createWrappedPermission(commandPath, node.getRequirement()));
     }
 
-    private Predicate<ServerCommandSource> createWrappedPermission(String commandPath, Predicate<ServerCommandSource> original) {
+    private @NotNull Predicate<ServerCommandSource> createWrappedPermission(String commandPath, @NotNull Predicate<ServerCommandSource> original) {
         return source -> {
             // ignore the non-player command source
             if (source.getPlayer() == null) return original.test(source);

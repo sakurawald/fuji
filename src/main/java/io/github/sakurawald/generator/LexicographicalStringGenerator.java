@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.time.CalendarUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.jetbrains.annotations.NotNull;
 import oshi.util.FileUtil;
 
 import java.nio.charset.Charset;
@@ -24,7 +25,7 @@ public class LexicographicalStringGenerator {
         generateCombinationsHelper(chars, 0, length);
     }
 
-    private static void generateCombinationsHelper(char[] chars, int index, int length) {
+    private static void generateCombinationsHelper(char @NotNull [] chars, int index, int length) {
         if (index == length) {
             String str = new String(chars);
             output.append("\"").append(str).append("\"").append(",");

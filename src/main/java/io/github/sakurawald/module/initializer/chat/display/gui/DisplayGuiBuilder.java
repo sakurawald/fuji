@@ -10,12 +10,13 @@ import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class DisplayGuiBuilder {
 
     protected static final int LINE_SIZE = 9;
 
-    protected static void $setSlot(SimpleGui gui, int i, ItemStack itemStack, SlotClickForDeeperDisplayCallback slotClickForDeeperDisplayCallback) {
+    protected static void $setSlot(@NotNull SimpleGui gui, int i, @NotNull ItemStack itemStack, SlotClickForDeeperDisplayCallback slotClickForDeeperDisplayCallback) {
         GuiElementBuilder guiElementBuilder = GuiElementBuilder.from(itemStack).setCallback(slotClickForDeeperDisplayCallback);
         if (isShulkerBox(itemStack)) {
             guiElementBuilder.addLoreLine(MessageHelper.ofText(gui.getPlayer(), "display.click.prompt"));
@@ -23,7 +24,7 @@ public abstract class DisplayGuiBuilder {
         gui.setSlot(i, guiElementBuilder.build());
     }
 
-    public static boolean isShulkerBox(ItemStack itemStack) {
+    public static boolean isShulkerBox(@NotNull ItemStack itemStack) {
         return itemStack.getItem() instanceof BlockItem bi && bi.getBlock() instanceof ShulkerBoxBlock;
     }
 
@@ -32,7 +33,7 @@ public abstract class DisplayGuiBuilder {
     protected record SlotClickForDeeperDisplayCallback(SimpleGui parentGui,
                                                        ServerPlayerEntity player) implements GuiElementInterface.ClickCallback {
         @Override
-        public void click(int i, ClickType clickType, net.minecraft.screen.slot.SlotActionType clickType1, SlotGuiInterface slotGuiInterface) {
+        public void click(int i, ClickType clickType, net.minecraft.screen.slot.SlotActionType clickType1, @NotNull SlotGuiInterface slotGuiInterface) {
             ItemStack itemStack = slotGuiInterface.getSlot(i).getItemStack();
             if (isShulkerBox(itemStack)) {
                 ShulkerBoxDisplayGui shulkerBoxDisplayGui = new ShulkerBoxDisplayGui(MessageHelper.ofText(player, "display.gui.title", player.getGameProfile().getName()), itemStack, parentGui);

@@ -7,6 +7,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ConnectedClientData;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -29,7 +30,7 @@ public abstract class PlayerListMixin {
     public abstract List<ServerPlayerEntity> getPlayerList();
 
     @Inject(method = "remove", at = @At("TAIL"))
-    private void remove(ServerPlayerEntity player, CallbackInfo ci) {
+    private void remove(@NotNull ServerPlayerEntity player, CallbackInfo ci) {
         SkinRestorer.getSkinStorage().removeSkin(player.getUuid());
     }
 
@@ -39,7 +40,7 @@ public abstract class PlayerListMixin {
     }
 
     @Inject(method = "onPlayerConnect", at = @At("HEAD"))
-    private void onPlayerConnected(ClientConnection connection, ServerPlayerEntity serverPlayer, ConnectedClientData commonListenerCookie, CallbackInfo ci) {
+    private void onPlayerConnected(ClientConnection connection, @NotNull ServerPlayerEntity serverPlayer, ConnectedClientData commonListenerCookie, CallbackInfo ci) {
         // if the player isn't a server player entity, it must be someone's fake player
         if (serverPlayer.getClass() != ServerPlayerEntity.class
                 && Configs.configHandler.model().modules.carpet.fake_player_manager.use_local_random_skins_for_fake_player) {

@@ -33,7 +33,7 @@ public class KitInitializer extends ModuleInitializer {
     public static final String INVENTORY = "inventory";
     private final Path STORAGE_PATH = Fuji.CONFIG_PATH.resolve("kit");
 
-    public void writeKit(Kit kit) {
+    public void writeKit(@NotNull Kit kit) {
         Path path = STORAGE_PATH.resolve(kit.getName());
 
         NbtCompound root = NbtHelper.read(path);
@@ -49,7 +49,7 @@ public class KitInitializer extends ModuleInitializer {
         NbtHelper.write(root, path);
     }
 
-    public List<String> getKitNameList() {
+    public @NotNull List<String> getKitNameList() {
         List<String> ret = new ArrayList<>();
         try {
             Files.list(STORAGE_PATH).forEach(p -> ret.add(p.toFile().getName()));
@@ -59,7 +59,7 @@ public class KitInitializer extends ModuleInitializer {
         return ret;
     }
 
-    public List<Kit> readKits() {
+    public @NotNull List<Kit> readKits() {
         List<Kit> ret = new ArrayList<>();
         for (String name : getKitNameList()) {
             ret.add(readKit(name));
@@ -67,12 +67,12 @@ public class KitInitializer extends ModuleInitializer {
         return ret;
     }
 
-    public void deleteKit(String name) {
+    public void deleteKit(@NotNull String name) {
         Path path = STORAGE_PATH.resolve(name);
         path.toFile().delete();
     }
 
-    public @NotNull Kit readKit(String name) {
+    public @NotNull Kit readKit(@NotNull String name) {
         Path p = STORAGE_PATH.resolve(name);
         NbtCompound root = NbtHelper.read(p);
 
@@ -91,7 +91,7 @@ public class KitInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(
                 literal("kit").requires(s -> s.hasPermissionLevel(4))
                         .then(literal("editor").executes(this::$editor))
@@ -105,7 +105,7 @@ public class KitInitializer extends ModuleInitializer {
                                                 .executes(this::$give)))));
     }
 
-    private int $editor(CommandContext<ServerCommandSource> ctx) {
+    private int $editor(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             List<Kit> kits = readKits();
             new KitEditorGui(player, kits).open();
@@ -121,7 +121,7 @@ public class KitInitializer extends ModuleInitializer {
      * counter for: times, cooldown
      * */
     @SneakyThrows
-    private int $give(CommandContext<ServerCommandSource> ctx) {
+    private int $give(@NotNull CommandContext<ServerCommandSource> ctx) {
         ServerPlayerEntity player = CommandHelper.Argument.player(ctx);
         String name = CommandHelper.Argument.name(ctx);
 

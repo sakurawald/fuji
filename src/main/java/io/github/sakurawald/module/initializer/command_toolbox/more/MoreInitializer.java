@@ -8,21 +8,21 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import org.jetbrains.annotations.NotNull;
 
 
 public class MoreInitializer extends ModuleInitializer {
 
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(CommandManager.literal("more").executes(this::$more));
     }
 
     @SuppressWarnings("SameReturnValue")
-    private int $more(CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.Pattern.playerOnlyCommand(ctx, (player -> {
-            ItemStack mainHandItem = player.getMainHandStack();
-            mainHandItem.setCount(mainHandItem.getMaxCount());
+    private int $more(@NotNull CommandContext<ServerCommandSource> ctx) {
+        return CommandHelper.Pattern.itemOnHandCommand(ctx, ((player, itemStack) -> {
+            itemStack.setCount(itemStack.getMaxCount());
             return CommandHelper.Return.SUCCESS;
         }));
     }

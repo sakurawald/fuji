@@ -2,6 +2,7 @@ package io.github.sakurawald.generator.structure;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -11,7 +12,7 @@ public class Reference {
     String definition;
     List<String> reference;
 
-    public static List<Reference> reduce(List<Reference> references) {
+    public static @NotNull List<Reference> reduce(@NotNull List<Reference> references) {
         // merge
         Map<String, Reference> map = new HashMap<>();
         for (Reference reference : references) {

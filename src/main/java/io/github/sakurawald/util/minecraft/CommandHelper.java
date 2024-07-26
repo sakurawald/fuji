@@ -20,6 +20,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.UserCache;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 import java.util.function.BiFunction;
@@ -61,47 +62,47 @@ public class CommandHelper {
             return offlinePlayer(ARGUMENT_NAME_PLAYER);
         }
 
-        public static String offlinePlayer(CommandContext<ServerCommandSource> ctx) {
+        public static String offlinePlayer(@NotNull CommandContext<ServerCommandSource> ctx) {
             return string(ctx, ARGUMENT_NAME_NAME);
         }
 
-        public static RequiredArgumentBuilder<ServerCommandSource, EntitySelector> player() {
+        public static @NotNull RequiredArgumentBuilder<ServerCommandSource, EntitySelector> player() {
             return argument(ARGUMENT_NAME_PLAYER, EntityArgumentType.player());
         }
 
-        public static ServerPlayerEntity player(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
+        public static ServerPlayerEntity player(@NotNull CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
             return EntityArgumentType.getPlayer(ctx, ARGUMENT_NAME_PLAYER);
         }
 
-        public static RequiredArgumentBuilder<ServerCommandSource, String> rest() {
+        public static @NotNull RequiredArgumentBuilder<ServerCommandSource, String> rest() {
             return argument(ARGUMENT_NAME_REST, StringArgumentType.greedyString());
         }
 
-        public static String string(CommandContext<ServerCommandSource> ctx, String argumentName) {
+        public static String string(@NotNull CommandContext<ServerCommandSource> ctx, String argumentName) {
             return StringArgumentType.getString(ctx, argumentName);
         }
 
-        public static String rest(CommandContext<ServerCommandSource> ctx) {
+        public static String rest(@NotNull CommandContext<ServerCommandSource> ctx) {
             return string(ctx, ARGUMENT_NAME_REST);
         }
 
-        public static RequiredArgumentBuilder<ServerCommandSource, String> string(String argumentName) {
+        public static @NotNull RequiredArgumentBuilder<ServerCommandSource, String> string(String argumentName) {
             return argument(argumentName, StringArgumentType.string());
         }
 
-        public static RequiredArgumentBuilder<ServerCommandSource, String> name() {
+        public static @NotNull RequiredArgumentBuilder<ServerCommandSource, String> name() {
             return string(ARGUMENT_NAME_NAME);
         }
 
-        public static String name(CommandContext<ServerCommandSource> ctx) {
+        public static String name(@NotNull CommandContext<ServerCommandSource> ctx) {
             return string(ctx, ARGUMENT_NAME_NAME);
         }
 
-        public static RequiredArgumentBuilder<ServerCommandSource, String> identifier() {
+        public static @NotNull RequiredArgumentBuilder<ServerCommandSource, String> identifier() {
             return argument(ARGUMENT_NAME_IDENTIFIER, StringArgumentType.greedyString());
         }
 
-        public static String identifier(CommandContext<ServerCommandSource> ctx) {
+        public static String identifier(@NotNull CommandContext<ServerCommandSource> ctx) {
             return string(ctx, ARGUMENT_NAME_IDENTIFIER);
         }
 
@@ -114,7 +115,7 @@ public class CommandHelper {
         }
 
         @SneakyThrows
-        public static ServerWorld dimension(CommandContext<ServerCommandSource> ctx) {
+        public static ServerWorld dimension(@NotNull CommandContext<ServerCommandSource> ctx) {
             return DimensionArgumentType.getDimensionArgument(ctx, ARGUMENT_NAME_DIMENSION);
         }
 
@@ -122,7 +123,7 @@ public class CommandHelper {
 
     public static class Suggestion {
 
-        public static <T> SuggestionProvider<ServerCommandSource> ofRegistryKey(RegistryKey<? extends Registry<T>> registryKey) {
+        public static <T> @NotNull SuggestionProvider<ServerCommandSource> ofRegistryKey(RegistryKey<? extends Registry<T>> registryKey) {
             return (context, builder) -> {
                 Registry<T> registry = IdentifierHelper.ofRegistry(registryKey);
                 Iterator<T> iterator = registry.iterator();
@@ -141,11 +142,11 @@ public class CommandHelper {
             };
         }
 
-        public static SuggestionProvider<ServerCommandSource> dimension() {
+        public static @NotNull SuggestionProvider<ServerCommandSource> dimension() {
             return ofRegistryKey(RegistryKeys.DIMENSION);
         }
 
-        public static SuggestionProvider<ServerCommandSource> dimensionType() {
+        public static @NotNull SuggestionProvider<ServerCommandSource> dimensionType() {
             return ofRegistryKey(RegistryKeys.DIMENSION_TYPE);
         }
     }
@@ -153,7 +154,7 @@ public class CommandHelper {
     public static class Pattern {
 
         @SneakyThrows
-        public static int playerOnlyCommand(CommandContext<ServerCommandSource> ctx, Function<ServerPlayerEntity, Integer> function) {
+        public static int playerOnlyCommand(@NotNull CommandContext<ServerCommandSource> ctx, @NotNull Function<ServerPlayerEntity, Integer> function) {
             ServerPlayerEntity player = ctx.getSource().getPlayer();
             if (player == null) {
                 MessageHelper.sendMessage(ctx.getSource(), "command.player_only");
@@ -164,7 +165,7 @@ public class CommandHelper {
         }
 
         @SneakyThrows
-        public static int itemOnHandCommand(CommandContext<ServerCommandSource> ctx, BiFunction<ServerPlayerEntity, ItemStack, Integer> consumer) {
+        public static int itemOnHandCommand(@NotNull CommandContext<ServerCommandSource> ctx, @NotNull BiFunction<ServerPlayerEntity, ItemStack, Integer> consumer) {
             return playerOnlyCommand(ctx, player -> {
                 ItemStack mainHandStack = player.getMainHandStack();
                 if (mainHandStack.isEmpty()) {

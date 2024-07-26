@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 
 
 public class ShulkerBoxDisplayGui extends DisplayGuiBuilder {
@@ -23,7 +24,7 @@ public class ShulkerBoxDisplayGui extends DisplayGuiBuilder {
     }
 
     @Override
-    public SimpleGui build(ServerPlayerEntity player) {
+    public @NotNull SimpleGui build(ServerPlayerEntity player) {
         SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X4, player, false);
         gui.setLockPlayerInventory(true);
         gui.setTitle(this.title);

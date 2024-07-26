@@ -35,7 +35,7 @@ public class SkinRestorer {
     private static final SkinStorage skinStorage = new SkinStorage(new SkinIO(Fuji.CONFIG_PATH.resolve("skin")));
 
 
-    public static CompletableFuture<Pair<Collection<ServerPlayerEntity>, Collection<GameProfile>>> setSkinAsync(MinecraftServer server, Collection<GameProfile> targets, Supplier<Property> skinSupplier) {
+    public static CompletableFuture<Pair<Collection<ServerPlayerEntity>, Collection<GameProfile>>> setSkinAsync(@NotNull MinecraftServer server, @NotNull Collection<GameProfile> targets, @NotNull Supplier<Property> skinSupplier) {
         return CompletableFuture.<Pair<Property, Collection<GameProfile>>>supplyAsync(() -> {
             HashSet<GameProfile> acceptedProfiles = new HashSet<>();
             Property skin = skinSupplier.get();
@@ -97,7 +97,7 @@ public class SkinRestorer {
         }, server).orTimeout(10, TimeUnit.SECONDS).exceptionally(e -> Pair.of(Collections.emptySet(), Collections.emptySet()));
     }
 
-    private static void applyRestoredSkin(ServerPlayerEntity playerEntity, Property skin) {
+    private static void applyRestoredSkin(@NotNull ServerPlayerEntity playerEntity, Property skin) {
         playerEntity.getGameProfile().getProperties().removeAll("textures");
         playerEntity.getGameProfile().getProperties().put("textures", skin);
     }

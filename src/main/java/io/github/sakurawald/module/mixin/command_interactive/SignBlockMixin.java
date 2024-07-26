@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.mixin.command_interactive;
 
 import io.github.sakurawald.module.common.structure.CommandExecutor;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,7 +29,7 @@ import net.minecraft.world.World;
 public class SignBlockMixin {
 
     @Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
-    private void $onUse(BlockState blockState, World world, BlockPos blockPos, PlayerEntity player, BlockHitResult blockHitResult, CallbackInfoReturnable<ActionResult> cir) {
+    private void $onUse(BlockState blockState, @NotNull World world, BlockPos blockPos, @NotNull PlayerEntity player, BlockHitResult blockHitResult, @NotNull CallbackInfoReturnable<ActionResult> cir) {
         // bypass if player is sneaking
         if (player.isSneaking()) return;
 
@@ -50,13 +51,13 @@ public class SignBlockMixin {
     }
 
     @Unique
-    public String reduce(SignText signText) {
+    public @NotNull String reduce(@NotNull SignText signText) {
         return Arrays.stream(signText.getMessages(false)).map(Text::getString).reduce("", String::concat);
     }
 
     @Unique
     /* text must contains "//" */
-    public List<String> splitCommands(String text) {
+    public @NotNull List<String> splitCommands(@NotNull String text) {
         int left = text.indexOf("/");
 
         // strip comments

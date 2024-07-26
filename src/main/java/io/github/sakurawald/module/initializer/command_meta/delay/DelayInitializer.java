@@ -9,6 +9,7 @@ import io.github.sakurawald.util.minecraft.CommandHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -21,13 +22,13 @@ public class DelayInitializer extends ModuleInitializer {
     private static final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(literal("delay")
                 .then(argument("time", IntegerArgumentType.integer(1))
                         .then(CommandHelper.Argument.rest().executes(this::delay))));
     }
 
-    private int delay(CommandContext<ServerCommandSource> ctx) {
+    private int delay(@NotNull CommandContext<ServerCommandSource> ctx) {
 
         int time = IntegerArgumentType.getInteger(ctx, "time");
         String rest = CommandHelper.Argument.rest(ctx);

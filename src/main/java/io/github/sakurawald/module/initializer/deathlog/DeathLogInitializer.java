@@ -24,6 +24,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Uuids;
 import net.minecraft.util.math.Vec3d;
+import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -57,7 +58,7 @@ public class DeathLogInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
         dispatcher.register(
                 literal("deathlog").requires(s -> s.hasPermissionLevel(4))
                         .then(literal("view")
@@ -70,7 +71,7 @@ public class DeathLogInitializer extends ModuleInitializer {
     }
 
     @SneakyThrows
-    private int $restore(CommandContext<ServerCommandSource> ctx) {
+    private int $restore(@NotNull CommandContext<ServerCommandSource> ctx) {
         /* read from file */
         ServerCommandSource source = ctx.getSource();
         String from = StringArgumentType.getString(ctx, "from");
@@ -119,11 +120,11 @@ public class DeathLogInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    private String getFileName(String playerName) {
+    private @NotNull String getFileName(String playerName) {
         return Uuids.getOfflinePlayerUuid(playerName) + ".dat";
     }
 
-    private int $view(CommandContext<ServerCommandSource> ctx) {
+    private int $view(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             String from = StringArgumentType.getString(ctx, "from");
 
@@ -145,7 +146,7 @@ public class DeathLogInitializer extends ModuleInitializer {
         });
     }
 
-    private Component asViewComponent(NbtCompound node, String from, int index, String to) {
+    private @NotNull Component asViewComponent(@NotNull NbtCompound node, String from, int index, String to) {
         NbtCompound remarkTag = node.getCompound(REMARK);
         Component hover = Component.empty().color(NamedTextColor.DARK_GREEN)
                 .append(Component.text("Time: " + remarkTag.getString(TIME)))
@@ -167,7 +168,7 @@ public class DeathLogInitializer extends ModuleInitializer {
                 .hoverEvent(HoverEvent.showText(hover));
     }
 
-    public void store(ServerPlayerEntity player) {
+    public void store(@NotNull ServerPlayerEntity player) {
         Path path = STORAGE_PATH.resolve(getFileName(player.getGameProfile().getName()));
 
         NbtCompound root = NbtHelper.read(path);
@@ -176,14 +177,14 @@ public class DeathLogInitializer extends ModuleInitializer {
         NbtHelper.write(root, path);
     }
 
-    private NbtCompound createDeathNode(ServerPlayerEntity player) {
+    private @NotNull NbtCompound createDeathNode(@NotNull ServerPlayerEntity player) {
         NbtCompound node = new NbtCompound();
         writeInventoryNode(node, player);
         writeRemarkNode(node, player);
         return node;
     }
 
-    private void writeRemarkNode(NbtCompound node, ServerPlayerEntity player) {
+    private void writeRemarkNode(@NotNull NbtCompound node, @NotNull ServerPlayerEntity player) {
         String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String reason = player.getDamageTracker().getDeathMessage().getString();
         String dimension = player.getWorld().getRegistryKey().getValue().toString();
@@ -199,7 +200,7 @@ public class DeathLogInitializer extends ModuleInitializer {
         node.put(REMARK, remarkTag);
     }
 
-    private void writeInventoryNode(NbtCompound node, ServerPlayerEntity player) {
+    private void writeInventoryNode(@NotNull NbtCompound node, @NotNull ServerPlayerEntity player) {
         NbtCompound inventoryTag = new NbtCompound();
         PlayerInventory inventory = player.getInventory();
         inventoryTag.put(ARMOR, NbtHelper.writeSlotsNode(new NbtList(), inventory.armor));

@@ -9,18 +9,19 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import org.jetbrains.annotations.NotNull;
 
 
 public class FeedInitializer extends ModuleInitializer {
 
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(CommandManager.literal("feed").executes(this::$feed));
     }
 
     @SuppressWarnings("SameReturnValue")
-    private int $feed(CommandContext<ServerCommandSource> ctx) {
+    private int $feed(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             HungerManager foodData = player.getHungerManager();
             foodData.setFoodLevel(20);

@@ -13,6 +13,7 @@ import net.kyori.adventure.text.Component;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -46,7 +47,7 @@ public class TabListInitializer extends ModuleInitializer {
         }
     }
 
-    private static void render(MinecraftServer server) {
+    private static void render(@NotNull MinecraftServer server) {
         ConfigModel.Modules.TabList config = Configs.configHandler.model().modules.tab_list;
         String headerControl = RandomUtil.drawList(config.style.header);
         String footerControl = RandomUtil.drawList(config.style.footer);

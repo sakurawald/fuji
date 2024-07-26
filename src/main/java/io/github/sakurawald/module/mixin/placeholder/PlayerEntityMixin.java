@@ -6,6 +6,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stat;
 import net.minecraft.stat.Stats;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerEntityMixin {
 
     @Inject(method = "increaseStat(Lnet/minecraft/stat/Stat;I)V", at = @At("HEAD"))
-    public void increaseStat(Stat<?> stat, int i, CallbackInfo ci) {
+    public void increaseStat(@NotNull Stat<?> stat, int i, CallbackInfo ci) {
         PlayerEntity player = (PlayerEntity) (Object) this;
 
         if (Stats.KILLED.equals(stat.getType())) {

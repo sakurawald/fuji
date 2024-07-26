@@ -12,6 +12,7 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 @Data
 @With
@@ -32,15 +33,15 @@ public class Position {
         this.pitch = pitch;
     }
 
-    public Position(World level, double x, double y, double z, float yaw, float pitch) {
+    public Position(@NotNull World level, double x, double y, double z, float yaw, float pitch) {
         this(level.getRegistryKey().getValue().toString(), x, y, z, yaw, pitch);
     }
 
-    public static Position of(ServerPlayerEntity player) {
+    public static @NotNull Position of(@NotNull ServerPlayerEntity player) {
         return new Position(player.getWorld().getRegistryKey().getValue().toString(), player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch());
     }
 
-    public static Position of(ServerPlayerEntity player, ServerWorld world) {
+    public static @NotNull Position of(@NotNull ServerPlayerEntity player, @NotNull ServerWorld world) {
         BlockPos spawnPos = world.getSpawnPos();
         return new Position(world, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), player.getYaw(), player.getPitch());
     }
@@ -49,15 +50,15 @@ public class Position {
         return IdentifierHelper.ofServerWorld(Identifier.of(this.level));
     }
 
-    public BlockPos ofBlockPos() {
+    public @NotNull BlockPos ofBlockPos() {
         return new BlockPos((int) this.x, (int) this.y, (int) this.z);
     }
 
-    public boolean sameLevel(World level) {
+    public boolean sameLevel(@NotNull World level) {
         return this.level.equals(level.getRegistryKey().getValue().toString());
     }
 
-    public double distanceToSqr(Position position) {
+    public double distanceToSqr(@NotNull Position position) {
         if (!this.level.equals(position.level)) return Double.MAX_VALUE;
         double x = this.x - position.x;
         double y = this.y - position.y;
@@ -65,7 +66,7 @@ public class Position {
         return x * x + y * y + z * z;
     }
 
-    public void teleport(ServerPlayerEntity player) {
+    public void teleport(@NotNull ServerPlayerEntity player) {
         RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(this.level));
         ServerWorld serverLevel = ServerHelper.getDefaultServer().getWorld(worldKey);
         if (serverLevel == null) {

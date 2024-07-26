@@ -14,6 +14,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -257,7 +258,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
 
     public static class UpdateSumUpPlaceholderJob implements Job {
         @Override
-        public void execute(JobExecutionContext context) {
+        public void execute(@NotNull JobExecutionContext context) {
             // save all online-player's stats into /stats/ folder
             MinecraftServer server = (MinecraftServer) context.getJobDetail().getJobDataMap().get(MinecraftServer.class.getName());
             server.getPlayerManager().getPlayerList().forEach((p) -> p.getStatHandler().save());

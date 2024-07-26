@@ -9,6 +9,7 @@ import lombok.SneakyThrows;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 
 import static net.minecraft.server.command.CommandManager.RegistrationEnvironment;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -17,13 +18,13 @@ import static net.minecraft.server.command.CommandManager.literal;
 public class PingInitializer extends ModuleInitializer {
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
         dispatcher.register(literal("ping").then(CommandHelper.Argument.player().executes(this::$ping))
         );
     }
 
     @SneakyThrows
-    private int $ping(CommandContext<ServerCommandSource> ctx) {
+    private int $ping(@NotNull CommandContext<ServerCommandSource> ctx) {
         ServerPlayerEntity target = CommandHelper.Argument.player(ctx);
         String name = target.getGameProfile().getName();
 

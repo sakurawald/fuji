@@ -23,6 +23,7 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -31,9 +32,9 @@ public class HeadInitializer extends ModuleInitializer {
 
     public static final ConfigHandler<HeadModel> headHandler = new ObjectConfigHandler<>("head.json", HeadModel.class);
     public final HeadDatabaseAPI HEAD_DATABASE = new HeadDatabaseAPI();
-    public Multimap<Category, Head> heads = HashMultimap.create();
+    public @NotNull Multimap<Category, Head> heads = HashMultimap.create();
 
-    public void tryPurchase(ServerPlayerEntity player, int amount, Runnable onPurchase) {
+    public void tryPurchase(@NotNull ServerPlayerEntity player, int amount, @NotNull Runnable onPurchase) {
         int trueAmount = amount * headHandler.model().costAmount;
         switch (headHandler.model().economyType) {
             case FREE -> onPurchase.run();
@@ -57,7 +58,7 @@ public class HeadInitializer extends ModuleInitializer {
         };
     }
 
-    public Item getCostItem() {
+    public @NotNull Item getCostItem() {
         return ItemHelper.ofItem(headHandler.model().costType);
     }
 
@@ -74,11 +75,11 @@ public class HeadInitializer extends ModuleInitializer {
 
     @SuppressWarnings("unused")
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(CommandManager.literal("head").executes(this::$head));
     }
 
-    public int $head(CommandContext<ServerCommandSource> ctx) {
+    public int $head(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             new HeadGui(player).open();
             return CommandHelper.Return.SUCCESS;

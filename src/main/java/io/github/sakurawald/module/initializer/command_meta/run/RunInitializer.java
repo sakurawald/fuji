@@ -10,12 +10,13 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import org.jetbrains.annotations.NotNull;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class RunInitializer extends ModuleInitializer {
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(literal("run")
                 .then(literal("as")
                         .then(literal("player").then(CommandHelper.Argument.player().then(CommandHelper.Argument.rest().executes(this::runAsPlayer))))
@@ -23,7 +24,7 @@ public class RunInitializer extends ModuleInitializer {
 
     }
 
-    private int runAsConsole(CommandContext<ServerCommandSource> ctx) {
+    private int runAsConsole(@NotNull CommandContext<ServerCommandSource> ctx) {
         String rest = CommandHelper.Argument.rest(ctx);
 
         CommandExecutor.executeCommandAsConsole(null, rest);
@@ -31,7 +32,7 @@ public class RunInitializer extends ModuleInitializer {
     }
 
     @SneakyThrows
-    private int runAsPlayer(CommandContext<ServerCommandSource> ctx) {
+    private int runAsPlayer(@NotNull CommandContext<ServerCommandSource> ctx) {
         ServerPlayerEntity player = CommandHelper.Argument.player(ctx);
         String rest = CommandHelper.Argument.rest(ctx);
 

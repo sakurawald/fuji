@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,7 +25,7 @@ import static io.github.sakurawald.util.minecraft.MessageHelper.ofText;
 public abstract class OverrideTabListNameMixin {
 
     @Unique
-    private static Map<String, Text> realPlayerGetDisplayNameSave = new HashMap<>();
+    private static @NotNull Map<String, Text> realPlayerGetDisplayNameSave = new HashMap<>();
 
     @Unique
     private final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;

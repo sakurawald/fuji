@@ -3,6 +3,7 @@ package io.github.sakurawald.module.initializer.skin.io;
 import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.config.Configs;
 import lombok.Getter;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -46,7 +47,7 @@ public class SkinStorage {
         }
     }
 
-    public void setSkin(UUID uuid, Property skin) {
+    public void setSkin(UUID uuid, @Nullable Property skin) {
         // if a player has no skin, use default skin.
         if (skin == null)
             skin = this.getDefaultSkin();

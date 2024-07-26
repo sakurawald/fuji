@@ -12,6 +12,7 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.world.ServerWorld;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -19,11 +20,11 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 public class RtpInitializer extends ModuleInitializer {
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(literal("rtp").executes(this::$rtp));
     }
 
-    private int $rtp(CommandContext<ServerCommandSource> ctx) {
+    private int $rtp(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             ServerWorld serverWorld = player.getServerWorld();
 

@@ -15,6 +15,7 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import org.jetbrains.annotations.NotNull;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -49,11 +50,11 @@ public class WorksInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(CommandManager.literal("works").executes(this::$works));
     }
 
-    private int $works(CommandContext<ServerCommandSource> ctx) {
+    private int $works(@NotNull CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
             new WorksGui(player,worksHandler.model().works).open();
             return CommandHelper.Return.SUCCESS;
@@ -63,7 +64,7 @@ public class WorksInitializer extends ModuleInitializer {
     public static class WorksScheduleJob implements Job {
 
         @Override
-        public void execute(JobExecutionContext context) {
+        public void execute(@NotNull JobExecutionContext context) {
             // save current works data
             MinecraftServer server = (MinecraftServer) context.getJobDetail().getJobDataMap().get(MinecraftServer.class.getName());
             if (server.isRunning()) {

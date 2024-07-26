@@ -4,12 +4,13 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
 public class Head {
-    public final String name;
+    public final @Nullable String name;
     public final UUID uuid;
     public final String value;
     @Nullable
@@ -30,7 +31,7 @@ public class Head {
         this("", uuid, value, null);
     }
 
-    public String getTagsOrEmpty() {
+    public @NotNull String getTagsOrEmpty() {
         return tags == null ? "" : tags;
     }
 
