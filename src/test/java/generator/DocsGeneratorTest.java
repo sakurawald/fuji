@@ -1,35 +1,64 @@
 package generator;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonReader;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.config.model.SchedulerModel;
 import io.github.sakurawald.generator.JsonDocsGenerator;
 import io.github.sakurawald.generator.MarkdownDocsGenerator;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileReader;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 
 public class DocsGeneratorTest {
+    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    public static final Path LOCALE_PATH = Path.of("fuji-fabric.wiki", "locale");
+    private static final String EN_US = "en-us";
+
+    private String getLanguageCode(String fileName) {
+        fileName = fileName.replace(".json", "");
+        return fileName.toLowerCase();
+    }
+
 
     @SneakyThrows
-    private void generate(String fileName, Object javaObject) {
-        Path githubWikiPath = Path.of("fuji-fabric.wiki");
-        JsonObject configJson = JsonDocsGenerator.getInstance().generate(javaObject);
+    private void generate(JsonObject jsonObject, String configFileName, String languageCode) {
+        Path outputPath = LOCALE_PATH.resolve(languageCode);
+        String outputFileName = "[%s]-[%s].json".formatted(configFileName, languageCode);
 
-        Path path = githubWikiPath.resolve("docs-gen-[%s].md".formatted(fileName));
-        String text = MarkdownDocsGenerator.getInstance().generate(configJson);
-        FileUtils.writeStringToFile(path.toFile(), text, Charset.defaultCharset());
+        String json = GSON.toJson(jsonObject);
+        FileUtils.writeStringToFile(outputPath.resolve(outputFileName).toFile(), json, Charset.defaultCharset());
+
+        outputFileName = "[%s]-[%s].md".formatted(configFileName, languageCode);
+        String text = MarkdownDocsGenerator.getInstance().generate(jsonObject);
+        FileUtils.writeStringToFile(outputPath.resolve(outputFileName).toFile(), text, Charset.defaultCharset());
+    }
+
+    @SneakyThrows
+    private void generate(Object javaObject, String configFileName, String languageCode) {
+        JsonObject configJson = JsonDocsGenerator.getInstance().generate(javaObject);
+        generate(configJson, configFileName, languageCode);
+    }
+
+    @SneakyThrows
+    private void generate(Path jsonFile, String configFileName, String languageCode) {
+        JsonReader jsonReader = new JsonReader(new FileReader(jsonFile.toFile()));
+        JsonObject jsonObject = GSON.fromJson(jsonReader, JsonObject.class);
+        System.out.println(jsonObject);
+        generate(jsonObject, configFileName, languageCode);
     }
 
     @Test
     void generate() {
-        generate("config.json", new ConfigModel());
-        generate("scheduler.json", new SchedulerModel());
+        generate(new ConfigModel(), "config.json", EN_US);
+        generate(new SchedulerModel(), "scheduler.json", EN_US);
+        generate(LOCALE_PATH.resolve("zh-cn").resolve("config.json"), "a.json", "zh-cn");
     }
 
 }
