@@ -6,9 +6,11 @@ import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.yggdrasil.ProfileResult;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.AnvilInputGui;
+import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.head.HeadInitializer;
 import io.github.sakurawald.module.initializer.head.structure.EconomyType;
+import io.github.sakurawald.util.minecraft.GuiHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.item.ItemStack;
@@ -23,80 +25,20 @@ import java.util.concurrent.CompletableFuture;
 
 class PlayerInputGui extends AnvilInputGui {
     final HeadInitializer module = ModuleManager.getInitializer(HeadInitializer.class);
-    private final @NotNull HeadGui parentGui;
+    private final @NotNull SimpleGui parentGui;
     private long apiDebounce = 0;
-    private final ItemStack DEFAULT_PLAYER_HEAD = Items.PLAYER_HEAD.getDefaultStack();
 
     public PlayerInputGui(@NotNull HeadGui parentGui) {
         super(parentGui.player, false);
         this.parentGui = parentGui;
-        this.setDefaultInputValue("");
-        this.setSlot(1, Items.PLAYER_HEAD.getDefaultStack());
-        this.resetSearchResult();
         this.setTitle(MessageHelper.ofText(player, "head.category.player"));
-    }
-
-    private void resetSearchResult() {
-        this.setSlot(2, this.DEFAULT_PLAYER_HEAD);
+        this.setSlot(1, GuiHelper.makeBarrier());
+        this.resetResultSlot();
     }
 
     @Override
-    public void onTick() {
-        if (apiDebounce != 0 && apiDebounce <= System.currentTimeMillis()) {
-            apiDebounce = 0;
-
-            CompletableFuture.runAsync(() -> {
-                MinecraftServer server = player.server;
-                UserCache profileCache = server.getUserCache();
-                if (profileCache == null) {
-                    resetSearchResult();
-                    return;
-                }
-
-                Optional<GameProfile> possibleProfile = profileCache.findByName(this.getInput());
-                MinecraftSessionService sessionService = server.getSessionService();
-                if (possibleProfile.isEmpty()) {
-                    resetSearchResult();
-                    return;
-                }
-
-                ProfileResult profileResult = sessionService.fetchProfile(possibleProfile.get().getId(), false);
-                if (profileResult == null) {
-                    resetSearchResult();
-                    return;
-                }
-
-                GameProfile profile = profileResult.profile();
-                MinecraftProfileTextures textures = sessionService.getTextures(profile);
-                if (textures == MinecraftProfileTextures.EMPTY) {
-                    resetSearchResult();
-                    return;
-                }
-
-                GuiElementBuilder builder = new GuiElementBuilder().setItem(Items.PLAYER_HEAD);
-                if (HeadInitializer.headHandler.model().economyType != EconomyType.FREE) {
-                    builder.addLoreLine(Text.empty());
-                    builder.addLoreLine(MessageHelper.ofText(player, "head.price").copy().append(module.getCost()));
-                }
-
-                builder.setSkullOwner(profile, ServerHelper.getDefaultServer());
-
-                ItemStack stack = builder.asStack();
-
-                this.setSlot(2, stack, (index, type, action, gui) ->
-                        module.tryPurchase(player, 1, () -> {
-                            var cursorStack = getPlayer().currentScreenHandler.getCursorStack();
-                            if (player.currentScreenHandler.getCursorStack().isEmpty()) {
-                                player.currentScreenHandler.setCursorStack(stack.copy());
-                            } else if (ItemStack.areItemsAndComponentsEqual(stack, cursorStack) && cursorStack.getCount() < cursorStack.getMaxCount()) {
-                                cursorStack.increment(1);
-                            } else {
-                                player.dropItem(stack.copy(), false);
-                            }
-                        })
-                );
-            });
-        }
+    public void setDefaultInputValue(String input) {
+        this.setSlot(0, GuiHelper.makeBarrier());
     }
 
     @Override
@@ -109,4 +51,68 @@ class PlayerInputGui extends AnvilInputGui {
     public void onClose() {
         parentGui.open();
     }
+
+    private void resetResultSlot() {
+        this.setSlot(2, GuiHelper.makeBarrier());
+    }
+
+    @Override
+    public void onTick() {
+        if (apiDebounce != 0 && apiDebounce <= System.currentTimeMillis()) {
+            apiDebounce = 0;
+
+            CompletableFuture.runAsync(() -> {
+                MinecraftServer server = player.server;
+                UserCache profileCache = server.getUserCache();
+                if (profileCache == null) {
+                    resetResultSlot();
+                    return;
+                }
+
+                Optional<GameProfile> response = profileCache.findByName(this.getInput());
+                MinecraftSessionService sessionService = server.getSessionService();
+                if (response.isEmpty()) {
+                    resetResultSlot();
+                    return;
+                }
+
+                ProfileResult profileResult = sessionService.fetchProfile(response.get().getId(), false);
+                if (profileResult == null) {
+                    resetResultSlot();
+                    return;
+                }
+
+                GameProfile profile = profileResult.profile();
+                MinecraftProfileTextures textures = sessionService.getTextures(profile);
+                if (textures == MinecraftProfileTextures.EMPTY) {
+                    resetResultSlot();
+                    return;
+                }
+
+                GuiElementBuilder builder = new GuiElementBuilder()
+                        .setItem(Items.PLAYER_HEAD)
+                        .setSkullOwner(profile, ServerHelper.getDefaultServer());
+                if (HeadInitializer.headHandler.model().economyType != EconomyType.FREE) {
+                    builder.addLoreLine(Text.empty());
+                    builder.addLoreLine(MessageHelper.ofText(player, "head.price").copy().append(module.getCost()));
+                }
+                ItemStack resultStack = builder.asStack();
+
+                this.setSlot(2, resultStack, (index, type, action, gui) ->
+                        module.tryPurchase(player, 1, () -> {
+                            var cursorStack = getPlayer().currentScreenHandler.getCursorStack();
+                            if (player.currentScreenHandler.getCursorStack().isEmpty()) {
+                                player.currentScreenHandler.setCursorStack(resultStack.copy());
+                            } else if (ItemStack.areItemsAndComponentsEqual(resultStack, cursorStack) && cursorStack.getCount() < cursorStack.getMaxCount()) {
+                                cursorStack.increment(1);
+                            } else {
+                                player.dropItem(resultStack.copy(), false);
+                            }
+                        })
+                );
+
+            });
+        }
+    }
+
 }

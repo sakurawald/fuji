@@ -150,7 +150,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
                         }.open()
                 )
         );
-        gui.setSlot(8, GuiHelper.createBackButton(player).setCallback(parentGui::open)
+        gui.setSlot(8, GuiHelper.makeBackButton(player).setCallback(parentGui::open)
         );
 
         gui.open();

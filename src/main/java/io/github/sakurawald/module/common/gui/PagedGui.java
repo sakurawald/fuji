@@ -6,7 +6,6 @@ import io.github.sakurawald.module.common.gui.layer.SingleLineLayer;
 import io.github.sakurawald.util.minecraft.GuiHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.Component;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -46,10 +45,10 @@ public abstract class PagedGui<T> extends LayeredGui {
         }
 
         // page layer
-        SingleLineLayer pageLayer = new SingleLineLayer(GuiHelper.createPlaceholder());
-        pageLayer.setSlot(0, GuiHelper.createPreviousPageButton(player).setCallback(() -> tryChangePage(pageIndex - 1)));
-        pageLayer.setSlot(this.getWidth() - 1, GuiHelper.createPreviousPageButton(player).setCallback(() -> tryChangePage(pageIndex + 1)));
-        pageLayer.setSlot(this.getWidth() - 2, GuiHelper.createSearchButton(player).setCallback(() -> new InputSignGui(player, null) {
+        SingleLineLayer pageLayer = new SingleLineLayer(GuiHelper.makePlaceholder());
+        pageLayer.setSlot(0, GuiHelper.makePreviousPageButton(player).setCallback(() -> tryChangePage(pageIndex - 1)));
+        pageLayer.setSlot(this.getWidth() - 1, GuiHelper.makePreviousPageButton(player).setCallback(() -> tryChangePage(pageIndex + 1)));
+        pageLayer.setSlot(this.getWidth() - 2, GuiHelper.makeSearchButton(player).setCallback(() -> new InputSignGui(player, null) {
             @Override
             public void onClose() {
                 String keyword = reduceInputOrEmpty();

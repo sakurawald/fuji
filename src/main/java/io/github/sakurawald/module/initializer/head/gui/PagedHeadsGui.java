@@ -54,7 +54,7 @@ public class PagedHeadsGui extends LayeredGui {
         }
 
         navigationLayer.setSlot(
-                3, GuiHelper.createPreviousPageButton(getPlayer()).asStack(),
+                3, GuiHelper.makePreviousPageButton(getPlayer()).asStack(),
                 ((index, type, action) -> {
                     this.page -= 1;
                     if (this.page < 0) {
@@ -66,7 +66,7 @@ public class PagedHeadsGui extends LayeredGui {
         );
 
         navigationLayer.setSlot(
-                5, GuiHelper.createNextPageButton(getPlayer()).asStack(),
+                5, GuiHelper.makeNextPageButton(getPlayer()).asStack(),
                 ((index, type, action) -> {
                     this.page += 1;
                     if (this.page >= getMaxPage()) {

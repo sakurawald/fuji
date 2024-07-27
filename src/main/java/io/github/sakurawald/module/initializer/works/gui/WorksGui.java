@@ -10,7 +10,6 @@ import io.github.sakurawald.module.initializer.works.work_type.Work;
 import io.github.sakurawald.util.minecraft.GuiHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.ServerHelper;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -34,7 +33,7 @@ public class WorksGui extends PagedGui<Work> {
         List<Work> entities = the.getEntities();
 
         Layer controlLayer = new Layer(1, 3);
-        controlLayer.addSlot(GuiHelper.createAddButton(player)
+        controlLayer.addSlot(GuiHelper.makeAddButton(player)
                 .setName(MessageHelper.ofText(player, "works.list.add"))
                 .setCallback(() -> new AddWorkGui(player).open())
         );
@@ -45,7 +44,7 @@ public class WorksGui extends PagedGui<Work> {
                 .setLore(MessageHelper.ofTextList(player, "works.list.help.lore")));
 
         if (entities == WorksInitializer.worksHandler.model().works) {
-            controlLayer.addSlot(GuiHelper.createHelpButton(player)
+            controlLayer.addSlot(GuiHelper.makeHelpButton(player)
                     .setName(MessageHelper.ofText(player, "works.list.my_works"))
                     .setCallback(() -> search(player.getGameProfile().getName()).open())
             );

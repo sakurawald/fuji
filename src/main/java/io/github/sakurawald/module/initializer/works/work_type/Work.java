@@ -172,7 +172,7 @@ public abstract class Work {
 
         );
 
-        gui.setSlot(8, GuiHelper.createPreviousPageButton(player)
+        gui.setSlot(8, GuiHelper.makePreviousPageButton(player)
                 .setCallback(parentGui::open)
         );
 

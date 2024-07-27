@@ -795,7 +795,7 @@ public class ConfigModel {
                 - Respect the player's client-side language-setting.
                 - If the player's client-side language-setting is not supported, then use the default language.
                 - Lazy-load support, which means if a language is not required, then it will not be loaded.
-                - Dynamic-reload support, you need to enable `ConfigModule` to use reload command.
+                - Lazy-reload support, you need to enable `ConfigModule` to use reload command.
                                 
                 """)
         public class Language {

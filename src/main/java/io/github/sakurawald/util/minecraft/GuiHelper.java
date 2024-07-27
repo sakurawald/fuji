@@ -4,9 +4,11 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import lombok.experimental.UtilityClass;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 @UtilityClass
@@ -17,53 +19,61 @@ public class GuiHelper {
         public static final ItemStack EMPTY = Items.AIR.getDefaultStack();
     }
 
-    public static GuiElementInterface createPlaceholder() {
+    public static GuiElementInterface makeBarrier() {
+        return new GuiElementBuilder()
+                .setItem(Items.BARRIER)
+                .hideTooltip()
+                .setComponent(DataComponentTypes.CUSTOM_NAME, Text.literal(""))
+                .build();
+
+    }
+
+    public static GuiElementInterface makePlaceholder() {
         return new GuiElementBuilder()
                 .setItem(Items.GRAY_STAINED_GLASS_PANE)
                 .hideTooltip().build();
     }
 
-    public static GuiElementBuilder createPreviousPageButton(ServerPlayerEntity player) {
+    public static GuiElementBuilder makePreviousPageButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
                 .setName(MessageHelper.ofText(player, "previous_page"))
                 .setSkullOwner(Icon.PREVIOUS_PAGE_ICON);
     }
 
-    public static GuiElementBuilder createNextPageButton(ServerPlayerEntity player) {
+    public static GuiElementBuilder makeNextPageButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
                 .setName(MessageHelper.ofText(player, "next_page"))
                 .setSkullOwner(Icon.NEXT_PAGE_ICON);
     }
 
-    public static GuiElementBuilder createBackButton(ServerPlayerEntity player) {
+    public static GuiElementBuilder makeBackButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
                 .setName(MessageHelper.ofText(player, "back"))
                 .setSkullOwner(Icon.PREVIOUS_PAGE_ICON);
     }
 
-    public static GuiElementBuilder createSearchButton(ServerPlayerEntity player) {
+    public static GuiElementBuilder makeSearchButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
                 .setItem(Items.COMPASS)
                 .setName(MessageHelper.ofText(player, "search"));
     }
 
-    public static GuiElementBuilder createAddButton(ServerPlayerEntity player) {
+    public static GuiElementBuilder makeAddButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
                 .setName(MessageHelper.ofText(player, "add"))
                 .setSkullOwner(GuiHelper.Icon.PLUS_ICON);
     }
 
-    public static GuiElementBuilder createHelpButton(ServerPlayerEntity player) {
+    public static GuiElementBuilder makeHelpButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
                 .setName(MessageHelper.ofText(player, "help"))
                 .setSkullOwner(Icon.HEART_ICON);
     }
-
 
     public static void fill(@NotNull SimpleGui gui, ItemStack itemStack) {
         for (int i = 0; i < gui.getSize(); i++) {

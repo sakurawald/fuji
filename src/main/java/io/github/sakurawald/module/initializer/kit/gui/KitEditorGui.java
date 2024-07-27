@@ -10,7 +10,6 @@ import io.github.sakurawald.module.initializer.kit.Kit;
 import io.github.sakurawald.module.initializer.kit.KitInitializer;
 import io.github.sakurawald.util.minecraft.GuiHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
@@ -75,9 +74,9 @@ public class KitEditorGui extends PagedGui<Kit> {
         ServerPlayerEntity player = getPlayer();
 
         SingleLineLayer singleLineLayer = new SingleLineLayer();
-        singleLineLayer.setSlot(1, GuiHelper.createHelpButton(player)
+        singleLineLayer.setSlot(1, GuiHelper.makeHelpButton(player)
                 .setLore(MessageHelper.ofTextList(player, "kit.gui.editor.help.lore")));
-        singleLineLayer.setSlot(4, GuiHelper.createAddButton(player).setCallback(() -> new InputSignGui(player, "prompt.input.name") {
+        singleLineLayer.setSlot(4, GuiHelper.makeAddButton(player).setCallback(() -> new InputSignGui(player, "prompt.input.name") {
             @Override
             public void onClose() {
                 String name = getLine(0).getString().trim();
