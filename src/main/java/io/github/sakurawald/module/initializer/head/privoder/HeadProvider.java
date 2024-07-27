@@ -13,6 +13,7 @@ import io.github.sakurawald.module.initializer.head.structure.Head;
 import io.github.sakurawald.util.LogUtil;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
+import oshi.util.FileUtil;
 
 import java.io.File;
 import java.io.IOException;

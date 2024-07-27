@@ -36,11 +36,11 @@ public class HeadInitializer extends ModuleInitializer {
     @Override
     public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
         dispatcher.register(literal("head").executes(this::$head)
-                .then(literal("download").requires((ctx) -> ctx.hasPermissionLevel(4)).executes(this::$download))
+                .then(literal("sync").requires((ctx) -> ctx.hasPermissionLevel(4)).executes(this::$sync))
                 .then(literal("gui").executes(this::$head)));
     }
 
-    private int $download(CommandContext<ServerCommandSource> ctx) {
+    private int $sync(CommandContext<ServerCommandSource> ctx) {
         HeadProvider.fetchData();
         return CommandHelper.Return.SUCCESS;
     }
