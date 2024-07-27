@@ -2,6 +2,7 @@ package io.github.sakurawald.module.initializer.works.gui;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
+import eu.pb4.sgui.api.gui.SimpleGui;
 import eu.pb4.sgui.api.gui.layered.Layer;
 import io.github.sakurawald.module.common.gui.PagedGui;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;
@@ -15,22 +16,18 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public class WorksGui extends PagedGui<Work> {
 
-    public WorksGui(ServerPlayerEntity player, @NotNull List<Work> entities) {
-        super(player, MessageHelper.ofText(player, "works.list.title"), entities);
-    }
-
-    @Override
-    public void onConstructor(@NotNull PagedGui<Work> the) {
-        ServerPlayerEntity player = getPlayer();
-        List<Work> entities = the.getEntities();
+    public WorksGui(ServerPlayerEntity player, @NotNull List<Work> entities, int pageIndex) {
+        super(null,player, MessageHelper.ofText(player, "works.list.title"), entities, pageIndex);
 
         Layer controlLayer = new Layer(1, 3);
         controlLayer.addSlot(GuiHelper.makeAddButton(player)
@@ -53,13 +50,14 @@ public class WorksGui extends PagedGui<Work> {
                     .setItem(Items.PLAYER_HEAD)
                     .setName(MessageHelper.ofText(player, "works.list.all_works"))
                     .setSkullOwner(GuiHelper.Icon.A_ICON)
-                    .setCallback(() -> new WorksGui(player, WorksInitializer.worksHandler.model().works).open())
+                    .setCallback(() -> new WorksGui(player, WorksInitializer.worksHandler.model().works, 0).open())
             );
         }
 
         // note: in this closure, it's important to call `the.addLayer`, not `this.addLayer() or super.addLayer()`
-        the.addLayer(controlLayer, 3, the.getHeight() - 1);
+        this.addLayer(controlLayer, 3, this.getHeight() - 1);
     }
+
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean hasPermission(@NotNull ServerPlayerEntity player, @NotNull Work work) {
@@ -67,7 +65,12 @@ public class WorksGui extends PagedGui<Work> {
     }
 
     @Override
-    public GuiElementInterface toGuiElement(@NotNull PagedGui<Work> the, @NotNull Work entity) {
+    public PagedGui<Work> make(@Nullable SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<Work> entities, int pageIndex) {
+        return new WorksGui(player,entities, 0);
+    }
+
+    @Override
+    public GuiElementInterface toGuiElement(@NotNull Work entity) {
         ServerPlayerEntity player = getPlayer();
         return new GuiElementBuilder()
                 .setItem(entity.asItem())
@@ -79,7 +82,7 @@ public class WorksGui extends PagedGui<Work> {
                         RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(entity.level));
                         ServerWorld level = ServerHelper.getDefaultServer().getWorld(worldKey);
                         player.teleport(level, entity.x, entity.y, entity.z, entity.yaw, entity.pitch);
-                        the.close();
+                        this.close();
                         return;
                     }
                     /* shift + right click -> specialized settings */
@@ -89,7 +92,7 @@ public class WorksGui extends PagedGui<Work> {
                             return;
                         }
                         entity.openSpecializedSettingsGui(player, gui);
-                        the.close();
+                        this.close();
                         return;
                     }
                     /* right click -> general settings */
@@ -100,14 +103,14 @@ public class WorksGui extends PagedGui<Work> {
                             return;
                         }
                         entity.openGeneralSettingsGui(player, gui);
-                        the.close();
+                        this.close();
                     }
                 }).build();
     }
 
     @Override
     public @NotNull List<Work> filter(@NotNull String keyword) {
-        return getThis().getEntities().stream().filter(w ->
+        return this.getEntities().stream().filter(w ->
                 w.creator.contains(keyword)
                         || w.name.contains(keyword)
                         || (w.introduction != null && w.introduction.contains(keyword))

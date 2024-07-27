@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 public class InputSignGui extends SignGui {
 
 
-    public InputSignGui(@NotNull ServerPlayerEntity player, @org.jetbrains.annotations.Nullable String promptKey) {
+    public InputSignGui(@NotNull ServerPlayerEntity player, @Nullable String promptKey) {
         super(player);
         this.setSignType(Blocks.CHERRY_WALL_SIGN);
         this.setColor(DyeColor.BLACK);
@@ -20,6 +20,10 @@ public class InputSignGui extends SignGui {
             this.setLine(3, MessageHelper.ofText(player, true, promptKey));
         }
         this.setAutoUpdate(false);
+    }
+
+    public InputSignGui(@NotNull ServerPlayerEntity player) {
+        this(player, null);
     }
 
     private @NotNull String reduce() {

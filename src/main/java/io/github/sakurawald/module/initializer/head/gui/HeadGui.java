@@ -2,14 +2,17 @@ package io.github.sakurawald.module.initializer.head.gui;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.module.initializer.head.structure.Category;
 import io.github.sakurawald.module.initializer.head.privoder.HeadProvider;
+import io.github.sakurawald.module.initializer.head.structure.Category;
+import io.github.sakurawald.module.initializer.head.structure.Head;
 import io.github.sakurawald.util.minecraft.MessageHelper;
-import java.util.ArrayList;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 
 public class HeadGui extends SimpleGui {
     protected final ServerPlayerEntity player;
@@ -35,11 +38,11 @@ public class HeadGui extends SimpleGui {
                 .setCallback((index1, type1, action) -> new PlayerInputGui(this).open()));
     }
 
-    private void addCategoryButton(int index, @NotNull Category category) {
-        this.setSlot(index, category.of(player), (i, type, action, gui) -> {
-            var headsGui = new PagedHeadsGui(this, new ArrayList<>(HeadProvider.getHeads().get(category)));
-            headsGui.setTitle(category.getDisplayName(player));
-            headsGui.open();
+    private void addCategoryButton(int slotIndex, @NotNull Category category) {
+        this.setSlot(slotIndex, category.of(player), (i, type, action, gui) -> {
+            ArrayList<Head> entities = new ArrayList<>(HeadProvider.getHeads().get(category));
+            Text title = category.getDisplayName(player);
+            new MyPagedHeadsGui(this, player, title, entities, 0).open();
         });
     }
 

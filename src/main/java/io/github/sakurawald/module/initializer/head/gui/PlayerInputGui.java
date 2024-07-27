@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 class PlayerInputGui extends AnvilInputGui {
-    final HeadInitializer module = ModuleManager.getInitializer(HeadInitializer.class);
+
     private final @NotNull SimpleGui parentGui;
     private long apiDebounce = 0;
 
@@ -94,12 +94,12 @@ class PlayerInputGui extends AnvilInputGui {
                         .setSkullOwner(profile, ServerHelper.getDefaultServer());
                 if (HeadInitializer.headHandler.model().economyType != EconomyType.FREE) {
                     builder.addLoreLine(Text.empty());
-                    builder.addLoreLine(MessageHelper.ofText(player, "head.price").copy().append(module.getCost()));
+                    builder.addLoreLine(MessageHelper.ofText(player, "head.price").copy().append(EconomyType.getCost()));
                 }
                 ItemStack resultStack = builder.asStack();
 
                 this.setSlot(2, resultStack, (index, type, action, gui) ->
-                        module.tryPurchase(player, 1, () -> {
+                        EconomyType.tryPurchase(player, 1, () -> {
                             var cursorStack = getPlayer().currentScreenHandler.getCursorStack();
                             if (player.currentScreenHandler.getCursorStack().isEmpty()) {
                                 player.currentScreenHandler.setCursorStack(resultStack.copy());

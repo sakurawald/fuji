@@ -14,131 +14,23 @@ import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class PagedHeadsGui extends LayeredGui {
-    public final List<Head> heads;
-    final @NotNull GuiInterface parent;
-    final @NotNull Layer contentLayer;
-    final @NotNull Layer navigationLayer;
-    final HeadInitializer module = ModuleManager.getInitializer(HeadInitializer.class);
-    public int page = 0;
+public abstract class PagedHeadsGui extends LayeredGui {
 
-    public PagedHeadsGui(@NotNull GuiInterface parent, List<Head> heads) {
-        super(ScreenHandlerType.GENERIC_9X6, parent.getPlayer(), false);
-        this.heads = heads;
-        this.parent = parent;
-        this.contentLayer = new Layer(5, 9);
-        updateContent();
-        this.addLayer(contentLayer, 0, 0);
-        this.navigationLayer = new Layer(1, 9);
-        this.updateNavigation();
-        this.addLayer(navigationLayer, 0, 5);
-    }
-
-    private int getMaxPage() {
-        return Math.max(1, (int) Math.ceil((double) this.heads.size() / 45));
-    }
-
-    private void updatePage() {
-        this.updateNavigation();
-        this.updateContent();
-    }
-
-    private void updateNavigation() {
-        for (int i = 0; i < 9; i++) {
-            navigationLayer.setSlot(i, GuiHelper.Item.PLACEHOLDER);
-        }
-
-        navigationLayer.setSlot(
-                3, GuiHelper.makePreviousPageButton(getPlayer()).asStack(),
-                ((index, type, action) -> {
-                    this.page -= 1;
-                    if (this.page < 0) {
-                        this.page = 0;
-                    }
-
-                    this.updatePage();
-                })
-        );
-
-        navigationLayer.setSlot(
-                5, GuiHelper.makeNextPageButton(getPlayer()).asStack(),
-                ((index, type, action) -> {
-                    this.page += 1;
-                    if (this.page >= getMaxPage()) {
-                        this.page = getMaxPage() - 1;
-                    }
-                    this.updatePage();
-                })
-        );
-        navigationLayer.setSlot(4, new GuiElementBuilder(Items.PLAYER_HEAD)
-                .setSkullOwner(GuiHelper.Icon.QUESTION_MARK_ICON)
-                .setName(MessageHelper.ofText(parent.getPlayer(), "head.page", this.page + 1, this.getMaxPage()))
-        );
-    }
-
-    private void updateContent() {
-        for (int i = 0; i < 45; i++) {
-            if (heads.size() > i + (this.page * 45)) {
-                Head head = heads.get(i + (this.page * 45));
-                var builder = GuiElementBuilder.from(head.of());
-                if (HeadInitializer.headHandler.model().economyType != EconomyType.FREE) {
-                    builder.addLoreLine(Text.empty());
-                    builder.addLoreLine(MessageHelper.ofText(parent.getPlayer(), "head.price").copy().append(module.getCost()));
-                }
-
-                contentLayer.setSlot(i, builder.asStack(), (index, type, action) -> processHeadClick(head, type));
-            } else {
-                contentLayer.setSlot(i, Items.AIR.getDefaultStack());
-            }
-        }
-    }
-
-    private void processHeadClick(@NotNull Head head, @NotNull ClickType type) {
-        var player = getPlayer();
-
-        ItemStack cursorStack = getPlayer().currentScreenHandler.getCursorStack();
-        ItemStack headStack = head.of();
-
-        if (cursorStack.isEmpty()) {
-            if (type.shift) {
-                module.tryPurchase(player, 1, () -> player.getInventory().insertStack(headStack));
-            } else if (type.isMiddle) {
-                module.tryPurchase(player, headStack.getMaxCount(), () -> {
-                    headStack.setCount(headStack.getMaxCount());
-                    player.currentScreenHandler.setCursorStack(headStack);
-                });
-            } else {
-                module.tryPurchase(player, 1, () -> player.currentScreenHandler.setCursorStack(headStack));
-            }
-        } else if (cursorStack.getMaxCount() <= cursorStack.getCount()) {
-            //noinspection UnnecessaryReturnStatement
-            return;
-        } else if (ItemStack.areItemsAndComponentsEqual(headStack, cursorStack)) {
-            if (type.isLeft) {
-                module.tryPurchase(player, 1, () -> cursorStack.increment(1));
-            } else if (type.isRight) {
-                if (HeadInitializer.headHandler.model().economyType == EconomyType.FREE)
-                    cursorStack.decrement(1);
-            } else if (type.isMiddle) {
-                var amount = headStack.getMaxCount() - cursorStack.getCount();
-                module.tryPurchase(player, amount, () -> {
-                    headStack.setCount(headStack.getMaxCount());
-                    player.currentScreenHandler.setCursorStack(headStack);
-                });
-            }
-        } else {
-            if (HeadInitializer.headHandler.model().economyType ==EconomyType.FREE)
-                player.currentScreenHandler.setCursorStack(ItemStack.EMPTY);
-        }
-    }
-
-    @Override
-    public void onClose() {
-        parent.open();
+    /**
+     * Constructs a new layered container gui for the supplied player.
+     *
+     * @param type                  the screen handler that the client should display
+     * @param player                the player to server this gui to
+     * @param manipulatePlayerSlots if <code>true</code> the players inventory
+     *                              will be treated as slots of this gui
+     */
+    public PagedHeadsGui(ScreenHandlerType<?> type, ServerPlayerEntity player, boolean manipulatePlayerSlots) {
+        super(type, player, manipulatePlayerSlots);
     }
 }

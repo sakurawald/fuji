@@ -2,6 +2,7 @@ package io.github.sakurawald.module.initializer.kit.gui;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
+import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.common.gui.InputSignGui;
 import io.github.sakurawald.module.common.gui.PagedGui;
@@ -21,6 +22,7 @@ import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +31,25 @@ public class KitEditorGui extends PagedGui<Kit> {
 
     private static final KitInitializer module = ModuleManager.getInitializer(KitInitializer.class);
 
-    public KitEditorGui(ServerPlayerEntity player, @NotNull List<Kit> entities) {
-        super(player, MessageHelper.ofText(player, true, "kit.gui.editor.title"), entities);
+    public KitEditorGui(ServerPlayerEntity player, @NotNull List<Kit> entities, int pageIndex) {
+        super(null, player, MessageHelper.ofText(player, true, "kit.gui.editor.title"), entities, pageIndex);
+
+        SingleLineLayer singleLineLayer = new SingleLineLayer();
+        singleLineLayer.setSlot(1, GuiHelper.makeHelpButton(player)
+                .setLore(MessageHelper.ofTextList(player, "kit.gui.editor.help.lore")));
+        singleLineLayer.setSlot(4, GuiHelper.makeAddButton(player).setCallback(() -> new InputSignGui(player, "prompt.input.name") {
+            @Override
+            public void onClose() {
+                String name = getLine(0).getString().trim();
+                if (name.isEmpty()) {
+                    MessageHelper.sendActionBar(player, "operation.cancelled");
+                    return;
+                }
+
+                openEditKitGui(getPlayer(), module.readKit(name));
+            }
+        }.open()));
+        this.addLayer(singleLineLayer, 0, this.getHeight() - 1);
     }
 
     private void openEditKitGui(@NotNull ServerPlayerEntity player, @NotNull Kit kit) {
@@ -70,29 +89,12 @@ public class KitEditorGui extends PagedGui<Kit> {
     }
 
     @Override
-    public void onConstructor(@NotNull PagedGui<Kit> parent) {
-        ServerPlayerEntity player = getPlayer();
-
-        SingleLineLayer singleLineLayer = new SingleLineLayer();
-        singleLineLayer.setSlot(1, GuiHelper.makeHelpButton(player)
-                .setLore(MessageHelper.ofTextList(player, "kit.gui.editor.help.lore")));
-        singleLineLayer.setSlot(4, GuiHelper.makeAddButton(player).setCallback(() -> new InputSignGui(player, "prompt.input.name") {
-            @Override
-            public void onClose() {
-                String name = getLine(0).getString().trim();
-                if (name.isEmpty()) {
-                    MessageHelper.sendActionBar(player, "operation.cancelled");
-                    return;
-                }
-
-                openEditKitGui(getPlayer(), module.readKit(name));
-            }
-        }.open()));
-        parent.addLayer(singleLineLayer, 0, parent.getHeight() - 1);
+    public PagedGui<Kit> make(@Nullable SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<Kit> entities, int pageIndex) {
+        return new KitEditorGui(player, entities, pageIndex);
     }
 
     @Override
-    public GuiElementInterface toGuiElement(PagedGui<Kit> ref, @NotNull Kit entity) {
+    public GuiElementInterface toGuiElement(@NotNull Kit entity) {
         return new GuiElementBuilder().setItem(Items.CHEST)
                 .setName(Text.literal(entity.getName()))
                 .setCallback((event) -> {
@@ -103,7 +105,7 @@ public class KitEditorGui extends PagedGui<Kit> {
 
                     if (event.shift && event.isRight) {
                         module.deleteKit(entity.getName());
-                        MessageHelper.sendActionBar(getPlayer(),"deleted");
+                        MessageHelper.sendActionBar(getPlayer(), "deleted");
 
                         deleteEntity(entity);
                     }
