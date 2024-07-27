@@ -1,17 +1,13 @@
 package io.github.sakurawald.module.initializer.head;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.HeadModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.head.api.Category;
-import io.github.sakurawald.module.initializer.head.api.Head;
-import io.github.sakurawald.module.initializer.head.api.HeadDatabaseAPI;
 import io.github.sakurawald.module.initializer.head.gui.HeadGui;
+import io.github.sakurawald.module.initializer.head.privoder.HeadProvider;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.ItemHelper;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
@@ -25,14 +21,42 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.concurrent.CompletableFuture;
+import static net.minecraft.server.command.CommandManager.literal;
 
 // Thanks to: https://modrinth.com/mod/headindex
 public class HeadInitializer extends ModuleInitializer {
 
     public static final ConfigHandler<HeadModel> headHandler = new ObjectConfigHandler<>("head.json", HeadModel.class);
-    public final HeadDatabaseAPI HEAD_DATABASE = new HeadDatabaseAPI();
-    public @NotNull Multimap<Category, Head> heads = HashMultimap.create();
+
+    @Override
+    public void onInitialize() {
+        HeadProvider.fetchData();
+        headHandler.loadFromDisk();
+    }
+
+    @Override
+    public void onReload() {
+        headHandler.loadFromDisk();
+    }
+
+    @SuppressWarnings("unused")
+    @Override
+    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
+        dispatcher.register(literal("head").executes(this::$head)
+                .then(literal("download").requires((ctx) -> ctx.hasPermissionLevel(4)).executes(this::$download)));
+    }
+
+    private int $download(CommandContext<ServerCommandSource> ctx) {
+        HeadProvider.fetchData();
+        return CommandHelper.Return.SUCCESS;
+    }
+
+    public int $head(@NotNull CommandContext<ServerCommandSource> ctx) {
+        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
+            new HeadGui(player).open();
+            return CommandHelper.Return.SUCCESS;
+        });
+    }
 
     public void tryPurchase(@NotNull ServerPlayerEntity player, int amount, @NotNull Runnable onPurchase) {
         int trueAmount = amount * headHandler.model().costAmount;
@@ -60,35 +84,6 @@ public class HeadInitializer extends ModuleInitializer {
 
     public @NotNull Item getCostItem() {
         return ItemHelper.ofItem(headHandler.model().costType);
-    }
-
-    @Override
-    public void onInitialize() {
-        CompletableFuture.runAsync(() -> heads = HEAD_DATABASE.getHeads());
-        headHandler.loadFromDisk();
-    }
-
-    @Override
-    public void onReload() {
-        headHandler.loadFromDisk();
-    }
-
-    @SuppressWarnings("unused")
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("head").executes(this::$head));
-    }
-
-    public int $head(@NotNull CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
-            new HeadGui(player).open();
-            return CommandHelper.Return.SUCCESS;
-        });
-    }
-
-    public enum EconomyType {
-        ITEM,
-        FREE
     }
 
 }

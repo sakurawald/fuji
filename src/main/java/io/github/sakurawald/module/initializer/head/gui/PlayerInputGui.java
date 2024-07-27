@@ -8,6 +8,7 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.AnvilInputGui;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.head.HeadInitializer;
+import io.github.sakurawald.module.initializer.head.structure.EconomyType;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.item.ItemStack;
@@ -73,7 +74,7 @@ class PlayerInputGui extends AnvilInputGui {
                 }
 
                 GuiElementBuilder builder = new GuiElementBuilder().setItem(Items.PLAYER_HEAD);
-                if (HeadInitializer.headHandler.model().economyType != HeadInitializer.EconomyType.FREE) {
+                if (HeadInitializer.headHandler.model().economyType != EconomyType.FREE) {
                     builder.addLoreLine(Text.empty());
                     builder.addLoreLine(MessageHelper.ofText(player, "head.price").copy().append(module.getCost()));
                 }

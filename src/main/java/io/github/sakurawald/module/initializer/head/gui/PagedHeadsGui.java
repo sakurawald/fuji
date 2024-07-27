@@ -7,7 +7,8 @@ import eu.pb4.sgui.api.gui.layered.Layer;
 import eu.pb4.sgui.api.gui.layered.LayeredGui;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.head.HeadInitializer;
-import io.github.sakurawald.module.initializer.head.api.Head;
+import io.github.sakurawald.module.initializer.head.structure.EconomyType;
+import io.github.sakurawald.module.initializer.head.structure.Head;
 import io.github.sakurawald.util.minecraft.GuiHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.item.ItemStack;
@@ -85,7 +86,7 @@ public class PagedHeadsGui extends LayeredGui {
             if (heads.size() > i + (this.page * 45)) {
                 Head head = heads.get(i + (this.page * 45));
                 var builder = GuiElementBuilder.from(head.of());
-                if (HeadInitializer.headHandler.model().economyType != HeadInitializer.EconomyType.FREE) {
+                if (HeadInitializer.headHandler.model().economyType != EconomyType.FREE) {
                     builder.addLoreLine(Text.empty());
                     builder.addLoreLine(MessageHelper.ofText(parent.getPlayer(), "head.price").copy().append(module.getCost()));
                 }
@@ -121,7 +122,7 @@ public class PagedHeadsGui extends LayeredGui {
             if (type.isLeft) {
                 module.tryPurchase(player, 1, () -> cursorStack.increment(1));
             } else if (type.isRight) {
-                if (HeadInitializer.headHandler.model().economyType == HeadInitializer.EconomyType.FREE)
+                if (HeadInitializer.headHandler.model().economyType == EconomyType.FREE)
                     cursorStack.decrement(1);
             } else if (type.isMiddle) {
                 var amount = headStack.getMaxCount() - cursorStack.getCount();
@@ -131,7 +132,7 @@ public class PagedHeadsGui extends LayeredGui {
                 });
             }
         } else {
-            if (HeadInitializer.headHandler.model().economyType == HeadInitializer.EconomyType.FREE)
+            if (HeadInitializer.headHandler.model().economyType ==EconomyType.FREE)
                 player.currentScreenHandler.setCursorStack(ItemStack.EMPTY);
         }
     }

@@ -2,47 +2,22 @@ package io.github.sakurawald.module.initializer.tester;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.mojang.serialization.MapCodec;
 import eu.pb4.placeholders.api.PlaceholderResult;
 import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.head.api.HeadDatabaseAPI;
-import io.github.sakurawald.module.initializer.tab_list.sort.TabListSortInitializer;
-import io.github.sakurawald.util.LogUtil;
-import io.github.sakurawald.util.minecraft.IdentifierHelper;
-import lombok.NonNull;
+import io.github.sakurawald.module.initializer.head.privoder.HeadProvider;
 import lombok.SneakyThrows;
 import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.impl.util.log.Log;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.inventory.Book;
-import net.kyori.adventure.text.Component;
 import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionOptions;
-import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.dimension.DimensionTypes;
-import net.minecraft.world.gen.chunk.ChunkGenerator;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.URI;
-import java.net.URL;
-import java.util.*;
 
 import static net.minecraft.server.command.CommandManager.RegistrationEnvironment;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -78,8 +53,6 @@ public class TesterInitializer extends ModuleInitializer {
         MinecraftServer server = player.server;
         PlayerManager playerManager = server.getPlayerManager();
 
-        URI url = URI.create("https://raw.githubusercontent.com/sakurawald/fuji-fabric/dev/assets/module/head/food-drinks.json");
-        FileUtils.copyURLToFile(url.toURL() , HeadDatabaseAPI.getSTORAGE_PATH().resolve("test.json").toFile());
 //        Registry<DimensionType> dimensionTypes = IdentifierHelper.ofRegistry(RegistryKeys.DIMENSION_TYPE);
 //        for (DimensionType o : dimensionTypes) {
 //            LogUtil.warn("id = {} \n o = {}", dimensionTypes.getId(o).toString(),o);

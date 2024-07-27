@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.head.api;
+package io.github.sakurawald.module.initializer.head.structure;
 
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import java.util.UUID;
@@ -83,5 +83,9 @@ public enum Category {
 
     public @NotNull Text getDisplayName(ServerPlayerEntity player) {
         return MessageHelper.ofText(player, "head.category." + name);
+    }
+
+    public @NotNull String getFileName() {
+        return this.name + ".json";
     }
 }
