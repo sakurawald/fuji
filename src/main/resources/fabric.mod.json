@@ -25,6 +25,13 @@
     },
     {
       "name": "dirtTW"
+    },
+    {
+      "name": "example (this is the example for contributors)",
+      "contact": {
+        "email": "example@gmail.com",
+        "homepage": "example.com"
+      }
     }
   ],
   "environment": "*",
