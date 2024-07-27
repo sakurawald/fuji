@@ -45,6 +45,12 @@ loom {
     }
 }
 
+/**
+ * Each time adds a new library, you should build the software, and go to the production-env to check whether the library works.
+ *
+ * It's possible the necessary libraries are not packed into the release package, even you `include` the library ...
+ *
+ */
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings_version}"
