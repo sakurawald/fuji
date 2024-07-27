@@ -8,6 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.util.LogUtil;
+import lombok.Getter;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -25,7 +26,9 @@ import java.nio.file.Path;
 
 public class HeadDatabaseAPI {
     private final String API = "https://minecraft-heads.com/scripts/api.php?cat=%s&tags=true";
-    private final Path STORAGE_PATH = Fuji.CONFIG_PATH.resolve("head").toAbsolutePath();
+
+    @Getter
+    private static final Path STORAGE_PATH = Fuji.CONFIG_PATH.resolve("head").toAbsolutePath();
 
     public @NotNull Multimap<Category, Head> getHeads() {
         refreshCacheFromAPI();

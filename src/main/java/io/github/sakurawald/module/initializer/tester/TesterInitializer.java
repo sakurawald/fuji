@@ -7,10 +7,12 @@ import com.mojang.serialization.MapCodec;
 import eu.pb4.placeholders.api.PlaceholderResult;
 import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.head.api.HeadDatabaseAPI;
 import io.github.sakurawald.module.initializer.tab_list.sort.TabListSortInitializer;
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.IdentifierHelper;
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.impl.util.log.Log;
 import net.kyori.adventure.audience.Audience;
@@ -38,6 +40,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 
+import java.net.URI;
+import java.net.URL;
 import java.util.*;
 
 import static net.minecraft.server.command.CommandManager.RegistrationEnvironment;
@@ -67,13 +71,15 @@ public class TesterInitializer extends ModuleInitializer {
 
     }
 
+    @SneakyThrows
     private static int $run(@NotNull CommandContext<ServerCommandSource> ctx) {
         var source = ctx.getSource();
         ServerPlayerEntity player = source.getPlayer();
         MinecraftServer server = player.server;
         PlayerManager playerManager = server.getPlayerManager();
 
-
+        URI url = URI.create("https://raw.githubusercontent.com/sakurawald/fuji-fabric/dev/assets/module/head/food-drinks.json");
+        FileUtils.copyURLToFile(url.toURL() , HeadDatabaseAPI.getSTORAGE_PATH().resolve("test.json").toFile());
 //        Registry<DimensionType> dimensionTypes = IdentifierHelper.ofRegistry(RegistryKeys.DIMENSION_TYPE);
 //        for (DimensionType o : dimensionTypes) {
 //            LogUtil.warn("id = {} \n o = {}", dimensionTypes.getId(o).toString(),o);
