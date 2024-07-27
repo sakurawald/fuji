@@ -75,6 +75,8 @@ dependencies {
     include(implementation "org.apache.commons:commons-rng-simple:${project.apache_commons_rng_version}")
     include(implementation "commons-io:commons-io:${project.apache_commons_io_version}")
 
+    include(implementation "org.jetbrains:annotations:${project.jetbrains_annotations_version}")
+
     include(implementation "org.quartz-scheduler:quartz:${project.quartz_version}")
 
     include(implementation "org.reflections:reflections:${project.reflections_version}")
