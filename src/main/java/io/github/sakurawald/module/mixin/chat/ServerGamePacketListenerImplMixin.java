@@ -3,7 +3,7 @@ package io.github.sakurawald.module.mixin.chat;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.chat.ChatInitializer;
-import lombok.extern.slf4j.Slf4j;
+import io.github.sakurawald.util.LogUtil;
 import net.minecraft.network.message.SignedMessage;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -26,9 +26,13 @@ public abstract class ServerGamePacketListenerImplMixin {
 
     @ModifyVariable(method = "handleDecoratedMessage", at = @At(value = "HEAD"), argsOnly = true)
     public @NotNull SignedMessage handleChat(@NotNull SignedMessage before) {
-        Text text = module.parseText(player, before.getContent().getString());
-        module.getChatHistory().add(text.asComponent());
+        if (Configs.configHandler.model().modules.chat.spy.output_unparsed_message_into_console) {
+            LogUtil.info("[Chat Spy] <{}> {}", player.getGameProfile().getName(), before.getContent().getString());
+        }
 
+        Text text = module.parseText(player, before.getContent().getString());
+
+        module.getChatHistory().add(text.asComponent());
         return before.withUnsignedContent(text);
     }
 }

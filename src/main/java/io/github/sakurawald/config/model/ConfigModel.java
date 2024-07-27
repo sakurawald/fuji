@@ -442,6 +442,7 @@ public class ConfigModel {
             public @NotNull MentionPlayer mention_player = new MentionPlayer();
             public @NotNull Display display = new Display();
             public @NotNull History history = new History();
+            public @NotNull Spy spy = new Spy();
 
             @Documentation("""
                     New joined players can see the historical chat messages.
@@ -493,8 +494,12 @@ public class ConfigModel {
                         this.add(new RegexRewriteEntry("((https?)://[^\\s/$.?#].\\S*)", "<underline><blue><hover:show_text:'$1'><click:open_url:'$1'>$1</click></hover></blue></underline>"));
                     }
                 };
-
             }
+
+            public static class Spy {
+                public boolean output_unparsed_message_into_console = false;
+            }
+
         }
 
         @Documentation("""
