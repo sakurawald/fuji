@@ -18,15 +18,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MyPagedHeadsGui extends PagedGui<Head> {
+public class PagedHeadGui extends PagedGui<Head> {
 
-    public MyPagedHeadsGui(SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<Head> entities, int pageIndex) {
+    public PagedHeadGui(SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<Head> entities, int pageIndex) {
         super(parent, player, title, entities, pageIndex);
     }
 
     @Override
     public PagedGui<Head> make(@Nullable SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<Head> entities, int pageIndex) {
-        return new MyPagedHeadsGui(parent, player, title, entities, pageIndex);
+        return new PagedHeadGui(parent, player, title, entities, pageIndex);
     }
 
     @Override
@@ -36,9 +36,7 @@ public class MyPagedHeadsGui extends PagedGui<Head> {
             builder.addLoreLine(Text.empty());
             builder.addLoreLine(MessageHelper.ofText(getPlayer(), "head.price").copy().append(EconomyType.getCost()));
         }
-        builder.setCallback((index, type, action) -> {
-            processHeadClick(entity, type);
-        });
+        builder.setCallback((index, type, action) -> processHeadClick(entity, type));
         return builder.build();
     }
 

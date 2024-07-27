@@ -1,12 +1,9 @@
 package io.github.sakurawald.module.initializer.head.gui;
 
-import eu.pb4.sgui.api.elements.GuiElementBuilder;
-import eu.pb4.sgui.api.gui.AnvilInputGui;
 import io.github.sakurawald.module.common.gui.InputSignGui;
 import io.github.sakurawald.module.initializer.head.privoder.HeadProvider;
 import io.github.sakurawald.module.initializer.head.structure.Head;
 import io.github.sakurawald.util.minecraft.MessageHelper;
-import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,7 +32,8 @@ class SearchInputGui extends InputSignGui {
                 .filter(head -> head.name.toLowerCase().contains(keywords.toLowerCase())
                         || head.getTagsOrEmpty().toLowerCase().contains(keywords.toLowerCase()))
                 .collect(Collectors.toList());
-        Text title = MessageHelper.ofText(player, "head.search.output", keywords);
-        new MyPagedHeadsGui(this.parentGui, player, title, entities, 0).open();
+
+        Text title = MessageHelper.ofText(player, "gui.search.title", keywords);
+        new PagedHeadGui(this.parentGui, player, title, entities, 0).open();
     }
 }

@@ -42,7 +42,7 @@ public class HeadGui extends SimpleGui {
         this.setSlot(slotIndex, category.of(player), (i, type, action, gui) -> {
             ArrayList<Head> entities = new ArrayList<>(HeadProvider.getHeads().get(category));
             Text title = category.getDisplayName(player);
-            new MyPagedHeadsGui(this, player, title, entities, 0).open();
+            new PagedHeadGui(this, player, title, entities, 0).open();
         });
     }
 

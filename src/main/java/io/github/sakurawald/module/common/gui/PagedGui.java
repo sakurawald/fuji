@@ -75,8 +75,9 @@ public abstract class PagedGui<T> extends LayeredGui {
         make(this.parent, getPlayer(), this.title, this.entities, newPageIndex).open();
     }
 
-    protected @NotNull PagedGui<T> search(String keyword) {
-        return make(this.parent, getPlayer(), this.title, filter(keyword), 0);
+    protected @NotNull PagedGui<T> search(String keywords) {
+        Text title = MessageHelper.ofText(getPlayer(), "gui.search.title", keywords);
+        return make(this.parent, getPlayer(), title, filter(keywords), 0);
     }
 
     protected void addEneity(T entity) {
