@@ -173,11 +173,11 @@ public class DeathLogInitializer extends ModuleInitializer {
 
         NbtCompound root = NbtHelper.read(path);
         NbtList deathsNode = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
-        deathsNode.add(createDeathNode(player));
+        deathsNode.add(makeDeathNode(player));
         NbtHelper.write(root, path);
     }
 
-    private @NotNull NbtCompound createDeathNode(@NotNull ServerPlayerEntity player) {
+    private @NotNull NbtCompound makeDeathNode(@NotNull ServerPlayerEntity player) {
         NbtCompound node = new NbtCompound();
         writeInventoryNode(node, player);
         writeRemarkNode(node, player);

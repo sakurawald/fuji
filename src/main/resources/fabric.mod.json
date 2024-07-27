@@ -5,7 +5,7 @@
   "name": "Fuji",
   "icon": "assets/fuji/icon.png",
   "description": "A mod that provides many essential and useful modules for vanilla survival.",
-  "license": "CC0-1.0",
+  "license": "GPL-3.0",
   "contact": {
     "homepage": "https://github.com/SakuraWald",
     "sources": "https://github.com/sakurawald/fuji-fabric/",

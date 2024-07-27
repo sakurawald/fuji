@@ -10,6 +10,7 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.util.LogUtil;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedInputStream;
@@ -33,6 +34,7 @@ public class HeadDatabaseAPI {
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     private void refreshCacheFromAPI() {
+
         for (Category category : Category.values()) {
             try {
                 LogUtil.info("Saving {} heads to cache", category.name);

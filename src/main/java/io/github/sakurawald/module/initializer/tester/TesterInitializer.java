@@ -33,6 +33,8 @@ import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.dimension.DimensionTypes;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -71,15 +73,16 @@ public class TesterInitializer extends ModuleInitializer {
         MinecraftServer server = player.server;
         PlayerManager playerManager = server.getPlayerManager();
 
+
 //        Registry<DimensionType> dimensionTypes = IdentifierHelper.ofRegistry(RegistryKeys.DIMENSION_TYPE);
 //        for (DimensionType o : dimensionTypes) {
 //            LogUtil.warn("id = {} \n o = {}", dimensionTypes.getId(o).toString(),o);
 //        }
 
-        Registry<DimensionOptions> dimensionOptions = IdentifierHelper.ofRegistry(RegistryKeys.DIMENSION);
-        for (DimensionOptions dimensionOption : dimensionOptions) {
-            LogUtil.warn("dimension option id = {}", dimensionOptions.getId(dimensionOption));
-        }
+//        Registry<DimensionOptions> dimensionOptions = IdentifierHelper.ofRegistry(RegistryKeys.DIMENSION);
+//        for (DimensionOptions dimensionOption : dimensionOptions) {
+//            LogUtil.warn("dimension option id = {}", dimensionOptions.getId(dimensionOption));
+//        }
 
         return -1;
     }

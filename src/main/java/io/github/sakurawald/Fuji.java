@@ -11,8 +11,6 @@ import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Path;
 
-import static io.github.sakurawald.module.ModuleManager.initializeModules;
-
 // TODO: rank module (track, requirement)
 // TODO: spawn module (facility)
 // TODO: hologram module (facility)
@@ -35,7 +33,7 @@ public class Fuji implements ModInitializer {
         Managers.getBossBarManager().initialize();
 
         /* modules */
-        initializeModules();
+        ModuleManager.initializeModules();
         ServerLifecycleEvents.SERVER_STARTED.register(server -> ModuleManager.reportModules());
 
         /* scheduler */
