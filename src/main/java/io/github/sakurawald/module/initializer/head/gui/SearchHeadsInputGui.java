@@ -10,11 +10,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class SearchInputGui extends InputSignGui {
+public class SearchHeadsInputGui extends InputSignGui {
 
     private final @NotNull HeadGui parentGui;
 
-    public SearchInputGui(@NotNull HeadGui parentGui) {
+    public SearchHeadsInputGui(@NotNull HeadGui parentGui) {
         super(parentGui.player);
         this.parentGui = parentGui;
     }

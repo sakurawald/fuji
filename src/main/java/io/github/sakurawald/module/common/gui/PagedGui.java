@@ -23,16 +23,16 @@ public abstract class PagedGui<T> extends LayeredGui {
     @Getter
     private final List<T> entities;
     private final int pageIndex;
-    private final Text title;
+    private final Text prefixTitle;
 
     public abstract PagedGui<T> make(@Nullable SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<T> entities, int pageIndex);
 
-    public PagedGui(@Nullable SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<T> entities, int pageIndex) {
+    public PagedGui(@Nullable SimpleGui parent, ServerPlayerEntity player, Text prefixTitle, @NotNull List<T> entities, int pageIndex) {
         super(ScreenHandlerType.GENERIC_9X6, player, false);
 
         // props
         this.parent = parent;
-        this.title = title;
+        this.prefixTitle = prefixTitle;
         this.pageIndex = pageIndex;
         this.entities = entities;
 
@@ -72,12 +72,18 @@ public abstract class PagedGui<T> extends LayeredGui {
         int entityBeginIndex = getEntityBeginIndex(newPageIndex);
         if (entityBeginIndex < 0 || entityBeginIndex >= getEntitySize()) return;
 
-        make(this.parent, getPlayer(), this.title, this.entities, newPageIndex).open();
+        make(this.parent, getPlayer(), this.prefixTitle, this.entities, newPageIndex).open();
     }
 
     protected @NotNull PagedGui<T> search(String keywords) {
-        Text title = MessageHelper.ofText(getPlayer(), "gui.search.title", keywords);
-        return make(this.parent, getPlayer(), title, filter(keywords), 0);
+        PagedGui<T> make = make(this.parent, getPlayer(), prefixTitle, filter(keywords), 0);
+
+        // override the title
+        Text page = MessageHelper.ofText(getPlayer(), true, "gui.page.title", this.getCurrentPageNumber(), this.getMaxPageNumber());
+        Text title = MessageHelper.ofText(getPlayer(), "gui.search.title", keywords)
+                .copy().append(page);
+        make.setTitle(title);
+        return make;
     }
 
     protected void addEneity(T entity) {
@@ -91,7 +97,7 @@ public abstract class PagedGui<T> extends LayeredGui {
     }
 
     protected void reopen() {
-        make(this.parent, getPlayer(), this.title, this.entities, 0).open();
+        make(this.parent, getPlayer(), this.prefixTitle, this.entities, 0).open();
     }
 
     public abstract GuiElementInterface toGuiElement(T entity);
@@ -100,7 +106,7 @@ public abstract class PagedGui<T> extends LayeredGui {
 
 
     private void drawTitle() {
-        Component formatted = this.title.asComponent()
+        Component formatted = this.prefixTitle.asComponent()
                 .append(MessageHelper.ofText(getPlayer(), true, "gui.page.title", this.getCurrentPageNumber(), this.getMaxPageNumber()));
         this.setTitle(MessageHelper.toText(formatted));
     }

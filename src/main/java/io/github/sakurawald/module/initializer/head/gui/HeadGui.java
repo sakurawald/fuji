@@ -31,11 +31,11 @@ public class HeadGui extends SimpleGui {
         this.setSlot(this.getSize() - 1, new GuiElementBuilder()
                 .setItem(Items.COMPASS)
                 .setName(MessageHelper.ofText(player, "search"))
-                .setCallback((index1, type1, action) -> new SearchInputGui(this).open()));
+                .setCallback((index1, type1, action) -> new SearchHeadsInputGui(this).open()));
         this.setSlot(this.getSize() - 2, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
                 .setName(MessageHelper.ofText(player, "head.category.player"))
-                .setCallback((index1, type1, action) -> new PlayerInputGui(this).open()));
+                .setCallback((index1, type1, action) -> new PlayerHeadInputGui(this).open()));
     }
 
     private void addCategoryButton(int slotIndex, @NotNull Category category) {

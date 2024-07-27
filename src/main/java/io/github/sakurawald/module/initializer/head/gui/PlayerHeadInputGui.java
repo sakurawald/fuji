@@ -7,7 +7,6 @@ import com.mojang.authlib.yggdrasil.ProfileResult;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.AnvilInputGui;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.head.HeadInitializer;
 import io.github.sakurawald.module.initializer.head.structure.EconomyType;
 import io.github.sakurawald.util.minecraft.GuiHelper;
@@ -23,12 +22,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-class PlayerInputGui extends AnvilInputGui {
+public class PlayerHeadInputGui extends AnvilInputGui {
 
     private final @NotNull SimpleGui parentGui;
     private long apiDebounce = 0;
 
-    public PlayerInputGui(@NotNull HeadGui parentGui) {
+    public PlayerHeadInputGui(@NotNull HeadGui parentGui) {
         super(parentGui.player, false);
         this.parentGui = parentGui;
         this.setTitle(MessageHelper.ofText(player, "head.category.player"));
