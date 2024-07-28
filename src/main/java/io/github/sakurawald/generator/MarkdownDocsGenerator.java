@@ -89,7 +89,8 @@ public class MarkdownDocsGenerator {
                 //
                 .append(makeJsonPair(key, node.get(key), level))
 
-                .append(indent).append("</td></tr></table>").append(System.lineSeparator());
+                .append(indent).append("</td></tr></table>").append(System.lineSeparator())
+                .append(indent).append(System.lineSeparator());
 
 
         return text.toString();

@@ -1769,12 +1769,12 @@ public class ConfigModel {
 
             @Documentation("""
                     The `key` is `translatable key`, which you can query in [en_us.json language file in minecraft 1.21](https://github.com/sakurawald/fuji-fabric/blob/dev/.github/files/en_us.json).
-                      - The translable key of `entity` starts with `entity.minecraft`
-                      - The translable key of `item` starts with `item.minecraft` and `block.minecraft`
+                      - The translable key of `entity` starts with `entity.minecraft`.
+                      - The translable key of `item` starts with `item.minecraft` and `block.minecraft`.
                                         
-                    The `age` is the existence time of the `entity`, the unit of `age` is `game tick`, which means `20 age` = `20 ticks` = `1 second`
+                    The `age` is the existence time of the `entity`, the unit of `age` is `game tick`, which means `20 age` = `20 ticks` = `1 second`.
                                         
-                    Example 1: If you want to clean the `sand` item which exsits more than 60 seconds, you can write `"block.minecraft.sand": 1200`
+                    Example 1: If you want to clean the `sand` item which exsits more than 60 seconds, you can write `"block.minecraft.sand": 1200`.
                                         
                     Note:
                     - The `cleaner` will only `remove` the `entities` whose `translatable key` equals `key`, and `age` >= `the defined age`. (And the `entity` must not in the `ignore` list)
@@ -1793,7 +1793,6 @@ public class ConfigModel {
             public Ignore ignore = new Ignore();
 
             @Documentation("""
-                    
                     Entities match the `ignore list` will not be `cleaned`.
                                         
                     The `cleaner` will always ignore the following types:
