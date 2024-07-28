@@ -37,6 +37,9 @@ public class ConfigInitializer extends ModuleInitializer {
         // reload modules
         Managers.getModuleManager().reloadModules();
 
+        // reload languages
+        MessageHelper.getLang2json().clear();
+
         MessageHelper.sendMessage(ctx.getSource(), "reload");
         return CommandHelper.Return.SUCCESS;
     }
