@@ -3,14 +3,12 @@ package io.github.sakurawald.module.common.structure;
 import com.google.common.collect.ImmutableList;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import org.jetbrains.annotations.NotNull;
 import oshi.annotation.concurrent.Immutable;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public abstract class BossBarTicket {
@@ -23,7 +21,7 @@ public abstract class BossBarTicket {
 
     @Getter
     @Setter
-    private boolean ready;
+    private boolean completed;
 
     @Getter
     @Setter

@@ -3,9 +3,6 @@ package io.github.sakurawald.module.mixin.command_warmup;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.structure.CommandWarmupTicket;
-import io.github.sakurawald.util.minecraft.MessageHelper;
-import lombok.extern.slf4j.Slf4j;
-import net.kyori.adventure.bossbar.BossBar;
 import net.minecraft.network.packet.c2s.play.CommandExecutionC2SPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
@@ -37,17 +34,11 @@ public abstract class ServerPlayNetworkHandlerMixin {
     @Inject(method = "onCommandExecution", at = @At("HEAD"), cancellable = true)
     public void $execute(@NotNull CommandExecutionC2SPacket commandExecutionC2SPacket, @NotNull CallbackInfo ci) {
         ServerPlayerEntity player = getPlayer();
-        String string = commandExecutionC2SPacket.comp_808();
+        String command = commandExecutionC2SPacket.comp_808();
 
-        int ms = getMs(string);
+        int ms = getMs(command);
         if (ms > 0) {
-            BossBar bossbar = BossBar.bossBar(MessageHelper.ofText(player, "command_warmup.bossbar.name", string), 0f, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS);
-            Managers.getBossBarManager().addTicket(new CommandWarmupTicket(bossbar, ms, player, string) {
-                @Override
-                public void onComplete() {
-                    player.networkHandler.executeCommand(string);
-                }
-            });
+            Managers.getBossBarManager().addTicket(CommandWarmupTicket.of(player, command, ms));
             ci.cancel();
         }
     }

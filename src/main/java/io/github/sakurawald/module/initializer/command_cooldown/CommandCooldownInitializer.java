@@ -11,7 +11,6 @@ public class CommandCooldownInitializer extends ModuleInitializer {
 
     private final HashMap<ServerPlayerEntity, HashMap<String, Long>> map = new HashMap<>();
 
-
     public long calculateCommandCooldown(ServerPlayerEntity player, @NotNull String commandLine) {
 
         // find the matched cooldown-entry

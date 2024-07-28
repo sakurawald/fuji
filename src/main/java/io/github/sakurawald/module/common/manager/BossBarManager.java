@@ -1,8 +1,6 @@
 package io.github.sakurawald.module.common.manager;
 
-import com.google.common.collect.ImmutableList;
 import io.github.sakurawald.module.common.structure.BossBarTicket;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.kyori.adventure.audience.Audience;
 import net.minecraft.server.MinecraftServer;
@@ -11,6 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import oshi.annotation.concurrent.Immutable;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class BossBarManager {
@@ -22,8 +22,8 @@ public class BossBarManager {
         ServerTickEvents.START_SERVER_TICK.register(this::onServerTick);
     }
 
-    public @Immutable @NotNull List<BossBarTicket> getTickets() {
-        return ImmutableList.copyOf(this.tickets);
+    public @Immutable Collection<BossBarTicket> getTickets() {
+        return Collections.unmodifiableCollection(this.tickets);
     }
 
     public void addTicket(BossBarTicket ticket) {
@@ -87,13 +87,14 @@ public class BossBarManager {
 
             // even the ServerPlayer is disconnected, the bossbar will still be ticked.
             if (Float.compare(ticket.progress(), 1f) == 0) {
-                ticket.setReady(true);
+                ticket.setCompleted(true);
+                // set completed tickets to abort, so that it will be removed form the list.
                 ticket.setAborted(true);
                 completedTickets.add(ticket);
             }
         }
 
-        /* remove tickets */
+        /* process tickets */
         completedTickets.forEach(BossBarTicket::onComplete);
         abortedTickets.forEach(this::abortTicket);
     }

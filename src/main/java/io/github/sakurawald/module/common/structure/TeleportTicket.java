@@ -3,12 +3,14 @@ package io.github.sakurawald.module.common.structure;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.accessor.ServerPlayerCombatStateAccessor;
 import io.github.sakurawald.util.minecraft.MessageHelper;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import net.kyori.adventure.bossbar.BossBar;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 public class TeleportTicket extends BossBarTicket {

@@ -1,16 +1,15 @@
 package io.github.sakurawald.module.common.structure;
 
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.Getter;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.bossbar.BossBar;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-@SuppressWarnings("LombokGetterMayBeUsed")
 @Getter
-public abstract class CommandWarmupTicket extends BossBarTicket{
+public class CommandWarmupTicket extends BossBarTicket {
 
     private final @NotNull ServerPlayerEntity player;
 
@@ -20,6 +19,16 @@ public abstract class CommandWarmupTicket extends BossBarTicket{
         super(bossbar, totalMS, List.of(player));
         this.player = player;
         this.command = command;
+    }
+
+    @Override
+    public void onComplete() {
+        player.networkHandler.executeCommand(command);
+    }
+
+    public static CommandWarmupTicket of(ServerPlayerEntity player, String command, int ms) {
+        BossBar bossbar = BossBar.bossBar(MessageHelper.ofText(player, "command_warmup.bossbar.name", command), 0f, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS);
+        return new CommandWarmupTicket(bossbar, ms, player, command);
     }
 
 }
