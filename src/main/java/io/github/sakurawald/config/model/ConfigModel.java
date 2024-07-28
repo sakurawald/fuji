@@ -1751,7 +1751,7 @@ public class ConfigModel {
 
         @Documentation("""
                 The cleaner to clean `item` and `entity` automatically.
-                
+                                
                 Since the vanilla minecraft also has a `cleaner` to remove the item stack in the ground, so it's recommended to only use this module to `clean` some `weak-loading entities`, like: the sand item stack ...
                                 
                 """)
@@ -1761,9 +1761,9 @@ public class ConfigModel {
 
             @Documentation("""
                     The job used to trigger `/cleaner clean`.
-                    
+                                        
                     - The `cleaner clean` will only be triggered by the job.
-                    
+                                        
                     """)
             public String cron = "0 * * ? * * *";
 
@@ -1771,15 +1771,15 @@ public class ConfigModel {
                     The `key` is `translatable key`, which you can query in [en_us.json language file in minecraft 1.21](https://github.com/sakurawald/fuji-fabric/blob/dev/.github/files/en_us.json).
                       - The translable key of `entity` starts with `entity.minecraft`
                       - The translable key of `item` starts with `item.minecraft` and `block.minecraft`
-                    
+                                        
                     The `age` is the existence time of the `entity`, the unit of `age` is `game tick`, which means `20 age` = `20 ticks` = `1 second`
-                    
+                                        
                     Example 1: If you want to clean the `sand` item which exsits more than 60 seconds, you can write `"block.minecraft.sand": 1200`
-                    
+                                        
                     Note:
                     - The `cleaner` will only `remove` the `entities` whose `translatable key` equals `key`, and `age` >= `the defined age`. (And the `entity` must not in the `ignore` list)
                     - Hover your mosue on the `cleaner broadcast`, you can see waht is been removed.
-                    
+                                        
                     """)
             public Map<String, Integer> key2age = new HashMap<>() {
                 {
@@ -1793,17 +1793,18 @@ public class ConfigModel {
             public Ignore ignore = new Ignore();
 
             @Documentation("""
-                    Entities match the `ignore list` will not be `cleaned`.
                     
+                    Entities match the `ignore list` will not be `cleaned`.
+                                        
                     The `cleaner` will always ignore the following types:
                     - player
                     - any block attached entity (e.g. leash_knot)
                     - any vehicle entity (e.g. minecart, boat ...)
-                    
+                                        
                     Note:
                     - The `item entity` = item stack dropped in the ground
                     - The `living entity` = pig, sheep, zombie, villager ...
-                    
+                                        
                     """)
             public class Ignore {
                 public boolean ignoreItemEntity = false;
