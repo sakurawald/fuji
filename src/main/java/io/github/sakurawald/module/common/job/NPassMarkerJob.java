@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.common.job;
 
+import io.github.sakurawald.util.LogUtil;
 import lombok.AllArgsConstructor;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;

@@ -28,7 +28,7 @@ public class AfkInitializer extends ModuleInitializer {
     }
 
     public void updateJobs() {
-        Managers.getScheduleManager().cancelJobs(AfkMarkerJob.class.getName());
+        Managers.getScheduleManager().cancelJobs(AfkMarkerJob.class);
         Managers.getScheduleManager().scheduleJob(AfkMarkerJob.class, Configs.configHandler.model().modules.afk.afk_checker.cron);
     }
 
