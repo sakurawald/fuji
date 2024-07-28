@@ -3,6 +3,7 @@ package io.github.sakurawald.module.mixin;
 import com.google.gson.JsonElement;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
+import io.github.sakurawald.module.common.manager.Managers;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -35,12 +36,12 @@ public class ModuleMixinConfigPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, @NotNull String mixinClassName) {
-        List<String> packagePath = ModuleManager.getPackagePath(this.getClass(), mixinClassName);
+        List<String> packagePath = Managers.getModuleManager().getPackagePath(this.getClass(), mixinClassName);
 
         // bypass
         if (packagePath.getFirst().startsWith("_")) return true;
 
-        return ModuleManager.shouldEnableModule(mixinConfigs, packagePath);
+        return Managers.getModuleManager().shouldEnableModule(mixinConfigs, packagePath);
     }
 
     @Override

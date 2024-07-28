@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.mixin.command_toolbox.seen;
 
 import io.github.sakurawald.module.ModuleManager;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.command_toolbox.seen.SeenInitializer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -16,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerListMixin {
 
     @Unique
-    private SeenInitializer module = ModuleManager.getInitializer(SeenInitializer.class);
+    private SeenInitializer module = Managers.getModuleManager().getInitializer(SeenInitializer.class);
 
     @Inject(method = "remove", at = @At("TAIL"))
     private void savePlayerDisconnectedTime(@NotNull ServerPlayerEntity player, CallbackInfo ci) {

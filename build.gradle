@@ -149,7 +149,7 @@ modrinth {
     versionType = "release"
     uploadFile = remapJar
     gameVersions = ["1.21"]
-    loaders = ["fabric"]
+    loaders = ["fabric", "quilt"]
     dependencies {
         required.project "fabric-api"
         optional.project "luckperms"

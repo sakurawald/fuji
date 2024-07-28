@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.mixin.back;
 
 import io.github.sakurawald.module.ModuleManager;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.back.BackInitializer;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
@@ -24,7 +25,7 @@ public abstract class ServerPlayerMixin {
     ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
     @Unique
-    private static final BackInitializer module = ModuleManager.getInitializer(BackInitializer.class);
+    private static final BackInitializer module = Managers.getModuleManager().getInitializer(BackInitializer.class);
 
     @Inject(method = "onDeath", at = @At("HEAD"))
     public void saveCurPos(DamageSource damageSource, CallbackInfo ci) {

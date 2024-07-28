@@ -2,6 +2,7 @@ package io.github.sakurawald.module.mixin.pvp;
 
 import com.mojang.authlib.GameProfile;
 import io.github.sakurawald.module.ModuleManager;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.pvp.PvpInitializer;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ServerPlayerEntity.class)
 public abstract class PvpToggleMixin extends PlayerEntity {
     @Unique
-    private static final PvpInitializer module = ModuleManager.getInitializer(PvpInitializer.class);
+    private static final PvpInitializer module = Managers.getModuleManager().getInitializer(PvpInitializer.class);
 
     public PvpToggleMixin(@NotNull World world, @NotNull BlockPos pos, float yaw, @NotNull GameProfile gameProfile) {
         super(world, pos, yaw, gameProfile);

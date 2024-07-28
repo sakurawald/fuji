@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.mixin.chat;
 
 import io.github.sakurawald.module.ModuleManager;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.chat.ChatInitializer;
 import io.github.sakurawald.util.minecraft.EntityHelper;
 import net.minecraft.network.ClientConnection;
@@ -18,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerListMixin {
 
     @Unique
-    private static final ChatInitializer module = ModuleManager.getInitializer(ChatInitializer.class);
+    private static final ChatInitializer module = Managers.getModuleManager().getInitializer(ChatInitializer.class);
 
     @Inject(at = @At(value = "TAIL"), method = "onPlayerConnect")
     private void sendChatHistoryToNewJoinedPlayer(ClientConnection connection, @NotNull ServerPlayerEntity serverPlayer, ConnectedClientData commonListenerCookie, CallbackInfo ci) {

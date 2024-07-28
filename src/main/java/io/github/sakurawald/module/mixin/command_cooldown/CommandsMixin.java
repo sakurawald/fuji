@@ -2,6 +2,7 @@ package io.github.sakurawald.module.mixin.command_cooldown;
 
 import com.mojang.brigadier.ParseResults;
 import io.github.sakurawald.module.ModuleManager;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.command_cooldown.CommandCooldownInitializer;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.server.command.CommandManager;
@@ -19,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class CommandsMixin {
 
     @Unique
-    private static final CommandCooldownInitializer module = ModuleManager.getInitializer(CommandCooldownInitializer.class);
+    private static final CommandCooldownInitializer module = Managers.getModuleManager().getInitializer(CommandCooldownInitializer.class);
 
     // If you issue "///abcdefg", then commandLine = "//abcdefg"
     @Inject(method = "execute", at = @At("HEAD"), cancellable = true)

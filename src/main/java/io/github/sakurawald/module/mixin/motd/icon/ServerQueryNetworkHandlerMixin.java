@@ -24,6 +24,7 @@
 package io.github.sakurawald.module.mixin.motd.icon;
 
 import io.github.sakurawald.module.ModuleManager;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.motd.MotdInitializer;
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.ServerHelper;
@@ -41,7 +42,7 @@ import net.minecraft.server.ServerMetadata;
 public abstract class ServerQueryNetworkHandlerMixin {
 
     @Unique
-    private static final MotdInitializer module = ModuleManager.getInitializer(MotdInitializer.class);
+    private static final MotdInitializer module = Managers.getModuleManager().getInitializer(MotdInitializer.class);
 
     @Redirect(method = "onRequest", at = @At(value = "FIELD", target = "Lnet/minecraft/server/network/ServerQueryNetworkHandler;metadata:Lnet/minecraft/server/ServerMetadata;"))
     public @NotNull ServerMetadata handleStatusRequest(final net.minecraft.server.network.ServerQueryNetworkHandler instance) {

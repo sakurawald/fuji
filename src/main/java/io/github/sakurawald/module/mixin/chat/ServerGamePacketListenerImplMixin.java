@@ -2,6 +2,7 @@ package io.github.sakurawald.module.mixin.chat;
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.chat.ChatInitializer;
 import io.github.sakurawald.util.LogUtil;
 import net.minecraft.network.message.SignedMessage;
@@ -19,7 +20,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public abstract class ServerGamePacketListenerImplMixin {
 
     @Unique
-    private static final ChatInitializer module = ModuleManager.getInitializer(ChatInitializer.class);
+    private static final ChatInitializer module = Managers.getModuleManager().getInitializer(ChatInitializer.class);
+
     @Shadow
     public ServerPlayerEntity player;
 

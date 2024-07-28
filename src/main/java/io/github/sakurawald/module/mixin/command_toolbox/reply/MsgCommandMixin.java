@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.mixin.command_toolbox.reply;
 
 import io.github.sakurawald.module.ModuleManager;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.command_toolbox.reply.ReplyInitializer;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,7 +20,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class MsgCommandMixin {
 
     @Unique
-    private static final ReplyInitializer module = ModuleManager.getInitializer(ReplyInitializer.class);
+    private static final ReplyInitializer module = Managers.getModuleManager().getInitializer(ReplyInitializer.class);
 
     @Inject(method = "execute", at = @At("HEAD"))
     private static void rememberRecentlyMessagedPlayer(@NotNull ServerCommandSource commandSourceStack, @NotNull Collection<ServerPlayerEntity> collection, SignedMessage playerChatMessage, CallbackInfo ci) {

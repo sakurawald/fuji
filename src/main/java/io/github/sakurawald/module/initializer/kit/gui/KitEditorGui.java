@@ -7,6 +7,7 @@ import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.common.gui.InputSignGui;
 import io.github.sakurawald.module.common.gui.PagedGui;
 import io.github.sakurawald.module.common.gui.layer.SingleLineLayer;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.kit.Kit;
 import io.github.sakurawald.module.initializer.kit.KitInitializer;
 import io.github.sakurawald.util.minecraft.GuiHelper;
@@ -29,7 +30,7 @@ import java.util.List;
 
 public class KitEditorGui extends PagedGui<Kit> {
 
-    private static final KitInitializer module = ModuleManager.getInitializer(KitInitializer.class);
+    private static final KitInitializer module = Managers.getModuleManager().getInitializer(KitInitializer.class);
 
     public KitEditorGui(ServerPlayerEntity player, @NotNull List<Kit> entities, int pageIndex) {
         super(null, player, MessageHelper.ofText(player, true, "kit.gui.editor.title"), entities, pageIndex);
