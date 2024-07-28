@@ -134,7 +134,7 @@
   "top_chunks.prop.players.nearest": "%s（最近）",
   "top_chunks.prop.score": "分數：%d",
   "top_chunks.prop.types": "類型：",
-  "top_chunks.prop.types.entry": "[type]=%d ",
+  "types.entry": "[type]=%d ",
   "tpa.no_relative_ticket": "<red>沒有相關的傳送請求",
   "tpa.others_to_you": "<yellow>%s --> 您",
   "tpa.player_not_found": "<red>未找到玩家",
@@ -197,5 +197,6 @@
   "world.dimension.reset": "<gold>開始重設資源世界 %s",
   "world.dimension.tp.tip": "<gold>正在搜尋安全位置 (不要移動)",
   "world_downloader.request": "<#8DDFCB>玩家 %s 剛剛向世界下載器遞交下載請求 (總大小：%.2f MB)",
-  "world_downloader.response": "<#8DDFCB>已產生下載連結：<hover:show_text:'<green>開啟此連結'><click:open_url:'%s'><green>[開啟]</click></hover>"
+  "world_downloader.response": "<#8DDFCB>已產生下載連結：<hover:show_text:'<green>開啟此連結'><click:open_url:'%s'><green>[開啟]</click></hover>",
+  "cleaner.broadcast": "<red>清理器刚刚完成了清理 (%s 实体)"
 }

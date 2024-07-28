@@ -218,7 +218,7 @@ public class MessageHelper {
         LogUtil.info(PlainTextComponentSerializer.plainText().serialize(ofComponent(null, key, args)));
 
         for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
-            sendMessage(player, key, args);
+            MessageHelper.sendMessage(player, key, args);
         }
     }
 }

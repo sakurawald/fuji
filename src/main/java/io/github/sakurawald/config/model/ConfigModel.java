@@ -118,6 +118,7 @@ public class ConfigModel {
         public @NotNull DeathLog deathlog = new DeathLog();
         public @NotNull Functional functional = new Functional();
         public @NotNull SystemMessage system_message = new SystemMessage();
+        public @NotNull Cleaner cleaner = new Cleaner();
         public @NotNull CommandScheduler command_scheduler = new CommandScheduler();
         public @NotNull CommandPermission command_permission = new CommandPermission();
         public @NotNull CommandRewrite command_rewrite = new CommandRewrite();
@@ -160,7 +161,7 @@ public class ConfigModel {
                                 
                 Example 3
                 Reset the extra dimension with random seed: `/world reset fuji:my_nether`
-                
+                                
                 Tips:
                 - The `/world tp` command use the `setup` list defined by `rtp module`.
                 - If you want to run `/world reset ...` command automatically, just use `command scheduler module`
@@ -496,7 +497,7 @@ public class ConfigModel {
                 };
             }
 
-            public static class Spy {
+            public class Spy {
                 public boolean output_unparsed_message_into_console = false;
             }
 
@@ -1344,18 +1345,18 @@ public class ConfigModel {
 
             @Documentation("""
                     A chain command allows you to run another 2 commands, the first is any command, and the second is the chain command. 
-                    
+                                        
                     Example 1: 
                     The command will be executed one by one.
                     `/chain say 1 chain say 2 chain say 3`
-                    
+                                        
                     Example 2: 
                     The chain will `break` if the previous command `failed`.
                     `/chain bad command here chain say 2`
-                    
+                                        
                     Note:
                     - In vanilla minecraft, the `return value` of command, are `failed`, `pass` and `success`
-                    
+                                        
                     """)
             public class Chain {
                 public boolean enable = true;
@@ -1363,11 +1364,11 @@ public class ConfigModel {
 
             @Documentation("""
                     Delay command allows you to ............................ execute a command.
-                    
+                                        
                     Example 1: `/delay 3 say three seconds passed`
-                    
+                                        
                     Example 2: `/delay 1 delay 2 delay 3 say 6 seconds passed.`
-                    
+                                        
                     """)
             public class Delay {
                 public boolean enable = true;
@@ -1458,21 +1459,21 @@ public class ConfigModel {
 
             @Documentation("""
                     Allows you to custom lore in your hand.
-                    
+                                        
                     Command: /lore
-                    
+                                        
                     Example 1: `/lore set <rainbow>the first line<newline><bold><green>the second`
-                    
-                    
-                    
+                                        
+                                        
+                                        
                     """)
             public class Lore {
                 public boolean enable = true;
             }
 
             @Documentation("""
-                This module provides `/sit` command, and the ability to sit by right-click any chair.
-                """)
+                    This module provides `/sit` command, and the ability to sit by right-click any chair.
+                    """)
             public class Sit {
                 public boolean enable = false;
                 public boolean allow_right_click_sit = true;
@@ -1500,13 +1501,13 @@ public class ConfigModel {
             }
 
             @Documentation("""
-                This module provides `/nickname` command.
-                                
-                Tips:
-                - You can query real name using `realname module`
-                - To show the `nickname`, you need to use `%player:displayname%` or `%player:displayname_visual%` placeholders.
-                                
-                """)
+                    This module provides `/nickname` command.
+                                    
+                    Tips:
+                    - You can query real name using `realname module`
+                    - To show the `nickname`, you need to use `%player:displayname%` or `%player:displayname_visual%` placeholders.
+                                    
+                    """)
             public class Nickname {
                 public boolean enable = false;
             }
@@ -1646,7 +1647,7 @@ public class ConfigModel {
 
         @Documentation("""
                 This module allows the `server` to execute commands after an `event` occurs.
-                
+                                
                 Example 1:
                 Let's say you want to send broadcast and set random spawnpoint of a newbie player.
                 You can write the command list in player first join event
@@ -1659,10 +1660,10 @@ public class ConfigModel {
                   ]
                 },
                 ```
-                
+                                
                 Note:
                 - You can use placeholders provided by `placeholder module`.
-                
+                                
                 """)
         public class CommandEvent {
 
@@ -1748,5 +1749,71 @@ public class ConfigModel {
             }
         }
 
+        @Documentation("""
+                The cleaner to clean `item` and `entity` automatically.
+                
+                Since the vanilla minecraft also has a `cleaner` to remove the item stack in the ground, so it's recommended to only use this module to `clean` some `weak-loading entities`, like: the sand item stack ...
+                                
+                """)
+        public class Cleaner {
+
+            public boolean enable = false;
+
+            @Documentation("""
+                    The job used to trigger `/cleaner clean`.
+                    
+                    - The `cleaner clean` will only be triggered by the job.
+                    
+                    """)
+            public String cron = "0 * * ? * * *";
+
+            @Documentation("""
+                    The `key` is `translatable key`, which you can query in [en_us.json language file in minecraft 1.21](https://github.com/sakurawald/fuji-fabric/blob/dev/.github/files/en_us.json).
+                      - The translable key of `entity` starts with `entity.minecraft`
+                      - The translable key of `item` starts with `item.minecraft` and `block.minecraft`
+                    
+                    The `age` is the existence time of the `entity`, the unit of `age` is `game tick`, which means `20 age` = `20 ticks` = `1 second`
+                    
+                    Example 1: If you want to clean the `sand` item which exsits more than 60 seconds, you can write `"block.minecraft.sand": 1200`
+                    
+                    Note:
+                    - The `cleaner` will only `remove` the `entities` whose `translatable key` equals `key`, and `age` >= `the defined age`. (And the `entity` must not in the `ignore` list)
+                    - Hover your mosue on the `cleaner broadcast`, you can see waht is been removed.
+                    
+                    """)
+            public Map<String, Integer> key2age = new HashMap<>() {
+                {
+                    this.put("block.minecraft.sand", 1200);
+                    this.put("item.minecraft.ender_pearl", 1200);
+                    this.put("block.minecraft.white_carpet", 1200);
+                    this.put("block.minecraft.cobblestone", 1200);
+                }
+            };
+
+            public Ignore ignore = new Ignore();
+
+            @Documentation("""
+                    Entities match the `ignore list` will not be `cleaned`.
+                    
+                    The `cleaner` will always ignore the following types:
+                    - player
+                    - any block attached entity (e.g. leash_knot)
+                    - any vehicle entity (e.g. minecart, boat ...)
+                    
+                    Note:
+                    - The `item entity` = item stack dropped in the ground
+                    - The `living entity` = pig, sheep, zombie, villager ...
+                    
+                    """)
+            public class Ignore {
+                public boolean ignoreItemEntity = false;
+                public boolean ignoreLivingEntity = true;
+                public boolean ignoreNamedEntity = true;
+                public boolean ignoreEntityWithVehicle = true;
+                public boolean ignoreEntityWithPassengers = true;
+                public boolean ignoreGlowingEntity = true;
+                public boolean ignoreLeashedEntity = true;
+            }
+        }
     }
 }

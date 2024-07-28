@@ -6,9 +6,12 @@ import eu.pb4.placeholders.api.PlaceholderResult;
 import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.head.privoder.HeadProvider;
+import io.github.sakurawald.util.LogUtil;
 import lombok.SneakyThrows;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.command.CommandRegistryAccess;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -52,6 +55,9 @@ public class TesterInitializer extends ModuleInitializer {
         ServerPlayerEntity player = source.getPlayer();
         MinecraftServer server = player.server;
         PlayerManager playerManager = server.getPlayerManager();
+
+        ItemStack mainHandStack = player.getMainHandStack();
+        LogUtil.warn("hasCustomName = {}", mainHandStack.get(DataComponentTypes.CUSTOM_NAME));
 
 //        Registry<DimensionType> dimensionTypes = IdentifierHelper.ofRegistry(RegistryKeys.DIMENSION_TYPE);
 //        for (DimensionType o : dimensionTypes) {

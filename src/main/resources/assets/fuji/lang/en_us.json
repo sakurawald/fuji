@@ -134,7 +134,7 @@
   "top_chunks.prop.players.nearest": "%s (nearest)",
   "top_chunks.prop.score": "Score: %d",
   "top_chunks.prop.types": "Types: ",
-  "top_chunks.prop.types.entry": "[type]=%d ",
+  "types.entry": "[type]=%d ",
   "tpa.no_relative_ticket": "<red>No relative request",
   "tpa.others_to_you": "<yellow>%s --> You",
   "tpa.player_not_found": "<red>Player not found",
@@ -197,5 +197,6 @@
   "world.dimension.reset": "<gold>Start to reset resource dimension %s",
   "world.dimension.tp.tip": "<gold>Search for a safe location... (don't move)",
   "world_downloader.request": "<#8DDFCB>Player %s just requested to download world file (Size: %.2f MB)",
-  "world_downloader.response": "<#8DDFCB>Download link generated: <hover:show_text:'<green>Open this link'><click:open_url:'%s'><green>[OPEN]</click></hover>"
+  "world_downloader.response": "<#8DDFCB>Download link generated: <hover:show_text:'<green>Open this link'><click:open_url:'%s'><green>[OPEN]</click></hover>",
+  "cleaner.broadcast": "<red>The cleaner just finished cleaning. (%s entities)"
 }

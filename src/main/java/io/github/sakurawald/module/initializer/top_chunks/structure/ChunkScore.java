@@ -1,11 +1,10 @@
 package io.github.sakurawald.module.initializer.top_chunks.structure;
 
 import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.module.common.structure.TypeFormatter;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.block.entity.BlockEntity;
@@ -24,16 +23,6 @@ import java.util.HashMap;
 
 public class ChunkScore implements Comparable<ChunkScore> {
     private final HashMap<String, Integer> type2amount = new HashMap<>();
-    private final HashMap<String, String> type2transform_type = new HashMap<>() {
-        {
-            this.put("block.minecraft.mob_spawner", "block.minecraft.spawner");
-            this.put("block.minecraft.brushable_block", "block.minecraft.suspicious_sand");
-            this.put("block.minecraft.sign", "block.minecraft.oak_sign");
-            this.put("block.minecraft.bed", "block.minecraft.white_bed");
-            this.put("block.minecraft.skull", "block.minecraft.player_head");
-            this.put("block.minecraft.banner", "block.minecraft.banner.base.white");
-        }
-    };
 
     @Getter
     private final World dimension;
@@ -51,7 +40,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
 
     public void addEntity(@NotNull Entity entity) {
         String type = entity.getType().getTranslationKey();
-        type = type2transform_type.getOrDefault(type, type);
+        type = TypeFormatter.type2transform_type.getOrDefault(type, type);
 
         type2amount.putIfAbsent(type, 0);
         type2amount.put(type, type2amount.get(type) + 1);
@@ -68,7 +57,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
         // fix: add the prefix of BlockEntity
         String type = id.toTranslationKey("block");
         // fix: some block entity has an error translatable key, like mob_spawner
-        type = type2transform_type.getOrDefault(type, type);
+        type = TypeFormatter.type2transform_type.getOrDefault(type, type);
         type2amount.putIfAbsent(type, 0);
         type2amount.put(type, type2amount.get(type) + 1);
     }
@@ -89,17 +78,6 @@ public class ChunkScore implements Comparable<ChunkScore> {
     @Override
     public int compareTo(@NotNull ChunkScore that) {
         return Integer.compare(that.score, this.score);
-    }
-
-
-    private @NotNull Component formatTypes(ServerCommandSource source) {
-        TextComponent.Builder ret = Component.text();
-        this.type2amount.forEach((k, v) -> {
-            Component component = MessageHelper.ofComponent(source, "top_chunks.prop.types.entry", v)
-                    .replaceText(TextReplacementConfig.builder().matchLiteral("[type]").replacement(Component.translatable(k)).build());
-            ret.append(component);
-        });
-        return ret.asComponent();
     }
 
     public @NotNull Component asComponent(@NotNull ServerCommandSource source) {
@@ -124,7 +102,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
                 .append(MessageHelper.ofComponent(source, "top_chunks.prop.players", this.players))
                 .append(Component.newline())
                 .append(MessageHelper.ofComponent(source, "top_chunks.prop.types"))
-                .append(formatTypes(source)).build();
+                .append(TypeFormatter.formatTypes(source, this.type2amount)).build();
         return Component.text()
                 .color(this.players.isEmpty() ? NamedTextColor.GRAY : NamedTextColor.DARK_GREEN)
                 .append(Component.text(this.toString())).hoverEvent(HoverEvent.showText(hoverTextComponent)).build();
