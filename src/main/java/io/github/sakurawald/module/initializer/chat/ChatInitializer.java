@@ -136,13 +136,13 @@ public class ChatInitializer extends ModuleInitializer {
 
                     ServerPlayerEntity player = ctx.player();
                     String displayUUID = DisplayHelper.createItemDisplay(player);
-                    Component replacement =
-                            Component.text("[")
-                                    .append(Component.translatable(player.getMainHandStack().getTranslationKey()))
-                                    .append(Component.text("]"))
+
+                    Component component =
+                            MessageHelper.ofComponent(player, "display.item.text")
+                                    .replaceText(builder -> builder.matchLiteral("[item]").replacement(Component.translatable(player.getMainHandStack().getTranslationKey())))
                                     .hoverEvent(MessageHelper.ofComponent(player, "display.click.prompt"))
                                     .clickEvent(buildDisplayClickEvent(displayUUID));
-                    return PlaceholderResult.value(MessageHelper.toText(replacement));
+                    return PlaceholderResult.value(MessageHelper.toText(component));
                 });
     }
 

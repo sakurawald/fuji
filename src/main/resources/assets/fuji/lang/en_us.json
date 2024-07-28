@@ -27,6 +27,7 @@
   "dimension.no_found": "<red>Target dimension no found.",
   "display.click.prompt": "<#D2E0FB>Click to view this display",
   "display.ender_chest.text": "<#D2E0FB>[EnderChest Display]",
+  "display.item.text": "<#D2E0FB>[[item]]",
   "display.gui.title": "Player %s 's Display",
   "display.invalid": "This display is invalid",
   "display.inventory.text": "<#D2E0FB>[Inventory Display]",
