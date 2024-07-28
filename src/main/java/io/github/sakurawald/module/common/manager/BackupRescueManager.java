@@ -1,10 +1,9 @@
 package io.github.sakurawald.module.common.manager;
 
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.module.common.manager.interfaces.AbstractBackupManager;
 import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.IOUtil;
-import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -15,15 +14,15 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-@UtilityClass
-public class BackupRescueManager {
+public class BackupRescueManager extends AbstractBackupManager {
 
-    public static final Path BACKUP_PATH = Fuji.CONFIG_PATH.resolve("backup_rescue");
+    public BackupRescueManager() {
+        super(Fuji.CONFIG_PATH.resolve("backup_rescue"));
+    }
 
-    private static @NotNull List<File> getInputFiles() {
+    protected @NotNull List<File> getInputFiles() {
         List<File> files = new ArrayList<>();
         try {
             Files.walkFileTree(Fuji.CONFIG_PATH, new SimpleFileVisitor<>() {
@@ -48,17 +47,18 @@ public class BackupRescueManager {
         return files;
     }
 
-    private static @NotNull File getOutputFile() {
+    protected @NotNull File getOutputFile() {
         String fileName = DateUtil.getCurrentDate() + ".zip";
         return BACKUP_PATH.resolve(fileName).toFile();
     }
 
-    private static void newBackup() {
-        IOUtil.compressFiles(getInputFiles(), getOutputFile());
+    protected void makeBackup() {
+        IOUtil.compressFiles(this.getInputFiles(), this.getOutputFile());
     }
 
-    public static void backup() {
+    public void backup() {
         BACKUP_PATH.toFile().mkdirs();
-        newBackup();
+        this.makeBackup();
     }
+
 }

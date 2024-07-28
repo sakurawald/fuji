@@ -2,12 +2,11 @@ package io.github.sakurawald.module.initializer.tab_list;
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.RandomUtil;
-import io.github.sakurawald.util.ScheduleUtil;
 import io.github.sakurawald.util.minecraft.ServerHelper;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.kyori.adventure.text.Component;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
@@ -25,7 +24,7 @@ public class TabListInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {
         String cron = Configs.configHandler.model().modules.tab_list.update_cron;
-        ServerLifecycleEvents.SERVER_STARTED.register((server -> ScheduleUtil.addJob(RenderHeaderAndFooterJob.class, null, null, cron, null)));
+        ServerLifecycleEvents.SERVER_STARTED.register((server -> Managers.getScheduleManager().scheduleJob(RenderHeaderAndFooterJob.class, null, null, cron, null)));
     }
 
     @Override

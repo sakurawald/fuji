@@ -34,7 +34,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
     @SuppressWarnings("DataFlowIssue")
     @Inject(method = "interact", at = @At("HEAD"), cancellable = true)
-    private void $interact(Entity target, Hand hand, @NotNull CallbackInfoReturnable<ActionResult> cir) {
+    private void canManipulateTheFakePlayer(Entity target, Hand hand, @NotNull CallbackInfoReturnable<ActionResult> cir) {
         if (target instanceof EntityPlayerMPFake fakePlayer) {
             ServerPlayerEntity source = (ServerPlayerEntity) (Object) this;
             if (!FAKE_PLAYER_MANAGER_MODULE.isMyFakePlayer(source, fakePlayer)) {

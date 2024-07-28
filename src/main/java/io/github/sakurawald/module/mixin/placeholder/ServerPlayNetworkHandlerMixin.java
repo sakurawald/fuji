@@ -18,7 +18,7 @@ public class ServerPlayNetworkHandlerMixin {
     public ServerPlayerEntity player;
 
     @Inject(at = @At("HEAD"), method = "onDisconnected")
-    private void $disconnect(DisconnectionInfo disconnectionInfo, CallbackInfo ci) {
+    private void removeSumUpPlaceholderToAvoidMemoryLeak(DisconnectionInfo disconnectionInfo, CallbackInfo ci) {
         SumUpPlaceholder.uuid2stats.remove(player.getUuidAsString());
     }
 }

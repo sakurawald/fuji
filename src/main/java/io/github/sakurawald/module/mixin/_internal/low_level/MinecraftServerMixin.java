@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MinecraftServerMixin {
 
     @Inject(method = "<init>", at = @At("RETURN"))
-    private void $init(CallbackInfo ci) {
+    private void injectTheServerInstance(CallbackInfo ci) {
         MinecraftServer server = (MinecraftServer) (Object) this;
         LogUtil.debug("MinecraftServerMixin: $init: {}", server);
         ServerHelper.setServer(server);

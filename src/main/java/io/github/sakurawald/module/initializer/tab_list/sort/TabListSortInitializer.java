@@ -2,10 +2,10 @@ package io.github.sakurawald.module.initializer.tab_list.sort;
 
 import com.mojang.authlib.GameProfile;
 import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.tab_list.sort.structure.AlphaTable;
 import io.github.sakurawald.util.minecraft.PermissionHelper;
-import io.github.sakurawald.util.ScheduleUtil;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkSide;
@@ -77,7 +77,7 @@ public class TabListSortInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {
         String cron = Configs.configHandler.model().modules.tab_list.sort.sync_cron;
-        ScheduleUtil.addJob(UpdateEncodedPlayerTablistNameJob.class, null, null, cron, null);
+        Managers.getScheduleManager().scheduleJob(UpdateEncodedPlayerTablistNameJob.class, null, null, cron, null);
     }
 
     public static String decodeName(String playerName) {

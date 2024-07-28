@@ -33,7 +33,7 @@ public class EndPortalBlockMixin {
     @Redirect(method = "createTeleportTarget", at = @At(value = "FIELD", target = "Lnet/minecraft/server/world/ServerWorld;END_SPAWN_POS:Lnet/minecraft/util/math/BlockPos;")
     )
         /* This method will NOT be called when an entity (including player, item and other entities) jump into overworld's ender-portal-frame */
-    BlockPos $createTeleportTarget(@Local(argsOnly = true) @NotNull Entity entity) {
+    BlockPos modifyTheEndSpawnPosConstant(@Local(argsOnly = true) @NotNull Entity entity) {
         if (getEntityCurrentLevel(entity).getRegistryKey() != World.OVERWORLD) {
             // modify: world:overworld -> minecraft:the_end (default obsidian platform)
             // feature: https://bugs.mojang.com/browse/MC-252361

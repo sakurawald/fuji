@@ -16,7 +16,6 @@ import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.world.ChunkHolder;
 import net.minecraft.server.world.ServerWorld;
@@ -59,7 +58,7 @@ public class TopChunksInitializer extends ModuleInitializer {
 
                 /* block-entity in this world */
                 ThreadedAnvilChunkStorageMixin threadedAnvilChunkStorage = (ThreadedAnvilChunkStorageMixin) world.getChunkManager().chunkLoadingManager;
-                Iterable<ChunkHolder> chunkHolders = threadedAnvilChunkStorage.$getChunks();
+                Iterable<ChunkHolder> chunkHolders = threadedAnvilChunkStorage.getChunks();
                 for (ChunkHolder chunkHolder : chunkHolders) {
                     WorldChunk worldChunk = chunkHolder.getWorldChunk();
                     if (worldChunk == null) continue;

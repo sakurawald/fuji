@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.mixin.chat;
 
 import io.github.sakurawald.module.common.accessor.SimpleRegistryMixinInterface;
-import lombok.extern.slf4j.Slf4j;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.registry.*;
@@ -32,8 +31,8 @@ public class RegistryLoaderMixin {
      */
     @Inject(method = "load(Lnet/minecraft/registry/RegistryLoader$RegistryLoadable;Lnet/minecraft/registry/DynamicRegistryManager;Ljava/util/List;)Lnet/minecraft/registry/DynamicRegistryManager$Immutable;"
             , at = @At(value = "INVOKE", target = "Ljava/util/List;forEach(Ljava/util/function/Consumer;)V", ordinal = 0, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-    private static void styledChat$injectMessageTypes(@Coerce Object registryLoadable, DynamicRegistryManager dynamicRegistryManager, List<RegistryLoader.Entry<?>> entries, CallbackInfoReturnable<DynamicRegistryManager.Immutable> cir, Map map,
-                                                      @NotNull List<RegistryLoader.Loader<?>> loaders, RegistryOps.RegistryInfoGetter registryInfoGetter) {
+    private static void modifyTheVanillaChatFormat(@Coerce Object registryLoadable, DynamicRegistryManager dynamicRegistryManager, List<RegistryLoader.Entry<?>> entries, CallbackInfoReturnable<DynamicRegistryManager.Immutable> cir, Map map,
+                                                   @NotNull List<RegistryLoader.Loader<?>> loaders, RegistryOps.RegistryInfoGetter registryInfoGetter) {
         Decoration firstDecoration = new Decoration("%s", List.of(Decoration.Parameter.CONTENT), Style.EMPTY);
         Decoration secondDecoration = Decoration.ofChat("chat.type.text.narrate");
 

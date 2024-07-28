@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class InfoCommandMixin {
 
     @Inject(method = "infoBlock", at = @At(value = "INVOKE", target = "Lcarpet/commands/InfoCommand;printBlock(Ljava/util/List;Lnet/minecraft/server/command/ServerCommandSource;Ljava/lang/String;)V", shift = At.Shift.AFTER))
-    private static void blockInfo(@NotNull ServerCommandSource source, @NotNull BlockPos pos, String grep, CallbackInfoReturnable<Integer> cir) {
+    private static void addNbtQueryForInfoBlockCommand(@NotNull ServerCommandSource source, @NotNull BlockPos pos, String grep, CallbackInfoReturnable<Integer> cir) {
         // is player ?
         ServerPlayerEntity player = source.getPlayer();
         if (player == null) return;

@@ -5,11 +5,12 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.WorksModel;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.works.gui.WorksGui;
 import io.github.sakurawald.module.initializer.works.work_type.Work;
 import io.github.sakurawald.util.minecraft.CommandHelper;
-import io.github.sakurawald.util.ScheduleUtil;
+import io.github.sakurawald.module.common.manager.ScheduleManager;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.MinecraftServer;
@@ -42,7 +43,7 @@ public class WorksInitializer extends ModuleInitializer {
     }
 
     public void registerScheduleTask(MinecraftServer server) {
-        ScheduleUtil.addJob(WorksScheduleJob.class, null, null, ScheduleUtil.CRON_EVERY_MINUTE, new JobDataMap() {
+        Managers.getScheduleManager().scheduleJob(WorksScheduleJob.class, null, null, ScheduleManager.CRON_EVERY_MINUTE, new JobDataMap() {
             {
                 this.put(MinecraftServer.class.getName(), server);
             }

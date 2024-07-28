@@ -2,7 +2,6 @@ package io.github.sakurawald.module.mixin.back;
 
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.initializer.back.BackInitializer;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -28,17 +27,17 @@ public abstract class ServerPlayerMixin {
     private static final BackInitializer module = ModuleManager.getInitializer(BackInitializer.class);
 
     @Inject(method = "onDeath", at = @At("HEAD"))
-    public void $onDeath(DamageSource damageSource, CallbackInfo ci) {
+    public void saveCurPos(DamageSource damageSource, CallbackInfo ci) {
         module.saveCurrentPosition(player);
     }
 
     @Inject(method = "teleport(Lnet/minecraft/server/world/ServerWorld;DDDFF)V", at = @At("HEAD"))
-    public void teleport(ServerWorld serverWorld, double d, double e, double f, float g, float h, CallbackInfo ci) {
+    public void saveCurPos(ServerWorld serverWorld, double d, double e, double f, float g, float h, CallbackInfo ci) {
         module.saveCurrentPosition(player);
     }
 
     @Inject(method = "teleport(Lnet/minecraft/server/world/ServerWorld;DDDLjava/util/Set;FF)Z", at = @At("HEAD"))
-    public void teleport(ServerWorld serverWorld, double d, double e, double f, Set<PositionFlag> set, float g, float h, CallbackInfoReturnable<Boolean> cir) {
+    public void saveCurPos(ServerWorld serverWorld, double d, double e, double f, Set<PositionFlag> set, float g, float h, CallbackInfoReturnable<Boolean> cir) {
         module.saveCurrentPosition(player);
     }
 

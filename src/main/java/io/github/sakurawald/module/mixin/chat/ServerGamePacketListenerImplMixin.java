@@ -25,7 +25,7 @@ public abstract class ServerGamePacketListenerImplMixin {
 
 
     @ModifyVariable(method = "handleDecoratedMessage", at = @At(value = "HEAD"), argsOnly = true)
-    public @NotNull SignedMessage handleChat(@NotNull SignedMessage before) {
+    public @NotNull SignedMessage modifyChatMessageSentByPlayers(@NotNull SignedMessage before) {
         if (Configs.configHandler.model().modules.chat.spy.output_unparsed_message_into_console) {
             LogUtil.info("[Chat Spy] <{}> {}", player.getGameProfile().getName(), before.getContent().getString());
         }

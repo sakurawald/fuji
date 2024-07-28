@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.mixin.placeholder;
 
 import io.github.sakurawald.module.initializer.placeholder.structure.SumUpPlaceholder;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stat;
@@ -16,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerEntityMixin {
 
     @Inject(method = "increaseStat(Lnet/minecraft/stat/Stat;I)V", at = @At("HEAD"))
-    public void increaseStat(@NotNull Stat<?> stat, int i, CallbackInfo ci) {
+    public void syncSumUpPlaceholderInMemory(@NotNull Stat<?> stat, int i, CallbackInfo ci) {
         PlayerEntity player = (PlayerEntity) (Object) this;
 
         if (Stats.KILLED.equals(stat.getType())) {

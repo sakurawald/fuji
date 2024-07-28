@@ -3,10 +3,11 @@ package io.github.sakurawald.module.initializer.placeholder;
 import eu.pb4.placeholders.api.PlaceholderResult;
 import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.placeholder.structure.SumUpPlaceholder;
 import io.github.sakurawald.util.RandomUtil;
-import io.github.sakurawald.util.ScheduleUtil;
+import io.github.sakurawald.module.common.manager.ScheduleManager;
 import io.github.sakurawald.util.minecraft.PermissionHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
@@ -63,7 +64,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
         /* events */
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             SumUpPlaceholder.ofServer();
-            ScheduleUtil.addJob(UpdateSumUpPlaceholderJob.class, null, null, ScheduleUtil.CRON_EVERY_MINUTE, new JobDataMap() {
+            Managers.getScheduleManager().scheduleJob(UpdateSumUpPlaceholderJob.class, null, null, ScheduleManager.CRON_EVERY_MINUTE, new JobDataMap() {
                 {
                     this.put(MinecraftServer.class.getName(), server);
                     this.put(PlaceholderInitializer.class.getName(), PlaceholderInitializer.this);

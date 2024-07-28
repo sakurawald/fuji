@@ -32,7 +32,7 @@ public class UserWhiteListMixin {
      * @see net.minecraft.util.UserCache#add(GameProfile)
      **/
     @Inject(method = "toString*", at = @At("HEAD"), cancellable = true)
-    void $getKeyForUser(@NotNull GameProfile gameProfile, @NotNull CallbackInfoReturnable<String> ci) {
+    void ignoreUUIDAndOnlyComparePlayerName(@NotNull GameProfile gameProfile, @NotNull CallbackInfoReturnable<String> ci) {
         String ret = gameProfile.getName();
         ci.setReturnValue(ret);
     }

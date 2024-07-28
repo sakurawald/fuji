@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerCommonNetworkHandler.class)
-public class ServerCommonNetworkHandlerMixin {
+public class FakePlayerPingMixin {
 
     @Inject(method = "getLatency", at = @At("HEAD"), cancellable = true)
     void fakePing(@NotNull CallbackInfoReturnable<Integer> cir) {

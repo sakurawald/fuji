@@ -2,7 +2,7 @@ package io.github.sakurawald.module.common.job;
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
-import io.github.sakurawald.util.ScheduleUtil;
+import io.github.sakurawald.module.common.manager.Managers;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -22,7 +22,7 @@ public class MentionPlayersJob implements Job {
         int intervalMs = mentionPlayer.interval_ms;
         int repeatCount = mentionPlayer.repeat_count;
         Sound sound = Sound.sound(Key.key(mentionPlayer.sound), Sound.Source.MUSIC, mentionPlayer.volume, mentionPlayer.pitch);
-        ScheduleUtil.addJob(MentionPlayersJob.class, null, null, intervalMs, repeatCount, new JobDataMap() {
+        Managers.getScheduleManager().scheduleJob(MentionPlayersJob.class, null, null, intervalMs, repeatCount, new JobDataMap() {
             {
                 this.put(ArrayList.class.getName(), players);
                 this.put(Sound.class.getName(), sound);

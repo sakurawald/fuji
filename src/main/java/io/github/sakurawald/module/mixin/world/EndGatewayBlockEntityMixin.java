@@ -13,7 +13,7 @@ public abstract class EndGatewayBlockEntityMixin {
 
     // note: for a resource end, we force make World.END == World.END a true condition, so that the end gateway in resource end can work.
     @Redirect(method = "getOrCreateExitPortalPos", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/world/ServerWorld;getRegistryKey()Lnet/minecraft/registry/RegistryKey;"))
-    private RegistryKey<World> $tryTeleportingEntity(ServerWorld instance) {
+    private RegistryKey<World> letExitPortalsInExtraDimensionsWork(ServerWorld instance) {
         return World.END;
     }
 }

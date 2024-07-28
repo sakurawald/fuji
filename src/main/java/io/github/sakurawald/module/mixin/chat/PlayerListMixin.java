@@ -21,7 +21,7 @@ public abstract class PlayerListMixin {
     private static final ChatInitializer module = ModuleManager.getInitializer(ChatInitializer.class);
 
     @Inject(at = @At(value = "TAIL"), method = "onPlayerConnect")
-    private void $onPlayerConnect(ClientConnection connection, @NotNull ServerPlayerEntity serverPlayer, ConnectedClientData commonListenerCookie, CallbackInfo ci) {
+    private void sendChatHistoryToNewJoinedPlayer(ClientConnection connection, @NotNull ServerPlayerEntity serverPlayer, ConnectedClientData commonListenerCookie, CallbackInfo ci) {
         if (EntityHelper.isNonRealPlayer(serverPlayer)) return;
         module.getChatHistory().forEach(serverPlayer::sendMessage);
     }

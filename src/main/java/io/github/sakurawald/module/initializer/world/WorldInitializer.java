@@ -10,8 +10,6 @@ import io.github.sakurawald.module.common.structure.TeleportSetup;
 import io.github.sakurawald.module.common.structure.random_teleport.RandomTeleport;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.world.structure.DimensionEntry;
-import io.github.sakurawald.util.LogUtil;
-import io.github.sakurawald.util.ScheduleUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.IdentifierHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
@@ -28,9 +26,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.random.RandomSeed;
 import org.jetbrains.annotations.NotNull;
-import org.quartz.Job;
-import org.quartz.JobDataMap;
-import org.quartz.JobExecutionContext;
 
 import java.util.Optional;
 
@@ -130,7 +125,7 @@ public class WorldInitializer extends ModuleInitializer {
         ServerWorld world = CommandHelper.Argument.dimension(ctx);
         String identifier = IdentifierHelper.ofString(world);
         if (Configs.configHandler.model().modules.world.blacklist.dimension_list.contains(identifier)) {
-            MessageHelper.sendMessage(ctx.getSource(), "world.dimension.blacklist");
+            MessageHelper.sendMessage(ctx.getSource(), "world.dimension.blacklist", identifier);
             return CommandHelper.Return.FAIL;
         }
 
@@ -154,7 +149,7 @@ public class WorldInitializer extends ModuleInitializer {
         ServerWorld world = CommandHelper.Argument.dimension(ctx);
         String identifier = IdentifierHelper.ofString(world);
         if (Configs.configHandler.model().modules.world.blacklist.dimension_list.contains(identifier)) {
-            MessageHelper.sendMessage(ctx.getSource(), "world.dimension.blacklist");
+            MessageHelper.sendMessage(ctx.getSource(), "world.dimension.blacklist",identifier);
             return CommandHelper.Return.FAIL;
         }
 

@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.mixin.color.sign;
 
-import lombok.extern.slf4j.Slf4j;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.block.entity.SignText;
@@ -21,7 +20,7 @@ public abstract class ServerPlayerEntityMixin {
     ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
     @Inject(method = "openEditSignScreen", at = @At("HEAD"))
-    private void $onUse(@NotNull SignBlockEntity signBlockEntity, boolean bl, @NotNull CallbackInfo ci) {
+    private void sendBlockStateUpdatePacketOfSerializedTextBeforeTheClientOpenTheEditScreen(@NotNull SignBlockEntity signBlockEntity, boolean bl, @NotNull CallbackInfo ci) {
         if (ci.isCancelled()) return;
 
         boolean facing = signBlockEntity.isPlayerFacingFront(player);

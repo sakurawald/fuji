@@ -3,10 +3,10 @@ package io.github.sakurawald.module.initializer.afk;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
-import io.github.sakurawald.util.ScheduleUtil;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.command.CommandRegistryAccess;
@@ -33,8 +33,8 @@ public class AfkInitializer extends ModuleInitializer {
     }
 
     public void updateJobs() {
-        ScheduleUtil.removeJobs(AfkCheckerJob.class.getName());
-        ScheduleUtil.addJob(AfkCheckerJob.class, null, null, Configs.configHandler.model().modules.afk.afk_checker.cron, new JobDataMap());
+        Managers.getScheduleManager().cancelJobs(AfkCheckerJob.class.getName());
+        Managers.getScheduleManager().scheduleJob(AfkCheckerJob.class, null, null, Configs.configHandler.model().modules.afk.afk_checker.cron, new JobDataMap());
     }
 
     @Override

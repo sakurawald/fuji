@@ -19,7 +19,7 @@ public class ServerPlayerEntityMixin {
     PlayerEntity player = (PlayerEntity) (Object) this;
 
     @Inject(method = "getDisplayName", at = @At("HEAD"), cancellable = true)
-    void getDisplayName(@NotNull CallbackInfoReturnable<Text> cir) {
+    void modifyDisplayName(@NotNull CallbackInfoReturnable<Text> cir) {
         String format = NicknameInitializer.getNicknameHandler().model().format.player2format.get(player.getGameProfile().getName());
 
         if (format != null) {

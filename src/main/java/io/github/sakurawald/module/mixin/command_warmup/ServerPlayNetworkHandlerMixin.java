@@ -32,7 +32,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
     }
 
     @Inject(method = "onCommandExecution", at = @At("HEAD"), cancellable = true)
-    public void $execute(@NotNull CommandExecutionC2SPacket commandExecutionC2SPacket, @NotNull CallbackInfo ci) {
+    public void interceptCommandUsagePackets(@NotNull CommandExecutionC2SPacket commandExecutionC2SPacket, @NotNull CallbackInfo ci) {
         ServerPlayerEntity player = getPlayer();
         String command = commandExecutionC2SPacket.comp_808();
 

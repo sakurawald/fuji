@@ -2,11 +2,10 @@ package io.github.sakurawald.config.handler;
 
 import assets.fuji.Cat;
 import com.google.gson.*;
-import io.github.sakurawald.module.common.manager.BackupRescueManager;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.works.work_type.Work;
 import io.github.sakurawald.util.JsonUtil;
 import io.github.sakurawald.util.LogUtil;
-import io.github.sakurawald.util.ScheduleUtil;
 import lombok.Cleanup;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
@@ -86,8 +85,8 @@ public abstract class ConfigHandler<T> {
     public void setAutoSaveJob(@NotNull String cron) {
         String jobName = this.file.getName();
         String jobGroup = ConfigHandlerAutoSaveJob.class.getName();
-        ScheduleUtil.removeJobs(jobGroup, jobName);
-        ScheduleUtil.addJob(ConfigHandlerAutoSaveJob.class, jobName, jobGroup, cron, new JobDataMap() {
+        Managers.getScheduleManager().cancelJobs(jobGroup, jobName);
+        Managers.getScheduleManager().scheduleJob(ConfigHandlerAutoSaveJob.class, jobName, jobGroup, cron, new JobDataMap() {
             {
                 this.put(ConfigHandler.class.getName(), ConfigHandler.this);
             }
@@ -146,24 +145,22 @@ public abstract class ConfigHandler<T> {
                                                         
                             """, file.getAbsoluteFile(), currentPath, file.getAbsoluteFile(), currentPath);
 
-                    /* query loop */
+                    /* ynop query */
                     Scanner scanner = new Scanner(System.in);
-                    while (true) {
-                        String input = scanner.next().trim();
-                        if (input.equalsIgnoreCase("y")) {
-                            if (!this.alreadyBackup) {
-                                BackupRescueManager.backup();
-                                LogUtil.warn("Backup the `config/fuji` folder into `config/fuji/backup_rescue` folder successfully.");
-                                this.alreadyBackup = true;
-                            }
-
-                            currentJson.remove(key);
-                            currentJson.add(key, value);
-                            break;
-                        } else {
-                            // exit the JVM with error code
-                            System.exit(-1);
+                    String input = scanner.next().trim();
+                    if (input.equalsIgnoreCase("y")) {
+                        if (!this.alreadyBackup) {
+                            Managers.getRescueBackupManager().backup();
+                            LogUtil.warn("Backup the `config/fuji` folder into `config/fuji/backup_rescue` folder successfully.");
+                            this.alreadyBackup = true;
                         }
+
+                        currentJson.remove(key);
+                        currentJson.add(key, value);
+                        break;
+                    } else {
+                        // exit the JVM with error code
+                        System.exit(-1);
                     }
                 }
 

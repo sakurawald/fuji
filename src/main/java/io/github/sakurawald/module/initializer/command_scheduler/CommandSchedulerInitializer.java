@@ -8,9 +8,9 @@ import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.SchedulerModel;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.LogUtil;
-import io.github.sakurawald.util.ScheduleUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
@@ -30,11 +30,11 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
     public static final ConfigHandler<SchedulerModel> schedulerHandler = new ObjectConfigHandler<>("scheduler.json", SchedulerModel.class);
 
     private void updateJobs() {
-        ScheduleUtil.removeJobs(ScheduleJobJob.class.getName());
+        Managers.getScheduleManager().cancelJobs(ScheduleJobJob.class.getName());
         schedulerHandler.model().scheduleJobs.forEach(scheduleJob -> {
 
             if (scheduleJob.enable) {
-                scheduleJob.crons.forEach(cron -> ScheduleUtil.addJob(ScheduleJobJob.class, null, null, cron, new JobDataMap() {
+                scheduleJob.crons.forEach(cron -> Managers.getScheduleManager().scheduleJob(ScheduleJobJob.class, null, null, cron, new JobDataMap() {
                     {
                         this.put("job", scheduleJob);
                     }

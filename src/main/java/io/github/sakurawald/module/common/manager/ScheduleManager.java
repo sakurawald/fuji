@@ -1,10 +1,12 @@
-package io.github.sakurawald.util;
+package io.github.sakurawald.module.common.manager;
 
 
 import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.config.handler.ConfigHandler;
+import io.github.sakurawald.util.LogUtil;
 import lombok.Getter;
-import lombok.experimental.UtilityClass;
 import net.fabricmc.api.EnvType;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
@@ -18,16 +20,14 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
 
-
-@UtilityClass
-public class ScheduleUtil {
+public class ScheduleManager {
 
     public static final String CRON_EVERY_MINUTE = "0 * * ? * * *";
 
     @Getter
-    private static Scheduler scheduler;
+    private Scheduler scheduler;
 
-    static {
+    {
         /* set logger level for quartz */
         Level level = Level.getLevel(Configs.configHandler.model().common.quartz.logger_level);
         Configurator.setAllLevels("org.quartz", level);
@@ -36,7 +36,17 @@ public class ScheduleUtil {
         resetScheduler();
     }
 
-    public static void addJob(@NotNull Class<? extends Job> jobClass, @Nullable String jobName, @Nullable String jobGroup, @NotNull String cron, @Nullable JobDataMap jobDataMap) {
+
+    public void initialize() {
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> Managers.getScheduleManager().startScheduler());
+        ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
+            Managers.getScheduleManager().triggerJobs(ConfigHandler.ConfigHandlerAutoSaveJob.class.getName());
+            Managers.getScheduleManager().shutdownScheduler();
+        });
+    }
+
+
+    public void scheduleJob(@NotNull Class<? extends Job> jobClass, @Nullable String jobName, @Nullable String jobGroup, @NotNull String cron, @Nullable JobDataMap jobDataMap) {
         if (jobName == null) {
             jobName = UUID.randomUUID().toString();
         }
@@ -57,7 +67,7 @@ public class ScheduleUtil {
         }
     }
 
-    public static void addJob(@NotNull Class<? extends Job> jobClass, @Nullable String jobName, @Nullable String jobGroup, int intervalMs, int repeatCount, @Nullable JobDataMap jobDataMap) {
+    public void scheduleJob(@NotNull Class<? extends Job> jobClass, @Nullable String jobName, @Nullable String jobGroup, int intervalMs, int repeatCount, @Nullable JobDataMap jobDataMap) {
         if (jobName == null) {
             jobName = UUID.randomUUID().toString();
         }
@@ -78,7 +88,7 @@ public class ScheduleUtil {
         }
     }
 
-    public static void removeJobs(String jobGroup, @NotNull String jobName) {
+    public void cancelJobs(String jobGroup, @NotNull String jobName) {
         LogUtil.debug("removeJobs() -> jobGroup: {}, jobName: {}", jobGroup, jobName);
 
         try {
@@ -88,7 +98,7 @@ public class ScheduleUtil {
         }
     }
 
-    public static void removeJobs(@NotNull String jobGroup) {
+    public void cancelJobs(@NotNull String jobGroup) {
         LogUtil.debug("removeJobs() -> jobGroup: {}", jobGroup);
 
         try {
@@ -98,7 +108,7 @@ public class ScheduleUtil {
         }
     }
 
-    private static Set<JobKey> getJobKeys(@NotNull String jobGroup) {
+    private Set<JobKey> getJobKeys(@NotNull String jobGroup) {
         GroupMatcher<JobKey> groupMatcher = GroupMatcher.groupEquals(jobGroup);
         try {
             return scheduler.getJobKeys(groupMatcher);
@@ -108,7 +118,7 @@ public class ScheduleUtil {
         return Collections.emptySet();
     }
 
-    public static void triggerJobs(@NotNull String jobGroup) {
+    public void triggerJobs(@NotNull String jobGroup) {
         getJobKeys(jobGroup).forEach(jobKey -> {
             try {
                 scheduler.triggerJob(jobKey);
@@ -118,7 +128,7 @@ public class ScheduleUtil {
         });
     }
 
-    private static void resetScheduler() {
+    private void resetScheduler() {
         /* new scheduler */
         try {
             scheduler = new StdSchedulerFactory().getScheduler();
@@ -127,7 +137,7 @@ public class ScheduleUtil {
         }
     }
 
-    public static void startScheduler() {
+    private void startScheduler() {
         resetScheduler();
 
         try {
@@ -137,7 +147,7 @@ public class ScheduleUtil {
         }
     }
 
-    public static void shutdownScheduler() {
+    private void shutdownScheduler() {
         try {
             scheduler.shutdown();
 

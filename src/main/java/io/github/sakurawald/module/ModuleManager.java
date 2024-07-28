@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.LogUtil;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +24,12 @@ public class ModuleManager {
         return reflections.getSubTypesOf(ModuleInitializer.class);
     }
 
-    public static void initializeModules() {
+    public static void initialize() {
+        initializeModules();
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> ModuleManager.reportModules());
+    }
+
+    private static void initializeModules() {
         scanModules(ModuleManager.class.getPackageName()).forEach(ModuleManager::getInitializer);
     }
 
@@ -40,7 +46,7 @@ public class ModuleManager {
         );
     }
 
-    public static void reportModules() {
+    private static void reportModules() {
         ArrayList<String> enabled = new ArrayList<>();
         module2enable.forEach((module, enable) -> {
             if (enable) enabled.add(String.join(".", module));
@@ -119,7 +125,7 @@ public class ModuleManager {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean isRequiredModsInstalled(@NotNull List<String> packagePath) {
+    private static boolean isRequiredModsInstalled(@NotNull List<String> packagePath) {
         String basePackagePath = packagePath.getFirst();
 
         if (basePackagePath.equals("carpet")) {

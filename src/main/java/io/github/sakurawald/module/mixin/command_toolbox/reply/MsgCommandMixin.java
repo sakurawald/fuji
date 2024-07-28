@@ -22,7 +22,7 @@ public class MsgCommandMixin {
     private static final ReplyInitializer module = ModuleManager.getInitializer(ReplyInitializer.class);
 
     @Inject(method = "execute", at = @At("HEAD"))
-    private static void $execute(@NotNull ServerCommandSource commandSourceStack, @NotNull Collection<ServerPlayerEntity> collection, SignedMessage playerChatMessage, CallbackInfo ci) {
+    private static void rememberRecentlyMessagedPlayer(@NotNull ServerCommandSource commandSourceStack, @NotNull Collection<ServerPlayerEntity> collection, SignedMessage playerChatMessage, CallbackInfo ci) {
         ServerPlayerEntity source = commandSourceStack.getPlayer();
         if (source == null) return;
 

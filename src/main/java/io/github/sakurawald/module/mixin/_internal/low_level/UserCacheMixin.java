@@ -17,7 +17,6 @@ public class UserCacheMixin implements GameProfileCacheEx {
     @Shadow
     private Map<String, UserCache.Entry> byName;
 
-
     @Override
     public @NotNull Collection<String> fuji$getNames() {
         ArrayList<String> ret = new ArrayList<>();

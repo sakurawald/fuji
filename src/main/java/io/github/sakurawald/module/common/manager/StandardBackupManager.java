@@ -2,10 +2,9 @@ package io.github.sakurawald.module.common.manager;
 
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.module.common.manager.interfaces.AbstractBackupManager;
 import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.IOUtil;
-import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -19,12 +18,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-@UtilityClass
-public class BackupManager {
+public class StandardBackupManager extends AbstractBackupManager {
 
-    public static final Path BACKUP_PATH = Fuji.CONFIG_PATH.resolve("backup");
+    public StandardBackupManager() {
+        super(Fuji.CONFIG_PATH.resolve("backup"));
+    }
 
-    private static boolean skipPath(@NotNull Path dir)  {
+    protected boolean skipPath(@NotNull Path dir) {
         for (String other : Configs.configHandler.model().common.backup.skip) {
             if (dir.equals(Fuji.CONFIG_PATH.resolve(other))) return true;
         }
@@ -32,7 +32,8 @@ public class BackupManager {
         return false;
     }
 
-    private static @NotNull List<File> getInputFiles() {
+    @Override
+    protected @NotNull List<File> getInputFiles() {
         List<File> files = new ArrayList<>();
         try {
             Files.walkFileTree(Fuji.CONFIG_PATH, new SimpleFileVisitor<>() {
@@ -58,7 +59,7 @@ public class BackupManager {
         return files;
     }
 
-    private static void trimBackup() {
+    protected void trimBackup() {
         List<Path> latestFiles = IOUtil.getLatestFiles(BACKUP_PATH);
         Iterator<Path> iterator = latestFiles.iterator();
         while (iterator.hasNext() && latestFiles.size() > Configs.configHandler.model().common.backup.max_slots - 1) {
@@ -67,18 +68,22 @@ public class BackupManager {
         }
     }
 
-    private static @NotNull File getOutputFile() {
+    @Override
+    protected @NotNull File getOutputFile() {
         String fileName = DateUtil.getCurrentDate() + ".zip";
         return BACKUP_PATH.resolve(fileName).toFile();
     }
 
-    private static void newBackup() {
+
+    @Override
+    protected void makeBackup() {
         IOUtil.compressFiles(getInputFiles(), getOutputFile());
     }
 
-    public static void backup() {
+    @Override
+    public void backup() {
         BACKUP_PATH.toFile().mkdirs();
         trimBackup();
-        newBackup();
+        makeBackup();
     }
 }

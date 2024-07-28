@@ -16,7 +16,7 @@ public abstract class ServerPlayerMixin {
     private static final DeathLogInitializer module = ModuleManager.getInitializer(DeathLogInitializer.class);
 
     @Inject(method = "onDeath", at = @At("HEAD"))
-    public void $onDeath(DamageSource damageSource, CallbackInfo ci) {
+    public void storeInventoryOnPlayerDeath(DamageSource damageSource, CallbackInfo ci) {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
         // don't store empty inventory
         if (player.getInventory().isEmpty()) return;

@@ -189,7 +189,7 @@ public class ProductionWork extends Work implements ScheduleMethod {
         int minecartHopperCount = 0;
         ServerWorld world = player.getServerWorld();
         ThreadedAnvilChunkStorageMixin threadedAnvilChunkStorage = (ThreadedAnvilChunkStorageMixin) world.getChunkManager().chunkLoadingManager;
-        Iterable<ChunkHolder> chunkHolders = threadedAnvilChunkStorage.$getChunks();
+        Iterable<ChunkHolder> chunkHolders = threadedAnvilChunkStorage.getChunks();
         for (ChunkHolder chunkHolder : chunkHolders) {
             WorldChunk worldChunk = chunkHolder.getWorldChunk();
             if (worldChunk == null) continue;

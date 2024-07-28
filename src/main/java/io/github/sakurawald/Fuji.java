@@ -1,12 +1,8 @@
 package io.github.sakurawald;
 
-import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.common.manager.BackupManager;
 import io.github.sakurawald.module.common.manager.Managers;
-import io.github.sakurawald.util.ScheduleUtil;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Path;
@@ -29,18 +25,11 @@ public class Fuji implements ModInitializer {
     @Override
     public void onInitialize() {
         /* managers */
-        BackupManager.backup();
+        Managers.getStandardBackupManager().backup();
         Managers.getBossBarManager().initialize();
+        Managers.getScheduleManager().initialize();
 
         /* modules */
-        ModuleManager.initializeModules();
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> ModuleManager.reportModules());
-
-        /* scheduler */
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> ScheduleUtil.startScheduler());
-        ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
-            ScheduleUtil.triggerJobs(ConfigHandler.ConfigHandlerAutoSaveJob.class.getName());
-            ScheduleUtil.shutdownScheduler();
-        });
+        ModuleManager.initialize();
     }
 }

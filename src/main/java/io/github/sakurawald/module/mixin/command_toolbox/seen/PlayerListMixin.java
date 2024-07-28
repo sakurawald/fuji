@@ -19,7 +19,7 @@ public abstract class PlayerListMixin {
     private SeenInitializer module = ModuleManager.getInitializer(SeenInitializer.class);
 
     @Inject(method = "remove", at = @At("TAIL"))
-    private void remove(@NotNull ServerPlayerEntity player, CallbackInfo ci) {
+    private void savePlayerDisconnectedTime(@NotNull ServerPlayerEntity player, CallbackInfo ci) {
         module.getData().model().player2seen.put(player.getGameProfile().getName(), System.currentTimeMillis());
         module.getData().saveToDisk();
     }

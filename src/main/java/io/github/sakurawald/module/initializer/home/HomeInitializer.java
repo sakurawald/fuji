@@ -6,9 +6,10 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.HomeModel;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.ScheduleUtil;
+import io.github.sakurawald.module.common.manager.ScheduleManager;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.PermissionHelper;
@@ -33,13 +34,13 @@ public class HomeInitializer extends ModuleInitializer {
 
     public void onInitialize() {
         data.loadFromDisk();
-        data.setAutoSaveJob(ScheduleUtil.CRON_EVERY_MINUTE);
+        data.setAutoSaveJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 
     @Override
     public void onReload() {
         data.loadFromDisk();
-        data.setAutoSaveJob(ScheduleUtil.CRON_EVERY_MINUTE);
+        data.setAutoSaveJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 
     @SuppressWarnings({"UnusedReturnValue", "unused"})

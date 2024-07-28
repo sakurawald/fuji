@@ -21,13 +21,13 @@ import net.minecraft.text.TranslatableTextContent;
 public interface ComponentMixin {
 
     @Inject(method = "translatable(Ljava/lang/String;[Ljava/lang/Object;)Lnet/minecraft/text/MutableText;", at = @At("RETURN"), cancellable = true)
-    private static void translatable(String key, Object[] args, @NotNull CallbackInfoReturnable<MutableText> cir) {
+    private static void hijackTranslatableText(String key, Object[] args, @NotNull CallbackInfoReturnable<MutableText> cir) {
         MutableText newValue = transform(key, args);
         if (newValue != null) cir.setReturnValue(newValue);
     }
 
     @Inject(method = "translatable(Ljava/lang/String;)Lnet/minecraft/text/MutableText;", at = @At("RETURN"), cancellable = true)
-    private static void translatable(String key, @NotNull CallbackInfoReturnable<MutableText> cir) {
+    private static void hijackTranslatableText(String key, @NotNull CallbackInfoReturnable<MutableText> cir) {
         MutableText newValue = transform(key);
         if (newValue != null) cir.setReturnValue(newValue);
     }

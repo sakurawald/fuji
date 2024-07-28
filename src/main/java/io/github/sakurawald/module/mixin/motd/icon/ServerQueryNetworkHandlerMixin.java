@@ -38,13 +38,13 @@ import java.util.Optional;
 import net.minecraft.server.ServerMetadata;
 
 @Mixin(ServerQueryNetworkHandler.class)
-abstract class ServerQueryNetworkHandlerMixin {
+public abstract class ServerQueryNetworkHandlerMixin {
 
     @Unique
     private static final MotdInitializer module = ModuleManager.getInitializer(MotdInitializer.class);
 
     @Redirect(method = "onRequest", at = @At(value = "FIELD", target = "Lnet/minecraft/server/network/ServerQueryNetworkHandler;metadata:Lnet/minecraft/server/ServerMetadata;"))
-    public @NotNull ServerMetadata $handleStatusRequest(final net.minecraft.server.network.ServerQueryNetworkHandler instance) {
+    public @NotNull ServerMetadata handleStatusRequest(final net.minecraft.server.network.ServerQueryNetworkHandler instance) {
         ServerMetadata vanillaStatus = ServerHelper.getDefaultServer().getServerMetadata();
         if (vanillaStatus == null) {
             LogUtil.warn("Can't inject into the vanilla server status. (reason: the vanilla one is null)");
