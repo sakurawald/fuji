@@ -23,7 +23,6 @@ public class HeadInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        HeadProvider.fetchData();
         headHandler.loadFromDisk();
     }
 

@@ -13,7 +13,6 @@ import io.github.sakurawald.module.initializer.head.structure.Head;
 import io.github.sakurawald.util.LogUtil;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
-import oshi.util.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,10 +30,12 @@ public class HeadProvider {
 
     private static final String API = "https://minecraft-heads.com/scripts/api.php?cat=%s&tags=true";
 
-    @Getter
-    private static final Multimap<Category, Head> heads = HashMultimap.create();
+    @Getter(lazy = true)
+    private static final Multimap<Category, Head> heads = fetchData();
 
-    public static void fetchData() {
+    public static Multimap<Category, Head> fetchData() {
+        HashMultimap<Category, Head> result = HashMultimap.create();
+
         for (Category category : Category.values()) {
             String URL = null;
             try {
@@ -42,7 +43,7 @@ public class HeadProvider {
 
                 // skip
                 if (destination.exists()) {
-                    loadCategory(category);
+                    loadCategory(result, category);
                     continue;
                 }
 
@@ -51,7 +52,7 @@ public class HeadProvider {
                 Downloader downloader = new Downloader(uri.toURL(), destination) {
                     @Override
                     public void onComplete() {
-                        loadCategory(category);
+                        loadCategory(result, category);
                     }
                 };
                 downloader.start();
@@ -59,9 +60,10 @@ public class HeadProvider {
                 LogUtil.warn("Failed to download heads from URL {}", URL);
             }
         }
+        return result;
     }
 
-    private static void loadCategory(Category category) {
+    private static void loadCategory(HashMultimap<Category, Head> result, Category category) {
         try {
             LogUtil.info("Load head category: {}", category.name);
             var stream = Files.newInputStream(STORAGE_PATH.resolve(category.name + ".json"));
@@ -69,7 +71,7 @@ public class HeadProvider {
             for (JsonElement headJson : headsJson) {
                 try {
                     Head head = new Gson().fromJson(headJson, Head.class);
-                    heads.put(category, head);
+                    result.put(category, head);
                 } catch (Exception e) {
                     LogUtil.warn("Invalid head: " + headJson);
                 }
