@@ -119,9 +119,10 @@ public class CleanerInitializer extends ModuleInitializer {
     }
 
     private void sendCleanerBroadcast(Map<String, Integer> counter) {
-        if (!counter.isEmpty()) {
-            LogUtil.info("[Cleaner] remove entities: {}",counter);
-        }
+        // avoid spam
+        if (counter.isEmpty()) return;
+
+        LogUtil.info("[Cleaner] remove entities: {}",counter);
 
         Component hoverTextComponent = Component.text()
                 .color(NamedTextColor.GOLD)
