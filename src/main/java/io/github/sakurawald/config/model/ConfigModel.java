@@ -1763,6 +1763,9 @@ public class ConfigModel {
                     The job used to trigger `/cleaner clean`.
                                         
                     - The `cleaner clean` will only be triggered by the job.
+                    
+                    Note:
+                    - If the `cleaner` cleans nothing, then it will keep silent. (Which means you will not see any message in console, or in-game chat)
                                         
                     """)
             public String cron = "0 * * ? * * *";
