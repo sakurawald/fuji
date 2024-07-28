@@ -5,6 +5,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
@@ -34,7 +35,7 @@ public class ConfigInitializer extends ModuleInitializer {
 
     private int $reload(@NotNull CommandContext<ServerCommandSource> ctx) {
         // reload modules
-        ModuleManager.reloadModules();
+        Managers.getModuleManager().reloadModules();
 
         MessageHelper.sendMessage(ctx.getSource(), "reload");
         return CommandHelper.Return.SUCCESS;

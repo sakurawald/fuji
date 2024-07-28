@@ -3,6 +3,7 @@ package io.github.sakurawald.module.common.manager;
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.handler.ConfigHandler;
+import io.github.sakurawald.module.common.manager.interfaces.AbstractManager;
 import io.github.sakurawald.util.LogUtil;
 import lombok.Getter;
 import net.fabricmc.api.EnvType;
@@ -20,7 +21,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.UUID;
 
-public class ScheduleManager {
+public class ScheduleManager extends AbstractManager {
 
     public static final String CRON_EVERY_MINUTE = "0 * * ? * * *";
 
@@ -36,8 +37,8 @@ public class ScheduleManager {
         resetScheduler();
     }
 
-
-    public void initialize() {
+    @Override
+    public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> Managers.getScheduleManager().startScheduler());
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
             Managers.getScheduleManager().triggerJobs(ConfigHandler.ConfigHandlerAutoSaveJob.class.getName());

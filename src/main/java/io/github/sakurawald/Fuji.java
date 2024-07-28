@@ -1,6 +1,5 @@
 package io.github.sakurawald;
 
-import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.common.manager.Managers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -24,12 +23,9 @@ public class Fuji implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        /* managers */
         Managers.getStandardBackupManager().backup();
-        Managers.getBossBarManager().initialize();
-        Managers.getScheduleManager().initialize();
-
-        /* modules */
-        ModuleManager.initialize();
+        Managers.getBossBarManager().onInitialize();
+        Managers.getModuleManager().onInitialize();
+        Managers.getScheduleManager().onInitialize();
     }
 }

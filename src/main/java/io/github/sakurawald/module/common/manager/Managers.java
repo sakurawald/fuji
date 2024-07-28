@@ -1,9 +1,13 @@
 package io.github.sakurawald.module.common.manager;
 
+import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.common.manager.interfaces.AbstractBackupManager;
 import lombok.Getter;
 
 public class Managers {
+
+    @Getter
+    private static final ModuleManager moduleManager = new ModuleManager();
 
     @Getter
     private static final BossBarManager bossBarManager = new BossBarManager();

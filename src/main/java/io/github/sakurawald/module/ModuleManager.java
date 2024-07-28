@@ -3,6 +3,7 @@ package io.github.sakurawald.module;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.module.common.manager.interfaces.AbstractManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.LogUtil;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -14,26 +15,27 @@ import org.reflections.Reflections;
 import javax.naming.OperationNotSupportedException;
 import java.util.*;
 
-public class ModuleManager {
-    private static final Map<Class<? extends ModuleInitializer>, ModuleInitializer> initializers = new HashMap<>();
-    private static final Map<List<String>, Boolean> module2enable = new HashMap<>();
+public class ModuleManager extends AbstractManager {
+    private  final Map<Class<? extends ModuleInitializer>, ModuleInitializer> initializers = new HashMap<>();
+    private  final Map<List<String>, Boolean> module2enable = new HashMap<>();
 
     @SuppressWarnings("SameParameterValue")
-    private static Set<Class<? extends ModuleInitializer>> scanModules(String packageName) {
+    private  Set<Class<? extends ModuleInitializer>> scanModules(String packageName) {
         Reflections reflections = new Reflections(packageName);
         return reflections.getSubTypesOf(ModuleInitializer.class);
     }
 
-    public static void initialize() {
+    @Override
+    public void onInitialize() {
         initializeModules();
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> ModuleManager.reportModules());
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> this.reportModules());
     }
 
-    private static void initializeModules() {
-        scanModules(ModuleManager.class.getPackageName()).forEach(ModuleManager::getInitializer);
+    private  void initializeModules() {
+        scanModules(this.getClass().getPackageName()).forEach(this::getInitializer);
     }
 
-    public static void reloadModules() {
+    public  void reloadModules() {
         initializers.values().forEach(initializer -> {
                     try {
                         initializer.onReload();
@@ -46,7 +48,7 @@ public class ModuleManager {
         );
     }
 
-    private static void reportModules() {
+    private  void reportModules() {
         ArrayList<String> enabled = new ArrayList<>();
         module2enable.forEach((module, enable) -> {
             if (enable) enabled.add(String.join(".", module));
@@ -57,7 +59,7 @@ public class ModuleManager {
     }
 
     @ApiStatus.AvailableSince("1.1.5")
-    public static boolean isModuleEnabled(List<String> packagePath) {
+    public  boolean isModuleEnabled(List<String> packagePath) {
         return module2enable.get(packagePath);
     }
 
@@ -67,7 +69,7 @@ public class ModuleManager {
      * hod will also return null, but the module doesn't extend AbstractModule, then this method will also return null.)
      */
     @ApiStatus.AvailableSince("1.1.5")
-    public static <T extends ModuleInitializer> T getInitializer(@NotNull Class<T> clazz) {
+    public  <T extends ModuleInitializer> T getInitializer(@NotNull Class<T> clazz) {
         JsonElement config = Configs.configHandler.toJsonElement();
         if (!initializers.containsKey(clazz)) {
             if (shouldEnableModule(config, getPackagePath(ModuleInitializer.class, clazz.getName()))) {
@@ -83,7 +85,7 @@ public class ModuleManager {
         return clazz.cast(initializers.get(clazz));
     }
 
-    public static boolean shouldEnableModule(@NotNull JsonElement config, @NotNull List<String> packagePath) {
+    public  boolean shouldEnableModule(@NotNull JsonElement config, @NotNull List<String> packagePath) {
         if (module2enable.containsKey(packagePath)) {
             return module2enable.get(packagePath);
         }
@@ -113,7 +115,7 @@ public class ModuleManager {
         return enable;
     }
 
-    public static @NotNull List<String> getPackagePath(@NotNull Class<?> rootPackageClass, @NotNull String className) {
+    public  @NotNull List<String> getPackagePath(@NotNull Class<?> rootPackageClass, @NotNull String className) {
         String ret;
         int left = rootPackageClass.getPackageName().length() + 1;
         ret = className.substring(left);
@@ -125,7 +127,7 @@ public class ModuleManager {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private static boolean isRequiredModsInstalled(@NotNull List<String> packagePath) {
+    private  boolean isRequiredModsInstalled(@NotNull List<String> packagePath) {
         String basePackagePath = packagePath.getFirst();
 
         if (basePackagePath.equals("carpet")) {
