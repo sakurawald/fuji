@@ -86,7 +86,7 @@ public abstract class ConfigHandler<T> {
         String jobName = this.file.getName();
         String jobGroup = ConfigHandlerAutoSaveJob.class.getName();
         Managers.getScheduleManager().cancelJobs(jobGroup, jobName);
-        Managers.getScheduleManager().scheduleJob(ConfigHandlerAutoSaveJob.class, jobName, jobGroup, cron, new JobDataMap() {
+        Managers.getScheduleManager().scheduleJob(ConfigHandlerAutoSaveJob.class, jobGroup, jobName, cron, new JobDataMap() {
             {
                 this.put(ConfigHandler.class.getName(), ConfigHandler.this);
             }

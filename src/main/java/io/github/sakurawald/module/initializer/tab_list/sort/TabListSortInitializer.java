@@ -77,7 +77,7 @@ public class TabListSortInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {
         String cron = Configs.configHandler.model().modules.tab_list.sort.sync_cron;
-        Managers.getScheduleManager().scheduleJob(UpdateEncodedPlayerTablistNameJob.class, null, null, cron, null);
+        Managers.getScheduleManager().scheduleJob(UpdateEncodedPlayerTablistNameJob.class, cron);
     }
 
     public static String decodeName(String playerName) {

@@ -64,7 +64,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
         /* events */
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             SumUpPlaceholder.ofServer();
-            Managers.getScheduleManager().scheduleJob(UpdateSumUpPlaceholderJob.class, null, null, ScheduleManager.CRON_EVERY_MINUTE, new JobDataMap() {
+            Managers.getScheduleManager().scheduleJob(UpdateSumUpPlaceholderJob.class, ScheduleManager.CRON_EVERY_MINUTE, new JobDataMap() {
                 {
                     this.put(MinecraftServer.class.getName(), server);
                     this.put(PlaceholderInitializer.class.getName(), PlaceholderInitializer.this);

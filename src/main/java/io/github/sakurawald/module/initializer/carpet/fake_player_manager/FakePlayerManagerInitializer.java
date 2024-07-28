@@ -156,7 +156,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
 
     @SuppressWarnings("unused")
     public void registerScheduleTask(MinecraftServer server) {
-        Managers.getScheduleManager().scheduleJob(ManageFakePlayersJob.class, null, null, ScheduleManager.CRON_EVERY_MINUTE, new JobDataMap() {
+        Managers.getScheduleManager().scheduleJob(ManageFakePlayersJob.class, ScheduleManager.CRON_EVERY_MINUTE, new JobDataMap() {
             {
                 this.put(FakePlayerManagerInitializer.class.getName(), FakePlayerManagerInitializer.this);
             }

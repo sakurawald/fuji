@@ -43,7 +43,7 @@ public class WorksInitializer extends ModuleInitializer {
     }
 
     public void registerScheduleTask(MinecraftServer server) {
-        Managers.getScheduleManager().scheduleJob(WorksScheduleJob.class, null, null, ScheduleManager.CRON_EVERY_MINUTE, new JobDataMap() {
+        Managers.getScheduleManager().scheduleJob(WorksScheduleJob.class, ScheduleManager.CRON_EVERY_MINUTE, new JobDataMap() {
             {
                 this.put(MinecraftServer.class.getName(), server);
             }

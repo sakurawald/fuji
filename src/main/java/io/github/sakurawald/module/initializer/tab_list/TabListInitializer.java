@@ -24,7 +24,7 @@ public class TabListInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {
         String cron = Configs.configHandler.model().modules.tab_list.update_cron;
-        ServerLifecycleEvents.SERVER_STARTED.register((server -> Managers.getScheduleManager().scheduleJob(RenderHeaderAndFooterJob.class, null, null, cron, null)));
+        ServerLifecycleEvents.SERVER_STARTED.register((server -> Managers.getScheduleManager().scheduleJob(RenderHeaderAndFooterJob.class, cron)));
     }
 
     @Override

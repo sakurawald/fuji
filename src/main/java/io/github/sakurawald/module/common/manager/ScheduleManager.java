@@ -25,7 +25,6 @@ public class ScheduleManager extends AbstractManager {
 
     public static final String CRON_EVERY_MINUTE = "0 * * ? * * *";
 
-    @Getter
     private Scheduler scheduler;
 
     {
@@ -46,13 +45,19 @@ public class ScheduleManager extends AbstractManager {
         });
     }
 
+    public void scheduleJob(@NotNull Class<? extends Job> jobClass, @NotNull String cron) {
+        scheduleJob(jobClass, null, null, cron, null);
+    }
+    public void scheduleJob(@NotNull Class<? extends Job> jobClass, @NotNull String cron, JobDataMap jobDataMap) {
+        scheduleJob(jobClass, null, null, cron, jobDataMap);
+    }
 
-    public void scheduleJob(@NotNull Class<? extends Job> jobClass, @Nullable String jobName, @Nullable String jobGroup, @NotNull String cron, @Nullable JobDataMap jobDataMap) {
-        if (jobName == null) {
-            jobName = UUID.randomUUID().toString();
-        }
+    public void scheduleJob(@NotNull Class<? extends Job> jobClass, @Nullable String jobGroup, @Nullable String jobName, @NotNull String cron, @Nullable JobDataMap jobDataMap) {
         if (jobGroup == null) {
             jobGroup = jobClass.getName();
+        }
+        if (jobName == null) {
+            jobName = UUID.randomUUID().toString();
         }
         if (jobDataMap == null) {
             jobDataMap = new JobDataMap();
@@ -69,11 +74,11 @@ public class ScheduleManager extends AbstractManager {
     }
 
     public void scheduleJob(@NotNull Class<? extends Job> jobClass, @Nullable String jobName, @Nullable String jobGroup, int intervalMs, int repeatCount, @Nullable JobDataMap jobDataMap) {
-        if (jobName == null) {
-            jobName = UUID.randomUUID().toString();
-        }
         if (jobGroup == null) {
             jobGroup = jobClass.getName();
+        }
+        if (jobName == null) {
+            jobName = UUID.randomUUID().toString();
         }
         if (jobDataMap == null) {
             jobDataMap = new JobDataMap();
@@ -97,6 +102,10 @@ public class ScheduleManager extends AbstractManager {
         } catch (SchedulerException e) {
             LogUtil.error("Exception in ScheduleUtil.removeJobs", e);
         }
+    }
+
+    public void cancelJobs(@NotNull Class<? extends Job> clazz) {
+        cancelJobs(clazz.getName());
     }
 
     public void cancelJobs(@NotNull String jobGroup) {
