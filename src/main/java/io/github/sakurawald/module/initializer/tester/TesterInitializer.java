@@ -57,12 +57,6 @@ public class TesterInitializer extends ModuleInitializer {
 
         ItemStack mainHandStack = player.getMainHandStack();
 
-        #if TRUE
-        LogUtil.warn("this is true");
-        #endif
-
-
-//        player.sendMessage(Text.literal("the value is ${mainHandStack.getName().toString()}"));
         player.sendMessage(Text.literal("the value is ${3+2}"));
 
         return -1;

@@ -1,5 +1,6 @@
 package io.github.sakurawald;
 
+import io.github.sakurawald.command.processor.BrigadierAnnotationProcessor;
 import io.github.sakurawald.module.common.manager.Managers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -15,7 +16,9 @@ import java.nio.file.Path;
 // TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector)
 // TODO: refactor command facility (tui, selector, aop, options, parser, redirect/option, modifier, operation-argument-type, suggestion)
 // TODO: tppos module
-// TODO: unified player data api
+// TODO: unified player data api (persistent data container)
+// TODO: move docs gen into another project
+// TODO: supplier for scheduler
 
 public class Fuji implements ModInitializer {
 
@@ -24,6 +27,8 @@ public class Fuji implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        BrigadierAnnotationProcessor.register();
+
         Managers.getStandardBackupManager().backup();
         Managers.getBossBarManager().onInitialize();
         Managers.getModuleManager().onInitialize();
