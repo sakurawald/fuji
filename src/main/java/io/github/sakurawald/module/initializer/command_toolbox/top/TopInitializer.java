@@ -1,45 +1,34 @@
 package io.github.sakurawald.module.initializer.command_toolbox.top;
 
-import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
-import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-@Command("dsa")
+@Command
 public class TopInitializer extends ModuleInitializer {
 
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("top").executes(TopInitializer::$top));
+    @Command("top")
+    private static int top(@Source ServerPlayerEntity player) {
+        World world = player.getWorld();
+        BlockPos topPosition = world.getTopPosition(Heightmap.Type.MOTION_BLOCKING, player.getBlockPos());
+
+        Position position = Position.of(player).withY(topPosition.getY());
+        position.teleport(player);
+
+        MessageHelper.sendMessage(player, "top");
+        return CommandHelper.Return.SUCCESS;
     }
 
-    private static int $top(@NotNull CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
-            World world = player.getWorld();
-            BlockPos topPosition = world.getTopPosition(Heightmap.Type.MOTION_BLOCKING, player.getBlockPos());
-
-            Position position = Position.of(player).withY(topPosition.getY());
-            position.teleport(player);
-
-            MessageHelper.sendMessage(player,  "top");
-            return CommandHelper.Return.SUCCESS;
-        });
-    }
-
-    @Command("hello")
+    @Command("first second")
     public static int myCommand(CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player) {
 
         player.sendMessage(Text.literal("you are a player"));

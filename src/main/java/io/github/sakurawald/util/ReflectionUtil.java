@@ -10,7 +10,6 @@ import java.util.Set;
 @UtilityClass
 public class ReflectionUtil {
 
-
     public static Set<Method> getMethodsWithAnnotation(Class<?> clazz, Class<? extends Annotation> annotation) {
         Set<Method> methods = new HashSet<>();
         Method[] declaredMethods = clazz.getDeclaredMethods();
@@ -20,7 +19,6 @@ public class ReflectionUtil {
             }
 
         }
-
         return methods;
     }
 

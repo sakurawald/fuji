@@ -14,11 +14,11 @@ import java.nio.file.Path;
 // TODO: powertool module (composed, meta)
 
 // TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector)
-// TODO: refactor command facility (tui, selector, aop, options, parser, redirect/option, modifier, operation-argument-type, suggestion)
 // TODO: tppos module
 // TODO: unified player data api (persistent data container)
 // TODO: move docs gen into another project
 // TODO: supplier for scheduler
+// TODO: refactor command facility (tui, selector, aop, options, parser, redirect/option, modifier, operation-argument-type, suggestion)
 
 public class Fuji implements ModInitializer {
 
