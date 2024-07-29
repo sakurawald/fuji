@@ -1660,6 +1660,16 @@ public class ConfigModel {
                   ]
                 },
                 ```
+                
+                Example 2:
+                You want to give a `kit` to a newbie player.
+                ```
+                "on_player_first_joined": {
+                  "command_list": [
+                    "kit give %player:name% <kit-name>"
+                  ]
+                },
+                ```
                                 
                 Note:
                 - You can use placeholders provided by `placeholder module`.
@@ -1809,10 +1819,20 @@ public class ConfigModel {
                                         
                     """)
             public class Ignore {
+                @Documentation("Should we ignore all `item entity`.")
                 public boolean ignoreItemEntity = false;
+                @Documentation("""
+                        Should we ignore all `living entity`.
+                        If you want the `cleaner` to remove `monster` or `animals`, you should enable this option.
+                        """)
                 public boolean ignoreLivingEntity = true;
+                @Documentation("""
+                Should we ignore named entity. (With name tag, or name changed by anvil.)
+                """)
                 public boolean ignoreNamedEntity = true;
+                @Documentation("Like entity riding in some other entity, e.g. minecraft, pig or spider")
                 public boolean ignoreEntityWithVehicle = true;
+                @Documentation("Contrary to above.")
                 public boolean ignoreEntityWithPassengers = true;
                 public boolean ignoreGlowingEntity = true;
                 public boolean ignoreLeashedEntity = true;
