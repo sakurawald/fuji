@@ -1,6 +1,7 @@
 package io.github.sakurawald.config.model;
 
 
+import carpet.script.external.Carpet;
 import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.config.annotation.Documentation;
 import io.github.sakurawald.module.common.structure.RegexRewriteEntry;
@@ -134,7 +135,6 @@ public class ConfigModel {
         public @NotNull TopChunks top_chunks = new TopChunks();
         public @NotNull Skin skin = new Skin();
         public @NotNull WorldDownloader world_downloader = new WorldDownloader();
-        public @NotNull MultiObsidianPlatform multi_obsidian_platform = new MultiObsidianPlatform();
         public @NotNull Whitelist whitelist = new Whitelist();
         public @NotNull Head head = new Head();
         public @NotNull Profiler profiler = new Profiler();
@@ -144,7 +144,6 @@ public class ConfigModel {
         public @NotNull AntiBuild anti_build = new AntiBuild();
         public @NotNull Color color = new Color();
         public @NotNull Kit kit = new Kit();
-        public @NotNull Carpet carpet = new Carpet();
         public @NotNull CommandMeta command_meta = new CommandMeta();
 
         @Documentation("""
@@ -666,25 +665,6 @@ public class ConfigModel {
                 """)
         public class Placeholder {
             public boolean enable = false;
-        }
-
-        @Documentation("""
-                In vanilla minecraft, each `ender-portal` links to `the only one obsidian platform`.
-                This module makes each `ender-portal` links to its own `obsidian platform`.
-                                
-                makes every EnderPortal generate its own Obsidian Platform (Up to 128 in survival-mode.
-                You can even use creative-mode to build more Ender Portal and more ObsidianPlatform. 
-                                
-                Please note that: all the obsidian-platform are vanilla-respect, which means they have the same chunk-layout and the same behaviour as vanilla obsidian-platform which locates in (100,50,0))
-                                
-                Use-case: you want more `obsidian platform` for your redstone-struture.
-                """)
-        public class MultiObsidianPlatform {
-            public boolean enable = false;
-            @Documentation("""
-                    The coordination-convertion factor between overworld and the_end.
-                    In vanilla minecraft, the factor between overworld and the_nether is 8.""")
-            public double factor = 4;
         }
 
         @Documentation("""
@@ -1217,16 +1197,24 @@ public class ConfigModel {
 
         }
 
-        @Documentation("""
-                This module provides some purpose about `carpet-fabric` mod.
-                """)
-        public class Carpet {
+        public Gameplay gameplay = new Gameplay();
+
+        public class Gameplay {
             public boolean enable = false;
 
-            public @NotNull FakePlayerManager fake_player_manager = new FakePlayerManager();
-            public @NotNull BetterInfo better_info = new BetterInfo();
+            public @NotNull MultiObsidianPlatform multi_obsidian_platform = new MultiObsidianPlatform();
+            public @NotNull Carpet carpet = new Carpet();
 
             @Documentation("""
+                This module provides some purpose about `carpet-fabric` mod.
+                """)
+            public class Carpet {
+                public boolean enable = false;
+
+                public @NotNull FakePlayerManager fake_player_manager = new FakePlayerManager();
+                public @NotNull BetterInfo better_info = new BetterInfo();
+
+                @Documentation("""
                     Enable this module requires `carpet-fabric` mod installed.
                                     
                     This module provides some management for `fake-player`.
@@ -1235,10 +1223,10 @@ public class ConfigModel {
                     - /player who -> query the owner of the fake-player.
                     - /player renew -> renew all of your fake-players.
                     """)
-            public class FakePlayerManager {
-                public boolean enable = true;
+                public class FakePlayerManager {
+                    public boolean enable = true;
 
-                @Documentation("""
+                    @Documentation("""
                         How many fake-player can each player spawn (in different time)? 
                                             
                         The tuple means (day_of_week, minutes_of_the_day, max_fake_player_per_player).
@@ -1254,13 +1242,13 @@ public class ConfigModel {
                         Only the owner can operates the fake-player. (Op can bypass this limit)
                                             
                         """)
-                public @NotNull ArrayList<List<Integer>> caps_limit_rule = new ArrayList<>() {
-                    {
-                        this.add(List.of(1, 0, 2));
-                    }
-                };
+                    public @NotNull ArrayList<List<Integer>> caps_limit_rule = new ArrayList<>() {
+                        {
+                            this.add(List.of(1, 0, 2));
+                        }
+                    };
 
-                @Documentation("""
+                    @Documentation("""
                         How long should we renew when a player issue command `/player renew`
                                     
                         The command `/player renew` allows the player to manually renew all of his `fake-player`.
@@ -1269,32 +1257,54 @@ public class ConfigModel {
                                             
                         Use-case: to avoid some long-term alive fake-player.
                         """)
-                public int renew_duration_ms = 1000 * 60 * 60 * 12;
+                    public int renew_duration_ms = 1000 * 60 * 60 * 12;
 
-                @Documentation("""
+                    @Documentation("""
                         The rule to transform the name of fake-player.
                                             
                         Use-case: add prefix or suffix for fake-player.
                         """)
-                public @NotNull String transform_name = "_fake_%name%";
+                    public @NotNull String transform_name = "_fake_%name%";
 
-                @Documentation("""
+                    @Documentation("""
                         Should we use local skin for fake-player? 
                                             
                         Enable this can prevent fetching skins from mojang official server each time the fake-player is spawned. 
                         This is mainly used in some network siatuation if your network to mojang official server is bad.
                         """)
-                public boolean use_local_random_skins_for_fake_player = true;
-            }
+                    public boolean use_local_random_skins_for_fake_player = true;
+                }
 
-            @Documentation("""
+                @Documentation("""
                     - Add `nbt query` for `/info block` command.
                     - Add the command `/info entity`.
                     """)
-            public class BetterInfo {
-                public boolean enable = true;
+                public class BetterInfo {
+                    public boolean enable = true;
+                }
+            }
+
+
+            @Documentation("""
+                In vanilla minecraft, each `ender-portal` links to `the only one obsidian platform`.
+                This module makes each `ender-portal` links to its own `obsidian platform`.
+                                
+                makes every EnderPortal generate its own Obsidian Platform (Up to 128 in survival-mode.
+                You can even use creative-mode to build more Ender Portal and more ObsidianPlatform. 
+                                
+                Please note that: all the obsidian-platform are vanilla-respect, which means they have the same chunk-layout and the same behaviour as vanilla obsidian-platform which locates in (100,50,0))
+                                
+                Use-case: you want more `obsidian platform` for your redstone-struture.
+                """)
+            public class MultiObsidianPlatform {
+                public boolean enable = false;
+                @Documentation("""
+                    The coordination-convertion factor between overworld and the_end.
+                    In vanilla minecraft, the factor between overworld and the_nether is 8.""")
+                public double factor = 4;
             }
         }
+
 
         @Documentation("""
                 This module provides commands to run commands to run commands to run commands...
