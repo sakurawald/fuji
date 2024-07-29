@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.multi_obsidian_platform;
+package io.github.sakurawald.module.initializer.gameplay.multi_obsidian_platform;
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;

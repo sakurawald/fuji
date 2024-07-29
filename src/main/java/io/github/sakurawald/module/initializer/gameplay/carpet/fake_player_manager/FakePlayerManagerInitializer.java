@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.carpet.fake_player_manager;
+package io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.CommandDispatcher;

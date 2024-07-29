@@ -1,12 +1,11 @@
-package io.github.sakurawald.module.mixin.carpet.fake_player_manager;
+package io.github.sakurawald.module.mixin.gameplay.carpet.fake_player_manager;
 
 import carpet.commands.PlayerCommand;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.common.manager.Managers;
-import io.github.sakurawald.module.initializer.carpet.fake_player_manager.FakePlayerManagerInitializer;
+import io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager.FakePlayerManagerInitializer;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.server.command.ServerCommandSource;

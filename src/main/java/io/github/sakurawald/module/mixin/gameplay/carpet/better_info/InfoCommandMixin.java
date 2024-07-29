@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.mixin.carpet.better_info;
+package io.github.sakurawald.module.mixin.gameplay.carpet.better_info;
 
 import carpet.commands.InfoCommand;
 import net.minecraft.block.entity.BlockEntity;
