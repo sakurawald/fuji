@@ -22,7 +22,7 @@ version = project.mod_version
 group = project.maven_group
 
 base {
-    archivesName = project.archives_base_name
+    archivesName = project.mod_id
 }
 
 /* fabric env */
@@ -96,12 +96,42 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:${project.junit_version}"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    annotationProcessor "systems.manifold:manifold-preprocessor:${project.manifold_version}"
+    testAnnotationProcessor "systems.manifold:manifold-preprocessor:${project.manifold_version}"
+
+    annotationProcessor "systems.manifold:manifold-strings:${project.manifold_version}"
+    testAnnotationProcessor "systems.manifold:manifold-strings:${project.manifold_version}"
+
+
+    implementation 'systems.manifold:manifold-templates-rt:2024.1.29'
+    // Add manifold to -processorpath for javac
+    annotationProcessor 'systems.manifold:manifold-templates:2024.1.29'
+    testAnnotationProcessor 'systems.manifold:manifold-templates:2024.1.29'
+
+}
+
+if (JavaVersion.current() != JavaVersion.VERSION_1_8 &&
+        sourceSets.main.allJava.files.any { it.name == "module-info.java" }) {
+    tasks.withType(JavaCompile) {
+        // if you DO define a module-info.java file:
+        options.compilerArgs += ['-Xplugin:Manifold', '--module-path', it.classpath.asPath]
+    }
+} else {
+    tasks.withType(JavaCompile) {
+        // If you DO NOT define a module-info.java file:
+        options.compilerArgs += ['-Xplugin:Manifold']
+    }
 }
 
 /* compile */
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
     it.options.release.set(21)
+    configure(options) {
+        // disable the powerful way of string interpolation
+        options.compilerArgs << '-Amanifold.strings.simple.disabled=true'
+    }
 }
 
 java {

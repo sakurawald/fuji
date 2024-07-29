@@ -15,6 +15,7 @@ import java.nio.file.Path;
 // TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector)
 // TODO: refactor command facility (tui, selector, aop, options, parser, redirect/option, modifier, operation-argument-type, suggestion)
 // TODO: tppos module
+// TODO: unified player data api
 
 public class Fuji implements ModInitializer {
 

@@ -166,6 +166,15 @@ public class ConfigModel {
                 - If you want to run `/world reset ...` command automatically, just use `command scheduler module`
                                 
                 Note:
+                - What is the difference between `world`, `dimension` and `dimension type` ?
+                  Well, in the early stage of minecraft, it only support single-dimension, which means `1 world` only contains `1 dimension`.
+                  And now, `1 world` can support `multi dimension`. Sometimes, you will see `world` and `dimension` means the same thing.
+                  But clearer, we say: 1 `world` can contains 1 or more `dimension`, and each `dimension` has its `dimension type`.
+                  
+                  Usually, you can say a mod adds `extra dimension type` and `create extra dimension with that dimension type`  instead of `extra world`
+                  See also: https://minecraft.wiki/w/Dimension_definition
+                  See also: https://minecraft.wiki/w/Dimension_type
+             
                 - In vanilla minecraft, 1 world contains 3 dimensions (minecraft:overworld, minecraft:the_nether, minecraft:the_end)
                   You can see the `dimension` of a `world` in `world/level.dat` file.
                 - `dimension type` is used to create `dimension`, there are 4 `dimension type` in vanilla minecraft: `minecraft:overworld`, `minecraft:overworld_caves`, `minecraft:the_nether` and `minecraft:the_end`

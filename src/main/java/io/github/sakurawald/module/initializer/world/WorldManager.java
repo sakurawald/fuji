@@ -48,7 +48,7 @@ public class WorldManager {
 
     public static void requestToDeleteWorld(@NotNull ServerWorld world) {
         MinecraftServer server = world.getServer();
-        server.submit(() -> {
+        var unused = server.submit(() -> {
             deletionQueue.add(world);
         });
     }
@@ -143,7 +143,7 @@ public class WorldManager {
     public static void requestToCreateWorld(@NotNull MinecraftServer server, Identifier dimensionIdentifier, @NotNull Identifier dimenstionTypeIdentifier, long seed) {
         /* create the world */
         // note: we use the same WorldData from OVERWORLD
-        MyWorldProperties resourceWorldProperties = new MyWorldProperties(server.getSaveProperties(), seed);
+        MyWorldProperties worldProperties = new MyWorldProperties(server.getSaveProperties(), seed);
         RegistryKey<World> worldRegistryKey = RegistryKey.of(RegistryKeys.WORLD, dimensionIdentifier);
 
         DynamicRegistryManager registryManager = server.getCombinedDynamicRegistries().getCombinedRegistryManager();
@@ -155,7 +155,7 @@ public class WorldManager {
             world = new MyServerWorld(server,
                     Util.getMainWorkerExecutor(),
                     server.session,
-                    resourceWorldProperties,
+                    worldProperties,
                     worldRegistryKey,
                     dimensionOptions,
                     VoidWorldGenerationProgressListener.INSTANCE,
