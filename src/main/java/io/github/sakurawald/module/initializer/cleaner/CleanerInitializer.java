@@ -59,6 +59,7 @@ public class CleanerInitializer extends ModuleInitializer {
         Managers.getScheduleManager().scheduleJob(CleanerJob.class, Configs.configHandler.model().modules.cleaner.cron);
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     private boolean ignoreEntity(Entity entity) {
         if (entity.getType().equals(EntityType.PLAYER)) return true;
         if (entity instanceof BlockAttachedEntity) return true;

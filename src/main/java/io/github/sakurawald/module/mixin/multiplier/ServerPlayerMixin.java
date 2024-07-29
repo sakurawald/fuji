@@ -18,7 +18,7 @@ public abstract class ServerPlayerMixin {
 
     @Unique
     @NotNull
-    ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+    final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
     @Unique
     float transform(@NotNull ServerPlayerEntity player, String type, String key, float f) {

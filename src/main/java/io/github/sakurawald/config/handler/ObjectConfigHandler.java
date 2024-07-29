@@ -14,7 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class ObjectConfigHandler<T> extends ConfigHandler<T> {
 
-    Class<T> configClass;
+    final Class<T> configClass;
 
     public ObjectConfigHandler(File file, Class<T> configClass) {
         super(file);

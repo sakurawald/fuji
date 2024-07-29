@@ -34,6 +34,7 @@ public class TeleportTicket extends BossBarTicket {
         return new TeleportTicket(player, source, destination, 1f);
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean preProgressChange() {
 

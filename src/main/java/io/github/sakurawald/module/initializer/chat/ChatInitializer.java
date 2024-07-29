@@ -236,9 +236,7 @@ public class ChatInitializer extends ModuleInitializer {
             /* feedback */
             format = MessageHelper.getString(player, "chat.format.set").replace("%s", format);
             Component component = miniMessage.deserialize(format).asComponent()
-                    .replaceText(builder -> {
-                        builder.match("%message%").replacement(MessageHelper.ofComponent(player, "chat.format.show"));
-                    });
+                    .replaceText(builder -> builder.match("%message%").replacement(MessageHelper.ofComponent(player, "chat.format.show")));
 
             player.sendMessage(component);
             return CommandHelper.Return.SUCCESS;

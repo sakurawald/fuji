@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerListMixin {
 
     @Unique
-    private SeenInitializer module = Managers.getModuleManager().getInitializer(SeenInitializer.class);
+    final private SeenInitializer module = Managers.getModuleManager().getInitializer(SeenInitializer.class);
 
     @Inject(method = "remove", at = @At("TAIL"))
     private void savePlayerDisconnectedTime(@NotNull ServerPlayerEntity player, CallbackInfo ci) {

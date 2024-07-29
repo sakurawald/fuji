@@ -57,7 +57,7 @@ public abstract class PlayerCommandMixin {
             cir.setReturnValue(0);
         }
 
-        /* fix: fake-player auth network laggy */
+        /* fix: fake-player auth network lagged */
         if (Configs.configHandler.model().modules.carpet.fake_player_manager.use_local_random_skins_for_fake_player) {
             String fakePlayerName = StringArgumentType.getString(context, "player");
             fakePlayerName = transformFakePlayerName(fakePlayerName);

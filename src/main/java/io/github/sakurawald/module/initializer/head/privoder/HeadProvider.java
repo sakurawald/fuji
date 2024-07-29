@@ -21,8 +21,6 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@SuppressWarnings("FieldCanBeLocal")
-
 @UtilityClass
 public class HeadProvider {
 

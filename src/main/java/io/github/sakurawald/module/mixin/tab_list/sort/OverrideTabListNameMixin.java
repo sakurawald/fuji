@@ -25,7 +25,7 @@ import static io.github.sakurawald.util.minecraft.MessageHelper.ofText;
 public abstract class OverrideTabListNameMixin {
 
     @Unique
-    private static @NotNull Map<String, Text> realPlayerGetDisplayNameSave = new HashMap<>();
+    final private static @NotNull Map<String, Text> realPlayerGetDisplayNameSave = new HashMap<>();
 
     @Unique
     private final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;

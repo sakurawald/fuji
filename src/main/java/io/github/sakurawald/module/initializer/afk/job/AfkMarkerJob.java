@@ -21,6 +21,7 @@ public class AfkMarkerJob extends NPassMarkerJob<ServerPlayerEntity> {
         return ServerHelper.getDefaultServer().getPlayerManager().getPlayerList();
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean shouldMark(ServerPlayerEntity entity) {
         if (entity.isRemoved()) return false;

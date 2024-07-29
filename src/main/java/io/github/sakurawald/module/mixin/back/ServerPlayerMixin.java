@@ -22,7 +22,7 @@ public abstract class ServerPlayerMixin {
 
     @Unique
     @NotNull
-    ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+    final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
     @Unique
     private static final BackInitializer module = Managers.getModuleManager().getInitializer(BackInitializer.class);

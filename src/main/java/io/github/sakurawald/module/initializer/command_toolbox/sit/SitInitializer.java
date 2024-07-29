@@ -34,11 +34,9 @@ public class SitInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        ServerLifecycleEvents.SERVER_STOPPING.register((server) -> {
-            CHAIRS.forEach(e -> {
-                if (e.isAlive()) e.kill();
-            });
-        });
+        ServerLifecycleEvents.SERVER_STOPPING.register((server) -> CHAIRS.forEach(e -> {
+            if (e.isAlive()) e.kill();
+        }));
     }
 
     private int $sit(@NotNull CommandContext<ServerCommandSource> ctx) {

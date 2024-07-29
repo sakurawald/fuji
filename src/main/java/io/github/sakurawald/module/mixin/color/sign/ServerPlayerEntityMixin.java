@@ -17,7 +17,7 @@ public abstract class ServerPlayerEntityMixin {
 
     @Unique
     @NotNull
-    ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+    final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
     @Inject(method = "openEditSignScreen", at = @At("HEAD"))
     private void sendBlockStateUpdatePacketOfSerializedTextBeforeTheClientOpenTheEditScreen(@NotNull SignBlockEntity signBlockEntity, boolean bl, @NotNull CallbackInfo ci) {

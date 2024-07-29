@@ -16,7 +16,7 @@ public class ServerPlayerEntityMixin {
 
     @Unique
     @NotNull
-    PlayerEntity player = (PlayerEntity) (Object) this;
+    final PlayerEntity player = (PlayerEntity) (Object) this;
 
     @Inject(method = "getDisplayName", at = @At("HEAD"), cancellable = true)
     void modifyDisplayName(@NotNull CallbackInfoReturnable<Text> cir) {

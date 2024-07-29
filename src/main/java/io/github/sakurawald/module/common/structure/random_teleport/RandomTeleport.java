@@ -36,11 +36,11 @@ public class RandomTeleport {
 
         Optional<BlockPos> result;
 
-        int tryiedTimes = 0;
+        int triedTimes = 0;
         do {
-            tryiedTimes++;
+            triedTimes++;
             result = searchPosition(setup);
-        } while (result.isEmpty() && tryiedTimes <= setup.getMaxTryTimes());
+        } while (result.isEmpty() && triedTimes <= setup.getMaxTryTimes());
 
         if (result.isEmpty()) {
             MessageHelper.sendMessage(player, "rtp.fail");
