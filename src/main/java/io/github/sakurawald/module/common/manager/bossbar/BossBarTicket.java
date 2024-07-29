@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.common.structure;
+package io.github.sakurawald.module.common.manager.bossbar;
 
 import com.google.common.collect.ImmutableList;
 import lombok.Getter;

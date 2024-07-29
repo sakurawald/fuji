@@ -1,8 +1,6 @@
-package io.github.sakurawald.module.common.manager;
+package io.github.sakurawald.module.common.manager.bossbar;
 
-import io.github.sakurawald.module.common.manager.interfaces.AbstractBackupManager;
 import io.github.sakurawald.module.common.manager.interfaces.AbstractManager;
-import io.github.sakurawald.module.common.structure.BossBarTicket;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.kyori.adventure.audience.Audience;
 import net.minecraft.server.MinecraftServer;

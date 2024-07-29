@@ -1,7 +1,6 @@
-package io.github.sakurawald.module.common.manager;
+package io.github.sakurawald.module.common.manager.backup;
 
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.module.common.manager.interfaces.AbstractBackupManager;
 import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.IOUtil;
 import org.jetbrains.annotations.NotNull;

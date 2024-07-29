@@ -1,11 +1,11 @@
-package io.github.sakurawald.module.common.manager;
+package io.github.sakurawald.module.common.manager.scheduler;
 
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.handler.ConfigHandler;
+import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.manager.interfaces.AbstractManager;
 import io.github.sakurawald.util.LogUtil;
-import lombok.Getter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;

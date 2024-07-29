@@ -7,7 +7,7 @@ import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.placeholder.structure.SumUpPlaceholder;
 import io.github.sakurawald.util.RandomUtil;
-import io.github.sakurawald.module.common.manager.ScheduleManager;
+import io.github.sakurawald.module.common.manager.scheduler.ScheduleManager;
 import io.github.sakurawald.util.minecraft.PermissionHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;

@@ -10,7 +10,7 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.works.gui.WorksGui;
 import io.github.sakurawald.module.initializer.works.work_type.Work;
 import io.github.sakurawald.util.minecraft.CommandHelper;
-import io.github.sakurawald.module.common.manager.ScheduleManager;
+import io.github.sakurawald.module.common.manager.scheduler.ScheduleManager;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.MinecraftServer;

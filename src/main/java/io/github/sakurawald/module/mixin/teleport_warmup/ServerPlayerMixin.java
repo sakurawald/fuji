@@ -2,7 +2,7 @@ package io.github.sakurawald.module.mixin.teleport_warmup;
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.manager.Managers;
-import io.github.sakurawald.module.common.structure.BossBarTicket;
+import io.github.sakurawald.module.common.manager.bossbar.BossBarTicket;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.common.structure.TeleportTicket;
 import io.github.sakurawald.util.minecraft.IdentifierHelper;

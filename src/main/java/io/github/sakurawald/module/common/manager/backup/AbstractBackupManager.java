@@ -1,5 +1,6 @@
-package io.github.sakurawald.module.common.manager.interfaces;
+package io.github.sakurawald.module.common.manager.backup;
 
+import io.github.sakurawald.module.common.manager.interfaces.AbstractManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
