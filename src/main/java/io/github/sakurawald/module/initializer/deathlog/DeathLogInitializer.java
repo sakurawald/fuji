@@ -5,6 +5,10 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandSource;
+import io.github.sakurawald.command.wrapper.OfflinePlayerName;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.NbtHelper;
@@ -31,7 +35,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static net.minecraft.server.command.CommandManager.*;
+import static net.minecraft.server.command.CommandManager.RegistrationEnvironment;
 
 public class DeathLogInitializer extends ModuleInitializer {
     private final Path STORAGE_PATH = Fuji.CONFIG_PATH.resolve("deathlog");
@@ -59,15 +63,15 @@ public class DeathLogInitializer extends ModuleInitializer {
 
     @Override
     public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
-        dispatcher.register(
-                literal("deathlog").requires(s -> s.hasPermissionLevel(4))
-                        .then(literal("view")
-                                .then(CommandHelper.Argument.offlinePlayer("from").executes(this::$view)))
-                        .then(literal("restore")
-                                .then(CommandHelper.Argument.offlinePlayer("from")
-                                        .then(argument("index", IntegerArgumentType.integer())
-                                                .then(argument("to", EntityArgumentType.player()).executes(this::$restore))))
-                        ));
+//        dispatcher.register(
+//                literal("deathlog").requires(s -> s.hasPermissionLevel(4))
+//                        .then(literal("view")
+//                                .then(CommandHelper.Argument.offlinePlayer("from").executes(this::$view)))
+//                        .then(literal("restore")
+//                                .then(CommandHelper.Argument.offlinePlayer("from")
+//                                        .then(argument("index", IntegerArgumentType.integer())
+//                                                .then(argument("to", EntityArgumentType.player()).executes(this::$restore))))
+//                        ));
     }
 
     @SneakyThrows
@@ -124,26 +128,25 @@ public class DeathLogInitializer extends ModuleInitializer {
         return Uuids.getOfflinePlayerUuid(playerName) + ".dat";
     }
 
-    private int $view(@NotNull CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
-            String from = StringArgumentType.getString(ctx, "from");
+    @Command("deathlog view")
+    @CommandPermission(level = 4)
+    private int $view(@CommandSource ServerPlayerEntity player, OfflinePlayerName from) {
+        String $from = from.getString();
+        NbtCompound root = NbtHelper.read(STORAGE_PATH.resolve(getFileName($from)));
+        if (root == null || root.isEmpty()) {
+            player.sendMessage(Component.text("No deathlog found."));
+            return CommandHelper.Return.FAIL;
+        }
 
-            NbtCompound root = NbtHelper.read(STORAGE_PATH.resolve(getFileName(from)));
-            if (root == null || root.isEmpty()) {
-                player.sendMessage(Component.text("No deathlog found."));
-                return CommandHelper.Return.FAIL;
-            }
+        NbtList deaths = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
+        TextComponent.Builder builder = Component.text();
+        String to = player.getGameProfile().getName();
+        for (int i = 0; i < deaths.size(); i++) {
+            builder.append(asViewComponent(deaths.getCompound(i), $from, i, to));
+        }
 
-            NbtList deaths = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
-            TextComponent.Builder builder = Component.text();
-            String to = player.getGameProfile().getName();
-            for (int i = 0; i < deaths.size(); i++) {
-                builder.append(asViewComponent(deaths.getCompound(i), from, i, to));
-            }
-
-            player.sendMessage(builder.asComponent());
-            return CommandHelper.Return.SUCCESS;
-        });
+        player.sendMessage(builder.asComponent());
+        return CommandHelper.Return.SUCCESS;
     }
 
     private @NotNull Component asViewComponent(@NotNull NbtCompound node, String from, int index, String to) {

@@ -149,6 +149,16 @@ public class CommandHelper {
         public static @NotNull SuggestionProvider<ServerCommandSource> dimensionType() {
             return ofRegistryKey(RegistryKeys.DIMENSION_TYPE);
         }
+
+        public static @NotNull SuggestionProvider<ServerCommandSource> offlinePlayers() {
+            return ((context, builder) -> {
+                UserCache gameProfileCache = ServerHelper.getDefaultServer().getUserCache();
+                if (gameProfileCache != null) {
+                    ((GameProfileCacheEx) gameProfileCache).fuji$getNames().forEach(builder::suggest);
+                }
+                return builder.buildFuture();
+            });
+        }
     }
 
     public static class Pattern {

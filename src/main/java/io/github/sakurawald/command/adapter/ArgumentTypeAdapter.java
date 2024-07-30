@@ -1,7 +1,9 @@
 package io.github.sakurawald.command.adapter;
 
 import com.mojang.brigadier.arguments.ArgumentType;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import org.reflections.Reflections;
 
@@ -31,7 +33,13 @@ public abstract class ArgumentTypeAdapter {
 
     public abstract boolean match(Type type);
 
-    public abstract ArgumentType<?> makeArgumentType();
+    public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(Parameter parameter) {
+        String argumentName = parameter.getName();
+        ArgumentType<?> argumentType = this.makeArgumentType();
+        return CommandManager.argument(argumentName, argumentType);
+    }
+
+    protected abstract ArgumentType<?> makeArgumentType();
 
     public abstract Object makeArgumentObject(CommandContext<ServerCommandSource> context, Parameter parameter);
 

@@ -154,9 +154,7 @@ public class BrigadierAnnotationProcessor {
             throw new RuntimeException("It's like you specify a wrong `parameter index` for the command pattern.");
         }
 
-        String argumentName = parameter.getName();
-        ArgumentType<?> argumentType = ArgumentTypeAdapter.getAdapter(parameter.getType()).makeArgumentType();
-        return CommandManager.argument(argumentName, argumentType);
+        return ArgumentTypeAdapter.getAdapter(parameter.getType()).makeRequiredArgumentBuilder(parameter);
     }
 
     public static List<ArgumentBuilder<ServerCommandSource, ?>> makeArgumentBuilders(List<String> pattern, Method method) {
