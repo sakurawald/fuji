@@ -7,6 +7,9 @@ import com.mojang.brigadier.context.CommandContext;
 import eu.pb4.placeholders.api.PlaceholderResult;
 import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandSource;
+import io.github.sakurawald.command.wrapper.GreedyString;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
@@ -207,50 +210,30 @@ public class ChatInitializer extends ModuleInitializer {
                 });
     }
 
+    @Command("chat format set")
+    private int $format(@CommandSource ServerPlayerEntity player, GreedyString format) {
+        /* save the format*/
+        String name = player.getGameProfile().getName();
+        String $format = format.getString();
+        chatHandler.model().format.player2format.put(name, $format);
+        chatHandler.saveToDisk();
 
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(
-                literal("chat")
-                        .then(literal("format")
-                                .then(literal("reset")
-                                        .executes(this::$reset)
-                                )
-                                .then(literal("set")
-                                        .then(argument("format", StringArgumentType.greedyString())
-                                                .executes(this::$format)
-                                        )
-                                )
-                        )
-        );
+        /* feedback */
+        $format = MessageHelper.getString(player, "chat.format.set").replace("%s", $format);
+        Component component = miniMessage.deserialize($format).asComponent()
+                .replaceText(builder -> builder.match("%message%").replacement(MessageHelper.ofComponent(player, "chat.format.show")));
+
+        player.sendMessage(component);
+        return CommandHelper.Return.SUCCESS;
     }
 
-    private int $format(@NotNull CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
-            /* save the format*/
-            String format = StringArgumentType.getString(ctx, "format");
-            String name = player.getGameProfile().getName();
-            chatHandler.model().format.player2format.put(name, format);
-            chatHandler.saveToDisk();
-
-            /* feedback */
-            format = MessageHelper.getString(player, "chat.format.set").replace("%s", format);
-            Component component = miniMessage.deserialize(format).asComponent()
-                    .replaceText(builder -> builder.match("%message%").replacement(MessageHelper.ofComponent(player, "chat.format.show")));
-
-            player.sendMessage(component);
-            return CommandHelper.Return.SUCCESS;
-        });
-    }
-
-    private int $reset(@NotNull CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
-            String name = player.getGameProfile().getName();
-            chatHandler.model().format.player2format.remove(name);
-            chatHandler.saveToDisk();
-            MessageHelper.sendMessage(player, "chat.format.reset");
-            return CommandHelper.Return.SUCCESS;
-        });
+    @Command("chat format reset")
+    private int $reset(@CommandSource ServerPlayerEntity player) {
+        String name = player.getGameProfile().getName();
+        chatHandler.model().format.player2format.remove(name);
+        chatHandler.saveToDisk();
+        MessageHelper.sendMessage(player, "chat.format.reset");
+        return CommandHelper.Return.SUCCESS;
     }
 
 

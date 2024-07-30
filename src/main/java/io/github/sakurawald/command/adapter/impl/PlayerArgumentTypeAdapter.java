@@ -9,10 +9,15 @@ import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
+import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
+
+@SuppressWarnings("unused")
 public class PlayerArgumentTypeAdapter extends ArgumentTypeAdapter {
 
-    public PlayerArgumentTypeAdapter() {
-        super(ServerPlayerEntity.class);
+    @Override
+    public boolean match(Type type) {
+        return ServerPlayerEntity.class.equals(type);
     }
 
     @Override
@@ -21,7 +26,7 @@ public class PlayerArgumentTypeAdapter extends ArgumentTypeAdapter {
     }
 
     @Override
-    public Object makeArgumentObject(CommandContext<ServerCommandSource> context) {
+    public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Parameter parameter) {
         return context.getSource().getPlayer();
     }
 

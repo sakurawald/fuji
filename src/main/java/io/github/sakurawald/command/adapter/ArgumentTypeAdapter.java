@@ -6,6 +6,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +14,6 @@ import java.util.List;
 public abstract class ArgumentTypeAdapter {
 
     private static final List<ArgumentTypeAdapter> adapters = new ArrayList<>();
-
-    Type type;
-
-    public ArgumentTypeAdapter(Type type) {
-        this.type = type;
-    }
 
     public static void registerAdapters() {
         Reflections reflections = new Reflections(ArgumentTypeAdapter.class.getPackage().getName());
@@ -34,15 +29,15 @@ public abstract class ArgumentTypeAdapter {
         });
     }
 
-    public boolean match(Type type) {
-        return this.type.equals(type);
-    }
+    public abstract boolean match(Type type);
 
     public abstract ArgumentType<?> makeArgumentType();
 
-    public abstract Object makeArgumentObject(CommandContext<ServerCommandSource> context);
+    public abstract Object makeArgumentObject(CommandContext<ServerCommandSource> context, Parameter parameter);
 
-    public abstract boolean validateCommandSource(CommandContext<ServerCommandSource> context);
+    public boolean validateCommandSource(CommandContext<ServerCommandSource> context) {
+        return true;
+    }
 
     public static ArgumentTypeAdapter getAdapter(Type type) {
         for (ArgumentTypeAdapter adapter : adapters) {

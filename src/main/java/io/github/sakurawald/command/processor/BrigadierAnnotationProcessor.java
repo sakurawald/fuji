@@ -78,11 +78,11 @@ public class BrigadierAnnotationProcessor {
 
         Command classAnnotation = clazz.getAnnotation(Command.class);
         if (classAnnotation != null) {
-            ret.add(classAnnotation.value());
+            ret.add(classAnnotation.value().trim());
         }
 
         Command methodAnnotation = method.getAnnotation(Command.class);
-        String[] split = methodAnnotation.value().split(" ");
+        String[] split = methodAnnotation.value().trim().split(" ");
         ret.addAll(Arrays.stream(split).toList());
 
         // auto complete the required arguments
@@ -137,7 +137,7 @@ public class BrigadierAnnotationProcessor {
 
         Parameter[] parameters = method.getParameters();
         for (Parameter parameter : parameters) {
-            Object arg = ArgumentTypeAdapter.getAdapter(parameter.getType()).makeArgumentObject(ctx);
+            Object arg = ArgumentTypeAdapter.getAdapter(parameter.getType()).makeArgumentObject(ctx, parameter);
             args.add(arg);
         }
 
