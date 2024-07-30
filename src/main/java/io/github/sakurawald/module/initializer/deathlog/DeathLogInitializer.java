@@ -37,6 +37,8 @@ import java.util.List;
 
 import static net.minecraft.server.command.CommandManager.RegistrationEnvironment;
 
+@Command("deathlog")
+@CommandPermission(level = 4)
 public class DeathLogInitializer extends ModuleInitializer {
     private final Path STORAGE_PATH = Fuji.CONFIG_PATH.resolve("deathlog");
 
@@ -75,13 +77,10 @@ public class DeathLogInitializer extends ModuleInitializer {
     }
 
     @SneakyThrows
-    private int $restore(@NotNull CommandContext<ServerCommandSource> ctx) {
+    @Command("restore")
+    private int $restore(@CommandSource CommandContext<ServerCommandSource> ctx, String from, int index, ServerPlayerEntity to) {
         /* read from file */
         ServerCommandSource source = ctx.getSource();
-        String from = StringArgumentType.getString(ctx, "from");
-        int index = IntegerArgumentType.getInteger(ctx, "index");
-
-        ServerPlayerEntity to = EntityArgumentType.getPlayer(ctx, "to");
 
         Path path = STORAGE_PATH.resolve(getFileName(from));
         NbtCompound root = NbtHelper.read(path);
@@ -128,8 +127,7 @@ public class DeathLogInitializer extends ModuleInitializer {
         return Uuids.getOfflinePlayerUuid(playerName) + ".dat";
     }
 
-    @Command("deathlog view")
-    @CommandPermission(level = 4)
+    @Command("view")
     private int $view(@CommandSource ServerPlayerEntity player, OfflinePlayerName from) {
         String $from = from.getString();
         NbtCompound root = NbtHelper.read(STORAGE_PATH.resolve(getFileName($from)));

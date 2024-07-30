@@ -1,22 +1,24 @@
 package io.github.sakurawald.command.processor;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.adapter.ArgumentTypeAdapter;
 import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.ReflectionUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.util.minecraft.PermissionHelper;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -27,7 +29,7 @@ import java.util.function.Function;
 
 
 public class BrigadierAnnotationProcessor {
-    public static final String REQUIRED_ARGUMENT_PLACEHOLDER = "$";
+    private static final String REQUIRED_ARGUMENT_PLACEHOLDER = "$";
     private static CommandDispatcher<ServerCommandSource> dispatcher;
 
     public static void register() {
@@ -66,11 +68,33 @@ public class BrigadierAnnotationProcessor {
         List<ArgumentBuilder<ServerCommandSource, ?>> builders = makeArgumentBuilders(pattern, method);
         com.mojang.brigadier.Command<ServerCommandSource> function = makeCommandFunction(method, instance);
 
+        // set requirement (override requirement)
+        builders.forEach(builder -> setRequirement(builder, clazz.getAnnotation(CommandPermission.class)));
+
         LiteralArgumentBuilder<ServerCommandSource> root = makeRootArgumentBuilder(builders, (last) -> last.executes(function));
 
         // register
         dispatcher.register(root);
     }
+
+    private static void setRequirement(ArgumentBuilder<ServerCommandSource, ?> builder, CommandPermission annotation) {
+        if (annotation == null) return;
+
+        if (annotation.level() != 0) {
+            builder.requires(ctx -> ctx.hasPermissionLevel(annotation.level()));
+            return;
+        }
+
+        if (!annotation.permission().isEmpty()) {
+            builder.requires(ctx -> {
+                ServerPlayerEntity player = ctx.getPlayer();
+                if (player == null) return true;
+                return PermissionHelper.hasPermission(player, annotation.permission());
+            });
+            return;
+        }
+    }
+
 
 
     private static List<String> makeArgumentPattern(Class<?> clazz, Method method) {
@@ -102,8 +126,7 @@ public class BrigadierAnnotationProcessor {
         Type expectedCommandSourceType = null;
 
         for (Parameter parameter : method.getParameters()) {
-            CommandSource annotation = parameter.getDeclaredAnnotation(CommandSource.class);
-            if (annotation != null) {
+            if (parameter.isAnnotationPresent(CommandSource.class)) {
                 expectedCommandSourceType = parameter.getType();
                 break;
             }
@@ -144,11 +167,11 @@ public class BrigadierAnnotationProcessor {
         return args;
     }
 
-    public static LiteralArgumentBuilder<ServerCommandSource> makeLiteralArgumentBuilder(String name) {
+    private static LiteralArgumentBuilder<ServerCommandSource> makeLiteralArgumentBuilder(String name) {
         return CommandManager.literal(name);
     }
 
-    public static RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(Parameter parameter) {
+    private static RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(Parameter parameter) {
         CommandSource commandSource = parameter.getDeclaredAnnotation(CommandSource.class);
         if (commandSource != null) {
             throw new RuntimeException("It's like you specify a wrong `parameter index` for the command pattern.");
@@ -157,27 +180,31 @@ public class BrigadierAnnotationProcessor {
         return ArgumentTypeAdapter.getAdapter(parameter.getType()).makeRequiredArgumentBuilder(parameter);
     }
 
-    public static List<ArgumentBuilder<ServerCommandSource, ?>> makeArgumentBuilders(List<String> pattern, Method method) {
+    private static List<ArgumentBuilder<ServerCommandSource, ?>> makeArgumentBuilders(List<String> pattern, Method method) {
         List<ArgumentBuilder<ServerCommandSource, ?>> builders = new ArrayList<>();
 
         for (String name : pattern) {
-
+            ArgumentBuilder<ServerCommandSource, ?> builder;
             if (name.startsWith("$")) {
                 int index = Integer.parseInt(name.substring(1));
                 Parameter parameter = method.getParameters()[index];
-
-                builders.add(makeRequiredArgumentBuilder(parameter));
+                builder = makeRequiredArgumentBuilder(parameter);
             } else {
-                builders.add(makeLiteralArgumentBuilder(name));
+                builder = makeLiteralArgumentBuilder(name);
             }
 
+            // set requirement
+            setRequirement(builder, method.getAnnotation(CommandPermission.class));
+
+            // add argument node
+            builders.add(builder);
         }
 
         return builders;
     }
 
     @SuppressWarnings("unchecked")
-    public static LiteralArgumentBuilder<ServerCommandSource> makeRootArgumentBuilder(List<ArgumentBuilder<ServerCommandSource, ?>> builders, Function<ArgumentBuilder<ServerCommandSource, ?>, ArgumentBuilder<ServerCommandSource, ?>> function) {
+    private static LiteralArgumentBuilder<ServerCommandSource> makeRootArgumentBuilder(List<ArgumentBuilder<ServerCommandSource, ?>> builders, Function<ArgumentBuilder<ServerCommandSource, ?>, ArgumentBuilder<ServerCommandSource, ?>> function) {
 
         ArgumentBuilder<ServerCommandSource, ?> root = null;
 
