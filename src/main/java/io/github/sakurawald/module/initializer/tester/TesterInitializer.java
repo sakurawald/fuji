@@ -1,16 +1,17 @@
 package io.github.sakurawald.module.initializer.tester;
 
-import carpet.script.language.Sys;
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import eu.pb4.placeholders.api.PlaceholderResult;
 import eu.pb4.placeholders.api.Placeholders;
+import io.github.sakurawald.command.processor.BrigadierAnnotationProcessor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.LogUtil;
-import lombok.SneakyThrows;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
@@ -20,8 +21,10 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
-import static net.minecraft.server.command.CommandManager.RegistrationEnvironment;
-import static net.minecraft.server.command.CommandManager.literal;
+import java.util.ArrayList;
+import java.util.List;
+
+import static net.minecraft.server.command.CommandManager.*;
 
 
 public class TesterInitializer extends ModuleInitializer {
@@ -48,7 +51,7 @@ public class TesterInitializer extends ModuleInitializer {
 
     }
 
-//    @SneakyThrows
+    //    @SneakyThrows
     private static int $run(@NotNull CommandContext<ServerCommandSource> ctx) {
         var source = ctx.getSource();
         ServerPlayerEntity player = source.getPlayer();
@@ -66,11 +69,30 @@ public class TesterInitializer extends ModuleInitializer {
     public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
         if (!FabricLoader.getInstance().isDevelopmentEnvironment()) return;
 
-//        registerStore();
         dispatcher.register(
                 literal("tester").requires(s -> s.hasPermissionLevel(4))
                         .then(literal("run").executes(TesterInitializer::$run))
         );
+
+//        List<ArgumentBuilder<ServerCommandSource, ?>> argument = new ArrayList<>(){
+//            {
+//                this.add(literal("create"));
+//                this.add(argument("name", StringArgumentType.string()));
+//                this.add(literal("age"));
+//                this.add(argument("age", IntegerArgumentType.integer()));
+//                this.add(literal("finish"));
+//            }
+//
+//        };
+//
+//        LiteralArgumentBuilder<ServerCommandSource> ret = BrigadierAnnotationProcessor.makeRootArgumentBuilder(argument, (root) -> {
+//            return root.executes(ctx -> {
+//                ctx.getSource().sendMessage(Text.of("Hello !"));
+//                return 1;
+//            });
+//        });
+//
+//        dispatcher.register(ret);
 
     }
 

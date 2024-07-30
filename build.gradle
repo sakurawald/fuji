@@ -124,6 +124,8 @@ tasks.withType(JavaCompile).configureEach {
     configure(options) {
         // disable the powerful way of string interpolation
         options.compilerArgs << '-Amanifold.strings.simple.disabled=true'
+        // for command annotation processor reflection
+        options.compilerArgs << '-parameters'
     }
 }
 

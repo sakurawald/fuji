@@ -16,7 +16,7 @@ import javax.naming.OperationNotSupportedException;
 import java.util.*;
 
 public class ModuleManager extends AbstractManager {
-    private  final Map<Class<? extends ModuleInitializer>, ModuleInitializer> initializers = new HashMap<>();
+    private  final Map<Class<? extends ModuleInitializer>, ModuleInitializer> moduleRegistry = new HashMap<>();
     private  final Map<List<String>, Boolean> module2enable = new HashMap<>();
 
     @SuppressWarnings("SameParameterValue")
@@ -36,7 +36,7 @@ public class ModuleManager extends AbstractManager {
     }
 
     public  void reloadModules() {
-        initializers.values().forEach(initializer -> {
+        moduleRegistry.values().forEach(initializer -> {
                     try {
                         initializer.onReload();
                     } catch (OperationNotSupportedException e) {
@@ -71,18 +71,22 @@ public class ModuleManager extends AbstractManager {
     @ApiStatus.AvailableSince("1.1.5")
     public  <T extends ModuleInitializer> T getInitializer(@NotNull Class<T> clazz) {
         JsonElement config = Configs.configHandler.toJsonElement();
-        if (!initializers.containsKey(clazz)) {
+        if (!moduleRegistry.containsKey(clazz)) {
             if (shouldEnableModule(config, getPackagePath(ModuleInitializer.class, clazz.getName()))) {
                 try {
                     ModuleInitializer moduleInitializer = clazz.getDeclaredConstructor().newInstance();
                     moduleInitializer.initialize();
-                    initializers.put(clazz, moduleInitializer);
+                    moduleRegistry.put(clazz, moduleInitializer);
                 } catch (Exception e) {
                     LogUtil.cryLoudly("Failed to initialize module %s.".formatted(clazz.getSimpleName()), e);
                 }
             }
         }
-        return clazz.cast(initializers.get(clazz));
+        return clazz.cast(moduleRegistry.get(clazz));
+    }
+
+    public Collection<ModuleInitializer> getInitializers() {
+        return this.moduleRegistry.values();
     }
 
     public  boolean shouldEnableModule(@NotNull JsonElement config, @NotNull List<String> packagePath) {
