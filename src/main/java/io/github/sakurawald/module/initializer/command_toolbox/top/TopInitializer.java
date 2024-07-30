@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 public class TopInitializer extends ModuleInitializer {
 
     @Command("top")
-    private static int top(@CommandSource ServerPlayerEntity player) {
+    private int top(@CommandSource ServerPlayerEntity player) {
         World world = player.getWorld();
         BlockPos topPosition = world.getTopPosition(Heightmap.Type.MOTION_BLOCKING, player.getBlockPos());
 

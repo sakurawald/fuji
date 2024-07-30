@@ -1,7 +1,8 @@
 package io.github.sakurawald.module.initializer.afk;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -12,6 +13,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -32,18 +34,12 @@ public class AfkInitializer extends ModuleInitializer {
         Managers.getScheduleManager().scheduleJob(AfkMarkerJob.class, Configs.configHandler.model().modules.afk.afk_checker.cron);
     }
 
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("afk").executes(this::$afk));
-    }
-
-    private int $afk(@NotNull CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.Pattern.playerOnlyCommand(ctx, (player -> {
-            // note: issue command will update lastLastActionTime, so it's impossible to use /afk to disable afk
-            ((AfkStateAccessor) player).fuji$setAfk(true);
-            MessageHelper.sendMessage(player, "afk.on");
-            return CommandHelper.Return.SUCCESS;
-        }));
+    @Command("afk")
+    private int $afk(@CommandSource ServerPlayerEntity player) {
+        // note: issue command will update lastLastActionTime, so it's impossible to use /afk to disable afk
+        ((AfkStateAccessor) player).fuji$setAfk(true);
+        MessageHelper.sendMessage(player, "afk.on");
+        return CommandHelper.Return.SUCCESS;
     }
 
 }

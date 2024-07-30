@@ -44,18 +44,18 @@ public class BrigadierAnnotationProcessor {
 
         for (ModuleInitializer initializer : initializers) {
             Class<?> clazz = initializer.getClass();
-            processClass(clazz);
+            processClass(clazz, initializer);
         }
     }
 
-    private static void processClass(Class<?> clazz) {
+    private static void processClass(Class<?> clazz, Object instance) {
         Set<Method> methods = ReflectionUtil.getMethodsWithAnnotation(clazz, Command.class);
         for (Method method : methods) {
-            processMethod(clazz, method);
+            processMethod(clazz, method, instance);
         }
     }
 
-    private static void processMethod(Class<?> clazz, Method method) {
+    private static void processMethod(Class<?> clazz, Method method, Object instance) {
         method.setAccessible(true);
 
         // build
@@ -64,7 +64,7 @@ public class BrigadierAnnotationProcessor {
         LogUtil.warn("register command pattern = {}", pattern);
 
         List<ArgumentBuilder<ServerCommandSource, ?>> builders = makeArgumentBuilders(pattern, method);
-        com.mojang.brigadier.Command<ServerCommandSource> function = makeCommandFunction(method);
+        com.mojang.brigadier.Command<ServerCommandSource> function = makeCommandFunction(method, instance);
 
         LiteralArgumentBuilder<ServerCommandSource> root = makeRootArgumentBuilder(builders, (last) -> last.executes(function));
 
@@ -114,19 +114,17 @@ public class BrigadierAnnotationProcessor {
         return ArgumentTypeAdapter.getAdapter(expectedCommandSourceType).validateCommandSource(ctx);
     }
 
-    private static com.mojang.brigadier.Command<ServerCommandSource> makeCommandFunction(Method method) {
+    private static com.mojang.brigadier.Command<ServerCommandSource> makeCommandFunction(Method method, Object instance) {
         return (ctx) -> {
-
             // validate command source
             if (!validateCommandSource(ctx, method)) {
                 return CommandHelper.Return.FAIL;
             }
 
-
             List<Object> args = makeCommandFunctionArgs(ctx, method);
             Object invoke;
             try {
-                invoke = method.invoke(null, args.toArray());
+                invoke = method.invoke(instance, args.toArray());
             } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException(e);
             }
