@@ -19,6 +19,7 @@ import java.nio.file.Path;
 // TODO: move docs gen into another project
 // TODO: supplier for scheduler
 // TODO: refactor command facility (tui, selector, aop, options, parser, redirect/option, modifier, operation-argument-type, suggestion)
+// TODO: cfg gradle shadow plugin
 
 public class Fuji implements ModInitializer {
 

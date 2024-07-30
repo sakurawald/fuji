@@ -1,14 +1,11 @@
 package io.github.sakurawald.module.initializer.deathlog;
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
-import io.github.sakurawald.command.wrapper.OfflinePlayerName;
+import io.github.sakurawald.command.adapter.wrapper.OfflinePlayerName;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.NbtHelper;
@@ -18,8 +15,6 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -34,8 +29,6 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
-import static net.minecraft.server.command.CommandManager.RegistrationEnvironment;
 
 @Command("deathlog")
 @CommandPermission(level = 4)
@@ -61,19 +54,6 @@ public class DeathLogInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {
         STORAGE_PATH.toFile().mkdirs();
-    }
-
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
-//        dispatcher.register(
-//                literal("deathlog").requires(s -> s.hasPermissionLevel(4))
-//                        .then(literal("view")
-//                                .then(CommandHelper.Argument.offlinePlayer("from").executes(this::$view)))
-//                        .then(literal("restore")
-//                                .then(CommandHelper.Argument.offlinePlayer("from")
-//                                        .then(argument("index", IntegerArgumentType.integer())
-//                                                .then(argument("to", EntityArgumentType.player()).executes(this::$restore))))
-//                        ));
     }
 
     @SneakyThrows
