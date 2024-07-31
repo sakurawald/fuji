@@ -11,7 +11,9 @@ import net.minecraft.server.command.ServerCommandSource;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
+@SuppressWarnings("unused")
 public class ScheduleJobArgumentTypeAdapter extends ArgumentTypeAdapter {
+
     @Override
     public boolean match(Type type) {
         return ScheduleJobName.class.equals(type);

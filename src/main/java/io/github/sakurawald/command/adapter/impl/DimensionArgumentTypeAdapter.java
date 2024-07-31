@@ -15,6 +15,7 @@ import java.lang.reflect.Type;
 
 import static net.minecraft.server.command.CommandManager.argument;
 
+@SuppressWarnings("unused")
 public class DimensionArgumentTypeAdapter extends ArgumentTypeAdapter {
     @Override
     public boolean match(Type type) {

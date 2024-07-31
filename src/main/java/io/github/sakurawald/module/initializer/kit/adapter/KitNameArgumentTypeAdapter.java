@@ -13,6 +13,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
+@SuppressWarnings("unused")
 public class KitNameArgumentTypeAdapter extends ArgumentTypeAdapter {
 
     private static final KitInitializer initializer = Managers.getModuleManager().getInitializer(KitInitializer.class);
