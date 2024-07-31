@@ -829,6 +829,9 @@ public class ConfigModel {
                 - Per dimension configurable.
                 - Ignore flulid blocks (water, lava...).
                 - Ignore powered snow
+                
+                Argument:
+                - --dimension: target dimension
                                 
                 Note:
                 - It's highly recommended to pre-gen the world chunks. To gen a new chunk during rtp rquires about 2~10 seconds.

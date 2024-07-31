@@ -53,7 +53,7 @@ public class TpposInitializer extends ModuleInitializer {
         int $centerZ = centerZ.orElse((int) world.getWorldBorder().getCenterZ());
         boolean $circle = circle.orElse(false);
         int $minRange = minRange.orElse(0);
-        int $maxRange = maxRange.orElse(world.getWorldBorder().getMaxRadius());
+        int $maxRange = maxRange.orElse((int) world.getWorldBorder().getSize() / 2);
         int $minY = minY.orElse(world.getBottomY());
         int $maxY = maxY.orElse(world.getTopY());
         int $maxTryTimes = maxTryTimes.orElse(8);
