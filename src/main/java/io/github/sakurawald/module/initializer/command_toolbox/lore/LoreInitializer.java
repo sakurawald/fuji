@@ -2,6 +2,9 @@ package io.github.sakurawald.module.initializer.command_toolbox.lore;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.command.adapter.wrapper.GreedyString;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
@@ -19,14 +22,8 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 public class LoreInitializer extends ModuleInitializer {
 
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(literal("lore")
-                .then(literal("set").then(CommandHelper.Argument.rest().executes(this::$set)))
-                .then(literal("unset").executes(this::$unset)));
-    }
-
-    private int $unset(@NotNull CommandContext<ServerCommandSource> ctx) {
+    @Command("lore unset")
+    private int $unset(@CommandSource CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.itemOnHandCommand(ctx, (player, item) -> {
             LoreComponent loreComponent = new LoreComponent(List.of());
             item.set(DataComponentTypes.LORE, loreComponent);
@@ -34,10 +31,10 @@ public class LoreInitializer extends ModuleInitializer {
         });
     }
 
-    private int $set(@NotNull CommandContext<ServerCommandSource> ctx) {
+    @Command("lore set")
+    private int $set(@CommandSource CommandContext<ServerCommandSource> ctx, GreedyString lore) {
         return CommandHelper.Pattern.itemOnHandCommand(ctx, (player, item) -> {
-            String rest = CommandHelper.Argument.rest(ctx);
-            List<Text> texts = MessageHelper.ofTextList(player, false, rest);
+            List<Text> texts = MessageHelper.ofTextList(player, false, lore.getString());
             LoreComponent loreComponent = new LoreComponent(texts);
             item.set(DataComponentTypes.LORE, loreComponent);
             return CommandHelper.Return.SUCCESS;

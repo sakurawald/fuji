@@ -2,6 +2,8 @@ package io.github.sakurawald.module.initializer.command_toolbox.realname;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.ServerHelper;
@@ -17,12 +19,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class RealnameInitializer extends ModuleInitializer {
 
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("realname").executes(this::$realname));
-    }
 
-    private int $realname(@NotNull CommandContext<ServerCommandSource> ctx) {
+    @Command("realname")
+    private int $realname(@CommandSource CommandContext<ServerCommandSource> ctx) {
         TextComponent.Builder builder = Component.empty().toBuilder();
 
         for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {

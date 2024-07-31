@@ -1,8 +1,9 @@
 package io.github.sakurawald.module.initializer.profiler;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
@@ -43,12 +44,8 @@ public class ProfilerInitializer extends ModuleInitializer {
         }
     }
 
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("profiler").executes(this::$profiler));
-    }
-
-    private int $profiler(@NotNull CommandContext<ServerCommandSource> ctx) {
+    @Command("profiler")
+    private int $profiler(@CommandSource CommandContext<ServerCommandSource> ctx) {
         ServerCommandSource source = ctx.getSource();
         CompletableFuture.runAsync(() -> {
             /* get instance */

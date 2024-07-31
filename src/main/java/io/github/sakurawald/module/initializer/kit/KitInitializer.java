@@ -1,21 +1,22 @@
 package io.github.sakurawald.module.initializer.kit;
 
-import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.kit.adapter.KitName;
 import io.github.sakurawald.module.initializer.kit.gui.KitEditorGui;
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.NbtHelper;
 import lombok.SneakyThrows;
-import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
@@ -26,8 +27,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.minecraft.server.command.CommandManager.literal;
-
+@Command("kit")
+@CommandPermission(level = 4)
 public class KitInitializer extends ModuleInitializer {
 
     public static final String INVENTORY = "inventory";
@@ -90,27 +91,11 @@ public class KitInitializer extends ModuleInitializer {
         STORAGE_PATH.toFile().mkdirs();
     }
 
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(
-                literal("kit").requires(s -> s.hasPermissionLevel(4))
-                        .then(literal("editor").executes(this::$editor))
-                        .then(literal("give")
-                                .then(CommandHelper.Argument.player()
-                                        .then(CommandHelper.Argument.name()
-                                                .suggests((context, builder) -> {
-                                                    getKitNameList().forEach(builder::suggest);
-                                                    return builder.buildFuture();
-                                                })
-                                                .executes(this::$give)))));
-    }
-
-    private int $editor(@NotNull CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
-            List<Kit> kits = readKits();
-            new KitEditorGui(player, kits, 0).open();
-            return CommandHelper.Return.SUCCESS;
-        });
+    @Command("editor")
+    private int $editor(@CommandSource ServerPlayerEntity player) {
+        List<Kit> kits = readKits();
+        new KitEditorGui(player, kits, 0).open();
+        return CommandHelper.Return.SUCCESS;
     }
 
     /*
@@ -121,19 +106,18 @@ public class KitInitializer extends ModuleInitializer {
      * counter for: times, cooldown
      * */
     @SneakyThrows
-    private int $give(@NotNull CommandContext<ServerCommandSource> ctx) {
-        ServerPlayerEntity player = CommandHelper.Argument.player(ctx);
-        String name = CommandHelper.Argument.name(ctx);
+    @Command("give")
+    private int $give(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player, KitName kit) {
 
-        Kit kit = readKit(name);
-        if (kit.getStackList().isEmpty()) {
-            MessageHelper.sendMessage(player, "kit.kit.empty");
+        Kit $kit = readKit(kit.getString());
+        if ($kit.getStackList().isEmpty()) {
+            MessageHelper.sendMessage(ctx.getSource(), "kit.kit.empty");
             return CommandHelper.Return.FAIL;
         }
 
         PlayerInventory playerInventory = player.getInventory();
-        for (int i = 0; i < kit.getStackList().size(); i++) {
-            ItemStack copy = kit.getStackList().get(i).copy();
+        for (int i = 0; i < $kit.getStackList().size(); i++) {
+            ItemStack copy = $kit.getStackList().get(i).copy();
 
             if (playerInventory.getStack(i).isEmpty()) {
                 playerInventory.setStack(i, copy);

@@ -2,6 +2,9 @@ package io.github.sakurawald.module.initializer.command_meta.chain;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.command.adapter.wrapper.GreedyString;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.module.common.structure.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
@@ -18,15 +21,13 @@ import static net.minecraft.server.command.CommandManager.literal;
 public class ChainInitializer extends ModuleInitializer {
     private static final Pattern CHAIN_COMMAND_PARSER = Pattern.compile("(.+?)\\s+(chain .+)");
 
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(literal("chain").then(CommandHelper.Argument.rest().executes(this::chain)));
-    }
+    @Command("chain")
+    @CommandPermission(level = 4)
+    private int chain(GreedyString rest) {
 
-    private int chain(@NotNull CommandContext<ServerCommandSource> ctx) {
-        String rest = CommandHelper.Argument.rest(ctx);
+        String $rest = rest.getString();
 
-        Matcher matcher = CHAIN_COMMAND_PARSER.matcher(rest);
+        Matcher matcher = CHAIN_COMMAND_PARSER.matcher($rest);
         if (matcher.find()) {
             String first = matcher.group(1);
             String second = matcher.group(2);
@@ -36,7 +37,7 @@ public class ChainInitializer extends ModuleInitializer {
                 CommandExecutor.executeCommandAsConsole(null, second);
             }
         } else {
-            CommandExecutor.executeCommandAsConsole(null, rest);
+            CommandExecutor.executeCommandAsConsole(null, $rest);
         }
 
         return CommandHelper.Return.SUCCESS;

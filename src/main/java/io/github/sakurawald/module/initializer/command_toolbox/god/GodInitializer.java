@@ -1,34 +1,24 @@
 package io.github.sakurawald.module.initializer.command_toolbox.god;
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
-import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 
 public class GodInitializer extends ModuleInitializer {
 
 
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("god").executes(this::$god));
-    }
+    @Command("god")
+    private int $god(@CommandSource ServerPlayerEntity player) {
+        boolean flag = !player.getAbilities().invulnerable;
+        player.getAbilities().invulnerable = flag;
+        player.sendAbilitiesUpdate();
 
-    @SuppressWarnings("SameReturnValue")
-    private int $god(@NotNull CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
-            boolean flag = !player.getAbilities().invulnerable;
-            player.getAbilities().invulnerable = flag;
-            player.sendAbilitiesUpdate();
-
-            MessageHelper.sendMessage(player, flag ? "god.on" : "god.off");
-            return CommandHelper.Return.SUCCESS;
-        });
+        MessageHelper.sendMessage(player, flag ? "god.on" : "god.off");
+        return CommandHelper.Return.SUCCESS;
     }
 
 }

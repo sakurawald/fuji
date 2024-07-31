@@ -2,6 +2,9 @@ package io.github.sakurawald.module.initializer.cleaner;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.structure.TypeFormatter;
@@ -36,13 +39,11 @@ import java.util.concurrent.CompletableFuture;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
+
+@Command("cleaner")
+@CommandPermission(level = 4)
 public class CleanerInitializer extends ModuleInitializer {
 
-    @Override
-    public void registerCommand(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(literal("cleaner").requires(ctx -> ctx.hasPermissionLevel(4))
-                .then(literal("clean").executes(this::clean)));
-    }
 
     @Override
     public void onInitialize() {
@@ -82,17 +83,13 @@ public class CleanerInitializer extends ModuleInitializer {
         return false;
     }
 
-    private int clean(CommandContext<ServerCommandSource> ctx) {
-        clean();
-        return CommandHelper.Return.SUCCESS;
-    }
-
     private boolean shouldRemove(String key, int age) {
         Map<String, Integer> regex2age = Configs.configHandler.model().modules.cleaner.key2age;
         return regex2age.containsKey(key) && age >= regex2age.get(key);
     }
 
-    private void clean() {
+    @Command("clean")
+    private int clean() {
         CompletableFuture.runAsync(() -> {
             Map<String, Integer> counter = new HashMap<>();
 
@@ -117,6 +114,8 @@ public class CleanerInitializer extends ModuleInitializer {
             // output
             sendCleanerBroadcast(counter);
         });
+
+        return CommandHelper.Return.SUCCESS;
     }
 
     private void sendCleanerBroadcast(Map<String, Integer> counter) {

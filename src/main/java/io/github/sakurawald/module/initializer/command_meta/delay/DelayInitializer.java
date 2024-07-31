@@ -3,6 +3,9 @@ package io.github.sakurawald.module.initializer.command_meta.delay;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.command.adapter.wrapper.GreedyString;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.module.common.structure.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
@@ -21,20 +24,14 @@ import static net.minecraft.server.command.CommandManager.literal;
 public class DelayInitializer extends ModuleInitializer {
     private static final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(literal("delay")
-                .then(argument("time", IntegerArgumentType.integer(1))
-                        .then(CommandHelper.Argument.rest().executes(this::delay))));
-    }
+    @Command("delay")
+    @CommandPermission(level = 4)
+    private int delay(int time, GreedyString rest) {
 
-    private int delay(@NotNull CommandContext<ServerCommandSource> ctx) {
-
-        int time = IntegerArgumentType.getInteger(ctx, "time");
-        String rest = CommandHelper.Argument.rest(ctx);
+        String $rest = rest.getString();
 
         executor.schedule(() -> {
-            CommandExecutor.executeCommandAsConsole(null, rest);
+            CommandExecutor.executeCommandAsConsole(null, $rest);
         }, time, TimeUnit.SECONDS);
 
         return CommandHelper.Return.SUCCESS;

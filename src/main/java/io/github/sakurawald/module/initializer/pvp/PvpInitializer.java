@@ -2,18 +2,23 @@ package io.github.sakurawald.module.initializer.pvp;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.PvPModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
-import java.util.HashSet;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
-import static net.minecraft.server.command.CommandManager.*;
+import java.util.HashSet;
+
+import static net.minecraft.server.command.CommandManager.RegistrationEnvironment;
+import static net.minecraft.server.command.CommandManager.literal;
 
 
 public class PvpInitializer extends ModuleInitializer {
@@ -30,38 +35,25 @@ public class PvpInitializer extends ModuleInitializer {
         pvpHandler.loadFromDisk();
     }
 
-    @SuppressWarnings("unused")
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
-        dispatcher.register(
-                literal("pvp")
-                        .then(literal("on").executes(this::$on))
-                        .then(literal("off").executes(this::$off))
-                        .then(literal("list").executes(this::$list))
-                        .then(literal("status").executes(this::$status))
-        );
-    }
+    @Command("pvp on")
+    private int $on(@CommandSource ServerPlayerEntity player) {
+        HashSet<String> whitelist = pvpHandler.model().whitelist;
+        String name = player.getGameProfile().getName();
+        if (!whitelist.contains(name)) {
+            whitelist.add(name);
+            pvpHandler.saveToDisk();
 
-    private int $on(@NotNull CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
-            HashSet<String> whitelist = pvpHandler.model().whitelist;
-            String name = player.getGameProfile().getName();
-            if (!whitelist.contains(name)) {
-                whitelist.add(name);
-                pvpHandler.saveToDisk();
+            MessageHelper.sendMessage(player, "pvp.on");
 
-                MessageHelper.sendMessage(player, "pvp.on");
-
-                return CommandHelper.Return.SUCCESS;
-            }
-
-            MessageHelper.sendMessage(player, "pvp.on.already");
             return CommandHelper.Return.SUCCESS;
-        });
+        }
+
+        MessageHelper.sendMessage(player, "pvp.on.already");
+        return CommandHelper.Return.SUCCESS;
     }
 
-    private int $off(@NotNull CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
+    @Command("pvp off")
+    private int $off(@CommandSource ServerPlayerEntity player) {
             HashSet<String> whitelist = pvpHandler.model().whitelist;
             String name = player.getGameProfile().getName();
             if (whitelist.contains(name)) {
@@ -73,21 +65,19 @@ public class PvpInitializer extends ModuleInitializer {
             }
 
             MessageHelper.sendMessage(player, "pvp.off.already");
-            return 0;
-        });
+            return CommandHelper.Return.FAIL;
     }
 
-    @SuppressWarnings("SameReturnValue")
-    private int $status(@NotNull CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
+    @Command("pvp status")
+    private int $status(@CommandSource ServerPlayerEntity player) {
             HashSet<String> whitelist = pvpHandler.model().whitelist;
             player.sendMessage(MessageHelper.ofComponent(player, "pvp.status")
                     .append(whitelist.contains(player.getGameProfile().getName()) ? MessageHelper.ofComponent(player, "on") : MessageHelper.ofComponent(player, "off")));
             return CommandHelper.Return.SUCCESS;
-        });
     }
 
-    private int $list(@NotNull CommandContext<ServerCommandSource> ctx) {
+    @Command("pvp list")
+    private int $list(@CommandSource CommandContext<ServerCommandSource> ctx) {
         HashSet<String> whitelist = pvpHandler.model().whitelist;
         MessageHelper.sendMessage(ctx.getSource(), "pvp.list", whitelist);
         return CommandHelper.Return.SUCCESS;
