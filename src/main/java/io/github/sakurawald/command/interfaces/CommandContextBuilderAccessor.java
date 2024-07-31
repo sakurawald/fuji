@@ -9,5 +9,6 @@ public interface CommandContextBuilderAccessor<S> {
 
     Map<String, ParsedArgument<S, ?>> getArguments();
 
-    CommandContextBuilder<S> withArguments(Map<String, ParsedArgument<S, ?>> arguments);
+    @SuppressWarnings("UnusedReturnValue")
+    CommandContextBuilder<S> fuji$withArguments(Map<String, ParsedArgument<S, ?>> arguments);
 }
