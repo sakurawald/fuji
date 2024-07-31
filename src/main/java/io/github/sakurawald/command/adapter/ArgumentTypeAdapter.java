@@ -11,9 +11,11 @@ import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class ArgumentTypeAdapter {
 
@@ -49,7 +51,18 @@ public abstract class ArgumentTypeAdapter {
         return true;
     }
 
-    public static ArgumentTypeAdapter getAdapter(Type type) {
+    private static Type unpackType(Parameter parameter) {
+        if (parameter.getType().equals(Optional.class)) {
+            ParameterizedType parameterizedType = (ParameterizedType) parameter.getParameterizedType();
+            return parameterizedType.getActualTypeArguments()[0];
+        }
+
+        return parameter.getType();
+    }
+
+    public static ArgumentTypeAdapter getAdapter(Parameter parameter) {
+        Type type = unpackType(parameter);
+
         for (ArgumentTypeAdapter adapter : adapters) {
             if (adapter.match(type)) {
                 return adapter;

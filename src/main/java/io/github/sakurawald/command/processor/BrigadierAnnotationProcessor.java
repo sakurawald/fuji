@@ -1,5 +1,6 @@
 package io.github.sakurawald.command.processor;
 
+import carpet.script.annotation.Param;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -8,7 +9,6 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.CommandNode;
 import io.github.sakurawald.command.adapter.ArgumentTypeAdapter;
 import io.github.sakurawald.command.annotation.Command;
-import io.github.sakurawald.command.annotation.CommandOptional;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.structure.Argument;
@@ -22,14 +22,8 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.lang.reflect.*;
+import java.util.*;
 import java.util.function.Function;
 
 import static net.minecraft.server.command.CommandManager.literal;
@@ -72,7 +66,6 @@ public class BrigadierAnnotationProcessor {
 
         LogUtil.warn("register command pattern = {}", pattern);
 
-
         /* first pass */
         List<ArgumentBuilder<ServerCommandSource, ?>> builders = makeArgumentBuilders(pattern, method);
         com.mojang.brigadier.Command<ServerCommandSource> function = makeCommandFunction(method, instance);
@@ -87,6 +80,7 @@ public class BrigadierAnnotationProcessor {
         registerOptionalArguments(pattern, method);
     }
 
+    @SuppressWarnings("UnnecessaryReturnStatement")
     private static void setRequirement(ArgumentBuilder<ServerCommandSource, ?> builder, CommandPermission annotation) {
         if (annotation == null) return;
 
@@ -127,7 +121,7 @@ public class BrigadierAnnotationProcessor {
                 Parameter parameter = parameters[index];
                 if (parameter.isAnnotationPresent(CommandSource.class)) continue;
 
-                ret.add(new Argument(parameter.getName(), index, parameter.isAnnotationPresent(CommandOptional.class)));
+                ret.add(new Argument(parameter.getName(), index, parameter.getType().equals(Optional.class)));
             }
         }
 
@@ -135,18 +129,18 @@ public class BrigadierAnnotationProcessor {
     }
 
     private static boolean validateCommandSource(CommandContext<ServerCommandSource> ctx, Method method) {
-        Type expectedCommandSourceType = null;
+        Parameter expectedCommandSourceParameter = null;
 
         for (Parameter parameter : method.getParameters()) {
             if (parameter.isAnnotationPresent(CommandSource.class)) {
-                expectedCommandSourceType = parameter.getType();
+                expectedCommandSourceParameter = parameter;
                 break;
             }
         }
 
-        if (expectedCommandSourceType == null) return true;
+        if (expectedCommandSourceParameter == null) return true;
 
-        return ArgumentTypeAdapter.getAdapter(expectedCommandSourceType).validateCommandSource(ctx);
+        return ArgumentTypeAdapter.getAdapter(expectedCommandSourceParameter).validateCommandSource(ctx);
     }
 
     private static com.mojang.brigadier.Command<ServerCommandSource> makeCommandFunction(Method method, Object instance) {
@@ -167,6 +161,8 @@ public class BrigadierAnnotationProcessor {
         };
     }
 
+
+
     private static List<Object> makeCommandFunctionArgs(CommandContext<ServerCommandSource> ctx, Method method) {
         List<Object> args = new ArrayList<>();
 
@@ -174,10 +170,15 @@ public class BrigadierAnnotationProcessor {
         for (Parameter parameter : parameters) {
 
             try {
-                Object arg = ArgumentTypeAdapter.getAdapter(parameter.getType()).makeArgumentObject(ctx, parameter);
+                Object arg = ArgumentTypeAdapter.getAdapter(parameter).makeArgumentObject(ctx, parameter);
+
+                if (parameter.getType().equals(Optional.class)) {
+                    arg = Optional.of(arg);
+                }
+
                 args.add(arg);
             } catch (Exception e) {
-                args.add(0);
+                args.add(Optional.empty());
                 // use optional
             }
 
@@ -196,7 +197,7 @@ public class BrigadierAnnotationProcessor {
             throw new RuntimeException("It's like you specify a wrong `parameter index` for the command pattern.");
         }
 
-        return ArgumentTypeAdapter.getAdapter(parameter.getType()).makeRequiredArgumentBuilder(parameter);
+        return ArgumentTypeAdapter.getAdapter(parameter).makeRequiredArgumentBuilder(parameter);
     }
 
     private static void registerOptionalArguments(List<Argument> arguments, Method method) {
@@ -219,7 +220,6 @@ public class BrigadierAnnotationProcessor {
 
     private static List<ArgumentBuilder<ServerCommandSource, ?>> makeArgumentBuilders(List<Argument> arguments, Method method) {
         List<ArgumentBuilder<ServerCommandSource, ?>> builders = new ArrayList<>();
-
 
         for (Argument argument : arguments) {
             String name = argument.getArgumentName();

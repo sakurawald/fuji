@@ -4,7 +4,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandSource;
-import io.github.sakurawald.command.annotation.CommandOptional;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.HomeModel;
@@ -12,6 +11,7 @@ import io.github.sakurawald.module.common.manager.scheduler.ScheduleManager;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.home.adapter.HomeName;
+import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.PermissionHelper;
@@ -92,11 +92,14 @@ public class HomeInitializer extends ModuleInitializer {
     }
 
     @Command("home set")
-    private int $set(@CommandSource ServerPlayerEntity player, HomeName home, @CommandOptional boolean override, @CommandOptional int time) {
+    private int $set(@CommandSource ServerPlayerEntity player, HomeName home, Optional<Boolean> override, Optional<Integer> time) {
         Map<String, Position> name2position = getHomes(player);
         String homeName = home.getString();
+
+        LogUtil.warn("time = {}", time.orElse(9999));
+
         if (name2position.containsKey(homeName)) {
-            if (!override) {
+            if (override.orElse(false)) {
                 MessageHelper.sendMessage(player, "home.set.fail.need_override", homeName);
                 return CommandHelper.Return.FAIL;
             }
