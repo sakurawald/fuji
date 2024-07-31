@@ -1,11 +1,11 @@
 package io.github.sakurawald.command.processor;
 
-import carpet.script.annotation.Param;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.tree.CommandNode;
 import io.github.sakurawald.command.adapter.ArgumentTypeAdapter;
 import io.github.sakurawald.command.annotation.Command;
@@ -21,8 +21,11 @@ import io.github.sakurawald.util.minecraft.PermissionHelper;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 
-import java.lang.reflect.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.function.Function;
 
@@ -59,12 +62,21 @@ public class BrigadierAnnotationProcessor {
     }
 
     private static void processMethod(Class<?> clazz, Method method, Object instance) {
+        if (!method.getReturnType().equals(Integer.class)
+                && !method.getReturnType().equals(int.class)) {
+            throw new RuntimeException("The method `%s` in class `%s` must return Integer.".formatted(method.getName(), clazz.getName()));
+        }
+
         method.setAccessible(true);
 
         // build
         List<Argument> pattern = makeArgumentList(clazz, method);
 
-        LogUtil.warn("register command pattern = {}", pattern);
+        if (pattern.isEmpty()) {
+            throw new RuntimeException("The @Command annotation of method `%s` in class `%s` must have at least one argument.".formatted(method.getName(), clazz.getName()));
+        }
+
+        LogUtil.debug("register command -> {}", pattern);
 
         /* first pass */
         List<ArgumentBuilder<ServerCommandSource, ?>> builders = makeArgumentBuilders(pattern, method);
@@ -155,12 +167,13 @@ public class BrigadierAnnotationProcessor {
             try {
                 invoke = method.invoke(instance, args.toArray());
             } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e);
+                // don't swallow the exception.
+                throw new SimpleCommandExceptionType(Text.of(e.getCause().toString())).create();
             }
+
             return (int) invoke;
         };
     }
-
 
 
     private static List<Object> makeCommandFunctionArgs(CommandContext<ServerCommandSource> ctx, Method method) {
@@ -210,7 +223,7 @@ public class BrigadierAnnotationProcessor {
             int index = optionalArgument.getMethodParameterIndex();
             Parameter parameter = method.getParameters()[index];
 
-            ArgumentBuilder<ServerCommandSource, ?> optionalArgumentBuilder = literal(optionalArgument.getArgumentName())
+            ArgumentBuilder<ServerCommandSource, ?> optionalArgumentBuilder = literal("--" + optionalArgument.getArgumentName())
                     .then(makeRequiredArgumentBuilder(parameter).executes(function).redirect(root));
 
             // register it
