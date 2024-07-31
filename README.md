@@ -25,7 +25,7 @@ Other languages available: [中文](https://github.com/sakurawald/fuji-fabric/wi
 
 See [configuration](https://github.com/sakurawald/fuji-fabric/wiki/Configuration)
 
-See [permission](https://github.com/sakurawald/fuji-fabric/wiki/Permission)
+See [permission](https://github.com/sakurawald/fuji-fabric/wiki/PermissionAndMeta)
 
 See [faq](https://github.com/sakurawald/fuji-fabric/wiki/FAQ)
 
