@@ -3,6 +3,9 @@ package io.github.sakurawald.module.initializer.command_toolbox.seen;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.command.adapter.wrapper.OfflinePlayerName;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.SeenModel;
@@ -14,6 +17,7 @@ import lombok.Getter;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
@@ -33,14 +37,9 @@ public class SeenInitializer extends ModuleInitializer {
         data.loadFromDisk();
     }
 
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("seen").then(CommandHelper.Argument.offlinePlayer().executes(this::$seen)));
-    }
-
-    @SuppressWarnings("SameReturnValue")
-    private int $seen(@NotNull CommandContext<ServerCommandSource> ctx) {
-        String target = CommandHelper.Argument.offlinePlayer(ctx);
+    @Command("seen")
+    private int $seen(@CommandSource CommandContext<ServerCommandSource> ctx, OfflinePlayerName playerName) {
+        String target = playerName.getString();
 
         if (data.model().player2seen.containsKey(target)) {
             Long time = data.model().player2seen.get(target);
