@@ -1,22 +1,19 @@
 package io.github.sakurawald.module.initializer.world_downloader;
 
 import com.google.common.collect.EvictingQueue;
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.context.CommandContext;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.util.IOUtil;
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
-import io.github.sakurawald.util.IOUtil;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.SneakyThrows;
-import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.ChunkPos;
@@ -31,8 +28,6 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import static net.minecraft.server.command.CommandManager.literal;
 
 public class WorldDownloaderInitializer extends ModuleInitializer {
 
@@ -63,12 +58,6 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         }
     }
 
-    @SuppressWarnings("unused")
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(literal("download").executes(this::$download));
-    }
-
     public void safelyRemoveContext(String path) {
         try {
             this.server.removeContext(path);
@@ -81,38 +70,36 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         safelyRemoveContext(httpContext.getPath());
     }
 
-    @SuppressWarnings("SameReturnValue")
     @SneakyThrows
-    private int $download(@NotNull CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
-            /* init server */
-            if (server == null) {
-                initServer();
-            }
+    @Command("download")
+    private int $download(@CommandSource ServerPlayerEntity player) {
+        /* init server */
+        if (server == null) {
+            initServer();
+        }
 
-            /* remove redundant contexts */
-            if (contextQueue.remainingCapacity() == 0) {
-                LogUtil.info("contexts is full, remove the oldest context. {}", contextQueue.peek());
-                safelyRemoveContext(contextQueue.poll());
-            }
+        /* remove redundant contexts */
+        if (contextQueue.remainingCapacity() == 0) {
+            LogUtil.info("contexts is full, remove the oldest context. {}", contextQueue.peek());
+            safelyRemoveContext(contextQueue.poll());
+        }
 
-            /* create context */
-            String url = Configs.configHandler.model().modules.world_downloader.url_format;
+        /* create context */
+        String url = Configs.configHandler.model().modules.world_downloader.url_format;
 
-            int port = Configs.configHandler.model().modules.world_downloader.port;
-            url = url.replace("%port%", String.valueOf(port));
+        int port = Configs.configHandler.model().modules.world_downloader.port;
+        url = url.replace("%port%", String.valueOf(port));
 
-            String path = "/download/" + UUID.randomUUID();
-            url = url.replace("%path%", path);
+        String path = "/download/" + UUID.randomUUID();
+        url = url.replace("%path%", path);
 
-            contextQueue.add(path);
-            File file = compressRegionFile(player);
-            double BYTE_TO_MEGABYTE = 1.0 * 1024 * 1024;
-            MessageHelper.sendBroadcast("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
-            server.createContext(path, new FileDownloadHandler(this, file, Configs.configHandler.model().modules.world_downloader.bytes_per_second_limit));
-            MessageHelper.sendMessage(player, "world_downloader.response", url);
-            return CommandHelper.Return.SUCCESS;
-        });
+        contextQueue.add(path);
+        File file = compressRegionFile(player);
+        double BYTE_TO_MEGABYTE = 1.0 * 1024 * 1024;
+        MessageHelper.sendBroadcast("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
+        server.createContext(path, new FileDownloadHandler(this, file, Configs.configHandler.model().modules.world_downloader.bytes_per_second_limit));
+        MessageHelper.sendMessage(player, "world_downloader.response", url);
+        return CommandHelper.Return.SUCCESS;
     }
 
     public @NotNull File compressRegionFile(@NotNull ServerPlayerEntity player) {

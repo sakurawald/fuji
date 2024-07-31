@@ -1,21 +1,19 @@
 package io.github.sakurawald.module.initializer.works;
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.WorksModel;
 import io.github.sakurawald.module.common.manager.Managers;
+import io.github.sakurawald.module.common.manager.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.works.gui.WorksGui;
 import io.github.sakurawald.module.initializer.works.work_type.Work;
 import io.github.sakurawald.util.minecraft.CommandHelper;
-import io.github.sakurawald.module.common.manager.scheduler.ScheduleManager;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
@@ -25,7 +23,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @SuppressWarnings("SameReturnValue")
-
 public class WorksInitializer extends ModuleInitializer {
 
     public static final ConfigHandler<WorksModel> worksHandler = new ObjectConfigHandler<>("works.json", WorksModel.class);
@@ -50,16 +47,10 @@ public class WorksInitializer extends ModuleInitializer {
         });
     }
 
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(CommandManager.literal("works").executes(this::$works));
-    }
-
-    private int $works(@NotNull CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
-            new WorksGui(player,worksHandler.model().works, 0).open();
-            return CommandHelper.Return.SUCCESS;
-        });
+    @Command("works")
+    private int $works(@CommandSource ServerPlayerEntity player) {
+        new WorksGui(player, worksHandler.model().works, 0).open();
+        return CommandHelper.Return.SUCCESS;
     }
 
     public static class WorksScheduleJob implements Job {

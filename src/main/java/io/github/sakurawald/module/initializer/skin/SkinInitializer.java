@@ -25,7 +25,6 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 public class SkinInitializer extends ModuleInitializer {
 
-    @SuppressWarnings("unused")
     @Override
     public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess commandBuildContext, CommandManager.RegistrationEnvironment commandSelection) {
         dispatcher.register(literal("skin")

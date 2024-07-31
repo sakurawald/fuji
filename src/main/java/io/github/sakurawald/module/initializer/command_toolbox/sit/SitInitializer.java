@@ -1,16 +1,15 @@
 package io.github.sakurawald.module.initializer.command_toolbox.sit;
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.block.BlockState;
-import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityAnchorArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -21,16 +20,10 @@ import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
-import static net.minecraft.server.command.CommandManager.*;
-
 public class SitInitializer extends ModuleInitializer {
 
     public final Set<Entity> CHAIRS = new HashSet<>();
 
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
-        dispatcher.register(literal("sit").executes(this::$sit));
-    }
 
     @Override
     public void onInitialize() {
@@ -39,19 +32,17 @@ public class SitInitializer extends ModuleInitializer {
         }));
     }
 
-    private int $sit(@NotNull CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.Pattern.playerOnlyCommand(ctx, (player) -> {
+    @Command("sit")
+    private int $sit(@CommandSource ServerPlayerEntity player) {
+        BlockState blockState = player.getEntityWorld().getBlockState(new BlockPos(player.getBlockX(), player.getBlockY() - 1, player.getBlockZ()));
+        if (player.hasVehicle() || player.isFallFlying() || player.isSleeping() || player.isSwimming() || player.isSpectator() || blockState.isAir() || blockState.isLiquid())
+            return 0;
 
-            BlockState blockState = player.getEntityWorld().getBlockState(new BlockPos(player.getBlockX(), player.getBlockY() - 1, player.getBlockZ()));
-            if (player.hasVehicle() || player.isFallFlying() || player.isSleeping() || player.isSwimming() || player.isSpectator() || blockState.isAir() || blockState.isLiquid())
-                return 0;
+        Entity entity = createChair(player.getEntityWorld(), player.getBlockPos(), new Vec3d(0, -1.7, 0), player.getPos(), false);
+        CHAIRS.add(entity);
+        player.startRiding(entity, true);
 
-            Entity entity = createChair(player.getEntityWorld(), player.getBlockPos(), new Vec3d(0, -1.7, 0), player.getPos(), false);
-            CHAIRS.add(entity);
-            player.startRiding(entity, true);
-
-            return CommandHelper.Return.SUCCESS;
-        });
+        return CommandHelper.Return.SUCCESS;
     }
 
     public @NotNull Entity createChair(@NotNull World world, @NotNull BlockPos blockPos, @NotNull Vec3d blockPosOffset, @Nullable Vec3d target, boolean boundToBlock) {

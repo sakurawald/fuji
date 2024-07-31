@@ -2,6 +2,8 @@ package io.github.sakurawald.module.initializer.top_chunks;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -37,14 +39,9 @@ import static net.minecraft.server.command.CommandManager.*;
 
 public class TopChunksInitializer extends ModuleInitializer {
 
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
-        dispatcher.register(
-                literal("chunks").executes(this::$chunks)
-        );
-    }
 
-    private int $chunks(@NotNull CommandContext<ServerCommandSource> ctx) {
+    @Command("chunks")
+    private int $chunks(@CommandSource CommandContext<ServerCommandSource> ctx) {
         CompletableFuture.runAsync(() -> {
             PriorityQueue<ChunkScore> PQ = new PriorityQueue<>();
             /* iter worlds */
