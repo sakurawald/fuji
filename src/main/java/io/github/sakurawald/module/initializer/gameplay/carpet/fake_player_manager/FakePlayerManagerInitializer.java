@@ -1,21 +1,20 @@
 package io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager;
 
 import com.mojang.authlib.GameProfile;
-import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.manager.Managers;
+import io.github.sakurawald.module.common.manager.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.DateUtil;
-import io.github.sakurawald.module.common.manager.scheduler.ScheduleManager;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.kyori.adventure.text.Component;
-import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Uuids;
@@ -28,8 +27,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
-import static net.minecraft.server.command.CommandManager.literal;
-
 public class FakePlayerManagerInitializer extends ModuleInitializer {
     private final ArrayList<String> CONSTANT_EMPTY_LIST = new ArrayList<>();
     private final HashMap<String, ArrayList<String>> player2fakePlayers = new HashMap<>();
@@ -40,28 +37,15 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(this::registerScheduleTask);
     }
 
-    @SuppressWarnings("unused")
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(
-                literal("player").then(
-                        literal("who").executes(this::$who)
-                ).then(
-                        literal("renew").executes(this::$renew)
-                )
-        );
-    }
-
-    @SuppressWarnings("SameReturnValue")
-    private int $renew(@NotNull CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
-            renewFakePlayers(player);
-            return CommandHelper.Return.SUCCESS;
-        });
+    @Command("player renew")
+    private int $renew(@CommandSource ServerPlayerEntity player) {
+        renewFakePlayers(player);
+        return CommandHelper.Return.SUCCESS;
     }
 
 
-    private int $who(@NotNull CommandContext<ServerCommandSource> context) {
+    @Command("player who")
+    private int $who(@CommandSource CommandContext<ServerCommandSource> context) {
         /* validate */
         validateFakePlayers();
 

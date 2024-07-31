@@ -1,42 +1,34 @@
 package io.github.sakurawald.module.initializer.rtp;
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.command.adapter.wrapper.Dimension;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.common.structure.TeleportSetup;
 import io.github.sakurawald.module.common.structure.random_teleport.RandomTeleport;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.IdentifierHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
-import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-import static net.minecraft.server.command.CommandManager.literal;
-
 public class RtpInitializer extends ModuleInitializer {
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(literal("rtp").executes(this::$rtp));
-    }
 
-    private int $rtp(@NotNull CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
-            ServerWorld serverWorld = player.getServerWorld();
+    @Command("rtp")
+    private int $rtp(@CommandSource ServerPlayerEntity player, Optional<Dimension> dimension) {
 
-            Optional<TeleportSetup> first = TeleportSetup.of(serverWorld);
-            if (first.isEmpty()) {
-                MessageHelper.sendMessage(player, "rtp.dimension.disallow", IdentifierHelper.ofString(serverWorld));
-                return CommandHelper.Return.FAIL;
-            }
+        ServerWorld serverWorld = dimension.isPresent() ? dimension.get().getWorld() : player.getServerWorld();
 
-            RandomTeleport.request(player, first.get(), (position -> MessageHelper.sendMessage(player, "rtp.success")));
+        Optional<TeleportSetup> first = TeleportSetup.of(serverWorld);
+        if (first.isEmpty()) {
+            MessageHelper.sendMessage(player, "rtp.dimension.disallow", IdentifierHelper.ofString(serverWorld));
+            return CommandHelper.Return.FAIL;
+        }
 
-            return CommandHelper.Return.SUCCESS;
-        });
+        RandomTeleport.request(player, first.get(), (position -> MessageHelper.sendMessage(player, "rtp.success")));
+
+        return CommandHelper.Return.SUCCESS;
     }
 }
