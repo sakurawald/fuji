@@ -17,7 +17,6 @@ public class ResourceConfigHandler extends ConfigHandler<JsonElement> {
 
     public ResourceConfigHandler(File file, String resourcePath) {
         super(file);
-        this.file = file;
         this.resourcePath = resourcePath;
     }
 

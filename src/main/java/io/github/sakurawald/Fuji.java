@@ -12,14 +12,14 @@ import java.nio.file.Path;
 // TODO: hologram module (facility)
 // TODO: invsee module (slot, inv-redirect)
 // TODO: powertool module (composed, meta)
-
-// TODO: a better way to write default languages
-// TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector)
-// TODO: tppos module
 // TODO: unified player data api (persistent data container)
+
+// TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector)
 // TODO: move docs gen into another project
 // TODO: supplier for scheduler
 // TODO: cfg gradle shadow plugin
+
+// TODO: tppos module
 
 public class Fuji implements ModInitializer {
 
