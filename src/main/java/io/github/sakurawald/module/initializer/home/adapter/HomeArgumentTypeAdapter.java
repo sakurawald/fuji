@@ -41,7 +41,7 @@ public class HomeArgumentTypeAdapter extends ArgumentTypeAdapter {
                     ServerPlayerEntity player = context.getSource().getPlayer();
                     if (player == null) return builder.buildFuture();
 
-                    Map<String, Position> name2position = initializer.getHomes(player);
+                    Map<String, Position> name2position = initializer.ofHomes(player);
                     name2position.keySet().forEach(builder::suggest);
                     return builder.buildFuture();
                 }

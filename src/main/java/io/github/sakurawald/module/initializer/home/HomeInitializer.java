@@ -1,7 +1,5 @@
 package io.github.sakurawald.module.initializer.home;
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.handler.ConfigHandler;
@@ -11,21 +9,16 @@ import io.github.sakurawald.module.common.manager.scheduler.ScheduleManager;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.home.adapter.HomeName;
-import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.PermissionHelper;
 import lombok.Getter;
-import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
-import static net.minecraft.server.command.CommandManager.RegistrationEnvironment;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
 public class HomeInitializer extends ModuleInitializer {
@@ -44,19 +37,7 @@ public class HomeInitializer extends ModuleInitializer {
         data.setAutoSaveJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 
-    @SuppressWarnings({"UnusedReturnValue", "unused"})
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, RegistrationEnvironment environment) {
-//        dispatcher.register(
-//                literal("home")
-//                        .then(literal("set").then(myHomesArgument().executes(ctx -> $set(ctx, false)).then(literal("override").executes(ctx -> $set(ctx, true)))))
-//                        .then(literal("tp").then(myHomesArgument().executes(this::$tp)))
-//                        .then(literal("unset").then(myHomesArgument().executes(this::$unset)))
-//                        .then(literal("list").executes(this::$list))
-//        );
-    }
-
-    public Map<String, Position> getHomes(@NotNull ServerPlayerEntity player) {
+    public Map<String, Position> ofHomes(@NotNull ServerPlayerEntity player) {
         String playerName = player.getGameProfile().getName();
         Map<String, Map<String, Position>> homes = data.model().homes;
         homes.computeIfAbsent(playerName, k -> new HashMap<>());
@@ -65,7 +46,7 @@ public class HomeInitializer extends ModuleInitializer {
 
     @Command("home tp")
     private int $tp(@CommandSource ServerPlayerEntity player, HomeName home) {
-        Map<String, Position> name2position = getHomes(player);
+        Map<String, Position> name2position = ofHomes(player);
         String homeName = home.getString();
         if (!name2position.containsKey(homeName)) {
             MessageHelper.sendMessage(player, "home.no_found", homeName);
@@ -79,7 +60,7 @@ public class HomeInitializer extends ModuleInitializer {
 
     @Command("home unset")
     private int $unset(@CommandSource ServerPlayerEntity player, HomeName home) {
-        Map<String, Position> name2position = getHomes(player);
+        Map<String, Position> name2position = ofHomes(player);
         String homeName = home.getString();
         if (!name2position.containsKey(homeName)) {
             MessageHelper.sendMessage(player, "home.no_found", homeName);
@@ -92,11 +73,9 @@ public class HomeInitializer extends ModuleInitializer {
     }
 
     @Command("home set")
-    private int $set(@CommandSource ServerPlayerEntity player, HomeName home, Optional<Boolean> override, Optional<Integer> time) {
-        Map<String, Position> name2position = getHomes(player);
+    private int $set(@CommandSource ServerPlayerEntity player, HomeName home, Optional<Boolean> override) {
+        Map<String, Position> name2position = ofHomes(player);
         String homeName = home.getString();
-
-        LogUtil.warn("time = {}", time.orElse(9999));
 
         if (name2position.containsKey(homeName)) {
             if (override.orElse(false)) {
@@ -119,20 +98,8 @@ public class HomeInitializer extends ModuleInitializer {
 
     @Command("home list")
     private int $list(@CommandSource ServerPlayerEntity player) {
-        MessageHelper.sendMessage(player, "home.list", getHomes(player).keySet());
+        MessageHelper.sendMessage(player, "home.list", ofHomes(player).keySet());
         return CommandHelper.Return.SUCCESS;
     }
 
-    public RequiredArgumentBuilder<ServerCommandSource, String> myHomesArgument() {
-        return CommandHelper.Argument.name()
-                .suggests((context, builder) -> {
-                            ServerPlayerEntity player = context.getSource().getPlayer();
-                            if (player == null) return builder.buildFuture();
-
-                            Map<String, Position> name2position = getHomes(player);
-                            name2position.keySet().forEach(builder::suggest);
-                            return builder.buildFuture();
-                        }
-                );
-    }
 }
