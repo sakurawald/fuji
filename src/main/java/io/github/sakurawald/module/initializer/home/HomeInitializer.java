@@ -9,6 +9,7 @@ import io.github.sakurawald.module.common.manager.scheduler.ScheduleManager;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.home.adapter.HomeName;
+import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.PermissionHelper;
@@ -78,7 +79,7 @@ public class HomeInitializer extends ModuleInitializer {
         String homeName = home.getString();
 
         if (name2position.containsKey(homeName)) {
-            if (override.orElse(false)) {
+            if (!override.orElse(false)) {
                 MessageHelper.sendMessage(player, "home.set.fail.need_override", homeName);
                 return CommandHelper.Return.FAIL;
             }
