@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.top_chunks;
 
-import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandSource;
@@ -8,22 +7,18 @@ import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.top_chunks.structure.ChunkScore;
-import io.github.sakurawald.module.mixin._internal.low_level.ThreadedAnvilChunkStorageMixin;
-import io.github.sakurawald.util.LogUtil;
+import io.github.sakurawald.module.mixin._internal.low_level.accessor.ThreadedAnvilChunkStorageMixin;
 import io.github.sakurawald.util.minecraft.CommandHelper;
-import io.github.sakurawald.util.minecraft.IdentifierHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.world.ChunkHolder;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -33,8 +28,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 import java.util.concurrent.CompletableFuture;
-
-import static net.minecraft.server.command.CommandManager.*;
 
 
 public class TopChunksInitializer extends ModuleInitializer {

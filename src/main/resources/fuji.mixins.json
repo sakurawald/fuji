@@ -9,11 +9,11 @@
     "color.sign.SignBlockEntityMixin"
   ],
   "mixins": [
-    "_internal.low_level.MinecraftServerMixin",
-    "_internal.low_level.ServerPlayerEntityMixin",
-    "_internal.low_level.SimpleRegistryMixin",
-    "_internal.low_level.ThreadedAnvilChunkStorageMixin",
-    "_internal.low_level.UserCacheMixin",
+    "_internal.low_level.server.MinecraftServerMixin",
+    "_internal.low_level.accessor.ServerPlayerEntityMixin",
+    "_internal.low_level.accessor.SimpleRegistryMixin",
+    "_internal.low_level.accessor.ThreadedAnvilChunkStorageMixin",
+    "_internal.low_level.accessor.UserCacheMixin",
     "_internal.low_level.command.CommandContextBuilderMixin",
     "_internal.low_level.command.CommandDispatcherMixin",
     "afk.PlayerListMixin",

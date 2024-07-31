@@ -1441,6 +1441,7 @@ public class ConfigModel {
             public @NotNull SendBroadcast send_broadcast = new SendBroadcast();
             public @NotNull SendActionBar send_actionbar = new SendActionBar();
             public @NotNull TrashCan trashcan = new TrashCan();
+            public @NotNull Tppos tppos = new Tppos();
 
             @Documentation("This module provides `/bed` command, which teleports the player to his bed.")
             public class Bed {
@@ -1495,7 +1496,7 @@ public class ConfigModel {
                     This module provides `/sit` command, and the ability to sit by right-click any chair.
                     """)
             public class Sit {
-                public boolean enable = false;
+                public boolean enable = true;
                 public boolean allow_right_click_sit = true;
                 public int max_distance_to_sit = -1;
                 public boolean must_be_stairs = true;
@@ -1529,7 +1530,7 @@ public class ConfigModel {
                                     
                     """)
             public class Nickname {
-                public boolean enable = false;
+                public boolean enable = true;
             }
 
             @Documentation("This module provides `/repair` command.")
@@ -1586,7 +1587,35 @@ public class ConfigModel {
 
             @Documentation("Command: /trashcan")
             public class TrashCan {
-                public boolean enable = false;
+                public boolean enable = true;
+            }
+
+            @Documentation("""
+                    The unified teleport command.
+                    
+                    Argument:
+                    - --dimension: target dimension
+                    - --x: target x
+                    - --y: target y
+                    - --z: target z
+                    - --yaw: target yaw
+                    - --pitch: target pitch
+                    - --centerX: centerX for rtp
+                    - --centerY: centerY for rtp
+                    - --circle: rtp shape, circle or rectangle
+                    - --minRange: rtp min range
+                    - --maxRange: rtp max range
+                    - --minY: rtp min Y
+                    - --maxY: rtp max Y
+                    - --maxTryTimes: rtp max try times.
+                    
+                    Note:
+                    - If you specify the `--x`, `--y` or `--z` argument, then the command will teleport to a `fix position`, or else to `random position`.
+                    
+                    Command: /tppos
+                    """)
+            public class Tppos {
+                public boolean enable = true;
             }
         }
 
