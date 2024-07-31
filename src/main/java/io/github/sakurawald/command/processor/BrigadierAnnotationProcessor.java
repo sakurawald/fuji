@@ -5,10 +5,13 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.tree.CommandNode;
 import io.github.sakurawald.command.adapter.ArgumentTypeAdapter;
 import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandOptional;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
+import io.github.sakurawald.command.structure.Argument;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.LogUtil;
@@ -16,7 +19,6 @@ import io.github.sakurawald.util.ReflectionUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.PermissionHelper;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -24,8 +26,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
+
+import static net.minecraft.server.command.CommandManager.literal;
 
 
 public class BrigadierAnnotationProcessor {
@@ -61,10 +68,12 @@ public class BrigadierAnnotationProcessor {
         method.setAccessible(true);
 
         // build
-        List<String> pattern = makeArgumentPattern(clazz, method);
+        List<Argument> pattern = makeArgumentList(clazz, method);
 
         LogUtil.warn("register command pattern = {}", pattern);
 
+
+        /* first pass */
         List<ArgumentBuilder<ServerCommandSource, ?>> builders = makeArgumentBuilders(pattern, method);
         com.mojang.brigadier.Command<ServerCommandSource> function = makeCommandFunction(method, instance);
 
@@ -72,9 +81,10 @@ public class BrigadierAnnotationProcessor {
         builders.forEach(builder -> setRequirement(builder, clazz.getAnnotation(CommandPermission.class)));
 
         LiteralArgumentBuilder<ServerCommandSource> root = makeRootArgumentBuilder(builders, (last) -> last.executes(function));
-
-        // register
         dispatcher.register(root);
+
+        /* second pass */
+        registerOptionalArguments(pattern, method);
     }
 
     private static void setRequirement(ArgumentBuilder<ServerCommandSource, ?> builder, CommandPermission annotation) {
@@ -96,26 +106,28 @@ public class BrigadierAnnotationProcessor {
     }
 
 
-
-    private static List<String> makeArgumentPattern(Class<?> clazz, Method method) {
-        List<String> ret = new ArrayList<>();
+    private static List<Argument> makeArgumentList(Class<?> clazz, Method method) {
+        List<Argument> ret = new ArrayList<>();
 
         Command classAnnotation = clazz.getAnnotation(Command.class);
         if (classAnnotation != null) {
-            ret.add(classAnnotation.value().trim());
+            ret.add(new Argument(classAnnotation.value().trim()));
         }
 
         Command methodAnnotation = method.getAnnotation(Command.class);
         String[] split = methodAnnotation.value().trim().split(" ");
-        ret.addAll(Arrays.stream(split).toList());
+        for (String s : split) {
+            ret.add(new Argument(s));
+        }
 
         // auto complete the required arguments
-        if (ret.stream().filter(p -> p.startsWith(REQUIRED_ARGUMENT_PLACEHOLDER)).findAny().isEmpty()) {
+        if (ret.stream().filter(p -> p.getArgumentName().startsWith(REQUIRED_ARGUMENT_PLACEHOLDER)).findAny().isEmpty()) {
             Parameter[] parameters = method.getParameters();
             for (int index = 0; index < parameters.length; index++) {
                 Parameter parameter = parameters[index];
                 if (parameter.isAnnotationPresent(CommandSource.class)) continue;
-                ret.add(REQUIRED_ARGUMENT_PLACEHOLDER + index);
+
+                ret.add(new Argument(parameter.getName(), index, parameter.isAnnotationPresent(CommandOptional.class)));
             }
         }
 
@@ -160,15 +172,22 @@ public class BrigadierAnnotationProcessor {
 
         Parameter[] parameters = method.getParameters();
         for (Parameter parameter : parameters) {
-            Object arg = ArgumentTypeAdapter.getAdapter(parameter.getType()).makeArgumentObject(ctx, parameter);
-            args.add(arg);
+
+            try {
+                Object arg = ArgumentTypeAdapter.getAdapter(parameter.getType()).makeArgumentObject(ctx, parameter);
+                args.add(arg);
+            } catch (Exception e) {
+                args.add(0);
+                // use optional
+            }
+
         }
 
         return args;
     }
 
     private static LiteralArgumentBuilder<ServerCommandSource> makeLiteralArgumentBuilder(String name) {
-        return CommandManager.literal(name);
+        return literal(name);
     }
 
     private static RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(Parameter parameter) {
@@ -180,13 +199,34 @@ public class BrigadierAnnotationProcessor {
         return ArgumentTypeAdapter.getAdapter(parameter.getType()).makeRequiredArgumentBuilder(parameter);
     }
 
-    private static List<ArgumentBuilder<ServerCommandSource, ?>> makeArgumentBuilders(List<String> pattern, Method method) {
+    private static void registerOptionalArguments(List<Argument> arguments, Method method) {
+        List<String> path = Argument.ofLowestNonOptionalNodePath(arguments);
+        CommandNode<ServerCommandSource> root = dispatcher.findNode(path);
+        com.mojang.brigadier.Command<ServerCommandSource> function = root.getCommand();
+
+        // filter
+        arguments.stream().filter(Argument::isOptional).forEach(optionalArgument -> {
+            int index = optionalArgument.getMethodParameterIndex();
+            Parameter parameter = method.getParameters()[index];
+
+            ArgumentBuilder<ServerCommandSource, ?> optionalArgumentBuilder = literal(optionalArgument.getArgumentName())
+                    .then(makeRequiredArgumentBuilder(parameter).executes(function).redirect(root));
+
+            // register it
+            root.addChild(optionalArgumentBuilder.build());
+        });
+    }
+
+    private static List<ArgumentBuilder<ServerCommandSource, ?>> makeArgumentBuilders(List<Argument> arguments, Method method) {
         List<ArgumentBuilder<ServerCommandSource, ?>> builders = new ArrayList<>();
 
-        for (String name : pattern) {
+
+        for (Argument argument : arguments) {
+            String name = argument.getArgumentName();
             ArgumentBuilder<ServerCommandSource, ?> builder;
-            if (name.startsWith("$")) {
-                int index = Integer.parseInt(name.substring(1));
+
+            if (argument.isRequiredArgument()) {
+                int index = argument.getMethodParameterIndex();
                 Parameter parameter = method.getParameters()[index];
                 builder = makeRequiredArgumentBuilder(parameter);
             } else {
@@ -195,6 +235,11 @@ public class BrigadierAnnotationProcessor {
 
             // set requirement
             setRequirement(builder, method.getAnnotation(CommandPermission.class));
+
+            // don't add the builder if it's an optional argument
+            if (argument.isOptional()) {
+                continue;
+            }
 
             // add argument node
             builders.add(builder);
