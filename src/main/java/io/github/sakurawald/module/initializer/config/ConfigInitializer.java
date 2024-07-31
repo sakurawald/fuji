@@ -1,8 +1,10 @@
 package io.github.sakurawald.module.initializer.config;
 
-import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.common.manager.Managers;
@@ -15,6 +17,8 @@ import net.minecraft.server.command.ServerCommandSource;
 import org.jetbrains.annotations.NotNull;
 
 
+@Command("fuji")
+@CommandPermission(level = 4)
 public class ConfigInitializer extends ModuleInitializer {
 
 
@@ -23,17 +27,8 @@ public class ConfigInitializer extends ModuleInitializer {
         Configs.configHandler.loadFromDisk();
     }
 
-    @SuppressWarnings("unused")
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(
-                CommandManager.literal("fuji").requires(source -> source.hasPermissionLevel(4)).then(
-                        CommandManager.literal("reload").executes(this::$reload)
-                )
-        );
-    }
-
-    private int $reload(@NotNull CommandContext<ServerCommandSource> ctx) {
+    @Command("reload")
+    private int $reload(@CommandSource CommandContext<ServerCommandSource> ctx) {
         // reload modules
         Managers.getModuleManager().reloadModules();
 

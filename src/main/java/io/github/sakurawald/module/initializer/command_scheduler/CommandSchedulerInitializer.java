@@ -1,33 +1,28 @@
 package io.github.sakurawald.module.initializer.command_scheduler;
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.suggestion.SuggestionProvider;
-import com.mojang.brigadier.suggestion.Suggestions;
-import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.SchedulerModel;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.command_scheduler.adapter.ScheduleJobName;
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
-import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
-import java.util.concurrent.CompletableFuture;
 
-import static net.minecraft.server.command.CommandManager.literal;
-
-
+@Command("scheduler")
+@CommandPermission(level = 4)
 public class CommandSchedulerInitializer extends ModuleInitializer {
 
-    public static final ConfigHandler<SchedulerModel> schedulerHandler = new ObjectConfigHandler<>("scheduler.json", SchedulerModel.class);
+    @Getter
+    private static final ConfigHandler<SchedulerModel> schedulerHandler = new ObjectConfigHandler<>("scheduler.json", SchedulerModel.class);
 
     private void updateJobs() {
         Managers.getScheduleManager().cancelJobs(ScheduleJobJob.class.getName());
@@ -56,33 +51,15 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
         updateJobs();
     }
 
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(literal("scheduler").requires(s -> s.hasPermissionLevel(4))
-                .then(literal("trigger")
-                        .then(CommandHelper.Argument.name().suggests(new SchedulerJobSuggestionProvider()).executes(this::$trigger))));
-    }
-
-    private int $trigger(@NotNull CommandContext<ServerCommandSource> ctx) {
-        String name = CommandHelper.Argument.name(ctx);
-
+    @Command("trigger")
+    private int $trigger(ScheduleJobName jobName) {
         schedulerHandler.model().scheduleJobs.forEach(job -> {
-            if (job.name.equals(name)) {
+            if (job.name.equals(jobName.getName())) {
                 job.trigger();
             }
         });
 
         return CommandHelper.Return.SUCCESS;
-    }
-
-
-    private static class SchedulerJobSuggestionProvider implements SuggestionProvider<ServerCommandSource> {
-
-        @Override
-        public CompletableFuture<Suggestions> getSuggestions(CommandContext context, @NotNull SuggestionsBuilder builder) {
-            schedulerHandler.model().scheduleJobs.forEach(job -> builder.suggest(job.name));
-            return builder.buildFuture();
-        }
     }
 
     public static class ScheduleJobJob implements Job {

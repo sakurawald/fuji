@@ -1,7 +1,11 @@
 package io.github.sakurawald.module.initializer.world;
 
-import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.command.adapter.wrapper.Dimension;
+import io.github.sakurawald.command.adapter.wrapper.DimensionType;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
@@ -17,19 +21,16 @@ import io.github.sakurawald.util.minecraft.ServerHelper;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.random.RandomSeed;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
-
-import static net.minecraft.server.command.CommandManager.literal;
 
 /*
  * RegistryKeys.DIMENSION_TYPE only returns registered `dimension type`.
@@ -54,22 +55,6 @@ public class WorldInitializer extends ModuleInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(this::loadWorlds);
     }
 
-    @Override
-    public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
-        dispatcher.register(
-                literal("world")
-                        .then(literal("create").requires(source -> source.hasPermissionLevel(4))
-                                .then(CommandHelper.Argument.name()
-                                        .then(CommandHelper.Argument.identifier().suggests(CommandHelper.Suggestion.dimensionType()).executes(this::$create))))
-                        .then(literal("tp")
-                                .then(CommandHelper.Argument.dimension().executes(this::$tp)))
-                        .then(literal("delete").requires(source -> source.hasPermissionLevel(4))
-                                .then(CommandHelper.Argument.dimension().executes(this::$delete)))
-                        .then(literal("reset").requires(source -> source.hasPermissionLevel(4))
-                                .then(CommandHelper.Argument.dimension().executes(this::$reset)))
-        );
-    }
-
     public void loadWorlds(@NotNull MinecraftServer server) {
         for (DimensionEntry dimensionEntry : storage.model().dimension_list) {
             if (!dimensionEntry.isEnable()) continue;
@@ -81,9 +66,9 @@ public class WorldInitializer extends ModuleInitializer {
         }
     }
 
-    private int $tp(@NotNull CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.Pattern.playerOnlyCommand(ctx, player -> {
-            ServerWorld world = CommandHelper.Argument.dimension(ctx);
+    @Command("world tp")
+    private int $tp(@CommandSource ServerPlayerEntity player, Dimension dimension) {
+            ServerWorld world = dimension.getWorld();
 
             MessageHelper.sendActionBar(player, "world.dimension.tp.tip");
             Optional<TeleportSetup> tpSetup = TeleportSetup.of(world);
@@ -94,13 +79,13 @@ public class WorldInitializer extends ModuleInitializer {
             RandomTeleport.request(player, tpSetup.get(), null);
 
             return CommandHelper.Return.SUCCESS;
-        });
     }
 
     @SneakyThrows
-    private int $create(@NotNull CommandContext<ServerCommandSource> ctx) {
-        Identifier dimensionTypeIdentifier = Identifier.of(CommandHelper.Argument.identifier(ctx));
-        String name = CommandHelper.Argument.name(ctx);
+    @Command("world create")
+    @CommandPermission(level = 4)
+    private int $create(@CommandSource CommandContext<ServerCommandSource> ctx, String name, DimensionType dimensionType) {
+        Identifier dimensionTypeIdentifier = Identifier.of(dimensionType.getIdentifier());
         String FUJI_DIMENSION_NAMESPACE = "fuji";
         Identifier dimensionIdentifier = Identifier.of(FUJI_DIMENSION_NAMESPACE, name);
 
@@ -121,8 +106,11 @@ public class WorldInitializer extends ModuleInitializer {
 
 
     @SneakyThrows
-    private int $delete(@NotNull CommandContext<ServerCommandSource> ctx) {
-        ServerWorld world = CommandHelper.Argument.dimension(ctx);
+    @Command("world delete")
+    @CommandPermission(level = 4)
+    private int $delete(@CommandSource CommandContext<ServerCommandSource> ctx, Dimension dimension) {
+        ServerWorld world = dimension.getWorld();
+
         String identifier = IdentifierHelper.ofString(world);
         if (Configs.configHandler.model().modules.world.blacklist.dimension_list.contains(identifier)) {
             MessageHelper.sendMessage(ctx.getSource(), "world.dimension.blacklist", identifier);
@@ -144,9 +132,11 @@ public class WorldInitializer extends ModuleInitializer {
     }
 
     @SneakyThrows
-    private int $reset(@NotNull CommandContext<ServerCommandSource> ctx) {
+    @Command("world reset")
+    @CommandPermission(level = 4)
+    private int $reset(@CommandSource CommandContext<ServerCommandSource> ctx, Dimension dimension) {
         // draw seed and save
-        ServerWorld world = CommandHelper.Argument.dimension(ctx);
+        ServerWorld world = dimension.getWorld();
         String identifier = IdentifierHelper.ofString(world);
         if (Configs.configHandler.model().modules.world.blacklist.dimension_list.contains(identifier)) {
             MessageHelper.sendMessage(ctx.getSource(), "world.dimension.blacklist",identifier);

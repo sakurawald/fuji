@@ -3,8 +3,10 @@ package io.github.sakurawald.command.adapter.impl;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.adapter.ArgumentTypeAdapter;
+import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
+import lombok.SneakyThrows;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -25,9 +27,14 @@ public class PlayerArgumentTypeAdapter extends ArgumentTypeAdapter {
         return EntityArgumentType.player();
     }
 
+    @SneakyThrows
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Parameter parameter) {
-        return context.getSource().getPlayer();
+        if (parameter.isAnnotationPresent(CommandSource.class)) {
+            return context.getSource().getPlayer();
+        }
+
+        return EntityArgumentType.getPlayer(context,parameter.getName());
     }
 
     @Override
