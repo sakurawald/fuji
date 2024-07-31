@@ -31,94 +31,11 @@ import static net.minecraft.server.command.CommandManager.argument;
 @UtilityClass
 public class CommandHelper {
 
+    @SuppressWarnings("unused")
     public static class Return {
         public static final int FAIL = -1;
         public static final int PASS = 0;
         public static final int SUCCESS = 1;
-    }
-
-    public static class Argument {
-        public static final String ARGUMENT_NAME_DIMENSION = "dimension";
-        public static final String ARGUMENT_NAME_ENTITY = "entity";
-        public static final String ARGUMENT_NAME_PLAYER = "player";
-        public static final String ARGUMENT_NAME_REST = "rest";
-        public static final String ARGUMENT_NAME_NAME = "name";
-        public static final String ARGUMENT_NAME_IDENTIFIER = "identifier";
-        public static final String ARGUMENT_NAME_MESSAGE = "message";
-
-        public static RequiredArgumentBuilder<ServerCommandSource, String> offlinePlayer(String argumentName) {
-            return argument(argumentName, StringArgumentType.string())
-                    .suggests((context, builder) -> {
-                                UserCache gameProfileCache = ServerHelper.getDefaultServer().getUserCache();
-                                if (gameProfileCache != null) {
-                                    ((GameProfileCacheEx) gameProfileCache).fuji$getNames().forEach(builder::suggest);
-                                }
-                                return builder.buildFuture();
-                            }
-                    );
-        }
-
-        public static RequiredArgumentBuilder<ServerCommandSource, String> offlinePlayer() {
-            return offlinePlayer(ARGUMENT_NAME_PLAYER);
-        }
-
-        public static String offlinePlayer(@NotNull CommandContext<ServerCommandSource> ctx) {
-            return string(ctx, ARGUMENT_NAME_NAME);
-        }
-
-        public static @NotNull RequiredArgumentBuilder<ServerCommandSource, EntitySelector> player() {
-            return argument(ARGUMENT_NAME_PLAYER, EntityArgumentType.player());
-        }
-
-        public static ServerPlayerEntity player(@NotNull CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
-            return EntityArgumentType.getPlayer(ctx, ARGUMENT_NAME_PLAYER);
-        }
-
-        public static @NotNull RequiredArgumentBuilder<ServerCommandSource, String> rest() {
-            return argument(ARGUMENT_NAME_REST, StringArgumentType.greedyString());
-        }
-
-        public static String string(@NotNull CommandContext<ServerCommandSource> ctx, String argumentName) {
-            return StringArgumentType.getString(ctx, argumentName);
-        }
-
-        public static String rest(@NotNull CommandContext<ServerCommandSource> ctx) {
-            return string(ctx, ARGUMENT_NAME_REST);
-        }
-
-        public static @NotNull RequiredArgumentBuilder<ServerCommandSource, String> string(String argumentName) {
-            return argument(argumentName, StringArgumentType.string());
-        }
-
-        public static @NotNull RequiredArgumentBuilder<ServerCommandSource, String> name() {
-            return string(ARGUMENT_NAME_NAME);
-        }
-
-        public static String name(@NotNull CommandContext<ServerCommandSource> ctx) {
-            return string(ctx, ARGUMENT_NAME_NAME);
-        }
-
-        public static @NotNull RequiredArgumentBuilder<ServerCommandSource, String> identifier() {
-            return argument(ARGUMENT_NAME_IDENTIFIER, StringArgumentType.greedyString());
-        }
-
-        public static String identifier(@NotNull CommandContext<ServerCommandSource> ctx) {
-            return string(ctx, ARGUMENT_NAME_IDENTIFIER);
-        }
-
-        public static RequiredArgumentBuilder<ServerCommandSource, Identifier> dimension() {
-            /*
-             The DimensionArgumentType.dimension() will not suggest the new registered dimension types.
-             Each time the server started, the dimensions will be shared with client and server.
-             */
-            return argument(ARGUMENT_NAME_DIMENSION, DimensionArgumentType.dimension()).suggests(CommandHelper.Suggestion.dimension());
-        }
-
-        @SneakyThrows
-        public static ServerWorld dimension(@NotNull CommandContext<ServerCommandSource> ctx) {
-            return DimensionArgumentType.getDimensionArgument(ctx, ARGUMENT_NAME_DIMENSION);
-        }
-
     }
 
     public static class Suggestion {
@@ -143,6 +60,10 @@ public class CommandHelper {
         }
 
         public static @NotNull SuggestionProvider<ServerCommandSource> dimension() {
+            /*
+             The DimensionArgumentType.dimension() will not suggest the new registered dimension types.
+             Each time the server started, the dimensions will be shared with client and server.
+             */
             return ofRegistryKey(RegistryKeys.DIMENSION);
         }
 
@@ -185,7 +106,6 @@ public class CommandHelper {
                 return consumer.apply(player, mainHandStack);
             });
         }
-
     }
 
 }

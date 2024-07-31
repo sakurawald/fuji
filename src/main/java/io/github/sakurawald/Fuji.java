@@ -19,7 +19,6 @@ import java.nio.file.Path;
 // TODO: unified player data api (persistent data container)
 // TODO: move docs gen into another project
 // TODO: supplier for scheduler
-// TODO: refactor command facility (tui, selector, aop, options, parser, redirect/option, modifier, operation-argument-type, suggestion)
 // TODO: cfg gradle shadow plugin
 
 public class Fuji implements ModInitializer {
