@@ -13,11 +13,11 @@ import java.util.Map;
 @Mixin(CommandContextBuilder.class)
 public abstract class CommandContextBuilderMixin<S> implements CommandContextBuilderAccessor<S> {
 
-    @Accessor("arguments")
+    @Accessor(value = "arguments", remap = false)
     public abstract Map<String, ParsedArgument<S, ?>> getArguments();
 
     @Unique
-    public CommandContextBuilder<S> withArguments(Map<String, ParsedArgument<S, ?>> arguments) {
+    public CommandContextBuilder<S> fuji$withArguments(Map<String, ParsedArgument<S, ?>> arguments) {
         getArguments().putAll(arguments);
         CommandContextBuilder that = (CommandContextBuilder) (Object) this;
         return that;
