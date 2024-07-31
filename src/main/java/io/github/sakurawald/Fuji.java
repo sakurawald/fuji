@@ -13,6 +13,7 @@ import java.nio.file.Path;
 // TODO: invsee module (slot, inv-redirect)
 // TODO: powertool module (composed, meta)
 
+// TODO: a better way to write default languages
 // TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector)
 // TODO: tppos module
 // TODO: unified player data api (persistent data container)

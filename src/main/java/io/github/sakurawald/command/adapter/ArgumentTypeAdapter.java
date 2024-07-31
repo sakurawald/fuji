@@ -4,6 +4,7 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.util.LogUtil;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import org.reflections.Reflections;
@@ -55,7 +56,7 @@ public abstract class ArgumentTypeAdapter {
             }
         }
 
-        throw new RuntimeException("Unsupported argument type " + type.getTypeName());
+        throw new RuntimeException("No adapters match the argument type: " + type.getTypeName());
     }
 
 }
