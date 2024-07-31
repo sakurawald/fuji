@@ -56,7 +56,9 @@ public class TabListSortInitializer extends ModuleInitializer {
     @Unique
     public static @NotNull ServerPlayerEntity makeServerPlayerEntity(@NotNull MinecraftServer server, @NotNull ServerPlayerEntity player) {
         String encodedName = encodeName(player);
-        return makeServerPlayerEntity(server, encodedName);
+        ServerPlayerEntity dummyPlayer = makeServerPlayerEntity(server, encodedName);
+        dummyPlayer.getGameProfile().getProperties().putAll(player.getGameProfile().getProperties());
+        return dummyPlayer;
     }
 
     public static @NotNull Map<String, Integer> getWeightMap(@NotNull List<ServerPlayerEntity> players) {
