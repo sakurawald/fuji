@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.chat;
 
 import com.google.common.collect.EvictingQueue;
+import com.mojang.datafixers.DataFixerUpper;
 import eu.pb4.placeholders.api.PlaceholderResult;
 import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.Fuji;
@@ -31,6 +32,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -57,7 +59,6 @@ public class ChatInitializer extends ModuleInitializer {
         registerInvPlaceholder();
         registerEnderPlaceholder();
         registerPosPlaceholder();
-        registerDatePlaceholder();
         registerPrefixPlaceholder();
         registerSuffixPlaceholder();
     }
@@ -83,12 +84,6 @@ public class ChatInitializer extends ModuleInitializer {
 
     }
 
-
-    private void registerDatePlaceholder() {
-        Placeholders.register(
-                Identifier.of(Fuji.MOD_ID, "date"),
-                (ctx, arg) -> PlaceholderResult.value(Text.literal(DateUtil.getCurrentDate())));
-    }
 
     private void registerEnderPlaceholder() {
         Placeholders.register(

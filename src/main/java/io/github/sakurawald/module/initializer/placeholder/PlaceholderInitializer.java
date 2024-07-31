@@ -6,6 +6,7 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.placeholder.structure.SumUpPlaceholder;
+import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.RandomUtil;
 import io.github.sakurawald.module.common.manager.scheduler.ScheduleManager;
 import io.github.sakurawald.util.minecraft.PermissionHelper;
@@ -20,6 +21,7 @@ import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +62,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
         registerRandomPlayerPlaceholder();
         registerRandomPlaceholder();
         registerEscapePlaceholder();
+        registerDatePlaceholder();
 
         /* events */
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
@@ -71,6 +74,24 @@ public class PlaceholderInitializer extends ModuleInitializer {
                 }
             });
         });
+    }
+
+    private void registerDatePlaceholder() {
+        Placeholders.register(
+                Identifier.of(Fuji.MOD_ID, "date"),
+                (ctx, arg) -> {
+
+                    if (arg == null || arg.isEmpty()) {
+                        return PlaceholderResult.value(Text.literal(DateUtil.getCurrentDate()));
+                    }
+
+                    try {
+                        String currentDate = DateUtil.getCurrentDate(new SimpleDateFormat(arg));
+                        return PlaceholderResult.value(Text.literal(currentDate));
+                    } catch (Exception e) {
+                        return PlaceholderResult.invalid("Invalid date formatter: " + arg);
+                    }
+                });
     }
 
     private void registerEscapePlaceholder() {

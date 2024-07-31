@@ -11,10 +11,15 @@ public class DateUtil {
     private static final SimpleDateFormat STANDARD_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 
     public static @NotNull String getCurrentDate() {
-        return toStandardDateFormat(System.currentTimeMillis());
+        return getCurrentDate(STANDARD_DATE_FORMAT);
+    }
+
+    public static @NotNull String getCurrentDate(SimpleDateFormat formatter) {
+        return formatter.format(System.currentTimeMillis());
     }
 
     public static @NotNull String toStandardDateFormat(long timeMillis) {
         return STANDARD_DATE_FORMAT.format(timeMillis);
     }
+
 }

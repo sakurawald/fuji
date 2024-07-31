@@ -434,7 +434,6 @@ public class ConfigModel {
                 - %fuji:inv%
                 - %fuji:ender%
                 - %fuji:pos%
-                - %fuji:date%
                 - %fuji:player_prefix%
                 - %fuji:player_suffix%
                                 
@@ -666,6 +665,8 @@ public class ConfigModel {
                 - %fuji:random <min> <max>% -> get a random number
                 - %fuji:escape <placeholer-name>% -> escape a placeholder.
                   You can use multi-level escape in a convenient way: `%fuji:escape player:name%` = `%fuji:escape player:name 1`
+                - %fuji:date% -> You can use custom `date formatter`: `%fuji:date HH:MM`
+                  See also: https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html
                                 
                 Tips:
                 - You can also use [the default available placeholders](https://placeholders.pb4.eu/user/default-placeholders/) in anywhere. (Yeah, you can use `placeholder` in the `en_us.json` language file, it works)
