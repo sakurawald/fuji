@@ -72,6 +72,7 @@ public class MessageHelper {
     private static void writeDefaultLanguageFiles() {
         new ResourceConfigHandler("lang/en_us.json").loadFromDisk();
         new ResourceConfigHandler("lang/zh_cn.json").loadFromDisk();
+        new ResourceConfigHandler("lang/zh_tw.json").loadFromDisk();
     }
 
     private static void loadLanguageIfAbsent(String lang) {
