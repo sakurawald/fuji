@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 
+@SuppressWarnings("SameParameterValue")
 public class DocsGeneratorTest {
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final Path LOCALE_PATH = Path.of("fuji-fabric.wiki", "locale");

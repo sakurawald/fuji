@@ -1,9 +1,9 @@
 package io.github.sakurawald.module.mixin.command_toolbox.sit;
 
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.command_toolbox.sit.SitInitializer;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SideShapeType;
@@ -58,31 +58,32 @@ public class InteractModifierMixin {
     protected ServerPlayerEntity player;
 
     @Inject(method = "interactBlock(Lnet/minecraft/server/network/ServerPlayerEntity;Lnet/minecraft/world/World;Lnet/minecraft/item/ItemStack;Lnet/minecraft/util/Hand;Lnet/minecraft/util/hit/BlockHitResult;)Lnet/minecraft/util/ActionResult;", at = @At("HEAD"), cancellable = true)
-    public void inject(@NotNull ServerPlayerEntity player, @NotNull World world, ItemStack stack, Hand hand, @NotNull BlockHitResult hitResult, @NotNull CallbackInfoReturnable<ActionResult> callbackInfoReturnable) {
+    public void rightClickToSit(@NotNull ServerPlayerEntity player, @NotNull World world, ItemStack stack, Hand hand, @NotNull BlockHitResult hitResult, @NotNull CallbackInfoReturnable<ActionResult> callbackInfoReturnable) {
+
+        /* conditioner */
         var config = Configs.configHandler.model().modules.command_toolbox.sit;
 
         if (!config.allow_right_click_sit) return;
-
-        if (!config.allow_sneaking && player.isSneaking()) return;
-
-        if (player.hasVehicle() || player.isFallFlying() || player.isSleeping() || player.isSwimming() || player.isSpectator())  return;
-
-        if ((config.required_empty_hand && !player.getInventory().getMainHandStack().isEmpty())) return;
+        if (!config.allow_sneaking_to_sit && player.isSneaking()) return;
+        if (player.hasVehicle() || player.isFallFlying() || player.isSleeping() || player.isSwimming() || player.isSpectator())
+            return;
+        if ((config.require_empty_hand_to_sit && !player.getInventory().getMainHandStack().isEmpty())) return;
 
         BlockPos blockPos = hitResult.getBlockPos();
         BlockState blockState = world.getBlockState(blockPos);
         Block block = blockState.getBlock();
 
-        if (config.no_opaque_block_above && world.getBlockState(blockPos.add(0, 1, 0)).isOpaque()) return;
-
-        if (config.must_be_stairs && (!(block instanceof StairsBlock))) return;
+        if (config.require_no_opaque_block_above_to_sit && world.getBlockState(blockPos.add(0, 1, 0)).isOpaque())
+            return;
+        if (config.require_stairs_to_sit && (!(block instanceof StairsBlock))) return;
 
         if (blockState.isSideSolid(world, blockPos, Direction.UP, SideShapeType.RIGID)) return;
 
-        final double reqDist = config.max_distance_to_sit;
+        final double maxDist = config.max_distance_to_sit;
         double givenDist = blockPos.getSquaredDistance(player.getBlockPos());
-        if (reqDist > 0 && (givenDist > (reqDist * reqDist))) return;
+        if (maxDist > 0 && (givenDist > (maxDist * maxDist))) return;
 
+        /* calc offset */
         Vec3d lookTarget;
         if (block instanceof StairsBlock) {
             Direction direction = blockState.get(StairsBlock.FACING);
@@ -93,9 +94,18 @@ public class InteractModifierMixin {
             if (stairShape == StairShape.OUTER_LEFT || stairShape == StairShape.INNER_LEFT)
                 offset.add(direction.rotateYCounterclockwise().getUnitVector());
             lookTarget = new Vec3d(blockPos.getX() + 0.5 - offset.x(), blockPos.getY(), blockPos.getZ() + 0.5 - offset.z());
+
+            // fix falling player
+            BlockPos supportBlock = blockPos.add(0, -2, 0);
+            if (!world.getBlockState(supportBlock).isSideSolid(world, supportBlock, Direction.UP, SideShapeType.RIGID)) {
+                MessageHelper.sendActionBar(player, "sit.fail");
+                return;
+            }
+
         } else {
             lookTarget = player.getPos();
         }
+
         Entity chair = module.createChair(world, blockPos, new Vec3d(0, -1.7, 0), lookTarget, true);
 
         Entity v = player.getVehicle();
@@ -106,11 +116,10 @@ public class InteractModifierMixin {
         player.startRiding(chair, true);
 
         callbackInfoReturnable.setReturnValue(ActionResult.success(true));
-        callbackInfoReturnable.cancel();
     }
 
     @Inject(method = "setGameMode(Lnet/minecraft/world/GameMode;Lnet/minecraft/world/GameMode;)V", at = @At("HEAD"))
-    public void inject(GameMode gameMode, GameMode previousGameMode, CallbackInfo callbackInfo) {
+    public void getOutTheChairIfYouAreSpectator(GameMode gameMode, GameMode previousGameMode, CallbackInfo callbackInfo) {
         if (gameMode == GameMode.SPECTATOR && previousGameMode != GameMode.SPECTATOR && player.getVehicle() != null) {
             player.setSneaking(true);
             player.tickRiding();

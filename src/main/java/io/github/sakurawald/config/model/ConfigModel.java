@@ -1,7 +1,6 @@
 package io.github.sakurawald.config.model;
 
 
-import carpet.script.external.Carpet;
 import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.config.annotation.Documentation;
 import io.github.sakurawald.module.common.structure.RegexRewriteEntry;
@@ -174,7 +173,7 @@ public class ConfigModel {
                   Usually, you can say a mod adds `extra dimension type` and `create extra dimension with that dimension type`  instead of `extra world`
                   See also: https://minecraft.wiki/w/Dimension_definition
                   See also: https://minecraft.wiki/w/Dimension_type
-             
+                             
                 - In vanilla minecraft, 1 world contains 3 dimensions (minecraft:overworld, minecraft:the_nether, minecraft:the_end)
                   You can see the `dimension` of a `world` in `world/level.dat` file.
                 - `dimension type` is used to create `dimension`, there are 4 `dimension type` in vanilla minecraft: `minecraft:overworld`, `minecraft:overworld_caves`, `minecraft:the_nether` and `minecraft:the_end`
@@ -714,9 +713,9 @@ public class ConfigModel {
                 This module can `override` the `requirement` of a `command node` into a `permission` with prefix `fuji.permission.<command_node_path>`.
                                 
                 See [permission](https://github.com/sakurawald/fuji-fabric/wiki/Permission)
-                
+                                
                 Example 1: let everyone use `/op` -> `/lp group default permission set fuji.permission.op true`
-                
+                                
                 """)
         public class CommandPermission {
             public boolean enable = false;
@@ -832,7 +831,7 @@ public class ConfigModel {
                 - Per dimension configurable.
                 - Ignore flulid blocks (water, lava...).
                 - Ignore powered snow
-                
+                                
                 Argument:
                 - --dimension: target dimension
                                 
@@ -1222,8 +1221,8 @@ public class ConfigModel {
             public @NotNull Carpet carpet = new Carpet();
 
             @Documentation("""
-                This module provides some purpose about `carpet-fabric` mod.
-                """)
+                    This module provides some purpose about `carpet-fabric` mod.
+                    """)
             public class Carpet {
                 public boolean enable = false;
 
@@ -1231,33 +1230,33 @@ public class ConfigModel {
                 public @NotNull BetterInfo better_info = new BetterInfo();
 
                 @Documentation("""
-                    Enable this module requires `carpet-fabric` mod installed.
-                                    
-                    This module provides some management for `fake-player`.
+                        Enable this module requires `carpet-fabric` mod installed.
                                         
-                    Command:
-                    - /player who -> query the owner of the fake-player.
-                    - /player renew -> renew all of your fake-players.
-                    """)
+                        This module provides some management for `fake-player`.
+                                            
+                        Command:
+                        - /player who -> query the owner of the fake-player.
+                        - /player renew -> renew all of your fake-players.
+                        """)
                 public class FakePlayerManager {
                     public boolean enable = true;
 
                     @Documentation("""
-                        How many fake-player can each player spawn (in different time)? 
-                                            
-                        The tuple means (day_of_week, minutes_of_the_day, max_fake_player_per_player).
-                        The range of day_of_week is [1,7].
-                        The range of minutes_of_the_day is [0, 1440].
-                                             
-                        For example: (1, 0, 2) means if the days_of_week >= 1, and minutes_of_the_day >= 0, then the max_fake_player_per_player now is 2.
-                                            
-                        Besides, you can add multi rules, the rules are checked from up to down.
-                        The first rule that matches current time will be used to decide the max_fake_player_per_player.
-                                            
-                        You can issue `/player who` to see the owner of the fake-player.
-                        Only the owner can operates the fake-player. (Op can bypass this limit)
-                                            
-                        """)
+                            How many fake-player can each player spawn (in different time)? 
+                                                
+                            The tuple means (day_of_week, minutes_of_the_day, max_fake_player_per_player).
+                            The range of day_of_week is [1,7].
+                            The range of minutes_of_the_day is [0, 1440].
+                                                 
+                            For example: (1, 0, 2) means if the days_of_week >= 1, and minutes_of_the_day >= 0, then the max_fake_player_per_player now is 2.
+                                                
+                            Besides, you can add multi rules, the rules are checked from up to down.
+                            The first rule that matches current time will be used to decide the max_fake_player_per_player.
+                                                
+                            You can issue `/player who` to see the owner of the fake-player.
+                            Only the owner can operates the fake-player. (Op can bypass this limit)
+                                                
+                            """)
                     public @NotNull ArrayList<List<Integer>> caps_limit_rule = new ArrayList<>() {
                         {
                             this.add(List.of(1, 0, 2));
@@ -1265,36 +1264,36 @@ public class ConfigModel {
                     };
 
                     @Documentation("""
-                        How long should we renew when a player issue command `/player renew`
-                                    
-                        The command `/player renew` allows the player to manually renew all of his `fake-player`.
-                                    
-                        If a fake-player don't gets renew, then it will expired and get killed.
-                                            
-                        Use-case: to avoid some long-term alive fake-player.
-                        """)
+                            How long should we renew when a player issue command `/player renew`
+                                        
+                            The command `/player renew` allows the player to manually renew all of his `fake-player`.
+                                        
+                            If a fake-player don't gets renew, then it will expired and get killed.
+                                                
+                            Use-case: to avoid some long-term alive fake-player.
+                            """)
                     public int renew_duration_ms = 1000 * 60 * 60 * 12;
 
                     @Documentation("""
-                        The rule to transform the name of fake-player.
-                                            
-                        Use-case: add prefix or suffix for fake-player.
-                        """)
+                            The rule to transform the name of fake-player.
+                                                
+                            Use-case: add prefix or suffix for fake-player.
+                            """)
                     public @NotNull String transform_name = "_fake_%name%";
 
                     @Documentation("""
-                        Should we use local skin for fake-player? 
-                                            
-                        Enable this can prevent fetching skins from mojang official server each time the fake-player is spawned. 
-                        This is mainly used in some network siatuation if your network to mojang official server is bad.
-                        """)
+                            Should we use local skin for fake-player? 
+                                                
+                            Enable this can prevent fetching skins from mojang official server each time the fake-player is spawned. 
+                            This is mainly used in some network siatuation if your network to mojang official server is bad.
+                            """)
                     public boolean use_local_random_skins_for_fake_player = true;
                 }
 
                 @Documentation("""
-                    - Add `nbt query` for `/info block` command.
-                    - Add the command `/info entity`.
-                    """)
+                        - Add `nbt query` for `/info block` command.
+                        - Add the command `/info entity`.
+                        """)
                 public class BetterInfo {
                     public boolean enable = true;
                 }
@@ -1302,21 +1301,21 @@ public class ConfigModel {
 
 
             @Documentation("""
-                In vanilla minecraft, each `ender-portal` links to `the only one obsidian platform`.
-                This module makes each `ender-portal` links to its own `obsidian platform`.
-                                
-                makes every EnderPortal generate its own Obsidian Platform (Up to 128 in survival-mode.
-                You can even use creative-mode to build more Ender Portal and more ObsidianPlatform. 
-                                
-                Please note that: all the obsidian-platform are vanilla-respect, which means they have the same chunk-layout and the same behaviour as vanilla obsidian-platform which locates in (100,50,0))
-                                
-                Use-case: you want more `obsidian platform` for your redstone-struture.
-                """)
+                    In vanilla minecraft, each `ender-portal` links to `the only one obsidian platform`.
+                    This module makes each `ender-portal` links to its own `obsidian platform`.
+                                    
+                    makes every EnderPortal generate its own Obsidian Platform (Up to 128 in survival-mode.
+                    You can even use creative-mode to build more Ender Portal and more ObsidianPlatform. 
+                                    
+                    Please note that: all the obsidian-platform are vanilla-respect, which means they have the same chunk-layout and the same behaviour as vanilla obsidian-platform which locates in (100,50,0))
+                                    
+                    Use-case: you want more `obsidian platform` for your redstone-struture.
+                    """)
             public class MultiObsidianPlatform {
                 public boolean enable = false;
                 @Documentation("""
-                    The coordination-convertion factor between overworld and the_end.
-                    In vanilla minecraft, the factor between overworld and the_nether is 8.""")
+                        The coordination-convertion factor between overworld and the_end.
+                        In vanilla minecraft, the factor between overworld and the_nether is 8.""")
                 public double factor = 4;
             }
         }
@@ -1503,12 +1502,12 @@ public class ConfigModel {
                     """)
             public class Sit {
                 public boolean enable = true;
+                public boolean require_stairs_to_sit = true;
                 public boolean allow_right_click_sit = true;
+                public boolean allow_sneaking_to_sit = false;
+                public boolean require_empty_hand_to_sit = false;
+                public boolean require_no_opaque_block_above_to_sit = false;
                 public int max_distance_to_sit = -1;
-                public boolean must_be_stairs = true;
-                public boolean required_empty_hand = false;
-                public boolean allow_sneaking = false;
-                public boolean no_opaque_block_above = false;
             }
 
             @Documentation("This module provides `/more` command.")
@@ -1598,7 +1597,7 @@ public class ConfigModel {
 
             @Documentation("""
                     The unified teleport command.
-                    
+                                        
                     Argument:
                     - --dimension: target dimension
                     - --x: target x
@@ -1614,10 +1613,10 @@ public class ConfigModel {
                     - --minY: rtp min Y
                     - --maxY: rtp max Y
                     - --maxTryTimes: rtp max try times.
-                    
+                                        
                     Note:
                     - If you specify the `--x`, `--y` or `--z` argument, then the command will teleport to a `fix position`, or else to `random position`.
-                    
+                                        
                     Command: /tppos
                     """)
             public class Tppos {
@@ -1715,7 +1714,7 @@ public class ConfigModel {
                   ]
                 },
                 ```
-                
+                                
                 Example 2:
                 You want to give a `kit` to a newbie player.
                 ```
@@ -1828,7 +1827,7 @@ public class ConfigModel {
                     The job used to trigger `/cleaner clean`.
                                         
                     - The `cleaner clean` will only be triggered by the job.
-                    
+                                        
                     Note:
                     - If the `cleaner` cleans nothing, then it will keep silent. (Which means you will not see any message in console, or in-game chat)
                                         
@@ -1882,8 +1881,8 @@ public class ConfigModel {
                         """)
                 public boolean ignoreLivingEntity = true;
                 @Documentation("""
-                Should we ignore named entity. (With name tag, or name changed by anvil.)
-                """)
+                        Should we ignore named entity. (With name tag, or name changed by anvil.)
+                        """)
                 public boolean ignoreNamedEntity = true;
                 @Documentation("Like entity riding in some other entity, e.g. minecraft, pig or spider")
                 public boolean ignoreEntityWithVehicle = true;

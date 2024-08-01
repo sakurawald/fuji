@@ -199,5 +199,6 @@
   "rtp.tip": "<gold>Search for a safe location... (don't move)",
   "world_downloader.request": "<#8DDFCB>Player %s just requested to download world file (Size: %.2f MB)",
   "world_downloader.response": "<#8DDFCB>Download link generated: <hover:show_text:'<green>Open this link'><click:open_url:'%s'><green>[OPEN]</click></hover>",
-  "cleaner.broadcast": "<red>The cleaner just finished cleaning. (%s entities)"
+  "cleaner.broadcast": "<red>The cleaner just finished cleaning. (%s entities)",
+  "sit.fail": "<red>You can't sit there !"
 }

@@ -4,6 +4,7 @@ import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.command.argument.EntityAnchorArgumentType;
@@ -34,11 +35,14 @@ public class SitInitializer extends ModuleInitializer {
 
     @Command("sit")
     private int $sit(@CommandSource ServerPlayerEntity player) {
-        BlockState blockState = player.getEntityWorld().getBlockState(new BlockPos(player.getBlockX(), player.getBlockY() - 1, player.getBlockZ()));
-        if (player.hasVehicle() || player.isFallFlying() || player.isSleeping() || player.isSwimming() || player.isSpectator() || blockState.isAir() || blockState.isLiquid())
-            return 0;
+        BlockState blockState = player.getWorld().getBlockState(new BlockPos(player.getBlockX(), player.getBlockY() - 1, player.getBlockZ()));
 
-        Entity entity = createChair(player.getEntityWorld(), player.getBlockPos(), new Vec3d(0, -1.7, 0), player.getPos(), false);
+        if (player.hasVehicle() || player.isFallFlying() || player.isSleeping() || player.isSwimming() || player.isSpectator() || blockState.isAir() || blockState.isLiquid()) {
+            MessageHelper.sendActionBar(player, "sit.fail");
+            return CommandHelper.Return.FAIL;
+        }
+
+        Entity entity = createChair(player.getWorld(), player.getBlockPos(), new Vec3d(0, -1.7, 0), player.getPos(), true);
         CHAIRS.add(entity);
         player.startRiding(entity, true);
 
@@ -46,13 +50,16 @@ public class SitInitializer extends ModuleInitializer {
     }
 
     public @NotNull Entity createChair(@NotNull World world, @NotNull BlockPos blockPos, @NotNull Vec3d blockPosOffset, @Nullable Vec3d target, boolean boundToBlock) {
+
+        // make chair entity
         ArmorStandEntity entity = new ArmorStandEntity(world, 0.5d + blockPos.getX() + blockPosOffset.getX(), blockPos.getY() + blockPosOffset.getY(), 0.5d + blockPos.getZ() + blockPosOffset.getZ()) {
-            private boolean v = false;
+
+            private boolean hasPassenger = false;
 
             @Override
             protected void addPassenger(Entity passenger) {
                 super.addPassenger(passenger);
-                v = true;
+                hasPassenger = true;
             }
 
             @Override
@@ -67,7 +74,7 @@ public class SitInitializer extends ModuleInitializer {
 
             @Override
             public void tick() {
-                if (v && getPassengerList().isEmpty()) {
+                if (hasPassenger && getPassengerList().isEmpty()) {
                     kill();
                 }
 
@@ -79,12 +86,15 @@ public class SitInitializer extends ModuleInitializer {
 
         };
 
-        if (target != null)
+        // chair entity props
+        if (target != null) {
             entity.lookAt(EntityAnchorArgumentType.EntityAnchor.EYES, target.subtract(0, (target.getY() * 2), 0));
+        }
         entity.setInvisible(true);
         entity.setInvulnerable(true);
         entity.setCustomName(Text.literal("FUJI-SIT"));
         entity.setNoGravity(true);
+
         world.spawnEntity(entity);
         return entity;
     }
