@@ -6,6 +6,7 @@ import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.SchedulerModel;
 import io.github.sakurawald.module.common.manager.Managers;
+import io.github.sakurawald.module.common.manager.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_scheduler.adapter.ScheduleJobName;
 import io.github.sakurawald.module.initializer.command_scheduler.job.CommandScheduleJob;
@@ -42,6 +43,7 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {
         schedulerHandler.loadFromDisk();
+        schedulerHandler.setAutoSaveJob(ScheduleManager.CRON_EVERY_MINUTE);
         updateJobs();
     }
 

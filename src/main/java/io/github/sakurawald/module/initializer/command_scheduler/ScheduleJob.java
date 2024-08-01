@@ -27,8 +27,6 @@ public class ScheduleJob {
             if (left_trigger_times == 0) {
                 this.enable = false;
             }
-
-            CommandSchedulerInitializer.getSchedulerHandler().saveToDisk();
         }
 
         List<String> commands = this.commands_list.get(new Random().nextInt(this.commands_list.size()));
