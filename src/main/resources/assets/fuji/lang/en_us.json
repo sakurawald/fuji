@@ -69,7 +69,7 @@
   "home.list": "<gold>Your homes: %s",
   "home.no_found": "<red>Home %s not found.",
   "home.set.fail.limit": "<red>Home limit exceed",
-  "home.set.fail.need_override": "<red>Home %s exists, use \"/home set <name> override\" to override it",
+  "home.set.fail.need_override": "<red>Home %s exists, use \"/home set <name> --override\" to override it",
   "home.set.success": "<gold>Home %s set.",
   "home.unset.success": "<gold>Home %s removed.",
   "input.limit.error": "<red>Input limit exceed",

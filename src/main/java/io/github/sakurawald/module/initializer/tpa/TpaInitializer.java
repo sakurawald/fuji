@@ -1,25 +1,18 @@
 package io.github.sakurawald.module.initializer.tpa;
 
-import com.mojang.brigadier.CommandDispatcher;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandSource;
-import io.github.sakurawald.module.common.job.MentionPlayersJob;
+import io.github.sakurawald.module.common.job.impl.MentionPlayersJob;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.tpa.structure.TpaRequest;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.Getter;
-import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Optional;
-
-import static net.minecraft.server.command.CommandManager.literal;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
 

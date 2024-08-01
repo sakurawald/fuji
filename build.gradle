@@ -27,8 +27,6 @@ base {
 
 /* fabric env */
 loom {
-// fix: adventure mod error in runServer()
-//    splitEnvironmentSourceSets()
 
     accessWidenerPath = file("src/main/resources/fuji.accesswidener")
 

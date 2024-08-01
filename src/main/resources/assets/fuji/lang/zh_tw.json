@@ -69,7 +69,7 @@
   "home.list": "<gold>您的家：%s",
   "home.no_found": "<red>家 %s 不存在。",
   "home.set.fail.limit": "<red>已達到最大可設定家的上限",
-  "home.set.fail.need_override": "<red>家 %s 已存在，請使用 \"/home set <name> override\" 進行覆蓋",
+  "home.set.fail.need_override": "<red>家 %s 已存在，請使用 \"/home set <name> --override\" 進行覆蓋",
   "home.set.success": "<gold>家 %s 已設定。",
   "home.unset.success": "<gold>家 %s 已移除。",
   "input.limit.error": "<red>輸入超出限制",

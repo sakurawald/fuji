@@ -714,6 +714,9 @@ public class ConfigModel {
                 This module can `override` the `requirement` of a `command node` into a `permission` with prefix `fuji.permission.<command_node_path>`.
                                 
                 See [permission](https://github.com/sakurawald/fuji-fabric/wiki/Permission)
+                
+                Example 1: let everyone use `/op` -> `/lp group default permission set fuji.permission.op true`
+                
                 """)
         public class CommandPermission {
             public boolean enable = false;

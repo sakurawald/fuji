@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.common.job;
+package io.github.sakurawald.module.common.job.impl;
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;

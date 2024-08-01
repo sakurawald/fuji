@@ -1,9 +1,8 @@
 package io.github.sakurawald.module.initializer.afk.job;
 
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.module.common.job.NPassMarkerJob;
+import io.github.sakurawald.module.common.job.impl.NPassMarkerJob;
 import io.github.sakurawald.module.initializer.afk.AfkStateAccessor;
-import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.server.network.ServerPlayerEntity;
