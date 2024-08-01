@@ -4,7 +4,6 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.util.LogUtil;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import org.reflections.Reflections;
@@ -17,16 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class ArgumentTypeAdapter {
+public abstract class AbstractArgumentTypeAdapter {
 
-    private static final List<ArgumentTypeAdapter> adapters = new ArrayList<>();
+    private static final List<AbstractArgumentTypeAdapter> adapters = new ArrayList<>();
 
     public static void registerAdapters() {
         Reflections reflections = new Reflections(Fuji.class.getPackage().getName());
-        reflections.getSubTypesOf(ArgumentTypeAdapter.class).forEach(o -> {
+        reflections.getSubTypesOf(AbstractArgumentTypeAdapter.class).forEach(o -> {
             try {
-                Constructor<? extends ArgumentTypeAdapter> constructor = o.getDeclaredConstructor();
-                ArgumentTypeAdapter instance = constructor.newInstance();
+                Constructor<? extends AbstractArgumentTypeAdapter> constructor = o.getDeclaredConstructor();
+                AbstractArgumentTypeAdapter instance = constructor.newInstance();
                 adapters.add(instance);
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -60,10 +59,10 @@ public abstract class ArgumentTypeAdapter {
         return parameter.getType();
     }
 
-    public static ArgumentTypeAdapter getAdapter(Parameter parameter) {
+    public static AbstractArgumentTypeAdapter getAdapter(Parameter parameter) {
         Type type = unpackType(parameter);
 
-        for (ArgumentTypeAdapter adapter : adapters) {
+        for (AbstractArgumentTypeAdapter adapter : adapters) {
             if (adapter.match(type)) {
                 return adapter;
             }

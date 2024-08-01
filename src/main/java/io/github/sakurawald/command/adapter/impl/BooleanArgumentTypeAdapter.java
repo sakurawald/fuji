@@ -2,16 +2,15 @@ package io.github.sakurawald.command.adapter.impl;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.BoolArgumentType;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.adapter.ArgumentTypeAdapter;
+import io.github.sakurawald.command.adapter.AbstractArgumentTypeAdapter;
 import net.minecraft.server.command.ServerCommandSource;
 
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
 @SuppressWarnings("unused")
-public class BooleanArgumentTypeAdapter extends ArgumentTypeAdapter {
+public class BooleanArgumentTypeAdapter extends AbstractArgumentTypeAdapter {
     @Override
     public boolean match(Type type) {
         return  boolean.class.equals(type) || Boolean.class.equals(type);

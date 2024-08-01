@@ -7,7 +7,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.tree.CommandNode;
-import io.github.sakurawald.command.adapter.ArgumentTypeAdapter;
+import io.github.sakurawald.command.adapter.AbstractArgumentTypeAdapter;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
@@ -39,7 +39,7 @@ public class BrigadierAnnotationProcessor {
 
     public static void register() {
         CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) -> {
-            ArgumentTypeAdapter.registerAdapters();
+            AbstractArgumentTypeAdapter.registerAdapters();
 
             BrigadierAnnotationProcessor.dispatcher = dispatcher;
             process();
@@ -152,7 +152,7 @@ public class BrigadierAnnotationProcessor {
 
         if (expectedCommandSourceParameter == null) return true;
 
-        return ArgumentTypeAdapter.getAdapter(expectedCommandSourceParameter).validateCommandSource(ctx);
+        return AbstractArgumentTypeAdapter.getAdapter(expectedCommandSourceParameter).validateCommandSource(ctx);
     }
 
     private static com.mojang.brigadier.Command<ServerCommandSource> makeCommandFunction(Method method, Object instance) {
@@ -183,7 +183,7 @@ public class BrigadierAnnotationProcessor {
         for (Parameter parameter : parameters) {
 
             try {
-                Object arg = ArgumentTypeAdapter.getAdapter(parameter).makeArgumentObject(ctx, parameter);
+                Object arg = AbstractArgumentTypeAdapter.getAdapter(parameter).makeArgumentObject(ctx, parameter);
 
                 if (parameter.getType().equals(Optional.class)) {
                     arg = Optional.of(arg);
@@ -210,7 +210,7 @@ public class BrigadierAnnotationProcessor {
             throw new RuntimeException("It's like you specify a wrong `parameter index` for the command pattern.");
         }
 
-        return ArgumentTypeAdapter.getAdapter(parameter).makeRequiredArgumentBuilder(parameter);
+        return AbstractArgumentTypeAdapter.getAdapter(parameter).makeRequiredArgumentBuilder(parameter);
     }
 
     private static void registerOptionalArguments(List<Argument> arguments, Method method) {

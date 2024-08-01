@@ -3,14 +3,14 @@ package io.github.sakurawald.command.adapter.impl;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.adapter.ArgumentTypeAdapter;
+import io.github.sakurawald.command.adapter.AbstractArgumentTypeAdapter;
 import net.minecraft.server.command.ServerCommandSource;
 
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
 @SuppressWarnings("unused")
-public class DoubleArgumentTypeAdapter extends ArgumentTypeAdapter {
+public class DoubleArgumentTypeAdapter extends AbstractArgumentTypeAdapter {
     @Override
     public boolean match(Type type) {
         return double.class.equals(type) || Double.class.equals(type);

@@ -3,7 +3,7 @@ package io.github.sakurawald.command.adapter.impl;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.adapter.ArgumentTypeAdapter;
+import io.github.sakurawald.command.adapter.AbstractArgumentTypeAdapter;
 import io.github.sakurawald.command.adapter.wrapper.Dimension;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import lombok.SneakyThrows;
@@ -13,10 +13,8 @@ import net.minecraft.server.command.ServerCommandSource;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
-import static net.minecraft.server.command.CommandManager.argument;
-
 @SuppressWarnings("unused")
-public class DimensionArgumentTypeAdapter extends ArgumentTypeAdapter {
+public class DimensionArgumentTypeAdapter extends AbstractArgumentTypeAdapter {
     @Override
     public boolean match(Type type) {
         return Dimension.class.equals(type);
