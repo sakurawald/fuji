@@ -13,6 +13,8 @@ import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.LogUtil;
+import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.item.ItemStack;
@@ -29,7 +31,7 @@ import java.util.List;
 import static net.minecraft.server.command.CommandManager.*;
 
 
-@io.github.sakurawald.command.annotation.Command("tester")
+@Command("tester")
 @CommandPermission(level = 4)
 public class TesterInitializer extends ModuleInitializer {
 

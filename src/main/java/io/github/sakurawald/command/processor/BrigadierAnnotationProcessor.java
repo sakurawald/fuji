@@ -28,6 +28,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
@@ -82,8 +83,10 @@ public class BrigadierAnnotationProcessor {
         List<ArgumentBuilder<ServerCommandSource, ?>> builders = makeArgumentBuilders(pattern, method);
         com.mojang.brigadier.Command<ServerCommandSource> function = makeCommandFunction(method, instance);
 
-        // set requirement (override requirement)
-        builders.forEach(builder -> setRequirement(builder, clazz.getAnnotation(CommandPermission.class)));
+        // set requirement (class)
+        if (clazz.isAnnotationPresent(CommandPermission.class)){
+            setRequirement(builders.getFirst(), clazz.getAnnotation(CommandPermission.class));
+        }
 
         LiteralArgumentBuilder<ServerCommandSource> root = makeRootArgumentBuilder(builders, (last) -> last.executes(function));
         dispatcher.register(root);
@@ -92,23 +95,20 @@ public class BrigadierAnnotationProcessor {
         registerOptionalArguments(pattern, method);
     }
 
-    @SuppressWarnings("UnnecessaryReturnStatement")
     private static void setRequirement(ArgumentBuilder<ServerCommandSource, ?> builder, CommandPermission annotation) {
         if (annotation == null) return;
 
-        if (annotation.level() != 0) {
-            builder.requires(ctx -> ctx.hasPermissionLevel(annotation.level()));
-            return;
-        }
+        Predicate<ServerCommandSource> predicate = (ctx) -> {
+            ServerPlayerEntity player = ctx.getPlayer();
+            if (player == null) return true;
+            if (ctx.hasPermissionLevel(annotation.level())) return true;
+            if (!annotation.permission().isEmpty() && PermissionHelper.hasPermission(player, annotation.permission()))
+                return true;
 
-        if (!annotation.permission().isEmpty()) {
-            builder.requires(ctx -> {
-                ServerPlayerEntity player = ctx.getPlayer();
-                if (player == null) return true;
-                return PermissionHelper.hasPermission(player, annotation.permission());
-            });
-            return;
-        }
+            return false;
+        };
+
+        builder.requires(predicate);
     }
 
 
@@ -231,6 +231,18 @@ public class BrigadierAnnotationProcessor {
         });
     }
 
+    private static ArgumentBuilder<ServerCommandSource, ?> getLastLiteralArgumentBuilder(List<ArgumentBuilder<ServerCommandSource, ?>> builders) {
+        for (int i = builders.size() - 1; i >= 0; i--) {
+            ArgumentBuilder<ServerCommandSource, ?> builder = builders.get(i);
+            if (builder instanceof LiteralArgumentBuilder) {
+                return builder;
+            }
+
+        }
+
+        throw new RuntimeException("No last literal argument builder found.");
+    }
+
     private static List<ArgumentBuilder<ServerCommandSource, ?>> makeArgumentBuilders(List<Argument> arguments, Method method) {
         List<ArgumentBuilder<ServerCommandSource, ?>> builders = new ArrayList<>();
 
@@ -246,9 +258,6 @@ public class BrigadierAnnotationProcessor {
                 builder = makeLiteralArgumentBuilder(name);
             }
 
-            // set requirement
-            setRequirement(builder, method.getAnnotation(CommandPermission.class));
-
             // don't add the builder if it's an optional argument
             if (argument.isOptional()) {
                 continue;
@@ -257,6 +266,10 @@ public class BrigadierAnnotationProcessor {
             // add argument node
             builders.add(builder);
         }
+
+
+        // set requirement (method)
+        setRequirement(getLastLiteralArgumentBuilder(builders), method.getAnnotation(CommandPermission.class));
 
         return builders;
     }
