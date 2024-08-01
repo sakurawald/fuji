@@ -3,7 +3,6 @@ package io.github.sakurawald.module.initializer.command_toolbox.sit;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -85,8 +84,6 @@ public class SitInitializer extends ModuleInitializer {
             @Override
             protected void removePassenger(Entity entity) {
                 super.removePassenger(entity);
-
-                LogUtil.warn("remove passenger = {}", entity);
 
                 // if the block below chair block is air
                 // NOTE: this seems no work, the player still falling because of the gravity
