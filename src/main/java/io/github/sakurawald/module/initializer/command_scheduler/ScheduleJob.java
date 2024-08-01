@@ -18,8 +18,6 @@ public class ScheduleJob {
     List<List<String>> commands_list;
 
     public void trigger() {
-        if (!this.enable) return;
-
         LogUtil.info("[Command Scheduler] trigger job -> {}", this.getName());
 
         if (left_trigger_times > 0) {

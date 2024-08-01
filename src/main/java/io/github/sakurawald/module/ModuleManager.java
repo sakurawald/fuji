@@ -134,7 +134,7 @@ public class ModuleManager extends AbstractManager {
     private  boolean isRequiredModsInstalled(@NotNull List<String> packagePath) {
         String basePackagePath = packagePath.getFirst();
 
-        if (packagePath.equals(List.of("gameplay", "carpet"))) {
+        if (packagePath.contains("carpet")) {
             return FabricLoader.getInstance().isModLoaded("carpet");
         }
 
