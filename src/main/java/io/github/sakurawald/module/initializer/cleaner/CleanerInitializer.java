@@ -1,14 +1,12 @@
 package io.github.sakurawald.module.initializer.cleaner;
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandPermission;
-import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.structure.TypeFormatter;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.cleaner.job.CleanerJob;
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
@@ -17,7 +15,6 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -25,39 +22,21 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.Leashable;
 import net.minecraft.entity.decoration.BlockAttachedEntity;
 import net.minecraft.entity.vehicle.VehicleEntity;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-
-import static net.minecraft.server.command.CommandManager.literal;
 
 
 @Command("cleaner")
 @CommandPermission(level = 4)
 public class CleanerInitializer extends ModuleInitializer {
 
-
     @Override
     public void onInitialize() {
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> updateJobs());
-    }
-
-    @Override
-    public void onReload() {
-        updateJobs();
-    }
-
-    public void updateJobs() {
-        Managers.getScheduleManager().cancelJobs(CleanerJob.class.getName());
-        Managers.getScheduleManager().scheduleJob(CleanerJob.class, Configs.configHandler.model().modules.cleaner.cron);
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> new CleanerJob().schedule());
     }
 
     @SuppressWarnings("RedundantIfStatement")
@@ -89,7 +68,7 @@ public class CleanerInitializer extends ModuleInitializer {
     }
 
     @Command("clean")
-    private int clean() {
+    public int clean() {
         CompletableFuture.runAsync(() -> {
             Map<String, Integer> counter = new HashMap<>();
 
@@ -132,15 +111,6 @@ public class CleanerInitializer extends ModuleInitializer {
             Component component = MessageHelper.ofComponent(player, "cleaner.broadcast", counter.values().stream().mapToInt(Integer::intValue).sum());
             component = component.hoverEvent(HoverEvent.showText(hoverTextComponent));
             player.sendMessage(component);
-        }
-    }
-
-    public static class CleanerJob implements Job {
-
-        @Override
-        public void execute(JobExecutionContext context) throws JobExecutionException {
-            CleanerInitializer initializer = Managers.getModuleManager().getInitializer(CleanerInitializer.class);
-            initializer.clean();
         }
     }
 

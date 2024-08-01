@@ -5,6 +5,7 @@ import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.placeholder.job.UpdateSumUpPlaceholderJob;
 import io.github.sakurawald.module.initializer.placeholder.structure.SumUpPlaceholder;
 import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.RandomUtil;
@@ -16,10 +17,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.NotNull;
-import org.quartz.Job;
 import org.quartz.JobDataMap;
-import org.quartz.JobExecutionContext;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -67,12 +65,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
         /* events */
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             SumUpPlaceholder.ofServer();
-            Managers.getScheduleManager().scheduleJob(UpdateSumUpPlaceholderJob.class, ScheduleManager.CRON_EVERY_MINUTE, new JobDataMap() {
-                {
-                    this.put(MinecraftServer.class.getName(), server);
-                    this.put(PlaceholderInitializer.class.getName(), PlaceholderInitializer.this);
-                }
-            });
+            new UpdateSumUpPlaceholderJob().schedule();
         });
     }
 
@@ -278,15 +271,4 @@ public class PlaceholderInitializer extends ModuleInitializer {
                 });
     }
 
-    public static class UpdateSumUpPlaceholderJob implements Job {
-        @Override
-        public void execute(@NotNull JobExecutionContext context) {
-            // save all online-player's stats into /stats/ folder
-            MinecraftServer server = (MinecraftServer) context.getJobDetail().getJobDataMap().get(MinecraftServer.class.getName());
-            server.getPlayerManager().getPlayerList().forEach((p) -> p.getStatHandler().save());
-
-            // update
-            SumUpPlaceholder.ofServer();
-        }
-    }
 }

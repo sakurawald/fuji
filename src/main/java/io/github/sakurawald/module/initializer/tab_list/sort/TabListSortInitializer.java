@@ -4,9 +4,9 @@ import com.mojang.authlib.GameProfile;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.tab_list.sort.job.UpdateEncodedPlayerTablistNameJob;
 import io.github.sakurawald.module.initializer.tab_list.sort.structure.AlphaTable;
 import io.github.sakurawald.util.minecraft.PermissionHelper;
-import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.NetworkSide;
 import net.minecraft.network.packet.c2s.common.SyncedClientOptions;
@@ -17,9 +17,6 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import org.jetbrains.annotations.NotNull;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.spongepowered.asm.mixin.Unique;
 
 import java.util.*;
@@ -78,8 +75,7 @@ public class TabListSortInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        String cron = Configs.configHandler.model().modules.tab_list.sort.sync_cron;
-        Managers.getScheduleManager().scheduleJob(UpdateEncodedPlayerTablistNameJob.class, cron);
+        new UpdateEncodedPlayerTablistNameJob(() -> Configs.configHandler.model().modules.tab_list.sort.sync_cron).schedule();
     }
 
     public static String decodeName(String playerName) {
@@ -103,7 +99,7 @@ public class TabListSortInitializer extends ModuleInitializer {
         return encoded;
     }
 
-    private static void syncEncodedPlayers(@NotNull MinecraftServer server) {
+    public static void syncEncodedPlayers(@NotNull MinecraftServer server) {
         /* make encoded player list */
         ArrayList<ServerPlayerEntity> encodedPlayers = new ArrayList<>();
         for (String encodedName : TabListSortInitializer.encoded2name.keySet()) {
@@ -115,10 +111,4 @@ public class TabListSortInitializer extends ModuleInitializer {
         server.getPlayerManager().sendToAll(playerListS2CPacket);
     }
 
-    public static class UpdateEncodedPlayerTablistNameJob implements Job {
-        @Override
-        public void execute(JobExecutionContext context) throws JobExecutionException {
-            syncEncodedPlayers(ServerHelper.getDefaultServer());
-        }
-    }
 }

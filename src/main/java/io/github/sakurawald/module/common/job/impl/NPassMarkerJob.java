@@ -1,6 +1,8 @@
 package io.github.sakurawald.module.common.job.impl;
 
+import io.github.sakurawald.module.common.job.interfaces.CronJob;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -8,17 +10,17 @@ import org.quartz.JobExecutionException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
-@AllArgsConstructor
-public abstract class NPassMarkerJob<T> implements Job {
+@NoArgsConstructor
+public abstract class NPassMarkerJob<T> extends CronJob {
 
     int pass;
-    String cron;
     Map<T, Integer> counter;
 
-    public NPassMarkerJob(int pass, String cron) {
+    public NPassMarkerJob(int pass, Supplier<String> cronSupplier) {
+        super(cronSupplier);
         this.pass = pass;
-        this.cron = cron;
         this.counter = new HashMap<>();
     }
 

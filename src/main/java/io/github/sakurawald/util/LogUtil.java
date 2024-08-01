@@ -38,6 +38,7 @@ public class LogUtil {
     public static @NotNull Logger createLogger(String name) {
         Logger logger = LogManager.getLogger(name);
         try {
+            // You can see the `debug` logs in `logs/debug.txt` file
             String level = System.getProperty("%s.level".formatted(Fuji.MOD_ID));
             Configurator.setLevel(logger, Level.getLevel(level));
         } catch (Exception e) {

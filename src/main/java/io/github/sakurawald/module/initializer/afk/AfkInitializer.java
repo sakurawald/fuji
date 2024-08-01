@@ -21,17 +21,9 @@ public class AfkInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> updateJobs());
-    }
-
-    @Override
-    public void onReload() {
-        updateJobs();
-    }
-
-    public void updateJobs() {
-        Managers.getScheduleManager().cancelJobs(AfkMarkerJob.class);
-        Managers.getScheduleManager().scheduleJob(AfkMarkerJob.class, Configs.configHandler.model().modules.afk.afk_checker.cron);
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+            new AfkMarkerJob().schedule();
+        });
     }
 
     @Command("afk")

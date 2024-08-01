@@ -12,7 +12,7 @@ import java.util.Collection;
 public class AfkMarkerJob extends NPassMarkerJob<ServerPlayerEntity> {
 
     public AfkMarkerJob() {
-        super(1, Configs.configHandler.model().modules.afk.afk_checker.cron);
+        super(1, () -> Configs.configHandler.model().modules.afk.afk_checker.cron);
     }
 
     @Override

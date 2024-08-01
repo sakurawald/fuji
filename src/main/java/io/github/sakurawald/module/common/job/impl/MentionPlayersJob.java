@@ -2,32 +2,38 @@ package io.github.sakurawald.module.common.job.impl;
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
-import io.github.sakurawald.module.common.manager.Managers;
+import io.github.sakurawald.module.common.job.interfaces.SimpleJob;
+import lombok.NoArgsConstructor;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
-import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-@SuppressWarnings("PatternValidation")
-public class MentionPlayersJob implements Job {
+@NoArgsConstructor
+public class MentionPlayersJob extends SimpleJob {
+
+    public MentionPlayersJob(JobDataMap jobDataMap, int intervalMs, int repeatCount) {
+        super(null, null, jobDataMap, intervalMs, repeatCount);
+
+    }
 
     public static void scheduleJob(ArrayList<ServerPlayerEntity> players) {
         ConfigModel.Modules.Chat.MentionPlayer mentionPlayer = Configs.configHandler.model().modules.chat.mention_player;
         int intervalMs = mentionPlayer.interval_ms;
         int repeatCount = mentionPlayer.repeat_count;
         Sound sound = Sound.sound(Key.key(mentionPlayer.sound), Sound.Source.MUSIC, mentionPlayer.volume, mentionPlayer.pitch);
-        Managers.getScheduleManager().scheduleJob(MentionPlayersJob.class, null, null, intervalMs, repeatCount, new JobDataMap() {
+
+        new MentionPlayersJob(new JobDataMap() {
             {
                 this.put(ArrayList.class.getName(), players);
                 this.put(Sound.class.getName(), sound);
             }
-        });
+        }, intervalMs, repeatCount).schedule();
     }
 
     public static void scheduleJob(ServerPlayerEntity serverPlayer) {

@@ -8,7 +8,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import java.nio.file.Path;
 
 // TODO: rank module (track, requirement)
-// TODO: spawn module (facility)
 // TODO: hologram module (facility)
 // TODO: invsee module (slot, inv-redirect)
 // TODO: powertool module (composed, meta)
@@ -16,8 +15,6 @@ import java.nio.file.Path;
 // TODO: move docs gen into another project
 
 // TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector)
-
-// TODO: supplier for scheduler
 
 public class Fuji implements ModInitializer {
 

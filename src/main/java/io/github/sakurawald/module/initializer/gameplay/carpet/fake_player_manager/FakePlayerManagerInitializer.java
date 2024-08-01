@@ -8,6 +8,7 @@ import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.manager.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager.job.ManageFakePlayersJob;
 import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
@@ -19,22 +20,20 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Uuids;
 import org.jetbrains.annotations.NotNull;
-import org.quartz.Job;
 import org.quartz.JobDataMap;
-import org.quartz.JobExecutionContext;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
 public class FakePlayerManagerInitializer extends ModuleInitializer {
-    private final ArrayList<String> CONSTANT_EMPTY_LIST = new ArrayList<>();
-    private final HashMap<String, ArrayList<String>> player2fakePlayers = new HashMap<>();
-    private final HashMap<String, Long> player2expiration = new HashMap<>();
+    public final ArrayList<String> CONSTANT_EMPTY_LIST = new ArrayList<>();
+    public final HashMap<String, ArrayList<String>> player2fakePlayers = new HashMap<>();
+    public final HashMap<String, Long> player2expiration = new HashMap<>();
 
     @Override
     public void onInitialize() {
-        ServerLifecycleEvents.SERVER_STARTED.register(this::registerScheduleTask);
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> new ManageFakePlayersJob().schedule());
     }
 
     @Command("player renew")
@@ -78,7 +77,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         MessageHelper.sendMessage(player, "fake_player_manager.renew.success", DateUtil.toStandardDateFormat(newTime));
     }
 
-    private void validateFakePlayers() {
+    public void validateFakePlayers() {
         /* remove invalid fake-player */
         Iterator<Map.Entry<String, ArrayList<String>>> it = player2fakePlayers.entrySet().iterator();
         while (it.hasNext()) {
@@ -126,7 +125,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         return myFakePlayers.contains(fakePlayer);
     }
 
-    private int getCurrentAmountLimit() {
+    public int getCurrentAmountLimit() {
         ArrayList<List<Integer>> rules = Configs.configHandler.model().modules.gameplay.carpet.fake_player_manager.caps_limit_rule;
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
@@ -138,15 +137,6 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         return -1;
     }
 
-    @SuppressWarnings("unused")
-    public void registerScheduleTask(MinecraftServer server) {
-        Managers.getScheduleManager().scheduleJob(ManageFakePlayersJob.class, ScheduleManager.CRON_EVERY_MINUTE, new JobDataMap() {
-            {
-                this.put(FakePlayerManagerInitializer.class.getName(), FakePlayerManagerInitializer.this);
-            }
-        });
-    }
-
     public boolean isMyFakePlayer(@NotNull ServerPlayerEntity player, @NotNull ServerPlayerEntity fakePlayer) {
         return player2fakePlayers.getOrDefault(player.getGameProfile().getName(), CONSTANT_EMPTY_LIST).contains(fakePlayer.getGameProfile().getName());
     }
@@ -156,50 +146,4 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         return new GameProfile(offlinePlayerUUID, fakePlayerName);
     }
 
-    public static class ManageFakePlayersJob implements Job {
-
-        @Override
-        public void execute(@NotNull JobExecutionContext context) {
-            /* validate */
-            FakePlayerManagerInitializer module = (FakePlayerManagerInitializer) context.getJobDetail().getJobDataMap().get(FakePlayerManagerInitializer.class.getName());
-            module.validateFakePlayers();
-
-            int limit = module.getCurrentAmountLimit();
-            long currentTimeMS = System.currentTimeMillis();
-            for (String playerName : module.player2fakePlayers.keySet()) {
-                /* check for renew limits */
-                long expiration = module.player2expiration.getOrDefault(playerName, 0L);
-                ArrayList<String> fakePlayers = module.player2fakePlayers.getOrDefault(playerName, module.CONSTANT_EMPTY_LIST);
-                if (expiration <= currentTimeMS) {
-                    /* auto-renew for online-playerName */
-                    ServerPlayerEntity playerByName = ServerHelper.getDefaultServer().getPlayerManager().getPlayer(playerName);
-                    if (playerByName != null) {
-                        module.renewFakePlayers(playerByName);
-                        continue;
-                    }
-
-                    for (String fakePlayerName : fakePlayers) {
-                        ServerPlayerEntity fakePlayer = ServerHelper.getDefaultServer().getPlayerManager().getPlayer(fakePlayerName);
-                        if (fakePlayer == null) return;
-                        fakePlayer.kill();
-                        MessageHelper.sendBroadcast("fake_player_manager.kick_for_expiration", fakePlayer.getGameProfile().getName(), playerName);
-                    }
-                    // remove entry
-                    module.player2expiration.remove(playerName);
-
-                    // we'll kick all fake players, so we don't need to check for amount limits
-                    continue;
-                }
-
-                /* check for amount limits */
-                for (int i = fakePlayers.size() - 1; i >= limit; i--) {
-                    ServerPlayerEntity fakePlayer = ServerHelper.getDefaultServer().getPlayerManager().getPlayer(fakePlayers.get(i));
-                    if (fakePlayer == null) continue;
-                    fakePlayer.kill();
-
-                    MessageHelper.sendBroadcast("fake_player_manager.kick_for_amount", fakePlayer.getGameProfile().getName(), playerName);
-                }
-            }
-        }
-    }
 }

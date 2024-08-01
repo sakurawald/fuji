@@ -4,6 +4,7 @@ import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.tab_list.job.RenderHeaderAndFooterJob;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.RandomUtil;
 import io.github.sakurawald.util.minecraft.ServerHelper;
@@ -13,9 +14,6 @@ import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import javax.naming.OperationNotSupportedException;
 
@@ -23,8 +21,7 @@ public class TabListInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        String cron = Configs.configHandler.model().modules.tab_list.update_cron;
-        ServerLifecycleEvents.SERVER_STARTED.register((server -> Managers.getScheduleManager().scheduleJob(RenderHeaderAndFooterJob.class, cron)));
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> new RenderHeaderAndFooterJob().schedule());
     }
 
     @Override
@@ -39,14 +36,7 @@ public class TabListInitializer extends ModuleInitializer {
         }
     }
 
-    public static class RenderHeaderAndFooterJob implements Job {
-        @Override
-        public void execute(JobExecutionContext context) throws JobExecutionException {
-            render(ServerHelper.getDefaultServer());
-        }
-    }
-
-    private static void render(@NotNull MinecraftServer server) {
+    public static void render(@NotNull MinecraftServer server) {
         ConfigModel.Modules.TabList config = Configs.configHandler.model().modules.tab_list;
         String headerControl = RandomUtil.drawList(config.style.header);
         String footerControl = RandomUtil.drawList(config.style.footer);

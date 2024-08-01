@@ -35,7 +35,6 @@ public class HomeInitializer extends ModuleInitializer {
     @Override
     public void onReload() {
         data.loadFromDisk();
-        data.setAutoSaveJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 
     public Map<String, Position> ofHomes(@NotNull ServerPlayerEntity player) {
