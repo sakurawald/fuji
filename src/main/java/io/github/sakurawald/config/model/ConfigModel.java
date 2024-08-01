@@ -1447,6 +1447,7 @@ public class ConfigModel {
             public @NotNull SendActionBar send_actionbar = new SendActionBar();
             public @NotNull TrashCan trashcan = new TrashCan();
             public @NotNull Tppos tppos = new Tppos();
+            public @NotNull Warp warp = new Warp();
 
             @Documentation("This module provides `/bed` command, which teleports the player to his bed.")
             public class Bed {
@@ -1620,6 +1621,11 @@ public class ConfigModel {
                     Command: /tppos
                     """)
             public class Tppos {
+                public boolean enable = true;
+            }
+
+            @Documentation("Command: /warp")
+            public class Warp {
                 public boolean enable = true;
             }
         }

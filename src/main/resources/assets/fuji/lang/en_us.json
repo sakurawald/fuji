@@ -69,7 +69,7 @@
   "home.list": "<gold>Your homes: %s",
   "home.no_found": "<red>Home %s not found.",
   "home.set.fail.limit": "<red>Home limit exceed",
-  "home.set.fail.need_override": "<red>Home %s exists, use \"/home set <name> --override\" to override it",
+  "home.set.fail.need_override": "<red>Home %s exists, you need to add `--override true` argument to override it.",
   "home.set.success": "<gold>Home %s set.",
   "home.unset.success": "<gold>Home %s removed.",
   "input.limit.error": "<red>Input limit exceed",
@@ -200,5 +200,10 @@
   "world_downloader.request": "<#8DDFCB>Player %s just requested to download world file (Size: %.2f MB)",
   "world_downloader.response": "<#8DDFCB>Download link generated: <hover:show_text:'<green>Open this link'><click:open_url:'%s'><green>[OPEN]</click></hover>",
   "cleaner.broadcast": "<red>The cleaner just finished cleaning. (%s entities)",
-  "sit.fail": "<red>You can't sit there !"
+  "sit.fail": "<red>You can't sit there !",
+  "warp.set.fail.need_override": "<red>Warp %s exists, you need to add `--override true` argument to override it.",
+  "warp.set.success": "<gold>Warp %s set.",
+  "warp.list": "<gold>All warps: %s",
+  "warp.no_found": "<red>Warp %s not found.",
+  "warp.unset.success": "<gold>Warp %s removed."
 }

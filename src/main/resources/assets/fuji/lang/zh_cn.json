@@ -69,7 +69,7 @@
   "home.list": "<gold>您的家: %s",
   "home.no_found": "<red>家 %s 不存在.",
   "home.set.fail.limit": "<red>已达到最大可设置家的上限",
-  "home.set.fail.need_override": "<red>家 %s 已存在, 请使用 \"/home set <name> --override\" 进行覆盖",
+  "home.set.fail.need_override": "<red>家 %s 已存在, 您需要添加 `--override` 参数来覆盖它.",
   "home.set.success": "<gold>家 %s 已设置.",
   "home.unset.success": "<gold>家 %s 已移除.",
   "input.limit.error": "<red>输入超出限制",
@@ -200,5 +200,10 @@
   "world_downloader.request": "<#8DDFCB>玩家 %s 刚刚向世界下载器递交下载请求 (总大小: %.2f MB)",
   "world_downloader.response": "<#8DDFCB>已生成下载链接: <hover:show_text:'<green>打开该链接'><click:open_url:'%s'><green>[打开]</click></hover>",
   "cleaner.broadcast": "<red>清理器刚刚完成了清理 (%s 实体)",
-  "sit.fail": "<red>您不能坐那里 !"
+  "sit.fail": "<red>您不能坐那里 !",
+  "warp.set.fail.need_override": "<red>传送点 %s 已存在, 您需要添加 `--override` 参数来覆盖它.",
+  "warp.set.success": "<gold>传送点 %s 已设置.",
+  "warp.list": "<gold>所有传送点: %s",
+  "warp.no_found": "<red>传送点 %s 未找到.",
+  "warp.unset.success": "<gold>传送点 %s 已移除."
 }
