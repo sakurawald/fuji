@@ -1,7 +1,9 @@
 package io.github.sakurawald.module.initializer.command_alias;
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.tree.CommandNode;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_alias.structure.CommandAliasEntry;
@@ -12,11 +14,13 @@ import net.minecraft.server.command.ServerCommandSource;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.net.ssl.SSLContext;
 import java.util.List;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class CommandAliasInitializer extends ModuleInitializer {
+
     @Override
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register((server -> {
@@ -27,32 +31,21 @@ public class CommandAliasInitializer extends ModuleInitializer {
         }));
     }
 
-    private LiteralArgumentBuilder<ServerCommandSource> walk(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, @Nullable LiteralArgumentBuilder<ServerCommandSource> parent, @NotNull CommandAliasEntry entry, int level) {
-        // edge case
-        if (entry.from.size() == 1) {
-            return literal(entry.from.getFirst()).redirect(dispatcher.findNode(entry.to));
-        }
-
-        List<String> names = entry.from;
-        String name = names.get(level);
-
-        if (parent == null) {
-            parent = literal(name);
-            return walk(dispatcher, parent, entry, level + 1);
-        }
-
-        LiteralArgumentBuilder<ServerCommandSource> child = literal(name);
-        if (level + 1 == names.size()) {
-            child.redirect(dispatcher.findNode(entry.to));
-            return parent.then(child);
-        }
-
-        LiteralArgumentBuilder<ServerCommandSource> value = walk(dispatcher, child, entry, level + 1);
-        return parent.then(value);
-    }
-
     private void registerCommandAliasEntry(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, @NotNull CommandAliasEntry entry) {
-        LiteralArgumentBuilder<ServerCommandSource> root = walk(dispatcher, null, entry, 0);
-        dispatcher.register(root);
+        LiteralArgumentBuilder<ServerCommandSource> builder = null;
+
+        for (int i = entry.from.size() - 1; i >= 0; i--) {
+            String name = entry.from.get(i);
+
+            if (builder == null) {
+                CommandNode<ServerCommandSource> target = dispatcher.findNode(entry.to);
+                builder = literal(name).redirect(target);
+                continue;
+            }
+
+            builder = literal(name).then(builder);
+        }
+
+        dispatcher.register(builder);
     }
 }
