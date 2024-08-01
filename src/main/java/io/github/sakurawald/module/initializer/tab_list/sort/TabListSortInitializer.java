@@ -2,7 +2,6 @@ package io.github.sakurawald.module.initializer.tab_list.sort;
 
 import com.mojang.authlib.GameProfile;
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.tab_list.sort.job.UpdateEncodedPlayerTablistNameJob;
 import io.github.sakurawald.module.initializer.tab_list.sort.structure.AlphaTable;
@@ -44,6 +43,14 @@ public class TabListSortInitializer extends ModuleInitializer {
         GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes(playerName.getBytes()), playerName);
         SyncedClientOptions syncedClientOptions = SyncedClientOptions.createDefault();
         ServerPlayerEntity player = new ServerPlayerEntity(server, world, gameProfile, syncedClientOptions);
+
+        // sync properties
+        String realPlayerName = TabListSortInitializer.decodeName(playerName);
+        ServerPlayerEntity realPlayer = server.getPlayerManager().getPlayer(realPlayerName);
+        if (realPlayer != null) {
+            player.getGameProfile().getProperties().putAll(realPlayer.getGameProfile().getProperties());
+        }
+
         ClientConnection clientConnection = new ClientConnection(NetworkSide.CLIENTBOUND);
         ConnectedClientData connectedClientData = ConnectedClientData.createDefault(gameProfile, false);
         player.networkHandler = new ServerPlayNetworkHandler(server, clientConnection, player, connectedClientData);
@@ -51,11 +58,9 @@ public class TabListSortInitializer extends ModuleInitializer {
     }
 
     @Unique
-    public static @NotNull ServerPlayerEntity makeServerPlayerEntity(@NotNull MinecraftServer server, @NotNull ServerPlayerEntity player) {
-        String encodedName = encodeName(player);
-        ServerPlayerEntity dummyPlayer = makeServerPlayerEntity(server, encodedName);
-        dummyPlayer.getGameProfile().getProperties().putAll(player.getGameProfile().getProperties());
-        return dummyPlayer;
+    public static @NotNull ServerPlayerEntity makeServerPlayerEntity(@NotNull MinecraftServer server, @NotNull ServerPlayerEntity realPlayer) {
+        String encodedName = encodeName(realPlayer);
+        return makeServerPlayerEntity(server, encodedName);
     }
 
     public static @NotNull Map<String, Integer> getWeightMap(@NotNull List<ServerPlayerEntity> players) {
@@ -103,7 +108,8 @@ public class TabListSortInitializer extends ModuleInitializer {
         /* make encoded player list */
         ArrayList<ServerPlayerEntity> encodedPlayers = new ArrayList<>();
         for (String encodedName : TabListSortInitializer.encoded2name.keySet()) {
-            encodedPlayers.add(makeServerPlayerEntity(server, encodedName));
+            ServerPlayerEntity dummyPlayer = makeServerPlayerEntity(server, encodedName);
+            encodedPlayers.add(dummyPlayer);
         }
 
         /* update tab list name for encoded players */

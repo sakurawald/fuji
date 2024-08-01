@@ -9,13 +9,13 @@
     "color.sign.SignBlockEntityMixin"
   ],
   "mixins": [
-    "_internal.low_level.server.MinecraftServerMixin",
     "_internal.low_level.accessor.ServerPlayerEntityMixin",
     "_internal.low_level.accessor.SimpleRegistryMixin",
     "_internal.low_level.accessor.ThreadedAnvilChunkStorageMixin",
     "_internal.low_level.accessor.UserCacheMixin",
     "_internal.low_level.command.CommandContextBuilderMixin",
     "_internal.low_level.command.CommandDispatcherMixin",
+    "_internal.low_level.server.MinecraftServerMixin",
     "afk.PlayerListMixin",
     "afk.ServerPlayerMixin",
     "anti_build.BlockItemMixin",
@@ -63,6 +63,7 @@
     "tab_list.sort.OverrideTabListNameMixin",
     "tab_list.sort.SyncEncodedPlayersOnPlayerConnectMixin",
     "tab_list.sort.SyncEncodedPlayersOnPlayerDisconnectMixin",
+    "tab_list.sort.SyncGameProfileMixin",
     "teleport_warmup.ServerPlayerMixin",
     "whitelist.UserWhiteListMixin",
     "works.HopperBlockEntityMixin",

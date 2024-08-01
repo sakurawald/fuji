@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.mixin.tab_list.sort;
 
+import io.github.sakurawald.util.LogUtil;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
