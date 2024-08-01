@@ -10,8 +10,6 @@ import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.WorldModel;
-import io.github.sakurawald.module.common.structure.TeleportSetup;
-import io.github.sakurawald.module.common.structure.random_teleport.RandomTeleport;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.world.structure.DimensionEntry;
 import io.github.sakurawald.util.minecraft.CommandHelper;
@@ -27,6 +25,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.RandomSeed;
 import org.jetbrains.annotations.NotNull;
 
@@ -43,10 +42,10 @@ import java.util.Optional;
  * public static final RegistryKey<Registry<DimensionOptions>> DIMENSION = RegistryKeys.of("dimension");
  */
 
-@SuppressWarnings("LombokGetterMayBeUsed")
+@Getter
+@CommandPermission(level = 4)
 public class WorldInitializer extends ModuleInitializer {
 
-    @Getter
     private final ConfigHandler<WorldModel> storage = new ObjectConfigHandler<>("world.json", WorldModel.class);
 
     @Override
@@ -68,22 +67,16 @@ public class WorldInitializer extends ModuleInitializer {
 
     @Command("world tp")
     private int $tp(@CommandSource ServerPlayerEntity player, Dimension dimension) {
-            ServerWorld world = dimension.getWorld();
+        ServerWorld world = dimension.getWorld();
 
-            MessageHelper.sendActionBar(player, "world.dimension.tp.tip");
-            Optional<TeleportSetup> tpSetup = TeleportSetup.of(world);
-            if (tpSetup.isEmpty()) {
-                MessageHelper.sendMessage(player, "rtp.dimension.disallow", IdentifierHelper.ofString(world));
-                return CommandHelper.Return.FAIL;
-            }
-            RandomTeleport.request(player, tpSetup.get(), null);
+        BlockPos spawnPos = world.getSpawnPos();
 
-            return CommandHelper.Return.SUCCESS;
+        player.teleport(world, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), player.getYaw(), player.getPitch());
+        return CommandHelper.Return.SUCCESS;
     }
 
     @SneakyThrows
     @Command("world create")
-    @CommandPermission(level = 4)
     private int $create(@CommandSource CommandContext<ServerCommandSource> ctx, String name, DimensionType dimensionType) {
         Identifier dimensionTypeIdentifier = Identifier.of(dimensionType.getIdentifier());
         String FUJI_DIMENSION_NAMESPACE = "fuji";
@@ -107,7 +100,6 @@ public class WorldInitializer extends ModuleInitializer {
 
     @SneakyThrows
     @Command("world delete")
-    @CommandPermission(level = 4)
     private int $delete(@CommandSource CommandContext<ServerCommandSource> ctx, Dimension dimension) {
         ServerWorld world = dimension.getWorld();
 
@@ -133,13 +125,12 @@ public class WorldInitializer extends ModuleInitializer {
 
     @SneakyThrows
     @Command("world reset")
-    @CommandPermission(level = 4)
     private int $reset(@CommandSource CommandContext<ServerCommandSource> ctx, Dimension dimension) {
         // draw seed and save
         ServerWorld world = dimension.getWorld();
         String identifier = IdentifierHelper.ofString(world);
         if (Configs.configHandler.model().modules.world.blacklist.dimension_list.contains(identifier)) {
-            MessageHelper.sendMessage(ctx.getSource(), "world.dimension.blacklist",identifier);
+            MessageHelper.sendMessage(ctx.getSource(), "world.dimension.blacklist", identifier);
             return CommandHelper.Return.FAIL;
         }
 

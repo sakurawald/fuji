@@ -27,8 +27,8 @@ public class RtpInitializer extends ModuleInitializer {
             return CommandHelper.Return.FAIL;
         }
 
+        MessageHelper.sendActionBar(player, "rtp.tip");
         RandomTeleport.request(player, first.get(), (position -> MessageHelper.sendMessage(player, "rtp.success")));
-
         return CommandHelper.Return.SUCCESS;
     }
 }
