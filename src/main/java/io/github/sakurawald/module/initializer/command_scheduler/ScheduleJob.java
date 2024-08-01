@@ -20,7 +20,7 @@ public class ScheduleJob {
     public void trigger() {
         if (!this.enable) return;
 
-        LogUtil.info("Trigger ScheduleJob {}", this.getName());
+        LogUtil.info("[Command Scheduler] trigger job -> {}", this.getName());
 
         if (left_trigger_times > 0) {
             left_trigger_times--;
