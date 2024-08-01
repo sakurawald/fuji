@@ -12,7 +12,6 @@ public abstract class AbstractJob implements Job {
     protected boolean reschedulable = true;
     protected String jobGroup = null;
     protected String jobName = null;
-    protected JobDataMap jobDataMap = null;
     protected JobDetail jobDetail = null;
     protected TriggerKey triggerKey = null;
 
@@ -28,13 +27,14 @@ public abstract class AbstractJob implements Job {
         if (jobName == null) {
             jobName = UUID.randomUUID().toString();
         }
+
+        // note: since quartz will construct AbstractJob using NoArgsConstructor, and all the AbstractJob instances used for `execute closure` have no jobDataMap.
         if (jobDataMap == null) {
             jobDataMap = new JobDataMap();
         }
 
         this.jobGroup = jobGroup;
         this.jobName = jobName;
-        this.jobDataMap = jobDataMap;
 
         this.jobDetail = JobBuilder.newJob(this.getClass()).withIdentity(jobName, jobGroup).usingJobData(jobDataMap).build();
         this.triggerKey = new TriggerKey(jobName, jobGroup);

@@ -2,10 +2,11 @@ package io.github.sakurawald.module.common.manager.scheduler;
 
 
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.config.handler.ConfigHandler;
+import io.github.sakurawald.config.job.ConfigHandlerAutoSaveJob;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.manager.interfaces.AbstractManager;
 import io.github.sakurawald.util.LogUtil;
+import lombok.Getter;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
@@ -16,11 +17,9 @@ import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.GroupMatcher;
 
-import javax.annotation.Nullable;
-import java.util.Collections;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
+@SuppressWarnings("LombokGetterMayBeUsed")
 public class ScheduleManager extends AbstractManager {
 
     public static final String CRON_EVERY_MINUTE = "0 * * ? * * *";
@@ -40,81 +39,30 @@ public class ScheduleManager extends AbstractManager {
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> Managers.getScheduleManager().startScheduler());
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
-            Managers.getScheduleManager().triggerJobs(ConfigHandler.ConfigHandlerAutoSaveJob.class.getName());
+            Managers.getScheduleManager().triggerJobs(ConfigHandlerAutoSaveJob.class.getName());
             Managers.getScheduleManager().shutdownScheduler();
         });
     }
 
-    public void scheduleJob(@NotNull Class<? extends Job> jobClass, @NotNull String cron) {
-        scheduleJob(jobClass, null, null, cron, null);
-    }
-    public void scheduleJob(@NotNull Class<? extends Job> jobClass, @NotNull String cron, JobDataMap jobDataMap) {
-        scheduleJob(jobClass, null, null, cron, jobDataMap);
+    public void scheduleJob(JobDetail jobDetail, Trigger trigger) throws SchedulerException {
+        this.scheduler.scheduleJob(jobDetail,trigger);
     }
 
-    public void scheduleJob(@NotNull Class<? extends Job> jobClass, @Nullable String jobGroup, @Nullable String jobName, @NotNull String cron, @Nullable JobDataMap jobDataMap) {
-        if (jobGroup == null) {
-            jobGroup = jobClass.getName();
-        }
-        if (jobName == null) {
-            jobName = UUID.randomUUID().toString();
-        }
-        if (jobDataMap == null) {
-            jobDataMap = new JobDataMap();
-        }
-        LogUtil.debug("addJob() -> jobClass: {}, jobName: {}, jobGroup: {}, cron: {}, jobDataMap: {}", jobClass, jobName, jobGroup, cron, jobDataMap);
+    public void rescheduleJob(TriggerKey triggerKey, Trigger newTrigger) throws SchedulerException {
+        this.scheduler.rescheduleJob(triggerKey,newTrigger);
+    }
 
-        JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName, jobGroup).usingJobData(jobDataMap).build();
-        CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(jobName, jobGroup).withSchedule(CronScheduleBuilder.cronSchedule(cron)).build();
+    public void deleteJobs(Class<?> clazz) {
+        List<JobKey> jobKeys = new ArrayList<>(getJobKeys(clazz.getName()));
+        this.deleteJobs(jobKeys);
+    }
+
+    private void deleteJobs(List<JobKey> jobKeys) {
         try {
-            scheduler.scheduleJob(jobDetail, trigger);
+            LogUtil.debug("Delete job keys: {}", jobKeys);
+            this.scheduler.deleteJobs(jobKeys);
         } catch (SchedulerException e) {
-            LogUtil.error("Exception in ScheduleUtil.addJob", e);
-        }
-    }
-
-    public void scheduleJob(@NotNull Class<? extends Job> jobClass, @Nullable String jobName, @Nullable String jobGroup, int intervalMs, int repeatCount, @Nullable JobDataMap jobDataMap) {
-        if (jobGroup == null) {
-            jobGroup = jobClass.getName();
-        }
-        if (jobName == null) {
-            jobName = UUID.randomUUID().toString();
-        }
-        if (jobDataMap == null) {
-            jobDataMap = new JobDataMap();
-        }
-        LogUtil.debug("addJob() -> jobClass: {}, jobName: {}, jobGroup: {}, intervalMs: {}, repeatCount: {}, jobDataMap: {}", jobClass, jobName, jobGroup, intervalMs, repeatCount, jobDataMap);
-
-        JobDetail jobDetail = JobBuilder.newJob(jobClass).withIdentity(jobName, jobGroup).usingJobData(jobDataMap).build();
-        SimpleTrigger trigger = TriggerBuilder.newTrigger().withIdentity(jobName, jobGroup).withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMilliseconds(intervalMs).withRepeatCount(repeatCount - 1)).build();
-        try {
-            scheduler.scheduleJob(jobDetail, trigger);
-        } catch (SchedulerException e) {
-            LogUtil.error("Exception in ScheduleUtil.addJob", e);
-        }
-    }
-
-    public void cancelJobs(String jobGroup, @NotNull String jobName) {
-        LogUtil.debug("removeJobs() -> jobGroup: {}, jobName: {}", jobGroup, jobName);
-
-        try {
-            scheduler.deleteJob(new JobKey(jobName, jobGroup));
-        } catch (SchedulerException e) {
-            LogUtil.error("Exception in ScheduleUtil.removeJobs", e);
-        }
-    }
-
-    public void cancelJobs(@NotNull Class<? extends Job> clazz) {
-        cancelJobs(clazz.getName());
-    }
-
-    public void cancelJobs(@NotNull String jobGroup) {
-        LogUtil.debug("removeJobs() -> jobGroup: {}", jobGroup);
-
-        try {
-            scheduler.deleteJobs(getJobKeys(jobGroup).stream().toList());
-        } catch (SchedulerException e) {
-            LogUtil.error("Exception in ScheduleUtil.removeJobs", e);
+            LogUtil.error("Failed to delete jobs: " + e);
         }
     }
 

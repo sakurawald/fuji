@@ -8,13 +8,11 @@ import io.github.sakurawald.config.model.SchedulerModel;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_scheduler.adapter.ScheduleJobName;
+import io.github.sakurawald.module.initializer.command_scheduler.job.CommandScheduleJob;
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
-import org.quartz.Job;
 import org.quartz.JobDataMap;
-import org.quartz.JobExecutionContext;
 
 
 @Command("scheduler")
@@ -25,15 +23,17 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
     private static final ConfigHandler<SchedulerModel> schedulerHandler = new ObjectConfigHandler<>("scheduler.json", SchedulerModel.class);
 
     private void updateJobs() {
-        Managers.getScheduleManager().cancelJobs(ScheduleJobJob.class.getName());
+        Managers.getScheduleManager().deleteJobs(CommandScheduleJob.class);
         schedulerHandler.model().scheduleJobs.forEach(scheduleJob -> {
-
             if (scheduleJob.enable) {
-                scheduleJob.crons.forEach(cron -> Managers.getScheduleManager().scheduleJob(ScheduleJobJob.class, cron, new JobDataMap() {
-                    {
-                        this.put("job", scheduleJob);
-                    }
-                }));
+                scheduleJob.crons.forEach(cron -> {
+                    new CommandScheduleJob(new JobDataMap() {
+                        {
+                            this.put("job", scheduleJob);
+                        }
+                    }, () -> cron).schedule();
+                });
+
                 LogUtil.info("SchedulerModule: Add ScheduleJob {}", scheduleJob);
             }
         });
@@ -62,13 +62,5 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    public static class ScheduleJobJob implements Job {
-
-        @Override
-        public void execute(@NotNull JobExecutionContext context) {
-            ScheduleJob job = (ScheduleJob) context.getJobDetail().getJobDataMap().get("job");
-            job.trigger();
-        }
-    }
 }
 

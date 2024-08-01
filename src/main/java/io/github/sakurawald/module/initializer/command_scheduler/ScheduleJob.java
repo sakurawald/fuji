@@ -18,6 +18,8 @@ public class ScheduleJob {
     List<List<String>> commands_list;
 
     public void trigger() {
+        if (!this.enable) return;
+
         LogUtil.info("Trigger ScheduleJob {}", this.getName());
 
         if (left_trigger_times > 0) {
@@ -25,6 +27,7 @@ public class ScheduleJob {
             if (left_trigger_times == 0) {
                 this.enable = false;
             }
+
             CommandSchedulerInitializer.getSchedulerHandler().saveToDisk();
         }
 

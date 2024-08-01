@@ -15,11 +15,13 @@ public class CommandScheduleJob extends CronJob {
 
     public CommandScheduleJob(JobDataMap jobDataMap, Supplier<String> cronSupplier) {
         super(jobDataMap, cronSupplier);
+
+        super.reschedulable = false;
     }
 
     @Override
     public void execute(@NotNull JobExecutionContext context) {
-        ScheduleJob job = (ScheduleJob) super.jobDataMap.get("job");
+        ScheduleJob job = (ScheduleJob) context.getJobDetail().getJobDataMap().get("job");
         job.trigger();
     }
 }
