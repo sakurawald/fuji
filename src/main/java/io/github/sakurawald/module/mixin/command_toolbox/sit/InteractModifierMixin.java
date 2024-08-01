@@ -95,18 +95,11 @@ public class InteractModifierMixin {
                 offset.add(direction.rotateYCounterclockwise().getUnitVector());
             lookTarget = new Vec3d(blockPos.getX() + 0.5 - offset.x(), blockPos.getY(), blockPos.getZ() + 0.5 - offset.z());
 
-            // fix falling player
-            BlockPos supportBlock = blockPos.add(0, -2, 0);
-            if (!world.getBlockState(supportBlock).isSideSolid(world, supportBlock, Direction.UP, SideShapeType.RIGID)) {
-                MessageHelper.sendActionBar(player, "sit.fail");
-                return;
-            }
-
         } else {
             lookTarget = player.getPos();
         }
 
-        Entity chair = module.createChair(world, blockPos, new Vec3d(0, -1.7, 0), lookTarget, true);
+        Entity chair = module.createChair(world, blockPos, new Vec3d(0, -1.7, 0), lookTarget);
 
         Entity v = player.getVehicle();
         if (v != null) {
