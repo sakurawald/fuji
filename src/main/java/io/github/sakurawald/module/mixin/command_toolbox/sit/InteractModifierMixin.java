@@ -3,12 +3,14 @@ package io.github.sakurawald.module.mixin.command_toolbox.sit;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.command_toolbox.sit.SitInitializer;
+import io.github.sakurawald.util.minecraft.IdentifierHelper;
 import net.minecraft.block.*;
 import net.minecraft.block.enums.StairShape;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.network.ServerPlayerInteractionManager;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -93,8 +95,7 @@ public class InteractModifierMixin {
             lookTarget = player.getPos();
         }
 
-        Vec3d chairEntityPosition = hitBlockPos.toBottomCenterPos().add(SitInitializer.CHAIR_ENTITY_OFFSET);
-        Entity chair = module.makeChairEntity(world, chairEntityPosition, hitBlockPos, lookTarget);
+        Entity chair = module.makeChairEntity(world, hitBlockPos, lookTarget);
 
         Entity v = player.getVehicle();
         if (v != null) {

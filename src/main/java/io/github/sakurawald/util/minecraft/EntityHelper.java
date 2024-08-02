@@ -18,7 +18,12 @@ public class EntityHelper {
     }
 
     public static BlockPos getBlockPosBelowEntity(@NotNull Entity entity) {
-        return new BlockPos(entity.getBlockX(), (int) Math.round(entity.getY()), entity.getBlockZ()).add(0, -1, 0);
+        if (entity.getY() % 1 != 0) {
+            return entity.getBlockPos();
+
+        }
+
+        return entity.getBlockPos().add(0, -1,0);
     }
 
 }

@@ -7,9 +7,8 @@ import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.EntityHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SlabBlock;
-import net.minecraft.block.StairsBlock;
 import net.minecraft.command.argument.EntityAnchorArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -17,7 +16,10 @@ import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
@@ -51,22 +53,25 @@ public class SitInitializer extends ModuleInitializer {
             return CommandHelper.Return.FAIL;
         }
 
-        Vec3d chairEntityPosition = blockPosBelowPlayer.toBottomCenterPos().add(0, 0.5, 0).add(SitInitializer.CHAIR_ENTITY_OFFSET);
 
-        // if there is a slab/stair block under the player, then we should not sit on the ground.
-        if (blockBelowPlayer.getBlock() instanceof StairsBlock
-        || blockBelowPlayer.getBlock() instanceof SlabBlock) {
-            chairEntityPosition = chairEntityPosition.add(0, -0.5, 0);
-        }
-
-        Entity entity = makeChairEntity(player.getWorld(), chairEntityPosition, blockPosBelowPlayer, player.getPos().add(0.5,0,0.5));
+        Entity entity = makeChairEntity(player.getWorld(), blockPosBelowPlayer, player.getPos().add(0.5, 0, 0.5));
         CHAIR_ENTITY_LIST.add(entity);
         player.startRiding(entity, true);
 
         return CommandHelper.Return.SUCCESS;
     }
 
-    public @NotNull Entity makeChairEntity(@NotNull World world, @NotNull Vec3d chairEntityPosition, @NotNull BlockPos boundBlockPosition, @Nullable Vec3d target) {
+    public @NotNull Entity makeChairEntity(@NotNull World world, @NotNull BlockPos targetBlockPos, @Nullable Vec3d target) {
+
+        Vec3d chairEntityPosition = targetBlockPos.toBottomCenterPos().add(0, 0.5, 0).add(SitInitializer.CHAIR_ENTITY_OFFSET);
+        BlockState targetBlockStage = world.getBlockState(targetBlockPos);
+
+        // if there is a slab/stair block under the player, then we should not sit on the ground.
+        VoxelShape outlineShape = targetBlockStage.getOutlineShape(world, targetBlockPos);
+        if (!Block.isFaceFullSquare(outlineShape, Direction.UP)) {
+            double averageLengthY = outlineShape.getBoundingBoxes().stream().mapToDouble(Box::getLengthY).average().orElse(0);
+            chairEntityPosition = chairEntityPosition.add(0, -(1 - averageLengthY), 0);
+        }
 
         ArmorStandEntity entity = new ArmorStandEntity(world, chairEntityPosition.x, chairEntityPosition.y, chairEntityPosition.z) {
 
@@ -89,7 +94,7 @@ public class SitInitializer extends ModuleInitializer {
             }
 
             public BlockPos getChairBlockPos() {
-                return boundBlockPosition;
+                return targetBlockPos;
             }
 
             public boolean isChairBlockBroken() {
