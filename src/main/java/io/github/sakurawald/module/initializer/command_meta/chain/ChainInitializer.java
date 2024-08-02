@@ -1,22 +1,14 @@
 package io.github.sakurawald.module.initializer.command_meta.chain;
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.adapter.wrapper.GreedyString;
+import io.github.sakurawald.command.argument.adapter.wrapper.GreedyString;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.module.common.structure.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
-import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static net.minecraft.server.command.CommandManager.literal;
 
 public class ChainInitializer extends ModuleInitializer {
     private static final Pattern CHAIN_COMMAND_PARSER = Pattern.compile("(.+?)\\s+(chain .+)");

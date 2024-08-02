@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.tppos;
 
-import io.github.sakurawald.command.adapter.wrapper.Dimension;
+import io.github.sakurawald.command.argument.adapter.wrapper.Dimension;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;

@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.rtp;
 
-import io.github.sakurawald.command.adapter.wrapper.Dimension;
+import io.github.sakurawald.command.argument.adapter.wrapper.Dimension;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.common.structure.TeleportSetup;

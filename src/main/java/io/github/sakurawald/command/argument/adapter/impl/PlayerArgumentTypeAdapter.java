@@ -1,8 +1,8 @@
-package io.github.sakurawald.command.adapter.impl;
+package io.github.sakurawald.command.argument.adapter.impl;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.adapter.AbstractArgumentTypeAdapter;
+import io.github.sakurawald.command.argument.adapter.AbstractArgumentTypeAdapter;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.SneakyThrows;

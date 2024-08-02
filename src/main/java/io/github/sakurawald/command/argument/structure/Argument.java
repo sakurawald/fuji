@@ -1,8 +1,6 @@
-package io.github.sakurawald.command.structure;
+package io.github.sakurawald.command.argument.adapter.structure;
 
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import lombok.Data;
-import net.minecraft.server.command.ServerCommandSource;
 
 import java.util.ArrayList;
 import java.util.List;

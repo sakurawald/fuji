@@ -1,4 +1,4 @@
-package io.github.sakurawald.command.adapter;
+package io.github.sakurawald.command.argument.adapter;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;

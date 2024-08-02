@@ -2,8 +2,7 @@ package io.github.sakurawald.module.mixin._internal.low_level.command;
 
 import com.mojang.brigadier.context.CommandContextBuilder;
 import com.mojang.brigadier.context.ParsedArgument;
-import io.github.sakurawald.command.interfaces.CommandContextBuilderAccessor;
-import io.github.sakurawald.util.LogUtil;
+import io.github.sakurawald.command.accessor.CommandContextBuilderAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.gen.Accessor;

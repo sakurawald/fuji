@@ -1,4 +1,4 @@
-package io.github.sakurawald.command.interfaces;
+package io.github.sakurawald.command.accessor;
 
 import com.mojang.brigadier.context.CommandContextBuilder;
 import com.mojang.brigadier.context.ParsedArgument;

@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.initializer.world;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.adapter.wrapper.Dimension;
-import io.github.sakurawald.command.adapter.wrapper.DimensionType;
+import io.github.sakurawald.command.argument.adapter.wrapper.Dimension;
+import io.github.sakurawald.command.argument.adapter.wrapper.DimensionType;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
