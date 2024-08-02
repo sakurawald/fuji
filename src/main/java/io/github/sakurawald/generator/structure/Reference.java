@@ -10,22 +10,22 @@ import java.util.*;
 @AllArgsConstructor
 public class Reference {
     String definition;
-    List<String> reference;
+    List<String> referenceList;
 
-    public static @NotNull List<Reference> reduce(@NotNull List<Reference> references) {
+    public static @NotNull List<Reference> reduce(@NotNull List<Reference> referenceList) {
 
         // merge
         Map<String, Reference> map = new HashMap<>();
-        for (Reference reference : references) {
+        for (Reference reference : referenceList) {
             map.putIfAbsent(reference.definition, reference);
-            map.get(reference.definition).getReference().addAll(reference.reference);
+            map.get(reference.definition).getReferenceList().addAll(reference.referenceList);
         }
 
         //reduce
         for (Reference reference : map.values()) {
-            Set<String> set = new HashSet<>(reference.reference);
-            reference.reference.clear();
-            reference.reference.addAll(set);
+            Set<String> set = new HashSet<>(reference.referenceList);
+            reference.referenceList.clear();
+            reference.referenceList.addAll(set);
         }
 
         return map.values().stream().toList();

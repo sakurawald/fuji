@@ -9,7 +9,6 @@ import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.generator.structure.Reference;
 import io.github.sakurawald.util.JsonUtil;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 
@@ -71,7 +70,7 @@ public class CheckModuleDependencyTest {
         return new Reference(className, refClassNameList);
     }
 
-    private String extractModuleName(String className) {
+    private String getDirNameList(String className) {
         List<String> moduleNameList = extractMatches(moduleNamePattern, className, 1);
         if (moduleNameList.isEmpty()) {
             return COMMON;
@@ -80,9 +79,15 @@ public class CheckModuleDependencyTest {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private boolean isRealModulePath(String moduleName) {
+    private boolean isModule(String dirNameList) {
         JsonElement root = gson.toJsonTree(new ConfigModel());
-        return JsonUtil.existsNode((JsonObject) root, "modules.%s.enable".formatted(moduleName));
+        return JsonUtil.existsNode((JsonObject) root, "modules.%s.enable".formatted(dirNameList));
+    }
+
+    private boolean hasCommonAncestor(String a, String b) {
+        String[] A = a.split("\\.");
+        String[] B = b.split("\\.");
+        return A[0].equals(B[0]);
     }
 
     private boolean isSibling(String a, String b) {
@@ -97,25 +102,27 @@ public class CheckModuleDependencyTest {
     }
 
     private Reference makeModuleRef(Reference classRef) {
-        String definition = extractModuleName(classRef.getDefinition());
-        List<String> reference = new ArrayList<>();
-        for (String ref : classRef.getReference()) {
-            String str = extractModuleName(ref);
-            // skip -> common reference
-            if (str.equals(COMMON)) continue;
-            // skip -> self reference
-            if (definition.equals(str) || definition.startsWith(str)) continue;
-            if (str.startsWith(definition) && !isRealModulePath(str)) continue;
-            if (isSibling(definition, str) && !isRealModulePath(definition) && !isRealModulePath(str)) continue;
-            // skip -> reference internal module
-            if (str.startsWith("_")) continue;
+        String definition = getDirNameList(classRef.getDefinition());
+        List<String> referenceList = new ArrayList<>();
 
-            reference.add(str);
+        for (String ref : classRef.getReferenceList()) {
+            String reference = getDirNameList(ref);
+            // skip -> common reference
+            if (reference.equals(COMMON)) continue;
+            // skip -> self reference
+            if (definition.equals(reference) || definition.startsWith(reference)) continue;
+            if (reference.startsWith(definition) && !isModule(reference)) continue;
+            if (hasCommonAncestor(definition, reference) && !isModule(definition) && !isModule(reference)) continue;
+
+            // skip -> reference internal module
+            if (reference.startsWith("_")) continue;
+
+            referenceList.add(reference);
         }
 
         if (definition.equals(COMMON) || definition.equals("tester")) return null;
-        if (reference.isEmpty()) return null;
-        return new Reference(definition, reference);
+        if (referenceList.isEmpty()) return null;
+        return new Reference(definition, referenceList);
     }
 
 
