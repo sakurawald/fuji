@@ -109,55 +109,12 @@ public abstract class ConfigHandler<T> {
 
                 // test -> same type
                 if (JsonUtil.sameType(currentJson.get(key), value)) {
-
                     // test -> both are JsonObject
                     if (currentJson.get(key).isJsonObject() && value.isJsonObject()) {
                         mergeFields(currentPath, currentJson.getAsJsonObject(key), value.getAsJsonObject());
                     }
-
                 } else {
-
-                    LogUtil.warn("""
-                                                        
-                            # What happened ?
-                            There is an incompatibility issue in the configuration file `{}`.
-                              - Actual value of key `{}` does not match the expected type.
-                                                        
-                            Possible reason:
-                              1. In the new version of fuji, the key has changed its type.
-                              2. The configuration file was been accidentally modified.
-                                                        
-                            How can I solve this ?
-                                                        
-                              - Manually:
-                                1. Backup the folder `<your-server-root>/config/fuji`
-                                2. Use your `text-editor` to open the file `{}`
-                                3. Find the `key` in path `{}`
-                                4. Make sure again you have backup your folder in `step 1`
-                                5. Delete the `key`, and re-start the server. Fuji will re-generate the missing keys.
-                                                        
-                              - Automatically:
-                                If you want to `back up the folder` and `delete the key`, press "y" and enter. (y/n)
-                                                        
-                            """, file.getAbsoluteFile(), currentPath, file.getAbsoluteFile(), currentPath);
-
-                    /* ynop query */
-                    Scanner scanner = new Scanner(System.in);
-                    String input = scanner.next().trim();
-                    if (input.equalsIgnoreCase("y")) {
-                        if (!this.alreadyBackup) {
-                            Managers.getRescueBackupManager().backup();
-                            LogUtil.warn("Backup the `config/fuji` folder into `config/fuji/backup_rescue` folder successfully.");
-                            this.alreadyBackup = true;
-                        }
-
-                        currentJson.remove(key);
-                        currentJson.add(key, value);
-                        break;
-                    } else {
-                        // exit the JVM with error code
-                        System.exit(-1);
-                    }
+                    if (rescueMode(currentJson, currentPath, key, value)) break;
                 }
 
             } else {
@@ -168,6 +125,51 @@ public abstract class ConfigHandler<T> {
                 }
             }
         }
+    }
+
+    private boolean rescueMode(@NotNull JsonObject currentJson, String currentPath, String key, JsonElement value) {
+        LogUtil.warn("""
+                                            
+                # What happened ?
+                There is an incompatibility issue in the configuration file `{}`.
+                  - Actual value of key `{}` does not match the expected type.
+                                            
+                Possible reason:
+                  1. In the new version of fuji, the key has changed its type.
+                  2. The configuration file was been accidentally modified.
+                                            
+                How can I solve this ?
+                                            
+                  - Manually:
+                    1. Backup the folder `<your-server-root>/config/fuji`
+                    2. Use your `text-editor` to open the file `{}`
+                    3. Find the `key` in path `{}`
+                    4. Make sure again you have backup your folder in `step 1`
+                    5. Delete the `key`, and re-start the server. Fuji will re-generate the missing keys.
+                                            
+                  - Automatically:
+                    If you want to `back up the folder` and `delete the key`, press "y" and enter. (y/n)
+                                            
+                """, file.getAbsoluteFile(), currentPath, file.getAbsoluteFile(), currentPath);
+
+        /* ynop query */
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.next().trim();
+        if (input.equalsIgnoreCase("y")) {
+            if (!this.alreadyBackup) {
+                Managers.getRescueBackupManager().backup();
+                LogUtil.warn("Backup the `config/fuji` folder into `config/fuji/backup_rescue` folder successfully.");
+                this.alreadyBackup = true;
+            }
+
+            currentJson.remove(key);
+            currentJson.add(key, value);
+            return true;
+        } else {
+            // exit the JVM with error code
+            System.exit(-1);
+        }
+        return false;
     }
 
 }
