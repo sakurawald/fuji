@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.afk;
+package io.github.sakurawald.module.initializer.afk.accessor;
 
 public interface AfkStateAccessor {
 
