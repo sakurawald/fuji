@@ -1684,8 +1684,9 @@ public class ConfigModel {
                                         
                     You can set sort `weight` for a group using `/lp group default meta set fuji.tab_list.sort.weight 1` to set weight to 1.
                     You can set sort `weight` for a player using `/lp user Steve meta set fuji.tab_list.sort.weight 2`
-                                        
                     The default weight is 0, the range of weight is [0, 675], which means you can set at most 676 sort groups.
+                    
+                    After you set a new `weight`, you should issue `/fuji reload` or re-connect the server.
                                         
                     Issue:
                     - The `tab list` sort method is client-side decided. So the workaround is to send dummy-player entry to the client-side, and hide the real entry in client-side's tablist.
@@ -1700,7 +1701,11 @@ public class ConfigModel {
                     """)
             public class Sort {
                 public boolean enable = false;
-                public @NotNull String sync_cron = "* * * ? * *";
+
+                public SyncGameProgile sync_game_profile = new SyncGameProgile();
+                public class SyncGameProgile {
+                    public boolean enable = true;
+                }
             }
 
             public class Faker {

@@ -11,6 +11,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(PlayerListS2CPacket.class)
 public class DisableTheClientSideToShowPlayersInTabListMixin {
 
+
+    /*
+        For a real player, we need to remove `Action.UPDATE_LISTED` so avoid the entry to be listed in client-side's tab list.
+     */
     @Inject(method = "entryFromPlayer", at = @At("RETURN"), cancellable = true)
     private static void removeAddPlayerAction(@NotNull CallbackInfoReturnable<PlayerListS2CPacket> cir) {
         // remove the vanilla minecraft `Action.UPDATE_LISTED` so that the player of the packet will not be listed in the client-side's tab list.

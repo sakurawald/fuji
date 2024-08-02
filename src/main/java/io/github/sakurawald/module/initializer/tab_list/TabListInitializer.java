@@ -2,7 +2,6 @@ package io.github.sakurawald.module.initializer.tab_list;
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
-import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.tab_list.job.RenderHeaderAndFooterJob;
 import io.github.sakurawald.util.minecraft.MessageHelper;
@@ -15,8 +14,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
-import javax.naming.OperationNotSupportedException;
-
 public class TabListInitializer extends ModuleInitializer {
 
     @Override
@@ -26,10 +23,10 @@ public class TabListInitializer extends ModuleInitializer {
 
     @Override
     public void onReload() {
-        syncDisplayName();
+        updateDisplayName();
     }
 
-    private void syncDisplayName() {
+    private void updateDisplayName() {
         MinecraftServer server = ServerHelper.getDefaultServer();
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
             server.getPlayerManager().sendToAll(new PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME, player));

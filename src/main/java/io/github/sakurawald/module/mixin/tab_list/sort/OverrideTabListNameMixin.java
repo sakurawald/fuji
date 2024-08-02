@@ -2,10 +2,10 @@ package io.github.sakurawald.module.mixin.tab_list.sort;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.module.initializer.tab_list.sort.TabListSortInitializer;
+import io.github.sakurawald.module.initializer.tab_list.sort.structure.TabListEntry;
+import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.RandomUtil;
 import io.github.sakurawald.util.minecraft.ServerHelper;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -31,7 +31,7 @@ public abstract class OverrideTabListNameMixin {
     private final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
     /*
-      note that: encoded player and real player will all call this function.
+      note that: dummy player and real player will all call this function.
      */
     @ModifyReturnValue(method = "getPlayerListName", at = @At("RETURN"))
     Text modifyPlayerListName(Text original) {
@@ -39,30 +39,37 @@ public abstract class OverrideTabListNameMixin {
         String name = player.getGameProfile().getName();
 
         /*
-         1. only try to modify the encoded-player 's display name. since if tab_list.sort module is enabled,
+         1. only try to modify the dummy-player 's display name. since if tab_list.sort module is enabled,
          then the real player's display name will not be show in the tab list.
 
-         2. for encoded-player, the getPlayerListName() call will always pass `original = null`
+         2. for dummy-player, the getPlayerListName() call will always pass `original = null`
 
          */
-        if (name.contains(TabListSortInitializer.META_SEPARATOR)) {
-            name = TabListSortInitializer.decodeName(name);
+        if (TabListEntry.isDummyPlayer(player)) {
+            TabListEntry entry = TabListEntry.getEntryFromDummyPlayer(player);
+            if (entry == null) return original;
+
+            name = entry.getRealPlayer().getGameProfile().getName();
 
             Text realPlayerGetDisplayName = realPlayerGetDisplayNameSave.get(name);
             // if nobody sets the display name, then we can set it.
             if (realPlayerGetDisplayName == null) {
-                ServerPlayerEntity realPlayer = ServerHelper.getDefaultServer().getPlayerManager().getPlayer(name);
-                return ofText(realPlayer, false, RandomUtil.drawList(Configs.configHandler.model().modules.tab_list.style.body));
+                return ofText(entry.getRealPlayer(), false, RandomUtil.drawList(Configs.configHandler.model().modules.tab_list.style.body));
             } else {
                 // someone else set teh display name, we should respect it.
                 return realPlayerGetDisplayName;
             }
 
         } else {
-            // listen to real player's get display name invoke, and sync it to the encoded-player
+            /* listen to real player's get display name invoke, and sync it to the dummy-player */
+
+            // cache result, if the query response is the same.
+            if (realPlayerGetDisplayNameSave.get(name) == original) return original;
+
             realPlayerGetDisplayNameSave.put(name, original);
-            ServerPlayerEntity encodedPlayer = TabListSortInitializer.makeServerPlayerEntity(server, player);
-            server.getPlayerManager().sendToAll(TabListSortInitializer.entryFromEncodedPlayer(List.of(encodedPlayer)));
+            ServerPlayerEntity dummyPlayer = TabListEntry.getEntryFromRealPlayer(player).getDummyPlayer();
+
+            server.getPlayerManager().sendToAll(TabListEntry.makePacket(List.of(dummyPlayer)));
         }
 
         return original;
