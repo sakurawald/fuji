@@ -2,7 +2,7 @@
   "required": true,
   "package": "io.github.sakurawald.module.mixin",
   "compatibilityLevel": "JAVA_17",
-  "plugin": "io.github.sakurawald.module.mixin.ModuleMixinConfigPlugin",
+  "plugin": "io.github.sakurawald.module.mixin.GlobalMixinConfigPlugin",
   "server": [
     "color.anvil.AnvilScreenHandlerMixin",
     "color.sign.ServerPlayerEntityMixin",

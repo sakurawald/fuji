@@ -16,11 +16,13 @@ import javax.naming.OperationNotSupportedException;
 import java.util.*;
 
 public class ModuleManager extends AbstractManager {
-    private  final Map<Class<? extends ModuleInitializer>, ModuleInitializer> moduleRegistry = new HashMap<>();
-    private  final Map<List<String>, Boolean> module2enable = new HashMap<>();
+
+    private final JsonElement RC_CONFIG = Configs.configHandler.toJsonElement();
+    private final Map<Class<? extends ModuleInitializer>, ModuleInitializer> moduleRegistry = new HashMap<>();
+    private final Map<List<String>, Boolean> module2enable = new HashMap<>();
 
     @SuppressWarnings("SameParameterValue")
-    private  Set<Class<? extends ModuleInitializer>> scanModules(String packageName) {
+    private Set<Class<? extends ModuleInitializer>> scanModules(String packageName) {
         Reflections reflections = new Reflections(packageName);
         return reflections.getSubTypesOf(ModuleInitializer.class);
     }
@@ -31,11 +33,11 @@ public class ModuleManager extends AbstractManager {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> this.reportModules());
     }
 
-    private  void initializeModules() {
+    private void initializeModules() {
         scanModules(this.getClass().getPackageName()).forEach(this::getInitializer);
     }
 
-    public  void reloadModules() {
+    public void reloadModules() {
         moduleRegistry.values().forEach(initializer -> {
                     try {
                         initializer.onReload();
@@ -48,19 +50,19 @@ public class ModuleManager extends AbstractManager {
         );
     }
 
-    private  void reportModules() {
-        ArrayList<String> enabled = new ArrayList<>();
+    private void reportModules() {
+        ArrayList<String> enabledModuleList = new ArrayList<>();
         module2enable.forEach((module, enable) -> {
-            if (enable) enabled.add(String.join(".", module));
+            if (enable) enabledModuleList.add(String.join(".", module));
         });
 
-        enabled.sort(String::compareTo);
-        LogUtil.info("Enabled {}/{} modules -> {}", enabled.size(), module2enable.size(), enabled);
+        enabledModuleList.sort(String::compareTo);
+        LogUtil.info("Enabled {}/{} modules -> {}", enabledModuleList.size(), module2enable.size(), enabledModuleList);
     }
 
     @ApiStatus.AvailableSince("1.1.5")
-    public  boolean isModuleEnabled(List<String> packagePath) {
-        return module2enable.get(packagePath);
+    public boolean isModuleEnabled(List<String> dirNameList) {
+        return module2enable.get(dirNameList);
     }
 
     /**
@@ -69,10 +71,9 @@ public class ModuleManager extends AbstractManager {
      * hod will also return null, but the module doesn't extend AbstractModule, then this method will also return null.)
      */
     @ApiStatus.AvailableSince("1.1.5")
-    public  <T extends ModuleInitializer> T getInitializer(@NotNull Class<T> clazz) {
-        JsonElement config = Configs.configHandler.toJsonElement();
+    public <T extends ModuleInitializer> T getInitializer(@NotNull Class<T> clazz) {
         if (!moduleRegistry.containsKey(clazz)) {
-            if (shouldEnableModule(config, getPackagePath(ModuleInitializer.class, clazz.getName()))) {
+            if (shouldWeEnableThisModule(RC_CONFIG, getDirNameList(ModuleInitializer.class, clazz.getName()))) {
                 try {
                     ModuleInitializer moduleInitializer = clazz.getDeclaredConstructor().newInstance();
                     moduleInitializer.initialize();
@@ -85,41 +86,52 @@ public class ModuleManager extends AbstractManager {
         return clazz.cast(moduleRegistry.get(clazz));
     }
 
+    /**
+     * It's possible that there is no `initializer` for a `module` (That module only required `mixin`.).
+     * If you want to check whether a module is enabled or disabled, use the method `isModuleEnabled`
+     *
+     * @return all initializers of `enabled module`.
+     */
     public Collection<ModuleInitializer> getInitializers() {
         return this.moduleRegistry.values();
     }
 
-    public  boolean shouldEnableModule(@NotNull JsonElement config, @NotNull List<String> packagePath) {
-        if (module2enable.containsKey(packagePath)) {
-            return module2enable.get(packagePath);
+    public boolean shouldWeEnableThisModule(@NotNull JsonElement config, @NotNull List<String> dirNameList) {
+        // cache
+        if (module2enable.containsKey(dirNameList)) {
+            return module2enable.get(dirNameList);
         }
 
-        if (!isRequiredModsInstalled(packagePath)) {
-            LogUtil.warn("Can't load module {} (reason: the required dependency mod isn't installed)", packagePath);
-            module2enable.put(packagePath, false);
+        // soft fail if required mod is not installed.
+        if (!isRequiredModsInstalled(dirNameList)) {
+            LogUtil.warn("Refuse to load module {} (reason: the required dependency mod isn't installed)", dirNameList);
+            module2enable.put(dirNameList, false);
             return false;
         }
 
-        // note: if missing the `enable supplier` for the package, then it's considered as `enable = true`
+        // check enable-supplier
         boolean enable = true;
         JsonObject parent = config.getAsJsonObject().get("modules").getAsJsonObject();
-        for (String packageName : packagePath) {
-            parent = parent.getAsJsonObject(packageName);
+        for (String dirName : dirNameList) {
+            parent = parent.getAsJsonObject(dirName);
+
             if (parent == null || !parent.has("enable")) {
-                throw new RuntimeException("Missing `enable supplier` key for package path %s".formatted(packagePath));
+                throw new RuntimeException("Missing `enable supplier` key for dir name list `%s`".formatted(dirNameList));
             }
+
+            // only enable a sub-module if the parent module is enabled.
             if (!parent.getAsJsonPrimitive("enable").getAsBoolean()) {
                 enable = false;
                 break;
             }
         }
 
-        // note: this only means that the module is enabled. (maybe partial enabled)
-        module2enable.put(packagePath, enable);
+        // cache
+        module2enable.put(dirNameList, enable);
         return enable;
     }
 
-    public  @NotNull List<String> getPackagePath(@NotNull Class<?> rootPackageClass, @NotNull String className) {
+    public @NotNull List<String> getDirNameList(@NotNull Class<?> rootPackageClass, @NotNull String className) {
         String ret;
         int left = rootPackageClass.getPackageName().length() + 1;
         ret = className.substring(left);
@@ -131,14 +143,14 @@ public class ModuleManager extends AbstractManager {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private  boolean isRequiredModsInstalled(@NotNull List<String> packagePath) {
-        String basePackagePath = packagePath.getFirst();
+    private boolean isRequiredModsInstalled(@NotNull List<String> dirNameList) {
+        String firstDirName = dirNameList.getFirst();
 
-        if (packagePath.contains("carpet")) {
+        if (dirNameList.contains("carpet")) {
             return FabricLoader.getInstance().isModLoaded("carpet");
         }
 
-        if (basePackagePath.equals("profiler")) {
+        if (firstDirName.equals("profiler")) {
             return FabricLoader.getInstance().isModLoaded("spark");
         }
 

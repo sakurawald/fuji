@@ -65,7 +65,6 @@ public abstract class ConfigHandler<T> {
         return gson.toJsonTree(this.model);
     }
 
-
     @SuppressWarnings("unused")
     public void backupFromDisk() {
         if (!file.exists()) return;

@@ -2,9 +2,7 @@ package io.github.sakurawald.module.mixin;
 
 import com.google.gson.JsonElement;
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.common.manager.Managers;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.tree.ClassNode;
@@ -15,13 +13,23 @@ import java.util.List;
 import java.util.Set;
 
 
-public class ModuleMixinConfigPlugin implements IMixinConfigPlugin {
+public class GlobalMixinConfigPlugin implements IMixinConfigPlugin {
 
-    private static final JsonElement mixinConfigs;
+    private static final JsonElement rcConfig;
 
     static {
         Configs.configHandler.loadFromDisk();
-        mixinConfigs = Configs.configHandler.toJsonElement();
+        rcConfig = Configs.configHandler.toJsonElement();
+    }
+
+    @Override
+    public boolean shouldApplyMixin(String targetClassName, @NotNull String mixinClassName) {
+        List<String> dirNameList = Managers.getModuleManager().getDirNameList(this.getClass(), mixinClassName);
+
+        // bypass
+        if (dirNameList.getFirst().startsWith("_")) return true;
+
+        return Managers.getModuleManager().shouldWeEnableThisModule(rcConfig, dirNameList);
     }
 
     @Override
@@ -32,16 +40,6 @@ public class ModuleMixinConfigPlugin implements IMixinConfigPlugin {
     @Override
     public @Nullable String getRefMapperConfig() {
         return null;
-    }
-
-    @Override
-    public boolean shouldApplyMixin(String targetClassName, @NotNull String mixinClassName) {
-        List<String> packagePath = Managers.getModuleManager().getPackagePath(this.getClass(), mixinClassName);
-
-        // bypass
-        if (packagePath.getFirst().startsWith("_")) return true;
-
-        return Managers.getModuleManager().shouldEnableModule(mixinConfigs, packagePath);
     }
 
     @Override
