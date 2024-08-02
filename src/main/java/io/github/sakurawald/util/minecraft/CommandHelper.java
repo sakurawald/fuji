@@ -1,23 +1,16 @@
 package io.github.sakurawald.util.minecraft;
 
-import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
-import io.github.sakurawald.module.common.accessor.GameProfileCacheEx;
+import io.github.sakurawald.module.common.accessor.UserCacheAccessor;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
-import net.minecraft.command.EntitySelector;
-import net.minecraft.command.argument.DimensionArgumentType;
-import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.UserCache;
 import org.jetbrains.annotations.NotNull;
@@ -25,8 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Iterator;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-
-import static net.minecraft.server.command.CommandManager.argument;
 
 @UtilityClass
 public class CommandHelper {
@@ -75,7 +66,7 @@ public class CommandHelper {
             return ((context, builder) -> {
                 UserCache gameProfileCache = ServerHelper.getDefaultServer().getUserCache();
                 if (gameProfileCache != null) {
-                    ((GameProfileCacheEx) gameProfileCache).fuji$getNames().forEach(builder::suggest);
+                    ((UserCacheAccessor) gameProfileCache).fuji$getNames().forEach(builder::suggest);
                 }
                 return builder.buildFuture();
             });

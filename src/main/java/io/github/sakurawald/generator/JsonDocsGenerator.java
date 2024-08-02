@@ -18,6 +18,7 @@ public class JsonDocsGenerator {
 
     @Getter
     private static final JsonDocsGenerator instance = new JsonDocsGenerator();
+
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public static final String CLASS_DOCUMENTATION = "@class-documentation";
     public static final String FIELD_DOCUMENTATION = "@field-documentation";

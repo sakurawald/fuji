@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin._internal.low_level.accessor;
 
-import io.github.sakurawald.module.common.accessor.GameProfileCacheEx;
+import io.github.sakurawald.module.common.accessor.UserCacheAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,7 +12,7 @@ import java.util.Map;
 import net.minecraft.util.UserCache;
 
 @Mixin(UserCache.class)
-public class UserCacheMixin implements GameProfileCacheEx {
+public class UserCacheMixin implements UserCacheAccessor {
     @Final
     @Shadow
     private Map<String, UserCache.Entry> byName;

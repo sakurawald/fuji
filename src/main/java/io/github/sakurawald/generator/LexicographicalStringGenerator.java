@@ -1,31 +1,25 @@
 package io.github.sakurawald.generator;
 
-import com.google.gson.annotations.SerializedName;
 import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.time.CalendarUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.jetbrains.annotations.NotNull;
-import oshi.util.FileUtil;
 
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 
+@SuppressWarnings({"MismatchedQueryAndUpdateOfStringBuilder", "unused"})
+@UtilityClass
 public class LexicographicalStringGenerator {
+
     private static final StringBuilder output = new StringBuilder();
 
-    @SneakyThrows
-    public static void main(String[] args) {
-        generateCombinations( 2);
-        FileUtils.writeStringToFile(Path.of("alpha-table.txt").toFile(), String.valueOf(output), Charset.defaultCharset());
-    }
-
-    public static void generateCombinations(int length) {
+    public static void generate(int length) {
         char[] chars = new char[length];
-        generateCombinationsHelper(chars, 0, length);
+        generate(chars, 0, length);
     }
 
-    private static void generateCombinationsHelper(char @NotNull [] chars, int index, int length) {
+    private static void generate(char @NotNull [] chars, int index, int length) {
         if (index == length) {
             String str = new String(chars);
             output.append("\"").append(str).append("\"").append(",");
@@ -34,7 +28,7 @@ public class LexicographicalStringGenerator {
 
         for (char ch = 'a'; ch <= 'z'; ch++) {
             chars[index] = ch;
-            generateCombinationsHelper(chars, index + 1, length);
+            generate(chars, index + 1, length);
         }
     }
 }

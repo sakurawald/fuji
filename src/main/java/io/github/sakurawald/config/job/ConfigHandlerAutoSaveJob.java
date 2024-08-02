@@ -18,7 +18,6 @@ public class ConfigHandlerAutoSaveJob extends CronJob {
         super(null, jobName, jobDataMap, cronSupplier);
     }
 
-
     @Override
     public void execute(@NotNull JobExecutionContext context) throws JobExecutionException {
         LogUtil.debug("AutoSave ConfigWrapper {}", context.getJobDetail().getKey().getName());

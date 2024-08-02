@@ -13,6 +13,7 @@ public class Reference {
     List<String> reference;
 
     public static @NotNull List<Reference> reduce(@NotNull List<Reference> references) {
+
         // merge
         Map<String, Reference> map = new HashMap<>();
         for (Reference reference : references) {

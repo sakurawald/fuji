@@ -19,7 +19,6 @@ import org.quartz.impl.matchers.GroupMatcher;
 
 import java.util.*;
 
-@SuppressWarnings("LombokGetterMayBeUsed")
 public class ScheduleManager extends AbstractManager {
 
     public static final String CRON_EVERY_MINUTE = "0 * * ? * * *";

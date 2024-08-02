@@ -26,7 +26,7 @@ public class Fuji implements ModInitializer {
         Managers.getStandardBackupManager().backup();
         Managers.getBossBarManager().onInitialize();
         Managers.getModuleManager().onInitialize();
-        BrigadierAnnotationProcessor.register();
+        BrigadierAnnotationProcessor.process();
         Managers.getScheduleManager().onInitialize();
     }
 }

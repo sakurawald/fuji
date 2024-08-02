@@ -7,10 +7,10 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.tree.CommandNode;
-import io.github.sakurawald.command.argument.adapter.AbstractArgumentTypeAdapter;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
+import io.github.sakurawald.command.argument.adapter.AbstractArgumentTypeAdapter;
 import io.github.sakurawald.command.argument.adapter.structure.Argument;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -37,16 +37,18 @@ public class BrigadierAnnotationProcessor {
     private static final String REQUIRED_ARGUMENT_PLACEHOLDER = "$";
     private static CommandDispatcher<ServerCommandSource> dispatcher;
 
-    public static void register() {
+    public static void process() {
         CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) -> {
+            /* environment */
             AbstractArgumentTypeAdapter.registerAdapters();
-
             BrigadierAnnotationProcessor.dispatcher = dispatcher;
-            process();
+
+            /* scan */
+            scanClass();
         }));
     }
 
-    private static void process() {
+    private static void scanClass() {
         Collection<ModuleInitializer> initializers = Managers.getModuleManager().getInitializers();
 
         for (ModuleInitializer initializer : initializers) {
@@ -84,7 +86,7 @@ public class BrigadierAnnotationProcessor {
         com.mojang.brigadier.Command<ServerCommandSource> function = makeCommandFunction(method, instance);
 
         // set requirement (class)
-        if (clazz.isAnnotationPresent(CommandPermission.class)){
+        if (clazz.isAnnotationPresent(CommandPermission.class)) {
             setRequirement(builders.getFirst(), clazz.getAnnotation(CommandPermission.class));
         }
 

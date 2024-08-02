@@ -82,7 +82,7 @@ public abstract class ConfigHandler<T> {
 
     public void setAutoSaveJob(@NotNull String cron) {
         String jobName = this.file.getName();
-        new ConfigHandlerAutoSaveJob(jobName,new JobDataMap() {
+        new ConfigHandlerAutoSaveJob(jobName, new JobDataMap() {
             {
                 this.put(ConfigHandler.class.getName(), ConfigHandler.this);
             }
@@ -118,27 +118,27 @@ public abstract class ConfigHandler<T> {
                 } else {
 
                     LogUtil.warn("""
-                            
+                                                        
                             # What happened ?
                             There is an incompatibility issue in the configuration file `{}`.
                               - Actual value of key `{}` does not match the expected type.
-                            
+                                                        
                             Possible reason:
                               1. In the new version of fuji, the key has changed its type.
                               2. The configuration file was been accidentally modified.
-                            
+                                                        
                             How can I solve this ?
-                            
+                                                        
                               - Manually:
                                 1. Backup the folder `<your-server-root>/config/fuji`
                                 2. Use your `text-editor` to open the file `{}`
                                 3. Find the `key` in path `{}`
                                 4. Make sure again you have backup your folder in `step 1`
                                 5. Delete the `key`, and re-start the server. Fuji will re-generate the missing keys.
-                            
+                                                        
                               - Automatically:
                                 If you want to `back up the folder` and `delete the key`, press "y" and enter. (y/n)
-                            
+                                                        
                             """, file.getAbsoluteFile(), currentPath, file.getAbsoluteFile(), currentPath);
 
                     /* ynop query */
