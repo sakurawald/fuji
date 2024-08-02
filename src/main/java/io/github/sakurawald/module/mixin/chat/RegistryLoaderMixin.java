@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.chat;
 
-import io.github.sakurawald.module.common.accessor.SimpleRegistryMixinInterface;
+import io.github.sakurawald.module.common.accessor.SimpleRegistryAccessor;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.registry.*;
@@ -45,7 +45,7 @@ public class RegistryLoaderMixin {
 
                 // The code is tricky, we need to register it later to override the vanilla registerKey.
                 ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-                    SimpleRegistryMixinInterface<MessageType> ex = (SimpleRegistryMixinInterface<MessageType>) registry;
+                    SimpleRegistryAccessor<MessageType> ex = (SimpleRegistryAccessor<MessageType>) registry;
                     ex.fuji$setFrozen(false);
                     Registry.register(registryForMessageType, MessageType.CHAT, new MessageType(firstDecoration, secondDecoration));
                     ex.fuji$setFrozen(true);

@@ -6,15 +6,15 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 @ApiStatus.Internal
-public interface SimpleRegistryMixinInterface<T> {
+public interface SimpleRegistryAccessor<T> {
     @SuppressWarnings("unchecked")
     static <T> boolean remove(@NotNull SimpleRegistry<T> registry, Identifier key) {
-        return ((SimpleRegistryMixinInterface<T>) registry).fuji$remove(key);
+        return ((SimpleRegistryAccessor<T>) registry).fuji$remove(key);
     }
 
     @SuppressWarnings("unchecked")
     static <T> boolean remove(@NotNull SimpleRegistry<T> registry, T value) {
-        return ((SimpleRegistryMixinInterface<T>) registry).fuji$remove(value);
+        return ((SimpleRegistryAccessor<T>) registry).fuji$remove(value);
     }
 
     boolean fuji$remove(T value);

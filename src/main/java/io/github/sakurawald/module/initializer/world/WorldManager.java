@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.structure.Position;
-import io.github.sakurawald.module.common.accessor.SimpleRegistryMixinInterface;
+import io.github.sakurawald.module.common.accessor.SimpleRegistryAccessor;
 import io.github.sakurawald.module.common.structure.TeleportTicket;
 import io.github.sakurawald.module.initializer.world.accessor.IDimensionOptions;
 import io.github.sakurawald.module.initializer.world.structure.MyServerWorld;
@@ -102,7 +102,7 @@ public class WorldManager {
         if (server.worlds.remove(dimensionKey, world)) {
             ServerWorldEvents.UNLOAD.invoker().onWorldUnload(server, world);
             SimpleRegistry<DimensionOptions> dimensionsRegistry = getDimensionRegistry(server);
-            SimpleRegistryMixinInterface.remove(dimensionsRegistry, dimensionKey.getValue());
+            SimpleRegistryAccessor.remove(dimensionsRegistry, dimensionKey.getValue());
             File worldDirectory = server.session.getWorldDirectory(dimensionKey).toFile();
             cleanFiles(worldDirectory);
         }
@@ -175,13 +175,13 @@ public class WorldManager {
         ((IDimensionOptions) (Object) dimensionOptions).fuji$setSaveProperties(false);
 
         SimpleRegistry<DimensionOptions> dimensionOptionsRegistry = (SimpleRegistry<DimensionOptions>) registryManager.get(RegistryKeys.DIMENSION);
-        boolean original = ((SimpleRegistryMixinInterface<?>) dimensionOptionsRegistry).fuji$isFrozen();
-        ((SimpleRegistryMixinInterface<?>) dimensionOptionsRegistry).fuji$setFrozen(false);
+        boolean original = ((SimpleRegistryAccessor<?>) dimensionOptionsRegistry).fuji$isFrozen();
+        ((SimpleRegistryAccessor<?>) dimensionOptionsRegistry).fuji$setFrozen(false);
         RegistryKey<DimensionOptions> dimensionOptionsRegistryKey = RegistryKey.of(RegistryKeys.DIMENSION, worldRegistryKey.getValue());
         if (!dimensionOptionsRegistry.contains(dimensionOptionsRegistryKey)) {
             dimensionOptionsRegistry.add(dimensionOptionsRegistryKey, dimensionOptions, RegistryEntryInfo.DEFAULT);
         }
-        ((SimpleRegistryMixinInterface<?>) dimensionOptionsRegistry).fuji$setFrozen(original);
+        ((SimpleRegistryAccessor<?>) dimensionOptionsRegistry).fuji$setFrozen(original);
 
         server.worlds.put(world.getRegistryKey(), world);
         ServerWorldEvents.LOAD.invoker().onWorldLoad(server, world);

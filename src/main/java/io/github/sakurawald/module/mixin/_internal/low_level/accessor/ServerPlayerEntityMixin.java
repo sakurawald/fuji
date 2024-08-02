@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin._internal.low_level.accessor;
 
-import io.github.sakurawald.module.common.accessor.ServerPlayerCombatStateAccessor;
+import io.github.sakurawald.module.common.accessor.PlayerCombatStateAccessor;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayerEntity.class)
-public class ServerPlayerEntityMixin implements ServerPlayerCombatStateAccessor {
+public class ServerPlayerEntityMixin implements PlayerCombatStateAccessor {
 
     @Unique
     public boolean fuji$inCombat;

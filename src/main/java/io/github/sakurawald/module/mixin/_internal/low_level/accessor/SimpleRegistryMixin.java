@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin._internal.low_level.accessor;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import io.github.sakurawald.module.common.accessor.SimpleRegistryMixinInterface;
+import io.github.sakurawald.module.common.accessor.SimpleRegistryAccessor;
 import io.github.sakurawald.util.LogUtil;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import it.unimi.dsi.fastutil.objects.Reference2IntMap;
@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
 @Mixin(SimpleRegistry.class)
-public abstract class SimpleRegistryMixin<T> implements SimpleRegistryMixinInterface<T>, MutableRegistry<T> {
+public abstract class SimpleRegistryMixin<T> implements SimpleRegistryAccessor<T>, MutableRegistry<T> {
 
     @Shadow
     @Final
