@@ -1607,7 +1607,7 @@ public class ConfigModel {
                     - --yaw: target yaw
                     - --pitch: target pitch
                     - --centerX: centerX for rtp
-                    - --centerY: centerY for rtp
+                    - --centerZ: centerZ for rtp
                     - --circle: rtp shape, circle or rectangle
                     - --minRange: rtp min range
                     - --maxRange: rtp max range

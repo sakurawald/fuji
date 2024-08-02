@@ -6,6 +6,7 @@ import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.config.model.WarpModel;
+import io.github.sakurawald.module.common.manager.scheduler.ScheduleManager;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_toolbox.warp.adapter.WarpName;
@@ -28,6 +29,7 @@ public class WarpInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {
         data.loadFromDisk();
+        data.setAutoSaveJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 
     @Override
