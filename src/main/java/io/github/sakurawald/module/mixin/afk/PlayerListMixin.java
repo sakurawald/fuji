@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.afk;
 
-import io.github.sakurawald.module.initializer.afk.AfkStateAccessor;
+import io.github.sakurawald.module.initializer.afk.accessor.AfkStateAccessor;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ConnectedClientData;

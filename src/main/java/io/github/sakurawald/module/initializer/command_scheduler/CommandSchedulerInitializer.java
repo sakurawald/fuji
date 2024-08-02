@@ -35,7 +35,7 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
                     }, () -> cron).schedule();
                 });
 
-                LogUtil.info("[Command Scheduler] add job -> {}", scheduleJob.getName());
+                LogUtil.info("[Command Scheduler] schedule job -> {}", scheduleJob.getName());
             }
         });
     }

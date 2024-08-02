@@ -475,8 +475,16 @@ public class ConfigModel {
 
             @Document("""
                     You can insert `item`, `inv` and `ender` in message to `display` something with other players.
+                    
+                    Placeholder:
+                    - %fuji:item%
+                    - %fuji:inv%
+                    - %fuji:ender%
+                    
                     """)
             public class Display {
+
+                public boolean enable = true;
 
                 @Document("""
                         For each display data, how long should we save in the memory.

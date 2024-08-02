@@ -1,5 +1,6 @@
-package io.github.sakurawald.module.initializer.chat.display;
+package io.github.sakurawald.module.initializer.chat.display.helper;
 
+import io.github.sakurawald.module.initializer.chat.display.structure.SoftReferenceMap;
 import io.github.sakurawald.module.initializer.chat.display.gui.*;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import org.jetbrains.annotations.NotNull;

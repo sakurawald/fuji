@@ -2,7 +2,7 @@ package io.github.sakurawald.module.mixin.afk;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.module.initializer.afk.AfkStateAccessor;
+import io.github.sakurawald.module.initializer.afk.accessor.AfkStateAccessor;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.MinecraftServer;

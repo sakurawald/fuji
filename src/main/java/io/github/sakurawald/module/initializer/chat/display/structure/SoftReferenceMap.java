@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.chat.display;
+package io.github.sakurawald.module.initializer.chat.display.structure;
 
 import org.jetbrains.annotations.Nullable;
 
