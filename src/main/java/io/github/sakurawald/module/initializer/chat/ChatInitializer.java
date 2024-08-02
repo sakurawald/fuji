@@ -31,19 +31,16 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class ChatInitializer extends ModuleInitializer {
-    public static final ConfigHandler<ChatModel> chatHandler = new ObjectConfigHandler<>("chat.json", ChatModel.class);
+
+    private static final ConfigHandler<ChatModel> chatHandler = new ObjectConfigHandler<>("chat.json", ChatModel.class);
 
     private final MiniMessage miniMessage = MiniMessage.builder().build();
 
     private Map<Pattern, String> patterns;
 
-    @Getter
-    private Queue<Component> chatHistory;
-
     @Override
     public void onInitialize() {
         chatHandler.loadFromDisk();
-        chatHistory = EvictingQueue.create(Configs.configHandler.model().modules.chat.history.buffer_size);
 
         compilePatterns();
 
@@ -56,25 +53,18 @@ public class ChatInitializer extends ModuleInitializer {
     public void onReload() {
         chatHandler.loadFromDisk();
 
-        EvictingQueue<Component> newQueue = EvictingQueue.create(Configs.configHandler.model().modules.chat.history.buffer_size);
-        newQueue.addAll(chatHistory);
-        chatHistory.clear();
-        chatHistory = newQueue;
-
         compilePatterns();
     }
 
     private void compilePatterns() {
         patterns = new HashMap<>();
-
         for (RegexRewriteEntry regexRewriteEntry : Configs.configHandler.model().modules.chat.rewrite.regex) {
             patterns.put(java.util.regex.Pattern.compile(regexRewriteEntry.regex), regexRewriteEntry.replacement);
         }
-
     }
 
 
-    public void registerPosPlaceholder() {
+    private void registerPosPlaceholder() {
         Placeholders.register(
                 Identifier.of(Fuji.MOD_ID, "pos"),
                 (ctx, arg) -> {

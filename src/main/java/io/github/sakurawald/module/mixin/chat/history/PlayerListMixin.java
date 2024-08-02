@@ -1,8 +1,8 @@
-package io.github.sakurawald.module.mixin.chat;
+package io.github.sakurawald.module.mixin.chat.history;
 
-import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.chat.ChatInitializer;
+import io.github.sakurawald.module.initializer.chat.history.ChatHistoryInitializer;
 import io.github.sakurawald.util.minecraft.EntityHelper;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;
@@ -19,11 +19,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerListMixin {
 
     @Unique
-    private static final ChatInitializer module = Managers.getModuleManager().getInitializer(ChatInitializer.class);
+    private static final ChatHistoryInitializer module = Managers.getModuleManager().getInitializer(ChatHistoryInitializer.class);
 
     @Inject(at = @At(value = "TAIL"), method = "onPlayerConnect")
     private void sendChatHistoryToNewJoinedPlayer(ClientConnection connection, @NotNull ServerPlayerEntity serverPlayer, ConnectedClientData commonListenerCookie, CallbackInfo ci) {
         if (EntityHelper.isNonRealPlayer(serverPlayer)) return;
+
         module.getChatHistory().forEach(serverPlayer::sendMessage);
     }
 }

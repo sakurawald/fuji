@@ -25,16 +25,15 @@ public abstract class ServerGamePacketListenerImplMixin {
     @Shadow
     public ServerPlayerEntity player;
 
-
     @ModifyVariable(method = "handleDecoratedMessage", at = @At(value = "HEAD"), argsOnly = true)
-    public @NotNull SignedMessage modifyChatMessageSentByPlayers(@NotNull SignedMessage before) {
+    public @NotNull SignedMessage modifyChatMessageSentByPlayers(@NotNull SignedMessage original) {
+        String string = original.getContent().getString();
+
         if (Configs.configHandler.model().modules.chat.spy.output_unparsed_message_into_console) {
-            LogUtil.info("[Chat Spy] <{}> {}", player.getGameProfile().getName(), before.getContent().getString());
+            LogUtil.info("[Chat Spy] <{}> {}", player.getGameProfile().getName(), string);
         }
 
-        Text text = module.parseText(player, before.getContent().getString());
-
-        module.getChatHistory().add(text.asComponent());
-        return before.withUnsignedContent(text);
+        Text text = module.parseText(player, string);
+        return original.withUnsignedContent(text);
     }
 }

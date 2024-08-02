@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.works.job;
 
 import io.github.sakurawald.module.common.job.interfaces.CronJob;
-import io.github.sakurawald.module.initializer.works.ScheduleMethod;
+import io.github.sakurawald.module.initializer.works.interfaces.Schedulable;
 import io.github.sakurawald.module.initializer.works.structure.WorksCache;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;
 import io.github.sakurawald.module.initializer.works.structure.work.interfaces.Work;
@@ -35,7 +35,7 @@ public class WorksScheduleJob extends CronJob {
         WorksCache.getBlockpos2works().values().forEach(works::addAll);
         WorksCache.getEntity2works().values().forEach(works::addAll);
         works.forEach(work -> {
-            if (work instanceof ScheduleMethod sm) sm.onSchedule();
+            if (work instanceof Schedulable sm) sm.onSchedule();
         });
     }
 }

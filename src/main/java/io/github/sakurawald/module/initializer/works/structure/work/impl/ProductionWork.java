@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.works.structure.work.impl;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.module.initializer.works.ScheduleMethod;
+import io.github.sakurawald.module.initializer.works.interfaces.Schedulable;
 import io.github.sakurawald.module.initializer.works.structure.WorksCache;
 import io.github.sakurawald.module.common.gui.ConfirmGui;
 import io.github.sakurawald.module.common.gui.InputSignGui;
@@ -38,7 +38,7 @@ import java.util.stream.Stream;
 
 @NoArgsConstructor
 
-public class ProductionWork extends Work implements ScheduleMethod {
+public class ProductionWork extends Work implements Schedulable {
 
     public @NotNull Sample sample = new Sample();
 
