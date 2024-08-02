@@ -1,6 +1,5 @@
-package io.github.sakurawald.config.model;
+package io.github.sakurawald.module.initializer.head.model;
 
-import io.github.sakurawald.module.initializer.head.HeadInitializer;
 import io.github.sakurawald.module.initializer.head.structure.EconomyType;
 import org.jetbrains.annotations.NotNull;
 

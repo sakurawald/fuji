@@ -1,18 +1,16 @@
-package io.github.sakurawald.config.model;
+package io.github.sakurawald.module.initializer.command_toolbox.nickname.model;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-@SuppressWarnings("InnerClassMayBeStatic")
-public class ChatModel {
+public class NicknameModel {
 
     public @NotNull Format format = new Format();
-
-    public class Format {
+    public static class Format {
         public @NotNull HashMap<String, String> player2format = new HashMap<>() {
             {
-                this.put("Steve", "<#FFC7EA>%message%");
+                this.put("Steve", "<rainbow>Steve");
             }
         };
     }

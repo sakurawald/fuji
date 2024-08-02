@@ -1,4 +1,4 @@
-package io.github.sakurawald.config.model;
+package io.github.sakurawald.module.initializer.pvp.model;
 
 import org.jetbrains.annotations.NotNull;
 

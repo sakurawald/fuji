@@ -1,4 +1,4 @@
-package io.github.sakurawald.config.model;
+package io.github.sakurawald.module.initializer.works.model;
 
 import io.github.sakurawald.module.initializer.works.work_type.Work;
 import org.jetbrains.annotations.NotNull;

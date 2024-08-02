@@ -1,4 +1,4 @@
-package io.github.sakurawald.config.model;
+package io.github.sakurawald.module.initializer.world.model;
 
 import io.github.sakurawald.module.initializer.world.structure.DimensionEntry;
 import org.jetbrains.annotations.NotNull;

@@ -4,7 +4,7 @@ import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
-import io.github.sakurawald.config.model.SchedulerModel;
+import io.github.sakurawald.module.initializer.command_scheduler.model.SchedulerModel;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.manager.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;

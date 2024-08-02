@@ -5,7 +5,7 @@ import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
-import io.github.sakurawald.config.model.NicknameModel;
+import io.github.sakurawald.module.initializer.command_toolbox.nickname.model.NicknameModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;

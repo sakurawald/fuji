@@ -9,7 +9,7 @@ import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
-import io.github.sakurawald.config.model.WorldModel;
+import io.github.sakurawald.module.initializer.world.model.WorldModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.world.structure.DimensionEntry;
 import io.github.sakurawald.util.minecraft.CommandHelper;

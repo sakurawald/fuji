@@ -1,4 +1,4 @@
-package io.github.sakurawald.config.model;
+package io.github.sakurawald.module.initializer.command_toolbox.warp.model;
 
 import io.github.sakurawald.module.initializer.command_toolbox.warp.structure.WarpEntry;
 import org.jetbrains.annotations.NotNull;

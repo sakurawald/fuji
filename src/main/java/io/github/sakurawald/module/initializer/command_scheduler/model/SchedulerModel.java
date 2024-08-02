@@ -1,4 +1,4 @@
-package io.github.sakurawald.config.model;
+package io.github.sakurawald.module.initializer.command_scheduler.model;
 
 import io.github.sakurawald.module.initializer.command_scheduler.ScheduleJob;
 import org.jetbrains.annotations.NotNull;

@@ -1,24 +1,18 @@
 package io.github.sakurawald.module.initializer.head;
 
-import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.handler.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
-import io.github.sakurawald.config.model.HeadModel;
+import io.github.sakurawald.module.initializer.head.model.HeadModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.head.gui.HeadGui;
 import io.github.sakurawald.module.initializer.head.privoder.HeadProvider;
 import io.github.sakurawald.util.minecraft.CommandHelper;
-import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import org.jetbrains.annotations.NotNull;
-
-import static net.minecraft.server.command.CommandManager.literal;
 
 // Special thanks to: https://modrinth.com/mod/headindex
 public class HeadInitializer extends ModuleInitializer {

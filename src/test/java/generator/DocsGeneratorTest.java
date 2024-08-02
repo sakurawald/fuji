@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import io.github.sakurawald.config.model.ConfigModel;
-import io.github.sakurawald.config.model.SchedulerModel;
 import io.github.sakurawald.generator.JsonDocsGenerator;
 import io.github.sakurawald.generator.MarkdownDocsGenerator;
 import lombok.SneakyThrows;

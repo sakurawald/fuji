@@ -1557,7 +1557,6 @@ public class ConfigModel {
 
             @Documentation("This module provides `/suicide` command.")
             public class Suicide {
-
                 public boolean enable = true;
             }
 
