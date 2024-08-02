@@ -455,7 +455,6 @@ public class ConfigModel {
                     New joined players can see the historical chat messages.
                     """)
             public class History {
-
                 public boolean enable = true;
 
                 @Document("How many chat messages should we save, so that we can send for a new-joined player.")

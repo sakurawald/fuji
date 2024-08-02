@@ -63,7 +63,6 @@ public class ChatInitializer extends ModuleInitializer {
         }
     }
 
-
     private void registerPosPlaceholder() {
         Placeholders.register(
                 Identifier.of(Fuji.MOD_ID, "pos"),
@@ -175,7 +174,7 @@ public class ChatInitializer extends ModuleInitializer {
         return string;
     }
 
-    public String resolvePatterns(String string) {
+    private String resolvePatterns(String string) {
         for (Map.Entry<Pattern, String> entry : patterns.entrySet()) {
             string = entry.getKey().matcher(string).replaceAll(entry.getValue());
         }
