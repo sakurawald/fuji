@@ -13,7 +13,6 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.handler.ResourceConfigHandler;
 import io.github.sakurawald.util.LogUtil;
-import lombok.Getter;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.audience.Audience;
@@ -49,9 +48,7 @@ public class MessageHelper {
             .globalPlaceholders().build();
 
     private static final FabricServerAudiences adventure = FabricServerAudiences.of(ServerHelper.getDefaultServer());
-    @Getter
     private static final Map<String, String> player2lang = new HashMap<>();
-    @Getter
     private static final Map<String, JsonObject> lang2json = new HashMap<>();
     private static final JsonObject UNSUPPORTED_LANGUAGE = new JsonObject();
 
@@ -67,6 +64,15 @@ public class MessageHelper {
                 )
         );
 
+    }
+
+    // clear the map to remove `UNSUPPORTED LANGUAGE`
+    public static void forgetLoadedLanguages() {
+        lang2json.clear();
+    }
+
+    public static void setClientSideLanguage(String playerName, String language) {
+        player2lang.put(playerName, language);
     }
 
     private static void writeDefaultLanguageFiles() {

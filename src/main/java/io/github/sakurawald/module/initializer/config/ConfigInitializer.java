@@ -31,9 +31,6 @@ public class ConfigInitializer extends ModuleInitializer {
         // reload modules
         Managers.getModuleManager().reloadModules();
 
-        // reload languages
-        MessageHelper.getLang2json().clear();
-
         // reload jobs
         AbstractJob.rescheduleAll();
 
