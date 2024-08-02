@@ -12,7 +12,6 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 
-import javax.naming.OperationNotSupportedException;
 import java.util.*;
 
 public class ModuleManager extends AbstractManager {
@@ -21,28 +20,21 @@ public class ModuleManager extends AbstractManager {
     private final Map<Class<? extends ModuleInitializer>, ModuleInitializer> moduleRegistry = new HashMap<>();
     private final Map<List<String>, Boolean> module2enable = new HashMap<>();
 
-    @SuppressWarnings("SameParameterValue")
-    private Set<Class<? extends ModuleInitializer>> scanModules(String packageName) {
-        Reflections reflections = new Reflections(packageName);
-        return reflections.getSubTypesOf(ModuleInitializer.class);
-    }
-
     @Override
     public void onInitialize() {
-        initializeModules();
+        callAllModuleInitializer();
         ServerLifecycleEvents.SERVER_STARTED.register(server -> this.reportModules());
     }
 
-    private void initializeModules() {
-        scanModules(this.getClass().getPackageName()).forEach(this::getInitializer);
+    private void callAllModuleInitializer() {
+        Reflections reflections = new Reflections(this.getClass().getPackageName());
+        reflections.getSubTypesOf(ModuleInitializer.class).forEach(this::getInitializer);
     }
 
     public void reloadModules() {
         moduleRegistry.values().forEach(initializer -> {
                     try {
                         initializer.onReload();
-                    } catch (OperationNotSupportedException e) {
-                        // no-op
                     } catch (Exception e) {
                         LogUtil.cryLoudly("Failed to reload module.", e);
                     }
@@ -76,7 +68,7 @@ public class ModuleManager extends AbstractManager {
             if (shouldWeEnableThisModule(RC_CONFIG, getDirNameList(ModuleInitializer.class, clazz.getName()))) {
                 try {
                     ModuleInitializer moduleInitializer = clazz.getDeclaredConstructor().newInstance();
-                    moduleInitializer.initialize();
+                    moduleInitializer.doInitialize();
                     moduleRegistry.put(clazz, moduleInitializer);
                 } catch (Exception e) {
                     LogUtil.cryLoudly("Failed to initialize module %s.".formatted(clazz.getSimpleName()), e);

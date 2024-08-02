@@ -22,7 +22,7 @@ public class ChatHistoryInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void onReload() throws OperationNotSupportedException {
+    public void onReload() {
         EvictingQueue<Text> newQueue = EvictingQueue.create(Configs.configHandler.model().modules.chat.history.buffer_size);
         newQueue.addAll(chatHistory);
         chatHistory.clear();

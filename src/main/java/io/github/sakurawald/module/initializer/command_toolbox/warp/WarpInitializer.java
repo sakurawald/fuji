@@ -33,7 +33,7 @@ public class WarpInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void onReload() throws OperationNotSupportedException {
+    public void onReload() {
         data.loadFromDisk();
     }
 

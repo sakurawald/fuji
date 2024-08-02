@@ -12,6 +12,8 @@ import io.github.sakurawald.util.minecraft.MessageHelper;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.function.Supplier;
+
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.GameProfileArgumentType;
 import net.minecraft.server.command.CommandManager;
@@ -26,6 +28,10 @@ import static net.minecraft.server.command.CommandManager.literal;
 public class SkinInitializer extends ModuleInitializer {
 
     @Override
+    public void onInitialize() {
+        CommandRegistrationCallback.EVENT.register(this::registerCommand);
+    }
+
     public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess commandBuildContext, CommandManager.RegistrationEnvironment commandSelection) {
         dispatcher.register(literal("skin")
                 .then(literal("set")
