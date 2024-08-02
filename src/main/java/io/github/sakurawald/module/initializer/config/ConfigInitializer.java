@@ -23,14 +23,11 @@ import org.quartz.JobExecutionContext;
 @CommandPermission(level = 4)
 public class ConfigInitializer extends ModuleInitializer {
 
-
-    @Override
-    public void onReload() {
-        Configs.configHandler.loadFromDisk();
-    }
-
     @Command("reload")
     private int $reload(@CommandSource CommandContext<ServerCommandSource> ctx) {
+        // reload configs
+        Configs.configHandler.loadFromDisk();
+
         // reload modules
         Managers.getModuleManager().reloadModules();
 
