@@ -31,8 +31,6 @@ public class ScheduleJob {
         List<String> commands = this.commands_list.get(new Random().nextInt(this.commands_list.size()));
 
         // fix: sync command execution
-        ServerHelper.getDefaultServer().executeSync(() -> {
-            CommandExecutor.executeCommandsAsConsoleWithContext(null, commands);
-        });
+        ServerHelper.getDefaultServer().executeSync(() -> CommandExecutor.executeCommandsAsConsoleWithContext(null, commands));
     }
 }

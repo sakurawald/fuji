@@ -13,6 +13,7 @@ import net.minecraft.util.UserCache;
 
 @Mixin(UserCache.class)
 public class UserCacheMixin implements UserCacheAccessor {
+
     @Final
     @Shadow
     private Map<String, UserCache.Entry> byName;

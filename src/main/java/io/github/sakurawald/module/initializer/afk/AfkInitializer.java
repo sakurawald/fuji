@@ -15,9 +15,7 @@ public class AfkInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-            new AfkMarkerJob().schedule();
-        });
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> new AfkMarkerJob().schedule());
     }
 
     @Command("afk")

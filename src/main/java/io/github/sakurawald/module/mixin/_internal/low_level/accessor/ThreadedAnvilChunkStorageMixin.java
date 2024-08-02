@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(ServerChunkLoadingManager.class)
 public interface ThreadedAnvilChunkStorageMixin {
+
     @Invoker("entryIterator")
     Iterable<ChunkHolder> getChunks();
 }

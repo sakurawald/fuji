@@ -46,7 +46,7 @@ public class WorldManager {
 
     public static void requestToDeleteWorld(@NotNull ServerWorld world) {
         MinecraftServer server = world.getServer();
-        var unused = server.submit(() -> {
+        server.submit(() -> {
             deletionQueue.add(world);
         });
     }

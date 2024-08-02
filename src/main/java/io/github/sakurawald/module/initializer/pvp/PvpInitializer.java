@@ -43,7 +43,7 @@ public class PvpInitializer extends ModuleInitializer {
         }
 
         MessageHelper.sendMessage(player, "pvp.on.already");
-        return CommandHelper.Return.SUCCESS;
+        return CommandHelper.Return.FAIL;
     }
 
     @Command("pvp off")

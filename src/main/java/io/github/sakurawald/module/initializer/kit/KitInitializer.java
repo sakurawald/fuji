@@ -69,6 +69,7 @@ public class KitInitializer extends ModuleInitializer {
         return ret;
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void deleteKit(@NotNull String name) {
         Path path = STORAGE_PATH.resolve(name);
         path.toFile().delete();
@@ -87,6 +88,7 @@ public class KitInitializer extends ModuleInitializer {
         return new Kit(p.toFile().getName(), itemStacks);
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
     public void onInitialize() {
         STORAGE_PATH.toFile().mkdirs();

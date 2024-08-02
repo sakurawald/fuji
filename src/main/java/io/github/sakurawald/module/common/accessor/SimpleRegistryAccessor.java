@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 @ApiStatus.Internal
 public interface SimpleRegistryAccessor<T> {
+
     @SuppressWarnings("unchecked")
     static <T> boolean remove(@NotNull SimpleRegistry<T> registry, Identifier key) {
         return ((SimpleRegistryAccessor<T>) registry).fuji$remove(key);

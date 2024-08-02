@@ -42,15 +42,6 @@ public class Argument {
         return this.argumentName;
     }
 
-    public static List<String> ofNodePath(List<Argument> arguments) {
-        List<String> path = new ArrayList<>();
-        for (Argument argument : arguments) {
-            path.add(argument.getArgumentName());
-        }
-
-        return path;
-    }
-
     public static List<String> ofLowestNonOptionalNodePath(List<Argument> arguments) {
         List<String> path = new ArrayList<>();
         for (Argument argument : arguments) {
@@ -60,9 +51,5 @@ public class Argument {
 
         return path;
     }
-
-//    public static LiteralArgumentBuilder<ServerCommandSource, ?> makeRootArgumentBuilder() {
-//
-//    }
 
 }

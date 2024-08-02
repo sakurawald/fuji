@@ -97,6 +97,7 @@ public class CommandAnnotationProcessor {
         registerOptionalArguments(pattern, method);
     }
 
+    @SuppressWarnings("RedundantIfStatement")
     private static void setRequirement(ArgumentBuilder<ServerCommandSource, ?> builder, CommandPermission annotation) {
         if (annotation == null) return;
 
