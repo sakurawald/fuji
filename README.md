@@ -16,8 +16,8 @@ Fuji is a minecraft mod that provides many essential and useful modules for vani
 
 ## Feature
 1. **Vanilla-Respect**: all the modules are designed to be as light-way as possible, and do the least change to the vanilla game. (Never touch the game-logic.)
-2. **Fully-Modular**: you can disable any module completely if you don't like it. (Code is data is code. Thanks to the power of meta-programming, the module loader will even not load and inject the module text into the game, if you disable the module, without any performance issue.)
-3. **High-Performance**: Keep performance in mind while coding. (From data-structure, algorithm, lazy-evaluation and cache to improve performance greatly.)
+2. **Fully-Modular**: you can disable any module completely if you don't like it. (Code is data is code. Thanks to the power of meta-programming, the module loader will even not load and inject the module codes into the game, if you disable the module, without any performance issue.)
+3. **High-Performance**: Keep performance in mind while coding. (By data-structure, algorithm, lazy-evaluation and cache to improve performance greatly.)
 4. **Easy-to-Use**: a text-based per-field-explained auto-generated always-up-to-date documentation is provided. (Our configuration use lots of mini-language and generators to provide a unified setup.)
 
 ## Manual

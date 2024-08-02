@@ -3,11 +3,7 @@ package io.github.sakurawald.module.mixin.command_toolbox.sit;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.command_toolbox.sit.SitInitializer;
-import io.github.sakurawald.util.minecraft.MessageHelper;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.SideShapeType;
-import net.minecraft.block.StairsBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.enums.StairShape;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -65,41 +61,40 @@ public class InteractModifierMixin {
 
         if (!config.allow_right_click_sit) return;
         if (!config.allow_sneaking_to_sit && player.isSneaking()) return;
-        if (player.hasVehicle() || player.isFallFlying() || player.isSleeping() || player.isSwimming() || player.isSpectator())
+        if (!module.canSit(player)) return;
+        if (config.require_empty_hand_to_sit && !player.getInventory().getMainHandStack().isEmpty()) return;
+
+        BlockPos hitBlockPos = hitResult.getBlockPos();
+        BlockState hitBlockState = world.getBlockState(hitBlockPos);
+        Block hitBlock = hitBlockState.getBlock();
+
+        if (config.require_no_opaque_block_above_to_sit && world.getBlockState(hitBlockPos.add(0, 1, 0)).isOpaque())
             return;
-        if ((config.require_empty_hand_to_sit && !player.getInventory().getMainHandStack().isEmpty())) return;
+        if (!(hitBlock instanceof StairsBlock) && !(hitBlock instanceof SlabBlock)) return;
 
-        BlockPos blockPos = hitResult.getBlockPos();
-        BlockState blockState = world.getBlockState(blockPos);
-        Block block = blockState.getBlock();
-
-        if (config.require_no_opaque_block_above_to_sit && world.getBlockState(blockPos.add(0, 1, 0)).isOpaque())
-            return;
-        if (config.require_stairs_to_sit && (!(block instanceof StairsBlock))) return;
-
-        if (blockState.isSideSolid(world, blockPos, Direction.UP, SideShapeType.RIGID)) return;
+        if (hitBlockState.isSideSolid(world, hitBlockPos, Direction.UP, SideShapeType.RIGID)) return;
 
         final double maxDist = config.max_distance_to_sit;
-        double givenDist = blockPos.getSquaredDistance(player.getBlockPos());
+        double givenDist = hitBlockPos.getSquaredDistance(player.getBlockPos());
         if (maxDist > 0 && (givenDist > (maxDist * maxDist))) return;
 
         /* calc offset */
         Vec3d lookTarget;
-        if (block instanceof StairsBlock) {
-            Direction direction = blockState.get(StairsBlock.FACING);
+        if (hitBlock instanceof StairsBlock) {
+            Direction direction = hitBlockState.get(StairsBlock.FACING);
             Vector3f offset = direction.getUnitVector();
-            StairShape stairShape = blockState.get(StairsBlock.SHAPE);
+            StairShape stairShape = hitBlockState.get(StairsBlock.SHAPE);
             if (stairShape == StairShape.OUTER_RIGHT || stairShape == StairShape.INNER_RIGHT)
                 offset.add(direction.rotateYClockwise().getUnitVector());
             if (stairShape == StairShape.OUTER_LEFT || stairShape == StairShape.INNER_LEFT)
                 offset.add(direction.rotateYCounterclockwise().getUnitVector());
-            lookTarget = new Vec3d(blockPos.getX() + 0.5 - offset.x(), blockPos.getY(), blockPos.getZ() + 0.5 - offset.z());
-
+            lookTarget = new Vec3d(hitBlockPos.getX() + 0.5 - offset.x(), hitBlockPos.getY(), hitBlockPos.getZ() + 0.5 - offset.z());
         } else {
             lookTarget = player.getPos();
         }
 
-        Entity chair = module.createChair(world, blockPos, new Vec3d(0, -1.7, 0), lookTarget);
+        Vec3d chairEntityPosition = hitBlockPos.toBottomCenterPos().add(SitInitializer.CHAIR_ENTITY_OFFSET);
+        Entity chair = module.makeChairEntity(world, chairEntityPosition, hitBlockPos, lookTarget);
 
         Entity v = player.getVehicle();
         if (v != null) {

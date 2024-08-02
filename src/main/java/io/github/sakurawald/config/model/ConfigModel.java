@@ -281,9 +281,15 @@ public class ConfigModel {
                                         
                     Note:
                     - For each player, each command has its cooldown.
-                    - You may want to use some editor for `regex language`. 
-                        See regex editor https://regexr.com/
-                        See regex editor https://regex101.com/
+                    - Some other useful information about `regex language`.
+                        See regex editor: 
+                        - https://regexr.com/
+                        - https://regex101.com/
+                        
+                        See regex tutorial: 
+                        - https://www.youtube.com/watch?v=sXQxhojSdZM
+                        - https://www.youtube.com/watch?v=rhzKDrUiJVk
+                        
                     """)
             public @NotNull HashMap<String, Long> regex2ms = new HashMap<>() {
                 {
@@ -1502,7 +1508,6 @@ public class ConfigModel {
                     Example 1: `/lore set <rainbow>the first line<newline><bold><green>the second`
                                         
                                         
-                                        
                     """)
             public class Lore {
                 public boolean enable = true;
@@ -1510,10 +1515,14 @@ public class ConfigModel {
 
             @Document("""
                     This module provides `/sit` command, and the ability to sit by right-click any chair.
+                    
+                    Note:
+                    - You can only right-click to sit on the ChairBlock/SlabBlock.
+                    - You can sit on any block using `/sit` command.
+                    
                     """)
             public class Sit {
                 public boolean enable = true;
-                public boolean require_stairs_to_sit = true;
                 public boolean allow_right_click_sit = true;
                 public boolean allow_sneaking_to_sit = false;
                 public boolean require_empty_hand_to_sit = false;
