@@ -10,7 +10,7 @@ import io.github.sakurawald.command.argument.wrapper.GreedyString;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
-import io.github.sakurawald.module.initializer.chat.model.ChatModel;
+import io.github.sakurawald.module.initializer.chat.config.model.ChatModel;
 import io.github.sakurawald.module.common.job.impl.MentionPlayersJob;
 import io.github.sakurawald.module.common.structure.RegexRewriteEntry;
 import io.github.sakurawald.module.initializer.ModuleInitializer;

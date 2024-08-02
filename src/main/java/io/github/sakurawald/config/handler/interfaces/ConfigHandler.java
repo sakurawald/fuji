@@ -4,7 +4,7 @@ import assets.fuji.Cat;
 import com.google.gson.*;
 import io.github.sakurawald.config.job.ConfigHandlerAutoSaveJob;
 import io.github.sakurawald.module.common.manager.Managers;
-import io.github.sakurawald.module.initializer.works.work_type.Work;
+import io.github.sakurawald.module.initializer.works.structure.work.interfaces.Work;
 import io.github.sakurawald.util.JsonUtil;
 import io.github.sakurawald.util.LogUtil;
 import lombok.Cleanup;

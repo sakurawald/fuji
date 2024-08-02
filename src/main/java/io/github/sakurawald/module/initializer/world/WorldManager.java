@@ -1,18 +1,16 @@
 package io.github.sakurawald.module.initializer.world;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.common.accessor.SimpleRegistryMixinInterface;
 import io.github.sakurawald.module.common.structure.TeleportTicket;
-import io.github.sakurawald.module.initializer.world.interfaces.IDimensionOptions;
+import io.github.sakurawald.module.initializer.world.accessor.IDimensionOptions;
 import io.github.sakurawald.module.initializer.world.structure.MyServerWorld;
 import io.github.sakurawald.module.initializer.world.structure.MyWorldProperties;
 import io.github.sakurawald.module.initializer.world.structure.VoidWorldGenerationProgressListener;
 import io.github.sakurawald.util.LogUtil;
-import io.github.sakurawald.util.minecraft.MessageHelper;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import lombok.SneakyThrows;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;

@@ -1,10 +1,9 @@
 package io.github.sakurawald.module.initializer.command_scheduler.job;
 
 import io.github.sakurawald.module.common.job.interfaces.CronJob;
-import io.github.sakurawald.module.initializer.command_scheduler.ScheduleJob;
+import io.github.sakurawald.module.initializer.command_scheduler.structure.ScheduleJob;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 

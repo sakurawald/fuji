@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(DimensionOptions.class)
-public class IDimensionOptions implements io.github.sakurawald.module.initializer.world.interfaces.IDimensionOptions {
+public class IDimensionOptions implements io.github.sakurawald.module.initializer.world.accessor.IDimensionOptions {
 
     @Unique
     private boolean fuji$saveProperties = true;

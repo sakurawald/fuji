@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.world;
 
 import com.google.common.collect.Maps;
-import io.github.sakurawald.module.initializer.world.interfaces.IDimensionOptions;
+import io.github.sakurawald.module.initializer.world.accessor.IDimensionOptions;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionOptionsRegistryHolder;

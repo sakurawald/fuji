@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.mixin.works;
 
-import io.github.sakurawald.module.initializer.works.WorksCache;
-import io.github.sakurawald.module.initializer.works.work_type.ProductionWork;
-import io.github.sakurawald.module.initializer.works.work_type.Work;
+import io.github.sakurawald.module.initializer.works.structure.WorksCache;
+import io.github.sakurawald.module.initializer.works.structure.work.impl.ProductionWork;
+import io.github.sakurawald.module.initializer.works.structure.work.interfaces.Work;
 import io.github.sakurawald.util.LogUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

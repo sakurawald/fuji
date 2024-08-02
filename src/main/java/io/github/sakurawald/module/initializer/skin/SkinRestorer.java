@@ -5,8 +5,8 @@ import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.module.initializer.skin.io.SkinIO;
-import io.github.sakurawald.module.initializer.skin.io.SkinStorage;
+import io.github.sakurawald.module.initializer.skin.config.SkinIO;
+import io.github.sakurawald.module.initializer.skin.config.SkinStorage;
 import io.github.sakurawald.util.LogUtil;
 import it.unimi.dsi.fastutil.Pair;
 import lombok.Getter;
@@ -27,13 +27,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 // Thanks to: https://modrinth.com/mod/skinrestorer
-
 public class SkinRestorer {
 
     private static final Gson gson = new Gson();
     @Getter
     private static final SkinStorage skinStorage = new SkinStorage(new SkinIO(Fuji.CONFIG_PATH.resolve("skin")));
-
 
     public static CompletableFuture<Pair<Collection<ServerPlayerEntity>, Collection<GameProfile>>> setSkinAsync(@NotNull MinecraftServer server, @NotNull Collection<GameProfile> targets, @NotNull Supplier<Property> skinSupplier) {
         return CompletableFuture.<Pair<Property, Collection<GameProfile>>>supplyAsync(() -> {

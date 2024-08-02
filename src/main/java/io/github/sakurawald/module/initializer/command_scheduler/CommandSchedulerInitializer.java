@@ -4,11 +4,11 @@ import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
-import io.github.sakurawald.module.initializer.command_scheduler.model.SchedulerModel;
+import io.github.sakurawald.module.initializer.command_scheduler.config.model.SchedulerModel;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.manager.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.command_scheduler.adapter.ScheduleJobName;
+import io.github.sakurawald.module.initializer.command_scheduler.command.argument.wrapper.ScheduleJobName;
 import io.github.sakurawald.module.initializer.command_scheduler.job.CommandScheduleJob;
 import io.github.sakurawald.util.LogUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
@@ -26,8 +26,8 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
     private void updateJobs() {
         Managers.getScheduleManager().deleteJobs(CommandScheduleJob.class);
         schedulerHandler.model().scheduleJobs.forEach(scheduleJob -> {
-            if (scheduleJob.enable) {
-                scheduleJob.crons.forEach(cron -> {
+            if (scheduleJob.isEnable()) {
+                scheduleJob.getCrons().forEach(cron -> {
                     new CommandScheduleJob(new JobDataMap() {
                         {
                             this.put("job", scheduleJob);
@@ -56,7 +56,7 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
     @Command("trigger")
     private int $trigger(ScheduleJobName jobName) {
         schedulerHandler.model().scheduleJobs.forEach(job -> {
-            if (job.name.equals(jobName.getName())) {
+            if (job.getName().equals(jobName.getName())) {
                 job.trigger();
             }
         });

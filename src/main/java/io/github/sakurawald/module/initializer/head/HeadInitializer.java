@@ -6,7 +6,7 @@ import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
-import io.github.sakurawald.module.initializer.head.model.HeadModel;
+import io.github.sakurawald.module.initializer.head.config.model.HeadModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.head.gui.HeadGui;
 import io.github.sakurawald.module.initializer.head.privoder.HeadProvider;
