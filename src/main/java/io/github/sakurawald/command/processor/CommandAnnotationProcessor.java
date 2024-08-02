@@ -10,8 +10,8 @@ import com.mojang.brigadier.tree.CommandNode;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
-import io.github.sakurawald.command.argument.adapter.AbstractArgumentTypeAdapter;
-import io.github.sakurawald.command.argument.adapter.structure.Argument;
+import io.github.sakurawald.command.argument.adapter.interfaces.AbstractArgumentTypeAdapter;
+import io.github.sakurawald.command.argument.structure.Argument;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.LogUtil;
@@ -33,7 +33,7 @@ import java.util.function.Predicate;
 import static net.minecraft.server.command.CommandManager.literal;
 
 
-public class BrigadierAnnotationProcessor {
+public class CommandAnnotationProcessor {
     private static final String REQUIRED_ARGUMENT_PLACEHOLDER = "$";
     private static CommandDispatcher<ServerCommandSource> dispatcher;
 
@@ -41,7 +41,7 @@ public class BrigadierAnnotationProcessor {
         CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) -> {
             /* environment */
             AbstractArgumentTypeAdapter.registerAdapters();
-            BrigadierAnnotationProcessor.dispatcher = dispatcher;
+            CommandAnnotationProcessor.dispatcher = dispatcher;
 
             /* scan */
             scanClass();

@@ -2,7 +2,7 @@ package io.github.sakurawald.config.model;
 
 
 import com.mojang.authlib.properties.Property;
-import io.github.sakurawald.config.annotation.Documentation;
+import io.github.sakurawald.annotation.Document;
 import io.github.sakurawald.module.common.structure.RegexRewriteEntry;
 import io.github.sakurawald.module.common.structure.TeleportSetup;
 import io.github.sakurawald.module.initializer.command_alias.structure.CommandAliasEntry;
@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 @SuppressWarnings("ALL")
-@Documentation("""
+@Document("""
         Welcome to fuji-fabric 's official documentation.
                 
         Tips:
@@ -29,7 +29,7 @@ public class ConfigModel {
     public @NotNull Common common = new Common();
     public @NotNull Modules modules = new Modules();
 
-    @Documentation("""
+    @Document("""
             Common options for this mod, which will influence `all modules`.
             """)
     public class Common {
@@ -38,14 +38,14 @@ public class ConfigModel {
         public @NotNull Backup backup = new Backup();
         public @NotNull Language language = new Language();
 
-        @Documentation("""
+        @Document("""
                 Fuji use `quartz` library as scheduler, all the timer are managed by quartz.
                                 
                 Quartz library use a language called `cron language` to define when to trigger a job.
                 See: [cron language generator](https://www.freeformatter.com/cron-expression-generator-quartz.html)
                 """)
         public class Quartz {
-            @Documentation("""
+            @Document("""
                     Logger level for quartz.
                                         
                     Logger levels: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL
@@ -58,14 +58,14 @@ public class ConfigModel {
             public @NotNull String logger_level = "WARN";
         }
 
-        @Documentation("""
+        @Document("""
                 Fuji will backup the folder `config/fuji` automatically before it loads any module.
                 """)
         public class Backup {
 
-            @Documentation("How many `backup` should we keep?")
+            @Document("How many `backup` should we keep?")
             public int max_slots = 15;
-            @Documentation("""
+            @Document("""
                     The list of `path resolver` to skip in backup.
                                         
                     Insert `head` means skip the folder `config/fuji/head`.
@@ -77,7 +77,7 @@ public class ConfigModel {
             };
         }
 
-        @Documentation("""
+        @Document("""
                 The default language to use.
                                 
                 Fuji also supports multi-language based on player's client-side language if the server is able to do so.
@@ -89,7 +89,7 @@ public class ConfigModel {
         }
     }
 
-    @Documentation("""
+    @Document("""
             A module means a standalone unit to provide a purpose.
                 
             All the module can work standalone, you can enable or disable `any module` if you like.
@@ -145,7 +145,7 @@ public class ConfigModel {
         public @NotNull Kit kit = new Kit();
         public @NotNull CommandMeta command_meta = new CommandMeta();
 
-        @Documentation("""
+        @Document("""
                 This module allows you to create extra `dimension` of a specific `dimension type`.
                                 
                 Command: /world
@@ -187,7 +187,7 @@ public class ConfigModel {
 
             public @NotNull Blacklist blacklist = new Blacklist();
 
-            @Documentation("""
+            @Document("""
                     The dimensions in the `blacklist` will not be operated by this module.
                                         
                     Use `blacklist` to avoid mis-operation.
@@ -203,13 +203,13 @@ public class ConfigModel {
             }
         }
 
-        @Documentation("""
+        @Document("""
                 This module customs your MOTD in server-list.
                 """)
         public class MOTD {
             public boolean enable = false;
 
-            @Documentation("""
+            @Document("""
                     Fuji will `randomly` pick a motd each time the player refresh server list.
                                         
                     Tips:
@@ -229,7 +229,7 @@ public class ConfigModel {
             }
         }
 
-        @Documentation("""
+        @Document("""
                 This module adds a warmup cooldown before player-teleporatation.
                                 
                 The teleportation will be cancelled if:
@@ -240,15 +240,15 @@ public class ConfigModel {
         public class TeleportWarmup {
             public boolean enable = false;
 
-            @Documentation("The second to wait before the teleportation.")
+            @Document("The second to wait before the teleportation.")
             public int warmup_second = 3;
 
-            @Documentation("How far should we cancel the teleportation.")
+            @Document("How far should we cancel the teleportation.")
             public double interrupt_distance = 1d;
 
             public @NotNull Dimension dimension = new Dimension();
 
-            @Documentation("""
+            @Document("""
                     Only allowed in the following dimensions.
                                         
                     Note:
@@ -268,7 +268,7 @@ public class ConfigModel {
             }
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides a cooldown for command usage.
                                 
                 Use-case: use this module to avoid some heavy cost commands.
@@ -276,7 +276,7 @@ public class ConfigModel {
         public class CommandCooldown {
             public boolean enable = false;
 
-            @Documentation("""
+            @Document("""
                     Use `regex language` to define issued command cooldown.
                                         
                     Note:
@@ -294,7 +294,7 @@ public class ConfigModel {
             };
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides `warmup` for `command usage`.
                                 
                 Note:
@@ -303,7 +303,7 @@ public class ConfigModel {
         public class CommandWarmup {
             public boolean enable = false;
 
-            @Documentation("See `command_cooldown module`")
+            @Document("See `command_cooldown module`")
             public @NotNull HashMap<String, Integer> regex2ms = new HashMap<>() {
                 {
                     this.put("back", 3 * 1000);
@@ -311,7 +311,7 @@ public class ConfigModel {
             };
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides the `/chunks` command, which shows the `top laggy chunks` in the server. 
                                 
                 The output is a score list, each score means a chunk, and how laggy the chunk is. (Large score means more laggy)
@@ -321,15 +321,15 @@ public class ConfigModel {
 
 
             public @NotNull Top top = new Top();
-            @Documentation("For a chunk, how much the radius used to search `the nearest player` around the chunk.")
+            @Document("For a chunk, how much the radius used to search `the nearest player` around the chunk.")
             public int nearest_distance = 128;
-            @Documentation("""
+            @Document("""
                     Should we hide the chunk-position for a laggy-chunk?
                                         
                     Hide chunk location to avoid grief or privacy purpose. 
                     """)
             public boolean hide_location = true;
-            @Documentation("""
+            @Document("""
                     The dict to define how laggy a type(entity/entity_block) should be.
                                 
                     For example: 
@@ -399,14 +399,14 @@ public class ConfigModel {
                 }
             };
 
-            @Documentation("The `top chunks` to show in `/chunks` command")
+            @Document("The `top chunks` to show in `/chunks` command")
             public class Top {
                 public int rows = 10;
                 public int columns = 10;
             }
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides chat custom. (You might also want to enable `placeholder module`)
                                 
                 Command: /chat
@@ -440,7 +440,7 @@ public class ConfigModel {
         public class Chat {
             public boolean enable = false;
 
-            @Documentation("""
+            @Document("""
                     The server chat format for all players.
                     """)
             public @NotNull String format = "<#B1B2FF>[%fuji:player_playtime%\uD83D\uDD25 %fuji:player_mined%⛏ %fuji:player_placed%\uD83D\uDD33 %fuji:player_killed%\uD83D\uDDE1 %fuji:player_moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:'/msg %player:name% '><hover:show_text:'Time: %fuji:date%<newline><italic>Click to Message'>%player:displayname_visual%</hover></click></dark_green>> %message%";
@@ -451,41 +451,41 @@ public class ConfigModel {
             public @NotNull History history = new History();
             public @NotNull Spy spy = new Spy();
 
-            @Documentation("""
+            @Document("""
                     New joined players can see the historical chat messages.
                     """)
             public class History {
-                @Documentation("How many chat messages should we save, so that we can send for a new-joined player.")
+                @Document("How many chat messages should we save, so that we can send for a new-joined player.")
                 public int buffer_size = 50;
             }
 
-            @Documentation("""
+            @Document("""
                     If you insert `Steve` in chat message, then the player named `Steve` will get audio mention.
                     """)
             public class MentionPlayer {
-                @Documentation("You can query all the `sound identifier` using `/playsound ...` command.")
+                @Document("You can query all the `sound identifier` using `/playsound ...` command.")
                 public @NotNull String sound = "entity.experience_orb.pickup";
                 public float volume = 100f;
                 public float pitch = 1f;
-                @Documentation("The sound repeat count.")
+                @Document("The sound repeat count.")
                 public int repeat_count = 3;
-                @Documentation("The interval between each repeat.")
+                @Document("The interval between each repeat.")
                 public int interval_ms = 1000;
             }
 
-            @Documentation("""
+            @Document("""
                     You can insert `item`, `inv` and `ender` in message to `display` something with other players.
                     """)
             public class Display {
 
-                @Documentation("""
+                @Document("""
                         For each display data, how long should we save in the memory.
                         Note that if a player shares its inventory items, then fuji will save a copy of his inventory data in the memory.
                         """)
                 public int expiration_duration_s = 3600;
             }
 
-            @Documentation("""
+            @Document("""
                     The `regex language` list used to `rewrite` the `player chat message`.
                                         
                     You can use `regex language` to transform player's chat input (only chat message, no command usage).
@@ -509,17 +509,17 @@ public class ConfigModel {
 
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides player skin management.
                 """)
         public class Skin {
             public boolean enable = false;
 
-            @Documentation("The `default skin` used for player who has no skin set.")
+            @Document("The `default skin` used for player who has no skin set.")
             public @NotNull Property default_skin = new Property("textures", "eyJ0aW1lc3RhbXAiOjE1ODYzMjc4ODA1NjYsInByb2ZpbGVJZCI6ImI3MzY3YzA2MjYxYzRlYjBiN2Y3OGY3YzUxNzBiNzQ4IiwicHJvZmlsZU5hbWUiOiJFbXB0eUlyb255Iiwic2lnbmF0dXJlUmVxdWlyZWQiOnRydWUsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS84NWZmZjI1ZDY2NzIwNmYyZTQ2ZDQ0MmNmMzU4YjNmMWVjMzYxMzgzOTE3NTFiYTZlZGY5NjVmZmM4M2I4NjAzIiwibWV0YWRhdGEiOnsibW9kZWwiOiJzbGltIn19fX0=",
                     "PoUf4TsNx6SVHTWZJ6Iwk3acWyiDk84VeKBVcOeqimaSBAGYKfeuXRTFV8c9IBE9cjsRAVaTGC/mwRfHlcD/rmxeDDOkhsFVidr8UL+91afIO8d+EnyoBghmnbZonqpcjCv+nkxQ5SP93qTDelD3jd8xF1FAU97BBvrx0yK+QNn5rPg2RUGGoUZUg75KlEJds1dNftpHc8IyAHz/FQIywlkohu26ghOqFStjok4WPHD3ok0z7Kwcjk7u58PYf67TkEGnGbmxTUDlNbLmxUqjxCr4NshS+e3y3jRfJN0nP82dbYh/NP2Fx8m7pSMsQtm/Ta2MN7JC0Pm2yvZB/APNoNHVSZZ2SOITbPF/yAkIdHrk+ieCKqDbeuc8TFs2n+6FktYdwPXcqrK266CzlSTPycVZQeyrgrOI+fqU1HwCz+MgdlcsAdAoyuFlFPaVqDesI46YPsSJzA3C3CNhjvuebOn357U9Po82eSFAPYbtBPVNjiNgiqn5l+1x8ZVHImwpGv/toa5/fUyfMmlxijwG/C9gQ4mE+buutMn9nfE1y/AisU/2DWeFBESw3eRAICcmVVi875N8kT+Wja8WsbpDCw+pV2wZC3x3nEdOceAdXtDEb0oy3bQPW3TSZ+Wnp68qwSxjI/aDosqVuyyqqlm+w/irUmNHGL+t7g/kD932g0Q=");
 
-            @Documentation("Random skin for fake-player, if you enable the local skin for fake-player. See: FakePlayerManagerModule")
+            @Document("Random skin for fake-player, if you enable the local skin for fake-player. See: FakePlayerManagerModule")
             public @NotNull ArrayList<Property> random_skins = new ArrayList<>() {
                 {
                     this.add(new Property("textures", "eyJ0aW1lc3RhbXAiOjE1ODYzMjc4ODA1NjYsInByb2ZpbGVJZCI6ImI3MzY3YzA2MjYxYzRlYjBiN2Y3OGY3YzUxNzBiNzQ4IiwicHJvZmlsZU5hbWUiOiJFbXB0eUlyb255Iiwic2lnbmF0dXJlUmVxdWlyZWQiOnRydWUsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS84NWZmZjI1ZDY2NzIwNmYyZTQ2ZDQ0MmNmMzU4YjNmMWVjMzYxMzgzOTE3NTFiYTZlZGY5NjVmZmM4M2I4NjAzIiwibWV0YWRhdGEiOnsibW9kZWwiOiJzbGltIn19fX0=", "PoUf4TsNx6SVHTWZJ6Iwk3acWyiDk84VeKBVcOeqimaSBAGYKfeuXRTFV8c9IBE9cjsRAVaTGC/mwRfHlcD/rmxeDDOkhsFVidr8UL+91afIO8d+EnyoBghmnbZonqpcjCv+nkxQ5SP93qTDelD3jd8xF1FAU97BBvrx0yK+QNn5rPg2RUGGoUZUg75KlEJds1dNftpHc8IyAHz/FQIywlkohu26ghOqFStjok4WPHD3ok0z7Kwcjk7u58PYf67TkEGnGbmxTUDlNbLmxUqjxCr4NshS+e3y3jRfJN0nP82dbYh/NP2Fx8m7pSMsQtm/Ta2MN7JC0Pm2yvZB/APNoNHVSZZ2SOITbPF/yAkIdHrk+ieCKqDbeuc8TFs2n+6FktYdwPXcqrK266CzlSTPycVZQeyrgrOI+fqU1HwCz+MgdlcsAdAoyuFlFPaVqDesI46YPsSJzA3C3CNhjvuebOn357U9Po82eSFAPYbtBPVNjiNgiqn5l+1x8ZVHImwpGv/toa5/fUyfMmlxijwG/C9gQ4mE+buutMn9nfE1y/AisU/2DWeFBESw3eRAICcmVVi875N8kT+Wja8WsbpDCw+pV2wZC3x3nEdOceAdXtDEb0oy3bQPW3TSZ+Wnp68qwSxjI/aDosqVuyyqqlm+w/irUmNHGL+t7g/kD932g0Q="));
@@ -531,28 +531,28 @@ public class ConfigModel {
             };
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides `/back` command.
                 """)
         public class Back {
             public boolean enable = false;
 
-            @Documentation("If the player's teleportation destination is close enough, we ignore this telepotation.")
+            @Document("If the player's teleportation destination is close enough, we ignore this telepotation.")
             public double ignore_distance = 32d;
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides `/tpa`, `/tpahere`, `/tpaacept` and `/tpadeny` commands.
                 """)
         public class Tpa {
             public boolean enable = false;
 
-            @Documentation("Tpa request expiration duration. unit is second")
+            @Document("Tpa request expiration duration. unit is second")
             public int timeout = 300;
 
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides `/works` command.
                                 
                 A `work` means a project (a building, a red-stone device ...) that crafted by a player.
@@ -571,15 +571,15 @@ public class ConfigModel {
         public class Works {
             public boolean enable = false;
 
-            @Documentation("For a production-work, how long should we sample it ?")
+            @Document("For a production-work, how long should we sample it ?")
             public int sample_time_ms = 60 * 1000 * 60;
-            @Documentation("For a production-work, how large the radius should we considered as the work's production")
+            @Document("For a production-work, how large the radius should we considered as the work's production")
             public int sample_distance_limit = 512;
-            @Documentation("For a production-work, we only display the topN output items")
+            @Document("For a production-work, we only display the topN output items")
             public int sample_counter_top_n = 20;
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides `/download` command. 
                                 
                 This command allows to downlaod nearby chunks around a player.
@@ -590,19 +590,19 @@ public class ConfigModel {
         public class WorldDownloader {
             public boolean enable = false;
 
-            @Documentation("The url format used to broadcast")
+            @Document("The url format used to broadcast")
             public @NotNull String url_format = "http://example.com:%port%%path%";
 
             public int port = 22222;
 
-            @Documentation("Max download speed limit for each connection.")
+            @Document("Max download speed limit for each connection.")
             public int bytes_per_second_limit = 128 * 1000;
 
-            @Documentation("Max download request allowed in the memory at the same time.")
+            @Document("Max download request allowed in the memory at the same time.")
             public int context_cache_size = 5;
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides `disabler` to disable checkers in `vaniila minecraft`.
                 """)
         public class Disabler {
@@ -612,23 +612,23 @@ public class ConfigModel {
             public @NotNull MoveSpeedDisabler move_speed_disabler = new MoveSpeedDisabler();
             public @NotNull MaxPlayerDisabler max_player_disabler = new MaxPlayerDisabler();
 
-            @Documentation("Disable `Kicked for spamming`")
+            @Document("Disable `Kicked for spamming`")
             public class ChatSpeedDisabler {
                 public boolean enable = true;
             }
 
-            @Documentation("Disable `moved too quickly` and `vehicle too quickly` check")
+            @Document("Disable `moved too quickly` and `vehicle too quickly` check")
             public class MoveSpeedDisabler {
                 public boolean enable = true;
             }
 
-            @Documentation("Disable the max players limit of the server.")
+            @Document("Disable the max players limit of the server.")
             public class MaxPlayerDisabler {
                 public boolean enable = true;
             }
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides `/deathlog` command.
                                 
                 Log player's inventory when he die, so that we can restore his inventory later.
@@ -642,7 +642,7 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides some extra `placeholder`.
                                 
                 Extra placeholder:
@@ -676,21 +676,21 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides `/pvp` command.
                 """)
         public class Pvp {
             public boolean enable = false;
         }
 
-        @Documentation("""
+        @Document("""
                 for `offline-mode` whitelist, this makes whitelist `only` compare the username and `ignore` UUID!
                 """)
         public class Whitelist {
             public boolean enable = false;
         }
 
-        @Documentation("""
+        @Document("""
                                 
                 Background:
                   The vanilla minecraft use a command system called `brigadier`.
@@ -721,7 +721,7 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides `/head` command, so that players can buy custom-head.
                 """)
         public class Head {
@@ -729,7 +729,7 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        @Documentation("""
+        @Document("""
                 Enable this module requires `spark` mod installed.
                                 
                 This module provides `/profiler` command to show server health status (including os, vm, cpu, ram, tps, mspt and gc)
@@ -738,12 +738,12 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        @Documentation("log command issue into the console.")
+        @Document("log command issue into the console.")
         public class CommandSpy {
             public boolean enable = false;
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides scheduler for auto-run jobs.
                                 
                 You can add schedule jobs by `cron expression`, set the random command-list to be executed.
@@ -756,7 +756,7 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides `/fuji reload` command, so that you can reload modules in game.
                                 
                 Note:
@@ -768,7 +768,7 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides some test commands for development.
                 This module only works in development-environment.
                 If you enable this module in a production-environment, then nothing will happen.
@@ -777,7 +777,7 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides multi-language support for your players.
                                 
                 Difference:
@@ -795,7 +795,7 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides afk detection.
                                 
                 If a player is idle long enough, he will be marked as afk state.
@@ -810,21 +810,21 @@ public class ConfigModel {
         public class Afk {
             public boolean enable = false;
 
-            @Documentation("The tab-name format when a player is afk")
+            @Document("The tab-name format when a player is afk")
             public @NotNull String format = "<gray>[AFK] %player:displayname_visual%";
 
-            @Documentation("The afk checker is a timer to check and mark the player's recently active time.")
+            @Document("The afk checker is a timer to check and mark the player's recently active time.")
             public @NotNull AfkChecker afk_checker = new AfkChecker();
 
             public class AfkChecker {
-                @Documentation("The cron to define how the afk_checker is triggered.")
+                @Document("The cron to define how the afk_checker is triggered.")
                 public @NotNull String cron = "0 0/5 * ? * *";
-                @Documentation("Should we kick a player if he is afk ?")
+                @Document("Should we kick a player if he is afk ?")
                 public boolean kick_player = false;
             }
         }
 
-        @Documentation("""
+        @Document("""
                 Command: /rtp
                                 
                 Feature:
@@ -848,7 +848,7 @@ public class ConfigModel {
 
             public @NotNull Setup setup = new Setup();
 
-            @Documentation("""
+            @Document("""
                     Teleport setup per dimension. Dimensions that are not in the list will be disabled to rtp.
                     """)
             public class Setup {
@@ -869,7 +869,7 @@ public class ConfigModel {
 
         }
 
-        @Documentation("""
+        @Document("""
                 This module allows you to write commands in `sign block`.
                                 
                 Example 1
@@ -905,7 +905,7 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides `/home` command.
                         
                 Meta:
@@ -916,7 +916,7 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        @Documentation("""
+        @Document("""
                 This module allows you to custom every system-message defined by mojang in `./assets/minecraft/lang/en_us.json`
                         
                 The mojang offical en_us.json file may looks like: [en_us.json for minecraft 1.21](https://github.com/sakurawald/fuji-fabric/blob/dev/.github/files/en_us.json)
@@ -936,7 +936,7 @@ public class ConfigModel {
         public class SystemMessage {
             public boolean enable = false;
 
-            @Documentation("The language keys to modify.")
+            @Document("The language keys to modify.")
             public @NotNull Map<String, String> key2value = new HashMap<>() {
                 {
                     this.put("multiplayer.player.joined", "<rainbow>+ %s");
@@ -951,7 +951,7 @@ public class ConfigModel {
         }
 
 
-        @Documentation("""
+        @Document("""
                 This module provides command alias.
                                 
                 An alias means we redirect a command-node into another command-node.
@@ -970,7 +970,7 @@ public class ConfigModel {
             };
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides command rewrite, so that you can use `regex language` to rewrite the `command line` a player issued.
                 """)
         public class CommandRewrite {
@@ -983,7 +983,7 @@ public class ConfigModel {
 
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides some `numeric multiplier`.
                                 
                 Supported `numeric types`:
@@ -1016,7 +1016,7 @@ public class ConfigModel {
 
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides anti-build purpose.
                                 
                 Use-case: ban some item/block/entity 
@@ -1098,7 +1098,7 @@ public class ConfigModel {
         }
 
 
-        @Documentation("""
+        @Document("""
                 This module provides colorize for: sign, anvil
                                 
                 Tips:
@@ -1111,18 +1111,18 @@ public class ConfigModel {
             public @NotNull Sign sign = new Sign();
             public @NotNull Anvil anvil = new Anvil();
 
-            @Documentation("Enable `color` for all sign blocks.")
+            @Document("Enable `color` for all sign blocks.")
             public class Sign {
                 public boolean enable = true;
             }
 
-            @Documentation("Enable `color` for anvil.")
+            @Document("Enable `color` for anvil.")
             public class Anvil {
                 public boolean enable = true;
             }
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides commands to open `remote functional blocks`.
                                 
                 Functional blocks:
@@ -1150,62 +1150,62 @@ public class ConfigModel {
             public @NotNull Smithing smithing = new Smithing();
             public @NotNull Loom loom = new Loom();
 
-            @Documentation("This module provides `/workbench` command.")
+            @Document("This module provides `/workbench` command.")
             public class Workbench {
                 public boolean enable = true;
             }
 
-            @Documentation("This module provides `/enchantment` command.")
+            @Document("This module provides `/enchantment` command.")
             public class Enchantment {
 
                 public boolean enable = true;
 
-                @Documentation("Should we override the power of proviers for the opened enchant table?")
+                @Document("Should we override the power of proviers for the opened enchant table?")
                 public @NotNull OverridePower override_power = new OverridePower();
 
                 public class OverridePower {
 
                     public boolean enable = true;
-                    @Documentation("""
+                    @Document("""
                             How many power providers for the opened enchant table.
                             For a max level of enchant table, it requires 15 power providers.""")
                     public int power_provider_amount = 15;
                 }
             }
 
-            @Documentation("This module provides `/grindstone` command.")
+            @Document("This module provides `/grindstone` command.")
             public class GrindStone {
                 public boolean enable = true;
             }
 
-            @Documentation("This module provides `/stonecutter` command.")
+            @Document("This module provides `/stonecutter` command.")
             public class StoneCutter {
 
                 public boolean enable = true;
             }
 
-            @Documentation("This module provides `/anvil` command.")
+            @Document("This module provides `/anvil` command.")
             public class Anvil {
 
                 public boolean enable = true;
             }
 
-            @Documentation("This module provides `/cartography` command.")
+            @Document("This module provides `/cartography` command.")
             public class Cartography {
                 public boolean enable = true;
             }
 
-            @Documentation("This module provides `/enderchest` command.")
+            @Document("This module provides `/enderchest` command.")
             public class EnderChest {
                 public boolean enable = true;
             }
 
-            @Documentation("This module provides `/smithing` command.")
+            @Document("This module provides `/smithing` command.")
             public class Smithing {
                 public boolean enable = true;
             }
 
-            @Documentation("This module provides `/loom` command.")
+            @Document("This module provides `/loom` command.")
             public class Loom {
                 public boolean enable = true;
             }
@@ -1220,7 +1220,7 @@ public class ConfigModel {
             public @NotNull MultiObsidianPlatform multi_obsidian_platform = new MultiObsidianPlatform();
             public @NotNull Carpet carpet = new Carpet();
 
-            @Documentation("""
+            @Document("""
                     This module provides some purpose about `carpet-fabric` mod.
                     """)
             public class Carpet {
@@ -1229,7 +1229,7 @@ public class ConfigModel {
                 public @NotNull FakePlayerManager fake_player_manager = new FakePlayerManager();
                 public @NotNull BetterInfo better_info = new BetterInfo();
 
-                @Documentation("""
+                @Document("""
                         Enable this module requires `carpet-fabric` mod installed.
                                         
                         This module provides some management for `fake-player`.
@@ -1241,7 +1241,7 @@ public class ConfigModel {
                 public class FakePlayerManager {
                     public boolean enable = true;
 
-                    @Documentation("""
+                    @Document("""
                             How many fake-player can each player spawn (in different time)? 
                                                 
                             The tuple means (day_of_week, minutes_of_the_day, max_fake_player_per_player).
@@ -1263,7 +1263,7 @@ public class ConfigModel {
                         }
                     };
 
-                    @Documentation("""
+                    @Document("""
                             How long should we renew when a player issue command `/player renew`
                                         
                             The command `/player renew` allows the player to manually renew all of his `fake-player`.
@@ -1274,14 +1274,14 @@ public class ConfigModel {
                             """)
                     public int renew_duration_ms = 1000 * 60 * 60 * 12;
 
-                    @Documentation("""
+                    @Document("""
                             The rule to transform the name of fake-player.
                                                 
                             Use-case: add prefix or suffix for fake-player.
                             """)
                     public @NotNull String transform_name = "_fake_%name%";
 
-                    @Documentation("""
+                    @Document("""
                             Should we use local skin for fake-player? 
                                                 
                             Enable this can prevent fetching skins from mojang official server each time the fake-player is spawned. 
@@ -1290,7 +1290,7 @@ public class ConfigModel {
                     public boolean use_local_random_skins_for_fake_player = true;
                 }
 
-                @Documentation("""
+                @Document("""
                         - Add `nbt query` for `/info block` command.
                         - Add the command `/info entity`.
                         """)
@@ -1300,7 +1300,7 @@ public class ConfigModel {
             }
 
 
-            @Documentation("""
+            @Document("""
                     In vanilla minecraft, each `ender-portal` links to `the only one obsidian platform`.
                     This module makes each `ender-portal` links to its own `obsidian platform`.
                                     
@@ -1313,7 +1313,7 @@ public class ConfigModel {
                     """)
             public class MultiObsidianPlatform {
                 public boolean enable = false;
-                @Documentation("""
+                @Document("""
                         The coordination-convertion factor between overworld and the_end.
                         In vanilla minecraft, the factor between overworld and the_nether is 8.""")
                 public double factor = 4;
@@ -1321,7 +1321,7 @@ public class ConfigModel {
         }
 
 
-        @Documentation("""
+        @Document("""
                 This module provides commands to run commands to run commands to run commands...
                                 
                 """)
@@ -1334,7 +1334,7 @@ public class ConfigModel {
             public @NotNull Delay delay = new Delay();
             public @NotNull Shell shell = new Shell();
 
-            @Documentation("""
+            @Document("""
                     This module provides `/run` command, which can run a `command` with `context`.
                                         
                     Example 1
@@ -1351,7 +1351,7 @@ public class ConfigModel {
                 public boolean enable = true;
             }
 
-            @Documentation("""
+            @Document("""
                     This module provides `/foreach` command.
                                         
                     If a command is only targeted for `single player`, you can use `foreach` to apply it for `all players`
@@ -1368,7 +1368,7 @@ public class ConfigModel {
                 public boolean enable = true;
             }
 
-            @Documentation("""
+            @Document("""
                     A chain command allows you to run another 2 commands, the first is any command, and the second is the chain command. 
                                         
                     Example 1: 
@@ -1387,7 +1387,7 @@ public class ConfigModel {
                 public boolean enable = true;
             }
 
-            @Documentation("""
+            @Document("""
                     Delay command allows you to ............................ execute a command.
                                         
                     Example 1: `/delay 3 say three seconds passed`
@@ -1399,7 +1399,7 @@ public class ConfigModel {
                 public boolean enable = true;
             }
 
-            @Documentation("""
+            @Document("""
                     This module provides `/shell` command, which executes `command line` in your `host shell`.
                                         
                     This module is a powerful and **`dangerous`** module, **not recommended to enable it**.
@@ -1418,7 +1418,7 @@ public class ConfigModel {
 
         }
 
-        @Documentation("""
+        @Document("""
                 This module provies some `simple` commands.
                 We said a `command` is `simple` since its puporse is not big enough to be a standalone `facility`.
                 """)
@@ -1449,42 +1449,42 @@ public class ConfigModel {
             public @NotNull Tppos tppos = new Tppos();
             public @NotNull Warp warp = new Warp();
 
-            @Documentation("This module provides `/bed` command, which teleports the player to his bed.")
+            @Document("This module provides `/bed` command, which teleports the player to his bed.")
             public class Bed {
                 public boolean enable = true;
             }
 
-            @Documentation("This module provides `/extinguish` command.")
+            @Document("This module provides `/extinguish` command.")
             public class Extinguish {
                 public boolean enable = true;
             }
 
-            @Documentation("This module provides `/feed` command.")
+            @Document("This module provides `/feed` command.")
             public class Feed {
                 public boolean enable = true;
             }
 
-            @Documentation("This module provides `/fly` command.")
+            @Document("This module provides `/fly` command.")
             public class Fly {
                 public boolean enable = true;
             }
 
-            @Documentation("This module provides `/god` command.")
+            @Document("This module provides `/god` command.")
             public class God {
                 public boolean enable = true;
             }
 
-            @Documentation("This module provides `/hat` command.")
+            @Document("This module provides `/hat` command.")
             public class Hat {
                 public boolean enable = true;
             }
 
-            @Documentation("This module provides `/heal` command.")
+            @Document("This module provides `/heal` command.")
             public class Heal {
                 public boolean enable = true;
             }
 
-            @Documentation("""
+            @Document("""
                     Allows you to custom lore in your hand.
                                         
                     Command: /lore
@@ -1498,7 +1498,7 @@ public class ConfigModel {
                 public boolean enable = true;
             }
 
-            @Documentation("""
+            @Document("""
                     This module provides `/sit` command, and the ability to sit by right-click any chair.
                     """)
             public class Sit {
@@ -1511,23 +1511,23 @@ public class ConfigModel {
                 public int max_distance_to_sit = -1;
             }
 
-            @Documentation("This module provides `/more` command.")
+            @Document("This module provides `/more` command.")
             public class More {
                 public boolean enable = true;
             }
 
-            @Documentation("This module provides `/ping` command.")
+            @Document("This module provides `/ping` command.")
             public class Ping {
                 public boolean enable = true;
             }
 
-            @Documentation("This module provides `/realname` command.")
+            @Document("This module provides `/realname` command.")
             public class Realname {
                 public boolean enable = true;
 
             }
 
-            @Documentation("""
+            @Document("""
                     This module provides `/nickname` command.
                                     
                     Tips:
@@ -1539,28 +1539,28 @@ public class ConfigModel {
                 public boolean enable = true;
             }
 
-            @Documentation("This module provides `/repair` command.")
+            @Document("This module provides `/repair` command.")
             public class Repair {
                 public boolean enable = true;
 
             }
 
-            @Documentation("This module provides `/reply` command, which replys the recent player who `/msg` you")
+            @Document("This module provides `/reply` command, which replys the recent player who `/msg` you")
             public class Reply {
                 public boolean enable = true;
             }
 
-            @Documentation("This module provides `/seen` command.")
+            @Document("This module provides `/seen` command.")
             public class Seen {
                 public boolean enable = true;
             }
 
-            @Documentation("This module provides `/suicide` command.")
+            @Document("This module provides `/suicide` command.")
             public class Suicide {
                 public boolean enable = true;
             }
 
-            @Documentation("""
+            @Document("""
                     This module provides `/top` command.
                                         
                     Go up to the ground conveniently !
@@ -1569,33 +1569,33 @@ public class ConfigModel {
                 public boolean enable = true;
             }
 
-            @Documentation("""
+            @Document("""
                     This module provides `/sendmessage` command.
                     """)
             public class SendMessage {
                 public boolean enable = true;
             }
 
-            @Documentation("""
+            @Document("""
                     This module provides `/sendbroadcast` command.
                     """)
             public class SendBroadcast {
                 public boolean enable = true;
             }
 
-            @Documentation("""
+            @Document("""
                     This module provides `/sendactionbar` command.
                     """)
             public class SendActionBar {
                 public boolean enable = true;
             }
 
-            @Documentation("Command: /trashcan")
+            @Document("Command: /trashcan")
             public class TrashCan {
                 public boolean enable = true;
             }
 
-            @Documentation("""
+            @Document("""
                     The unified teleport command.
                                         
                     Argument:
@@ -1623,13 +1623,13 @@ public class ConfigModel {
                 public boolean enable = true;
             }
 
-            @Documentation("Command: /warp")
+            @Document("Command: /warp")
             public class Warp {
                 public boolean enable = true;
             }
         }
 
-        @Documentation("""
+        @Document("""
                 This module provides tab-list custom.
                                 
                 """)
@@ -1660,7 +1660,7 @@ public class ConfigModel {
                 };
             }
 
-            @Documentation("""
+            @Document("""
                     If enable this moudle, the `player names` in `tab list` will be sorted by `weight`.
                                         
                     You can set sort `weight` for a group using `/lp group default meta set fuji.tab_list.sort.weight 1` to set weight to 1.
@@ -1695,7 +1695,7 @@ public class ConfigModel {
             }
         }
 
-        @Documentation("""
+        @Document("""
                                 
                 Command: /kit
                                 
@@ -1704,7 +1704,7 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        @Documentation("""
+        @Document("""
                 This module allows the `server` to execute commands after an `event` occurs.
                                 
                 Example 1:
@@ -1818,7 +1818,7 @@ public class ConfigModel {
             }
         }
 
-        @Documentation("""
+        @Document("""
                 The cleaner to clean `item` and `entity` automatically.
                                 
                 Since the vanilla minecraft also has a `cleaner` to remove the item stack in the ground, so it's recommended to only use this module to `clean` some `weak-loading entities`, like: the sand item stack ...
@@ -1828,7 +1828,7 @@ public class ConfigModel {
 
             public boolean enable = false;
 
-            @Documentation("""
+            @Document("""
                     The job used to trigger `/cleaner clean`.
                                         
                     - The `cleaner clean` will only be triggered by the job.
@@ -1839,7 +1839,7 @@ public class ConfigModel {
                     """)
             public String cron = "0 * * ? * * *";
 
-            @Documentation("""
+            @Document("""
                     The `key` is `translatable key`, which you can query in [en_us.json language file in minecraft 1.21](https://github.com/sakurawald/fuji-fabric/blob/dev/.github/files/en_us.json).
                       - The translable key of `entity` starts with `entity.minecraft`.
                       - The translable key of `item` starts with `item.minecraft` and `block.minecraft`.
@@ -1864,7 +1864,7 @@ public class ConfigModel {
 
             public Ignore ignore = new Ignore();
 
-            @Documentation("""
+            @Document("""
                     Entities match the `ignore list` will not be `cleaned`.
                                         
                     The `cleaner` will always ignore the following types:
@@ -1878,20 +1878,20 @@ public class ConfigModel {
                                         
                     """)
             public class Ignore {
-                @Documentation("Should we ignore all `item entity`.")
+                @Document("Should we ignore all `item entity`.")
                 public boolean ignoreItemEntity = false;
-                @Documentation("""
+                @Document("""
                         Should we ignore all `living entity`.
                         If you want the `cleaner` to remove `monster` or `animals`, you should enable this option.
                         """)
                 public boolean ignoreLivingEntity = true;
-                @Documentation("""
+                @Document("""
                         Should we ignore named entity. (With name tag, or name changed by anvil.)
                         """)
                 public boolean ignoreNamedEntity = true;
-                @Documentation("Like entity riding in some other entity, e.g. minecraft, pig or spider")
+                @Document("Like entity riding in some other entity, e.g. minecraft, pig or spider")
                 public boolean ignoreEntityWithVehicle = true;
-                @Documentation("Contrary to above.")
+                @Document("Contrary to above.")
                 public boolean ignoreEntityWithPassengers = true;
                 public boolean ignoreGlowingEntity = true;
                 public boolean ignoreLeashedEntity = true;

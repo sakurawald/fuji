@@ -4,8 +4,8 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.argument.adapter.AbstractArgumentTypeAdapter;
-import io.github.sakurawald.command.argument.adapter.wrapper.DimensionType;
+import io.github.sakurawald.command.argument.adapter.interfaces.AbstractArgumentTypeAdapter;
+import io.github.sakurawald.command.argument.wrapper.DimensionType;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import net.minecraft.server.command.ServerCommandSource;
 

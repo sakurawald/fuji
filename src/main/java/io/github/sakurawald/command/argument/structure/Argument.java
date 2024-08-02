@@ -1,4 +1,4 @@
-package io.github.sakurawald.command.argument.adapter.structure;
+package io.github.sakurawald.command.argument.structure;
 
 import lombok.Data;
 

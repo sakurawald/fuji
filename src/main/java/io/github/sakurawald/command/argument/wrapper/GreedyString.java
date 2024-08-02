@@ -1,11 +1,11 @@
-package io.github.sakurawald.command.argument.adapter.wrapper;
+package io.github.sakurawald.command.argument.wrapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 
-@Getter
 @AllArgsConstructor
-public class OfflinePlayerName {
+@Getter
+public class GreedyString {
     String string;
 }

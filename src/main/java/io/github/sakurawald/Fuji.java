@@ -1,6 +1,6 @@
 package io.github.sakurawald;
 
-import io.github.sakurawald.command.processor.BrigadierAnnotationProcessor;
+import io.github.sakurawald.command.processor.CommandAnnotationProcessor;
 import io.github.sakurawald.module.common.manager.Managers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -26,7 +26,7 @@ public class Fuji implements ModInitializer {
         Managers.getStandardBackupManager().backup();
         Managers.getBossBarManager().onInitialize();
         Managers.getModuleManager().onInitialize();
-        BrigadierAnnotationProcessor.process();
+        CommandAnnotationProcessor.process();
         Managers.getScheduleManager().onInitialize();
     }
 }

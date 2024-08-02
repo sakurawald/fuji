@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import io.github.sakurawald.config.annotation.Documentation;
+import io.github.sakurawald.annotation.Document;
 import io.github.sakurawald.util.LogUtil;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -37,8 +37,8 @@ public class JsonDocsGenerator {
         Class<?> clazz = obj.getClass();
 
         // for class
-        if (clazz.isAnnotationPresent(Documentation.class)) {
-            root.addProperty(clazz.getSimpleName() + CLASS_DOCUMENTATION, clazz.getAnnotation(Documentation.class).value());
+        if (clazz.isAnnotationPresent(Document.class)) {
+            root.addProperty(clazz.getSimpleName() + CLASS_DOCUMENTATION, clazz.getAnnotation(Document.class).value());
         }
 
         // for fields
@@ -48,8 +48,8 @@ public class JsonDocsGenerator {
                 Object value = field.get(obj);
 
                 /* insert related comment property */
-                if (field.isAnnotationPresent(Documentation.class)) {
-                    root.addProperty(fieldName + FIELD_DOCUMENTATION, field.getAnnotation(Documentation.class).value());
+                if (field.isAnnotationPresent(Document.class)) {
+                    root.addProperty(fieldName + FIELD_DOCUMENTATION, field.getAnnotation(Document.class).value());
                 }
 
                 /* switch type */

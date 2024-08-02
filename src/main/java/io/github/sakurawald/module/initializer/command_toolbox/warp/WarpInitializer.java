@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.command_toolbox.warp;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
-import io.github.sakurawald.config.handler.ConfigHandler;
+import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.module.initializer.command_toolbox.warp.model.WarpModel;
 import io.github.sakurawald.module.common.manager.scheduler.ScheduleManager;

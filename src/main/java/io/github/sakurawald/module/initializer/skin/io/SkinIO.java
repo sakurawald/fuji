@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.skin.io;
 
 import com.mojang.authlib.properties.Property;
-import io.github.sakurawald.config.handler.ConfigHandler;
+import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
 import io.github.sakurawald.util.LogUtil;
 import org.jetbrains.annotations.Nullable;
 

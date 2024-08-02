@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.reply;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.github.sakurawald.command.argument.adapter.wrapper.GreedyString;
+import io.github.sakurawald.command.argument.wrapper.GreedyString;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;

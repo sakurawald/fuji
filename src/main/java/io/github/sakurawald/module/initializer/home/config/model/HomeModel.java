@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.home.model;
+package io.github.sakurawald.module.initializer.home.config.model;
 
 import io.github.sakurawald.module.common.structure.Position;
 import org.jetbrains.annotations.NotNull;

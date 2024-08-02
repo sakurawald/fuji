@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.pvp;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandSource;
-import io.github.sakurawald.config.handler.ConfigHandler;
+import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.module.initializer.pvp.model.PvPModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;

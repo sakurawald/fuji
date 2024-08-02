@@ -5,7 +5,7 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
-import io.github.sakurawald.command.argument.adapter.wrapper.OfflinePlayerName;
+import io.github.sakurawald.command.argument.wrapper.OfflinePlayerName;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.NbtHelper;

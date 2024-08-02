@@ -1,9 +1,9 @@
 package io.github.sakurawald.module.initializer.command_toolbox.nickname;
 
-import io.github.sakurawald.command.argument.adapter.wrapper.GreedyString;
+import io.github.sakurawald.command.argument.wrapper.GreedyString;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandSource;
-import io.github.sakurawald.config.handler.ConfigHandler;
+import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.module.initializer.command_toolbox.nickname.model.NicknameModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;

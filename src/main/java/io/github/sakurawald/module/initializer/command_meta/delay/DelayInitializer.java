@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_meta.delay;
 
-import io.github.sakurawald.command.argument.adapter.wrapper.GreedyString;
+import io.github.sakurawald.command.argument.wrapper.GreedyString;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.module.common.structure.CommandExecutor;

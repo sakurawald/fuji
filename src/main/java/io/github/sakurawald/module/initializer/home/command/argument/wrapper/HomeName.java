@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.home.adapter;
+package io.github.sakurawald.module.initializer.home.command.argument.wrapper;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

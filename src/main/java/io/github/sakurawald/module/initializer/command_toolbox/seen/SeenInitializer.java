@@ -1,10 +1,10 @@
 package io.github.sakurawald.module.initializer.command_toolbox.seen;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.argument.adapter.wrapper.OfflinePlayerName;
+import io.github.sakurawald.command.argument.wrapper.OfflinePlayerName;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandSource;
-import io.github.sakurawald.config.handler.ConfigHandler;
+import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.module.initializer.command_toolbox.seen.model.SeenModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
