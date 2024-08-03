@@ -49,7 +49,7 @@ public abstract class PagedGui<T> extends LayeredGui {
     private void drawNavigator(int pageIndex) {
         SingleLineLayer pageLayer = new SingleLineLayer(GuiHelper.makePlaceholder());
         pageLayer.setSlot(0, GuiHelper.makePreviousPageButton(getPlayer()).setCallback(() -> tryChangePage(pageIndex - 1)));
-        pageLayer.setSlot(this.getWidth() - 1, GuiHelper.makePreviousPageButton(getPlayer()).setCallback(() -> tryChangePage(pageIndex + 1)));
+        pageLayer.setSlot(this.getWidth() - 1, GuiHelper.makeNextPageButton(getPlayer()).setCallback(() -> tryChangePage(pageIndex + 1)));
         pageLayer.setSlot(this.getWidth() - 2, GuiHelper.makeSearchButton(getPlayer()).setCallback(() -> new InputSignGui(getPlayer(), null) {
             @Override
             public void onClose() {

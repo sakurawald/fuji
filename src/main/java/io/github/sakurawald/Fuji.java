@@ -10,9 +10,10 @@ import java.nio.file.Path;
 // TODO: rank module (track, requirement)
 // TODO: hologram module (facility)
 // TODO: invsee module (slot, inv-redirect)
-// TODO: powertool module (composed, meta)
-// TODO: unified player data api (persistent data container)
 // TODO: move docs gen into another project
+
+// TODO: powertool module (composed, meta)
+// TODO: unified player data api (persistent data container -> attachment: subject)
 
 // TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector)
 
