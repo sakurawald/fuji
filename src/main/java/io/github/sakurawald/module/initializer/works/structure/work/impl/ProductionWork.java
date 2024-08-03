@@ -105,7 +105,7 @@ public class ProductionWork extends Work implements Schedulable {
     }
 
     public void openInputSampleDistanceGui(@NotNull ServerPlayerEntity player) {
-        new InputSignGui(player, MessageHelper.getString(player, "works.production_work.prompt.input.sample_distance")) {
+        new InputSignGui(player,  "works.production_work.prompt.input.sample_distance") {
             @Override
             public void onClose() {
                 int limit = Configs.configHandler.model().modules.works.sample_distance_limit;
