@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.common.manager.bossbar;
+package io.github.sakurawald.module.common.manager.impl.bossbar;
 
 import io.github.sakurawald.module.common.manager.interfaces.AbstractManager;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;

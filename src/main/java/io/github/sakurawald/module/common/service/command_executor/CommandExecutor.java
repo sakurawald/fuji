@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.common.structure;
+package io.github.sakurawald.module.common.service.command_executor;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.ParseResults;

@@ -1,12 +1,7 @@
-package io.github.sakurawald.generator;
+package io.github.sakurawald.meta.generator.lexical_table;
 
-import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
-import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
-
-import java.nio.charset.Charset;
-import java.nio.file.Path;
 
 @SuppressWarnings({"MismatchedQueryAndUpdateOfStringBuilder", "unused"})
 @UtilityClass

@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.command_event;
 
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.module.common.structure.CommandExecutor;
+import io.github.sakurawald.module.common.service.command_executor.CommandExecutor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;

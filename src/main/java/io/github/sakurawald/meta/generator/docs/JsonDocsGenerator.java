@@ -1,4 +1,4 @@
-package io.github.sakurawald.generator;
+package io.github.sakurawald.meta.generator.docs;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

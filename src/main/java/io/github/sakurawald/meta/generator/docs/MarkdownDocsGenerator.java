@@ -1,14 +1,11 @@
-package io.github.sakurawald.generator;
+package io.github.sakurawald.meta.generator.docs;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
-
-import static io.github.sakurawald.generator.JsonDocsGenerator.*;
 
 @SuppressWarnings("StringBufferReplaceableByString")
 public class MarkdownDocsGenerator {
@@ -76,7 +73,7 @@ public class MarkdownDocsGenerator {
     }
 
     private @NotNull String makeDocumentedJsonPair(@NotNull JsonObject node, String key, int level) {
-        String documentation = node.get(key + FIELD_DOCUMENTATION).getAsString();
+        String documentation = node.get(key + JsonDocsGenerator.FIELD_DOCUMENTATION).getAsString();
         String indent = getIndent(level);
 
         StringBuilder text = new StringBuilder();
@@ -97,7 +94,7 @@ public class MarkdownDocsGenerator {
     }
 
     private void processJsonPair(@NotNull StringBuilder text, @NotNull JsonObject node, String key, int level) {
-        if (node.keySet().contains(key + FIELD_DOCUMENTATION)) {
+        if (node.keySet().contains(key + JsonDocsGenerator.FIELD_DOCUMENTATION)) {
             // field documentation
             text.append(makeDocumentedJsonPair(node, key, level));
         } else {
@@ -114,8 +111,8 @@ public class MarkdownDocsGenerator {
             JsonElement value = node.get(key);
 
             /* process meta json-element */
-            if (key.endsWith(SKIP_WALK) || key.endsWith(FIELD_DOCUMENTATION)) continue;
-            if (key.endsWith(CLASS_DOCUMENTATION)) {
+            if (key.endsWith(JsonDocsGenerator.SKIP_WALK) || key.endsWith(JsonDocsGenerator.FIELD_DOCUMENTATION)) continue;
+            if (key.endsWith(JsonDocsGenerator.CLASS_DOCUMENTATION)) {
                 // class documentation
                 sb.append(makeBoxed(makeDocumentation(value.toString(), level) + System.lineSeparator(), level));
                 continue;
@@ -124,7 +121,7 @@ public class MarkdownDocsGenerator {
             /* process normal json-element */
             if (value.isJsonObject()) {
                 // note: skip walk
-                if (keys.contains(key + SKIP_WALK)) {
+                if (keys.contains(key + JsonDocsGenerator.SKIP_WALK)) {
                     processJsonPair(sb, node, key, level);
                     continue;
                 }

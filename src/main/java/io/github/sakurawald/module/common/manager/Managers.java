@@ -1,11 +1,11 @@
 package io.github.sakurawald.module.common.manager;
 
 import io.github.sakurawald.module.ModuleManager;
-import io.github.sakurawald.module.common.manager.backup.BackupRescueManager;
-import io.github.sakurawald.module.common.manager.backup.StandardBackupManager;
-import io.github.sakurawald.module.common.manager.bossbar.BossBarManager;
-import io.github.sakurawald.module.common.manager.backup.AbstractBackupManager;
-import io.github.sakurawald.module.common.manager.scheduler.ScheduleManager;
+import io.github.sakurawald.module.common.manager.impl.backup.BackupRescueManager;
+import io.github.sakurawald.module.common.manager.impl.backup.StandardBackupManager;
+import io.github.sakurawald.module.common.manager.impl.bossbar.BossBarManager;
+import io.github.sakurawald.module.common.manager.impl.backup.AbstractBackupManager;
+import io.github.sakurawald.module.common.manager.impl.scheduler.ScheduleManager;
 import lombok.Getter;
 
 public class Managers {

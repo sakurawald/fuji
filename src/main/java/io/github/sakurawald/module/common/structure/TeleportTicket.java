@@ -2,7 +2,7 @@ package io.github.sakurawald.module.common.structure;
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.accessor.PlayerCombatStateAccessor;
-import io.github.sakurawald.module.common.manager.bossbar.BossBarTicket;
+import io.github.sakurawald.module.common.manager.impl.bossbar.BossBarTicket;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import lombok.Getter;
 import net.kyori.adventure.bossbar.BossBar;

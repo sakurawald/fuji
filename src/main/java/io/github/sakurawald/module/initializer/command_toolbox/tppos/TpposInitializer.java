@@ -6,7 +6,7 @@ import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.common.structure.TeleportSetup;
-import io.github.sakurawald.module.common.structure.random_teleport.RandomTeleport;
+import io.github.sakurawald.module.common.service.random_teleport.RandomTeleport;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.IdentifierHelper;

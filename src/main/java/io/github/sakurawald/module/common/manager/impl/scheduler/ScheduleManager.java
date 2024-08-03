@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.common.manager.scheduler;
+package io.github.sakurawald.module.common.manager.impl.scheduler;
 
 
 import io.github.sakurawald.config.Configs;

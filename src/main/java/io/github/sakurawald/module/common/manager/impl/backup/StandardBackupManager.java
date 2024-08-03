@@ -1,6 +1,7 @@
-package io.github.sakurawald.module.common.manager.backup;
+package io.github.sakurawald.module.common.manager.impl.backup;
 
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.util.DateUtil;
 import io.github.sakurawald.util.IOUtil;
 import org.jetbrains.annotations.NotNull;
@@ -13,22 +14,33 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class BackupRescueManager extends AbstractBackupManager {
+public class StandardBackupManager extends AbstractBackupManager {
 
-    public BackupRescueManager() {
-        super(Fuji.CONFIG_PATH.resolve("backup_rescue"));
+    public StandardBackupManager() {
+        super(Fuji.CONFIG_PATH.resolve("backup"));
     }
 
+    protected boolean skipPath(@NotNull Path dir) {
+        for (String other : Configs.configHandler.model().common.backup.skip) {
+            if (dir.equals(Fuji.CONFIG_PATH.resolve(other))) return true;
+        }
+
+        return false;
+    }
+
+    @Override
     protected @NotNull List<File> getInputFiles() {
         List<File> files = new ArrayList<>();
         try {
             Files.walkFileTree(Fuji.CONFIG_PATH, new SimpleFileVisitor<>() {
 
                 @Override
-                public @NotNull FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
+                public @NotNull FileVisitResult preVisitDirectory(@NotNull Path dir, BasicFileAttributes attrs) {
                     if (BACKUP_PATH.equals(dir)) return FileVisitResult.SKIP_SUBTREE;
+                    if (skipPath(dir)) return FileVisitResult.SKIP_SUBTREE;
 
                     return FileVisitResult.CONTINUE;
                 }
@@ -46,18 +58,31 @@ public class BackupRescueManager extends AbstractBackupManager {
         return files;
     }
 
+    protected void trimBackup() {
+        List<Path> latestFiles = IOUtil.getLatestFiles(BACKUP_PATH);
+        Iterator<Path> iterator = latestFiles.iterator();
+        while (iterator.hasNext() && latestFiles.size() > Configs.configHandler.model().common.backup.max_slots - 1) {
+            iterator.next().toFile().delete();
+            iterator.remove();
+        }
+    }
+
+    @Override
     protected @NotNull File getOutputFile() {
         String fileName = DateUtil.getCurrentDate() + ".zip";
         return BACKUP_PATH.resolve(fileName).toFile();
     }
 
+
+    @Override
     protected void makeBackup() {
-        IOUtil.compressFiles(this.getInputFiles(), this.getOutputFile());
+        IOUtil.compressFiles(getInputFiles(), getOutputFile());
     }
 
+    @Override
     public void backup() {
         BACKUP_PATH.toFile().mkdirs();
-        this.makeBackup();
+        trimBackup();
+        makeBackup();
     }
-
 }

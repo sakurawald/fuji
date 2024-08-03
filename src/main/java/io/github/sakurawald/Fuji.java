@@ -17,6 +17,8 @@ import java.nio.file.Path;
 
 // TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector)
 
+// TODO: a `common` package in mixin package
+
 public class Fuji implements ModInitializer {
 
     public static final String MOD_ID = "fuji";

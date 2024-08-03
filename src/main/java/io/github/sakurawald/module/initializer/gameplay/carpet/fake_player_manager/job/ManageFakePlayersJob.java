@@ -2,17 +2,15 @@ package io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_mana
 
 import io.github.sakurawald.module.common.job.interfaces.CronJob;
 import io.github.sakurawald.module.common.manager.Managers;
-import io.github.sakurawald.module.common.manager.scheduler.ScheduleManager;
+import io.github.sakurawald.module.common.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager.FakePlayerManagerInitializer;
 import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
-import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 
 import java.util.ArrayList;
-import java.util.function.Supplier;
 
 public class ManageFakePlayersJob extends CronJob {
 

@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.common.structure.random_teleport;
+package io.github.sakurawald.module.common.service.random_teleport;
 
 import java.util.Optional;
 import java.util.OptionalInt;
