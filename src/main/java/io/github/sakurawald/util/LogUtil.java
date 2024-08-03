@@ -2,6 +2,7 @@ package io.github.sakurawald.util;
 
 import io.github.sakurawald.Fuji;
 import lombok.experimental.UtilityClass;
+import net.fabricmc.loader.api.FabricLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -20,7 +21,11 @@ public class LogUtil {
     }
 
     public static void debug(String message, Object... args) {
-        LOGGER.debug(message, args);
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+            LOGGER.warn(message, args);
+        } else {
+            LOGGER.debug(message, args);
+        }
     }
 
     public static void info(String message, Object... args) {
