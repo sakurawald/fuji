@@ -20,9 +20,10 @@ public class LogUtil {
         return LOGGER;
     }
 
+    @SuppressWarnings("StringConcatenationArgumentToLogCall")
     public static void debug(String message, Object... args) {
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-            LOGGER.warn(message, args);
+            LOGGER.warn("[DEBUG MODE]" + message, args);
         } else {
             LOGGER.debug(message, args);
         }
