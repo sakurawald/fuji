@@ -113,6 +113,7 @@ public class CheckModuleDependencyTest {
             if (definition.equals(reference) || definition.startsWith(reference)) continue;
             if (reference.startsWith(definition) && !isModule(reference)) continue;
             if (hasCommonAncestor(definition, reference) && !isModule(definition) && !isModule(reference)) continue;
+            if (hasCommonAncestor(definition, reference) && isModule(definition) && !isModule(reference)) continue;
 
             // skip -> reference internal module
             if (reference.startsWith("_")) continue;
