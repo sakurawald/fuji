@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static io.github.sakurawald.util.minecraft.MessageHelper.ofText;
 
@@ -46,9 +47,10 @@ public abstract class OverrideTabListNameMixin {
 
          */
         if (TabListEntry.isDummyPlayer(player)) {
-            TabListEntry entry = TabListEntry.getEntryFromDummyPlayer(player);
-            if (entry == null) return original;
+            Optional<TabListEntry> optional = TabListEntry.getEntryFromDummyPlayer(player);
+            if (optional.isEmpty()) return original;
 
+            TabListEntry entry = optional.get();
             name = entry.getRealPlayer().getGameProfile().getName();
 
             Text realPlayerGetDisplayName = realPlayerGetDisplayNameSave.get(name);

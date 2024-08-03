@@ -61,17 +61,14 @@ public class TabListEntry {
         return new PlayerListS2CPacket(enumSet, collection);
     }
 
-    public static TabListEntry getEntryFromDummyPlayer(ServerPlayerEntity dummyPlayer) {
-        Iterator<TabListEntry> iterator = TabListEntry.getInstances().iterator();
-        while (iterator.hasNext()) {
-            TabListEntry next = iterator.next();
-            if (next.getDummyPlayer().equals(dummyPlayer)) return next;
+    public static Optional<TabListEntry> getEntryFromDummyPlayer(ServerPlayerEntity dummyPlayer) {
+        for (TabListEntry next : TabListEntry.getInstances()) {
+            if (next.getDummyPlayer().equals(dummyPlayer)) return Optional.of(next);
         }
 
         // send packet to remove it
         ServerHelper.getDefaultServer().getPlayerManager().sendToAll(new PlayerRemoveS2CPacket(List.of(dummyPlayer.getUuid())));
-
-        return null;
+        return Optional.empty();
     }
 
     public static @NotNull TabListEntry getEntryFromRealPlayer(ServerPlayerEntity realPlayer) {

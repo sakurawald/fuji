@@ -1518,7 +1518,7 @@ public class ConfigModel {
                     
                     Note:
                     - You can only right-click to sit on the ChairBlock/SlabBlock.
-                    - You can sit on any block using `/sit` command.
+                    - You can sit on any block using `/sit` command, like, sitting on the bed...
                     
                     """)
             public class Sit {
@@ -1685,8 +1685,7 @@ public class ConfigModel {
                     You can set sort `weight` for a group using `/lp group default meta set fuji.tab_list.sort.weight 1` to set weight to 1.
                     You can set sort `weight` for a player using `/lp user Steve meta set fuji.tab_list.sort.weight 2`
                     The default weight is 0, the range of weight is [0, 675], which means you can set at most 676 sort groups.
-                    
-                    After you set a new `weight`, you should issue `/fuji reload` or re-connect the server.
+                    After you set a new `weight`, you should issue `/fuji reload` or re-connect to refresh the tab-list.
                                         
                     Issue:
                     - The `tab list` sort method is client-side decided. So the workaround is to send dummy-player entry to the client-side, and hide the real entry in client-side's tablist.

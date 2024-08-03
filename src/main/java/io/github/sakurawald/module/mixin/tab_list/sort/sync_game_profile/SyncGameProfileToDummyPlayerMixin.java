@@ -48,10 +48,10 @@ public class SyncGameProfileToDummyPlayerMixin {
 
                 if (TabListEntry.isDummyPlayer(player)) {
                     /* fix: `/fuji reload` will clear the skin of dummy player, so we need to listen the Action.ADD of dummy-player */
-                    TabListEntry entry = TabListEntry.getEntryFromDummyPlayer(player);
-                    if (entry != null) {
+                    Optional<TabListEntry> optional = TabListEntry.getEntryFromDummyPlayer(player);
+                    if (optional.isPresent()) {
                         player.getGameProfile().getProperties().clear();
-                        player.getGameProfile().getProperties().putAll(entry.getRealPlayer().getGameProfile().getProperties());
+                        player.getGameProfile().getProperties().putAll(optional.get().getRealPlayer().getGameProfile().getProperties());
                     }
 
                 } else {
