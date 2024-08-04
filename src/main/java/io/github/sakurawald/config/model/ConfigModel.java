@@ -1737,6 +1737,32 @@ public class ConfigModel {
             public class Warp {
                 public boolean enable = true;
             }
+
+            public Burn burn = new Burn();
+
+            @Document("Command: /burn")
+            public class Burn{
+                public boolean enable = true;
+            }
+
+            public HelpOp help_op = new HelpOp();
+
+            @Document("Command: /helpop")
+            public class HelpOp {
+                public boolean enable = true;
+            }
+
+            public Near near = new Near();
+            @Document("Command: /near")
+            public class Near {
+                public boolean enable = true;
+            }
+
+            public Jump jump = new Jump();
+            @Document("Command: /near")
+            public class Jump {
+                public boolean enable = true;
+            }
         }
 
         @Document("""

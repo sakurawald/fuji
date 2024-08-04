@@ -9,12 +9,21 @@ import java.nio.file.Path;
 
 // TODO: rank module (track, requirement)
 // TODO: hologram module (facility)
-// TODO: invsee module (slot, inv-redirect)
+// TODO: invsee module (slot, inv-redirect, inv, ender)
 // TODO: move docs gen into another project
 
-// TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector)
+// TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector, predicate)
 
 // TODO: a `common` package in mixin package
+
+// TODO: /compass
+// TODO: /down
+// TODO: /lastonline
+// TODO: /mail
+// TODO: /ride <mount/unmount>
+// TODO: /shoot
+// TODO: /title
+// TODO: /toast
 
 public class Fuji implements ModInitializer {
 

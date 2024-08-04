@@ -208,5 +208,9 @@
   "warp.list": "<gold>All warps: %s",
   "warp.no_found": "<red>Warp %s not found.",
   "warp.unset.success": "<gold>Warp %s removed.",
-  "command_attachment.query.no_attachment": "<red>No attachments."
+  "command_attachment.query.no_attachment": "<red>No attachments.",
+  "helpop.success": "<green>Send help to ops done.",
+  "helpop.fail": "<red>No staff online!",
+  "helpop.format": "<orange>Player %s ask for help: %s",
+  "near.format": "<orange>Nearby player list: %s"
 }
