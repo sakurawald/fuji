@@ -1,22 +1,18 @@
 package io.github.sakurawald.module.initializer.tester;
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
+import com.google.gson.JsonElement;
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.tree.CommandNode;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import eu.pb4.placeholders.api.PlaceholderResult;
 import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
+import io.github.sakurawald.command.argument.wrapper.GreedyString;
+import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.LogUtil;
-import io.github.sakurawald.util.minecraft.CommandHelper;
-import io.github.sakurawald.util.minecraft.ServerHelper;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
@@ -24,11 +20,8 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
-import static net.minecraft.server.command.CommandManager.*;
+import java.util.Optional;
 
 
 @Command("tester")
@@ -53,6 +46,12 @@ public class TesterInitializer extends ModuleInitializer {
 
             return null;
         });
+    }
+
+    @Command("attachment")
+    int attachment(@CommandSource CommandContext<ServerCommandSource> ctx, Optional<String> fileName, GreedyString jsonPath) {
+
+        return 1;
     }
 
     @Command("run")

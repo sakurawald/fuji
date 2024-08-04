@@ -89,6 +89,7 @@
   "off": "<red>Off",
   "on": "<green>On",
   "operation.cancelled": "<red>This operation is cancelled",
+  "operation.success": "<green>Operation success.",
   "ping.player": "<gold>Ping of %s: %d ms",
   "placeholder.pos": "<#2596be>[%d %d %d, %s]",
   "previous_page": "<#FFA1F5>Previous Page",

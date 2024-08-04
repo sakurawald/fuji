@@ -13,7 +13,7 @@ import java.nio.file.Path;
 // TODO: move docs gen into another project
 
 // TODO: powertool module (composed, meta)
-// TODO: unified player data api (persistent data container -> attachment: subject)
+// TODO: unified player data api (persistent data container -> attachment: subject, CLI)
 
 // TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector)
 

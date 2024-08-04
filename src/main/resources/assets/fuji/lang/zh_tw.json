@@ -89,6 +89,7 @@
   "off": "<red>停用",
   "on": "<green>啟用",
   "operation.cancelled": "<red>該操作已取消",
+  "operation.success": "<green>操作已成功.",
   "ping.player": "<gold>玩家 %s 的延遲：%d 毫秒",
   "placeholder.pos": "<#2596be>[%d %d %d, %s]",
   "previous_page": "<#FFA1F5>上一頁",

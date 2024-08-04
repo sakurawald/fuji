@@ -1348,6 +1348,7 @@ public class ConfigModel {
             public @NotNull ForEach for_each = new ForEach();
             public @NotNull Chain chain = new Chain();
             public @NotNull Delay delay = new Delay();
+            public @NotNull Json json = new Json();
             public @NotNull Shell shell = new Shell();
 
             @Document("""
@@ -1412,6 +1413,25 @@ public class ConfigModel {
                                         
                     """)
             public class Delay {
+                public boolean enable = true;
+            }
+
+            @Document("""
+                    Provides a unified `json editor`.
+                    
+                    Example 1: `/json read "config/fuji/config.json" "$.common.quartz.logger_level"`
+                    
+                    Example 2: `/json read "config/fuji/config.json" "$.modules.keys()"`
+                    
+                    Example 3: `/json write "config/fuji/config.json" "$.common.quartz.logger_level"` NULL null
+                    
+                    Note:
+                    - You can see more about `json path`: https://goessner.net/articles/JsonPath/
+                    
+                    Command: /json
+                    
+                    """)
+            public class Json {
                 public boolean enable = true;
             }
 
