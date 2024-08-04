@@ -766,7 +766,7 @@ public class ConfigModel {
                 You can add schedule jobs by `cron expression`, set the random command-list to be executed.
                                 
                 Command:
-                - /scheduler
+                - /command-scheduler
                                 
                 """)
         public class CommandScheduler {
@@ -998,7 +998,7 @@ public class ConfigModel {
                 - --interactType
                 - --maxUseTimes
                 - --executeAsConsole
-                
+                - --destroyItem
                 
                 Example 1:
                 Create a magic-stick, which will heal the player when left-click/right-click it.
@@ -1016,6 +1016,14 @@ public class ConfigModel {
                 ```
                 
                 Example 3: query the `attached commands` in the mainhand item.
+                
+                Example 4: a magic-stick, each click give you an apple, don't destory if run out the times. 
+                ```
+                Issue command: /command-attachment attach-one --maxUseTimes 3 --destroyItem false give %player:name% minecraft:apple 1
+                ```
+                
+                Note:
+                - If you hold `stick * 64` in your mainhand, then all the sticks share the same `attached commands`.
                 
                 """)
         public class CommandAttachment {

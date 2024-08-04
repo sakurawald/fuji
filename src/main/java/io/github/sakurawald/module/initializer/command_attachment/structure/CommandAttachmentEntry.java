@@ -11,5 +11,6 @@ public class CommandAttachmentEntry {
     InteractType interactType;
     boolean executeAsConsole;
     int maxUseTimes;
+    boolean destroyItem;
     int useTimes;
 }

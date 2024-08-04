@@ -12,9 +12,6 @@ import java.nio.file.Path;
 // TODO: invsee module (slot, inv-redirect)
 // TODO: move docs gen into another project
 
-// TODO: powertool module (composed, meta)
-// TODO: unified player data api (persistent data container -> attachment: subject, CLI)
-
 // TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector)
 
 // TODO: a `common` package in mixin package

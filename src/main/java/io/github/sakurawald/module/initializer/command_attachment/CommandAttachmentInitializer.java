@@ -19,6 +19,7 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
 
 import java.io.IOException;
 import java.util.List;
@@ -66,7 +67,12 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
             } else {
                 CommandExecutor.executeCommandAsPlayer(player, e.getCommand());
             }
+
             e.setUseTimes(e.getUseTimes() + 1);
+
+            if (e.isDestroyItem() && e.getUseTimes() >= e.getMaxUseTimes()) {
+                player.getMainHandStack().decrement(1);
+            }
         }
 
         // save
@@ -80,26 +86,33 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
             , Optional<InteractType> interactType
             , Optional<Integer> maxUseTimes
             , Optional<Boolean> executeAsConsole
+            , Optional<Boolean> destroyItem
             , GreedyString command
     ) {
 
         // get model
         ItemStack mainHandStack = player.getMainHandStack();
+        if (mainHandStack.isEmpty()) {
+            MessageHelper.sendMessage(player,"operation.fail");
+            return CommandHelper.Return.FAIL;
+        }
+
         String uuid = NbtHelper.getOrMakeUUIDNbt(mainHandStack);
         CommandAttachmentModel model = this.getModel(uuid);
 
         // new entry
         String $command = command.getString();
         InteractType $interactType = interactType.orElse(InteractType.BOTH);
-        Integer $maxUseTimes = maxUseTimes.orElse(Integer.MAX_VALUE);
         Boolean $executeAsConsole = executeAsConsole.orElse(true);
+        Integer $maxUseTimes = maxUseTimes.orElse(Integer.MAX_VALUE);
+        Boolean $destroyItem = destroyItem.orElse(true);
 
-        model.getEntries().add(new CommandAttachmentEntry($command, $interactType, $executeAsConsole, $maxUseTimes, 0));
+        model.getEntries().add(new CommandAttachmentEntry($command, $interactType, $executeAsConsole, $maxUseTimes, $destroyItem, 0));
 
         // save model
         this.setModel(uuid, model);
 
-        MessageHelper.sendMessage(player,"operation.success");
+        MessageHelper.sendMessage(player, "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
