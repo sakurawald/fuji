@@ -1416,6 +1416,9 @@ public class ConfigModel {
                                         
                     Example 3
                     Execute as a player, to run other commands. (Similar to `/execute as ...`): `/run as player Steve back`
+                    
+                    Example 4
+                    Execute as fake-op: `/run as fake-op Steve give %player:name% minecraft:apple 1`
                                         
                     """)
             public class Run {
@@ -1477,7 +1480,7 @@ public class ConfigModel {
                                         
                     Example 2: `/json read "config/fuji/config.json" "$.modules.keys()"`
                                         
-                    Example 3: `/json write "config/fuji/config.json" "$.common.quartz.logger_level"` NULL null
+                    Example 3: `/json write "config/fuji/config.json" "$.common.quartz.logger_level" NULL null`
                                         
                     Note:
                     - You can see more about `json path`: https://goessner.net/articles/JsonPath/

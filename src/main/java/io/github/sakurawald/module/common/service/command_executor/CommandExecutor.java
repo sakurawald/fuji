@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Function;
 
 
 public class CommandExecutor {
@@ -53,13 +54,17 @@ public class CommandExecutor {
         return CommandHelper.Return.FAIL;
     }
 
-    public static int executeCommandAsPlayer(@NotNull ServerPlayerEntity player, String command) {
+
+    public static int executeCommandAsPlayer(@NotNull ServerPlayerEntity player, String command, Function<ServerCommandSource, ServerCommandSource> source) {
         command = MessageHelper.ofString(player, command);
 
         CommandManager commandManager = ServerHelper.getDefaultServer().getCommandManager();
         CommandDispatcher<ServerCommandSource> dispatcher = commandManager.getDispatcher();
+
+        ServerCommandSource serverCommandSource = source.apply(player.getCommandSource());
+
         ParseResults<ServerCommandSource> parseResults
-                = dispatcher.parse(command, player.getCommandSource());
+                = dispatcher.parse(command, serverCommandSource);
         try {
             return dispatcher.execute(parseResults);
         } catch (CommandSyntaxException e) {
@@ -69,4 +74,11 @@ public class CommandExecutor {
         return CommandHelper.Return.FAIL;
     }
 
+    public static int executeCommandAsPlayer(@NotNull ServerPlayerEntity player, String command) {
+       return executeCommandAsPlayer(player, command, (source) -> source);
+    }
+
+    public static int executeCommandAsFakeOp(@NotNull ServerPlayerEntity player, String command) {
+        return executeCommandAsPlayer(player, command, (source) -> source.withLevel(4));
+    }
 }

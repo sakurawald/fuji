@@ -1,6 +1,8 @@
 package io.github.sakurawald.module.initializer.tester;
 
+import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import eu.pb4.placeholders.api.PlaceholderResult;
 import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.command.annotation.Command;
@@ -51,16 +53,20 @@ public class TesterInitializer extends ModuleInitializer {
     }
 
     @Command("run")
+    @CommandPermission(level = 0)
     private static int $run(@CommandSource CommandContext<ServerCommandSource> ctx) {
         var source = ctx.getSource();
         ServerPlayerEntity player = source.getPlayer();
         MinecraftServer server = player.server;
 
-//        player.getMainHandStack().apply(DataComponentTypes.CUSTOM_DATA,, , )
-        ItemStack mainHandStack = player.getMainHandStack();
+        CommandDispatcher<ServerCommandSource> dispatcher = server.getCommandManager().getDispatcher();
 
-        NbtComponent nbtComponent = mainHandStack.get(DataComponentTypes.CUSTOM_DATA);
-        mainHandStack.set(DataComponentTypes.CUSTOM_DATA, NbtHelper.addUuidToNbtComponentIfAbsent(nbtComponent));
+        try {
+//            int execute = dispatcher.execute("give SakuraWald apple 1", player.getCommandSource().withLevel(4));
+            int execute = dispatcher.execute("give SakuraWald apple 1", player.getCommandSource().withLevel(4));
+        } catch (CommandSyntaxException e) {
+            throw new RuntimeException(e);
+        }
 
         return -1;
     }

@@ -20,7 +20,11 @@ public class RunInitializer extends ModuleInitializer {
 
     @Command("as player")
     private int runAsPlayer(ServerPlayerEntity player, GreedyString rest) {
-        CommandExecutor.executeCommandAsPlayer(player, rest.getString());
-        return CommandHelper.Return.SUCCESS;
+        return CommandExecutor.executeCommandAsPlayer(player, rest.getString());
+    }
+
+    @Command("as fake-op")
+    private int runAsFakeOp(ServerPlayerEntity player, GreedyString rest) {
+        return CommandExecutor.executeCommandAsFakeOp(player, rest.getString());
     }
 }
