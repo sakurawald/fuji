@@ -8,11 +8,14 @@ import io.github.sakurawald.util.minecraft.MessageHelper;
 import io.github.sakurawald.util.RandomUtil;
 import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.kyori.adventure.text.Component;
+import net.minecraft.network.packet.s2c.play.PlayerListHeaderS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Set;
 
 public class TabListInitializer extends ModuleInitializer {
 
@@ -34,14 +37,16 @@ public class TabListInitializer extends ModuleInitializer {
     }
 
     public static void render(@NotNull MinecraftServer server) {
+
         ConfigModel.Modules.TabList config = Configs.configHandler.model().modules.tab_list;
         String headerControl = RandomUtil.drawList(config.style.header);
         String footerControl = RandomUtil.drawList(config.style.footer);
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-            Component header = MessageHelper.ofComponent(player, false, headerControl);
-            Component footer = MessageHelper.ofComponent(player, false, footerControl);
-            player.sendPlayerListHeaderAndFooter(header, footer);
+            @NotNull Text header = MessageHelper.ofText(player, false, headerControl);
+            @NotNull Text footer = MessageHelper.ofText(player, false, footerControl);
+            player.networkHandler.sendPacket(new PlayerListHeaderS2CPacket(header, footer));
         }
+
     }
 
 }

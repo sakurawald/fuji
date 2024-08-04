@@ -23,7 +23,7 @@ public class LogUtil {
     @SuppressWarnings("StringConcatenationArgumentToLogCall")
     public static void debug(String message, Object... args) {
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-            LOGGER.warn("[DEBUG MODE]" + message, args);
+            LOGGER.warn("[DEBUG MODE] " + message, args);
         } else {
             LOGGER.debug(message, args);
         }
