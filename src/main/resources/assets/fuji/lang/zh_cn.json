@@ -207,5 +207,6 @@
   "warp.set.success": "<gold>传送点 %s 已设置.",
   "warp.list": "<gold>所有传送点: %s",
   "warp.no_found": "<red>传送点 %s 未找到.",
-  "warp.unset.success": "<gold>传送点 %s 已移除."
+  "warp.unset.success": "<gold>传送点 %s 已移除.",
+  "command_attachment.query.no_attachment": "<red>该物品没有绑定的命令."
 }

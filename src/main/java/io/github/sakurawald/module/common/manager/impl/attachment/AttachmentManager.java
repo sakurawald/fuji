@@ -22,6 +22,7 @@ public class AttachmentManager extends AbstractManager {
 
     }
 
+
     @SuppressWarnings("DataFlowIssue")
     public List<String> listSubjectName() {
         try {
@@ -41,7 +42,9 @@ public class AttachmentManager extends AbstractManager {
     }
 
     public File getAttachmentFile(String subject, String uuid) {
-        return ATTACHMENT_STORAGE_PATH.resolve(subject).resolve(uuid).toFile();
+        File file = ATTACHMENT_STORAGE_PATH.resolve(subject).resolve(uuid).toFile();
+        file.getParentFile().mkdirs();
+        return file;
     }
 
     public void setAttachment(String subject, String uuid, String data) throws IOException {

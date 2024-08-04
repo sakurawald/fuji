@@ -3,6 +3,7 @@ package io.github.sakurawald.util.minecraft;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.util.LogUtil;
 import lombok.experimental.UtilityClass;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -105,11 +106,6 @@ public class NbtHelper {
         return ret;
     }
 
-    public static @NotNull NbtCompound makeUUIDNbt() {
-        NbtCompound root = new NbtCompound();
-        root.putString(FUJI_UUID, String.valueOf(UUID.randomUUID()));
-        return root;
-    }
 
     private static NbtCompound addUuidToNbtCompoundIfAbsent(@Nullable NbtCompound root) {
         if (root == null) {
@@ -117,11 +113,11 @@ public class NbtHelper {
         }
         if (root.contains(FUJI_UUID)) return root;
 
-        root.put(FUJI_UUID, makeUUIDNbt());
+        root.putString(FUJI_UUID, String.valueOf(UUID.randomUUID()));
         return root;
     }
 
-    public static NbtComponent addUuidToNbtComponentIfAbsent(@Nullable NbtComponent nbtComponent) {
+    public static @NotNull NbtComponent addUuidToNbtComponentIfAbsent(@Nullable NbtComponent nbtComponent) {
         if (nbtComponent == null) {
             return NbtComponent.of(addUuidToNbtCompoundIfAbsent(null));
         }
@@ -130,13 +126,25 @@ public class NbtHelper {
         return NbtComponent.of(ret);
     }
 
-    public static String getUuid(@Nullable NbtComponent nbtComponent) {
+    public static @Nullable String getUuid(@Nullable NbtComponent nbtComponent) {
         if (nbtComponent == null) return null;
+
         NbtCompound root = nbtComponent.copyNbt();
+
         if (!root.contains(FUJI_UUID)) return null;
 
         return root.getString(FUJI_UUID);
     }
 
 
+    public static @NotNull String getOrMakeUUIDNbt(ItemStack itemStack) {
+        NbtComponent nbtComponent = itemStack.get(DataComponentTypes.CUSTOM_DATA);
+        if (getUuid(nbtComponent) == null) {
+            nbtComponent = addUuidToNbtComponentIfAbsent(nbtComponent);
+            itemStack.set(DataComponentTypes.CUSTOM_DATA, nbtComponent);
+        }
+
+        //noinspection DataFlowIssue
+        return getUuid(nbtComponent);
+    }
 }

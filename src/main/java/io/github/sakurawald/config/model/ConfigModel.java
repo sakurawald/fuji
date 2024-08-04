@@ -123,6 +123,7 @@ public class ConfigModel {
         public @NotNull CommandPermission command_permission = new CommandPermission();
         public @NotNull CommandRewrite command_rewrite = new CommandRewrite();
         public @NotNull CommandAlias command_alias = new CommandAlias();
+        public @NotNull CommandAttachment command_attachment = new CommandAttachment();
         public @NotNull CommandInteractive command_interactive = new CommandInteractive();
         public @NotNull CommandWarmup command_warmup = new CommandWarmup();
         public @NotNull CommandCooldown command_cooldown = new CommandCooldown();
@@ -984,6 +985,41 @@ public class ConfigModel {
                     this.add(new CommandAliasEntry(List.of("i", "want", "to", "modify", "chat"), List.of("chat", "format")));
                 }
             };
+        }
+
+
+
+        @Document("""
+                Allows you to `attch` commands to `item stack` !
+                
+                Command: /command-attachment
+                
+                Argument:
+                - --interactType
+                - --maxUseTimes
+                - --executeAsConsole
+                
+                
+                Example 1:
+                Create a magic-stick, which will heal the player when left-click/right-click it.
+                ```
+                Hold a `stick` item in your main hand.
+                Issue command: /command-attachment attach-one heal
+                ```
+                
+                Example 2:
+                Create a magic-stick, give you dimaond when left click (with use limit 3 times), give you gold when right click (with use limit 5 times).
+                ```
+                Hold a `stick` item in your main hand.
+                Issue command: /command-attachment attach-one --maxUseTimes 3 --interactType LEFT give %player:name% minecraft:diamond 1
+                Issue command: /command-attachment attach-one --maxUseTimes 5 --interactType RIGHT give %player:name% minecraft:gold_ingot 1
+                ```
+                
+                Example 3: query the `attached commands` in the mainhand item.
+                
+                """)
+        public class CommandAttachment {
+            public boolean enable = true;
         }
 
         @Document("""

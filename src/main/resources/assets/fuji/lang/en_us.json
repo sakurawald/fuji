@@ -207,5 +207,6 @@
   "warp.set.success": "<gold>Warp %s set.",
   "warp.list": "<gold>All warps: %s",
   "warp.no_found": "<red>Warp %s not found.",
-  "warp.unset.success": "<gold>Warp %s removed."
+  "warp.unset.success": "<gold>Warp %s removed.",
+  "command_attachment.query.no_attachment": "<red>No attachments."
 }
