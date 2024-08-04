@@ -62,6 +62,8 @@ dependencies {
 
     implementation "com.google.code.gson:gson:${project.gson_version}"
     include(implementation "com.jayway.jsonpath:json-path:${project.json_path_version}")
+    include(implementation "net.minidev:json-smart:${project.json_path_smart_version}")
+    include(implementation "net.minidev:accessors-smart:${project.json_path_smart_version}")
 
     modImplementation("carpet:fabric-carpet:${project.carpet_core_version}")
 
