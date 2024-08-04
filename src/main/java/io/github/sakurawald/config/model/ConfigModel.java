@@ -1036,7 +1036,7 @@ public class ConfigModel {
                 
                 """)
         public class CommandAttachment {
-            public boolean enable = true;
+            public boolean enable = false;
         }
 
         @Document("""
