@@ -1017,10 +1017,19 @@ public class ConfigModel {
                 
                 Example 3: query the `attached commands` in the mainhand item.
                 
-                Example 4: a magic-stick, each click give you an apple, don't destory if run out the times. 
+                Example 4: a magic-stick, each click gives you an apple, don't destory if run out the times. 
                 ```
                 Issue command: /command-attachment attach-one --maxUseTimes 3 --destroyItem false give %player:name% minecraft:apple 1
                 ```
+                
+                Example 5: a magic-stick, which teleports the player to a specific destination.
+                ```
+                Issue command: /command-attachment attach-one execute in minecraft:overworld run teleport %player:name% 0 64 0
+                ```
+                
+                Tips:
+                - You can sue `attached commands` to create some `magic items`: give player items, teleport player to target destination, execute routine commands, and more...
+                
                 
                 Note:
                 - If you hold `stick * 64` in your mainhand, then all the sticks share the same `attached commands`.
