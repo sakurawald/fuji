@@ -1437,7 +1437,11 @@ public class ConfigModel {
             }
 
             @Document("""
-                Provides a unified `attachment` facility, which can attach `meta information` to any instance.
+                Provides a unified `attachment` facility, which can attach any `data` to any `object`.
+                
+                Example 1: `/attachment set news today hello world`
+                
+                Example 2: `/attachment get news today`
                 
                 Command: /attachment
                 

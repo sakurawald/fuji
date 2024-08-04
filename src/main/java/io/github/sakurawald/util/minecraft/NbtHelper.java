@@ -3,6 +3,7 @@ package io.github.sakurawald.util.minecraft;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.util.LogUtil;
 import lombok.experimental.UtilityClass;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -19,6 +20,8 @@ import java.util.UUID;
 
 @UtilityClass
 public class NbtHelper {
+
+    private static final String FUJI_UUID = Fuji.MOD_ID + "$uuid";
 
     public static void set(@NotNull NbtCompound root, @NotNull String path, NbtElement value) {
         // search the path
@@ -104,8 +107,36 @@ public class NbtHelper {
 
     public static @NotNull NbtCompound makeUUIDNbt() {
         NbtCompound root = new NbtCompound();
-        root.putString(Fuji.MOD_ID + "$uuid", String.valueOf(UUID.randomUUID()));
+        root.putString(FUJI_UUID, String.valueOf(UUID.randomUUID()));
         return root;
     }
+
+    private static NbtCompound addUuidToNbtCompoundIfAbsent(@Nullable NbtCompound root) {
+        if (root == null) {
+            root = new NbtCompound();
+        }
+        if (root.contains(FUJI_UUID)) return root;
+
+        root.put(FUJI_UUID, makeUUIDNbt());
+        return root;
+    }
+
+    public static NbtComponent addUuidToNbtComponentIfAbsent(@Nullable NbtComponent nbtComponent) {
+        if (nbtComponent == null) {
+            return NbtComponent.of(addUuidToNbtCompoundIfAbsent(null));
+        }
+
+        NbtCompound ret = addUuidToNbtCompoundIfAbsent(nbtComponent.copyNbt());
+        return NbtComponent.of(ret);
+    }
+
+    public static String getUuid(@Nullable NbtComponent nbtComponent) {
+        if (nbtComponent == null) return null;
+        NbtCompound root = nbtComponent.copyNbt();
+        if (!root.contains(FUJI_UUID)) return null;
+
+        return root.getString(FUJI_UUID);
+    }
+
 
 }
