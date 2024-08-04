@@ -1,5 +1,6 @@
 package io.github.sakurawald.util.minecraft;
 
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.util.LogUtil;
 import lombok.experimental.UtilityClass;
 import net.minecraft.item.ItemStack;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @UtilityClass
 public class NbtHelper {
@@ -99,4 +101,11 @@ public class NbtHelper {
         }
         return ret;
     }
+
+    public static @NotNull NbtCompound makeUUIDNbt() {
+        NbtCompound root = new NbtCompound();
+        root.putString(Fuji.MOD_ID + "$uuid", String.valueOf(UUID.randomUUID()));
+        return root;
+    }
+
 }

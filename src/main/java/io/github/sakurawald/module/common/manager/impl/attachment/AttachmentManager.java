@@ -1,26 +1,62 @@
 package io.github.sakurawald.module.common.manager.impl.attachment;
 
-import com.google.gson.JsonElement;
-import com.jayway.jsonpath.Configuration;
-import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.spi.json.GsonJsonProvider;
-import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.annotation.Command;
-import io.github.sakurawald.command.annotation.CommandSource;
-import io.github.sakurawald.command.argument.wrapper.GreedyString;
-import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.common.manager.interfaces.AbstractManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
+import net.minecraft.nbt.NbtCompound;
+import org.apache.commons.io.FileUtils;
 
-import java.util.Optional;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AttachmentManager extends AbstractManager {
+
+    private static final Path ATTACHMENT_STORAGE_PATH = Fuji.CONFIG_PATH.resolve("attachment");
 
     @Override
     public void onInitialize() {
 
+    }
 
+    @SuppressWarnings("DataFlowIssue")
+    public List<String> listSubjectName() {
+        try {
+            return Arrays.stream(ATTACHMENT_STORAGE_PATH.toFile().listFiles()).filter(File::isDirectory).map(File::getName).collect(Collectors.toList());
+        } catch (Exception e) {
+            return List.of();
+        }
+    }
+
+    @SuppressWarnings("DataFlowIssue")
+    public List<String> listSubjectId(String subject) {
+        try {
+            return Arrays.stream(ATTACHMENT_STORAGE_PATH.resolve(subject).toFile().listFiles()).filter(File::isFile).map(File::getName).collect(Collectors.toList());
+        } catch (Exception e) {
+            return List.of();
+        }
+    }
+
+    public File getAttachmentFile(String subject, String uuid) {
+        return ATTACHMENT_STORAGE_PATH.resolve(subject).resolve(uuid).toFile();
+    }
+
+    public void setAttachment(String subject, String uuid, String data) throws IOException {
+        File file = this.getAttachmentFile(subject, uuid);
+        FileUtils.writeStringToFile(file, data, Charset.defaultCharset());
+    }
+
+    public String getAttachment(String subject, String uuid) throws IOException {
+        File file = this.getAttachmentFile(subject, uuid);
+        return FileUtils.readFileToString(file, Charset.defaultCharset());
+    }
+
+    public boolean unsetAttachment(String subject, String uuid) {
+        File file = this.getAttachmentFile(subject, uuid);
+        return file.delete();
     }
 
 }

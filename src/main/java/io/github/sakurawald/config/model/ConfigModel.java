@@ -483,12 +483,12 @@ public class ConfigModel {
 
             @Document("""
                     You can insert `item`, `inv` and `ender` in message to `display` something with other players.
-                    
+                                        
                     Placeholder:
                     - %fuji:item%
                     - %fuji:inv%
                     - %fuji:ender%
-                    
+                                        
                     """)
             public class Display {
 
@@ -1349,6 +1349,7 @@ public class ConfigModel {
             public @NotNull Chain chain = new Chain();
             public @NotNull Delay delay = new Delay();
             public @NotNull Json json = new Json();
+            public @NotNull Attachment attachment = new Attachment();
             public @NotNull Shell shell = new Shell();
 
             @Document("""
@@ -1418,20 +1419,30 @@ public class ConfigModel {
 
             @Document("""
                     Provides a unified `json editor`.
-                    
+                                        
                     Example 1: `/json read "config/fuji/config.json" "$.common.quartz.logger_level"`
-                    
+                                        
                     Example 2: `/json read "config/fuji/config.json" "$.modules.keys()"`
-                    
+                                        
                     Example 3: `/json write "config/fuji/config.json" "$.common.quartz.logger_level"` NULL null
-                    
+                                        
                     Note:
                     - You can see more about `json path`: https://goessner.net/articles/JsonPath/
-                    
+                                        
                     Command: /json
-                    
+                                        
                     """)
             public class Json {
+                public boolean enable = true;
+            }
+
+            @Document("""
+                Provides a unified `attachment` facility, which can attach `meta information` to any instance.
+                
+                Command: /attachment
+                
+                """)
+            public class Attachment {
                 public boolean enable = true;
             }
 
@@ -1535,11 +1546,11 @@ public class ConfigModel {
 
             @Document("""
                     This module provides `/sit` command, and the ability to sit by right-click any chair.
-                    
+                                        
                     Note:
                     - You can only right-click to sit on the ChairBlock/SlabBlock.
                     - You can sit on any block using `/sit` command, like, sitting on the bed...
-                    
+                                        
                     """)
             public class Sit {
                 public boolean enable = true;
@@ -1722,6 +1733,7 @@ public class ConfigModel {
                 public boolean enable = false;
 
                 public SyncGameProgile sync_game_profile = new SyncGameProgile();
+
                 public class SyncGameProgile {
                     public boolean enable = true;
                 }
@@ -1940,5 +1952,6 @@ public class ConfigModel {
                 public boolean ignoreLeashedEntity = true;
             }
         }
+
     }
 }

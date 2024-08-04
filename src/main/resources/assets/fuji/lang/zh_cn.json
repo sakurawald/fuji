@@ -90,6 +90,7 @@
   "on": "<green>启用",
   "operation.cancelled": "<red>该操作已取消",
   "operation.success": "<green>操作已成功.",
+  "operation.fail": "<red>操作失败",
   "ping.player": "<gold>玩家 %s 的延迟: %d ms",
   "placeholder.pos": "<#2596be>[%d %d %d, %s]",
   "previous_page": "<#FFA1F5>上一页",
