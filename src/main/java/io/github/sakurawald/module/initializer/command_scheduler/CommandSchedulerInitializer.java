@@ -16,7 +16,7 @@ import lombok.Getter;
 import org.quartz.JobDataMap;
 
 
-@Command("scheduler")
+@Command("command-scheduler")
 @CommandPermission(level = 4)
 public class CommandSchedulerInitializer extends ModuleInitializer {
 
