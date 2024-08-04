@@ -1552,6 +1552,7 @@ public class ConfigModel {
             public @NotNull SendMessage send_message = new SendMessage();
             public @NotNull SendBroadcast send_broadcast = new SendBroadcast();
             public @NotNull SendActionBar send_actionbar = new SendActionBar();
+            public @NotNull SendTitle send_title = new SendTitle();
             public @NotNull TrashCan trashcan = new TrashCan();
             public @NotNull Tppos tppos = new Tppos();
             public @NotNull Warp warp = new Warp();
@@ -1697,6 +1698,18 @@ public class ConfigModel {
                     This module provides `/sendactionbar` command.
                     """)
             public class SendActionBar {
+                public boolean enable = true;
+            }
+
+            @Document("""
+                    This module provides `/sendtitle` command.
+                    
+                    Example 1: `/sendtitle SakuraWald --mainTitle "<rainbow>Hello" --subTitle "<blue>World" --fadeInTicks 60 --stayTicks 60 --fadeOutTicks 60`
+                    
+                    Example 2: `/foreach sendtitle SakuraWald --mainTitle "<rainbow>Hello %player:name%"`
+                    
+                    """)
+            public class SendTitle {
                 public boolean enable = true;
             }
 

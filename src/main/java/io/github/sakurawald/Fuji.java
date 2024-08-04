@@ -20,9 +20,6 @@ import java.nio.file.Path;
 // TODO: /down
 // TODO: /lastonline
 // TODO: /mail
-// TODO: /ride <mount/unmount>
-// TODO: /shoot
-// TODO: /title
 // TODO: /toast
 
 public class Fuji implements ModInitializer {
