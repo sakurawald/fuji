@@ -39,6 +39,7 @@ public class SitInitializer extends ModuleInitializer {
         }));
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean canSit(ServerPlayerEntity player) {
         return !player.hasVehicle() && !player.isFallFlying() && !player.isSleeping() && !player.isSwimming() && !player.isSpectator();
     }
@@ -46,15 +47,15 @@ public class SitInitializer extends ModuleInitializer {
     @Command("sit")
     private int $sit(@CommandSource ServerPlayerEntity player) {
         // fix: if the player stand in the slab/stair block
-        BlockPos blockPosBelowPlayer = EntityHelper.getBlockPosBelowEntity(player);
-        BlockState blockBelowPlayer = player.getWorld().getBlockState(blockPosBelowPlayer);
-        if (!canSit(player) || blockBelowPlayer.isAir() || blockBelowPlayer.isLiquid()) {
+        BlockPos steppingBlockPos = EntityHelper.getSteppingBlockPos(player);
+        BlockState steppingBlockState = player.getWorld().getBlockState(steppingBlockPos);
+        if (!canSit(player) || steppingBlockState.isAir() || steppingBlockState.isLiquid()) {
             MessageHelper.sendActionBar(player, "sit.fail");
             return CommandHelper.Return.FAIL;
         }
 
-
-        Entity entity = makeChairEntity(player.getWorld(), blockPosBelowPlayer, player.getPos().add(0.5, 0, 0.5));
+        Vec3d lookTarget = player.getPos().add(0.5, 0, 0.5);
+        Entity entity = makeChairEntity(player.getWorld(), steppingBlockPos, lookTarget);
         CHAIR_ENTITY_LIST.add(entity);
         player.startRiding(entity, true);
 
@@ -128,6 +129,14 @@ public class SitInitializer extends ModuleInitializer {
                     kill();
                 }
 
+                // sync the leg position
+                Entity passenger = getFirstPassenger();
+                if (passenger != null) {
+                    this.setYaw(passenger.getYaw());
+                    this.setPitch(passenger.getPitch());
+                }
+
+                // call super
                 super.tick();
             }
 
@@ -137,6 +146,7 @@ public class SitInitializer extends ModuleInitializer {
         if (target != null) {
             entity.lookAt(EntityAnchorArgumentType.EntityAnchor.EYES, target.subtract(0, (target.getY() * 2), 0));
         }
+
         entity.setInvisible(true);
         entity.setInvulnerable(true);
         entity.setCustomName(Text.literal("FUJI-SIT"));

@@ -17,13 +17,8 @@ public class EntityHelper {
         return !isRealPlayer(player);
     }
 
-    public static BlockPos getBlockPosBelowEntity(@NotNull Entity entity) {
-        if (entity.getY() % 1 != 0) {
-            return entity.getBlockPos();
-
-        }
-
-        return entity.getBlockPos().add(0, -1,0);
+    public static BlockPos getSteppingBlockPos(@NotNull Entity entity) {
+        return entity.getSteppingPos();
     }
 
 }

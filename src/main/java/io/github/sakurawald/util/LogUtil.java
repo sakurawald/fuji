@@ -16,6 +16,7 @@ public class LogUtil {
 
     private static final @NotNull Logger LOGGER = createLogger(StringUtils.capitalize(Fuji.MOD_ID));
 
+    @SuppressWarnings("unused")
     public static Logger getDefaultLogger() {
         return LOGGER;
     }

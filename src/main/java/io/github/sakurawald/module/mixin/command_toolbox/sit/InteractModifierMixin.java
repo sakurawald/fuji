@@ -81,20 +81,7 @@ public class InteractModifierMixin {
         if (maxDist > 0 && (givenDist > (maxDist * maxDist))) return;
 
         /* calc offset */
-        Vec3d lookTarget;
-        if (hitBlock instanceof StairsBlock) {
-            Direction direction = hitBlockState.get(StairsBlock.FACING);
-            Vector3f offset = direction.getUnitVector();
-            StairShape stairShape = hitBlockState.get(StairsBlock.SHAPE);
-            if (stairShape == StairShape.OUTER_RIGHT || stairShape == StairShape.INNER_RIGHT)
-                offset.add(direction.rotateYClockwise().getUnitVector());
-            if (stairShape == StairShape.OUTER_LEFT || stairShape == StairShape.INNER_LEFT)
-                offset.add(direction.rotateYCounterclockwise().getUnitVector());
-            lookTarget = new Vec3d(hitBlockPos.getX() + 0.5 - offset.x(), hitBlockPos.getY(), hitBlockPos.getZ() + 0.5 - offset.z());
-        } else {
-            lookTarget = player.getPos();
-        }
-
+        Vec3d lookTarget = player.getPos().add(0.5, 0, 0.5);
         Entity chair = module.makeChairEntity(world, hitBlockPos, lookTarget);
 
         Entity v = player.getVehicle();
