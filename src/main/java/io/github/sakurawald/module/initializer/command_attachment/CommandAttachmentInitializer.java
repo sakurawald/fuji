@@ -8,6 +8,7 @@ import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.command_attachment.command.argument.wrapper.ExecuteAsType;
 import io.github.sakurawald.module.initializer.command_attachment.command.argument.wrapper.InteractType;
 import io.github.sakurawald.module.initializer.command_attachment.config.model.CommandAttachmentModel;
 import io.github.sakurawald.module.initializer.command_attachment.structure.CommandAttachmentEntry;
@@ -19,7 +20,6 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
 
 import java.io.IOException;
 import java.util.List;
@@ -62,10 +62,11 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
             if (!receivedInteractTypes.contains(e.getInteractType())) continue;
             if (e.getUseTimes() >= e.getMaxUseTimes()) continue;
 
-            if (e.isExecuteAsConsole()) {
-                CommandExecutor.executeCommandAsConsole(player, e.getCommand());
-            } else {
-                CommandExecutor.executeCommandAsPlayer(player, e.getCommand());
+            ExecuteAsType executeAsType = e.getExecuteAsType();
+            switch (executeAsType) {
+                case CONSOLE -> CommandExecutor.executeCommandAsConsole(player, e.getCommand());
+                case PLAYER -> CommandExecutor.executeCommandAsPlayer(player, e.getCommand());
+                case FAKE_OP -> CommandExecutor.executeCommandAsFakeOp(player,e.getCommand());
             }
 
             e.setUseTimes(e.getUseTimes() + 1);
@@ -85,7 +86,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     int attachOne(@CommandSource ServerPlayerEntity player
             , Optional<InteractType> interactType
             , Optional<Integer> maxUseTimes
-            , Optional<Boolean> executeAsConsole
+            , Optional<ExecuteAsType> executeAsType
             , Optional<Boolean> destroyItem
             , GreedyString command
     ) {
@@ -103,11 +104,11 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         // new entry
         String $command = command.getString();
         InteractType $interactType = interactType.orElse(InteractType.BOTH);
-        Boolean $executeAsConsole = executeAsConsole.orElse(true);
+        ExecuteAsType $executeAsType = executeAsType.orElse(ExecuteAsType.FAKE_OP);
         Integer $maxUseTimes = maxUseTimes.orElse(Integer.MAX_VALUE);
         Boolean $destroyItem = destroyItem.orElse(true);
 
-        model.getEntries().add(new CommandAttachmentEntry($command, $interactType, $executeAsConsole, $maxUseTimes, $destroyItem, 0));
+        model.getEntries().add(new CommandAttachmentEntry($command, $interactType, $executeAsType, $maxUseTimes, $destroyItem, 0));
 
         // save model
         this.setModel(uuid, model);

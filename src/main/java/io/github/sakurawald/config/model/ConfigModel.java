@@ -996,8 +996,8 @@ public class ConfigModel {
                 
                 Argument:
                 - --interactType
+                - --executeAsType
                 - --maxUseTimes
-                - --executeAsConsole
                 - --destroyItem
                 
                 Example 1:
@@ -1015,7 +1015,7 @@ public class ConfigModel {
                 Issue command: /command-attachment attach-one --maxUseTimes 5 --interactType RIGHT give %player:name% minecraft:gold_ingot 1
                 ```
                 
-                Example 3: query the `attached commands` in the mainhand item.
+                Example 3: query the `attached commands` in the mainhand item. -> `/command-attachment query`
                 
                 Example 4: a magic-stick, each click gives you an apple, don't destory if run out the times. 
                 ```
