@@ -1,6 +1,6 @@
 /* gradle env */
 plugins {
-    id "fabric-loom" version "1.6.+"
+    id "fabric-loom" version "1.7.+"
     id "maven-publish"
     id "com.modrinth.minotaur" version "2.+"
     id "java"
