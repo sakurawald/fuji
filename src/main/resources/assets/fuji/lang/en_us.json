@@ -212,5 +212,6 @@
   "helpop.success": "<green>Send help to ops done.",
   "helpop.fail": "<red>No staff online!",
   "helpop.format": "<orange>Player %s ask for help: %s",
-  "near.format": "<orange>Nearby player list: %s"
+  "near.format": "<orange>Nearby player list: %s",
+  "compass.no_compass": "<red>You should hold a compass in hand."
 }

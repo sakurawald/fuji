@@ -16,9 +16,6 @@ import java.nio.file.Path;
 
 // TODO: a `common` package in mixin package
 
-// TODO: /compass
-// TODO: /down
-// TODO: /lastonline
 // TODO: /mail
 // TODO: /toast
 

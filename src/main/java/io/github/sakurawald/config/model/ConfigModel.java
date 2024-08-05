@@ -1772,8 +1772,14 @@ public class ConfigModel {
             }
 
             public Jump jump = new Jump();
-            @Document("Command: /near")
+            @Document("Command: /jump")
             public class Jump {
+                public boolean enable = true;
+            }
+
+            public Compass compass = new Compass();
+            @Document("Command: /compass")
+            public class Compass {
                 public boolean enable = true;
             }
         }

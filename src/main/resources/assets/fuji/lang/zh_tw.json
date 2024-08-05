@@ -212,5 +212,6 @@
   "helpop.success": "<green>成功向管理员请求帮助.",
   "helpop.fail": "<red>没有管理员在线.",
   "helpop.format": "<orange>玩家 %s 请求帮助: %s",
-  "near.format": "<orange>附近玩家列表: %s"
+  "near.format": "<orange>附近玩家列表: %s",
+  "compass.no_compass": "<red>您需要手持指南针."
 }
