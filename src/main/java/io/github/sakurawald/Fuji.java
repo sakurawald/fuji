@@ -17,7 +17,6 @@ import java.nio.file.Path;
 // TODO: a `common` package in mixin package
 
 // TODO: /mail
-// TODO: /toast
 
 public class Fuji implements ModInitializer {
 
