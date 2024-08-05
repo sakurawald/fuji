@@ -10,7 +10,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public class SendActionbar extends ModuleInitializer {
 
-    @Command("sendactionbar")
+    @Command("send-actionbar")
     @CommandPermission(level = 4)
     int sendActionBar(ServerPlayerEntity player, GreedyString rest) {
         player.sendActionBar(MessageHelper.ofText(player, false, rest.getString()));

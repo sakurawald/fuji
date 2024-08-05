@@ -19,6 +19,7 @@ import io.github.sakurawald.util.ReflectionUtil;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.PermissionHelper;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -35,13 +36,15 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 public class CommandAnnotationProcessor {
     private static final String REQUIRED_ARGUMENT_PLACEHOLDER = "$";
-    private static CommandDispatcher<ServerCommandSource> dispatcher;
+    public static CommandDispatcher<ServerCommandSource> dispatcher;
+    public static CommandRegistryAccess registryAccess;
 
     public static void process() {
         CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) -> {
             /* environment */
             AbstractArgumentTypeAdapter.registerAdapters();
             CommandAnnotationProcessor.dispatcher = dispatcher;
+            CommandAnnotationProcessor.registryAccess = registryAccess;
 
             /* scan */
             scanClass();

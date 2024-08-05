@@ -1553,6 +1553,7 @@ public class ConfigModel {
             public @NotNull SendBroadcast send_broadcast = new SendBroadcast();
             public @NotNull SendActionBar send_actionbar = new SendActionBar();
             public @NotNull SendTitle send_title = new SendTitle();
+            public @NotNull SendToast send_toast = new SendToast();
             public @NotNull TrashCan trashcan = new TrashCan();
             public @NotNull Tppos tppos = new Tppos();
             public @NotNull Warp warp = new Warp();
@@ -1681,35 +1682,45 @@ public class ConfigModel {
             }
 
             @Document("""
-                    This module provides `/sendmessage` command.
+                    This module provides `/send-message` command.
                     """)
             public class SendMessage {
                 public boolean enable = true;
             }
 
             @Document("""
-                    This module provides `/sendbroadcast` command.
+                    This module provides `/send-broadcast` command.
                     """)
             public class SendBroadcast {
                 public boolean enable = true;
             }
 
             @Document("""
-                    This module provides `/sendactionbar` command.
+                    This module provides `/send-actionbar` command.
                     """)
             public class SendActionBar {
                 public boolean enable = true;
             }
 
             @Document("""
-                    This module provides `/sendtitle` command.
+                    Command: /send-title
                     
-                    Example 1: `/sendtitle SakuraWald --mainTitle "<rainbow>Hello" --subTitle "<blue>World" --fadeInTicks 60 --stayTicks 60 --fadeOutTicks 60`
+                    Example 1: `/send-title SakuraWald --mainTitle "<rainbow>Hello" --subTitle "<blue>World" --fadeInTicks 60 --stayTicks 60 --fadeOutTicks 60`
                     
-                    Example 2: `/foreach sendtitle SakuraWald --mainTitle "<rainbow>Hello %player:name%"`
+                    Example 2: `/foreach send-title SakuraWald --mainTitle "<rainbow>Hello %player:name%"`
                     
                     """)
             public class SendTitle {
+                public boolean enable = true;
+            }
+
+            @Document("""
+                    Command: /send-toast
+                    
+                    Example 1: `/send-toast Steve --icon minecraft:golden_axe --toastType GOAL <rainbow> hello %player:name%`
+                    
+                    """)
+            public class SendToast {
                 public boolean enable = true;
             }
 
@@ -1873,7 +1884,7 @@ public class ConfigModel {
                 ```
                 "on_player_first_joined": {
                   "command_list": [
-                    "sendbroadcast <light_purple>Welcome new player %player:name% to join us!",
+                    "send-broadcast <light_purple>Welcome new player %player:name% to join us!",
                     "execute as %player:name% run rtp",
                     "delay 10 spawnpoint %player:name%"
                   ]
@@ -1914,7 +1925,7 @@ public class ConfigModel {
                 public class OnPlayerDeath {
                     public @NotNull List<String> command_list = new ArrayList<>() {
                         {
-                            this.add("sendmessage %player:name% you just die.");
+                            this.add("send-message %player:name% you just die.");
                         }
                     };
                 }
@@ -1922,7 +1933,7 @@ public class ConfigModel {
                 public class AfterPlayerBreakBlock {
                     public @NotNull List<String> command_list = new ArrayList<>() {
                         {
-                            this.add("sendmessage %player:name% you just break a block.");
+                            this.add("send-message %player:name% you just break a block.");
                             this.add("experience add %player:name% %fuji:random 2 8%");
                         }
                     };
@@ -1931,7 +1942,7 @@ public class ConfigModel {
                 public class AfterPlayerPlaceBlock {
                     public @NotNull List<String> command_list = new ArrayList<>() {
                         {
-                            this.add("sendmessage %player:name% you just place a block.");
+                            this.add("send-message %player:name% you just place a block.");
                         }
                     };
                 }
@@ -1947,7 +1958,7 @@ public class ConfigModel {
                 public class AfterPlayerChangeWorld {
                     public @NotNull List<String> command_list = new ArrayList<>() {
                         {
-                            this.add("sendmessage %player:name% You are in %world:id% now!");
+                            this.add("send-message %player:name% You are in %world:id% now!");
                         }
                     };
                 }
@@ -1955,7 +1966,7 @@ public class ConfigModel {
                 public class OnPlayerFirstJoined {
                     public @NotNull List<String> command_list = new ArrayList<>() {
                         {
-                            this.add("sendbroadcast <rainbow>welcome new player %player:name% to join us!");
+                            this.add("send-broadcast <rainbow>welcome new player %player:name% to join us!");
                         }
                     };
                 }
@@ -1963,7 +1974,7 @@ public class ConfigModel {
                 public class OnPlayerJoined {
                     public @NotNull List<String> command_list = new ArrayList<>() {
                         {
-                            this.add("sendmessage %player:name% welcome to the server.");
+                            this.add("send-message %player:name% welcome to the server.");
                         }
                     };
                 }
@@ -1971,7 +1982,7 @@ public class ConfigModel {
                 public class OnPlayerLeft {
                     public @NotNull List<String> command_list = new ArrayList<>() {
                         {
-                            this.add("sendbroadcast %player:name% left the server.");
+                            this.add("send-broadcast %player:name% left the server.");
                         }
                     };
                 }

@@ -11,7 +11,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public class SendBroadcastInitializer extends ModuleInitializer {
 
-    @Command("sendbroadcast")
+    @Command("send-broadcast")
     @CommandPermission(level =  4)
     int sendBroadcast(GreedyString rest){
         String message = rest.getString();

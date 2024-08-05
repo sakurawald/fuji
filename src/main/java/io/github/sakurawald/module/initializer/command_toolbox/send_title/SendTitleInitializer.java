@@ -18,7 +18,7 @@ import java.util.Optional;
 
 public class SendTitleInitializer extends ModuleInitializer {
 
-    @Command("sendtitle")
+    @Command("send-title")
     @CommandPermission(level = 4)
     int sendTitle(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player
             , Optional<String> mainTitle

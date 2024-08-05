@@ -10,7 +10,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public class SendMessageInitializer extends ModuleInitializer {
 
-    @Command("sendmessage")
+    @Command("send-message")
     @CommandPermission(level = 4)
     int sendMessage(ServerPlayerEntity player, GreedyString rest) {
         player.sendMessage(MessageHelper.ofText(player, false, rest.getString()));
