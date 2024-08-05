@@ -319,6 +319,8 @@ public class ConfigModel {
         }
 
         @Document("""
+                Command: /chunks
+                
                 This module provides the `/chunks` command, which shows the `top laggy chunks` in the server. 
                                 
                 The output is a score list, each score means a chunk, and how laggy the chunk is. (Large score means more laggy)
@@ -528,6 +530,9 @@ public class ConfigModel {
 
         @Document("""
                 This module provides player skin management.
+                
+                Command: /skin
+                
                 """)
         public class Skin {
             public boolean enable = false;
@@ -549,7 +554,7 @@ public class ConfigModel {
         }
 
         @Document("""
-                This module provides `/back` command.
+                Command: /back
                 """)
         public class Back {
             public boolean enable = false;
@@ -559,7 +564,12 @@ public class ConfigModel {
         }
 
         @Document("""
-                This module provides `/tpa`, `/tpahere`, `/tpaacept` and `/tpadeny` commands.
+                Command:
+                - /tpa
+                - /tpahere
+                - /tpaacept
+                - /tpadeny
+                
                 """)
         public class Tpa {
             public boolean enable = false;
@@ -570,7 +580,7 @@ public class ConfigModel {
         }
 
         @Document("""
-                This module provides `/works` command.
+                Command: /works
                                 
                 A `work` means a project (a building, a red-stone device ...) that crafted by a player.
                                 
@@ -597,7 +607,7 @@ public class ConfigModel {
         }
 
         @Document("""
-                This module provides `/download` command. 
+                Command: /download
                                 
                 This command allows to downlaod nearby chunks around a player.
                                 
@@ -646,7 +656,7 @@ public class ConfigModel {
         }
 
         @Document("""
-                This module provides `/deathlog` command.
+                Command: /deathlog
                                 
                 Log player's inventory when he die, so that we can restore his inventory later.
                                 
@@ -694,7 +704,7 @@ public class ConfigModel {
         }
 
         @Document("""
-                This module provides `/pvp` command.
+                Command: /pvp
                 """)
         public class Pvp {
             public boolean enable = false;
@@ -739,7 +749,7 @@ public class ConfigModel {
         }
 
         @Document("""
-                This module provides `/head` command, so that players can buy custom-head.
+                Command: /head
                 """)
         public class Head {
 
@@ -749,7 +759,9 @@ public class ConfigModel {
         @Document("""
                 Enable this module requires `spark` mod installed.
                                 
-                This module provides `/profiler` command to show server health status (including os, vm, cpu, ram, tps, mspt and gc)
+                This module shows server health status (including os, vm, cpu, ram, tps, mspt and gc)
+                
+                Command: /profiler
                 """)
         public class Profiler {
             public boolean enable = false;
@@ -819,6 +831,8 @@ public class ConfigModel {
                 A afk player will display in `tab list`.
                                 
                 A player can issue `/afk` command to afk manually.
+                
+                Command: /afk
                                 
                 Note:
                 - There is no protect for a `afk player` 
@@ -923,7 +937,7 @@ public class ConfigModel {
         }
 
         @Document("""
-                This module provides `/home` command.
+                Command: /home
                         
                 Meta:
                 - Integer `fuji.home.home_limit` # The home number per player limit.
@@ -1219,12 +1233,12 @@ public class ConfigModel {
             public @NotNull Smithing smithing = new Smithing();
             public @NotNull Loom loom = new Loom();
 
-            @Document("This module provides `/workbench` command.")
+            @Document("Command: /workbenc")
             public class Workbench {
                 public boolean enable = true;
             }
 
-            @Document("This module provides `/enchantment` command.")
+            @Document("Command: /enchantment")
             public class Enchantment {
 
                 public boolean enable = true;
@@ -1242,39 +1256,39 @@ public class ConfigModel {
                 }
             }
 
-            @Document("This module provides `/grindstone` command.")
+            @Document("Command: /grindstone")
             public class GrindStone {
                 public boolean enable = true;
             }
 
-            @Document("This module provides `/stonecutter` command.")
+            @Document("Command: /stonecutter")
             public class StoneCutter {
 
                 public boolean enable = true;
             }
 
-            @Document("This module provides `/anvil` command.")
+            @Document("Command: /anvil")
             public class Anvil {
 
                 public boolean enable = true;
             }
 
-            @Document("This module provides `/cartography` command.")
+            @Document("Command: /cartography")
             public class Cartography {
                 public boolean enable = true;
             }
 
-            @Document("This module provides `/enderchest` command.")
+            @Document("Command: /enderchest")
             public class EnderChest {
                 public boolean enable = true;
             }
 
-            @Document("This module provides `/smithing` command.")
+            @Document("Command: /smithing")
             public class Smithing {
                 public boolean enable = true;
             }
 
-            @Document("This module provides `/loom` command.")
+            @Document("Command: /loom")
             public class Loom {
                 public boolean enable = true;
             }
@@ -1495,6 +1509,8 @@ public class ConfigModel {
             @Document("""
                 Provides a unified `attachment` facility, which can attach any `data` to any `object`.
                 
+                Command: /attachment
+                
                 Example 1: `/attachment set news today hello world`
                 
                 Example 2: `/attachment get news today`
@@ -1563,32 +1579,32 @@ public class ConfigModel {
                 public boolean enable = true;
             }
 
-            @Document("This module provides `/extinguish` command.")
+            @Document("Command: /extinguish")
             public class Extinguish {
                 public boolean enable = true;
             }
 
-            @Document("This module provides `/feed` command.")
+            @Document("Command: /feed")
             public class Feed {
                 public boolean enable = true;
             }
 
-            @Document("This module provides `/fly` command.")
+            @Document("Command: /fly")
             public class Fly {
                 public boolean enable = true;
             }
 
-            @Document("This module provides `/god` command.")
+            @Document("Command: /god")
             public class God {
                 public boolean enable = true;
             }
 
-            @Document("This module provides `/hat` command.")
+            @Document("Command: /had")
             public class Hat {
                 public boolean enable = true;
             }
 
-            @Document("This module provides `/heal` command.")
+            @Document("Command: /heal")
             public class Heal {
                 public boolean enable = true;
             }
@@ -1608,6 +1624,8 @@ public class ConfigModel {
 
             @Document("""
                     This module provides `/sit` command, and the ability to sit by right-click any chair.
+                    
+                    Command: /sit
                                         
                     Note:
                     - You can only right-click to sit on the ChairBlock/SlabBlock.
@@ -1623,24 +1641,24 @@ public class ConfigModel {
                 public int max_distance_to_sit = -1;
             }
 
-            @Document("This module provides `/more` command.")
+            @Document("Command: /more")
             public class More {
                 public boolean enable = true;
             }
 
-            @Document("This module provides `/ping` command.")
+            @Document("Command: /ping")
             public class Ping {
                 public boolean enable = true;
             }
 
-            @Document("This module provides `/realname` command.")
+            @Document("Command: /realname")
             public class Realname {
                 public boolean enable = true;
 
             }
 
             @Document("""
-                    This module provides `/nickname` command.
+                    Command: /nickname
                                     
                     Tips:
                     - You can query real name using `realname module`
@@ -1651,7 +1669,7 @@ public class ConfigModel {
                 public boolean enable = true;
             }
 
-            @Document("This module provides `/repair` command.")
+            @Document("Command: /repair")
             public class Repair {
                 public boolean enable = true;
 
@@ -1662,18 +1680,18 @@ public class ConfigModel {
                 public boolean enable = true;
             }
 
-            @Document("This module provides `/seen` command.")
+            @Document("Command: /seen")
             public class Seen {
                 public boolean enable = true;
             }
 
-            @Document("This module provides `/suicide` command.")
+            @Document("Command: /suicide")
             public class Suicide {
                 public boolean enable = true;
             }
 
             @Document("""
-                    This module provides `/top` command.
+                    Command: /top
                                         
                     Go up to the ground conveniently !
                     """)
@@ -1682,21 +1700,21 @@ public class ConfigModel {
             }
 
             @Document("""
-                    This module provides `/send-message` command.
+                    Command: /send-message
                     """)
             public class SendMessage {
                 public boolean enable = true;
             }
 
             @Document("""
-                    This module provides `/send-broadcast` command.
+                    Command: /send-broadcast
                     """)
             public class SendBroadcast {
                 public boolean enable = true;
             }
 
             @Document("""
-                    This module provides `/send-actionbar` command.
+                    Command: /send-actionbar
                     """)
             public class SendActionBar {
                 public boolean enable = true;
@@ -1704,6 +1722,13 @@ public class ConfigModel {
 
             @Document("""
                     Command: /send-title
+                    
+                    Argument:
+                    - --mainTitle
+                    - --subTitle
+                    - --fadeInTicks
+                    - --stayTicks
+                    - --fadeOutTIcks
                     
                     Example 1: `/send-title SakuraWald --mainTitle "<rainbow>Hello" --subTitle "<blue>World" --fadeInTicks 60 --stayTicks 60 --fadeOutTicks 60`
                     
@@ -1716,6 +1741,10 @@ public class ConfigModel {
 
             @Document("""
                     Command: /send-toast
+                    
+                    Argument:
+                    - --icon
+                    - --toastType
                     
                     Example 1: `/send-toast Steve --icon minecraft:golden_axe --toastType GOAL <rainbow> hello %player:name%`
                     
