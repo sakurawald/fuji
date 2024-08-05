@@ -8,15 +8,12 @@ import io.github.sakurawald.command.argument.wrapper.GreedyString;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.util.minecraft.CommandHelper;
 import io.github.sakurawald.util.minecraft.MessageHelper;
-import io.github.sakurawald.util.minecraft.ServerHelper;
 import net.minecraft.advancement.*;
 import net.minecraft.advancement.criterion.CriterionProgress;
 import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.network.packet.s2c.play.AdvancementUpdateS2CPacket;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -29,7 +26,6 @@ public class SendToastInitializer extends ModuleInitializer {
     private static final String IMPOSSIBLE = "impossible";
 
     private void sendToast(ServerPlayerEntity player, AdvancementFrame advancementFrame, Item icon, Text title) {
-
         AdvancementDisplay advancementDisplay = new AdvancementDisplay(
                 icon.getDefaultStack()
                 , title
@@ -52,11 +48,11 @@ public class SendToastInitializer extends ModuleInitializer {
                 .criterion(IMPOSSIBLE, conditionsAdvancementCriterion)
                 .build(identifier);
 
-        AdvancementUpdateS2CPacket packet = makeAdvancementUpdateS2CPacket(advancementEntry, identifier);
-        player.networkHandler.sendPacket(packet);
+        player.networkHandler.sendPacket(makeGrantPacket(advancementEntry, identifier));
+        player.networkHandler.sendPacket(makeRevokePacket(identifier));
     }
 
-    private @NotNull AdvancementUpdateS2CPacket makeAdvancementUpdateS2CPacket(AdvancementEntry advancementEntry, Identifier identifier) {
+    private @NotNull AdvancementUpdateS2CPacket makeGrantPacket(AdvancementEntry advancementEntry, Identifier identifier) {
         AdvancementProgress advancementProgress = new AdvancementProgress();
         AdvancementRequirements advancementRequirements = new AdvancementRequirements(List.of(List.of(IMPOSSIBLE)));
         advancementProgress.init(advancementRequirements);
@@ -67,6 +63,13 @@ public class SendToastInitializer extends ModuleInitializer {
         Collection<AdvancementEntry> toEarn = List.of(advancementEntry);
         Set<Identifier> toRemove = Set.of();
         Map<Identifier, AdvancementProgress> toSetProgress = Map.of(identifier, advancementProgress);
+        return new AdvancementUpdateS2CPacket(false, toEarn, toRemove, toSetProgress);
+    }
+
+    private @NotNull AdvancementUpdateS2CPacket makeRevokePacket(Identifier identifier) {
+        Collection<AdvancementEntry> toEarn = List.of();
+        Set<Identifier> toRemove = Set.of(identifier);
+        Map<Identifier, AdvancementProgress> toSetProgress = Map.of();
         return new AdvancementUpdateS2CPacket(false, toEarn, toRemove, toSetProgress);
     }
 
