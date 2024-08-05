@@ -28,7 +28,7 @@ import java.util.*;
 public class SendToastInitializer extends ModuleInitializer {
     private static final String IMPOSSIBLE = "impossible";
 
-    void sendToast(ServerPlayerEntity player, AdvancementFrame advancementFrame, Item icon, Text title) {
+    private void sendToast(ServerPlayerEntity player, AdvancementFrame advancementFrame, Item icon, Text title) {
 
         AdvancementDisplay advancementDisplay = new AdvancementDisplay(
                 icon.getDefaultStack()
@@ -56,7 +56,7 @@ public class SendToastInitializer extends ModuleInitializer {
         player.networkHandler.sendPacket(packet);
     }
 
-    private static @NotNull AdvancementUpdateS2CPacket makeAdvancementUpdateS2CPacket(AdvancementEntry advancementEntry, Identifier identifier) {
+    private @NotNull AdvancementUpdateS2CPacket makeAdvancementUpdateS2CPacket(AdvancementEntry advancementEntry, Identifier identifier) {
         AdvancementProgress advancementProgress = new AdvancementProgress();
         AdvancementRequirements advancementRequirements = new AdvancementRequirements(List.of(List.of(IMPOSSIBLE)));
         advancementProgress.init(advancementRequirements);
