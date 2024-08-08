@@ -12,11 +12,16 @@ import java.nio.file.Path;
 // TODO: invsee module (slot, inv-redirect, inv, ender)
 // TODO: move docs gen into another project
 
-// TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector, predicate)
+// TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector, predicate, equal)
 
 // TODO: a `common` package in mixin package
 
 // TODO: /mail
+// TODO: command attachment for entity, and block
+// TODO: rename util -> auxility
+// TODO: closure factory method for AbstractJob
+// TODO: argument resolver for command alias module
+
 
 public class Fuji implements ModInitializer {
 

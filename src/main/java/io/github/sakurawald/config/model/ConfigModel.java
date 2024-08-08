@@ -22,6 +22,7 @@ import java.util.*;
         Note:
         - Most of the configuration files use `.json` file format, so you might want to use a better `text-editor` to highlight the file. 
           A good editor for json is `visual studio code`: [Visual Studio Code - Web Online Editor](https://vscode.dev/)
+        - Some files are saved as `vanilla minecraft NBT format`, you can use the [Onlien NBT Editor](https://www.brandonfowler.me/nbtreader/)
           
         """)
 public class ConfigModel {
