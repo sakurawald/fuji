@@ -1,6 +1,7 @@
 # Checklist
 
 ## Bump version
+- read the change log of minecraft version
 - fabric loader version
 - mapping version
 - dependency mod version

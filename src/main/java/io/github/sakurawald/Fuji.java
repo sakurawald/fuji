@@ -21,6 +21,10 @@ import java.nio.file.Path;
 // TODO: rename util -> auxility
 // TODO: closure factory method for AbstractJob
 // TODO: argument resolver for command alias module
+// TODO: rename to specialized command
+// TODO: /delay --name, /delay list, /delay cancel
+// TODO: /for do
+// TODO: partial async for rtp
 
 
 public class Fuji implements ModInitializer {
