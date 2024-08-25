@@ -1843,7 +1843,6 @@ public class ConfigModel {
                 public @NotNull List<String> footer = new ArrayList<>() {
                     {
                         this.add("<#FFA1F5>-----------------<newline>TPS: %server:tps_colored% PING: %player:ping_colored%<newline><rainbow>Memory: %server:used_ram%/%server:max_ram% MB<newline>%fuji:rotate Welcome to the server. %");
-                        this.add("<#FFA1F5>-----------------<newline><rainbow>This is another one");
                     }
 
                 };
