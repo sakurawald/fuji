@@ -20,7 +20,6 @@ import java.nio.file.Path;
 // TODO: command attachment for entity, and block
 // TODO: closure factory method for AbstractJob
 // TODO: argument resolver for command alias module
-// TODO: rename to specialized command
 // TODO: /delay --name, /delay list, /delay cancel
 // TODO: /for do
 // TODO: partial async for rtp

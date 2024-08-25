@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.common.service.random_teleport;
 
 import com.google.common.base.Stopwatch;
+import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.common.structure.TeleportSetup;
 import io.github.sakurawald.auxiliary.LogUtil;
@@ -21,6 +22,7 @@ import java.util.Iterator;
 import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 /**
@@ -29,36 +31,45 @@ import java.util.function.Consumer;
 public class RandomTeleport {
 
     public static void request(@NotNull ServerPlayerEntity player, @NotNull TeleportSetup setup, @Nullable Consumer<Position> postConsumer) {
-        LogUtil.info("Request rtp: {}", player.getGameProfile().getName());
-        Stopwatch timer = Stopwatch.createStarted();
+        CompletableFuture.runAsync(() -> {
+            LogUtil.info("Request rtp: {}", player.getGameProfile().getName());
+            Stopwatch timer = Stopwatch.createStarted();
 
-        ServerWorld world = IdentifierHelper.ofServerWorld(Identifier.of(setup.getDimension()));
+            ServerWorld world = IdentifierHelper.ofServerWorld(Identifier.of(setup.getDimension()));
+            if (world == null) {
+                MessageHelper.sendMessage(player,"dimension.no_found");
+                return;
+            }
 
-        Optional<BlockPos> result;
+            Optional<BlockPos> result;
 
-        int triedTimes = 0;
-        do {
-            triedTimes++;
-            result = searchPosition(setup);
-        } while (result.isEmpty() && triedTimes <= setup.getMaxTryTimes());
+            int triedTimes = 0;
+            do {
+                triedTimes++;
+                result = searchPosition(setup);
+            } while (result.isEmpty() && triedTimes <= setup.getMaxTryTimes());
 
-        if (result.isEmpty()) {
-            MessageHelper.sendMessage(player, "rtp.fail");
-            return;
-        }
+            if (result.isEmpty()) {
+                MessageHelper.sendMessage(player, "rtp.fail");
+                return;
+            }
 
-        // teleport the player
-        Position position = new Position(world, result.get().getX() + 0.5, result.get().getY(), result.get().getZ() + 0.5, 0, 0);
-        position.teleport(player);
+            // teleport the player
+            Position position = new Position(world, result.get().getX() + 0.5, result.get().getY(), result.get().getZ() + 0.5, 0, 0);
+            ServerHelper.getDefaultServer().executeSync(()-> {
+                // run the teleport action in main-thread
+                position.teleport(player);
+            });
 
-        // post consumer
-        if (postConsumer != null) {
-            postConsumer.accept(position);
-        }
+            // post consumer
+            if (postConsumer != null) {
+                postConsumer.accept(position);
+            }
 
-        // cost
-        var cost = timer.stop();
-        LogUtil.info("Response rtp: {} has been teleported to ({} {} {} {}) (cost = {})", player.getGameProfile().getName(), world.getRegistryKey().getValue(), result.get().getX(), result.get().getY(), result.get().getZ(), cost);
+            // cost
+            var cost = timer.stop();
+            LogUtil.info("Response rtp: {} has been teleported to ({} {} {} {}) (cost = {})", player.getGameProfile().getName(), world.getRegistryKey().getValue(), result.get().getX(), result.get().getY(), result.get().getZ(), cost);
+        });
     }
 
     private static @NotNull Optional<BlockPos> searchPosition(@NotNull TeleportSetup setup) {
