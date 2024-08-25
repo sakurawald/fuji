@@ -191,7 +191,7 @@
   "works.work.set.target.introduction": "<#FFA1F5>設定簡介",
   "works.work.set.target.name": "<#FFA1F5>設定名稱",
   "works.work.set.target.position": "<#FFA1F5>設定位置",
-  "world.dimension.blacklist": "<red>維度 %s 存在於黑名單中",
+  "world.dimension.blacklist": "維度 %s 存在於黑名單中",
   "world.dimension.created": "<gold>資源世界 %s 已建立",
   "world.dimension.deleted": "<gold>資源世界 %s 已刪除",
   "world.dimension.exist": "<red>資源世界已經存在",

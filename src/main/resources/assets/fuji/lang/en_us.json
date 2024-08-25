@@ -191,7 +191,7 @@
   "works.work.set.target.introduction": "<#FFA1F5>Set introduction",
   "works.work.set.target.name": "<#FFA1F5>Set name",
   "works.work.set.target.position": "<#FFA1F5>Set position",
-  "world.dimension.blacklist": "<red>The dimension %s is blacklisted.",
+  "world.dimension.blacklist": "The dimension %s is blacklisted.",
   "world.dimension.created": "<gold>Create resource world %s done",
   "world.dimension.deleted": "<gold>Delete resource world %s done",
   "world.dimension.exist": "<red>World already exist",

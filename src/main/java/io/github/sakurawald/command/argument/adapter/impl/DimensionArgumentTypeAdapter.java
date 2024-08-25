@@ -33,7 +33,6 @@ public class DimensionArgumentTypeAdapter extends AbstractArgumentTypeAdapter {
     @SneakyThrows
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Parameter parameter) {
-
         return new Dimension(DimensionArgumentType.getDimensionArgument(context, parameter.getName()));
     }
 }

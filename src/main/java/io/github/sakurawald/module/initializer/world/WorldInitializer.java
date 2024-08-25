@@ -1,21 +1,21 @@
 package io.github.sakurawald.module.initializer.world;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.argument.wrapper.Dimension;
-import io.github.sakurawald.command.argument.wrapper.DimensionType;
-import io.github.sakurawald.command.annotation.Command;
-import io.github.sakurawald.command.annotation.CommandPermission;
-import io.github.sakurawald.command.annotation.CommandSource;
-import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
-import io.github.sakurawald.config.handler.ObjectConfigHandler;
-import io.github.sakurawald.module.initializer.world.config.model.WorldModel;
-import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.world.structure.DimensionEntry;
 import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.auxiliary.minecraft.IdentifierHelper;
 import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
 import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandSource;
+import io.github.sakurawald.command.argument.wrapper.Dimension;
+import io.github.sakurawald.command.argument.wrapper.DimensionType;
+import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.config.handler.ObjectConfigHandler;
+import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
+import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.world.config.model.WorldModel;
+import io.github.sakurawald.module.initializer.world.structure.DimensionEntry;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -77,7 +77,8 @@ public class WorldInitializer extends ModuleInitializer {
 
     @SneakyThrows
     @Command("world create")
-    private int $create(@CommandSource CommandContext<ServerCommandSource> ctx, String name, DimensionType dimensionType) {
+    private int $create(@CommandSource CommandContext<ServerCommandSource> ctx, String name,
+                        Optional<Long> seed, DimensionType dimensionType) {
         Identifier dimensionTypeIdentifier = Identifier.of(dimensionType.getIdentifier());
         String FUJI_DIMENSION_NAMESPACE = "fuji";
         Identifier dimensionIdentifier = Identifier.of(FUJI_DIMENSION_NAMESPACE, name);
@@ -87,10 +88,10 @@ public class WorldInitializer extends ModuleInitializer {
             return CommandHelper.Return.FAIL;
         }
 
-        long seed = RandomSeed.getSeed();
-        WorldManager.requestToCreateWorld(ServerHelper.getDefaultServer(), dimensionIdentifier, dimensionTypeIdentifier, seed);
+        long $seed = seed.orElse(RandomSeed.getSeed());
+        WorldManager.requestToCreateWorld(ServerHelper.getDefaultServer(), dimensionIdentifier, dimensionTypeIdentifier, $seed);
 
-        storage.model().dimension_list.add(new DimensionEntry(true, dimensionIdentifier.toString(), dimensionTypeIdentifier.toString(), seed));
+        storage.model().dimension_list.add(new DimensionEntry(true, dimensionIdentifier.toString(), dimensionTypeIdentifier.toString(), $seed));
         storage.saveToDisk();
 
         MessageHelper.sendBroadcast("world.dimension.created", dimensionIdentifier);
@@ -104,10 +105,7 @@ public class WorldInitializer extends ModuleInitializer {
         ServerWorld world = dimension.getWorld();
 
         String identifier = IdentifierHelper.ofString(world);
-        if (Configs.configHandler.model().modules.world.blacklist.dimension_list.contains(identifier)) {
-            MessageHelper.sendMessage(ctx.getSource(), "world.dimension.blacklist", identifier);
-            return CommandHelper.Return.FAIL;
-        }
+        checkBlacklist(ctx, identifier);
 
         WorldManager.requestToDeleteWorld(world);
 
@@ -123,31 +121,39 @@ public class WorldInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
+    private void checkBlacklist(CommandContext<ServerCommandSource> ctx, String identifier) {
+        if (Configs.configHandler.model().modules.world.blacklist.dimension_list.contains(identifier)) {
+            throw new IllegalArgumentException(MessageHelper.getString(ctx.getSource(), "world.dimension.blacklist", identifier));
+        }
+    }
+
     @SneakyThrows
     @Command("world reset")
-    private int $reset(@CommandSource CommandContext<ServerCommandSource> ctx, Dimension dimension) {
+    private int $reset(@CommandSource CommandContext<ServerCommandSource> ctx, Optional<Boolean> useTheSameSeed, Dimension dimension) {
         // draw seed and save
         ServerWorld world = dimension.getWorld();
         String identifier = IdentifierHelper.ofString(world);
-        if (Configs.configHandler.model().modules.world.blacklist.dimension_list.contains(identifier)) {
-            MessageHelper.sendMessage(ctx.getSource(), "world.dimension.blacklist", identifier);
-            return CommandHelper.Return.FAIL;
-        }
+        checkBlacklist(ctx, identifier);
 
         Optional<DimensionEntry> first = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
         if (first.isEmpty()) {
             MessageHelper.sendMessage(ctx.getSource(), "world.dimension.not_exist");
             return CommandHelper.Return.FAIL;
         }
-        first.get().setSeed(RandomSeed.getSeed());
+        // just delete it
+        WorldManager.requestToDeleteWorld(world);
+
+        Boolean $useTheSameSeed = useTheSameSeed.orElse(false);
+
+
+        long newSeed = $useTheSameSeed ? first.get().getSeed() : RandomSeed.getSeed();
+        WorldManager.requestToCreateWorld(ServerHelper.getDefaultServer(), Identifier.of(identifier), Identifier.of(first.get().getDimensionType()), newSeed);
+
+        // save the new seed
+        first.get().setSeed(newSeed);
         storage.saveToDisk();
 
         MessageHelper.sendBroadcast("world.dimension.reset", identifier);
-
-        // just delete it
-        WorldManager.requestToDeleteWorld(world);
-        WorldManager.requestToCreateWorld(ServerHelper.getDefaultServer(), Identifier.of(identifier), Identifier.of(first.get().getDimensionType()), first.get().getSeed());
-
         return CommandHelper.Return.SUCCESS;
     }
 }
