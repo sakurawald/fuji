@@ -20,7 +20,7 @@ import java.util.function.Function;
 
 public class CommandExecutor {
 
-    public static void executeCommandsAsConsoleWithContext(ServerPlayerEntity contextPlayer, @NotNull List<String> commands) {
+    public static void executeSpecializedCommand(ServerPlayerEntity contextPlayer, @NotNull List<String> commands) {
         /* context
          *
          * !as_console

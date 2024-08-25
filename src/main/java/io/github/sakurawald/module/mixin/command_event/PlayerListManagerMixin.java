@@ -19,10 +19,10 @@ public class PlayerListManagerMixin {
     @Inject(method = "onPlayerConnect", at = @At("TAIL"))
     void onPlayerJoined(ClientConnection clientConnection, @NotNull ServerPlayerEntity player, ConnectedClientData connectedClientData, CallbackInfo ci) {
 
-        CommandExecutor.executeCommandsAsConsoleWithContext(player, Configs.configHandler.model().modules.command_event.event.on_player_joined.command_list);
+        CommandExecutor.executeSpecializedCommand(player, Configs.configHandler.model().modules.command_event.event.on_player_joined.command_list);
 
         if (player.getStatHandler().getStat(Stats.CUSTOM.getOrCreateStat(Stats.LEAVE_GAME)) < 1) {
-            CommandExecutor.executeCommandsAsConsoleWithContext(player, Configs.configHandler.model().modules.command_event.event.on_player_first_joined.command_list);
+            CommandExecutor.executeSpecializedCommand(player, Configs.configHandler.model().modules.command_event.event.on_player_first_joined.command_list);
         }
     }
 
