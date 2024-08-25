@@ -13,17 +13,17 @@ import java.util.*;
 @SuppressWarnings("ALL")
 @Document("""
         Welcome to fuji-fabric 's official documentation.
-                
+        
         Tips:
         - The `quote bar` on the left side of your browser = the strucutre nested level. You can see which level you are in.
         - You can press `CTRL + F` keys in your keyboard, and search any `configuration key` that you want to konw.
         - If anything is unclear, please create an issue in github.
-                
+        
         Note:
         - Most of the configuration files use `.json` file format, so you might want to use a better `text-editor` to highlight the file. 
           A good editor for json is `visual studio code`: [Visual Studio Code - Web Online Editor](https://vscode.dev/)
         - Some files are saved as `vanilla minecraft NBT format`, you can use the [Onlien NBT Editor](https://www.brandonfowler.me/nbtreader/)
-          
+        
         """)
 public class ConfigModel {
 
@@ -41,18 +41,18 @@ public class ConfigModel {
 
         @Document("""
                 Fuji use `quartz` library as scheduler, all the timer are managed by quartz.
-                                
+                
                 Quartz library use a language called `cron language` to define when to trigger a job.
                 See: [cron language generator](https://www.freeformatter.com/cron-expression-generator-quartz.html)
                 """)
         public class Quartz {
             @Document("""
                     Logger level for quartz.
-                                        
+                    
                     Logger levels: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL
                     - Set to `OFF` to supress all the messages from fuji.
                     - Set to `ALL` to display all the messages from fuji.
-                                        
+                    
                     Note:
                     - It's recommended to set at least `WARN`, to avoid `console spam`
                     """)
@@ -68,7 +68,7 @@ public class ConfigModel {
             public int max_slots = 15;
             @Document("""
                     The list of `path resolver` to skip in backup.
-                                        
+                    
                     Insert `head` means skip the folder `config/fuji/head`.
                     """)
             public @NotNull List<String> skip = new ArrayList<>() {
@@ -80,7 +80,7 @@ public class ConfigModel {
 
         @Document("""
                 The default language to use.
-                                
+                
                 Fuji also supports multi-language based on player's client-side language if the server is able to do so.
                 You need to enable `language module` to let fuji respect client-side's language settings.
                 Also, if the server can't support client-side's language, it will fallback to the `deafult_language`
@@ -92,15 +92,15 @@ public class ConfigModel {
 
     @Document("""
             A module means a standalone unit to provide a purpose.
-                
+            
             All the module can work standalone, you can enable or disable `any module` if you like.
-                
+            
             Some modules can work together to achieve more purpose. 
             e.g. the `placeholder module` can provides some placeholders for `chat module`, `motd module` and other modules to use.
-                        
+            
             Q: How can I konw which is a `module` ?
             A: All the modules will has an option called `enable`, or you can see a `module` tag right in the field.
-                        
+            
             """)
     public class Modules {
         public @NotNull Config config = new Config();
@@ -146,43 +146,44 @@ public class ConfigModel {
         public @NotNull Color color = new Color();
         public @NotNull Kit kit = new Kit();
         public @NotNull CommandMeta command_meta = new CommandMeta();
+        public @NotNull Gameplay gameplay = new Gameplay();
 
         @Document("""
                 This module allows you to create extra `dimension` of a specific `dimension type`.
-                                
+                
                 Command: /world
-                                
+                
                 Example 1
                 To create another the_nether world: `/world create my_nether minecraft:the_nether`
                   - This will create anohter `dimension` named `fuji:my_nether`, whose `dimension type` is `minecraft:the_nether`
-                                
+                
                 Example 2
                 Delete the extra dimension: `/world delete fuji:my_nether`
-                                
+                
                 Example 3
                 Reset the extra dimension with random seed: `/world reset fuji:my_nether`
-                                
+                
                 Tips:
                 - The `/world tp` command use the `setup` list defined by `rtp module`.
                 - If you want to run `/world reset ...` command automatically, just use `command scheduler module`
-                                
+                
                 Note:
                 - What is the difference between `world`, `dimension` and `dimension type` ?
                   Well, in the early stage of minecraft, it only support single-dimension, which means `1 world` only contains `1 dimension`.
                   And now, `1 world` can support `multi dimension`. Sometimes, you will see `world` and `dimension` means the same thing.
                   But clearer, we say: 1 `world` can contains 1 or more `dimension`, and each `dimension` has its `dimension type`.
-                  
+                
                   Usually, you can say a mod adds `extra dimension type` and `create extra dimension with that dimension type`  instead of `extra world`
                   See also: https://minecraft.wiki/w/Dimension_definition
                   See also: https://minecraft.wiki/w/Dimension_type
-                             
+                
                 - In vanilla minecraft, 1 world contains 3 dimensions (minecraft:overworld, minecraft:the_nether, minecraft:the_end)
                   You can see the `dimension` of a `world` in `world/level.dat` file.
                 - `dimension type` is used to create `dimension`, there are 4 `dimension type` in vanilla minecraft: `minecraft:overworld`, `minecraft:overworld_caves`, `minecraft:the_nether` and `minecraft:the_end`
                 - In order to create extra dimensions of a `dimension type`, you need to at least exist one dimension of that dimension type.
                 - Instead of writing data into the file `world/level.dat`, fuji will load the extra dimensions in game dynamically.
                 - The file `server.properties` is used for the default `world properties` of extra dimensions
-                                
+                
                 """)
         public class World {
             public boolean enable = false;
@@ -191,7 +192,7 @@ public class ConfigModel {
 
             @Document("""
                     The dimensions in the `blacklist` will not be operated by this module.
-                                        
+                    
                     Use `blacklist` to avoid mis-operation.
                     """)
             public class Blacklist {
@@ -213,7 +214,7 @@ public class ConfigModel {
 
             @Document("""
                     Fuji will `randomly` pick a motd each time the player refresh server list.
-                                        
+                    
                     Tips:
                     - You may need to enable `placeholder` to support some placeholders.
                     """)
@@ -233,7 +234,7 @@ public class ConfigModel {
 
         @Document("""
                 This module adds a warmup cooldown before player-teleporatation.
-                                
+                
                 The teleportation will be cancelled if:
                 1. the player runs too far.
                 2. the player gets damage.
@@ -252,12 +253,12 @@ public class ConfigModel {
 
             @Document("""
                     Only allowed in the following dimensions.
-                                        
+                    
                     Note:
                       - Some other mods will add extra `dimension` (like, the mod `the-bumblezone-fabric`). Their dimension portal will work in a different way, so `teleport warmup module` may not compatibility with these mods.
-                      
+                    
                         In the default options, we only allow teleport warmup works in the `vanilla miencraft` dimensions.
-                                        
+                    
                     """)
             public class Dimension {
                 public @NotNull Set<String> list = new HashSet<>() {
@@ -272,7 +273,7 @@ public class ConfigModel {
 
         @Document("""
                 This module provides a cooldown for command usage.
-                                
+                
                 Use-case: use this module to avoid some heavy cost commands.
                 """)
         public class CommandCooldown {
@@ -280,18 +281,18 @@ public class ConfigModel {
 
             @Document("""
                     Use `regex language` to define issued command cooldown.
-                                        
+                    
                     Note:
                     - For each player, each command has its cooldown.
                     - Some other useful information about `regex language`.
                         See regex editor: 
                         - https://regexr.com/
                         - https://regex101.com/
-                        
+                    
                         See regex tutorial: 
                         - https://www.youtube.com/watch?v=sXQxhojSdZM
                         - https://www.youtube.com/watch?v=rhzKDrUiJVk
-                        
+                    
                     """)
             public @NotNull HashMap<String, Long> regex2ms = new HashMap<>() {
                 {
@@ -304,7 +305,7 @@ public class ConfigModel {
 
         @Document("""
                 This module provides `warmup` for `command usage`.
-                                
+                
                 Note:
                 - `command warmup` is before `command usage`, while `command cooldown` is after `command usage`.
                 """)
@@ -323,7 +324,7 @@ public class ConfigModel {
                 Command: /chunks
                 
                 This module provides the `/chunks` command, which shows the `top laggy chunks` in the server. 
-                                
+                
                 The output is a score list, each score means a chunk, and how laggy the chunk is. (Large score means more laggy)
                 """)
         public class TopChunks {
@@ -335,17 +336,17 @@ public class ConfigModel {
             public int nearest_distance = 128;
             @Document("""
                     Should we hide the chunk-position for a laggy-chunk?
-                                        
+                    
                     Hide chunk location to avoid grief or privacy purpose. 
                     """)
             public boolean hide_location = true;
             @Document("""
                     The dict to define how laggy a type(entity/entity_block) should be.
-                                
+                    
                     For example: 
                     `this.put("entity.minecraft.zombie", 4);` means there are 15 zombies inside a chunk,
                     then the chunk gets score 15 * 4 = 60
-                                
+                    
                     Any other types not inside the dict used the score defined for type `default`
                     """)
             public @NotNull HashMap<String, Integer> type2score = new HashMap<>() {
@@ -418,9 +419,9 @@ public class ConfigModel {
 
         @Document("""
                 This module provides chat custom. (You might also want to enable `placeholder module`)
-                                
+                
                 Command: /chat
-                                
+                
                 Feature:
                 - You can create your own `regex transformaer` to repalce the input message.
                 - You can insert any `placeholder` like `%world:name%` in the chat message. (See more placeholders in: https://placeholders.pb4.eu/user/default-placeholders/)
@@ -437,7 +438,7 @@ public class ConfigModel {
                     See: https://placeholders.pb4.eu/user/quicktext
                 - Besides the `server chat format`, each player can use `/chat format set` command to set their `per-player chat format`
                 - This module doesn't `cancel` the vanilla chat events, so it can work with `other chat realvent mods`.
-                    
+                
                 Placeholder:
                 - %fuji:item%
                 - %fuji:inv%
@@ -445,7 +446,7 @@ public class ConfigModel {
                 - %fuji:pos%
                 - %fuji:player_prefix%
                 - %fuji:player_suffix%
-                                
+                
                 """)
         public class Chat {
             public boolean enable = false;
@@ -487,12 +488,12 @@ public class ConfigModel {
 
             @Document("""
                     You can insert `item`, `inv` and `ender` in message to `display` something with other players.
-                                        
+                    
                     Placeholder:
                     - %fuji:item%
                     - %fuji:inv%
                     - %fuji:ender%
-                                        
+                    
                     """)
             public class Display {
 
@@ -507,7 +508,7 @@ public class ConfigModel {
 
             @Document("""
                     The `regex language` list used to `rewrite` the `player chat message`.
-                                        
+                    
                     You can use `regex language` to transform player's chat input (only chat message, no command usage).
                     """)
             public class Rewrite {
@@ -582,19 +583,19 @@ public class ConfigModel {
 
         @Document("""
                 Command: /works
-                                
+                
                 A `work` means a project (a building, a red-stone device ...) that crafted by a player.
-                                
+                
                 `work` types:
                 - `Non-production work`: the project don't produce any resource (e.g. bone, string, coal).
                 - `Production work`: the project produce some resource. 
                      For a production-work, fuji provides the `production sample` to count the `hopper` and `minecart-hopper`
-                     
+                
                 Note:
                 - You can use the `production counter` provided by `production work` to sample the output.
                 - This module works with `carpet-fabric`'s `hopper counter`. You can use both of them at the same time.
                 - The hopper counter provided by this module will not `destroy the item`.
-                                
+                
                 """)
         public class Works {
             public boolean enable = false;
@@ -609,9 +610,9 @@ public class ConfigModel {
 
         @Document("""
                 Command: /download
-                                
+                
                 This command allows to downlaod nearby chunks around a player.
-                                
+                
                 Use-case: if a player wants to download his buildings, or just want to download the redstone-structure 
                 so that he can debug in his single-player world.
                 """)
@@ -658,13 +659,13 @@ public class ConfigModel {
 
         @Document("""
                 Command: /deathlog
-                                
+                
                 Log player's inventory when he die, so that we can restore his inventory later.
-                                
+                
                 Usage:
                 - If you want to query the death logs for player `Steve`: `/deathlog view Steve`
                 - If you want to restore **the death log indexed 0 from `Steve`** for player `Steve`: `/deathlog restore Steve 0 Steve`
-                                
+                
                 """)
         public class DeathLog {
             public boolean enable = false;
@@ -672,7 +673,7 @@ public class ConfigModel {
 
         @Document("""
                 This module provides some extra `placeholder`.
-                                
+                
                 Extra placeholder:
                 - %fuji:player_mined%
                 - %fuji:server_mined%
@@ -694,11 +695,11 @@ public class ConfigModel {
                   You can use multi-level escape in a convenient way: `%fuji:escape player:name%` = `%fuji:escape player:name 1`
                 - %fuji:date% -> You can use custom `date formatter`: `%fuji:date HH:MM`
                   See also: https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html
-                                
+                
                 Tips:
                 - You can also use [the default available placeholders](https://placeholders.pb4.eu/user/default-placeholders/) in anywhere. (Yeah, you can use `placeholder` in the `en_us.json` language file, it works)
                 - There are some mods also provides extra placeholders, see: [other mods that provides extra placeholders](https://placeholders.pb4.eu/user/mod-placeholders/)
-                  
+                
                 """)
         public class Placeholder {
             public boolean enable = false;
@@ -719,31 +720,31 @@ public class ConfigModel {
         }
 
         @Document("""
-                                
+                
                 Background:
                   The vanilla minecraft use a command system called `brigadier`.
                   All the commands are `registered`, `parsed` and `executed` by `brigadier`.
-                  
+                
                   In this system, all commands are build into a tree strucutre.
-                  
+                
                   For example, like the command `/gamemode creative Steve` is composed by 3 `command node`:
                   - `literal command node` -> "gamemode"
                   - `argument command node` -> a valid gamemode
                   - `argument command node` -> a valid player
-                  
+                
                   And the `command node path` stands the `tree node path`.
                   For `/gamemode creative Steve`, the path is ["gamemode", "gamemode", "target"].
-                  
+                
                   You can query a command path using `/lp group default permission set fuji.permission...` way.
-                  
+                
                   Also, each `command node` has its `requirement`, which is a condition to check if the `command user` can use the `command node`.
-                                
+                
                 This module can `override` the `requirement` of a `command node` into a `permission` with prefix `fuji.permission.<command_node_path>`.
-                                
+                
                 See [permission](https://github.com/sakurawald/fuji-fabric/wiki/Permission)
-                                
+                
                 Example 1: let everyone use `/op` -> `/lp group default permission set fuji.permission.op true`
-                                
+                
                 """)
         public class CommandPermission {
             public boolean enable = false;
@@ -759,7 +760,7 @@ public class ConfigModel {
 
         @Document("""
                 Enable this module requires `spark` mod installed.
-                                
+                
                 This module shows server health status (including os, vm, cpu, ram, tps, mspt and gc)
                 
                 Command: /profiler
@@ -775,12 +776,12 @@ public class ConfigModel {
 
         @Document("""
                 This module provides scheduler for auto-run jobs.
-                                
+                
                 You can add schedule jobs by `cron expression`, set the random command-list to be executed.
-                                
+                
                 Command:
                 - /command-scheduler
-                                
+                
                 """)
         public class CommandScheduler {
             public boolean enable = false;
@@ -788,11 +789,11 @@ public class ConfigModel {
 
         @Document("""
                 This module provides `/fuji reload` command, so that you can reload modules in game.
-                                
+                
                 Note:
                 - After you `enable` or `disable` a `module`, you must `restart` the server.
                   The command `/fuji reload` only works for `module options`.
-                                
+                
                 """)
         public class Config {
             public boolean enable = false;
@@ -809,17 +810,17 @@ public class ConfigModel {
 
         @Document("""
                 This module provides multi-language support for your players.
-                                
+                
                 Difference:
                 - Disable this module: all the players use the `default_language`
                 - Enable this module: will try to respect the player's client-side language, if the server-side supports its language
-                                
+                
                 Feature:
                 - Respect the player's client-side language-setting.
                 - If the player's client-side language-setting is not supported, then use the default language.
                 - Lazy-load support, which means if a language is not required, then it will not be loaded.
                 - Lazy-reload support, you need to enable `ConfigModule` to use reload command.
-                                
+                
                 """)
         public class Language {
             public boolean enable = false;
@@ -827,17 +828,17 @@ public class ConfigModel {
 
         @Document("""
                 This module provides afk detection.
-                                
+                
                 If a player is idle long enough, he will be marked as afk state.
                 A afk player will display in `tab list`.
-                                
+                
                 A player can issue `/afk` command to afk manually.
                 
                 Command: /afk
-                                
+                
                 Note:
                 - There is no protect for a `afk player` 
-                                
+                
                 """)
         public class Afk {
             public boolean enable = false;
@@ -858,21 +859,21 @@ public class ConfigModel {
 
         @Document("""
                 Command: /rtp
-                                
+                
                 Feature:
                 - Per dimension configurable.
                 - Ignore flulid blocks (water, lava...).
                 - Ignore powered snow
-                                
+                
                 Argument:
                 - --dimension: target dimension
-                                
+                
                 Note:
                 - It's highly recommended to pre-gen the world chunks. To gen a new chunk during rtp rquires about 2~10 seconds.
                   If a chunk is pre-gen, then it will be fast.
                 - If you are using rtp in the_end, and the chunks are not generated, then it will be very very slow.
                   If it's so, you can adjust the range of the_end to a small number.
-                                
+                
                 """)
         public class Rtp {
 
@@ -903,7 +904,7 @@ public class ConfigModel {
 
         @Document("""
                 This module allows you to write commands in `sign block`.
-                                
+                
                 Example 1
                 ```
                 /say hi %player:name%
@@ -911,7 +912,7 @@ public class ConfigModel {
                 line 3 empty
                 line 4 epmty
                 ```
-                                
+                
                 Example 2
                 ```
                 prefix /say first
@@ -919,7 +920,7 @@ public class ConfigModel {
                 /say hi %player:name%
                 /say the last command
                 ```
-                                
+                
                 Example 3
                 ```
                 prefix /say this is
@@ -927,11 +928,11 @@ public class ConfigModel {
                 second
                 line 4 empty
                 ```
-                                
+                
                 Note:
                 - You need to press `shift + right click` to edit an `interactive sign`
                 - The command is executed as `the player in the console`. (Not executed as the console)
-                               
+                
                 """)
         public class CommandInteractive {
             public boolean enable = false;
@@ -939,7 +940,7 @@ public class ConfigModel {
 
         @Document("""
                 Command: /home
-                        
+                
                 Meta:
                 - Integer `fuji.home.home_limit` # The home number per player limit.
                 """)
@@ -950,9 +951,9 @@ public class ConfigModel {
 
         @Document("""
                 This module allows you to custom every system-message defined by mojang in `./assets/minecraft/lang/en_us.json`
-                        
+                
                 The mojang offical en_us.json file may looks like: [en_us.json for minecraft 1.21](https://github.com/sakurawald/fuji-fabric/blob/dev/.github/files/en_us.json)
-                                
+                
                 The system messages including:
                 - Player join and leave server message
                 - Player advancement message
@@ -960,10 +961,10 @@ public class ConfigModel {
                 - Player command feedback
                 - Player white-list message
                 - ... (and more other system messages)
-                        
+                
                 Note:
                 - Some messages in `en_us.json` are only used in the client-side, so you may more interested in keys that start with `multiplayer.`
-                                
+                
                 """)
         public class SystemMessage {
             public boolean enable = false;
@@ -982,15 +983,14 @@ public class ConfigModel {
 
         }
 
-
         @Document("""
                 This module provides command alias.
-                                
+                
                 An alias means we redirect a command-node into another command-node.
                 The requirement of comamnd-node is extended.
-                                
+                
                 The format is: `source command node path` and `destination command node path`
-                                
+                
                 """)
         public class CommandAlias {
             public boolean enable = false;
@@ -1001,8 +1001,6 @@ public class ConfigModel {
                 }
             };
         }
-
-
 
         @Document("""
                 Allows you to `attch` commands to `item stack` !
@@ -1069,31 +1067,31 @@ public class ConfigModel {
 
         @Document("""
                 This module provides some `numeric multiplier`.
-                                
+                
                 Supported `numeric types`:
                 - `damage`: damage to plaer
                 - `experience`: experience a player gained
-                                
+                
                 Example 1
                 If you want to `doubled` the damage from zombie to a player.
                 You can set a meta by: `/lp group default meta set fuji.multiplier.damage.minecraft:zombie 2`
-                                
+                
                 Example 2
                 If you want to cancel fall damage for all players. You can use `damage multiplier`.
                 You can set a meta by: `/lp group default meta set fuji.multiplier.damage.minecraft:fall 0`
-                                
+                
                 Example 3
                 If you want to `doubled` all the damages to a player.
                 You can set a meta by: `/lp group default meta set fuji.multiplier.damage.all 2`
-                                
+                
                 Example 4
                 If you want to `doubled` all the experience a player gained.
                 You can set a meta by: `/lp group default meta set fuji.multiplier.experience.all 2`
-                                
+                
                 Example 5
                 If you want to `half` all the damages to a player.
                 You can set a meta by: `/lp group default meta set fuji.multiplier.damage.all 0.5`
-                                
+                
                 """)
         public class Multiplier {
             public boolean enable = false;
@@ -1102,29 +1100,29 @@ public class ConfigModel {
 
         @Document("""
                 This module provides anti-build purpose.
-                                
+                
                 Use-case: ban some item/block/entity 
-                                
+                
                 Anti types:
                 - break_block
                 - place_block
                 - interact_item
                 - interact_block
                 - interact_entity
-                                
+                
                 For example, let's say you want to ban TNT:
                 1. add `minecraft:tnt` into `place_block` list
-                                
+                
                 And it's done. 
-                                
+                
                 Use `/lp user <player> permission set fuji.anti_build.place_block.bypass.minecraft:tnt` to 
                 allow a player place the tnt.
-                                
+                
                 Tips:
                 - To query `blcok identifier`, use `/setblock ~ ~ ~ ...` command.
                 - To query `entity identifier`, use `/summon ...` command.
                 - To query `item identifier`, use `/give ...` command. 
-                                
+                
                 """)
         public class AntiBuild {
             public boolean enable = false;
@@ -1181,13 +1179,12 @@ public class ConfigModel {
             }
         }
 
-
         @Document("""
                 This module provides colorize for: sign, anvil
-                                
+                
                 Tips:
                 - You can use `mini-message language` to define complex message format. (See more in `chat module`)
-                                
+                
                 """)
         public class Color {
             public boolean enable = false;
@@ -1208,7 +1205,7 @@ public class ConfigModel {
 
         @Document("""
                 This module provides commands to open `remote functional blocks`.
-                                
+                
                 Functional blocks:
                 - /workbench 
                 - /enchantment
@@ -1219,7 +1216,7 @@ public class ConfigModel {
                 - /enderchest
                 - /smithing
                 - /loom
-                                
+                
                 """)
         public class Functional {
             public boolean enable = false;
@@ -1296,8 +1293,6 @@ public class ConfigModel {
 
         }
 
-        public Gameplay gameplay = new Gameplay();
-
         public class Gameplay {
             public boolean enable = false;
 
@@ -1315,9 +1310,9 @@ public class ConfigModel {
 
                 @Document("""
                         Enable this module requires `carpet-fabric` mod installed.
-                                        
+                        
                         This module provides some management for `fake-player`.
-                                            
+                        
                         Command:
                         - /player who -> query the owner of the fake-player.
                         - /player renew -> renew all of your fake-players.
@@ -1327,19 +1322,19 @@ public class ConfigModel {
 
                     @Document("""
                             How many fake-player can each player spawn (in different time)? 
-                                                
+                            
                             The tuple means (day_of_week, minutes_of_the_day, max_fake_player_per_player).
                             The range of day_of_week is [1,7].
                             The range of minutes_of_the_day is [0, 1440].
-                                                 
+                            
                             For example: (1, 0, 2) means if the days_of_week >= 1, and minutes_of_the_day >= 0, then the max_fake_player_per_player now is 2.
-                                                
+                            
                             Besides, you can add multi rules, the rules are checked from up to down.
                             The first rule that matches current time will be used to decide the max_fake_player_per_player.
-                                                
+                            
                             You can issue `/player who` to see the owner of the fake-player.
                             Only the owner can operates the fake-player. (Op can bypass this limit)
-                                                
+                            
                             """)
                     public @NotNull ArrayList<List<Integer>> caps_limit_rule = new ArrayList<>() {
                         {
@@ -1349,25 +1344,25 @@ public class ConfigModel {
 
                     @Document("""
                             How long should we renew when a player issue command `/player renew`
-                                        
+                            
                             The command `/player renew` allows the player to manually renew all of his `fake-player`.
-                                        
+                            
                             If a fake-player don't gets renew, then it will expired and get killed.
-                                                
+                            
                             Use-case: to avoid some long-term alive fake-player.
                             """)
                     public int renew_duration_ms = 1000 * 60 * 60 * 12;
 
                     @Document("""
                             The rule to transform the name of fake-player.
-                                                
+                            
                             Use-case: add prefix or suffix for fake-player.
                             """)
                     public @NotNull String transform_name = "_fake_%name%";
 
                     @Document("""
                             Should we use local skin for fake-player? 
-                                                
+                            
                             Enable this can prevent fetching skins from mojang official server each time the fake-player is spawned. 
                             This is mainly used in some network siatuation if your network to mojang official server is bad.
                             """)
@@ -1387,12 +1382,12 @@ public class ConfigModel {
             @Document("""
                     In vanilla minecraft, each `ender-portal` links to `the only one obsidian platform`.
                     This module makes each `ender-portal` links to its own `obsidian platform`.
-                                    
+                    
                     makes every EnderPortal generate its own Obsidian Platform (Up to 128 in survival-mode.
                     You can even use creative-mode to build more Ender Portal and more ObsidianPlatform. 
-                                    
+                    
                     Please note that: all the obsidian-platform are vanilla-respect, which means they have the same chunk-layout and the same behaviour as vanilla obsidian-platform which locates in (100,50,0))
-                                    
+                    
                     Use-case: you want more `obsidian platform` for your redstone-struture.
                     """)
             public class MultiObsidianPlatform {
@@ -1407,7 +1402,7 @@ public class ConfigModel {
 
         @Document("""
                 This module provides commands to run commands to run commands to run commands...
-                                
+                
                 """)
         public class CommandMeta {
             public boolean enable = false;
@@ -1422,19 +1417,19 @@ public class ConfigModel {
 
             @Document("""
                     This module provides `/run` command, which can run a `command` with `context`.
-                                        
+                    
                     Example 1
                     Give random diamonds to all online players: `/run as console give @a minecraft:diamond %fuji:random 8 32%`
-                                        
+                    
                     Example 2
                     Give all online players random diamonds: `/run as console foreach give %fuji:escape player:name% minecraft:diamond %fuji:escape fuji:random 8 32%`
-                                        
+                    
                     Example 3
                     Execute as a player, to run other commands. (Similar to `/execute as ...`): `/run as player Steve back`
                     
                     Example 4
                     Execute as fake-op: `/run as fake-op Steve give %player:name% minecraft:apple 1`
-                                        
+                    
                     """)
             public class Run {
                 public boolean enable = true;
@@ -1442,16 +1437,16 @@ public class ConfigModel {
 
             @Document("""
                     This module provides `/foreach` command.
-                                        
+                    
                     If a command is only targeted for `single player`, you can use `foreach` to apply it for `all players`
-                                        
+                    
                     Example 1: `/foreach say hello %player:name%`
-                                        
+                    
                     Note:
                     - If you use `foreach` in `scheduler module`, then you should `escape` (Write `%fuji:escape player:name%` insted of `%player:name%`) the `placeholder`.
                         It's because the scheduler module will try to parse the placeholder, and you need to escape the placeholder, so that the placeholder can be parsed by foreach commnad. 
                         Here is an example about `escape` the `foreach command` in scheduler command list: `foreach give %fuji:escape player:name% minecraft:diamond 16`
-                      
+                    
                     """)
             public class ForEach {
                 public boolean enable = true;
@@ -1459,18 +1454,18 @@ public class ConfigModel {
 
             @Document("""
                     A chain command allows you to run another 2 commands, the first is any command, and the second is the chain command. 
-                                        
+                    
                     Example 1: 
                     The command will be executed one by one.
                     `/chain say 1 chain say 2 chain say 3`
-                                        
+                    
                     Example 2: 
                     The chain will `break` if the previous command `failed`.
                     `/chain bad command here chain say 2`
-                                        
+                    
                     Note:
                     - In vanilla minecraft, the `return value` of command, are `failed`, `pass` and `success`
-                                        
+                    
                     """)
             public class Chain {
                 public boolean enable = true;
@@ -1478,11 +1473,11 @@ public class ConfigModel {
 
             @Document("""
                     Delay command allows you to ............................ execute a command.
-                                        
+                    
                     Example 1: `/delay 3 say three seconds passed`
-                                        
+                    
                     Example 2: `/delay 1 delay 2 delay 3 say 6 seconds passed.`
-                                        
+                    
                     """)
             public class Delay {
                 public boolean enable = true;
@@ -1490,50 +1485,50 @@ public class ConfigModel {
 
             @Document("""
                     Provides a unified `json editor`.
-                                        
+                    
                     Example 1: `/json read "config/fuji/config.json" "$.common.quartz.logger_level"`
-                                        
+                    
                     Example 2: `/json read "config/fuji/config.json" "$.modules.keys()"`
-                                        
+                    
                     Example 3: `/json write "config/fuji/config.json" "$.common.quartz.logger_level" NULL null`
-                                        
+                    
                     Note:
                     - You can see more about `json path`: https://goessner.net/articles/JsonPath/
-                                        
+                    
                     Command: /json
-                                        
+                    
                     """)
             public class Json {
                 public boolean enable = true;
             }
 
             @Document("""
-                Provides a unified `attachment` facility, which can attach any `data` to any `object`.
-                
-                Command: /attachment
-                
-                Example 1: `/attachment set news today hello world`
-                
-                Example 2: `/attachment get news today`
-                
-                Command: /attachment
-                
-                """)
+                    Provides a unified `attachment` facility, which can attach any `data` to any `object`.
+                    
+                    Command: /attachment
+                    
+                    Example 1: `/attachment set news today hello world`
+                    
+                    Example 2: `/attachment get news today`
+                    
+                    Command: /attachment
+                    
+                    """)
             public class Attachment {
                 public boolean enable = true;
             }
 
             @Document("""
                     This module provides `/shell` command, which executes `command line` in your `host shell`.
-                                        
+                    
                     This module is a powerful and **`dangerous`** module, **not recommended to enable it**.
-                                        
+                    
                     Exmaple 1: `/shell touch %player:name%.dangerous` (Create a file using placeholder)
-                                        
+                    
                     Exmaple 2: `/shell emacs` (Execute a program in the host os)
-                                        
+                    
                     Example 3: `/shell ...` (Possible to download a virus from Internet and execute it!)
-                                        
+                    
                     """)
             public class Shell {
                 public @NotNull String enable_warning = "ENABLE THIS MODULE IS POTENTIAL TO HARM YOUR COMPUTER! YOU NEED TO CHANGE THIS FIELD INTO `CONFIRM` TO ENABLE THIS MODULE";
@@ -1574,67 +1569,72 @@ public class ConfigModel {
             public @NotNull TrashCan trashcan = new TrashCan();
             public @NotNull Tppos tppos = new Tppos();
             public @NotNull Warp warp = new Warp();
+            public Burn burn = new Burn();
+            public HelpOp help_op = new HelpOp();
+            public Near near = new Near();
+            public Jump jump = new Jump();
+            public Compass compass = new Compass();
 
             @Document("This module provides `/bed` command, which teleports the player to his bed.")
             public class Bed {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("Command: /extinguish")
             public class Extinguish {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("Command: /feed")
             public class Feed {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("Command: /fly")
             public class Fly {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("Command: /god")
             public class God {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("Command: /had")
             public class Hat {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("Command: /heal")
             public class Heal {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("""
                     Allows you to custom lore in your hand.
-                                        
+                    
                     Command: /lore
-                                        
+                    
                     Example 1: `/lore set <rainbow>the first line<newline><bold><green>the second`
-                                        
-                                        
+                    
+                    
                     """)
             public class Lore {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("""
                     This module provides `/sit` command, and the ability to sit by right-click any chair.
                     
                     Command: /sit
-                                        
+                    
                     Note:
                     - You can only right-click to sit on the ChairBlock/SlabBlock.
                     - You can sit on any block using `/sit` command, like, sitting on the bed...
-                                        
+                    
                     """)
             public class Sit {
-                public boolean enable = true;
+                public boolean enable = false;
                 public boolean allow_right_click_sit = true;
                 public boolean allow_sneaking_to_sit = false;
                 public boolean require_empty_hand_to_sit = false;
@@ -1644,81 +1644,81 @@ public class ConfigModel {
 
             @Document("Command: /more")
             public class More {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("Command: /ping")
             public class Ping {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("Command: /realname")
             public class Realname {
-                public boolean enable = true;
+                public boolean enable = false;
 
             }
 
             @Document("""
                     Command: /nickname
-                                    
+                    
                     Tips:
                     - You can query real name using `realname module`
                     - To show the `nickname`, you need to use `%player:displayname%` or `%player:displayname_visual%` placeholders.
-                                    
+                    
                     """)
             public class Nickname {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("Command: /repair")
             public class Repair {
-                public boolean enable = true;
+                public boolean enable = false;
 
             }
 
             @Document("This module provides `/reply` command, which replys the recent player who `/msg` you")
             public class Reply {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("Command: /seen")
             public class Seen {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("Command: /suicide")
             public class Suicide {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("""
                     Command: /top
-                                        
+                    
                     Go up to the ground conveniently !
                     """)
             public class Top {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("""
                     Command: /send-message
                     """)
             public class SendMessage {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("""
                     Command: /send-broadcast
                     """)
             public class SendBroadcast {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("""
                     Command: /send-actionbar
                     """)
             public class SendActionBar {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("""
@@ -1737,7 +1737,7 @@ public class ConfigModel {
                     
                     """)
             public class SendTitle {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("""
@@ -1751,17 +1751,17 @@ public class ConfigModel {
                     
                     """)
             public class SendToast {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("Command: /trashcan")
             public class TrashCan {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("""
                     The unified teleport command.
-                                        
+                    
                     Argument:
                     - --dimension: target dimension
                     - --x: target x
@@ -1777,57 +1777,50 @@ public class ConfigModel {
                     - --minY: rtp min Y
                     - --maxY: rtp max Y
                     - --maxTryTimes: rtp max try times.
-                                        
+                    
                     Note:
                     - If you specify the `--x`, `--y` or `--z` argument, then the command will teleport to a `fix position`, or else to `random position`.
-                                        
+                    
                     Command: /tppos
                     """)
             public class Tppos {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             @Document("Command: /warp")
             public class Warp {
-                public boolean enable = true;
+                public boolean enable = false;
             }
-
-            public Burn burn = new Burn();
 
             @Document("Command: /burn")
-            public class Burn{
-                public boolean enable = true;
+            public class Burn {
+                public boolean enable = false;
             }
-
-            public HelpOp help_op = new HelpOp();
 
             @Document("Command: /helpop")
             public class HelpOp {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
-            public Near near = new Near();
             @Document("Command: /near")
             public class Near {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
-            public Jump jump = new Jump();
             @Document("Command: /jump")
             public class Jump {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
-            public Compass compass = new Compass();
             @Document("Command: /compass")
             public class Compass {
-                public boolean enable = true;
+                public boolean enable = false;
             }
         }
 
         @Document("""
                 This module provides tab-list custom.
-                                
+                
                 """)
         public class TabList {
             public boolean enable = false;
@@ -1858,22 +1851,22 @@ public class ConfigModel {
 
             @Document("""
                     If enable this moudle, the `player names` in `tab list` will be sorted by `weight`.
-                                        
+                    
                     You can set sort `weight` for a group using `/lp group default meta set fuji.tab_list.sort.weight 1` to set weight to 1.
                     You can set sort `weight` for a player using `/lp user Steve meta set fuji.tab_list.sort.weight 2`
                     The default weight is 0, the range of weight is [0, 675], which means you can set at most 676 sort groups.
                     After you set a new `weight`, you should issue `/fuji reload` or re-connect to refresh the tab-list.
-                                        
+                    
                     Issue:
                     - The `tab list` sort method is client-side decided. So the workaround is to send dummy-player entry to the client-side, and hide the real entry in client-side's tablist.
                       In this case, the client-side will find that, all `command target selector` will display the dummy-entry.
                       And you can see the dummy-entry in client-side's `Player Reporting` UI.
-                                        
+                    
                     Note:
                     - The dummy-entry is just an entry listed in `tab list`, when the client ask the server tab list, the server lie with the dummy-entry list.
                       There is not a real player entity in the server side, so no extra performance problem.
                     - The sync method is event-based, and cached, so the performance is good.
-                      
+                    
                     """)
             public class Sort {
                 public boolean enable = false;
@@ -1897,9 +1890,9 @@ public class ConfigModel {
         }
 
         @Document("""
-                                
+                
                 Command: /kit
-                                
+                
                 """)
         public class Kit {
             public boolean enable = false;
@@ -1907,7 +1900,7 @@ public class ConfigModel {
 
         @Document("""
                 This module allows the `server` to execute commands after an `event` occurs.
-                                
+                
                 Example 1:
                 Let's say you want to send broadcast and set random spawnpoint of a newbie player.
                 You can write the command list in player first join event
@@ -1920,7 +1913,7 @@ public class ConfigModel {
                   ]
                 },
                 ```
-                                
+                
                 Example 2:
                 You want to give a `kit` to a newbie player.
                 ```
@@ -1930,10 +1923,10 @@ public class ConfigModel {
                   ]
                 },
                 ```
-                                
+                
                 Note:
                 - You can use placeholders provided by `placeholder module`.
-                                
+                
                 """)
         public class CommandEvent {
 
@@ -2021,9 +2014,9 @@ public class ConfigModel {
 
         @Document("""
                 The cleaner to clean `item` and `entity` automatically.
-                                
+                
                 Since the vanilla minecraft also has a `cleaner` to remove the item stack in the ground, so it's recommended to only use this module to `clean` some `weak-loading entities`, like: the sand item stack ...
-                                
+                
                 """)
         public class Cleaner {
 
@@ -2031,12 +2024,12 @@ public class ConfigModel {
 
             @Document("""
                     The job used to trigger `/cleaner clean`.
-                                        
+                    
                     - The `cleaner clean` will only be triggered by the job.
-                                        
+                    
                     Note:
                     - If the `cleaner` cleans nothing, then it will keep silent. (Which means you will not see any message in console, or in-game chat)
-                                        
+                    
                     """)
             public String cron = "0 * * ? * * *";
 
@@ -2044,15 +2037,15 @@ public class ConfigModel {
                     The `key` is `translatable key`, which you can query in [en_us.json language file in minecraft 1.21](https://github.com/sakurawald/fuji-fabric/blob/dev/.github/files/en_us.json).
                       - The translable key of `entity` starts with `entity.minecraft`.
                       - The translable key of `item` starts with `item.minecraft` and `block.minecraft`.
-                                        
+                    
                     The `age` is the existence time of the `entity`, the unit of `age` is `game tick`, which means `20 age` = `20 ticks` = `1 second`.
-                                        
+                    
                     Example 1: If you want to clean the `sand` item which exsits more than 60 seconds, you can write `"block.minecraft.sand": 1200`.
-                                        
+                    
                     Note:
                     - The `cleaner` will only `remove` the `entities` whose `translatable key` equals `key`, and `age` >= `the defined age`. (And the `entity` must not in the `ignore` list)
                     - Hover your mosue on the `cleaner broadcast`, you can see waht is been removed.
-                                        
+                    
                     """)
             public Map<String, Integer> key2age = new HashMap<>() {
                 {
@@ -2067,16 +2060,16 @@ public class ConfigModel {
 
             @Document("""
                     Entities match the `ignore list` will not be `cleaned`.
-                                        
+                    
                     The `cleaner` will always ignore the following types:
                     - player
                     - any block attached entity (e.g. leash_knot)
                     - any vehicle entity (e.g. minecart, boat ...)
-                                        
+                    
                     Note:
                     - The `item entity` = item stack dropped in the ground
                     - The `living entity` = pig, sheep, zombie, villager ...
-                                        
+                    
                     """)
             public class Ignore {
                 @Document("Should we ignore all `item entity`.")
