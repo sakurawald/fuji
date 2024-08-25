@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.functional.stonecutter;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;

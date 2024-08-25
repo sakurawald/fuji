@@ -5,7 +5,7 @@ import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.module.common.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 @Command("run")

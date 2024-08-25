@@ -9,9 +9,9 @@ import io.github.sakurawald.module.common.manager.impl.scheduler.ScheduleManager
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.home.command.argument.wrapper.HomeName;
-import io.github.sakurawald.util.minecraft.CommandHelper;
-import io.github.sakurawald.util.minecraft.MessageHelper;
-import io.github.sakurawald.util.minecraft.PermissionHelper;
+import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.auxiliary.minecraft.PermissionHelper;
 import lombok.Getter;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;

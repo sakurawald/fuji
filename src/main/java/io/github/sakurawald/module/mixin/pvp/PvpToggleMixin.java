@@ -1,10 +1,9 @@
 package io.github.sakurawald.module.mixin.pvp;
 
 import com.mojang.authlib.GameProfile;
-import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.pvp.PvpInitializer;
-import io.github.sakurawald.util.minecraft.MessageHelper;
+import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;

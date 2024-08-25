@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.common.structure;
 
-import io.github.sakurawald.util.minecraft.IdentifierHelper;
-import io.github.sakurawald.util.minecraft.MessageHelper;
-import io.github.sakurawald.util.minecraft.ServerHelper;
+import io.github.sakurawald.auxiliary.minecraft.IdentifierHelper;
+import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
 import lombok.Data;
 import lombok.With;
 import net.minecraft.registry.RegistryKey;

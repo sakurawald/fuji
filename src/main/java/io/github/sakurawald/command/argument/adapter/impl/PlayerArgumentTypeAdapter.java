@@ -4,7 +4,7 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.argument.adapter.interfaces.AbstractArgumentTypeAdapter;
 import io.github.sakurawald.command.annotation.CommandSource;
-import io.github.sakurawald.util.minecraft.MessageHelper;
+import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
 import lombok.SneakyThrows;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;

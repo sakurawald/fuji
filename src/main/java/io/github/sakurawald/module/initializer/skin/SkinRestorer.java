@@ -7,7 +7,7 @@ import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.initializer.skin.config.SkinIO;
 import io.github.sakurawald.module.initializer.skin.config.SkinStorage;
-import io.github.sakurawald.util.LogUtil;
+import io.github.sakurawald.auxiliary.LogUtil;
 import it.unimi.dsi.fastutil.Pair;
 import lombok.Getter;
 import net.minecraft.entity.effect.StatusEffectInstance;

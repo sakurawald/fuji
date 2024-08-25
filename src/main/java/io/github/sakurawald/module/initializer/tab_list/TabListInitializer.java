@@ -4,9 +4,9 @@ import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.tab_list.job.RenderHeaderAndFooterJob;
-import io.github.sakurawald.util.minecraft.MessageHelper;
-import io.github.sakurawald.util.RandomUtil;
-import io.github.sakurawald.util.minecraft.ServerHelper;
+import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.auxiliary.RandomUtil;
+import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.network.packet.s2c.play.PlayerListHeaderS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
@@ -14,8 +14,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Set;
 
 public class TabListInitializer extends ModuleInitializer {
 

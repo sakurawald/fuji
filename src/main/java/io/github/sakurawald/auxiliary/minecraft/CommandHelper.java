@@ -1,4 +1,4 @@
-package io.github.sakurawald.util.minecraft;
+package io.github.sakurawald.auxiliary.minecraft;
 
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;

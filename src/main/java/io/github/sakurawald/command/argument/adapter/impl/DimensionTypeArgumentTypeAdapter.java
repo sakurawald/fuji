@@ -6,7 +6,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.argument.adapter.interfaces.AbstractArgumentTypeAdapter;
 import io.github.sakurawald.command.argument.wrapper.DimensionType;
-import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
 import net.minecraft.server.command.ServerCommandSource;
 
 import java.lang.reflect.Parameter;

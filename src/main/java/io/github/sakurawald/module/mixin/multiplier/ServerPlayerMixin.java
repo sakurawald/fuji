@@ -1,8 +1,7 @@
 package io.github.sakurawald.module.mixin.multiplier;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import io.github.sakurawald.util.minecraft.PermissionHelper;
-import lombok.extern.slf4j.Slf4j;
+import io.github.sakurawald.auxiliary.minecraft.PermissionHelper;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;

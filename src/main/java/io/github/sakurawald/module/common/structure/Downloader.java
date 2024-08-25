@@ -1,14 +1,10 @@
 package io.github.sakurawald.module.common.structure;
 
-import io.github.sakurawald.util.LogUtil;
-import lombok.Data;
-import lombok.SneakyThrows;
+import io.github.sakurawald.auxiliary.LogUtil;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.util.concurrent.CompletableFuture;
 

@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.common.job.interfaces;
 
 import io.github.sakurawald.module.common.manager.Managers;
-import io.github.sakurawald.util.LogUtil;
+import io.github.sakurawald.auxiliary.LogUtil;
 import org.quartz.*;
 
 import java.util.*;

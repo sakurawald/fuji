@@ -1,9 +1,8 @@
 package io.github.sakurawald.module.initializer.tab_list.sort.structure;
 
 import com.mojang.authlib.GameProfile;
-import io.github.sakurawald.util.LogUtil;
-import io.github.sakurawald.util.minecraft.PermissionHelper;
-import io.github.sakurawald.util.minecraft.ServerHelper;
+import io.github.sakurawald.auxiliary.minecraft.PermissionHelper;
+import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.network.ClientConnection;

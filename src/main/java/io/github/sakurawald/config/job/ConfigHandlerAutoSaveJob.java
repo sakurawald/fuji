@@ -2,7 +2,7 @@ package io.github.sakurawald.config.job;
 
 import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
 import io.github.sakurawald.module.common.job.interfaces.CronJob;
-import io.github.sakurawald.util.LogUtil;
+import io.github.sakurawald.auxiliary.LogUtil;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.quartz.JobDataMap;

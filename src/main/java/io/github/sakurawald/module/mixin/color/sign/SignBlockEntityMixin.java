@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.mixin.color.sign;
 
-import io.github.sakurawald.util.minecraft.MessageHelper;
-import lombok.extern.slf4j.Slf4j;
+import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;

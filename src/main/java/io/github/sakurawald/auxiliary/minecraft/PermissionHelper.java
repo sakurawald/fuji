@@ -1,4 +1,4 @@
-package io.github.sakurawald.util.minecraft;
+package io.github.sakurawald.auxiliary.minecraft;
 
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;

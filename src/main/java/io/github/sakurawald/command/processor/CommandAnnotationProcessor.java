@@ -14,10 +14,10 @@ import io.github.sakurawald.command.argument.adapter.interfaces.AbstractArgument
 import io.github.sakurawald.command.argument.structure.Argument;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.LogUtil;
-import io.github.sakurawald.util.ReflectionUtil;
-import io.github.sakurawald.util.minecraft.CommandHelper;
-import io.github.sakurawald.util.minecraft.PermissionHelper;
+import io.github.sakurawald.auxiliary.LogUtil;
+import io.github.sakurawald.auxiliary.ReflectionUtil;
+import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.auxiliary.minecraft.PermissionHelper;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.ServerCommandSource;

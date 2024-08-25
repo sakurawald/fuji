@@ -5,9 +5,9 @@ import io.github.sakurawald.command.argument.wrapper.GreedyString;
 import io.github.sakurawald.command.annotation.Command;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.minecraft.CommandHelper;
-import io.github.sakurawald.util.minecraft.MessageHelper;
-import io.github.sakurawald.util.minecraft.ServerHelper;
+import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.HashMap;

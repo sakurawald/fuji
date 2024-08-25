@@ -10,7 +10,7 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.module.common.structure.Downloader;
 import io.github.sakurawald.module.initializer.head.structure.Category;
 import io.github.sakurawald.module.initializer.head.structure.Head;
-import io.github.sakurawald.util.LogUtil;
+import io.github.sakurawald.auxiliary.LogUtil;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
 

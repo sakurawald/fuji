@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import io.github.sakurawald.annotation.Document;
-import io.github.sakurawald.util.LogUtil;
+import io.github.sakurawald.auxiliary.LogUtil;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 

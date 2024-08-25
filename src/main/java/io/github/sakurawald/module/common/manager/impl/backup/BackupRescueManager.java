@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.common.manager.impl.backup;
 
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.util.DateUtil;
-import io.github.sakurawald.util.IOUtil;
+import io.github.sakurawald.auxiliary.DateUtil;
+import io.github.sakurawald.auxiliary.IOUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;

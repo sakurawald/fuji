@@ -2,7 +2,7 @@ package io.github.sakurawald.module.mixin._internal.low_level.accessor;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import io.github.sakurawald.module.common.accessor.SimpleRegistryAccessor;
-import io.github.sakurawald.util.LogUtil;
+import io.github.sakurawald.auxiliary.LogUtil;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import it.unimi.dsi.fastutil.objects.Reference2IntMap;
 import net.minecraft.registry.MutableRegistry;

@@ -1,4 +1,4 @@
-package io.github.sakurawald.util.minecraft;
+package io.github.sakurawald.auxiliary.minecraft;
 
 import lombok.experimental.UtilityClass;
 import net.minecraft.block.Block;
@@ -11,11 +11,9 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-import net.minecraft.world.dimension.DimensionType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

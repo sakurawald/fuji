@@ -1,9 +1,9 @@
 package io.github.sakurawald.module.mixin.system_message;
 
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.util.LogUtil;
-import io.github.sakurawald.util.minecraft.MessageHelper;
-import io.github.sakurawald.util.minecraft.ServerHelper;
+import io.github.sakurawald.auxiliary.LogUtil;
+import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;

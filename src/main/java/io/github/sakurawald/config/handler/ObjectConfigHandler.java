@@ -5,7 +5,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonWriter;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
-import io.github.sakurawald.util.LogUtil;
+import io.github.sakurawald.auxiliary.LogUtil;
 import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
 

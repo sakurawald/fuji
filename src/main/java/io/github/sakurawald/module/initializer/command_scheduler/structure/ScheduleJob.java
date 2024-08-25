@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.initializer.command_scheduler.structure;
 
 import io.github.sakurawald.module.common.service.command_executor.CommandExecutor;
-import io.github.sakurawald.util.LogUtil;
-import io.github.sakurawald.util.minecraft.ServerHelper;
+import io.github.sakurawald.auxiliary.LogUtil;
+import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

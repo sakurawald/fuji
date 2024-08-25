@@ -3,9 +3,8 @@ package io.github.sakurawald.module.mixin.tab_list.sort;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.tab_list.sort.structure.TabListEntry;
-import io.github.sakurawald.util.LogUtil;
-import io.github.sakurawald.util.RandomUtil;
-import io.github.sakurawald.util.minecraft.ServerHelper;
+import io.github.sakurawald.auxiliary.RandomUtil;
+import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -19,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static io.github.sakurawald.util.minecraft.MessageHelper.ofText;
+import static io.github.sakurawald.auxiliary.minecraft.MessageHelper.ofText;
 
 // the last to check the return value
 @Mixin(value = ServerPlayerEntity.class, priority = 1000 - 125)

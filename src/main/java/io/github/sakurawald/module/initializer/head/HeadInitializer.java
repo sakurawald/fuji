@@ -10,7 +10,7 @@ import io.github.sakurawald.module.initializer.head.config.model.HeadModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.head.gui.HeadGui;
 import io.github.sakurawald.module.initializer.head.privoder.HeadProvider;
-import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 

@@ -1,4 +1,4 @@
-package io.github.sakurawald.util;
+package io.github.sakurawald.auxiliary;
 
 import lombok.Getter;
 import lombok.experimental.UtilityClass;

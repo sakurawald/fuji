@@ -1,4 +1,4 @@
-package io.github.sakurawald.util;
+package io.github.sakurawald.auxiliary;
 
 import io.github.sakurawald.Fuji;
 import lombok.experimental.UtilityClass;
@@ -9,7 +9,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 @UtilityClass
 public class LogUtil {

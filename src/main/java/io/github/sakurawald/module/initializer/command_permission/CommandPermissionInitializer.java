@@ -4,7 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.CommandNode;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.mixin.command_permission.CommandNodeAccessor;
-import io.github.sakurawald.util.minecraft.PermissionHelper;
+import io.github.sakurawald.auxiliary.minecraft.PermissionHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.luckperms.api.util.Tristate;
 import net.minecraft.server.MinecraftServer;

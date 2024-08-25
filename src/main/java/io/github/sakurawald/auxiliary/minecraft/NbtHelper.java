@@ -1,7 +1,7 @@
-package io.github.sakurawald.util.minecraft;
+package io.github.sakurawald.auxiliary.minecraft;
 
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.util.LogUtil;
+import io.github.sakurawald.auxiliary.LogUtil;
 import lombok.experimental.UtilityClass;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;

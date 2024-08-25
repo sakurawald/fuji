@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.meta.checker.module_dependency.structure.Reference;
-import io.github.sakurawald.util.JsonUtil;
+import io.github.sakurawald.auxiliary.JsonUtil;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 

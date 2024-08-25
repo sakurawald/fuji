@@ -4,8 +4,8 @@ import com.google.common.base.Preconditions;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.LogUtil;
-import io.github.sakurawald.util.minecraft.MessageHelper;
+import io.github.sakurawald.auxiliary.LogUtil;
+import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
 import javax.imageio.ImageIO;
 
 import lombok.Setter;

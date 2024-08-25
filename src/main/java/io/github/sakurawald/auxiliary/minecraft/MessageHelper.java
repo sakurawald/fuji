@@ -1,4 +1,4 @@
-package io.github.sakurawald.util.minecraft;
+package io.github.sakurawald.auxiliary.minecraft;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -12,7 +12,7 @@ import eu.pb4.placeholders.api.parsers.tag.TextTag;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.handler.ResourceConfigHandler;
-import io.github.sakurawald.util.LogUtil;
+import io.github.sakurawald.auxiliary.LogUtil;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.audience.Audience;

@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.module.initializer.skin.enums.SkinVariant;
-import io.github.sakurawald.util.IOUtil;
+import io.github.sakurawald.auxiliary.IOUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

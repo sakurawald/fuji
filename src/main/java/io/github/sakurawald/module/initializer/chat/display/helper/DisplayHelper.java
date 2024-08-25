@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.chat.display.helper;
 
 import io.github.sakurawald.module.initializer.chat.display.structure.SoftReferenceMap;
 import io.github.sakurawald.module.initializer.chat.display.gui.*;
-import io.github.sakurawald.util.minecraft.MessageHelper;
+import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;

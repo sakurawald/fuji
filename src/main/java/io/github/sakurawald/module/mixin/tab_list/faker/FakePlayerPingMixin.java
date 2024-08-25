@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.tab_list.faker;
 
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.util.RandomUtil;
+import io.github.sakurawald.auxiliary.RandomUtil;
 import net.minecraft.server.network.ServerCommonNetworkHandler;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;

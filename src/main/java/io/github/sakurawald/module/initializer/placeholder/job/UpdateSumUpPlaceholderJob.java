@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.placeholder.job;
 import io.github.sakurawald.module.common.job.interfaces.CronJob;
 import io.github.sakurawald.module.common.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.placeholder.structure.SumUpPlaceholder;
-import io.github.sakurawald.util.minecraft.ServerHelper;
+import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
 import org.quartz.JobExecutionContext;

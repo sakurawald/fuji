@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.head.structure;
 
-import io.github.sakurawald.util.minecraft.MessageHelper;
+import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
 import java.util.UUID;
 
 import net.minecraft.component.DataComponentTypes;

@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin._internal.low_level.server;
 
-import io.github.sakurawald.util.LogUtil;
-import io.github.sakurawald.util.minecraft.ServerHelper;
+import io.github.sakurawald.auxiliary.LogUtil;
+import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
 import net.minecraft.server.MinecraftServer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

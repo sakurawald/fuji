@@ -1,19 +1,13 @@
 package io.github.sakurawald.module.mixin.command_attachment;
 
-import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.common.manager.Managers;
-import io.github.sakurawald.module.common.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.command_attachment.CommandAttachmentInitializer;
 import io.github.sakurawald.module.initializer.command_attachment.command.argument.wrapper.InteractType;
-import io.github.sakurawald.module.initializer.command_attachment.config.model.CommandAttachmentModel;
-import io.github.sakurawald.util.LogUtil;
-import io.github.sakurawald.util.minecraft.MessageHelper;
-import io.github.sakurawald.util.minecraft.NbtHelper;
+import io.github.sakurawald.auxiliary.minecraft.NbtHelper;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.network.ServerPlayerInteractionManager;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;

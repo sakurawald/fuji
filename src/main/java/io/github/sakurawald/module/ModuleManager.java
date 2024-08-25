@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.manager.interfaces.AbstractManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.LogUtil;
+import io.github.sakurawald.auxiliary.LogUtil;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.ApiStatus;

@@ -2,7 +2,7 @@ package io.github.sakurawald.module.mixin.tab_list.sort;
 
 
 import io.github.sakurawald.module.initializer.tab_list.sort.structure.TabListEntry;
-import io.github.sakurawald.util.minecraft.ServerHelper;
+import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
 import net.minecraft.network.DisconnectionInfo;
 import net.minecraft.network.packet.s2c.play.PlayerRemoveS2CPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;

@@ -7,8 +7,8 @@ import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.util.LogUtil;
-import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.auxiliary.LogUtil;
+import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 

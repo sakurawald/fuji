@@ -10,8 +10,8 @@ import io.github.sakurawald.module.common.manager.impl.scheduler.ScheduleManager
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_scheduler.command.argument.wrapper.ScheduleJobName;
 import io.github.sakurawald.module.initializer.command_scheduler.job.CommandScheduleJob;
-import io.github.sakurawald.util.LogUtil;
-import io.github.sakurawald.util.minecraft.CommandHelper;
+import io.github.sakurawald.auxiliary.LogUtil;
+import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
 import lombok.Getter;
 import org.quartz.JobDataMap;
 

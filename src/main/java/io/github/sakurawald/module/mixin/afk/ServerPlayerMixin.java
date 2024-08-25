@@ -3,7 +3,7 @@ package io.github.sakurawald.module.mixin.afk;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.afk.accessor.AfkStateAccessor;
-import io.github.sakurawald.util.minecraft.MessageHelper;
+import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static io.github.sakurawald.util.minecraft.MessageHelper.*;
+import static io.github.sakurawald.auxiliary.minecraft.MessageHelper.*;
 
 // to override tab list name in `tab list module`
 @Mixin(value = ServerPlayerEntity.class, priority = 1000 - 250)

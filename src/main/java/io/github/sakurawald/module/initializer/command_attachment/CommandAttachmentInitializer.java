@@ -12,9 +12,9 @@ import io.github.sakurawald.module.initializer.command_attachment.command.argume
 import io.github.sakurawald.module.initializer.command_attachment.command.argument.wrapper.InteractType;
 import io.github.sakurawald.module.initializer.command_attachment.config.model.CommandAttachmentModel;
 import io.github.sakurawald.module.initializer.command_attachment.structure.CommandAttachmentEntry;
-import io.github.sakurawald.util.minecraft.CommandHelper;
-import io.github.sakurawald.util.minecraft.MessageHelper;
-import io.github.sakurawald.util.minecraft.NbtHelper;
+import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.auxiliary.minecraft.NbtHelper;
 import lombok.SneakyThrows;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;

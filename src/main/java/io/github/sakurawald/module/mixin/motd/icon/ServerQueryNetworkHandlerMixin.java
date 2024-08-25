@@ -23,11 +23,10 @@
  */
 package io.github.sakurawald.module.mixin.motd.icon;
 
-import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.motd.MotdInitializer;
-import io.github.sakurawald.util.LogUtil;
-import io.github.sakurawald.util.minecraft.ServerHelper;
+import io.github.sakurawald.auxiliary.LogUtil;
+import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
 import net.minecraft.server.network.ServerQueryNetworkHandler;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
