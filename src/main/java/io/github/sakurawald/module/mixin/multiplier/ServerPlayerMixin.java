@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.mixin.multiplier;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import io.github.sakurawald.auxiliary.LogUtil;
 import io.github.sakurawald.auxiliary.minecraft.PermissionHelper;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -21,7 +22,7 @@ public abstract class ServerPlayerMixin {
 
     @Unique
     float transform(@NotNull ServerPlayerEntity player, String type, String key, float f) {
-        Optional<Float> meta = PermissionHelper.getMeta(player, "fuji.multiplier.%s.%s".formatted(type, key), Float::valueOf);
+        Optional<Float> meta = PermissionHelper.getMeta(player.getUuid(), "fuji.multiplier.%s.%s".formatted(type, key), Float::valueOf);
         return meta.map(factor -> f * factor).orElse(f);
     }
 

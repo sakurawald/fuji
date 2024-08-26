@@ -83,7 +83,7 @@ public class HomeInitializer extends ModuleInitializer {
             }
         }
 
-        Optional<Integer> limit = PermissionHelper.getMeta(player, "fuji.home.home_limit", Integer::valueOf);
+        Optional<Integer> limit = PermissionHelper.getMeta(player.getUuid(), "fuji.home.home_limit", Integer::valueOf);
         if (limit.isPresent() && name2position.size() >= limit.get()) {
             MessageHelper.sendMessage(player, "home.set.fail.limit");
             return CommandHelper.Return.FAIL;

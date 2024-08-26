@@ -54,7 +54,7 @@ public class CommandPermissionInitializer extends ModuleInitializer {
 
                    Only valid command has its command path (command-alias also has its path, but it will redirect the execution to the real command-path)
                  */
-                Tristate triState = PermissionHelper.checkPermission(source.getPlayer(), "fuji.permission.%s".formatted(commandPath));
+                Tristate triState = PermissionHelper.checkPermission(source.getPlayer().getUuid(), "fuji.permission.%s".formatted(commandPath));
                 if (triState != Tristate.UNDEFINED) {
                     return triState.asBoolean();
                 }

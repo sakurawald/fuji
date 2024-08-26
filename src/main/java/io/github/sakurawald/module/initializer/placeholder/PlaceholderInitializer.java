@@ -107,7 +107,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
                 return PlaceholderResult.invalid();
             }
 
-            boolean value = PermissionHelper.hasPermission(ctx.player(), args);
+            boolean value = PermissionHelper.hasPermission(ctx.player().getUuid(), args);
             return PlaceholderResult.value(Text.literal(String.valueOf(value)));
         });
     }
@@ -118,7 +118,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
                 return PlaceholderResult.invalid();
             }
 
-            Optional<String> o = PermissionHelper.getMeta(ctx.player(), args, String::valueOf);
+            Optional<String> o = PermissionHelper.getMeta(ctx.player().getUuid(), args, String::valueOf);
             String value = o.orElse("NO_EXIST");
             return PlaceholderResult.value(Text.literal(value));
         });

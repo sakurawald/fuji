@@ -107,7 +107,7 @@ public class CommandAnnotationProcessor {
             ServerPlayerEntity player = ctx.getPlayer();
             if (player == null) return true;
             if (ctx.hasPermissionLevel(annotation.level())) return true;
-            if (!annotation.string().isEmpty() && PermissionHelper.hasPermission(player, annotation.string()))
+            if (!annotation.string().isEmpty() && PermissionHelper.hasPermission(player.getUuid(), annotation.string()))
                 return true;
 
             return false;

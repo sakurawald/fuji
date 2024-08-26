@@ -100,7 +100,7 @@ public class TabListEntry {
     }
 
     private static @NotNull Integer getWeight(@NotNull ServerPlayerEntity player) {
-        Optional<Integer> weight = PermissionHelper.getMeta(player, "fuji.tab_list.sort.weight", Integer::valueOf);
+        Optional<Integer> weight = PermissionHelper.getMeta(player.getUuid(), "fuji.tab_list.sort.weight", Integer::valueOf);
         return weight.orElse(0);
     }
 

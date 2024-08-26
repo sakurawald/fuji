@@ -105,7 +105,7 @@ public class ChatInitializer extends ModuleInitializer {
                     if (ctx.player() == null) PlaceholderResult.invalid();
 
                     ServerPlayerEntity player = ctx.player();
-                    String prefix = PermissionHelper.getPrefix(player);
+                    String prefix = PermissionHelper.getPrefix(player.getUuid());
                     return PlaceholderResult.value(MessageHelper.ofText(prefix));
                 });
     }
@@ -117,7 +117,7 @@ public class ChatInitializer extends ModuleInitializer {
                     if (ctx.player() == null) PlaceholderResult.invalid();
 
                     ServerPlayerEntity player = ctx.player();
-                    String prefix = PermissionHelper.getSuffix(player);
+                    String prefix = PermissionHelper.getSuffix(player.getUuid());
                     return PlaceholderResult.value(MessageHelper.ofText(prefix));
                 });
     }

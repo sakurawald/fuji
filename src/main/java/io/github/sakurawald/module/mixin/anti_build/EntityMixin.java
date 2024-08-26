@@ -23,7 +23,7 @@ public class EntityMixin {
         String id = IdentifierHelper.ofString(entity);
 
         if (Configs.configHandler.model().modules.anti_build.anti.interact_entity.id.contains(id)
-                && !PermissionHelper.hasPermission(player, "fuji.anti_build.%s.bypass.%s".formatted("interact_entity", id))
+                && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_entity", id))
         ) {
 
             if (hand == Hand.MAIN_HAND) {

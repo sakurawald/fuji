@@ -188,6 +188,10 @@ public class ModuleManager extends AbstractManager {
 
             // remove the trailing directories if there is no enable-supplier for this directory.
             if (!JsonUtil.existsNode((JsonObject) rcConfig, moduleEnableSupplierJsonPath)) {
+                if (modulePath.isEmpty()) {
+                    throw new RuntimeException("Can't find the module enable-supplier in `config.json` for class name %s. Did you forget to add the enable-supplier key in ConfigModel ?".formatted(className));
+                }
+
                 modulePath.removeLast();
                 flag = true;
             }

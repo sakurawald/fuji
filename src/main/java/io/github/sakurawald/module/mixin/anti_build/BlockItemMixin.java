@@ -25,7 +25,7 @@ public class BlockItemMixin {
 
         String id = IdentifierHelper.ofString(itemPlacementContext.getStack());
         if (Configs.configHandler.model().modules.anti_build.anti.place_block.id.contains(id)
-                && !PermissionHelper.hasPermission((ServerPlayerEntity) player, "fuji.anti_build.%s.bypass.%s".formatted("place_block", id))
+                && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("place_block", id))
         ) {
             MessageHelper.sendMessageToPlayerEntity(player, "anti_build.disallow");
             cir.setReturnValue(false);
