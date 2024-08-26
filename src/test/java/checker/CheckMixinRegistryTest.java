@@ -1,11 +1,12 @@
 package checker;
 
 import com.google.gson.*;
+import io.github.classgraph.ClassInfo;
+import io.github.sakurawald.auxiliary.ReflectionUtil;
 import io.github.sakurawald.module.ModuleManager;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
-import org.reflections.Reflections;
 import org.spongepowered.asm.mixin.Mixin;
 
 import java.io.*;
@@ -43,10 +44,10 @@ public class CheckMixinRegistryTest {
 
        /* reflect */
         String mixinPackage = ModuleManager.class.getPackageName() + ".mixin";
-        Reflections reflections = new Reflections(mixinPackage);
         List<String> unregisteredMixins = new ArrayList<>();
-        for (Class<?> clazz : reflections.getTypesAnnotatedWith(Mixin.class)) {
-            String mixinName = clazz.getName().substring(mixinPackage.length() + 1);
+
+        for (ClassInfo classInfo : ReflectionUtil.getClassAnnotationInfoScanResult().getClassesWithAnnotation(Mixin.class)) {
+            String mixinName = classInfo.getName().substring(mixinPackage.length() + 1);
 
             if (!registeredMixins.contains(mixinName)) {
                 unregisteredMixins.add(mixinName);

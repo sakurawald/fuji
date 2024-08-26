@@ -52,7 +52,7 @@ public class CommandAnnotationProcessor {
     }
 
     private static void scanClass() {
-        Collection<ModuleInitializer> initializers = Managers.getModuleManager().getInitializers();
+        Collection<ModuleInitializer> initializers = Managers.getModuleManager().getRegisteredInitializers();
 
         for (ModuleInitializer initializer : initializers) {
             Class<?> clazz = initializer.getClass();

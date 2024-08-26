@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.mixin;
 
-import com.google.gson.JsonElement;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.manager.Managers;
 import org.jetbrains.annotations.NotNull;
@@ -15,21 +14,14 @@ import java.util.Set;
 
 public class GlobalMixinConfigPlugin implements IMixinConfigPlugin {
 
-    private static final JsonElement rcConfig;
-
     static {
+        // this is the first time to load configHandler
         Configs.configHandler.loadFromDisk();
-        rcConfig = Configs.configHandler.toJsonElement();
     }
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, @NotNull String mixinClassName) {
-        List<String> dirNameList = Managers.getModuleManager().getDirNameList(this.getClass(), mixinClassName);
-
-        // bypass
-        if (dirNameList.getFirst().startsWith("_")) return true;
-
-        return Managers.getModuleManager().shouldWeEnableThisModule(rcConfig, dirNameList);
+        return Managers.getModuleManager().shouldWeEnableThis(mixinClassName);
     }
 
     @Override
