@@ -145,6 +145,7 @@ public class ConfigModel {
         public @NotNull AntiBuild anti_build = new AntiBuild();
         public @NotNull Color color = new Color();
         public @NotNull Kit kit = new Kit();
+        public @NotNull TempBan temp_ban = new TempBan();
         public @NotNull CommandMeta command_meta = new CommandMeta();
         public @NotNull Gameplay gameplay = new Gameplay();
 
@@ -1894,6 +1895,16 @@ public class ConfigModel {
                 
                 """)
         public class Kit {
+            public boolean enable = false;
+        }
+
+        @Document("""
+                Command: /temp-ban
+                
+                Example 1: `/temp-ban player Steve 12h30m15s bad boy`
+                
+                """)
+        public class TempBan {
             public boolean enable = false;
         }
 
