@@ -3,11 +3,10 @@ package io.github.sakurawald.meta.checker.module_dependency;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.meta.checker.module_dependency.structure.Reference;
-import io.github.sakurawald.auxiliary.JsonUtil;
+import io.github.sakurawald.module.ModuleManager;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 
@@ -24,11 +23,10 @@ import java.util.regex.Pattern;
 
 public class ModuleDependencyChecker {
 
-    private static final String COMMON = "common";
     private static final Pattern importPattern = Pattern.compile("import\\s+(\\S+);");
     private static final Pattern staticImportPattern = Pattern.compile("import\\s+static\\s+(\\S+)\\.\\S+;");
-    private static final Pattern moduleNamePattern = Pattern.compile("io\\.github\\.sakurawald\\.module\\.(?:initializer|mixin)\\.(\\S+)\\.\\S+;?");
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final JsonElement rcConfig = gson.toJsonTree(new ConfigModel());
 
     private List<String> extractMatches(Pattern pattern, String text, int group) {
         Matcher matcher = pattern.matcher(text);
@@ -69,58 +67,23 @@ public class ModuleDependencyChecker {
         return new Reference(className, refClassNameList);
     }
 
-    private String getDirNameList(String className) {
-        List<String> dirNameList = extractMatches(moduleNamePattern, className, 1);
-        if (dirNameList.isEmpty()) {
-            return COMMON;
-        }
-        return dirNameList.getFirst();
-    }
-
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private boolean isModule(String dirNameList) {
-        JsonElement root = gson.toJsonTree(new ConfigModel());
-        return JsonUtil.existsNode((JsonObject) root, "modules.%s.enable".formatted(dirNameList));
-    }
-
-    private boolean hasCommonAncestor(String a, String b) {
-        String[] A = a.split("\\.");
-        String[] B = b.split("\\.");
-        return A[0].equals(B[0]);
-    }
-
-    private boolean isSibling(String a, String b) {
-        String[] A = a.split("\\.");
-        String[] B = b.split("\\.");
-
-        if (A.length != B.length) return false;
-        for (int i = 0; i < A.length - 1; i++) {
-            if (!A[i].equals(B[i])) return false;
-        }
-        return true;
-    }
-
     private Reference makeModuleRef(Reference classRef) {
-        String definition = getDirNameList(classRef.getDefinition());
+        String definition = String.join(".", ModuleManager.computeModulePath(rcConfig, classRef.getDefinition()));
         List<String> referenceList = new ArrayList<>();
 
         for (String ref : classRef.getReferenceList()) {
-            String reference = getDirNameList(ref);
+            String reference = String.join(".", ModuleManager.computeModulePath(rcConfig, ref));
             // skip -> common reference
-            if (reference.equals(COMMON)) continue;
+            if (reference.equals(ModuleManager.COMMON_MODULE_ROOT)) continue;
             // skip -> self reference
-            if (definition.equals(reference) || definition.startsWith(reference)) continue;
-            if (reference.startsWith(definition) && !isModule(reference)) continue;
-            if (hasCommonAncestor(definition, reference) && !isModule(definition) && !isModule(reference)) continue;
-            if (hasCommonAncestor(definition, reference) && isModule(definition) && !isModule(reference)) continue;
-
-            // skip -> reference internal module
-            if (reference.startsWith("_")) continue;
+            if (definition.equals(reference)) continue;
+            // skip -> parent reference
+            if (definition.startsWith(reference)) continue;
 
             referenceList.add(reference);
         }
 
-        if (definition.equals(COMMON) || definition.equals("tester")) return null;
+        if (definition.equals(ModuleManager.COMMON_MODULE_ROOT) || definition.equals("tester")) return null;
         if (referenceList.isEmpty()) return null;
         return new Reference(definition, referenceList);
     }
