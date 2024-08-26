@@ -95,6 +95,9 @@ public class TempBanInitializer extends ModuleInitializer {
             String unit = matcher.group(2);
 
             switch (unit) {
+                case "d":
+                    totalSeconds += value * 86400;
+                    break;
                 case "h":
                     totalSeconds += value * 3600;
                     break;
