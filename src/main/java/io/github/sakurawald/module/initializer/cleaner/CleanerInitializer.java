@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.cleaner;
 
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.structure.TypeFormatter;
@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 
-@Command("cleaner")
+@CommandNode("cleaner")
 @CommandPermission(level = 4)
 public class CleanerInitializer extends ModuleInitializer {
 
@@ -66,7 +66,7 @@ public class CleanerInitializer extends ModuleInitializer {
         return regex2age.containsKey(key) && age >= regex2age.get(key);
     }
 
-    @Command("clean")
+    @CommandNode("clean")
     public int clean() {
         CompletableFuture.runAsync(() -> {
             Map<String, Integer> counter = new HashMap<>();

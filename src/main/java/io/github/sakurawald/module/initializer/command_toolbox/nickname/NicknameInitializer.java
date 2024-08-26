@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.nickname;
 
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
@@ -12,7 +12,7 @@ import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
 import lombok.Getter;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-@Command("nickname")
+@CommandNode("nickname")
 public class NicknameInitializer extends ModuleInitializer {
 
     @Getter
@@ -23,7 +23,7 @@ public class NicknameInitializer extends ModuleInitializer {
         nicknameHandler.loadFromDisk();
     }
 
-    @Command("set")
+    @CommandNode("set")
     private int $set(@CommandSource ServerPlayerEntity player, GreedyString format) {
             String name = player.getGameProfile().getName();
             nicknameHandler.model().format.player2format.put(name, format.getString());
@@ -33,7 +33,7 @@ public class NicknameInitializer extends ModuleInitializer {
             return CommandHelper.Return.SUCCESS;
     }
 
-    @Command("reset")
+    @CommandNode("reset")
     private int $reset(@CommandSource ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
         nicknameHandler.model().format.player2format.remove(name);

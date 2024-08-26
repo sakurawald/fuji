@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.fly;
 
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
@@ -10,7 +10,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public class FlyInitializer extends ModuleInitializer {
 
-    @Command("fly")
+    @CommandNode("fly")
     private int $fly(@CommandSource ServerPlayerEntity player) {
         boolean flag = !player.getAbilities().allowFlying;
         player.getAbilities().allowFlying = flag;

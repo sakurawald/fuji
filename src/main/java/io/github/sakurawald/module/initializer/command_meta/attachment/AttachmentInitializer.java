@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_meta.attachment;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
@@ -15,11 +15,11 @@ import lombok.SneakyThrows;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
-@Command("attachment")
+@CommandNode("attachment")
 @CommandPermission(level = 4)
 public class AttachmentInitializer extends ModuleInitializer {
 
-    @Command("set")
+    @CommandNode("set")
     @SneakyThrows
     int set(@CommandSource CommandContext<ServerCommandSource> ctx, SubjectName subject, SubjectId uuid, GreedyString data) {
         Managers.getAttachmentManager().setAttachment(subject.getName(), uuid.getUuid(), data.getString());
@@ -28,7 +28,7 @@ public class AttachmentInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @Command("unset")
+    @CommandNode("unset")
     int unset(@CommandSource CommandContext<ServerCommandSource> ctx, SubjectName subject, SubjectId uuid) {
         boolean flag = Managers.getAttachmentManager().unsetAttachment(subject.getName(), uuid.getUuid());
 
@@ -37,7 +37,7 @@ public class AttachmentInitializer extends ModuleInitializer {
     }
 
     @SneakyThrows
-    @Command("get")
+    @CommandNode("get")
     int get(@CommandSource CommandContext<ServerCommandSource> ctx, SubjectName subject, SubjectId uuid) {
         String attachment = Managers.getAttachmentManager().getAttachment(subject.getName(), uuid.getUuid());
 

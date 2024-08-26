@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_meta.for_each;
 
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.module.common.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -12,7 +12,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public class ForEachInitializer extends ModuleInitializer {
 
-    @Command("foreach")
+    @CommandNode("foreach")
     @CommandPermission(level = 4)
     private int foreach(GreedyString rest) {
         String $rest = rest.getString();

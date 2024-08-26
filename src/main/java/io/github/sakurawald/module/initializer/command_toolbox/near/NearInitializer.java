@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.near;
 
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
@@ -19,7 +19,7 @@ public class NearInitializer extends ModuleInitializer {
         return (int) a.getBlockPos().getSquaredDistance(b.getBlockPos().toCenterPos());
     }
 
-    @Command("near")
+    @CommandNode("near")
     int near(@CommandSource ServerPlayerEntity player, Optional<Integer> distance) {
         MinecraftServer server = ServerHelper.getDefaultServer();
 

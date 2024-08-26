@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.config;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.Configs;
@@ -13,11 +13,11 @@ import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
 import net.minecraft.server.command.ServerCommandSource;
 
 
-@Command("fuji")
+@CommandNode("fuji")
 @CommandPermission(level = 4)
 public class ConfigInitializer extends ModuleInitializer {
 
-    @Command("reload")
+    @CommandNode("reload")
     private int $reload(@CommandSource CommandContext<ServerCommandSource> ctx) {
         // reload configs
         Configs.configHandler.loadFromDisk();

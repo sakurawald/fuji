@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.trashcan;
 
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
@@ -14,7 +14,7 @@ import net.minecraft.stat.Stats;
 
 public class TrashCanInitializer extends ModuleInitializer {
 
-    @Command("trashcan")
+    @CommandNode("trashcan")
     private int $trashcan(@CommandSource ServerPlayerEntity player) {
         int rows = 3;
         SimpleInventory simpleInventory = new SimpleInventory(rows * 9);

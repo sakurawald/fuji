@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.help_op;
 
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -15,7 +15,7 @@ import java.util.List;
 
 public class HelpOpInitializer extends ModuleInitializer {
 
-    @Command("helpop")
+    @CommandNode("helpop")
     int helpop(@CommandSource ServerPlayerEntity player, GreedyString message) {
         PlayerManager playerManager = ServerHelper.getDefaultServer().getPlayerManager();
 

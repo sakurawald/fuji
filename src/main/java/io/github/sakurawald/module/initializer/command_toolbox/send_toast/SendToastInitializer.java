@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.send_toast;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
@@ -73,7 +73,7 @@ public class SendToastInitializer extends ModuleInitializer {
         return new AdvancementUpdateS2CPacket(false, toEarn, toRemove, toSetProgress);
     }
 
-    @Command("send-toast")
+    @CommandNode("send-toast")
     @CommandPermission(level = 4)
     int sendToast(@CommandSource CommandContext<ServerCommandSource> ctx
             , ServerPlayerEntity player

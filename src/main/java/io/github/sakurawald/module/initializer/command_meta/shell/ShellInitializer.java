@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.command_meta.shell;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.Configs;
@@ -20,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class ShellInitializer extends ModuleInitializer {
 
-    @Command("shell")
+    @CommandNode("shell")
     @CommandPermission(level = 4)
     private int shell(@CommandSource CommandContext<ServerCommandSource> ctx, GreedyString rest) {
         if (!Configs.configHandler.model().modules.command_meta.shell.enable_warning.equals("CONFIRM")) {

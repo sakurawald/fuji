@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.top;
 
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 
 public class TopInitializer extends ModuleInitializer {
 
-    @Command("top")
+    @CommandNode("top")
     private int top(@CommandSource ServerPlayerEntity player) {
         World world = player.getWorld();
         BlockPos topPosition = world.getTopPosition(Heightmap.Type.MOTION_BLOCKING, player.getBlockPos());

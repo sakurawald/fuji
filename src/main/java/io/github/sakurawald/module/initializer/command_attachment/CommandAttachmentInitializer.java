@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_attachment;
 
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-@Command("command-attachment")
+@CommandNode("command-attachment")
 @CommandPermission(level = 4)
 public class CommandAttachmentInitializer extends ModuleInitializer {
 
@@ -82,7 +82,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
 
     // cooldown
-    @Command("attach-one")
+    @CommandNode("attach-one")
     int attachOne(@CommandSource ServerPlayerEntity player
             , Optional<InteractType> interactType
             , Optional<Integer> maxUseTimes
@@ -117,7 +117,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @Command("detach-all")
+    @CommandNode("detach-all")
     int detachAll(@CommandSource ServerPlayerEntity player) {
         ItemStack mainHandStack = player.getMainHandStack();
         if (mainHandStack.isEmpty()) {
@@ -133,7 +133,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     }
 
     @SneakyThrows
-    @Command("query")
+    @CommandNode("query")
     int query(@CommandSource ServerPlayerEntity player) {
         ItemStack mainHandStack = player.getMainHandStack();
         if (mainHandStack.isEmpty()) {

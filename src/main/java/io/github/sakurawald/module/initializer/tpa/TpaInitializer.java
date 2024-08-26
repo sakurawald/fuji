@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.tpa;
 
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.common.job.impl.MentionPlayersJob;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -21,27 +21,27 @@ public class TpaInitializer extends ModuleInitializer {
     @Getter
     private final ArrayList<TpaRequest> requests = new ArrayList<>();
 
-    @Command("tpa")
+    @CommandNode("tpa")
     private int $tpa(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
         return doRequest(player, target, false);
     }
 
-    @Command("tpahere")
+    @CommandNode("tpahere")
     private int $tpahere(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
         return doRequest(player, target, true);
     }
 
-    @Command("tpaaccept")
+    @CommandNode("tpaaccept")
     private int $tpaaccept(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
         return doResponse(player, target, ResponseStatus.ACCEPT);
     }
 
-    @Command("tpadeny")
+    @CommandNode("tpadeny")
     private int $tpadeny(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
         return doResponse(player, target, ResponseStatus.DENY);
     }
 
-    @Command("tpacancel")
+    @CommandNode("tpacancel")
     private int $tpacancel(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
         return doResponse(player, target, ResponseStatus.CANCEL);
     }

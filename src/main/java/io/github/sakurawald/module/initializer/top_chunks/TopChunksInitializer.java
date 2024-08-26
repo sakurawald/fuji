@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.top_chunks;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
@@ -33,7 +33,7 @@ import java.util.concurrent.CompletableFuture;
 public class TopChunksInitializer extends ModuleInitializer {
 
 
-    @Command("chunks")
+    @CommandNode("chunks")
     private int $chunks(@CommandSource CommandContext<ServerCommandSource> ctx) {
         CompletableFuture.runAsync(() -> {
             PriorityQueue<ChunkScore> PQ = new PriorityQueue<>();

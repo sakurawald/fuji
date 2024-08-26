@@ -5,7 +5,7 @@ import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.auxiliary.minecraft.IdentifierHelper;
 import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
 import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.wrapper.Dimension;
@@ -65,7 +65,7 @@ public class WorldInitializer extends ModuleInitializer {
         }
     }
 
-    @Command("world tp")
+    @CommandNode("world tp")
     private int $tp(@CommandSource ServerPlayerEntity player, Dimension dimension) {
         ServerWorld world = dimension.getWorld();
 
@@ -76,7 +76,7 @@ public class WorldInitializer extends ModuleInitializer {
     }
 
     @SneakyThrows
-    @Command("world create")
+    @CommandNode("world create")
     private int $create(@CommandSource CommandContext<ServerCommandSource> ctx, String name,
                         Optional<Long> seed, DimensionType dimensionType) {
         Identifier dimensionTypeIdentifier = Identifier.of(dimensionType.getIdentifier());
@@ -100,7 +100,7 @@ public class WorldInitializer extends ModuleInitializer {
 
 
     @SneakyThrows
-    @Command("world delete")
+    @CommandNode("world delete")
     private int $delete(@CommandSource CommandContext<ServerCommandSource> ctx, Dimension dimension) {
         ServerWorld world = dimension.getWorld();
 
@@ -128,7 +128,7 @@ public class WorldInitializer extends ModuleInitializer {
     }
 
     @SneakyThrows
-    @Command("world reset")
+    @CommandNode("world reset")
     private int $reset(@CommandSource CommandContext<ServerCommandSource> ctx, Optional<Boolean> useTheSameSeed, Dimension dimension) {
         // draw seed and save
         ServerWorld world = dimension.getWorld();

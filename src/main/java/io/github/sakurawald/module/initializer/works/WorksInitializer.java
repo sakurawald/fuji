@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.works;
 
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
@@ -37,7 +37,7 @@ public class WorksInitializer extends ModuleInitializer {
         worksHandler.loadFromDisk();
     }
 
-    @Command("works")
+    @CommandNode("works")
     private int $works(@CommandSource ServerPlayerEntity player) {
         new WorksGui(player, worksHandler.model().works, 0).open();
         return CommandHelper.Return.SUCCESS;

@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.jump;
 
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public class JumpInitializer extends ModuleInitializer {
 
-    @Command("jump")
+    @CommandNode("jump")
     int jump(@CommandSource ServerPlayerEntity player, Optional<Integer> distance) {
         int $distance = distance.orElse(128);
         HitResult raycast = player.raycast($distance,0,false);

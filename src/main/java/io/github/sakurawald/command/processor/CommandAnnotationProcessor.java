@@ -6,8 +6,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import com.mojang.brigadier.tree.CommandNode;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.adapter.interfaces.AbstractArgumentTypeAdapter;
@@ -61,7 +60,7 @@ public class CommandAnnotationProcessor {
     }
 
     private static void processClass(Class<?> clazz, Object instance) {
-        Set<Method> methods = ReflectionUtil.getMethodsWithAnnotation(clazz, Command.class);
+        Set<Method> methods = ReflectionUtil.getMethodsWithAnnotation(clazz, CommandNode.class);
         for (Method method : methods) {
             processMethod(clazz, method, instance);
         }
@@ -121,12 +120,12 @@ public class CommandAnnotationProcessor {
     private static List<Argument> makeArgumentList(Class<?> clazz, Method method) {
         List<Argument> ret = new ArrayList<>();
 
-        Command classAnnotation = clazz.getAnnotation(Command.class);
+        CommandNode classAnnotation = clazz.getAnnotation(CommandNode.class);
         if (classAnnotation != null) {
             ret.add(new Argument(classAnnotation.value().trim()));
         }
 
-        Command methodAnnotation = method.getAnnotation(Command.class);
+        CommandNode methodAnnotation = method.getAnnotation(CommandNode.class);
         String[] split = methodAnnotation.value().trim().split(" ");
         for (String s : split) {
             ret.add(new Argument(s));
@@ -221,7 +220,7 @@ public class CommandAnnotationProcessor {
 
     private static void registerOptionalArguments(List<Argument> arguments, Method method) {
         List<String> path = Argument.ofLowestNonOptionalNodePath(arguments);
-        CommandNode<ServerCommandSource> root = dispatcher.findNode(path);
+        com.mojang.brigadier.tree.CommandNode<ServerCommandSource> root = dispatcher.findNode(path);
         com.mojang.brigadier.Command<ServerCommandSource> function = root.getCommand();
 
         // filter

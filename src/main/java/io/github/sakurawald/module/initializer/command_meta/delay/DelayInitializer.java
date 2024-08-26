@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_meta.delay;
 
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.module.common.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -21,7 +21,7 @@ public class DelayInitializer extends ModuleInitializer {
         ServerLifecycleEvents.SERVER_STOPPING.register((server) -> executor.shutdown());
     }
 
-    @Command("delay")
+    @CommandNode("delay")
     @CommandPermission(level = 4)
     private int delay(int time, GreedyString rest) {
 

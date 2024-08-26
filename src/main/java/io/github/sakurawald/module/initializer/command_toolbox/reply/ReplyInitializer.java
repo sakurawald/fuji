@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.command_toolbox.reply;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
@@ -22,7 +22,7 @@ public class ReplyInitializer extends ModuleInitializer {
     }
 
 
-    @Command("reply")
+    @CommandNode("reply")
     private int $reply(@CommandSource ServerPlayerEntity player, GreedyString message) {
         String target = this.player2target.get(player.getGameProfile().getName());
 

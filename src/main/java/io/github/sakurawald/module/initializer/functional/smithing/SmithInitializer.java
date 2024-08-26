@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.functional.smithing;
 
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
@@ -14,7 +14,7 @@ import net.minecraft.text.Text;
 
 public class SmithInitializer extends ModuleInitializer {
 
-    @Command("smithing")
+    @CommandNode("smithing")
     private int $smithing(@CommandSource ServerPlayerEntity player) {
         player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> new SmithingScreenHandler(i, inventory, ScreenHandlerContext.create(p.getWorld(), p.getBlockPos())) {
             @Override

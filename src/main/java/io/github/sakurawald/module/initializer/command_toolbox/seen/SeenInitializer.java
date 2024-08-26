@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.command_toolbox.seen;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.argument.wrapper.OfflinePlayerName;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
@@ -31,7 +31,7 @@ public class SeenInitializer extends ModuleInitializer {
         data.loadFromDisk();
     }
 
-    @Command("seen")
+    @CommandNode("seen")
     private int $seen(@CommandSource CommandContext<ServerCommandSource> ctx, OfflinePlayerName playerName) {
         String target = playerName.getString();
 

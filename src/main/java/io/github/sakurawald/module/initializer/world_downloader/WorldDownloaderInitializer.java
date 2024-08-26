@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.world_downloader;
 import com.google.common.collect.EvictingQueue;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -72,7 +72,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
     }
 
     @SneakyThrows
-    @Command("download")
+    @CommandNode("download")
     private int $download(@CommandSource ServerPlayerEntity player) {
         /* init server */
         if (server == null) {

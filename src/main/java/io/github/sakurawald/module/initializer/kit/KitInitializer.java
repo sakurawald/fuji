@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.kit;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -28,7 +28,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-@Command("kit")
+@CommandNode("kit")
 @CommandPermission(level = 4)
 public class KitInitializer extends ModuleInitializer {
 
@@ -94,7 +94,7 @@ public class KitInitializer extends ModuleInitializer {
         STORAGE_PATH.toFile().mkdirs();
     }
 
-    @Command("editor")
+    @CommandNode("editor")
     private int $editor(@CommandSource ServerPlayerEntity player) {
         List<Kit> kits = readKits();
         new KitEditorGui(player, kits, 0).open();
@@ -109,7 +109,7 @@ public class KitInitializer extends ModuleInitializer {
      * counter for: times, cooldown
      * */
     @SneakyThrows
-    @Command("give")
+    @CommandNode("give")
     private int $give(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player, KitName kit) {
 
         Kit $kit = readKit(kit.getString());

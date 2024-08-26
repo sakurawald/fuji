@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.sit;
 
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
@@ -44,7 +44,7 @@ public class SitInitializer extends ModuleInitializer {
         return !player.hasVehicle() && !player.isFallFlying() && !player.isSleeping() && !player.isSwimming() && !player.isSpectator();
     }
 
-    @Command("sit")
+    @CommandNode("sit")
     private int $sit(@CommandSource ServerPlayerEntity player) {
         // fix: if the player stand in the slab/stair block
         BlockPos steppingBlockPos = EntityHelper.getSteppingBlockPos(player);

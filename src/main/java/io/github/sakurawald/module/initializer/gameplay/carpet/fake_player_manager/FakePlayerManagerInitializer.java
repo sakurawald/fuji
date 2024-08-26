@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_mana
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -32,14 +32,14 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new ManageFakePlayersJob().schedule());
     }
 
-    @Command("player renew")
+    @CommandNode("player renew")
     private int $renew(@CommandSource ServerPlayerEntity player) {
         renewFakePlayers(player);
         return CommandHelper.Return.SUCCESS;
     }
 
 
-    @Command("player who")
+    @CommandNode("player who")
     private int $who(@CommandSource CommandContext<ServerCommandSource> context) {
         /* validate */
         validateFakePlayers();

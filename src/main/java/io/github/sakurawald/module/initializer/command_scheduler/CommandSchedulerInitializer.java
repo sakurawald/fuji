@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_scheduler;
 
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
@@ -16,7 +16,7 @@ import lombok.Getter;
 import org.quartz.JobDataMap;
 
 
-@Command("command-scheduler")
+@CommandNode("command-scheduler")
 @CommandPermission(level = 4)
 public class CommandSchedulerInitializer extends ModuleInitializer {
 
@@ -53,7 +53,7 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
         updateJobs();
     }
 
-    @Command("trigger")
+    @CommandNode("trigger")
     private int $trigger(ScheduleJobName jobName) {
         schedulerHandler.model().scheduleJobs.forEach(job -> {
             if (job.getName().equals(jobName.getName())) {

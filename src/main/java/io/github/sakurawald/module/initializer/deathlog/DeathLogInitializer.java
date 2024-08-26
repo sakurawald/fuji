@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.deathlog;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.wrapper.OfflinePlayerName;
@@ -30,7 +30,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@Command("deathlog")
+@CommandNode("deathlog")
 @CommandPermission(level = 4)
 public class DeathLogInitializer extends ModuleInitializer {
     private final Path STORAGE_PATH = Fuji.CONFIG_PATH.resolve("deathlog");
@@ -57,7 +57,7 @@ public class DeathLogInitializer extends ModuleInitializer {
     }
 
     @SneakyThrows
-    @Command("restore")
+    @CommandNode("restore")
     private int $restore(@CommandSource CommandContext<ServerCommandSource> ctx, String from, int index, ServerPlayerEntity to) {
         /* read from file */
         ServerCommandSource source = ctx.getSource();
@@ -107,7 +107,7 @@ public class DeathLogInitializer extends ModuleInitializer {
         return Uuids.getOfflinePlayerUuid(playerName) + ".dat";
     }
 
-    @Command("view")
+    @CommandNode("view")
     private int $view(@CommandSource ServerPlayerEntity player, OfflinePlayerName from) {
         String $from = from.getString();
         NbtCompound root = NbtHelper.read(STORAGE_PATH.resolve(getFileName($from)));

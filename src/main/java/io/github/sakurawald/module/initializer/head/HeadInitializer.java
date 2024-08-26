@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.head;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
@@ -29,20 +29,20 @@ public class HeadInitializer extends ModuleInitializer {
         headHandler.loadFromDisk();
     }
 
-    @Command("head sync")
+    @CommandNode("head sync")
     @CommandPermission(level = 4)
     private int $sync(@CommandSource CommandContext<ServerCommandSource> ctx) {
         HeadProvider.fetchData();
         return CommandHelper.Return.SUCCESS;
     }
 
-    @Command("head")
+    @CommandNode("head")
     public int $head(@CommandSource ServerPlayerEntity player) {
         new HeadGui(player).open();
         return CommandHelper.Return.SUCCESS;
     }
 
-    @Command("head gui")
+    @CommandNode("head gui")
     public int $gui(@CommandSource ServerPlayerEntity player) {
         return $head(player);
     }

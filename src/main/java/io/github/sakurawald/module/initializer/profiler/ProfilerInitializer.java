@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.profiler;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
@@ -41,7 +41,7 @@ public class ProfilerInitializer extends ModuleInitializer {
         }
     }
 
-    @Command("profiler")
+    @CommandNode("profiler")
     private int $profiler(@CommandSource CommandContext<ServerCommandSource> ctx) {
         ServerCommandSource source = ctx.getSource();
         CompletableFuture.runAsync(() -> {

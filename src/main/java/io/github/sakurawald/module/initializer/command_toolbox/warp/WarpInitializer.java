@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.warp;
 
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
@@ -19,7 +19,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import java.util.Optional;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
-@Command("warp")
+@CommandNode("warp")
 public class WarpInitializer extends ModuleInitializer {
 
     @Getter
@@ -36,7 +36,7 @@ public class WarpInitializer extends ModuleInitializer {
         data.loadFromDisk();
     }
 
-    @Command("tp")
+    @CommandNode("tp")
     private int $tp(@CommandSource ServerPlayerEntity player, WarpName warpName) {
         String name = warpName.getName();
 
@@ -50,7 +50,7 @@ public class WarpInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @Command("unset")
+    @CommandNode("unset")
     @CommandPermission(level = 4)
     private int $unset(@CommandSource ServerPlayerEntity player, WarpName warpName) {
         String name = warpName.getName();
@@ -65,7 +65,7 @@ public class WarpInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @Command("set")
+    @CommandNode("set")
     @CommandPermission(level = 4)
     private int $set(@CommandSource ServerPlayerEntity player, WarpName warpName, Optional<Boolean> override) {
         String name = warpName.getName();
@@ -82,7 +82,7 @@ public class WarpInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @Command("list")
+    @CommandNode("list")
     private int $list(@CommandSource ServerPlayerEntity player) {
         MessageHelper.sendMessage(player, "warp.list", data.model().warps.keySet());
         return CommandHelper.Return.SUCCESS;

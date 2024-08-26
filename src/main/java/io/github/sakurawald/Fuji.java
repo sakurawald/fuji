@@ -22,7 +22,6 @@ import java.nio.file.Path;
 // TODO: argument resolver for command alias module
 // TODO: /delay --name, /delay list, /delay cancel
 // TODO: /for do
-// TODO: partial async for rtp
 
 public class Fuji implements ModInitializer {
 

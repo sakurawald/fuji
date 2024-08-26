@@ -5,7 +5,7 @@ import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandPermission;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
@@ -24,7 +24,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.function.BiFunction;
 
-@Command("json")
+@CommandNode("json")
 @CommandPermission(level = 4)
 public class JsonInitializer extends ModuleInitializer {
 
@@ -47,7 +47,7 @@ public class JsonInitializer extends ModuleInitializer {
 
     }
 
-    @Command("read")
+    @CommandNode("read")
     int read(@CommandSource CommandContext<ServerCommandSource> ctx, String filePath, String jsonPath) {
         operateJson(filePath, (documentContext, path) -> {
             Object read = documentContext.read(jsonPath);
@@ -57,7 +57,7 @@ public class JsonInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @Command("write")
+    @CommandNode("write")
     int write(@CommandSource CommandContext<ServerCommandSource> ctx, String filePath, String jsonPath, JsonValueType valueType, GreedyString value) {
         operateJson(filePath, (documentContext, path) -> {
             Object obj = valueType.parse(value.getString());
@@ -69,7 +69,7 @@ public class JsonInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @Command("delete")
+    @CommandNode("delete")
     int delete(@CommandSource CommandContext<ServerCommandSource> ctx, String filePath, String jsonPath) {
         operateJson(filePath, (documentContext, path) -> {
             documentContext.delete(jsonPath);
@@ -80,7 +80,7 @@ public class JsonInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @Command("put")
+    @CommandNode("put")
     int put(@CommandSource CommandContext<ServerCommandSource> ctx, String filePath, String jsonPath, String jsonKey, JsonValueType valueType, GreedyString value) {
         operateJson(filePath, (documentContext, path) -> {
             Object obj = valueType.parse(value.getString());
@@ -92,7 +92,7 @@ public class JsonInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @Command("renameKey")
+    @CommandNode("renameKey")
     int renameKey(@CommandSource CommandContext<ServerCommandSource> ctx, String filePath, String jsonPath, String oldJsonKey, String newJsonKey) {
         operateJson(filePath, (documentContext, path) -> {
             documentContext.renameKey(jsonPath, oldJsonKey, newJsonKey);

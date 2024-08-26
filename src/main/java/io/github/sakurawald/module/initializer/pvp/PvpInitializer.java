@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.pvp;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
@@ -29,7 +29,7 @@ public class PvpInitializer extends ModuleInitializer {
         pvpHandler.loadFromDisk();
     }
 
-    @Command("pvp on")
+    @CommandNode("pvp on")
     private int $on(@CommandSource ServerPlayerEntity player) {
         HashSet<String> whitelist = pvpHandler.model().whitelist;
         String name = player.getGameProfile().getName();
@@ -46,7 +46,7 @@ public class PvpInitializer extends ModuleInitializer {
         return CommandHelper.Return.FAIL;
     }
 
-    @Command("pvp off")
+    @CommandNode("pvp off")
     private int $off(@CommandSource ServerPlayerEntity player) {
             HashSet<String> whitelist = pvpHandler.model().whitelist;
             String name = player.getGameProfile().getName();
@@ -62,7 +62,7 @@ public class PvpInitializer extends ModuleInitializer {
             return CommandHelper.Return.FAIL;
     }
 
-    @Command("pvp status")
+    @CommandNode("pvp status")
     private int $status(@CommandSource ServerPlayerEntity player) {
             HashSet<String> whitelist = pvpHandler.model().whitelist;
             player.sendMessage(MessageHelper.ofComponent(player, "pvp.status")
@@ -70,7 +70,7 @@ public class PvpInitializer extends ModuleInitializer {
             return CommandHelper.Return.SUCCESS;
     }
 
-    @Command("pvp list")
+    @CommandNode("pvp list")
     private int $list(@CommandSource CommandContext<ServerCommandSource> ctx) {
         HashSet<String> whitelist = pvpHandler.model().whitelist;
         MessageHelper.sendMessage(ctx.getSource(), "pvp.list", whitelist);

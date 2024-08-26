@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.afk;
 
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.afk.accessor.AfkStateAccessor;
@@ -18,7 +18,7 @@ public class AfkInitializer extends ModuleInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new AfkMarkerJob().schedule());
     }
 
-    @Command("afk")
+    @CommandNode("afk")
     private int $afk(@CommandSource ServerPlayerEntity player) {
         // note: issue command will update lastLastActionTime, so it's impossible to use /afk to disable afk
         ((AfkStateAccessor) player).fuji$setAfk(true);

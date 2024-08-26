@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.compass;
 
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.wrapper.Dimension;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -18,7 +18,7 @@ import net.minecraft.util.math.GlobalPos;
 import java.util.Optional;
 import java.util.function.Function;
 
-@Command("compass")
+@CommandNode("compass")
 public class CompassInitializer extends ModuleInitializer {
 
     int acceptCompassItem(ServerPlayerEntity source, Function<ItemStack, Integer> function) {
@@ -36,7 +36,7 @@ public class CompassInitializer extends ModuleInitializer {
         itemStack.set(DataComponentTypes.LODESTONE_TRACKER, component);
     }
 
-    @Command("track pos")
+    @CommandNode("track pos")
     int track(@CommandSource ServerPlayerEntity player, Dimension dimension, BlockPos blockPos) {
         return acceptCompassItem(player,(itemStack) -> {
            this.setTrackedTarget(itemStack, dimension.getWorld(), blockPos);
@@ -44,7 +44,7 @@ public class CompassInitializer extends ModuleInitializer {
         });
     }
 
-    @Command("track player")
+    @CommandNode("track player")
     int track(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
         return acceptCompassItem(player,(itemStack) -> {
             this.setTrackedTarget(itemStack,target.getServerWorld(),target.getBlockPos());
@@ -52,7 +52,7 @@ public class CompassInitializer extends ModuleInitializer {
         });
     }
 
-    @Command("reset")
+    @CommandNode("reset")
     int reset(@CommandSource ServerPlayerEntity player) {
         return acceptCompassItem(player,(itemStack) -> {
             itemStack.set(DataComponentTypes.LODESTONE_TRACKER, null);

@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.back;
 
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.structure.Position;
@@ -19,7 +19,7 @@ public class BackInitializer extends ModuleInitializer {
     @Getter
     private final HashMap<String, Position> player2lastPos = new HashMap<>();
 
-    @Command("back")
+    @CommandNode("back")
     private int $back(@CommandSource ServerPlayerEntity player) {
         Position lastPos = player2lastPos.get(player.getName().getString());
         if (lastPos == null) {

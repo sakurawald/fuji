@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.bed;
 
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 public class BedInitializer extends ModuleInitializer {
 
-    @Command("bed")
+    @CommandNode("bed")
     private int $bed(@CommandSource ServerPlayerEntity player) {
         BlockPos respawnPosition = player.getSpawnPointPosition();
         RegistryKey<World> respawnDimension = player.getSpawnPointDimension();

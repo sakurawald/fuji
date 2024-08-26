@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.chat;
 import eu.pb4.placeholders.api.PlaceholderResult;
 import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
 import io.github.sakurawald.config.Configs;
@@ -122,7 +122,7 @@ public class ChatInitializer extends ModuleInitializer {
                 });
     }
 
-    @Command("chat format set")
+    @CommandNode("chat format set")
     private int $format(@CommandSource ServerPlayerEntity player, GreedyString format) {
         /* save the format*/
         String name = player.getGameProfile().getName();
@@ -139,7 +139,7 @@ public class ChatInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @Command("chat format reset")
+    @CommandNode("chat format reset")
     private int $reset(@CommandSource ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
         chatHandler.model().format.player2format.remove(name);

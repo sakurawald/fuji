@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.home;
 
-import io.github.sakurawald.command.annotation.Command;
+import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
@@ -43,7 +43,7 @@ public class HomeInitializer extends ModuleInitializer {
         return homes.get(playerName);
     }
 
-    @Command("home tp")
+    @CommandNode("home tp")
     private int $tp(@CommandSource ServerPlayerEntity player, HomeName home) {
         Map<String, Position> name2position = ofHomes(player);
         String homeName = home.getString();
@@ -57,7 +57,7 @@ public class HomeInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @Command("home unset")
+    @CommandNode("home unset")
     private int $unset(@CommandSource ServerPlayerEntity player, HomeName home) {
         Map<String, Position> name2position = ofHomes(player);
         String homeName = home.getString();
@@ -71,7 +71,7 @@ public class HomeInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @Command("home set")
+    @CommandNode("home set")
     private int $set(@CommandSource ServerPlayerEntity player, HomeName home, Optional<Boolean> override) {
         Map<String, Position> name2position = ofHomes(player);
         String homeName = home.getString();
@@ -95,7 +95,7 @@ public class HomeInitializer extends ModuleInitializer {
     }
 
 
-    @Command("home list")
+    @CommandNode("home list")
     private int $list(@CommandSource ServerPlayerEntity player) {
         MessageHelper.sendMessage(player, "home.list", ofHomes(player).keySet());
         return CommandHelper.Return.SUCCESS;
