@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_scheduler;
 
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
 import io.github.sakurawald.module.initializer.command_scheduler.config.model.SchedulerModel;
@@ -17,7 +17,7 @@ import org.quartz.JobDataMap;
 
 
 @CommandNode("command-scheduler")
-@CommandPermission(level = 4)
+@CommandRequirement(level = 4)
 public class CommandSchedulerInitializer extends ModuleInitializer {
 
     @Getter

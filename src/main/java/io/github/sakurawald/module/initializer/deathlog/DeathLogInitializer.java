@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.deathlog;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.wrapper.OfflinePlayerName;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -31,7 +31,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @CommandNode("deathlog")
-@CommandPermission(level = 4)
+@CommandRequirement(level = 4)
 public class DeathLogInitializer extends ModuleInitializer {
     private final Path STORAGE_PATH = Fuji.CONFIG_PATH.resolve("deathlog");
 

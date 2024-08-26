@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.command_meta.chain;
 
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.module.common.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
@@ -14,7 +14,7 @@ public class ChainInitializer extends ModuleInitializer {
     private static final Pattern CHAIN_COMMAND_PARSER = Pattern.compile("(.+?)\\s+(chain .+)");
 
     @CommandNode("chain")
-    @CommandPermission(level = 4)
+    @CommandRequirement(level = 4)
     private int chain(GreedyString rest) {
 
         String $rest = rest.getString();

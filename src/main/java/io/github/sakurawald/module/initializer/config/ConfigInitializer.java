@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.config;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.job.interfaces.AbstractJob;
@@ -14,7 +14,7 @@ import net.minecraft.server.command.ServerCommandSource;
 
 
 @CommandNode("fuji")
-@CommandPermission(level = 4)
+@CommandRequirement(level = 4)
 public class ConfigInitializer extends ModuleInitializer {
 
     @CommandNode("reload")

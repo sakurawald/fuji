@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.cleaner;
 
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.structure.TypeFormatter;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -30,7 +30,7 @@ import java.util.concurrent.CompletableFuture;
 
 
 @CommandNode("cleaner")
-@CommandPermission(level = 4)
+@CommandRequirement(level = 4)
 public class CleanerInitializer extends ModuleInitializer {
 
     @Override

@@ -7,7 +7,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.adapter.interfaces.AbstractArgumentTypeAdapter;
 import io.github.sakurawald.command.argument.structure.Argument;
@@ -88,8 +88,8 @@ public class CommandAnnotationProcessor {
         com.mojang.brigadier.Command<ServerCommandSource> function = makeCommandFunction(method, instance);
 
         // set requirement (class)
-        if (clazz.isAnnotationPresent(CommandPermission.class)) {
-            setRequirement(builders.getFirst(), clazz.getAnnotation(CommandPermission.class));
+        if (clazz.isAnnotationPresent(CommandRequirement.class)) {
+            setRequirement(builders.getFirst(), clazz.getAnnotation(CommandRequirement.class));
         }
 
         LiteralArgumentBuilder<ServerCommandSource> root = makeRootArgumentBuilder(builders, (last) -> last.executes(function));
@@ -100,14 +100,14 @@ public class CommandAnnotationProcessor {
     }
 
     @SuppressWarnings("RedundantIfStatement")
-    private static void setRequirement(ArgumentBuilder<ServerCommandSource, ?> builder, CommandPermission annotation) {
+    private static void setRequirement(ArgumentBuilder<ServerCommandSource, ?> builder, CommandRequirement annotation) {
         if (annotation == null) return;
 
         Predicate<ServerCommandSource> predicate = (ctx) -> {
             ServerPlayerEntity player = ctx.getPlayer();
             if (player == null) return true;
             if (ctx.hasPermissionLevel(annotation.level())) return true;
-            if (!annotation.permission().isEmpty() && PermissionHelper.hasPermission(player, annotation.permission()))
+            if (!annotation.string().isEmpty() && PermissionHelper.hasPermission(player, annotation.string()))
                 return true;
 
             return false;
@@ -274,7 +274,7 @@ public class CommandAnnotationProcessor {
 
 
         // set requirement (method)
-        setRequirement(getLastLiteralArgumentBuilder(builders), method.getAnnotation(CommandPermission.class));
+        setRequirement(getLastLiteralArgumentBuilder(builders), method.getAnnotation(CommandRequirement.class));
 
         return builders;
     }

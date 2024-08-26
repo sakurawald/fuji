@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.command_meta.shell;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -21,7 +21,7 @@ import java.util.concurrent.CompletableFuture;
 public class ShellInitializer extends ModuleInitializer {
 
     @CommandNode("shell")
-    @CommandPermission(level = 4)
+    @CommandRequirement(level = 4)
     private int shell(@CommandSource CommandContext<ServerCommandSource> ctx, GreedyString rest) {
         if (!Configs.configHandler.model().modules.command_meta.shell.enable_warning.equals("CONFIRM")) {
             throw new RuntimeException("Refuse to execute shell command: please read the official wiki.");

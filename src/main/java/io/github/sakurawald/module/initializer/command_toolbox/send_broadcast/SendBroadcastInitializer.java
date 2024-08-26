@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.command_toolbox.send_broadcast;
 
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
@@ -12,7 +12,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class SendBroadcastInitializer extends ModuleInitializer {
 
     @CommandNode("send-broadcast")
-    @CommandPermission(level =  4)
+    @CommandRequirement(level =  4)
     int sendBroadcast(GreedyString rest){
         String message = rest.getString();
 

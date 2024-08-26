@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.warp;
 
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
@@ -51,7 +51,7 @@ public class WarpInitializer extends ModuleInitializer {
     }
 
     @CommandNode("unset")
-    @CommandPermission(level = 4)
+    @CommandRequirement(level = 4)
     private int $unset(@CommandSource ServerPlayerEntity player, WarpName warpName) {
         String name = warpName.getName();
 
@@ -66,7 +66,7 @@ public class WarpInitializer extends ModuleInitializer {
     }
 
     @CommandNode("set")
-    @CommandPermission(level = 4)
+    @CommandRequirement(level = 4)
     private int $set(@CommandSource ServerPlayerEntity player, WarpName warpName, Optional<Boolean> override) {
         String name = warpName.getName();
 

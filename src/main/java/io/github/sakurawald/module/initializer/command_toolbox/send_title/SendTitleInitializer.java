@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.command_toolbox.send_title;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class SendTitleInitializer extends ModuleInitializer {
 
     @CommandNode("send-title")
-    @CommandPermission(level = 4)
+    @CommandRequirement(level = 4)
     int sendTitle(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player
             , Optional<String> mainTitle
             , Optional<String> subTitle

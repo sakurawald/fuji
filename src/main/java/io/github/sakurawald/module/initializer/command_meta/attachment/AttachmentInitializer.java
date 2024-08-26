@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.command_meta.attachment;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
 import io.github.sakurawald.module.common.manager.Managers;
@@ -16,7 +16,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
 @CommandNode("attachment")
-@CommandPermission(level = 4)
+@CommandRequirement(level = 4)
 public class AttachmentInitializer extends ModuleInitializer {
 
     @CommandNode("set")

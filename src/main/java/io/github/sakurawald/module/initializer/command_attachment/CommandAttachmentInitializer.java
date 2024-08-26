@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_attachment;
 
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
 import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @CommandNode("command-attachment")
-@CommandPermission(level = 4)
+@CommandRequirement(level = 4)
 public class CommandAttachmentInitializer extends ModuleInitializer {
 
     private static final String COMMAND_ATTACHMENT_SUBJECT_NAME = "command-attachment";

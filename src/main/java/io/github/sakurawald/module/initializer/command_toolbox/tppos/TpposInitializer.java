@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.command_toolbox.tppos;
 
 import io.github.sakurawald.command.argument.wrapper.Dimension;
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.common.structure.Position;
 import io.github.sakurawald.module.common.structure.TeleportSetup;
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class TpposInitializer extends ModuleInitializer {
 
     @CommandNode("tppos")
-    @CommandPermission(level = 4)
+    @CommandRequirement(level = 4)
     int tppos(@CommandSource ServerPlayerEntity player
             , Optional<Dimension> dimension
             , Optional<Double> x

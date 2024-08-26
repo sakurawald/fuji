@@ -6,7 +6,7 @@ import io.github.sakurawald.auxiliary.minecraft.IdentifierHelper;
 import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
 import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.wrapper.Dimension;
 import io.github.sakurawald.command.argument.wrapper.DimensionType;
@@ -43,7 +43,7 @@ import java.util.Optional;
  */
 
 @Getter
-@CommandPermission(level = 4)
+@CommandRequirement(level = 4)
 public class WorldInitializer extends ModuleInitializer {
 
     private final ConfigHandler<WorldModel> storage = new ObjectConfigHandler<>("world.json", WorldModel.class);

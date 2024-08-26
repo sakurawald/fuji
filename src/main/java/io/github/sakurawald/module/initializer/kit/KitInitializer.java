@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.kit;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.kit.command.argument.wrapper.KitName;
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @CommandNode("kit")
-@CommandPermission(level = 4)
+@CommandRequirement(level = 4)
 public class KitInitializer extends ModuleInitializer {
 
     public static final String INVENTORY = "inventory";

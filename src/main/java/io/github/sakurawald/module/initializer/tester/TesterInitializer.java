@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.tester;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import net.minecraft.server.MinecraftServer;
@@ -11,7 +11,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 
 @CommandNode("tester")
-@CommandPermission(level = 4)
+@CommandRequirement(level = 4)
 public class TesterInitializer extends ModuleInitializer {
 
     @CommandNode("run")

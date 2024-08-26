@@ -2,14 +2,14 @@ package io.github.sakurawald.module.initializer.command_meta.run;
 
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.module.common.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 @CommandNode("run")
-@CommandPermission(level =  4)
+@CommandRequirement(level =  4)
 public class RunInitializer extends ModuleInitializer {
 
     @CommandNode("as console")

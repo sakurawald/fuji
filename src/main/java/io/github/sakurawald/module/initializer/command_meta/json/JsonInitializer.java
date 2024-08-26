@@ -6,7 +6,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
 import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
@@ -25,7 +25,7 @@ import java.nio.file.Path;
 import java.util.function.BiFunction;
 
 @CommandNode("json")
-@CommandPermission(level = 4)
+@CommandRequirement(level = 4)
 public class JsonInitializer extends ModuleInitializer {
 
     private static final Configuration CONFIGURATION = Configuration.defaultConfiguration().jsonProvider(new GsonJsonProvider());

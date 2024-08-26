@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.command_toolbox.send_toast;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -74,7 +74,7 @@ public class SendToastInitializer extends ModuleInitializer {
     }
 
     @CommandNode("send-toast")
-    @CommandPermission(level = 4)
+    @CommandRequirement(level = 4)
     int sendToast(@CommandSource CommandContext<ServerCommandSource> ctx
             , ServerPlayerEntity player
             , Optional<AdvancementFrame> toastType

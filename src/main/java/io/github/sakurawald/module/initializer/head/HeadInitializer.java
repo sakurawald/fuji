@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.head;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandPermission;
+import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
 import io.github.sakurawald.config.handler.ObjectConfigHandler;
@@ -30,7 +30,7 @@ public class HeadInitializer extends ModuleInitializer {
     }
 
     @CommandNode("head sync")
-    @CommandPermission(level = 4)
+    @CommandRequirement(level = 4)
     private int $sync(@CommandSource CommandContext<ServerCommandSource> ctx) {
         HeadProvider.fetchData();
         return CommandHelper.Return.SUCCESS;
