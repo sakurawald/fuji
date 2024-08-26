@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.mixin._internal.low_level.accessor;
+package io.github.sakurawald.module.mixin.common.low_level.accessor;
 
 import net.minecraft.server.world.ChunkHolder;
 import net.minecraft.server.world.ServerChunkLoadingManager;

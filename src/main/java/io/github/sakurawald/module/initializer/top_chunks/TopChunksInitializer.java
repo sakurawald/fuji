@@ -7,7 +7,7 @@ import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.top_chunks.structure.ChunkScore;
-import io.github.sakurawald.module.mixin._internal.low_level.accessor.ThreadedAnvilChunkStorageMixin;
+import io.github.sakurawald.module.mixin.common.low_level.accessor.ThreadedAnvilChunkStorageMixin;
 import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
 import net.kyori.adventure.text.Component;

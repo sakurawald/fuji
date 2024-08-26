@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.mixin._internal.low_level.server;
+package io.github.sakurawald.module.mixin.common.low_level.server;
 
 import io.github.sakurawald.auxiliary.LogUtil;
 import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
