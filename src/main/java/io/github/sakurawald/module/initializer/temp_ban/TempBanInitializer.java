@@ -84,7 +84,7 @@ public class TempBanInitializer extends ModuleInitializer {
     private static Date parseDate(String expiry) {
 
         // Regular expression to match hours, minutes, and seconds
-        Pattern pattern = Pattern.compile("(\\d+)([hms])");
+        Pattern pattern = Pattern.compile("(\\d+)([dhms])");
         Matcher matcher = pattern.matcher(expiry);
 
         int totalSeconds = 0;
