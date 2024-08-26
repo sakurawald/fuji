@@ -3,10 +3,13 @@ package io.github.sakurawald.command.argument.adapter.interfaces;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.Fuji;
+import io.github.classgraph.ClassInfo;
+import io.github.sakurawald.auxiliary.ReflectionUtil;
+import io.github.sakurawald.module.ModuleManager;
+import io.github.sakurawald.module.common.manager.Managers;
+import lombok.SneakyThrows;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import org.reflections.Reflections;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
@@ -20,18 +23,21 @@ public abstract class AbstractArgumentTypeAdapter {
 
     private static final List<AbstractArgumentTypeAdapter> adapters = new ArrayList<>();
 
+    @SneakyThrows
     public static void registerAdapters() {
-        Reflections reflections = new Reflections(Fuji.class.getPackage().getName());
-        reflections.getSubTypesOf(AbstractArgumentTypeAdapter.class).forEach(o -> {
-            try {
-                Constructor<? extends AbstractArgumentTypeAdapter> constructor = o.getDeclaredConstructor();
-                AbstractArgumentTypeAdapter instance = constructor.newInstance();
-                adapters.add(instance);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+        ModuleManager moduleManager = Managers.getModuleManager();
 
-        });
+        for (ClassInfo classInfo : ReflectionUtil.getClassInfoScanResult().getSubclasses(AbstractArgumentTypeAdapter.class)) {
+            String className = classInfo.getName();
+
+            // skip if the module path is not enabled.
+            if (!moduleManager.shouldWeEnableThis(className)) continue;
+
+            Class<? extends AbstractArgumentTypeAdapter> clazz = (Class<? extends AbstractArgumentTypeAdapter>) Class.forName(classInfo.getName());
+            Constructor<? extends AbstractArgumentTypeAdapter> constructor = clazz.getDeclaredConstructor();
+            AbstractArgumentTypeAdapter instance = constructor.newInstance();
+            adapters.add(instance);
+        }
     }
 
     public abstract boolean match(Type type);
