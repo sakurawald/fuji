@@ -1,15 +1,23 @@
 package io.github.sakurawald.module.initializer.tester;
 
-import com.mojang.brigadier.context.CommandContext;
+import eu.pb4.polymer.virtualentity.api.ElementHolder;
+import eu.pb4.polymer.virtualentity.api.VirtualEntityUtils;
+import eu.pb4.polymer.virtualentity.api.attachment.EntityAttachment;
+import eu.pb4.polymer.virtualentity.api.elements.TextDisplayElement;
+import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
+import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import net.minecraft.entity.player.PlayerAbilities;
-import net.minecraft.network.packet.s2c.play.PlayerAbilitiesS2CPacket;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.entity.decoration.DisplayEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+import net.minecraft.util.math.Vec3d;
+import org.joml.Vector3f;
 
 
 @CommandNode("tester")
@@ -17,43 +25,9 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class TesterInitializer extends ModuleInitializer {
 
     @CommandNode("run")
-    private static int $run(@CommandSource CommandContext<ServerCommandSource> ctx) {
-        var source = ctx.getSource();
-        ServerPlayerEntity player = source.getPlayer();
+    private static int $run(@CommandSource ServerPlayerEntity player) {
 
-//        player.setNoGravity(false);
-//        player.setNoGravity(false);
-
-//        PlayerAbilities playerAbilities = new PlayerAbilities();
-//        playerAbilities.allowFlying = true;
-//        playerAbilities.flying = true;
-//        player.networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(playerAbilities));
-
-//        public final double getFinalGravity() {
-//        player.setNoGravity(!player.hasNoGravity());
-        // no damage
-//        player.getFinalGravity()
-
-//        player.setNoGravity(false);
-
-//        player.setInvisible(true);
-//        player.isInvisibleTo()
-
-//        player.isCollidable()
-//        player.isAttackable()
-//        player.isInCreativeMode()
-//        player.isPushable()
-//        player.isSpectator()
-//        player.setInvisible(true);
-//        player.isCollidable();
-//        player.isTarget()
-//        player.isInRange()
-//        player.canHaveStatusEffect()
-//        player.canTarget()
-
-//        player.isInvisibleTo()
-
-        return -1;
+        return 1;
     }
 
 }

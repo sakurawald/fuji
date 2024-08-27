@@ -21,6 +21,7 @@ import java.nio.file.Path;
 
 // TODO: closure factory method for AbstractJob
 // TODO: a `common` package in mixin package
+// TODO: manifold getInstance()
 
 public class Fuji implements ModInitializer {
 
