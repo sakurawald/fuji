@@ -3,7 +3,6 @@ package io.github.sakurawald.module.initializer.nametag.job;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.job.interfaces.CronJob;
 import io.github.sakurawald.module.initializer.nametag.NametagInitializer;
-import io.github.sakurawald.module.initializer.tab_list.TabListInitializer;
 import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
