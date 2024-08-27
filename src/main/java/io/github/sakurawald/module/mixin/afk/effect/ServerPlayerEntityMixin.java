@@ -50,6 +50,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
             if (movementType == MovementType.PLAYER) {
                 if (AfkInitializer.isPlayerActuallyMovedItself(movementType,vec3d)) {
                     afkStateAccessor.fuji$setAfk(false);
+                    super.move(movementType, vec3d);
                 }
 
                 // ignore the move() for Vec3d.ZERO
