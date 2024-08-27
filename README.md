@@ -12,7 +12,7 @@ One-stop essential mod for fabric.
 - **fully modular**: you can disable any module completely if you don't like it. (Code is data is code. Thanks to the power of meta-programming, the module loader will even not load and inject the module codes into the game, if you disable the module, without any performance and compatibility issue.)
 - **high performance**: keep performance in mind while coding. (By data-structure, algorithm, lazy-evaluation, multi-threading, event-driven and cache to improve performance greatly.)
 - **easy to use**: a text-based per-field-explained auto-generated always-up-to-date documentation is provided. (The configuration uses lots of mini-language and generators to provide a unified setup.)
-- ** free **: it's free and open source, with GPL licence.
+- **free**: it's free and open source, with GPL licence.
 
 ## Manual
 See [configuration](https://github.com/sakurawald/fuji-fabric/wiki/Configuration)
