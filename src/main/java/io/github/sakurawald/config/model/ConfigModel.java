@@ -880,11 +880,12 @@ public class ConfigModel {
                 public List<String> on_leave_afk = new ArrayList<>() {
                     {
                         this.add("send-broadcast <gold>Player %player:name% is no longer afk");
+                        this.add("effect give %player:name% minecraft:absorption 5 4");
                     }
                 };
             }
 
-            public AfkEffect afk_effect = new AfkEffect();
+            public AfkEffect effect = new AfkEffect();
 
             @Document("""
                     Afk effects are applied if a player enters afk state.
@@ -893,7 +894,14 @@ public class ConfigModel {
             public class AfkEffect {
                 public boolean enable = true;
 
+                @Document("Immune to all damage?")
                 public boolean invulnerable = true;
+
+                @Document("Can be targeted by a hostile entity ?")
+                public boolean targetable = false;
+
+                @Document("Can be moved if in afk state ?")
+                public boolean moveable = false;
             }
 
         }

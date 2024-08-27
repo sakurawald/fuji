@@ -9,9 +9,8 @@
     "color.sign.SignBlockEntityMixin"
   ],
   "mixins": [
-    "afk.MobEntityMixin",
-    "afk.PlayerListMixin",
     "afk.ServerPlayerMixin",
+    "afk.effect.LivingEntityMixin",
     "afk.effect.ServerPlayerEntityMixin",
     "anti_build.BlockItemMixin",
     "anti_build.EntityMixin",

@@ -10,18 +10,17 @@ import java.nio.file.Path;
 // TODO: rank module (track, requirement)
 // TODO: hologram module (facility)
 // TODO: invsee module (slot, inv-redirect, inv, ender)
-// TODO: move docs gen into another project
+// TODO: /mail
 
 // TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector, predicate, equal)
 
-// TODO: a `common` package in mixin package
-
-// TODO: /mail
 // TODO: command attachment for entity, and block
-// TODO: closure factory method for AbstractJob
 // TODO: argument resolver for command alias module
 // TODO: /delay --name, /delay list, /delay cancel
 // TODO: /for do
+
+// TODO: closure factory method for AbstractJob
+// TODO: a `common` package in mixin package
 
 public class Fuji implements ModInitializer {
 

@@ -1,14 +1,22 @@
 package io.github.sakurawald.module.mixin.afk;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.mojang.authlib.GameProfile;
+import io.github.sakurawald.auxiliary.LogUtil;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
 import io.github.sakurawald.module.common.service.command_executor.CommandExecutor;
+import io.github.sakurawald.module.initializer.afk.AfkInitializer;
 import io.github.sakurawald.module.initializer.afk.accessor.AfkStateAccessor;
+import net.minecraft.entity.MovementType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,7 +31,7 @@ import static io.github.sakurawald.auxiliary.minecraft.MessageHelper.ofText;
 
 // to override tab list name in `tab list module`
 @Mixin(value = ServerPlayerEntity.class, priority = 1000 - 250)
-public abstract class ServerPlayerMixin implements AfkStateAccessor {
+public abstract class ServerPlayerMixin extends PlayerEntity implements AfkStateAccessor {
 
     @Unique
     private final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
@@ -37,6 +45,10 @@ public abstract class ServerPlayerMixin implements AfkStateAccessor {
 
     @Unique
     private long lastLastActionTime = 0;
+
+    public ServerPlayerMixin(World world, BlockPos blockPos, float f, GameProfile gameProfile) {
+        super(world, blockPos, f, gameProfile);
+    }
 
     @ModifyReturnValue(method = "getPlayerListName", at = @At("RETURN"))
     public Text $getPlayerListName(Text original) {
@@ -81,4 +93,12 @@ public abstract class ServerPlayerMixin implements AfkStateAccessor {
         return this.lastLastActionTime;
     }
 
+    @Override
+    public void move(MovementType movementType, Vec3d vec3d) {
+        if (AfkInitializer.isPlayerActuallyMovedItself(movementType,vec3d)) {
+            fuji$setAfk(false);
+        }
+
+        super.move(movementType, vec3d);
+    }
 }
