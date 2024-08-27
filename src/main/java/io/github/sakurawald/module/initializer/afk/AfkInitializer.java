@@ -4,6 +4,7 @@ import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
 import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
+import io.github.sakurawald.module.common.accessor.PlayerCombatStateAccessor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.afk.accessor.AfkStateAccessor;
 import io.github.sakurawald.module.initializer.afk.job.AfkMarkerJob;
@@ -22,9 +23,18 @@ public class AfkInitializer extends ModuleInitializer {
 
     }
 
+    // note: issue command will update lastLastActionTime, so it's impossible to use /afk to disable afk
     @CommandNode("afk")
     private int $afk(@CommandSource ServerPlayerEntity player) {
-        // note: issue command will update lastLastActionTime, so it's impossible to use /afk to disable afk
+        if (!player.isOnGround()
+                || player.isOnFire()
+                || player.inPowderSnow
+                || ((PlayerCombatStateAccessor) player).fuji$inCombat()) {
+
+            MessageHelper.sendMessage(player, "afk.on.failed");
+            return CommandHelper.Return.FAIL;
+        }
+
         ((AfkStateAccessor) player).fuji$setAfk(true);
         MessageHelper.sendMessage(player, "afk.on");
         return CommandHelper.Return.SUCCESS;

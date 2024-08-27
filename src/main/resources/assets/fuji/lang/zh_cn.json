@@ -5,6 +5,7 @@
   "afk.off.broadcast": "<gold>玩家 %s 回来了",
   "afk.on": "<gold>闲置模式: 启用",
   "afk.on.broadcast": "<gold>玩家 %s 暂时离开了",
+  "afk.on.failed": "<red>您现在无法进入闲置状态.",
   "anti_build.disallow": "<red>该操作被禁止",
   "back": "<#FFA1F5>返回",
   "back.no_previous_position": "<red>无保存的位置",
