@@ -2,6 +2,9 @@ package io.github.sakurawald.auxiliary.minecraft;
 
 import lombok.Setter;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
+
+import java.util.List;
 
 public class ServerHelper {
 
@@ -10,5 +13,9 @@ public class ServerHelper {
 
     public static MinecraftServer getDefaultServer() {
         return server;
+    }
+
+    public static List<ServerPlayerEntity> getPlayers() {
+        return getDefaultServer().getPlayerManager().getPlayerList();
     }
 }
