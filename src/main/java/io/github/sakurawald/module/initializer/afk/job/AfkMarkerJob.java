@@ -49,8 +49,5 @@ public class AfkMarkerJob extends NPassMarkerJob<ServerPlayerEntity> {
     public void onCompleted(ServerPlayerEntity entity) {
         AfkStateAccessor afk_player = (AfkStateAccessor) entity;
         afk_player.fuji$setAfk(true);
-        if (Configs.configHandler.model().modules.afk.afk_checker.kick_player) {
-            entity.networkHandler.disconnect(MessageHelper.ofText(entity, "afk.kick"));
-        }
     }
 }

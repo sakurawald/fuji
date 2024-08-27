@@ -853,9 +853,49 @@ public class ConfigModel {
             public class AfkChecker {
                 @Document("The cron to define how the afk_checker is triggered.")
                 public @NotNull String cron = "0 0/5 * ? * *";
-                @Document("Should we kick a player if he is afk ?")
-                public boolean kick_player = false;
             }
+
+            public AfkEvent afk_event = new AfkEvent();
+
+            @Document("""
+                    Execute commands on afk evnets.
+                    
+                    Example 1: kick the player if he enters afk state.
+                    ```
+                    "on_enter_afk": [
+                      "send-broadcast <gold>Player %player:name% is now afk",
+                      "kick %player:name% You are kicked beacause on afk."
+                    ]
+                    ```
+                    
+                    """)
+            public class AfkEvent {
+                public List<String> on_enter_afk = new ArrayList<>() {
+                    {
+                        this.add("send-broadcast <gold>Player %player:name% is now afk");
+
+                    }
+                };
+
+                public List<String> on_leave_afk = new ArrayList<>() {
+                    {
+                        this.add("send-broadcast <gold>Player %player:name% is no longer afk");
+                    }
+                };
+            }
+
+            public AfkEffect afk_effect = new AfkEffect();
+
+            @Document("""
+                    Afk effects are applied if a player enters afk state.
+                    """
+            )
+            public class AfkEffect {
+                public boolean enable = true;
+
+                public boolean invulnerable = true;
+            }
+
         }
 
         @Document("""

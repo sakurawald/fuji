@@ -2,8 +2,9 @@ package io.github.sakurawald.module.mixin.afk;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.config.model.ConfigModel;
+import io.github.sakurawald.module.common.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.afk.accessor.AfkStateAccessor;
-import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -16,7 +17,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static io.github.sakurawald.auxiliary.minecraft.MessageHelper.*;
+import java.util.List;
+
+import static io.github.sakurawald.auxiliary.minecraft.MessageHelper.ofText;
 
 // to override tab list name in `tab list module`
 @Mixin(value = ServerPlayerEntity.class, priority = 1000 - 250)
@@ -39,7 +42,7 @@ public abstract class ServerPlayerMixin implements AfkStateAccessor {
     public Text $getPlayerListName(Text original) {
         AfkStateAccessor accessor = (AfkStateAccessor) player;
         if (accessor.fuji$isAfk()) {
-           return ofText(player, false, Configs.configHandler.model().modules.afk.format);
+            return ofText(player, false, Configs.configHandler.model().modules.afk.format);
         }
 
         return original;
@@ -56,7 +59,11 @@ public abstract class ServerPlayerMixin implements AfkStateAccessor {
     public void fuji$setAfk(boolean flag) {
         this.afk = flag;
         this.server.getPlayerManager().sendToAll(new PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME, (ServerPlayerEntity) (Object) this));
-        MessageHelper.sendBroadcast(this.afk ? "afk.on.broadcast" : "afk.off.broadcast", this.player.getGameProfile().getName());
+
+        // trigger event
+        ConfigModel.Modules.Afk.AfkEvent afkEvent = Configs.configHandler.model().modules.afk.afk_event;
+        List<String> commandList = this.afk ? afkEvent.on_enter_afk : afkEvent.on_leave_afk;
+        CommandExecutor.executeSpecializedCommand(player, commandList);
     }
 
     @Override
