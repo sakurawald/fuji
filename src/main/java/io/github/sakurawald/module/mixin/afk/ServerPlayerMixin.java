@@ -97,7 +97,6 @@ public abstract class ServerPlayerMixin extends PlayerEntity implements AfkState
     public void move(MovementType movementType, Vec3d vec3d) {
         if (AfkInitializer.isPlayerActuallyMovedItself(movementType,vec3d)) {
             fuji$setAfk(false);
-            super.move(movementType, vec3d);
         }
 
         super.move(movementType, vec3d);
