@@ -3,7 +3,7 @@
   "id": "fuji",
   "version": "${version}",
   "name": "Fuji",
-  "icon": "assets/fuji/icon.png",
+  "icon": "assets/fuji/icon.jpg",
   "description": "A mod that provides many essential and useful modules for vanilla survival.",
   "license": "GPL-3.0",
   "contact": {
