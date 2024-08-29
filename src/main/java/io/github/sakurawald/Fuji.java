@@ -11,6 +11,7 @@ import java.nio.file.Path;
 // TODO: hologram module (facility)
 // TODO: invsee module (slot, inv-redirect, inv, ender)
 // TODO: /mail
+// TODO: spawn/respawn control
 
 // TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector, predicate, equal)
 
@@ -21,7 +22,9 @@ import java.nio.file.Path;
 
 // TODO: closure factory method for AbstractJob
 // TODO: a `common` package in mixin package
+// TODO: modify default enable supplier
 // TODO: manifold getInstance()
+// TODO: curse forge plugin
 
 public class Fuji implements ModInitializer {
 
