@@ -1,11 +1,14 @@
 \section{Configuration File}
-All \ttt{files} inside \ttt{config/fuji} are called \ttt{configuration file}
 
+\subsection{Definition}
+All \ttt{files} inside \ttt{config/fuji} directory are named \ttt{configuration file}
+
+\subsection{Types}
 \begin{note}{The types of configuration files}
     \begin{description}
         \item[Control File] {A \ttt{control file} is used to control behaviours.}
         \begin{description}
-            \item[Main-Control File] The \ttt{main-control file} refers to the \ttt{/config/fuji/config.json} file, which is used to enable/disable a module.
+            \item[Main-Control File] The \ttt{main-control file} refers to the \ttt{config/fuji/config.json} file, which is used to enable/disable a module.
             \item[Module-Control File] Some modules will have their own control file, which is used to control the behaviour of the module.
         \end{description}
 
@@ -38,22 +41,21 @@ The properties of a module are as follows:
 \subsection{Module Path}
 A \ttt{module} is identified by a unique \ttt{module path}.
 \begin{example}{What a module-path looks like}
-    The module path of the module \ttt{tpa} is \ttt{tpa}.
+    The module path of the module \ttt{tpa} is \ttt{tpa}. \\
+    The module path of the module \ttt{history} whose parent module is \ttt{chat}, is \ttt{chat.history}. \\
     You will see a list of \ttt{enabled modules} identified by their \ttt{module path} at the server-startup process.
 \end{example}
-\\
-\\
 A \ttt{module} can have \ttt{sub-module}.
 The relationship between \ttt{parent-module} and \ttt{sub-module} is relative, and there is nothing special about \ttt{sub-module}.
 
 \subsection{How to enable/disable a module}
-You can enable/disable a module in \ttt{/config/fuji/config.json} by setting the value of its \ttt{enable} key to \ttt{true}/\ttt{false}
+You can enable/disable a module in \ttt{config/fuji/config.json} by setting the value of its \ttt{enable} key to \ttt{true}/\ttt{false}
 \\
 \\
 A \ttt{module} will be enabled if the following conditions are met:
 \begin{enumerate}
+    \item The required dependency mods are installed.
     \item The value of its \ttt{enable} key is set to \ttt{true}.
-    \item The required dependency-mods are installed.
     \item Its \ttt{parnet-module} is \ttt{enabled}.
 \end{enumerate}
 
