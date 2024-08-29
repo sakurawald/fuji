@@ -1,0 +1,46 @@
+\s{nametag}
+\ss{Purpose}
+This module provides nametag customization.
+
+\ss{Configuration}
+\sss{update\_cron}
+The cron used for the job to \tbf{update} the properties of \tbf{display entity}.
+
+\sss{style}
+Define the style for the nametag \tbf{display entity}.
+
+\sss{render}
+Define the nametag render behaviour.
+
+\begin{note}{The explanation of each field in style and render}
+    You can refer to the minecraft wiki about \tbf{display entity}: \url{https://minecraft.wiki/w/Display}
+\end{note}
+
+\ss{Example}
+\begin{example}{Set background to blue color}
+    \begin{json}
+        "background": -16776961
+    \end{json}
+\end{example}
+
+\begin{example}{Set half transparency}
+    \begin{json}
+        "text_opacity": 128
+    \end{json}
+\end{example}
+
+\begin{example}{Scale the size of text into double}
+    \begin{json}
+        "scale": {
+            "x": 2.0,
+            "y": 2.0,
+            "z": 2.0
+        },
+    \end{json}
+
+\end{example}
+
+\ss{Reference}
+\begin{enumerate}
+    \item \url{https://minecraft.wiki/w/Display}
+\end{enumerate}

@@ -1,0 +1,33 @@
+\s{rtp}
+
+\ss{Purpose}
+Provides random teleportation.
+
+\ss{Feature}
+\begin{enumerate}
+    \item Per dimension configurable.
+    \item Ignore fluid blocks, such as water and lava.
+    \item Ignore powered snow.
+\end{enumerate}
+
+\ss{Command}
+\sss{/rtp}
+\ssss{Argument}
+\begin{description}
+    \item [--dimension] target dimension
+\end{description}
+
+\begin{tips}{Improve the performance on rtp}
+    \begin{enumerate}
+        \item It's highly recommended to pre-gen the world chunks.To gen a new chunk during rtp requires about 2~10 seconds.If a chunk is pre-gen, then it will be fast.
+        \item It's highly recommended to pre-gen the world chunks.To gen a new chunk during rtp requires about 2~10 seconds.If a chunk is pre-gen, then it will be fast.
+    \end{enumerate}
+\end{tips}
+
+\ss{Configuration}
+\sss{setup}
+Teleport setup per dimension.Dimensions that are not in the list will be disabled to rtp.
+
+
+
+
