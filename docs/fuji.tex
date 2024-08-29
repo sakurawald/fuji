@@ -2,25 +2,44 @@
 %! Date = 2024/8/28
 
 % Preamble
-\documentclass[11pt]{amsart}
+\documentclass[10pt,oneside]{book}
 
 % Packages
-\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\hypersetup{
+colorlinks=true,
+linkcolor=blue
+}
+
+% macro
+\input{macros/macro}
 
 % Document
 \begin{document}
 
-    \title{This is title}
+    \title{Fuji Manual}
     \author{sakurawald}
-    \date{\today}
+    \date{\today\\\version}
 
+    \maketitle
     \tableofcontents
 
-    \section{Introduction}\label{sec:introduction}
-    This is the introduction to the Fuji mod.
 
-    \section{Concepts}\label{sec:concepts}
-    \input{concept/concept}
+    \mainmatter
+
+
+    \chapter{Concept}\label{ch:concept}
+    \input{chapters/concept/concept}
+
+
+    \chapter{Configuration}\label{ch:configuration}
+    \input{chapters/configuration/configuration}
+
+
+    \chapter{Module}\label{ch:module}
+    \input{chapters/module/module}
+
 
 
 \end{document}

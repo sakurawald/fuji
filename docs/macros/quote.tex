@@ -1,0 +1,34 @@
+% Define custom boxes
+\tcbuselibrary{listings}
+
+\newtcolorbox[auto counter, number within=section]{note}[2][]{%
+    colback=blue!5!white, colframe=blue!75!black,
+    fonttitle=\bfseries, title=Note: #2,
+    sharp corners=south,
+    boxrule=0.8mm,
+    #1
+}
+
+\newtcolorbox[auto counter, number within=section]{tips}[2][]{%
+    colback=green!5!white, colframe=green!75!black,
+    fonttitle=\bfseries, title=Tip: #2,
+    sharp corners=south,
+    boxrule=0.8mm,
+    #1
+}
+
+\newtcolorbox[auto counter, number within=section]{warn}[2][]{%
+    colback=yellow!10!white, colframe=orange!75!black,
+    fonttitle=\bfseries, title=Warning: #2,
+    sharp corners=south,
+    boxrule=0.8mm,
+    #1
+}
+
+\newtcolorbox[auto counter, number within=section]{example}[2][]{%
+    colback=gray!10!white, colframe=gray!75!black,
+    fonttitle=\bfseries, title=Example: #2,
+    sharp corners=south,
+    boxrule=0.8mm,
+    #1
+}
