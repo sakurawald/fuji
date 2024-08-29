@@ -40,7 +40,7 @@ The properties of a module are as follows:
 
 \subsection{Module Path}
 A \ttt{module} is identified by a unique \ttt{module path}.
-\begin{example}{What a module-path looks like}
+\begin{example}{What a module-path looks like?}
     The module path of the module \ttt{tpa} is \ttt{tpa}. \\
     The module path of the module \ttt{history} whose parent module is \ttt{chat}, is \ttt{chat.history}. \\
     You will see a list of \ttt{enabled modules} identified by their \ttt{module path} at the server-startup process.
@@ -62,3 +62,19 @@ A \ttt{module} will be enabled if the following conditions are met:
 \begin{example}{How to enable a sub-module}
     To make the module \ttt{chat.display} enabled, you need to enable \ttt{chat} module first.
 \end{example}
+
+
+\section{Job}
+
+\subsection{Definition}
+A \ttt{job} is some things will be done \ttt{repeatedly}.
+
+\subsection{Trigger Rule}
+A language named \ttt{cron language} is used to \ttt{define} when a \ttt{job} should be triggered.
+
+\begin{tips}{Don't write cron expression by hand. Use generator!}
+    A \ttt{cron expression} looks like \ttt{0 * * ? * *}, which means \ttt{trigger the job every minute}.
+
+    You can use the generator to generate a \ttt{cron expression}:
+    \url{https://www.freeformatter.com/cron-expression-generator-quartz.html}
+\end{tips}
