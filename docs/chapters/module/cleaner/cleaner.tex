@@ -14,6 +14,10 @@ This module provides the entity cleaner to remove specified entities automatical
     If the cleaner cleans nothing, then it will keep silent.(Which means you will not see any message in console, or in-game chat)
 \end{note}
 
+\begin{tips}{See what is cleaned in cleaner broadcast.}
+    Hover your mouse on the cleaner broadcast, you can see what has been removed.
+\end{tips}
+
 \ss{Configuration}
 \sss{cron}
 The cron used to define the job to trigger \ic{/cleaner clean}.
@@ -26,18 +30,24 @@ The cleaner will only remove the entities whose translatable key equals key, and
 
 \begin{example}{Clean the sand-block entity lives longer than 60sec}
     \begin{json}
-            "block.minecraft.sand": 1200
+        "block.minecraft.sand": 1200
     \end{json}
 \end{example}
 
 \sss{ignore}
 Entities match the ignore list will not be cleaned. \\
-The cleaner will always ignore the following types:
-\begin{enumerate}
-    \item player
-    \item any block attached entity (e.g. leash\_knot)
-    \item any vehicle entity (e.g. minecart, boat \ldots)
-\end{enumerate}
+
+\begin{samepage}
+    \begin{note}{The built-in safety rule}
+        The cleaner will \tbf{always ignore} the following types:
+        \begin{enumerate}
+            \item player
+            \item any block attached entity (e.g. leash\_knot)
+            \item any vehicle entity (e.g. minecart, boat \ldots)
+        \end{enumerate}
+    \end{note}
+\end{samepage}
+
 \ssss{ignoreItemEntity}
 Should we ignore all item entity.
 
@@ -49,7 +59,6 @@ If you want the cleaner to remove monster or animals, you should enable this opt
 Should we ignore named entity.(With name tag, or name changed by anvil.)
 
 \ssss{ignoreEntityWithVehicle}
-
 Like entity riding in some other entity, e.g. minecraft, pig or spider
 
 \ssss{ignoreEntityWithPassengers}
@@ -57,12 +66,3 @@ Like entity riding in some other entity, e.g. minecraft, pig or spider
 \ssss{ignoreGlowingEntity}
 
 \ssss{ignoreLeashedEntity}
-
-
-\begin{tips}{See what is cleaned in cleaner broadcast.}
-    Hover your mouse on the cleaner broadcast, you can see what has been removed.
-\end{tips}
-
-
-
-
