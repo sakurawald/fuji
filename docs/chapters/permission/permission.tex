@@ -28,19 +28,19 @@ By default, fuji only use the \ttt{level permission} as \ttt{the requirement of}
 However, if you want to use \ttt{string permission} for a \ttt{command}, you can use \ttt{command permission module}, which is used to \ttt{override} the requirement of an existing command.
 
 \begin{example}{Allow players to use /seed command}
-    The command \ttt{/seed} provided by mojang requires \ttt{level permission} to be \ttt{3} to use.
-    If you want to allow players to use \ttt{/seed} command, but you don't want to grant \ttt{op} for them.
-    Then in this situation, you can grant the \ttt{string permission} for them: \ttt{/lp group default permission set fuji.permission.seed true}, which means that: set the requirement of command \ttt{/seed} to string permission \ttt{fuji.permission.seed}.
+    The command \ic{/seed} provided by mojang requires \ttt{level permission} to be \ttt{3} to use.
+    If you want to allow players to use \ic{/seed} command, but you don't want to grant \ttt{op} for them.
+    Then in this situation, you can grant the \ttt{string permission} for them: \ic{/lp group default permission set fuji.permission.seed true}, which means that: set the requirement of command \ic{/seed} to string permission \ic{fuji.permission.seed}.
 \end{example}
 
 \begin{example}{Dis-allow players to use /list command}
-    The command \ttt{/list} provided by mojang required \ttt{level permission} to be \ttt{0} to use.
-    If you want to dis-allow players to use \ttt{/list} command, but because this command requires no \ttt{string permission} to use, so it's impossible to ban it via \ttt{luckperms}.
-    In this situation, you can grant a \ttt{string permission}: \ttt{/lp group default permission set fuji.permission.list false} for them, which means that: set the requirement of command \ttt{/list} to string permission \ttt{fuji.permission.list}.
+    The command \ic{/list} provided by mojang required \ttt{level permission} to be \ttt{0} to use.
+    If you want to dis-allow players to use \ic{/list} command, but because this command requires no \ttt{string permission} to use, so it's impossible to ban it via \ttt{luckperms}.
+    In this situation, you can grant a \ttt{string permission}: \ic{/lp group default permission set fuji.permission.list false} for them, which means that: set the requirement of command \ic{/list} to string permission \ttt{fuji.permission.list}.
 \end{example}
 
 \begin {example}{Unset the override of requirement of the command}
-    To undo the operation in \ttt{the first example}, just issue \ttt{/lp group default permission unset fuji.permission.seed}
+    To undo the operation in \ttt{the first example}, just issue \ic{/lp group default permission unset fuji.permission.seed}
 \end{example}
 
 
