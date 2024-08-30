@@ -5,7 +5,7 @@ This module provides chat system customization.
 \ss{Feature}
 \begin{enumerate}
     \item You can create your own \ttt{regex transformer} to replace \ttt{chat message} sent by players.
-    \item You can insert any \ttt{placeholder} like \ttt{\ph{world:name}}
+    \item You can insert any \ttt{placeholder} like \ph{world:name}
     \item You can insert player's prefix and suffix.Just insert \ph{fuji:player\_prefix} and \ph{fuji:player\_suffix}.
     \item You can insert \tbf{item}, \tbf{inv} and \tbf{ender} to display your item, inventory and ender-chest.
     \item You can insert \tbf{Steve} to mention another player named Steve.
@@ -60,6 +60,7 @@ You can use regex language to transform player's chat input (only chat message, 
 If you insert \tbf{Steve} in chat message, then the player named Steve will get audio mention.
 
 \sssss{sound}
+
 The type of \tbf{sound} used to notify the mentioned player.
 \begin{tips}{Query all identifiers of sound}
     \ic{/playsound \ldots}
@@ -68,10 +69,13 @@ The type of \tbf{sound} used to notify the mentioned player.
 \sssss{volume}
 
 \sssss{pitch}
+
 \sssss{repeat\_count}
+
 The sound repeat count.
 
 \sssss{interval\_ms}
+
 The interval between each repeat.
 
 \ssss{spy}
