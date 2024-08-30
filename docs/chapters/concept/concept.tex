@@ -34,20 +34,22 @@ A \ttt{module} is used to provide a specific purpose.
 The properties of a module are as follows:
 \begin{description}
     \item [Can be disabled] You can disable any module completely in \ttt{main-control file} by setting the value of its \ttt{enable} key to \ttt{false}.
-    \item [Can work standalone] The codes of a module is self-contained, there is no reference to other modules.
+    \item [Can work standalone] The code of a module is self-contained, there is no reference to other modules.
 \end{description}
 
 \ss{Module Path}
 A \ttt{module} is identified by a unique \ttt{module path}.
+
 \begin{example}{What a module-path looks like?}
     The module path of the module \ttt{tpa} is \ttt{tpa}. \\
     The module path of the module \ttt{history} whose parent module is \ttt{chat}, is \ttt{chat.history}. \\
     You will see a list of \ttt{enabled modules} identified by their \ttt{module path} at the server-startup process.
 \end{example}
+
 A \ttt{module} can have \ttt{sub-module}.
 The relationship between \ttt{parent-module} and \ttt{sub-module} is relative, and there is nothing special about \ttt{sub-module}.
 
-\ss{How to enable/disable a module}
+\ss{How to enable/disable a module?}
 You can enable/disable a module in \ttt{config/fuji/config.json} by setting the value of its \ttt{enable} key to \ttt{true}/\ttt{false}
 \\
 \\
