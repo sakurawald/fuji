@@ -174,17 +174,6 @@ test {
 /* validate the access widener file */
 tasks.compileJava.dependsOn(validateAccessWidener)
 
-/* docs generator is used to generate the `configuration files` docs. */
-tasks.register("generateDocs") {
-    outputs.upToDateWhen { false }
-    test {
-        filter {
-            includeTestsMatching "DocsGeneratorTest.generate"
-        }
-    }
-}
-tasks.modrinthSyncBody.dependsOn(generateDocs)
-
 /* mixin Registry checker is used to check the un-registered mixins, to avoid un-expected circumstance. */
 tasks.register("checkMixinRegistryTest") {
     outputs.upToDateWhen { false }
