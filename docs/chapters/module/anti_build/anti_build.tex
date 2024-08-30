@@ -13,9 +13,9 @@ This module allows you to ban the interaction with some item/block/entity.
 \end{enumerate}
 
 \begin{tips}{Query identifiers}
-    To query block identifier, use /setblock ~ ~ ~ \ldots command.\\
-    To query entity identifier, use /summon \ldots command.\\
-    To query item identifier, use /give \ldots command.
+    To query block identifier, use \ic{/setblock ~ ~ ~ \ldots} command.\\
+    To query entity identifier, use \ic{/summon \ldots} command.\\
+    To query item identifier, use \ic{/give \ldots} command.
 \end{tips}
 
 \ss{Exapmle}
@@ -23,9 +23,8 @@ This module allows you to ban the interaction with some item/block/entity.
     add minecraft:tnt into place\_block list
 \end{example}
 
-\begin{example}{Ban TNT but allow some players to use}
-    Use /lp user <player> permission set fuji.anti\_build.place\_block.bypass.minecraft:tnt to
-    allow a player place the tnt.
+\begin{example}{Ban TNT but allow a specific player to use}
+    \ic{/lp user <player> permission set \\fuji.anti\_build.place\_block.bypass.minecraft:tnt}
 \end{example}
 
 
