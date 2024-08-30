@@ -1,0 +1,22 @@
+\sss{for\_each}
+
+\ssss{Purpose}
+This module provides /foreach command.
+
+If a command is only targeted for single player, you can use foreach to apply it for all players
+
+\ssss{Command}
+\sssss{/for\_each}
+
+\ssss{Example}
+\begin{example}{}
+    \ic{/foreach say hello \ph{player:name}}
+\end{example}
+
+\begin{tips}{Escape the placeholder properly}
+    If you use foreach in scheduler module, then you should escape (Write ph{fuji:escape player:name} instead of ph{player:name}) the placeholder.
+
+    It's because the scheduler module will try to parse the placeholder, and you need to escape the placeholder, so that the placeholder can be parsed by foreach command.
+
+    Here is an example about escape the foreach command in scheduler command list: /foreach give ph{fuji:escape player:name} minecraft:diamond 16
+\end{tips}

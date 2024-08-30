@@ -1,0 +1,25 @@
+\sss{run}
+
+\ssss{Purpose}
+This module provides \ttt{/run} command, which can run a command with context.
+
+\ssss{Command}
+\sssss{/run}
+
+\ssss{Example}
+\begin{example}{Give random diamonds to all online players}
+    \ic{/run as console give @a minecraft:diamond \ph{fuji:random 8 32}}
+\end{example}
+
+\begin{example}{Give all online players random diamonds}
+    \ic{/run as console foreach give \ph{fuji:escape player:name} minecraft:diamond \ph{fuji:escape fuji:random 8 32}}
+\end{example}
+
+\begin{example}{Execute a commands as a player}
+   \ic{/run as player Steve back}
+\end{example}
+
+\begin{example}{Execute a commands as fake-op}
+   \ic{/run as fake-op Steve give \ph{player:name} minecraft:apple 1}
+\end{example}
+

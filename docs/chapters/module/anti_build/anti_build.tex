@@ -1,0 +1,31 @@
+\s{anti\_build}
+
+\ss{Purpose}
+This module allows you to ban the interaction with some item/block/entity.
+
+\ss{Anti Types}
+\begin{enumerate}
+    \item break\_block
+    \item place\_block
+    \item interact\_item
+    \item interact\_block
+    \item interact\_entity
+\end{enumerate}
+
+\begin{tips}{Query identifiers}
+    To query block identifier, use /setblock ~ ~ ~ \ldots command.\\
+    To query entity identifier, use /summon \ldots command.\\
+    To query item identifier, use /give \ldots command.
+\end{tips}
+
+\ss{Exapmle}
+\begin{example}{Ban TNT}
+    add minecraft:tnt into place\_block list
+\end{example}
+
+\begin{example}{Ban TNT but allow some players to use}
+    Use /lp user <player> permission set fuji.anti\_build.place\_block.bypass.minecraft:tnt to
+    allow a player place the tnt.
+\end{example}
+
+

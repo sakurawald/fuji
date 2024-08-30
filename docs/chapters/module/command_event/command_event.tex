@@ -1,0 +1,19 @@
+\s{command\_event}
+
+\ss{Purpose}
+Execute commands on specific events.
+
+\ss{Example}
+
+\begin{example}{Welcome the new-bie player}
+    \begin{json}
+        "on_player_first_joined": {
+            "command_list": [
+            "send-broadcast <light_purple>Welcome new player %player:name% to join us!",
+            "kit give %player:name% <kit-name>",
+            "execute as %player:name% run rtp",
+            "delay 10 spawnpoint %player:name%"
+            ]
+        },
+    \end{json}
+\end{example}

@@ -1,0 +1,29 @@
+\s{command\_attachment}
+
+\ss{Purpose}
+This module allows you to attach commands into itemstack.
+
+\ss{Command}
+\sss{/command-attachment}
+
+\begin{note}{The same item-stack shares the-same instance}
+    If you hold stick * 64 in your mainhand, then all the sticks share the same attached commands.
+\end{note}
+
+\ss{Example}
+\begin{example}{Create a magic-stick which will heal player when click.}
+    Hold a `stick` item in your main hand.
+    \ic{/command-attachment attach-one heal}
+\end{example}
+
+\begin{example}{Create a magic-stick giving you dimaond when left click (with use limit 3 times) and giving you gold when right click (with use limit 5 times).}
+    Hold a `stick` item in your main hand.
+
+    \ic{/command-attachment attach-one --maxUseTimes 3 --interactType LEFT give \ph{player:name} minecraft:diamond 1}
+
+    \ic{/command-attachment attach-one --maxUseTimes 5 --interactType RIGHT give \ph{player:name} minecraft:gold\_ingot 1}
+\end{example}
+
+\begin{example}{Query the attached commands in the mainhand item}
+    \ic{/command-attachment attach-one --maxUseTimes 3 --destroyItem false give \ph{player:name} minecraft:apple 1}
+\end{example}

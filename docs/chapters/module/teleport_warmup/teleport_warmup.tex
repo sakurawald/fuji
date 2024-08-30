@@ -1,0 +1,27 @@
+\s{teleport\_warmup}
+
+\ss{Purpose}
+This module adds a warmup cooldown before player-teleportation.
+
+The teleportation will be cancelled if:
+\begin{enumerate}
+    \item the player runs too far.
+    \item the player gets damage.
+    \item the player is in combat.
+\end{enumerate}
+
+\ss{Configuration}
+\sss{warmup\_second}
+The second to wait before the teleportation.
+
+\sss{interrupt\_distance}
+How far should we cancel the teleportation.
+
+\sss{dimension}
+Only allowed in the following dimensions.
+
+\begin{warn}{Dimensions that created by other mods may have special behaviour}
+    Some other mods will add extra dimension (like, the mod the-bumblezone-fabric).Their dimension portal will work in a different way, so teleport warmup module may not compatibility with these mods.
+    \\
+    In the default options, we only allow teleport warmup works in the vanilla minecraft dimensions.
+\end{warn}

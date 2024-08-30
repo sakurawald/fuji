@@ -1,0 +1,52 @@
+\s{world}
+
+\ss{Purpose}
+Provides a unified world management.
+
+\ss{Concept}
+What is the difference between world, dimension and dimension type ?\\
+Well, in the early stage of minecraft, it only support single-dimension, which means 1 world only contains 1 dimension.\\
+And now, 1 world can support multi dimension.
+Sometimes, you will see world and dimension means the same thing.\\
+But clearer, we say: 1 world can contains 1 or more dimension, and each dimension has its dimension type.\\
+Usually, you can say a mod adds extra dimension type and create extra dimension with that dimension type instead of extra world\\
+See also: \url{https://minecraft.wiki/w/Dimension_definition}\\
+See also: \url{https://minecraft.wiki/w/Dimension_type}
+
+In vanilla minecraft, 1 world contains 3 dimensions (minecraft:overworld, minecraft:the\_nether, minecraft:the\_end). You can see the dimension of a world in world/level.dat file.
+
+
+dimension type is used to create dimension, there are 4 dimension type in vanilla minecraft: minecraft:overworld, minecraft:overworld\_caves, minecraft:the\_nether and minecraft:the\_end
+
+
+In order to create extra dimensions of a dimension type, you need to at least exist one dimension of that dimension type.
+
+Instead of writing data into the file world/level.dat, fuji will load the extra dimensions in game dynamically.
+
+The file server.properties is used for the default world properties of extra dimensions
+
+\ss{Configuration}
+\sss{blacklist}
+The dimensions in the blacklist will not be operated by this module.Use blacklist to avoid mis-operation.
+
+\ss{Example}
+\begin{example}{Create an extra the\_nether dimension}
+    \ic{/world create my\_nether minecraft:the\_nether}
+\end{example}
+
+\begin{example}{Delete the extra dimension}
+    \ic{/world delete fuji:my\_nether}
+\end{example}
+
+\begin{example}{Reset the extra dimension with random seed}
+    \ic{/world reset fuji:my\_nether}
+\end{example}
+
+\begin{tips}{Specify a seed for dimension}
+    \ic{/world create my\_nether minecraft:the\_nether --seed 1234567890}
+    \ic{/world reset fuji:my\_nether --use-the-same-seed}
+\end{tips}
+
+\begin{tips}{Make a resource-world that automatically reset every day}
+    You can use command-scheduler module to execute \ttt{world reset} command automatically.
+\end{tips}

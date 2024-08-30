@@ -1,0 +1,25 @@
+\sss{json}
+
+\ssss{Purpose}
+Provides a unified json editor.
+
+\ssss{Command}
+\ssss{/json}
+
+\ssss{Exaxmple}
+\begin{example}{Read a key}
+    \ic{/json read "config/fuji/config.json" "\$.common.quartz.logger\_level"}
+\end{example}
+
+\begin{example}{List keys}
+    \ic{/json read "config/fuji/config.json" "\$.modules.keys()}
+\end{example}
+
+\begin{example}{Set a key}
+    /json write "config/fuji/config.json" "\$.common.quartz.logger\_level" NULL null
+\end{example}
+
+\ssss{Reference}
+\begin{enumerate}
+    \item \url{https://goessner.net/articles/JsonPath/}
+\end{enumerate}

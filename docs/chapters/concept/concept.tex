@@ -1,9 +1,9 @@
-\section{Configuration File}
+\s{Configuration File}
 
-\subsection{Definition}
+\ss{Definition}
 All \ttt{files} inside \ttt{config/fuji} directory are named \ttt{configuration file}
 
-\subsection{Types}
+\ss{Types}
 \begin{note}{The types of configuration files}
     \begin{description}
         \item[Control File] {A \ttt{control file} is used to control behaviours.}
@@ -20,9 +20,9 @@ All \ttt{files} inside \ttt{config/fuji} directory are named \ttt{configuration 
 \clearpage
 
 
-\section{Module}
+\s{Module}
 
-\subsection{Definition}
+\ss{Definition}
 A \ttt{module} is used to provide a specific purpose.
 \begin{example}{The purpose of modules}
     \begin{description}
@@ -31,14 +31,14 @@ A \ttt{module} is used to provide a specific purpose.
     \end{description}
 \end{example}
 
-\subsection{Properties}
+\ss{Properties}
 The properties of a module are as follows:
 \begin{description}
     \item [Can be disabled] You can disable any module completely in \ttt{main-control file} by setting the value of its \ttt{enable} key to \ttt{false}.
     \item [Can work standalone] The codes of a module is self-contained, there is no reference to other modules.
 \end{description}
 
-\subsection{Module Path}
+\ss{Module Path}
 A \ttt{module} is identified by a unique \ttt{module path}.
 \begin{example}{What a module-path looks like?}
     The module path of the module \ttt{tpa} is \ttt{tpa}. \\
@@ -48,28 +48,30 @@ A \ttt{module} is identified by a unique \ttt{module path}.
 A \ttt{module} can have \ttt{sub-module}.
 The relationship between \ttt{parent-module} and \ttt{sub-module} is relative, and there is nothing special about \ttt{sub-module}.
 
-\subsection{How to enable/disable a module}
+\ss{How to enable/disable a module}
 You can enable/disable a module in \ttt{config/fuji/config.json} by setting the value of its \ttt{enable} key to \ttt{true}/\ttt{false}
 \\
 \\
-A \ttt{module} will be enabled if the following conditions are met:
-\begin{enumerate}
-    \item The required dependency mods are installed.
-    \item The value of its \ttt{enable} key is set to \ttt{true}.
-    \item Its \ttt{parnet-module} is \ttt{enabled}.
-\end{enumerate}
+\begin{samepage}
+    A \ttt{module} will be enabled if the following conditions are met:
+    \begin{enumerate}
+        \item The required dependency mods are installed.
+        \item Its \ttt{parnet-module} is \ttt{enabled}.
+        \item The value of its \ttt{enable} key is set to \ttt{true}.
+    \end{enumerate}
+\end{samepage}
 
 \begin{example}{How to enable a sub-module}
     To make the module \ttt{chat.display} enabled, you need to enable \ttt{chat} module first.
 \end{example}
 
 
-\section{Job}\label{sec:job}
+\s{Job}\label{sec:job}
 
-\subsection{Definition}
+\ss{Definition}
 A \ttt{job} is some things will be done \ttt{repeatedly}.
 
-\subsection{Cron Expression as Trigger Rule}
+\ss{Cron Expression as Trigger Rule}
 A language named \ttt{cron language} is used to \ttt{define} when a \ttt{job} should be triggered.
 
 \begin{tips}{Don't write cron expression by hand. Use generator!}
@@ -78,3 +80,18 @@ A language named \ttt{cron language} is used to \ttt{define} when a \ttt{job} sh
     You can use the generator to generate a \ttt{cron expression}:
     \url{https://www.freeformatter.com/cron-expression-generator-quartz.html}
 \end{tips}
+
+\s{Regex}
+
+\ss{Definition}
+Regex is a language used to define the pattern of strings.
+
+\ss{Reference}
+\begin{enumerate}
+    \item \url{https://regexr.com/}
+    \item \url{https://regex101.com/}
+\end{enumerate}
+
+
+
+

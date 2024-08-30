@@ -1,0 +1,33 @@
+\s{command\_interactive}
+\ss{Purpose}
+This module allows you to write commands in \tbf{sign block}.
+
+\ss{Example}
+\begin{example}{Basic usage}
+    /say hi \ph{player:name}\\
+    line 2 empty\\
+    line 3 empty\\
+    line 4 empty
+\end{example}
+
+\begin{example}{Add a prefix description text}
+    prefix /say first\\
+    /say the second\\
+    /say hi \ph{player:name}\\
+    /say the last command
+\end{example}
+
+\begin{example}{Concat commands between lines}
+    prefix /say this is\\
+    the first /say and the\\
+    second\\
+    line 4 empty
+\end{example}
+
+\begin{tips}{}
+    \begin{enumerate}
+        \item You need to press shift + right click to edit an interactive sign
+        \item The command is executed as the player.
+    \end{enumerate}
+    
+\end{tips}

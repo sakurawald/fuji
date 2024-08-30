@@ -1,0 +1,27 @@
+\s{command\_permission}
+
+\ss{Purpose}
+This module provides the customization of \tbf{the requirement of any commands}.
+
+\ss{How it works}
+The vanilla minecraft use a command system called brigadier.\\
+All the commands are registered, parsed and executed by brigadier. \\
+In this system, all commands are build into a tree structure. \\
+For example, like the command /gamemode creative Steve is composed by 3 command node:
+\begin{description}
+    \item [literal command node] gamemode
+    \item [argument command node] a valid gamemode
+    \item [argument command node] a valid player
+\end{description} And the command node path stands the tree node path. \\
+For /gamemode creative Steve, the path is ["gamemode", "gamemode", "target"]. \\
+Also, each command node has its requirement, which is a condition to check if the command user can use the command node. \\
+This module can override the requirement of a command node into a permission with prefix fuji.permission.<command\_node\_path>.
+
+\begin{tips}{Query all the registered command path}
+    You can query a command path using /lp group default permission set fuji.permission\ldots way.
+\end{tips}
+
+\ss{Example}
+\begin{example}{Allow everyone to use /op command}
+    \ic{/lp group default permission set fuji.permission.op true}
+\end{example}
