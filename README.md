@@ -6,7 +6,7 @@ An essentials mod written just for fun.
 ![github last commit](https://img.shields.io/github/last-commit/sakurawald/fuji-fabric)
 ![modrinth download counter](https://img.shields.io/modrinth/dt/1TowMm2v)
 ![github release](https://img.shields.io/github/v/release/sakurawald/fuji-fabric)
-![github license](https://img.shields.io/github/license/sakurawald/fuji-fabric)
+![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)
 
 ## Feature
 
