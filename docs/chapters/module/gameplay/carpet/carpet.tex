@@ -19,11 +19,11 @@ The range of minutes\_of\_the\_day is [0, 1440].
 For example: (1, 0, 2) means if the days\_of\_week >= 1, and minutes\_of\_the\_day >= 0, then the max\_fake\_player\_per\_player now is 2.
 Besides, you can add multi rules, the rules are checked from up to down.
 The first rule that matches current time will be used to decide the max\_fake\_player\_per\_player.
-You can issue /player who to see the owner of the fake-player.
+You can issue \ic{/player who} to see the owner of the fake-player.
 Only the owner can operates the fake-player. (Op can bypass this limit)
 
 renew\_duration\_ms\\
-How long should we renew when a player issue command /player renew
+How long should we renew when a player issue \ic{/player renew}
 The command /player renew allows the player to manually renew all of his fake-player.
 If a fake-player don't gets renew, then it will expired and get killed.
 Use-case: to avoid some long-term alive fake-player.
