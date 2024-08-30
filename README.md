@@ -10,16 +10,11 @@ An essentials mod written just for fun.
 
 ## Feature
 
-- **vanilla respect**: all the modules are designed to be as light-way as possible, and do the least changes to the
-  vanilla game. (Never touch the game-logic.)
-- **fully modular**: you can disable any module completely if you don't like it. (Code is data is code. Thanks to the
-  power of meta-programming, the module loader will even not load and inject the module codes into the game, if you
-  disable the module, without any performance and compatibility issue.)
-- **high performance**: keep performance in mind while coding. (By data-structure, algorithm, lazy-evaluation,
-  multi-threading, event-driven and cache to improve performance greatly.)
-- **easy to use**: a text-based per-field-explained auto-generated always-up-to-date documentation is provided. (The
-  configuration uses lots of mini-language and generators to provide a unified setup.)
-- **free**: it's free and open source, with GPL licence.
+- **vanilla respect**: all modules are designed to be light-weight.
+- **fully modular**: all modules can be disabled.
+- **high performance**: code with performance in mind.
+- **easy to use**: a plain-text manual is provided.
+- **free**: it's free, open source, and GPL-licensed.
 
 ## Manual
 
