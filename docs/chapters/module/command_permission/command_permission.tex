@@ -1,24 +1,27 @@
 \s{command\_permission}
 
 \ss{Purpose}
-This module provides the customization of \tbf{the requirement of any commands}.
+This module provides the customization of \tbf{the requirement of all commands}.
 
 \ss{How it works}
-The vanilla minecraft use a command system called brigadier.\\
+The vanilla minecraft use a command system named brigadier.\\
 All the commands are registered, parsed and executed by brigadier. \\
-In this system, all commands are build into a tree structure. \\
-For example, like the command /gamemode creative Steve is composed by 3 command node:
-\begin{description}
-    \item [literal command node] gamemode
-    \item [argument command node] a valid gamemode
-    \item [argument command node] a valid player
-\end{description} And the command node path stands the tree node path. \\
-For /gamemode creative Steve, the path is ["gamemode", "gamemode", "target"]. \\
-Also, each command node has its requirement, which is a condition to check if the command user can use the command node. \\
-This module can override the requirement of a command node into a permission with prefix fuji.permission.<command\_node\_path>.
+In this system, all commands are build into \tbf{a tree structure}, that is to say, all commands are a direct or in-direct child of the \tbf{root command node}. \\
+
+\begin{example}{What is the path of a specific command node?}
+    For example, the command \ic{/gamemode creative Steve} is composed by 3 command node:
+    \begin{description}
+        \item [literal command node] = \ttt{"gamemode"}
+        \item [argument command node] = \tbf{a gamemode argument}
+        \item [argument command node] = \tbf{a player argument}
+    \end{description}
+    We say that the command path of \ic{/gamemode creative Steve}, is \ttt{["gamemode", "gamemode", "target"]}.
+\end{example}
+
+Also, each \tbf{command node} has its \tbf{requirement}, which is a \tbf{predicate} to check if the \tbf{command source} can use the command node. \\
 
 \begin{tips}{Query all the registered command path}
-    You can query a command path using /lp group default permission set fuji.permission\ldots way.
+    \ic{/lp group default permission set fuji.permission\ldots}
 \end{tips}
 
 \ss{Example}

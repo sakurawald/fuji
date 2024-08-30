@@ -4,26 +4,36 @@
 Provides a unified world management.
 
 \ss{Concept}
-What is the difference between world, dimension and dimension type ?\\
-Well, in the early stage of minecraft, it only support single-dimension, which means 1 world only contains 1 dimension.\\
-And now, 1 world can support multi dimension.
-Sometimes, you will see world and dimension means the same thing.\\
-But clearer, we say: 1 world can contains 1 or more dimension, and each dimension has its dimension type.\\
-Usually, you can say a mod adds extra dimension type and create extra dimension with that dimension type instead of extra world\\
-See also: \url{https://minecraft.wiki/w/Dimension_definition}\\
-See also: \url{https://minecraft.wiki/w/Dimension_type}
 
-In vanilla minecraft, 1 world contains 3 dimensions (minecraft:overworld, minecraft:the\_nether, minecraft:the\_end). You can see the dimension of a world in world/level.dat file.
+\begin{example}{What is the difference between world\tcomma\ dimension and dimension type?}
+    Well, in the early stage of minecraft, a \tbf{world} only support \tbf{single-dimension}, which means 1 world only contains 1 dimension.\\
+    But now, 1 world supports multi dimension.
+    Sometimes, you will see \tbf{world} and \tbf{dimension} means the same thing.\\
+    But clearer, we say: 1 world can contain 1 or more dimension, and each dimension has its \tbf{dimension type}.\\\\
+    Usually, you can say a mod adds extra dimension type and \tbf{creates an extra dimension} with that dimension type instead of \tbf{creating extra world}.\\
+    See also: \url{https://minecraft.wiki/w/Dimension_definition}\\
+    See also: \url{https://minecraft.wiki/w/Dimension_type}
+\end{example}
 
+\begin{tips}{The dimension and dimension types in vanilla minecraft}
+    In vanilla minecraft, 1 world contains 3 dimensions:
+    \begin{enumerate}
+        \item minecraft:overworld
+        \item minecraft:the\_nether
+        \item minecraft:the\_end
+    \end{enumerate}
+    You can see the dimensions of a world in world/level.dat file.
+    \\\\
+    A dimension type is used to create dimensions, the vanilla minecraft has the following dimension type:
+    \begin{enumerate}
+        \item minecraft:overworld
+        \item minecraft:overworld\_caves
+        \item minecraft:the\_nether
+        \item minecraft:the\_end
+    \end{enumerate}
 
-dimension type is used to create dimension, there are 4 dimension type in vanilla minecraft: minecraft:overworld, minecraft:overworld\_caves, minecraft:the\_nether and minecraft:the\_end
-
-
-In order to create extra dimensions of a dimension type, you need to at least exist one dimension of that dimension type.
-
-Instead of writing data into the file world/level.dat, fuji will load the extra dimensions in game dynamically.
-
-The file server.properties is used for the default world properties of extra dimensions
+    The file server.properties is used for \tbf{the only and default world}.
+\end{tips}
 
 \ss{Configuration}
 \sss{blacklist}
