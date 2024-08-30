@@ -4,6 +4,8 @@ local.properties
 build/
 out/
 classes/
+_minted-fuji
+docs/_minted-fuji
 
 # eclipse
 *.launch
