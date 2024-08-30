@@ -26,14 +26,14 @@ A \ttt{module} is used to provide a specific purpose.
 \begin{example}{The purpose of modules}
     \begin{description}
         \item [ChatModule] provides chat-format customization.
-        \item [TpaModule] provides \ttt{/tpa} command.
+        \item [TpaModule] provides \ic{/tpa} command.
     \end{description}
 \end{example}
 
 \ss{Properties}
 The properties of a module are as follows:
 \begin{description}
-    \item [Can be disabled] You can disable any module completely in \ttt{main-control file} by setting the value of its \ttt{enable} key to \ttt{false}.
+    \item [Can be disabled] You can disable a module completely in \ttt{main-control file} by setting the value of its \ttt{enable} key to \ttt{false}.
     \item [Can work standalone] The code of a module is self-contained, there is no reference to other modules.
 \end{description}
 
@@ -47,6 +47,7 @@ A \ttt{module} is identified by a unique \ttt{module path}.
 \end{example}
 
 A \ttt{module} can have \ttt{sub-module}.
+
 The relationship between \ttt{parent-module} and \ttt{sub-module} is relative, and there is nothing special about \ttt{sub-module}.
 
 \ss{How to enable/disable a module?}
@@ -62,7 +63,7 @@ You can enable/disable a module in \ttt{config/fuji/config.json} by setting the 
     \end{enumerate}
 \end{samepage}
 
-\begin{example}{How to enable a sub-module}
+\begin{example}{How to enable a sub-module?}
     To make the module \ttt{chat.display} enabled, you need to enable \ttt{chat} module first.
 \end{example}
 
