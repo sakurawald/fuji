@@ -1,4 +1,5 @@
 # Fuji-Fabric
+
 An essentials mod written just for fun.
 
 ![github workflow build job](https://img.shields.io/github/actions/workflow/status/sakurawald/fuji-fabric/build.yml)
@@ -8,23 +9,30 @@ An essentials mod written just for fun.
 ![github license](https://img.shields.io/github/license/sakurawald/fuji-fabric)
 
 ## Feature
-- **vanilla respect**: all the modules are designed to be as light-way as possible, and do the least changes to the vanilla game. (Never touch the game-logic.)
-- **fully modular**: you can disable any module completely if you don't like it. (Code is data is code. Thanks to the power of meta-programming, the module loader will even not load and inject the module codes into the game, if you disable the module, without any performance and compatibility issue.)
-- **high performance**: keep performance in mind while coding. (By data-structure, algorithm, lazy-evaluation, multi-threading, event-driven and cache to improve performance greatly.)
-- **easy to use**: a text-based per-field-explained auto-generated always-up-to-date documentation is provided. (The configuration uses lots of mini-language and generators to provide a unified setup.)
+
+- **vanilla respect**: all the modules are designed to be as light-way as possible, and do the least changes to the
+  vanilla game. (Never touch the game-logic.)
+- **fully modular**: you can disable any module completely if you don't like it. (Code is data is code. Thanks to the
+  power of meta-programming, the module loader will even not load and inject the module codes into the game, if you
+  disable the module, without any performance and compatibility issue.)
+- **high performance**: keep performance in mind while coding. (By data-structure, algorithm, lazy-evaluation,
+  multi-threading, event-driven and cache to improve performance greatly.)
+- **easy to use**: a text-based per-field-explained auto-generated always-up-to-date documentation is provided. (The
+  configuration uses lots of mini-language and generators to provide a unified setup.)
 - **free**: it's free and open source, with GPL licence.
 
 ## Manual
-See [configuration](https://github.com/sakurawald/fuji-fabric/wiki/Configuration)
 
-See [permission](https://github.com/sakurawald/fuji-fabric/wiki/PermissionAndMeta)
-
-See [faq](https://github.com/sakurawald/fuji-fabric/wiki/FAQ)
+Download a copy of [fuji-manual.pdf](
+https://github.com/sakurawald/fuji-fabric/raw/dev/docs/release/fuji.pdf)
 
 ## Credit
-This software uses the following open source packages: [credit](https://github.com/sakurawald/fuji-fabric/blob/dev/CREDIT)
+
+This software uses the following open source
+packages: [credit](https://github.com/sakurawald/fuji-fabric/blob/dev/CREDIT)
 
 ## License
+
 ```
 Copyright (C) 2023  sakurawald@gmail.com
 
