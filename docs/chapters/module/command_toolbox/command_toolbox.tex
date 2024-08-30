@@ -15,7 +15,7 @@ This module provides some simple commands.
 \sss{/heal}
 
 \sss{/lore}
-\begin{example}{}
+\begin{example}{Set lore for item in mainhand}
     \ic{/lore set <rainbow>the first line<newline><bold><green>the second}
 \end{example}
 
@@ -34,11 +34,11 @@ This module provides some simple commands.
 \sss{/send\_title}
 
 \sss{/send\_toast}
-\begin{example}{}
+\begin{example}{Send title to a player}
     \ic{/send-title Steve --mainTitle "<rainbow>Hello" --subTitle "<blue>World" --fadeInTicks 60 --stayTicks 60 --fadeOutTicks 60}
 \end{example}
 
-\begin{example}{}
+\begin{example}{Send title to online players}
     \ic{/foreach send-title \ph{player:name} --mainTitle "<rainbow>Hello \ph{player:name}"}
 \end{example}
 
