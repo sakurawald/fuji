@@ -2,19 +2,25 @@
 \documentclass[10pt,oneside]{book}
 
 % Packages
-\usepackage{hyperref}
+% use a4 paper
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+
+% color extension
+\usepackage{xcolor}
+
+% colored box
 \usepackage{tcolorbox}
+
+% hyper link colorize
+\usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
     urlcolor=red
 }
-\usepackage[a4paper, total={6in, 8in}]{geometry}
 
 % the 'outputdir' is reletive to fuji.tex, and must point the 'output directory' of latex compiler.
 \usepackage[outputdir=../out/]{minted}
-
-\usepackage{xcolor}
 
 % fix the character '_' can't be copied in output .pdf file
 \usepackage[T1]{fontenc}
