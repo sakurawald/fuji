@@ -40,6 +40,29 @@ This module provides the entity cleaner to remove specified entities automatical
 
     \item[ignore]{
         Entities match the ignore list will not be cleaned.
+
+        \begin{NestedList}
+            \item[ignoreItemEntity]{
+                Should we ignore all item entity.
+            }
+
+            \item[ignoreLivingEntity]{
+                Should we ignore all living entity?\\
+                If you want the cleaner to remove monster or animals, you should enable this option.
+            }
+
+            \item[ignoreNamedEntity]{
+                Should we ignore named entity.(With name tag, or name changed by anvil.)
+            }
+
+            \item[ignoreEntityWithVehicle]{
+                Like entity riding in some other entity, \eg minecraft, pig or spider
+            }
+
+            \item[ignoreEntityWithPassengers]
+            \item[ignoreGlowingEntity]
+            \item[ignoreLeashedEntity]
+        \end{NestedList}
     }
 
 \end{Configuration}
@@ -55,21 +78,3 @@ This module provides the entity cleaner to remove specified entities automatical
     \end{note}
 \end{samepage}
 
-\LevelFour{ignoreItemEntity}
-Should we ignore all item entity.
-
-\LevelFour{ignoreLivingEntity}
-Should we ignore all living entity?\\
-If you want the cleaner to remove monster or animals, you should enable this option.
-
-\LevelFour{ignoreNamedEntity}
-Should we ignore named entity.(With name tag, or name changed by anvil.)
-
-\LevelFour{ignoreEntityWithVehicle}
-Like entity riding in some other entity, \eg minecraft, pig or spider
-
-\LevelFour{ignoreEntityWithPassengers}
-
-\LevelFour{ignoreGlowingEntity}
-
-\LevelFour{ignoreLeashedEntity}
