@@ -7,36 +7,51 @@ This module provides afk detection, afk event, afk name customization and afk ef
 \LevelThree{/afk}
 
 \LevelTwo{Configuration}
-\LevelThree{format}
-The \tbf{tab list name} format when a player is afk
+\begin{Configuration}
+    \item[format]{The \tbf{tab list name} format when a player is afk}
 
-\LevelThree{afk\_checker}
-\LevelFour{cron}
-The cron to define how the afk\_checker is triggered.
+    \item[afk\_checker]{
+        \begin{NestedList}
+            \item[]
+            \item[cron]{The cron to define how the afk\_checker is triggered.}
+        \end{NestedList}
 
-\LevelThree{afk\_event}
-Execute commands on afk events.
+    }
 
-\begin{example}{Kick a player if he enters afk state}
-    \begin{json}
-        "on_enter_afk": [
-        "send-broadcast <gold>Player %player:name% is now afk",
-        "kick %player:name% You are kicked beacause of afk."
-        ]
-    \end{json}
-\end{example}
+    \item[afk\_event]{
+        Execute commands on afk events.
+        \begin{example}{Kick a player if he enters afk state}
+            \begin{json}
+                "on_enter_afk": [
+                "send-broadcast <gold>Player %player:name% is now afk",
+                "kick %player:name% You are kicked beacause of afk."
+                ]
+            \end{json}
+        \end{example}
+    }
 
-\LevelThree{effect}
-Afk effects are applied if a player enters afk state.
 
-\LevelFour{invulnerable}
-Immune to all damage?
+    \item[event]{
+        Afk effects are applied if a player enters afk state.
 
-\LevelFour{targetable}
-Can be targeted by a hostile entity?
+        \begin{NestedList}
+            \item[invulnerable]{
+                Immune to all damage?
+            }
 
-\LevelFour{moveable}
-Can be moved if in afk state?
+            \item[targetable]{
+                Can be targeted by a hostile entity?
+            }
+
+            \item[moveable]{
+                Can be moved if in afk state?
+            }
+
+        \end{NestedList}
+    }
+
+\end{Configuration}
+
 
 
 

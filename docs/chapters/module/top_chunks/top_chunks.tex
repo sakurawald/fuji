@@ -7,18 +7,25 @@ Higher score means more lagged.
 \LevelThree{/chunks}
 
 \LevelTwo{Configuration}
-\LevelThree{top}
-The top chunks to show in \ic{/chunks} command
+\begin{Configuration}
+    \item[top]{
+        The top chunks to show in \ic{/chunks} command
+    }
 
-\LevelThree{nearest\_distance}
-For a chunk, how much the radius used to search the nearest player around the chunk.
+    \item[nearest\_distance]{
+        For a chunk, how much the radius used to search the nearest player around the chunk.
+    }
 
-\LevelThree{hide\_location}
-Should we hide the chunk-position for a lagged-chunk?
-Hide chunk location to avoid grief or privacy purpose.
+    \item[hide\_location]{
+        Should we hide the chunk-position for a lagged-chunk?
+        Hide chunk location to avoid grief or privacy purpose.
+    }
 
-\LevelThree{type2score}
-The dict to define how lagged a type(entity/entity\_block) should be.\\
-For example:  \ttt{this.put("entity.minecraft.zombie", 4);} means that if there are 15 zombies inside a chunk,
-then the chunk gets score 15 * 4 = 60.\\
-Any other types not inside the dict use the score defined for type \tbf{default}.
+    \item[type2score]{
+        The dict to define how lagged a type(entity/entity\_block) should be.\\
+        For example:  \ttt{this.put("entity.minecraft.zombie", 4);} means that if there are 15 zombies inside a chunk,
+        then the chunk gets score 15 * 4 = 60.\\
+        Any other types not inside the dict use the score defined for type \tbf{default}.
+    }
+
+\end{Configuration}

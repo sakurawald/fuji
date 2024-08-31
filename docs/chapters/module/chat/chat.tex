@@ -44,38 +44,44 @@ This module provides chat system customization.
 \end{description}
 
 \LevelTwo{Configuration}
+\begin{Configuration}
+    \item[format]{
+        The server chat format for all players.
+    }
 
-\LevelThree{format}
-The server chat format for all players.
+    \item[rewrite]{
+        The \ttt{regex language} list used to \ttt{rewrite} the player chat message.\\
+        You can use regex language to transform player's chat input (only chat message, no command usage).
+    }
 
-\LevelFour{rewrite}
-The \ttt{regex language} list used to \ttt{rewrite} the player chat message.\\
-You can use regex language to transform player's chat input (only chat message, no command usage).
+    \item[mention\_player]{
+        If you insert \tbf{Steve} in chat message, then the player named Steve will get audio mention.
 
-\LevelFour{mention\_player}
-If you insert \tbf{Steve} in chat message, then the player named Steve will get audio mention.
+        \begin{NestedList}
+            \item[sound]{
+                The type of \tbf{sound} used to notify the mentioned player.
+                \begin{tips}{Query all identifiers of sound}
+                    \ic{/playsound \ldots}
+                \end{tips}
+            }
 
-\LevelFive{sound}
+            \item[volume]
+            \item[pitch]
+            \item[repeat\_count]{
+                The sound repeat count.
+            }
 
-The type of \tbf{sound} used to notify the mentioned player.
-\begin{tips}{Query all identifiers of sound}
-    \ic{/playsound \ldots}
-\end{tips}
+            \item[interval\_ms]{
+                The interval between each repeat.
+            }
+        \end{NestedList}
 
-\LevelFive{volume}
+        \item[spy]{
+            Log chat information into server-console.
+        }
 
-\LevelFive{pitch}
-
-\LevelFive{repeat\_count}
-
-The sound repeat count.
-
-\LevelFive{interval\_ms}
-
-The interval between each repeat.
-
-\LevelFour{spy}
-Log chat information into server-console.
+    }
+\end{Configuration}
 
 \LevelTwo{Sub-Module}
 \input{chapters/module/chat/display/display}

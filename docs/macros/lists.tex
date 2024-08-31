@@ -1,0 +1,26 @@
+%! suppress = DiscouragedUseOfDef
+\usepackage{enumitem}
+
+% first level
+\newcounter{descriptcounti}
+\setlist[description]{%
+    before={\setcounter{descriptcounti}{0}},%
+    ,font=\bfseries\refstepcounter{descriptcounti}\thedescriptcounti.~}
+
+% second level
+\newcounter{descriptcountii}
+\setlist[description,2]{%
+    before={\setcounter{descriptcountii}{0}},%
+    ,font=\bfseries\refstepcounter{descriptcountii}\thedescriptcounti.\thedescriptcountii.~}
+
+% nested list
+\newlist{NestedList}{itemize}{6}
+\setlist[NestedList]{label=\protect\textbullet,align=left}
+\setlistdepth{6}
+
+% new environment: Configuration
+\newenvironment{Configuration}
+{\NestedList\let\origitem\item
+\renewcommand{\item}[1][DEFAULT-LABEL]
+{\origitem[\textbf{\textcolor{magenta}{##1}}]}}
+{\endNestedList}
