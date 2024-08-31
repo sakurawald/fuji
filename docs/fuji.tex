@@ -25,8 +25,14 @@
 % fix the character '_' can't be copied in output .pdf file
 \usepackage[T1]{fontenc}
 
+% disable double hyphen ligature in typeset
+\usepackage{microtype}
+\DisableLigatures[-]{}
+
 % Macros
 \input{macros/macro}
+
+
 
 % Document
 \begin{document}
