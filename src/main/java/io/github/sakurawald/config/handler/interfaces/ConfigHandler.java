@@ -2,6 +2,7 @@ package io.github.sakurawald.config.handler.interfaces;
 
 import assets.fuji.Cat;
 import com.google.gson.*;
+import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.config.job.ConfigHandlerAutoSaveJob;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.works.structure.work.interfaces.Work;
@@ -20,8 +21,10 @@ import java.nio.file.StandardCopyOption;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public abstract class ConfigHandler<T> {
+    private static final Pattern MAP_TYPE_MATCHER = Pattern.compile(".+2.+");
 
     @Getter
     protected static final Gson gson = new GsonBuilder()
@@ -110,6 +113,11 @@ public abstract class ConfigHandler<T> {
                 if (JsonUtil.sameType(currentJson.get(key), value)) {
                     // test -> both are JsonObject
                     if (currentJson.get(key).isJsonObject() && value.isJsonObject()) {
+                        // skip the missing keys if its type is Map
+                        if (MAP_TYPE_MATCHER.matcher(key).matches()) {
+                            continue;
+                        }
+
                         mergeFields(currentPath, currentJson.getAsJsonObject(key), value.getAsJsonObject());
                     }
                 } else {
