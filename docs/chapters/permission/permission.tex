@@ -1,9 +1,9 @@
-\chapter{Permission}\label{ch:permission}
-\section{Definition}
+\LevelZero{Permission}\label{ch:permission}
+\LevelOne{Definition}
 A \ttt{permission} is used to decide whether \ttt{a player} can do something or not.
 
 
-\section{Types}
+\LevelOne{Types}
 To make the discussion clearer, we define the types of \ttt{permission} as follows:
 \begin{description}
     \item [level permission] A permission level is a non-negative number used in vanilla minecraft.
@@ -14,15 +14,15 @@ To make the discussion clearer, we define the types of \ttt{permission} as follo
 \clearpage
 
 
-\section{What is the permission system used by fuji?}
+\LevelOne{What is the permission system used by fuji?}
 
-\subsection{Explanation}
+\LevelTwo{Explanation}
 Fuji use the mojang's \ttt{vanilla permission system}, which is based on \ttt{level permission}.\\
 \\
 As a convention, most of the commands registered by fuji, requires \ttt{level permission} to be \ttt{0} to use.
 Only a few of the commands require the \ttt{level permission} to be \ttt{4} to use.
 
-\subsection{Set a string permission for a command}
+\LevelTwo{Set a string permission for a command}
 By default, fuji only use the \ttt{level permission} as \ttt{the requirement of} a command.
 However, if you want to use \ttt{string permission} for a \ttt{command}, you can use \ttt{command permission module}, which is used to \ttt{override} the requirement of an existing command.
 
@@ -43,7 +43,7 @@ However, if you want to use \ttt{string permission} for a \ttt{command}, you can
 \end{example}
 
 
-\section{Reference}
+\LevelOne{Reference}
 \begin{enumerate}
     \item \url{https://minecraft.fandom.com/wiki/Permission\_level}
 \end{enumerate}
