@@ -1,6 +1,6 @@
-\s{cleaner}
+\LevelOne{cleaner}
 
-\ss{Purpose}
+\LevelTwo{Purpose}
 This module provides the entity cleaner to remove specified entities automatically.
 
 \begin{note}{Only use this module to clean some edge-case entity}
@@ -8,8 +8,8 @@ This module provides the entity cleaner to remove specified entities automatical
 \end{note}
 
 
-\ss{Command}
-\sss{/cleaner clean}
+\LevelTwo{Command}
+\LevelThree{/cleaner clean}
 \begin{note}{The cleaner will keep silent if cleans nothing}
     If the cleaner cleans nothing, then it will keep silent.(Which means you will not see any message in console, or in-game chat)
 \end{note}
@@ -18,10 +18,10 @@ This module provides the entity cleaner to remove specified entities automatical
     Hover your mouse on the cleaner broadcast, you can see what has been removed.
 \end{tips}
 
-\ss{Configuration}
-\sss{cron}
+\LevelTwo{Configuration}
+\LevelThree{cron}
 The cron used to define the job to trigger \ic{/cleaner clean}.
-\sss{key2age}
+\LevelThree{key2age}
 The key is translatable key, which you can query in \href{https://github.com/sakurawald/fuji-fabric/blob/dev/.github/files/en_us.json}{en\_us.json language file in minecraft 1.21.} \\
 The translatable key of entity starts with entity.minecraft. \\
 The translatable key of item starts with item.minecraft and block.minecraft. \\
@@ -34,7 +34,7 @@ The cleaner will only remove the entities whose translatable key equals key, and
     \end{json}
 \end{example}
 
-\sss{ignore}
+\LevelThree{ignore}
 Entities match the ignore list will not be cleaned.
 
 \begin{samepage}
@@ -48,21 +48,21 @@ Entities match the ignore list will not be cleaned.
     \end{note}
 \end{samepage}
 
-\ssss{ignoreItemEntity}
+\LevelFour{ignoreItemEntity}
 Should we ignore all item entity.
 
-\ssss{ignoreLivingEntity}
+\LevelFour{ignoreLivingEntity}
 Should we ignore all living entity?\\
 If you want the cleaner to remove monster or animals, you should enable this option.
 
-\ssss{ignoreNamedEntity}
+\LevelFour{ignoreNamedEntity}
 Should we ignore named entity.(With name tag, or name changed by anvil.)
 
-\ssss{ignoreEntityWithVehicle}
+\LevelFour{ignoreEntityWithVehicle}
 Like entity riding in some other entity, \eg minecraft, pig or spider
 
-\ssss{ignoreEntityWithPassengers}
+\LevelFour{ignoreEntityWithPassengers}
 
-\ssss{ignoreGlowingEntity}
+\LevelFour{ignoreGlowingEntity}
 
-\ssss{ignoreLeashedEntity}
+\LevelFour{ignoreLeashedEntity}

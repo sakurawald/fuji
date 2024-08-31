@@ -1,8 +1,47 @@
-\newcommand{\s}[1]{\section{#1}}
-\renewcommand{\ss}[1]{\subsection{#1}}
-\newcommand{\sss}[1]{\subsubsection{#1}}
-\newcommand{\ssss}[1]{\paragraph{#1}\mbox{}\\}
-\newcommand{\sssss}[1]{\subparagraph{#1}\mbox{}\\}
+%! suppress = Makeatletter
+\newcommand{\LevelOne}[1]{\section{#1}}
+\newcommand{\LevelTwo}[1]{\subsection{#1}}
+\newcommand{\LevelThree}[1]{\subsubsection{#1}}
+\newcommand{\LevelFour}[1]{\paragraph{#1}\mbox{}\\}
+\newcommand{\LevelFive}[1]{\subparagraph{#1}\mbox{}\\}
 
+% define new levels
 \setcounter{secnumdepth}{10}
 \setcounter{tocdepth}{10}
+
+% \subsubparagraph
+\usepackage{titlesec}
+\titleclass{\subsubparagraph}{straight}[\subparagraph]
+\newcounter{subsubparagraph}[subparagraph]
+\renewcommand{\thesubsubparagraph}{\thesubparagraph.\arabic{subsubparagraph}}
+\titleformat{\subsubparagraph}[runin]
+{\normalfont\normalsize\bfseries}{\thesubsubparagraph}{1em}{}
+\titlespacing*{\subsubparagraph}{32pt}{3.25ex plus 1ex minus .2ex}{1em}
+\makeatletter
+\newcommand\l@subsubparagraph{\@dottedtocline{6}{14em}{7em}}
+\makeatother
+\newcommand{\LevelSix}[1]{\subsubparagraph{#1}\mbox{}\\}
+
+% \subsubsubparagraph
+\titleclass{\subsubsubparagraph}{straight}[\subsubparagraph]
+\newcounter{subsubsubparagraph}[subsubparagraph]
+\renewcommand{\thesubsubsubparagraph}{\thesubsubparagraph.\arabic{subsubsubparagraph}}
+\titleformat{\subsubsubparagraph}[runin]
+{\normalfont\normalsize\bfseries}{\thesubsubsubparagraph}{1em}{}
+\titlespacing*{\subsubsubparagraph}{32pt}{3.25ex plus 1ex minus .2ex}{1em}
+\makeatletter
+\newcommand\l@subsubsubparagraph{\@dottedtocline{7}{16em}{8em}}
+\makeatother
+\newcommand{\LevelSeven}[1]{\subsubsubparagraph{#1}\mbox{}\\}
+
+% \subsubsubsubparagraph
+\titleclass{\subsubsubsubparagraph}{straight}[\subsubsubparagraph]
+\newcounter{subsubsubsubparagraph}[subsubsubparagraph]
+\renewcommand{\thesubsubsubsubparagraph}{\thesubsubsubparagraph.\arabic{subsubsubsubparagraph}}
+\titleformat{\subsubsubsubparagraph}[runin]
+{\normalfont\normalsize\bfseries}{\thesubsubsubsubparagraph}{1em}{}
+\titlespacing*{\subsubsubsubparagraph}{32pt}{3.25ex plus 1ex minus .2ex}{1em}
+\makeatletter
+\newcommand\l@subsubsubsubparagraph{\@dottedtocline{8}{18em}{9em}}
+\makeatother
+\newcommand{\LevelEight}[1]{\subsubsubsubparagraph{#1}\mbox{}\\}

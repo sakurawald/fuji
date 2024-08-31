@@ -1,8 +1,8 @@
-\s{chat}
-\ss{Purpose}
+\LevelOne{chat}
+\LevelTwo{Purpose}
 This module provides chat system customization.
 
-\ss{Feature}
+\LevelTwo{Feature}
 \begin{enumerate}
     \item You can create your own \ttt{regex transformer} to replace \ttt{chat message} sent by players.
     \item You can insert any \ttt{placeholder} like \ph{world:name}
@@ -33,55 +33,55 @@ This module provides chat system customization.
     \end{enumerate}
 \end{tips}
 
-\ss{Command}
-\sss{/chat}
+\LevelTwo{Command}
+\LevelThree{/chat}
 
-\ss{Placeholder}
+\LevelTwo{Placeholder}
 \begin{description}
     \item[\ph{fuji:pos}] player current position
     \item[\ph{fuji:player\_prefix}] player prefix
     \item[\ph{fuji:player\_suffix}] player suffix
 \end{description}
 
-\ss{Configuration}
+\LevelTwo{Configuration}
 
-\sss{format}
+\LevelThree{format}
 The server chat format for all players.
 
-\ssss{rewrite}
+\LevelFour{rewrite}
 The \ttt{regex language} list used to \ttt{rewrite} the player chat message.\\
 You can use regex language to transform player's chat input (only chat message, no command usage).
 
-\ssss{mention\_player}
+\LevelFour{mention\_player}
 If you insert \tbf{Steve} in chat message, then the player named Steve will get audio mention.
 
-\sssss{sound}
+\LevelFive{sound}
 
 The type of \tbf{sound} used to notify the mentioned player.
 \begin{tips}{Query all identifiers of sound}
     \ic{/playsound \ldots}
 \end{tips}
 
-\sssss{volume}
+\LevelFive{volume}
 
-\sssss{pitch}
+\LevelFive{pitch}
 
-\sssss{repeat\_count}
+\LevelFive{repeat\_count}
 
 The sound repeat count.
 
-\sssss{interval\_ms}
+\LevelFive{interval\_ms}
 
 The interval between each repeat.
 
-\ssss{spy}
+\LevelFour{spy}
 Log chat information into server-console.
 
-\ss{Sub-Module}
+\LevelTwo{Sub-Module}
 \input{chapters/module/chat/display/display}
 \input{chapters/module/chat/history/history}
 
-\ss{Reference}
+\LevelTwo{Reference}
 \begin{enumerate}
     \item \href{https://placeholders.pb4.eu/user/default-placeholders/}{Text Placeholder API - default placeholders}
     \item \href{https://luckperms.net/wiki/Prefixes,-Suffixes-&-Meta}{Luckperms - prefix, suffix and meta}

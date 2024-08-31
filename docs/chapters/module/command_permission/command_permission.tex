@@ -1,9 +1,9 @@
-\s{command\_permission}
+\LevelOne{command\_permission}
 
-\ss{Purpose}
+\LevelTwo{Purpose}
 This module provides the customization of \tbf{the requirement of all commands}.
 
-\ss{How it works}
+\LevelTwo{How it works}
 The vanilla minecraft use a command system named brigadier.\\
 All the commands are registered, parsed and executed by brigadier. \\
 In this system, all commands are build into \tbf{a tree structure}, that is to say, all commands are a direct or in-direct child of the \tbf{root command node}.
@@ -24,7 +24,7 @@ Also, each \tbf{command node} has its \tbf{requirement}, which is a \tbf{predica
     \ic{/lp group default permission set fuji.permission\ldots}
 \end{tips}
 
-\ss{Example}
+\LevelTwo{Example}
 \begin{example}{Allow everyone to use /op command}
     \ic{/lp group default permission set fuji.permission.op true}
 \end{example}

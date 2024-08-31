@@ -3,14 +3,14 @@
 
 \section{Main-Control File}
 
-\ss{common}
+\LevelTwo{common}
 The \ttt{common} options inside \ttt{config/fuji/config.json} will influence \ttt{all modules}.
 
-\sss{quartz}
+\LevelThree{quartz}
 Fuji use \ttt{quartz} library as scheduler, all the~\nameref{sec:job} are managed by quartz.
 Quartz library use a language called \ttt{cron language} to define when to trigger a job.
 
-\ssss{logger\_level}
+\LevelFour{logger\_level}
 The logger level for \ttt{quartz}.
 The logger level from high to low are: OFF, FATAL, ERROR, WARN, INFO, DEBUG, TRACE, ALL.
 
@@ -19,18 +19,18 @@ The logger level from high to low are: OFF, FATAL, ERROR, WARN, INFO, DEBUG, TRA
     It's recommended to set at least \ttt{WARN} level, to avoid \ttt{console spam}.
 \end{example}
 
-\sss{backup}
+\LevelThree{backup}
 Fuji will back up the \ttt{config/fuji} directory automatically before it loads any module.
 
-\ssss{max\_slots}
+\LevelFour{max\_slots}
 How many \ttt{backup} should we keep?
 
-\ssss{skip}
+\LevelFour{skip}
 The list of \ttt{path resolver} to skip in backup. \\
 Insert \ttt{head} means skip the folder \ttt{config/fuji/head}.
 
-\sss{language}
-\ssss{default\_language}
+\LevelThree{language}
+\LevelFour{default\_language}
 The default language to use.
 
 \begin{tips}{Enable multi-language support for fuji}
