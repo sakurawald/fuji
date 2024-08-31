@@ -1,23 +1,23 @@
-\s{top\_chunks}
-\ss{Purpose}
+\LevelOne{top\_chunks}
+\LevelTwo{Purpose}
 This module compute a \tbf{laggy score} for all loaded chunks, and return the topN lagged chunks.
 Higher score means more lagged.
 
-\ss{Command}
-\sss{/chunks}
+\LevelTwo{Command}
+\LevelThree{/chunks}
 
-\ss{Configuration}
-\sss{top}
+\LevelTwo{Configuration}
+\LevelThree{top}
 The top chunks to show in \ic{/chunks} command
 
-\sss{nearest\_distance}
+\LevelThree{nearest\_distance}
 For a chunk, how much the radius used to search the nearest player around the chunk.
 
-\sss{hide\_location}
+\LevelThree{hide\_location}
 Should we hide the chunk-position for a lagged-chunk?
 Hide chunk location to avoid grief or privacy purpose.
 
-\sss{type2score}
+\LevelThree{type2score}
 The dict to define how lagged a type(entity/entity\_block) should be.\\
 For example:  \ttt{this.put("entity.minecraft.zombie", 4);} means that if there are 15 zombies inside a chunk,
 then the chunk gets score 15 * 4 = 60.\\

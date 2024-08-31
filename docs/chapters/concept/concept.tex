@@ -1,10 +1,10 @@
 \chapter{Concept}\label{ch:concept}
-\s{Configuration File}
+\LevelOne{Configuration File}
 
-\ss{Definition}
+\LevelTwo{Definition}
 All \ttt{files} inside \ttt{config/fuji} directory are named \ttt{configuration file}
 
-\ss{Types}
+\LevelTwo{Types}
 \begin{note}{The types of configuration files}
     \begin{description}
         \item[Control File] {A \ttt{control file} is used to control behaviours.}
@@ -19,9 +19,9 @@ All \ttt{files} inside \ttt{config/fuji} directory are named \ttt{configuration 
 
 
 \clearpage
-\s{Module}
+\LevelOne{Module}
 
-\ss{Definition}
+\LevelTwo{Definition}
 A \ttt{module} is used to provide a specific purpose.
 \begin{example}{The purpose of modules}
     \begin{description}
@@ -30,14 +30,14 @@ A \ttt{module} is used to provide a specific purpose.
     \end{description}
 \end{example}
 
-\ss{Properties}
+\LevelTwo{Properties}
 The properties of a module are as follows:
 \begin{description}
     \item [Can be disabled] You can disable a module completely in \ttt{main-control file} by setting the value of its \ttt{enable} key to \ttt{false}.
     \item [Can work standalone] The code of a module is self-contained, there is no reference to other modules.
 \end{description}
 
-\ss{Module Path}
+\LevelTwo{Module Path}
 A \ttt{module} is identified by a unique \ttt{module path}.
 
 \begin{example}{What a module-path looks like?}
@@ -50,7 +50,7 @@ A \ttt{module} can have \ttt{sub-module}.
 
 The relationship between \ttt{parent-module} and \ttt{sub-module} is relative, and there is nothing special about \ttt{sub-module}.
 
-\ss{How to enable/disable a module?}
+\LevelTwo{How to enable/disable a module?}
 You can enable/disable a module in \ttt{config/fuji/config.json} by setting the value of its \ttt{enable} key to \ttt{true}/\ttt{false}
 \begin{samepage}
     A \ttt{module} will be enabled if the following conditions are met:
@@ -67,12 +67,12 @@ You can enable/disable a module in \ttt{config/fuji/config.json} by setting the 
 
 
 \clearpage
-\s{Job}\label{sec:job}
+\LevelOne{Job}\label{sec:job}
 
-\ss{Definition}
+\LevelTwo{Definition}
 A \ttt{job} is some things will be done \ttt{repeatedly}.
 
-\ss{Cron Expression as Trigger Rule}
+\LevelTwo{Cron Expression as Trigger Rule}
 A language named \ttt{cron language} is used to \ttt{define} when a \ttt{job} should be triggered.
 
 \begin{tips}{Don't write cron expression by hand. Use generator!}
@@ -83,12 +83,12 @@ A language named \ttt{cron language} is used to \ttt{define} when a \ttt{job} sh
 \end{tips}
 
 \clearpage
-\s{Regex}
+\LevelOne{Regex}
 
-\ss{Definition}
+\LevelTwo{Definition}
 Regex is a language used to define the pattern of strings.
 
-\ss{Reference}
+\LevelTwo{Reference}
 \begin{enumerate}
     \item \url{https://regexr.com/}
     \item \url{https://regex101.com/}
