@@ -1,15 +1,15 @@
-\chapter{Q\&A}\label{ch:q&a}
+\LevelZero{Q\&A}\label{ch:q&a}
 
 
-\section{Where is the configuration files?}
+\LevelOne{Where is the configuration files?}
 As a convention, all the files are placed in \ttt{config/fuji/} directory.
 
 
-\section{What is .json file?}
+\LevelOne{What is .json file?}
 A json file is a text file, whose name normally ends with \tbf{.json}.
 
 
-\section{How can I edit a configuration file?}
+\LevelOne{How can I edit a configuration file?}
 To ensure the \ttt{readable} and \ttt{transparent}, most of the files are saved as \ttt{pure text format}.
 You can open them with a \ttt{text editor}.
 
@@ -25,33 +25,33 @@ You can open them with a \ttt{text editor}.
 \end{tips}
 
 
-\section{What is .dat file?}
+\LevelOne{What is .dat file?}
 The file whose name ends with \tbf{.dat} are the \ttt{vanilla minecraft NBT format file}.
 To open such a file, you need to use a \ttt{NBT Editor}, such as \ttt{NBTExplorer}.
 
 
-\section{How to update fuji to a new version?}
+\LevelOne{How to update fuji to a new version?}
 
-\subsection{Backup the data}
+\LevelTwo{Backup the data}
 Back up the \ttt{config/fuji} directory.
 
-\subsection{Test the new version in your test-environment}
+\LevelTwo{Test the new version in your test-environment}
 Put the new version of fuji into \ttt{mods/} directory, start the server, and adjust the configuration to what you want.
 
 \begin{warn}{Don't test new changes directly in your production-environment}
     It's highly recommended to setup a test-environment for a network-maintainer, so that you can test and tweak installed mods into what you want, and avoid un-expected situations.
 \end{warn}
 
-\subsection{Apply the changes to production-environment}
+\LevelTwo{Apply the changes to production-environment}
 Now, it's ready to apply the changes to your production-environment.
 
 
-\section{Fuji conflits with one of my mods.}
+\LevelOne{Fuji conflits with one of my mods.}
 You can \ttt{disable} the \ttt{conflicting module}.
 If possible, create an issue at \issueurl, so that we can solve this later.
 
 
-\section{How can I report bugs or suggest new features?}
+\LevelOne{How can I report bugs or suggest new features?}
 You can create an issue at \issueurl
 
 
