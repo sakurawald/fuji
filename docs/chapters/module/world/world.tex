@@ -25,7 +25,7 @@ Provides a unified world management.
         \item minecraft:the\_nether
         \item minecraft:the\_end
     \end{enumerate}
-    You can see the dimensions of a world in world/level.dat file.
+    You can see the dimensions of a world in \tbf{world/level.dat} file.
     \\\\
     A dimension type is used to create dimensions, the vanilla minecraft has the following dimension type:
     \begin{enumerate}
@@ -35,12 +35,13 @@ Provides a unified world management.
         \item minecraft:the\_end
     \end{enumerate}
 
-    The file server.properties is used for \tbf{the only and default world}.
+    The file \tbf{server.properties} is used for \tbf{the only and default world}.
 \end{tips}
 
 \ss{Configuration}
 \sss{blacklist}
-The dimensions in the blacklist will not be operated by this module.Use blacklist to avoid mis-operation.
+The dimensions in the blacklist will not be operated by this module.
+Use blacklist to avoid mis-operation.
 
 \ss{Example}
 \begin{example}{Create an extra the\_nether dimension}
@@ -57,7 +58,7 @@ The dimensions in the blacklist will not be operated by this module.Use blacklis
 
 \begin{tips}{Specify a seed for dimension}
     \ic{/world create my\_nether minecraft:the\_nether --seed 1234567890}\\
-    \ic{/world reset fuji:my\_nether --use-the-same-seed}
+    \ic{/world reset fuji:my\_nether --use-the-same-seed true}
 \end{tips}
 
 \begin{tips}{Make a resource-world that automatically reset every day}
