@@ -18,3 +18,8 @@ This module provides \tbf{system message} customization.
     It should be noted that, no all messages inside \href{https://github.com/sakurawald/fuji-fabric/blob/dev/.github/files/en_us.json}{mojang's official language file} are server-side message.
     If a message is client-side message, which means that the message is only used in client-side, then the module will have no effects on this message.
 \end{note}
+
+\begin{warn}{Possible conflicting with StyledChat}
+    If you are using this module with \tbf{StyledChat} mod installed, you need to remove the conflicting \tbf{language keys} in \tbf{key2value} configuration. \\
+    See also: \url{https://github.com/sakurawald/fuji-fabric/issues/65}
+\end{warn}
