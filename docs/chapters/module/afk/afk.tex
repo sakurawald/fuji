@@ -8,7 +8,7 @@ This module provides afk detection, afk event, afk name customization and afk ef
 
 \ss{Configuration}
 \sss{format}
-The tab-name format when a player is afk
+The \tbf{tab list name} format when a player is afk
 
 \sss{afk\_checker}
 \ssss{cron}
@@ -21,7 +21,7 @@ Execute commands on afk events.
     \begin{json}
         "on_enter_afk": [
         "send-broadcast <gold>Player %player:name% is now afk",
-        "kick %player:name% You are kicked beacause on afk."
+        "kick %player:name% You are kicked beacause of afk."
         ]
     \end{json}
 \end{example}
@@ -33,10 +33,10 @@ Afk effects are applied if a player enters afk state.
 Immune to all damage?
 
 \ssss{targetable}
-Can be targeted by a hostile entity ?
+Can be targeted by a hostile entity?
 
 \ssss{moveable}
-Can be moved if in afk state ?
+Can be moved if in afk state?
 
 
 
