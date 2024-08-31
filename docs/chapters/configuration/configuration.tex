@@ -1,4 +1,6 @@
 \chapter{Configuration}\label{ch:configuration}
+
+
 \section{Main-Control File}
 
 \ss{common}
@@ -24,20 +26,16 @@ Fuji will back up the \ttt{config/fuji} directory automatically before it loads 
 How many \ttt{backup} should we keep?
 
 \ssss{skip}
-The list of \ttt{path resolver} to skip in backup.
-\\
+The list of \ttt{path resolver} to skip in backup. \\
 Insert \ttt{head} means skip the folder \ttt{config/fuji/head}.
 
 \sss{language}
 \ssss{default\_language}
 The default language to use.
-\\
-Fuji also supports multi-language based on player's client-side language if the server is able to do so.
-\\
-You need to enable \ttt{language module} to let fuji respect client-side's language settings.
-\\
-Also, if the server can't support client-side's language, it will fallback to the \ttt{deafult\_language}
 
+\begin{tips}{Enable multi-language support for fuji}
+    See~\nameref{sec:language}
+\end{tips}
 
 
 \clearpage
