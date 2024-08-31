@@ -19,23 +19,30 @@ This module provides the entity cleaner to remove specified entities automatical
 \end{tips}
 
 \LevelTwo{Configuration}
-\LevelThree{cron}
-The cron used to define the job to trigger \ic{/cleaner clean}.
-\LevelThree{key2age}
-The key is translatable key, which you can query in \href{https://github.com/sakurawald/fuji-fabric/blob/dev/.github/files/en_us.json}{en\_us.json language file in minecraft 1.21.} \\
-The translatable key of entity starts with entity.minecraft. \\
-The translatable key of item starts with item.minecraft and block.minecraft. \\
-The age is the existence time of the entity, the unit of age is game tick, which means 20 age = 20 ticks = 1 second. \\
-The cleaner will only remove the entities whose translatable key equals key, and age greater equals the defined age, and the entity must not in the ignore list.
+\begin{Configuration}
+    \item[cron]{
+        The cron used to define the job to trigger \ic{/cleaner clean}.
+    }
 
-\begin{example}{Clean the sand-block entity lives longer than 60sec}
-    \begin{json}
-        "block.minecraft.sand": 1200
-    \end{json}
-\end{example}
+    \item[key2age]{
+        The key is translatable key, which you can query in \href{https://github.com/sakurawald/fuji-fabric/blob/dev/.github/files/en_us.json}{en\_us.json language file in minecraft 1.21.} \\
+        The translatable key of entity starts with entity.minecraft. \\
+        The translatable key of item starts with item.minecraft and block.minecraft. \\
+        The age is the existence time of the entity, the unit of age is game tick, which means 20 age = 20 ticks = 1 second. \\
+        The cleaner will only remove the entities whose translatable key equals key, and age greater equals the defined age, and the entity must not in the ignore list.
 
-\LevelThree{ignore}
-Entities match the ignore list will not be cleaned.
+        \begin{example}{Clean the sand-block entity lives longer than 60sec}
+            \begin{json}
+                "block.minecraft.sand": 1200
+            \end{json}
+        \end{example}
+    }
+
+    \item[ignore]{
+        Entities match the ignore list will not be cleaned.
+    }
+
+\end{Configuration}
 
 \begin{samepage}
     \begin{note}{The built-in safety rule}
