@@ -13,7 +13,7 @@ An essentials mod written just for fun.
 - **vanilla respect**: all modules are designed to be light-weight.
 - **fully modular**: all modules can be disabled.
 - **high performance**: code with performance in mind.
-- **easy to use**: a plain-text manual is provided.
+- **easy to use**: a text-based manual is provided.
 - **free**: it's free, open source, and GPL-licensed.
 
 ## Manual

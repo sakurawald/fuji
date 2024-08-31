@@ -25,6 +25,8 @@ import java.nio.file.Path;
 // TODO: modify default enable supplier
 // TODO: manifold getInstance()
 // TODO: curse forge plugin
+// TODO: refuse to load tester module in non-dev env
+
 
 public class Fuji implements ModInitializer {
 
