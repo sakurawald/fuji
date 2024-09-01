@@ -215,7 +215,7 @@ public class CommandAnnotationProcessor {
                  *
                  * In order to continue the command-context passing process, we will temporally ignore the exception, so that the optional argument can be filled properly.
                  * */
-                if (e instanceof IllegalArgumentException && e.getMessage().startsWith("No such argument")) {
+                if (e.getMessage() != null && e.getMessage().startsWith("No such argument")) {
                     args.add(Optional.empty());
                     continue;
                 }
