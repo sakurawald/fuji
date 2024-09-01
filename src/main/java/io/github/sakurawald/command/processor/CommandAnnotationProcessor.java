@@ -14,6 +14,7 @@ import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.adapter.interfaces.AbstractArgumentTypeAdapter;
 import io.github.sakurawald.command.argument.structure.Argument;
+import io.github.sakurawald.module.common.exception.BreakException;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -175,6 +176,11 @@ public class CommandAnnotationProcessor {
             } catch (IllegalAccessException | InvocationTargetException e) {
                 // don't swallow the exception.
                 Throwable theRealException = e.getCause();
+
+                if (theRealException instanceof BreakException) {
+                    // swallow it
+                    return CommandHelper.Return.FAIL;
+                }
 
                 sendCommandExceptionToSource(ctx.getSource(), theRealException);
                 return CommandHelper.Return.FAIL;
