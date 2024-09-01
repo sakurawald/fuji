@@ -185,7 +185,7 @@ public class CommandAnnotationProcessor {
     }
 
     private static void sendCommandExceptionToSource(ServerCommandSource source, Throwable exception) {
-        MutableText mutableText = Text.literal(exception.getMessage() == null ? exception.getClass().getName() : exception.getMessage());
+        MutableText mutableText = Text.literal("[fuji exception handler] " + exception.toString());
         source.sendError(Text.translatable("command.failed").styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, mutableText))));
     }
 

@@ -6,7 +6,6 @@ This module provides commands to send echo to players.
 \LevelThree{/send-broadcast}
 \LevelThree{/send-actionbar}
 \LevelThree{/send-title}
-\LevelThree{/send-toast}
 \begin{example}{Send title to a player}
     \ic{/send-title Steve --mainTitle "<rainbow>Hello" --subTitle "<blue>World" --fadeInTicks 60 --stayTicks 60 --fadeOutTicks 60}
 \end{example}
@@ -14,6 +13,12 @@ This module provides commands to send echo to players.
 \begin{example}{Send title to online players}
     \ic{/foreach send-title \ph{player:name} --mainTitle "<rainbow>Hello \ph{player:name}"}
 \end{example}
+\LevelThree{/send-toast}
+
+\begin{example}{Send toast to a player}
+    \ic{/send-toast Steve --icon minecraft:golden\_carrot <rb>eat this carrot}
+\end{example}
+
 \LevelThree{/send-chat}
 
 \begin{example}{Send chat as a player}
