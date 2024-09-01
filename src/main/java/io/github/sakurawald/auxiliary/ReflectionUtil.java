@@ -3,7 +3,9 @@ package io.github.sakurawald.auxiliary;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.module.ModuleManager;
 import lombok.experimental.UtilityClass;
+import org.quartz.Job;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -36,9 +38,9 @@ public class ReflectionUtil {
     public static ScanResult getClassInfoScanResult() {
         if (CLASS_INFO_SCAN_RESULT == null) {
             CLASS_INFO_SCAN_RESULT = makeBaseClassGraph()
-                .enableClassInfo()
-                .acceptPackages(Fuji.class.getPackageName())
-                .scan();
+                    .enableClassInfo()
+                    .acceptPackages(Fuji.class.getPackageName())
+                    .scan();
         }
 
         return CLASS_INFO_SCAN_RESULT;
@@ -54,5 +56,9 @@ public class ReflectionUtil {
         }
 
         return CLASS_ANNOTATION_SCAN_RESULT;
+    }
+
+    public static String getModulePath(Object object) {
+        return String.join(".",ModuleManager.computeModulePath(object.getClass().getName()));
     }
 }

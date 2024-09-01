@@ -22,7 +22,7 @@ import java.util.*;
 public class ModuleManager extends AbstractManager {
 
     public static final String COMMON_MODULE_ROOT = "common";
-    private final JsonElement RC_CONFIG = Configs.configHandler.toJsonElement();
+    private static final JsonElement RC_CONFIG = Configs.configHandler.toJsonElement();
     private final Map<Class<? extends ModuleInitializer>, ModuleInitializer> moduleRegistry = new HashMap<>();
     private final Map<List<String>, Boolean> module2enable = new HashMap<>();
 
@@ -102,7 +102,7 @@ public class ModuleManager extends AbstractManager {
     }
 
     public boolean shouldWeEnableThis(String className) {
-        return shouldWeEnableThis(computeModulePath(this.RC_CONFIG,className));
+        return shouldWeEnableThis(computeModulePath(this.RC_CONFIG, className));
     }
 
     private boolean shouldWeEnableThis(@NotNull List<String> modulePath) {
@@ -141,6 +141,10 @@ public class ModuleManager extends AbstractManager {
         // cache
         module2enable.put(modulePath, enable);
         return enable;
+    }
+
+    public static @NotNull List<String> computeModulePath(@NotNull String className) {
+        return computeModulePath(RC_CONFIG, className);
     }
 
     /**

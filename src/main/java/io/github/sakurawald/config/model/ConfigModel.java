@@ -564,6 +564,7 @@ public class ConfigModel {
             public @NotNull List<CommandAliasEntry> alias = new ArrayList<>() {
                 {
                     this.add(new CommandAliasEntry(List.of("r"), List.of("reply")));
+                    this.add(new CommandAliasEntry(List.of("sudo"), List.of("run", "as", "fake-op")));
                     this.add(new CommandAliasEntry(List.of("i", "want", "to", "modify", "chat"), List.of("chat", "format")));
                 }
             };
