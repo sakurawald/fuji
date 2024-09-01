@@ -17,9 +17,10 @@ public class ConfigModel {
 
     public class Common {
 
-        public @NotNull Quartz quartz = new Quartz();
+        public @NotNull Debug debug = new Debug();
         public @NotNull Backup backup = new Backup();
         public @NotNull Language language = new Language();
+        public @NotNull Quartz quartz = new Quartz();
 
         public class Quartz {
             public @NotNull String logger_level = "WARN";
@@ -37,6 +38,10 @@ public class ConfigModel {
 
         public class Language {
             public @NotNull String default_language = "en_us";
+        }
+
+        public class Debug {
+            public boolean disable_all_modules = false;
         }
     }
 

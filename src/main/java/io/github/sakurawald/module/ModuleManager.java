@@ -102,11 +102,14 @@ public class ModuleManager extends AbstractManager {
     }
 
     public boolean shouldWeEnableThis(String className) {
-        return shouldWeEnableThis(computeModulePath(this.RC_CONFIG, className));
+        return shouldWeEnableThis(computeModulePath(RC_CONFIG, className));
     }
 
     private boolean shouldWeEnableThis(@NotNull List<String> modulePath) {
-        // common module
+        // special case 1
+        if (Configs.configHandler.model().common.debug.disable_all_modules) return false;
+
+        // special case 2
         if (modulePath.getFirst().equals(COMMON_MODULE_ROOT)) return true;
 
         // cache
