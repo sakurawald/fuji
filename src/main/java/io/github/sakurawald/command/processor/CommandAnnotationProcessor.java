@@ -214,6 +214,8 @@ public class CommandAnnotationProcessor {
                  * java.lang.IllegalArgumentException, e.message = No such argument 'y' exists on this command
                  *
                  * In order to continue the command-context passing process, we will temporally ignore the exception, so that the optional argument can be filled properly.
+                 *
+                 * The magic field "No such argument" is thrown by mojang's brigadier system.
                  * */
                 if (e.getMessage() != null && e.getMessage().startsWith("No such argument")) {
                     args.add(Optional.empty());
