@@ -61,6 +61,7 @@ public class ConfigModel {
         public @NotNull Rtp rtp = new Rtp();
         public @NotNull Works works = new Works();
         public @NotNull DeathLog deathlog = new DeathLog();
+        public @NotNull View view = new View();
         public @NotNull Echo echo = new Echo();
         public @NotNull Functional functional = new Functional();
         public @NotNull SystemMessage system_message = new SystemMessage();
@@ -467,6 +468,10 @@ public class ConfigModel {
             public class SendChat {
                 public boolean enable = true;
             }
+        }
+
+        public class View {
+            public boolean enable = false;
         }
 
         public class Placeholder {

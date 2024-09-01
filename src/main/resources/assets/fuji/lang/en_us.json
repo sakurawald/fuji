@@ -214,5 +214,8 @@
   "helpop.fail": "<red>No staff online!",
   "helpop.format": "<orange>Player %s ask for help: %s",
   "near.format": "<orange>Nearby player list: %s",
-  "compass.no_compass": "<red>You should hold a compass in hand."
+  "compass.no_compass": "<red>You should hold a compass in hand.",
+  "view.failed.self_view": "<red>You can't view self.",
+  "view.inv.title": "%s 's Inventory",
+  "view.ender.title": "%s 's EnderChest"
 }

@@ -3,14 +3,14 @@ package io.github.sakurawald.module.initializer.kit.gui;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
+import io.github.sakurawald.auxiliary.minecraft.GuiHelper;
+import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
 import io.github.sakurawald.module.common.gui.InputSignGui;
 import io.github.sakurawald.module.common.gui.PagedGui;
 import io.github.sakurawald.module.common.gui.layer.SingleLineLayer;
 import io.github.sakurawald.module.common.manager.Managers;
-import io.github.sakurawald.module.initializer.kit.structure.Kit;
 import io.github.sakurawald.module.initializer.kit.KitInitializer;
-import io.github.sakurawald.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.module.initializer.kit.structure.Kit;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
@@ -69,7 +69,7 @@ public class KitEditorGui extends PagedGui<Kit> {
                     @Override
                     public void onSlotClick(int i, int j, SlotActionType slotActionType, PlayerEntity playerEntity) {
                         // note: skip BARRIER item stack click.
-                        if (i == 41 || i == 42 || i == 43 || i == 44) return;
+                        if (GuiHelper.isInvalidSlotInPlayerInventory(i)) return;
                         super.onSlotClick(i, j, slotActionType, playerEntity);
                     }
 
