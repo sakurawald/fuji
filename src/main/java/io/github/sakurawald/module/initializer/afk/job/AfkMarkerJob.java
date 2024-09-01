@@ -1,10 +1,10 @@
 package io.github.sakurawald.module.initializer.afk.job;
 
+import io.github.sakurawald.auxiliary.LogUtil;
+import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.job.impl.NPassMarkerJob;
 import io.github.sakurawald.module.initializer.afk.accessor.AfkStateAccessor;
-import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
-import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.Collection;
@@ -20,7 +20,6 @@ public class AfkMarkerJob extends NPassMarkerJob<ServerPlayerEntity> {
         return ServerHelper.getDefaultServer().getPlayerManager().getPlayerList();
     }
 
-    @SuppressWarnings("RedundantIfStatement")
     @Override
     public boolean shouldMark(ServerPlayerEntity entity) {
         if (entity.isRemoved()) return false;
@@ -38,11 +37,7 @@ public class AfkMarkerJob extends NPassMarkerJob<ServerPlayerEntity> {
             we'll set lastLastActionTime's initial value to Player#getLastActionTime(),
             but there are a little difference even if you call Player#getLastActionTime() again
              */
-        if (lastActionTime - lastLastActionTime <= 3000) {
-            if (afk_player.fuji$isAfk()) return false;
-        }
-
-        return true;
+        return lastLastActionTime != 0 && lastActionTime - lastLastActionTime > 3000;
     }
 
     @Override
