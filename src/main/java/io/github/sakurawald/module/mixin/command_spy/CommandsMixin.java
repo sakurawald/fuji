@@ -22,6 +22,6 @@ public class CommandsMixin {
         if (player == null) return;
 
         // fix: fabric console will not log the command issue
-        LogUtil.info("{} issued server command: {}", player.getGameProfile().getName(), string);
+        LogUtil.info("{} issued server command: /{}", player.getGameProfile().getName(), string);
     }
 }
