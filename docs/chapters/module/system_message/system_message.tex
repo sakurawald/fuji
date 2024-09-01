@@ -23,3 +23,50 @@ This module provides \tbf{system message} customization.
     If you are using this module with \tbf{StyledChat} mod installed, you need to remove the conflicting \tbf{language keys} in \tbf{key2value} configuration. \\
     See also: \url{https://github.com/sakurawald/fuji-fabric/issues/65}
 \end{warn}
+
+\begin{example}{Custom the player join and leave message}
+    \begin{json}
+        "system_message": {
+            "enable": true,
+            "key2value": {
+                "multiplayer.player.joined": "<rainbow>+ %s",
+                "multiplayer.player.left": "<dark_gray>%s leeeeeeeeft the game"
+            }
+        },
+    \end{json}
+
+\end{example}
+
+\begin{example}{Custom a specific death message}
+    \begin{json}
+        "system_message": {
+            "enable": true,
+            "key2value": {
+                "death.attack.explosion.player": "<rainbow>%1$s booooooom because of %2$s"
+            }
+        },
+    \end{json}
+\end{example}
+
+\begin{example}{Custom messages used in screen.}
+    \begin{json}
+        "system_message": {
+            "enable": true,
+            "key2value": {
+                "multiplayer.disconnect.server_shutdown": "Server closeeeeeeeed",
+                "multiplayer.disconnect.not_whitelisted": "<rainbow>Please apply a whitelist first!"
+            }
+        },
+    \end{json}
+\end{example}
+
+\begin{example}{Custom the vanilla command feedback}
+    \begin{json}
+        "system_message": {
+            "enable": true,
+            "key2value": {
+                "commands.seed.success": "<rainbow> Seeeeeeeeeeed: %s"
+            }
+        },
+    \end{json}
+\end{example}

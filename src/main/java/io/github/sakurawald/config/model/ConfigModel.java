@@ -131,6 +131,7 @@ public class ConfigModel {
                 public String text = "<#B1B2FF>%fuji:player_playtime%\uD83D\uDD25 %fuji:player_mined%⛏ %fuji:player_placed%\uD83D\uDD33 %fuji:player_killed%\uD83D\uDDE1 %fuji:player_moved%\uD83C\uDF0D\n<dark_green>%player:displayname_visual%";
 
                 public Offset offset = new Offset();
+
                 public class Offset {
                     public float x = 0f;
                     public float y = 0.2f;
@@ -138,12 +139,14 @@ public class ConfigModel {
                 }
 
                 public Size size = new Size();
+
                 public class Size {
                     public float height = 0f;
                     public float width = 0f;
                 }
 
                 public Scale scale = new Scale();
+
                 public class Scale {
                     public float x = 1.0f;
                     public float y = 1.0f;
@@ -151,6 +154,7 @@ public class ConfigModel {
                 }
 
                 public Brightness brightness = new Brightness();
+
                 public class Brightness {
                     public boolean override_brightness = false;
                     public int block = 15;
@@ -158,6 +162,7 @@ public class ConfigModel {
                 }
 
                 public Shadow shadow = new Shadow();
+
                 public class Shadow {
                     public boolean shadow = false;
                     public float shadow_radius = 0f;
@@ -165,6 +170,7 @@ public class ConfigModel {
                 }
 
                 public Color color = new Color();
+
                 public class Color {
                     public int background = 1073741824;
                     public byte text_opacity = -1;
@@ -173,6 +179,7 @@ public class ConfigModel {
             }
 
             public Render render = new Render();
+
             public class Render {
                 public boolean see_through_blocks = false;
                 public float view_range = 1.0f;
@@ -546,12 +553,7 @@ public class ConfigModel {
 
             public @NotNull Map<String, String> key2value = new HashMap<>() {
                 {
-                    this.put("multiplayer.player.joined", "<rainbow>+ %s");
-                    this.put("multiplayer.player.left", "<dark_gray>%s leeeeeeeeft the game");
                     this.put("commands.seed.success", "<rainbow> Seeeeeeeeeeed: %s");
-                    this.put("multiplayer.disconnect.not_whitelisted", "<rainbow>Please apply a whitelist first!");
-                    this.put("death.attack.explosion.player", "<rainbow>%1$s booooooom because of %2$s");
-                    this.put("multiplayer.disconnect.server_shutdown", "Server closeeeeeeeed");
                 }
             };
 
