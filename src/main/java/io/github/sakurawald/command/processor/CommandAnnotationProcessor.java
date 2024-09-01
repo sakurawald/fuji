@@ -5,7 +5,10 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import io.github.sakurawald.auxiliary.LogUtil;
+import io.github.sakurawald.auxiliary.ReflectionUtil;
+import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
@@ -13,14 +16,12 @@ import io.github.sakurawald.command.argument.adapter.interfaces.AbstractArgument
 import io.github.sakurawald.command.argument.structure.Argument;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.auxiliary.LogUtil;
-import io.github.sakurawald.auxiliary.ReflectionUtil;
-import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.auxiliary.minecraft.PermissionHelper;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 import java.lang.reflect.InvocationTargetException;
@@ -173,11 +174,19 @@ public class CommandAnnotationProcessor {
                 invoke = method.invoke(instance, args.toArray());
             } catch (IllegalAccessException | InvocationTargetException e) {
                 // don't swallow the exception.
-                throw new SimpleCommandExceptionType(Text.of(e.getCause().toString())).create();
+                Throwable theRealException = e.getCause();
+
+                sendCommandExceptionToSource(ctx.getSource(), theRealException);
+                return CommandHelper.Return.FAIL;
             }
 
             return (int) invoke;
         };
+    }
+
+    private static void sendCommandExceptionToSource(ServerCommandSource source, Throwable exception) {
+        MutableText mutableText = Text.literal(exception.getMessage() == null ? exception.getClass().getName() : exception.getMessage());
+        source.sendError(Text.translatable("command.failed").styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, mutableText))));
     }
 
 
@@ -196,8 +205,23 @@ public class CommandAnnotationProcessor {
 
                 args.add(arg);
             } catch (Exception e) {
-                args.add(Optional.empty());
-                // use optional
+                /*
+                 * for command redirect, given 3 optional arguments named x, y and z.
+                 * The arguments are defined in order: (x, y, z).
+                 * The optional argument must be passed in the order that matches the defined order.
+                 * If the command source pass the optional arguments in the order (z, x, y), then thw following exceptions will be thrown:
+                 * java.lang.IllegalArgumentException, e.message = No such argument 'x' exists on this command
+                 * java.lang.IllegalArgumentException, e.message = No such argument 'y' exists on this command
+                 *
+                 * In order to continue the command-context passing process, we will temporally ignore the exception, so that the optional argument can be filled properly.
+                 * */
+                if (e instanceof IllegalArgumentException && e.getMessage().startsWith("No such argument")) {
+                    args.add(Optional.empty());
+                    continue;
+                }
+
+                // throw other exception for upper-level handler
+                throw e;
             }
 
         }
