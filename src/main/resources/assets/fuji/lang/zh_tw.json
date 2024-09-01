@@ -214,5 +214,8 @@
   "helpop.fail": "<red>没有管理员在线.",
   "helpop.format": "<orange>玩家 %s 请求帮助: %s",
   "near.format": "<orange>附近玩家列表: %s",
-  "compass.no_compass": "<red>您需要手持指南针."
+  "compass.no_compass": "<red>您需要手持指南针.",
+  "view.failed.self_view": "<red>您不能查看自己.",
+  "view.inv.title": "%s 的 物品栏",
+  "view.ender.title": "%s 的 末影箱"
 }
