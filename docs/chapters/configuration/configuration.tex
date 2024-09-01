@@ -9,19 +9,13 @@
         The \ttt{common} options inside \ttt{config/fuji/config.json} will influence \ttt{all modules}.
 
         \begin{NestedList}
-            \item[quartz]{
-                Fuji use \ttt{quartz} library as scheduler, all the~\nameref{sec:job} are managed by quartz.
-                Quartz library use a language called \ttt{cron language} to define when to trigger a job.
+            \item[debug]{
+                \item[]
 
                 \begin{NestedList}
-                    \item[logger\_level]
-                    The logger level for \ttt{quartz}.
-                    The logger level from high to low are: OFF, FATAL, ERROR, WARN, INFO, DEBUG, TRACE, ALL.
-
-                    \begin{example}{Enable all logs for quartz}
-                        Set the value to \ttt{ALL} to display all the messages from quartz.
-                        It's recommended to set at least \ttt{WARN} level, to avoid \ttt{console spam}.
-                    \end{example}
+                    \item[disable\_all\_modules]{
+                        Used to test the compatibility between fuji and other mods.
+                    }
 
                 \end{NestedList}
 
@@ -45,6 +39,7 @@
             }
         \end{NestedList}
 
+
         \begin{NestedList}
             \item[language]{
                 \item[]
@@ -62,6 +57,28 @@
 
             }
         \end{NestedList}
+
+        \begin{NestedList}
+            \item[quartz]{
+                Fuji use \ttt{quartz} library as scheduler, all the~\nameref{sec:job} are managed by quartz.
+                Quartz library use a language called \ttt{cron language} to define when to trigger a job.
+
+                \begin{NestedList}
+                    \item[logger\_level]
+                    The logger level for \ttt{quartz}.
+                    The logger level from high to low are: OFF, FATAL, ERROR, WARN, INFO, DEBUG, TRACE, ALL.
+
+                    \begin{example}{Enable all logs for quartz}
+                        Set the value to \ttt{ALL} to display all the messages from quartz.
+                        It's recommended to set at least \ttt{WARN} level, to avoid \ttt{console spam}.
+                    \end{example}
+
+                \end{NestedList}
+
+            }
+        \end{NestedList}
+
+
     }
 
 \end{Configuration}

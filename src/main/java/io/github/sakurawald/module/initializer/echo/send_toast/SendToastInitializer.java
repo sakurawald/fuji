@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.command_toolbox.send_toast;
+package io.github.sakurawald.module.initializer.echo.send_toast;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.annotation.CommandNode;

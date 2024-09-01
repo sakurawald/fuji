@@ -1,0 +1,25 @@
+\LevelOne{echo}
+This module provides commands to send echo to players.
+
+\LevelTwo{Sub-Module}
+\LevelThree{/send-message}
+\LevelThree{/send-broadcast}
+\LevelThree{/send-actionbar}
+\LevelThree{/send-title}
+\LevelThree{/send-toast}
+\begin{example}{Send title to a player}
+    \ic{/send-title Steve --mainTitle "<rainbow>Hello" --subTitle "<blue>World" --fadeInTicks 60 --stayTicks 60 --fadeOutTicks 60}
+\end{example}
+
+\begin{example}{Send title to online players}
+    \ic{/foreach send-title \ph{player:name} --mainTitle "<rainbow>Hello \ph{player:name}"}
+\end{example}
+\LevelThree{/send-chat}
+
+\begin{example}{Send chat as a player}
+    \ic{/send-chat Steve i am steve.}
+\end{example}
+
+\begin{example}{Send chat as a player for online players}
+    \ic{/foreach send-chat \ph{player:name} i am \ph{player:name}}
+\end{example}

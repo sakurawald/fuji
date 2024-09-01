@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.command_toolbox.send_actionbar;
+package io.github.sakurawald.module.initializer.echo.send_message;
 
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
 import io.github.sakurawald.command.annotation.CommandNode;
@@ -8,12 +8,12 @@ import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-public class SendActionbar extends ModuleInitializer {
+public class SendMessageInitializer extends ModuleInitializer {
 
-    @CommandNode("send-actionbar")
+    @CommandNode("send-message")
     @CommandRequirement(level = 4)
-    int sendActionBar(ServerPlayerEntity player, GreedyString rest) {
-        player.sendActionBar(MessageHelper.ofText(player, false, rest.getString()));
+    int sendMessage(ServerPlayerEntity player, GreedyString rest) {
+        player.sendMessage(MessageHelper.ofText(player, false, rest.getString()));
         return CommandHelper.Return.SUCCESS;
     }
 

@@ -61,6 +61,7 @@ public class ConfigModel {
         public @NotNull Rtp rtp = new Rtp();
         public @NotNull Works works = new Works();
         public @NotNull DeathLog deathlog = new DeathLog();
+        public @NotNull Echo echo = new Echo();
         public @NotNull Functional functional = new Functional();
         public @NotNull SystemMessage system_message = new SystemMessage();
         public @NotNull Cleaner cleaner = new Cleaner();
@@ -431,6 +432,41 @@ public class ConfigModel {
 
         public class DeathLog {
             public boolean enable = false;
+        }
+
+        public class Echo {
+            public boolean enable = false;
+
+            public @NotNull SendMessage send_message = new SendMessage();
+            public @NotNull SendBroadcast send_broadcast = new SendBroadcast();
+            public @NotNull SendActionBar send_actionbar = new SendActionBar();
+            public @NotNull SendTitle send_title = new SendTitle();
+            public @NotNull SendToast send_toast = new SendToast();
+            public @NotNull SendChat send_chat = new SendChat();
+
+            public class SendMessage {
+                public boolean enable = true;
+            }
+
+            public class SendBroadcast {
+                public boolean enable = true;
+            }
+
+            public class SendActionBar {
+                public boolean enable = true;
+            }
+
+            public class SendTitle {
+                public boolean enable = true;
+            }
+
+            public class SendToast {
+                public boolean enable = true;
+            }
+
+            public class SendChat {
+                public boolean enable = true;
+            }
         }
 
         public class Placeholder {
@@ -829,11 +865,6 @@ public class ConfigModel {
             public @NotNull Seen seen = new Seen();
             public @NotNull Suicide suicide = new Suicide();
             public @NotNull Top top = new Top();
-            public @NotNull SendMessage send_message = new SendMessage();
-            public @NotNull SendBroadcast send_broadcast = new SendBroadcast();
-            public @NotNull SendActionBar send_actionbar = new SendActionBar();
-            public @NotNull SendTitle send_title = new SendTitle();
-            public @NotNull SendToast send_toast = new SendToast();
             public @NotNull TrashCan trashcan = new TrashCan();
             public @NotNull Tppos tppos = new Tppos();
             public @NotNull Warp warp = new Warp();
@@ -919,26 +950,6 @@ public class ConfigModel {
             }
 
             public class Top {
-                public boolean enable = false;
-            }
-
-            public class SendMessage {
-                public boolean enable = false;
-            }
-
-            public class SendBroadcast {
-                public boolean enable = false;
-            }
-
-            public class SendActionBar {
-                public boolean enable = false;
-            }
-
-            public class SendTitle {
-                public boolean enable = false;
-            }
-
-            public class SendToast {
                 public boolean enable = false;
             }
 

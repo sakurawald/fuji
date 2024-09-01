@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.command_toolbox.send_title;
+package io.github.sakurawald.module.initializer.echo.send_title;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.command.annotation.CommandNode;
