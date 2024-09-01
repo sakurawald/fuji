@@ -22,7 +22,7 @@ import java.util.*;
 public class ModuleManager extends AbstractManager {
 
     public static final String COMMON_MODULE_ROOT = "common";
-    private static final JsonElement RC_CONFIG = Configs.configHandler.toJsonElement();
+    private static JsonElement RC_CONFIG = null;
     private final Map<Class<? extends ModuleInitializer>, ModuleInitializer> moduleRegistry = new HashMap<>();
     private final Map<List<String>, Boolean> module2enable = new HashMap<>();
 
@@ -147,6 +147,10 @@ public class ModuleManager extends AbstractManager {
     }
 
     public static @NotNull List<String> computeModulePath(@NotNull String className) {
+        if (RC_CONFIG == null) {
+            RC_CONFIG = Configs.configHandler.toJsonElement();
+        }
+
         return computeModulePath(RC_CONFIG, className);
     }
 
