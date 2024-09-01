@@ -412,15 +412,15 @@ public class ConfigModel {
             public @NotNull MaxPlayerDisabler max_player_disabler = new MaxPlayerDisabler();
 
             public class ChatSpeedDisabler {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             public class MoveSpeedDisabler {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             public class MaxPlayerDisabler {
-                public boolean enable = true;
+                public boolean enable = false;
             }
         }
 
@@ -673,50 +673,50 @@ public class ConfigModel {
             public @NotNull Loom loom = new Loom();
 
             public class Workbench {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             public class Enchantment {
 
-                public boolean enable = true;
+                public boolean enable = false;
 
                 public @NotNull OverridePower override_power = new OverridePower();
 
                 public class OverridePower {
 
-                    public boolean enable = true;
+                    public boolean enable = false;
                     public int power_provider_amount = 15;
                 }
             }
 
             public class GrindStone {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             public class StoneCutter {
 
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             public class Anvil {
 
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             public class Cartography {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             public class EnderChest {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             public class Smithing {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             public class Loom {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
         }
@@ -734,7 +734,7 @@ public class ConfigModel {
                 public @NotNull BetterInfo better_info = new BetterInfo();
 
                 public class FakePlayerManager {
-                    public boolean enable = true;
+                    public boolean enable = false;
 
                     public @NotNull ArrayList<List<Integer>> caps_limit_rule = new ArrayList<>() {
                         {
@@ -750,7 +750,7 @@ public class ConfigModel {
                 }
 
                 public class BetterInfo {
-                    public boolean enable = true;
+                    public boolean enable = false;
                 }
             }
 
@@ -774,27 +774,27 @@ public class ConfigModel {
             public @NotNull Shell shell = new Shell();
 
             public class Run {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             public class ForEach {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             public class Chain {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             public class Delay {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             public class Json {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             public class Attachment {
-                public boolean enable = true;
+                public boolean enable = false;
             }
 
             public class Shell {
