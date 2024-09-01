@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.command_toolbox.send_toast.command.argument.adapter;
+package io.github.sakurawald.module.initializer.echo.send_toast.command.argument.adapter;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;

@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.command_toolbox.send_broadcast;
+package io.github.sakurawald.module.initializer.echo.send_broadcast;
 
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
 import io.github.sakurawald.command.annotation.CommandNode;
