@@ -102,7 +102,7 @@ public class ModuleManager extends AbstractManager {
     }
 
     public boolean shouldWeEnableThis(String className) {
-        return shouldWeEnableThis(computeModulePath(RC_CONFIG, className));
+        return shouldWeEnableThis(computeModulePath(className));
     }
 
     private boolean shouldWeEnableThis(@NotNull List<String> modulePath) {
