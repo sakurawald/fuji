@@ -3,10 +3,12 @@ package io.github.sakurawald.module.initializer.command_alias;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.CommandNode;
+import io.github.sakurawald.auxiliary.LogUtil;
+import io.github.sakurawald.auxiliary.ReflectionUtil;
+import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_alias.structure.CommandAliasEntry;
-import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.command.ServerCommandSource;
 import org.jetbrains.annotations.NotNull;
@@ -33,6 +35,12 @@ public class CommandAliasInitializer extends ModuleInitializer {
 
             if (builder == null) {
                 CommandNode<ServerCommandSource> target = dispatcher.findNode(entry.to);
+
+                if (target == null) {
+                    LogUtil.warn("[{}] Can't find the target command node for alias entry: {}", ReflectionUtil.getModulePath(this), entry);
+                    return;
+                }
+
                 builder = literal(name).redirect(target);
                 continue;
             }

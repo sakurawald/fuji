@@ -65,6 +65,10 @@ public abstract class ConfigHandler<T> {
     }
 
     public JsonElement toJsonElement() {
+        if (this.model == null) {
+            throw new IllegalStateException("The model is null now, maybe it's too early to call this function ?");
+        }
+
         return gson.toJsonTree(this.model);
     }
 
