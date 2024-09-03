@@ -4,7 +4,12 @@
 A chain command allows you to run another 2 commands, the first is any command, and the second is the chain command.
 
 \begin{note}{The return value of a command}
-    In vanilla minecraft, the return value of command, are failed, pass and success.
+    In vanilla minecraft, the return value of command, is an integer:
+    \begin{description}
+        \item[<0]{failed}
+        \item[=0] {passed}
+        \item[>0]{success}
+    \end{description}
 \end{note}
 
 \LevelFour{Command}

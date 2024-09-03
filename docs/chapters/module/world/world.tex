@@ -60,10 +60,10 @@ Provides a unified world management.
     \ic{/world reset fuji:my\_nether}
 \end{example}
 
-\begin{tips}{Specify a seed for dimension}
+\begin{example}{Specify a seed for an extra dimension.}
     \ic{/world create my\_nether minecraft:the\_nether --seed 1234567890}\\
-    \ic{/world reset fuji:my\_nether --use-the-same-seed true}
-\end{tips}
+    \ic{/world reset --use-the-same-seed true fuji:my\_nether}
+\end{example}
 
 \begin{tips}{Make a resource-world that automatically reset every day}
     You can use command-scheduler module to execute \ttt{world reset} command automatically.

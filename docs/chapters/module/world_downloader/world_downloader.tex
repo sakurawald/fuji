@@ -6,17 +6,19 @@ This module allows a player to download nearby chunks.
 \LevelTwo{Configuration}
 \begin{Configuration}
     \item[url\_format]{
-        The url format used to broadcast
+        The url format used to broadcast.
     }
 
-    \item[port]
+    \item[port] {
+        The port used for downloader http-service.
+    }
 
     \item[bytes\_per\_second\_limit]{
-        Max download speed limit for each connection.
+        Max download speed for each connection.
     }
 
     \item[context\_cache\_size]{
-        Max download request allowed in the memory at the same time.
+        Max download request saved in the memory.
     }
 \end{Configuration}
 

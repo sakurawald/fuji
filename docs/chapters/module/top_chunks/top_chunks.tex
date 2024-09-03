@@ -23,9 +23,19 @@ Higher score means more lagged.
 
     \item[type2score]{
         The dict to define how lagged a type(entity/entity\_block) should be.\\
-        For example:  \ttt{this.put("entity.minecraft.zombie", 4);} means that if there are 15 zombies inside a chunk,
-        then the chunk gets score 15 * 4 = 60.\\
-        Any other types not inside the dict use the score defined for type \tbf{default}.
+        For example:
+
+        \begin{example}{What is the meaning of type2score field?}
+            The configuration means that if there are 15 zombies inside a chunk, then the chunk gets score 15 * 4 = 60.
+            Any other types not specified in type2score will use the score defined for type \tbf{default}.
+
+            \begin{json}
+                "type2score": {
+                    "entity.minecraft.zombie": 4,
+                    "default": 1
+                }
+            \end{json}
+        \end{example}
     }
 
 \end{Configuration}

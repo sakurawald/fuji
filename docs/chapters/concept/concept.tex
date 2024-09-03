@@ -34,7 +34,7 @@ A \ttt{module} is used to provide a specific purpose.
 The properties of a module are as follows:
 \begin{description}
     \item [Can be disabled] You can disable a module completely in \ttt{main-control file} by setting the value of its \ttt{enable} key to \ttt{false}.
-    \item [Can work standalone] The code of a module is self-contained, there is no reference to other modules.
+    \item [Can work standalone] The code of a module is self-contained, there is no symbol reference to other modules.
 \end{description}
 
 \LevelTwo{Module Path}
@@ -51,13 +51,15 @@ A \ttt{module} can have \ttt{sub-module}.
 The relationship between \ttt{parent-module} and \ttt{sub-module} is relative, and there is nothing special about \ttt{sub-module}.
 
 \LevelTwo{How to enable/disable a module?}
-You can enable/disable a module in \ttt{config/fuji/config.json} by setting the value of its \ttt{enable} key to \ttt{true}/\ttt{false}
+You can enable/disable a module in \ttt{config/fuji/config.json} by setting the value of its \ttt{enable} key to \ttt{true}/\ttt{false}.
+
 \begin{samepage}
     A \ttt{module} will be enabled if the following conditions are met:
     \begin{enumerate}
+        \item The value of \ttt{common.debug.disable\_all\_modules} is \ttt{false}.
         \item The required dependency mods are installed.
         \item Its \ttt{parnet-module} is \ttt{enabled}.
-        \item The value of its \ttt{enable} key is set to \ttt{true}.
+        \item The value of its \ttt{enable} key is \ttt{true}.
     \end{enumerate}
 \end{samepage}
 
@@ -76,7 +78,7 @@ A \ttt{job} is some things will be done \ttt{repeatedly}.
 A language named \ttt{cron language} is used to \ttt{define} when a \ttt{job} should be triggered.
 
 \begin{tips}{Don't write cron expression by hand. Use generator!}
-    A \ttt{cron expression} looks like \ttt{0 * * ? * *}, which means \ttt{trigger the job every minute}.
+    A \ttt{cron expression} looks like \ttt{0 * * ? * *}, means \ttt{trigger the job every minute}.
 
     You can use the generator to generate a \ttt{cron expression}:
     \url{https://www.freeformatter.com/cron-expression-generator-quartz.html}
@@ -95,5 +97,27 @@ Regex is a language used to define the pattern of strings.
 \end{enumerate}
 
 
+\clearpage
+\LevelOne{Placeholder}
+
+\LevelTwo{Definition}
+A \ttt{placeholder} is a string which will be replaced based on context.
+
+\begin{tips}{What is the placeholder api in fabric platform?}
+    There is a plugin named \ttt{PlaceholderAPI} in bukkit platform.\\
+    Also, there is a mod named \ttt{Text Placeholder API} in fabric platform.\\
+    They are different projects, but provides the same purpose.
+\end{tips}
+
+\LevelTwo{Example}
+\begin{example}{Replace player name by context}
+    The placeholder \ph{player:name} will be replaced by the name of the contextual player.
+\end{example}
+
+\LevelTwo{Reference}
+\begin{enumerate}
+    \item \url{https://placeholders.pb4.eu/user/default-placeholders/}
+    \item \url{https://placeholders.pb4.eu/user/mod-placeholders/}
+\end{enumerate}
 
 
