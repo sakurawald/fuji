@@ -46,5 +46,7 @@ jobs:
           modrinth-id: 1TowMm2v
           modrinth-token: "${{secrets.MODRINTH_TOKEN}}"
 
+          version-type: alpha
+          changelog-file: CHANGELOG.md
 #          curseforge-id: 123456
 #          curseforge-token: "${{env.CURSEFORGE_TOKEN}}"
