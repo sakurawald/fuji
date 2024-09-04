@@ -1,12 +1,12 @@
 package io.github.sakurawald.module.initializer.tab_list;
 
-import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.config.model.ConfigModel;
+import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.tab_list.job.RenderHeaderAndFooterJob;
-import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
-import io.github.sakurawald.auxiliary.RandomUtil;
-import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.RandomUtil;
+import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.network.packet.s2c.play.PlayerListHeaderS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;

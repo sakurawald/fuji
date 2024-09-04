@@ -1,11 +1,9 @@
 package io.github.sakurawald.module.mixin.afk.effect;
 
-import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.module.common.manager.Managers;
+import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.afk.AfkInitializer;
 import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;

@@ -1,17 +1,17 @@
 package io.github.sakurawald.module.initializer.command_scheduler;
 
-import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandRequirement;
-import io.github.sakurawald.config.handler.abst.ConfigHandler;
-import io.github.sakurawald.config.handler.impl.ObjectConfigHandler;
+import io.github.sakurawald.core.command.annotation.CommandNode;
+import io.github.sakurawald.core.command.annotation.CommandRequirement;
+import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
 import io.github.sakurawald.module.initializer.command_scheduler.config.model.SchedulerModel;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_scheduler.command.argument.wrapper.ScheduleJobName;
 import io.github.sakurawald.module.initializer.command_scheduler.job.CommandScheduleJob;
-import io.github.sakurawald.auxiliary.LogUtil;
-import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import lombok.Getter;
 import org.quartz.JobDataMap;
 

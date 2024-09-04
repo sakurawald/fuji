@@ -1,11 +1,11 @@
 package io.github.sakurawald.module.common.manager.impl.scheduler;
 
 
-import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.config.job.ConfigHandlerAutoSaveJob;
+import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.config.job.ConfigHandlerAutoSaveJob;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.manager.abst.BaseManager;
-import io.github.sakurawald.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;

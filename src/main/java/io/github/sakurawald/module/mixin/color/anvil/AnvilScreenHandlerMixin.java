@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.color.anvil;
 
-import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.minecraft.screen.AnvilScreenHandler;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;

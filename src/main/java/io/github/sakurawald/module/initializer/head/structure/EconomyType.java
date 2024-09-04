@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.head.structure;
 
 import io.github.sakurawald.module.initializer.head.HeadInitializer;
-import io.github.sakurawald.auxiliary.minecraft.ItemHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.ItemHelper;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.PlayerInventoryStorage;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;

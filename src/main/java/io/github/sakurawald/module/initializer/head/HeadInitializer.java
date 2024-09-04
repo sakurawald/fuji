@@ -1,16 +1,16 @@
 package io.github.sakurawald.module.initializer.head;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandRequirement;
-import io.github.sakurawald.command.annotation.CommandSource;
-import io.github.sakurawald.config.handler.abst.ConfigHandler;
-import io.github.sakurawald.config.handler.impl.ObjectConfigHandler;
+import io.github.sakurawald.core.command.annotation.CommandNode;
+import io.github.sakurawald.core.command.annotation.CommandRequirement;
+import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
 import io.github.sakurawald.module.initializer.head.config.model.HeadModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.head.gui.HeadGui;
 import io.github.sakurawald.module.initializer.head.privoder.HeadProvider;
-import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 

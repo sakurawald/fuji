@@ -3,7 +3,7 @@ package io.github.sakurawald.module.mixin.command_attachment;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.command_attachment.CommandAttachmentInitializer;
 import io.github.sakurawald.module.initializer.command_attachment.command.argument.wrapper.InteractType;
-import io.github.sakurawald.auxiliary.minecraft.NbtHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;

@@ -10,7 +10,7 @@ import io.github.sakurawald.module.initializer.world.accessor.IDimensionOptions;
 import io.github.sakurawald.module.initializer.world.structure.MyServerWorld;
 import io.github.sakurawald.module.initializer.world.structure.MyWorldProperties;
 import io.github.sakurawald.module.initializer.world.structure.VoidWorldGenerationProgressListener;
-import io.github.sakurawald.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import lombok.SneakyThrows;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;

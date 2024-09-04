@@ -1,15 +1,15 @@
 package io.github.sakurawald.module.initializer.cleaner;
 
-import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandRequirement;
-import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.core.command.annotation.CommandNode;
+import io.github.sakurawald.core.command.annotation.CommandRequirement;
+import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.common.structure.TypeFormatter;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.cleaner.job.CleanerJob;
-import io.github.sakurawald.auxiliary.LogUtil;
-import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
-import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;

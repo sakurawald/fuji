@@ -8,7 +8,7 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.skin.enums.SkinVariant;
 import io.github.sakurawald.module.initializer.skin.provider.MineSkinSkinProvider;
 import io.github.sakurawald.module.initializer.skin.provider.MojangSkinProvider;
-import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.function.Supplier;

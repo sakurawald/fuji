@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.view.gui;
 
-import io.github.sakurawald.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.DoubleInventory;
 import net.minecraft.inventory.Inventory;

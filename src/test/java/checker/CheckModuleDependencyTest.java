@@ -1,7 +1,7 @@
 package checker;
 
-import io.github.sakurawald.meta.checker.module_dependency.ModuleDependencyChecker;
-import io.github.sakurawald.meta.checker.module_dependency.structure.Reference;
+import io.github.sakurawald.core.meta.checker.module_dependency.ModuleDependencyChecker;
+import io.github.sakurawald.core.meta.checker.module_dependency.structure.Reference;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

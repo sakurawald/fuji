@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.command_spy;
 
 import com.mojang.brigadier.ParseResults;
-import io.github.sakurawald.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;

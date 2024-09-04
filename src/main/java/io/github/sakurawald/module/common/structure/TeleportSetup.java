@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.common.structure;
 
-import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.auxiliary.minecraft.IdentifierHelper;
+import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.minecraft.server.world.ServerWorld;

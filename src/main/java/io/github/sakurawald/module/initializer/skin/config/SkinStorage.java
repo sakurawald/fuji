@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.skin.config;
 
 import com.mojang.authlib.properties.Property;
-import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.core.config.Configs;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
 

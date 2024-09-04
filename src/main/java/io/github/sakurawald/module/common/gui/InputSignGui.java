@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.common.gui;
 
 import eu.pb4.sgui.api.gui.SignGui;
-import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.DyeColor;

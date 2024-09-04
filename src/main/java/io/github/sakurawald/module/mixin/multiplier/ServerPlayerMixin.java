@@ -1,8 +1,7 @@
 package io.github.sakurawald.module.mixin.multiplier;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import io.github.sakurawald.auxiliary.LogUtil;
-import io.github.sakurawald.auxiliary.minecraft.PermissionHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;

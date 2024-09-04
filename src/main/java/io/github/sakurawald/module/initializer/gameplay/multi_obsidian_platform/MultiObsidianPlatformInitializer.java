@@ -1,12 +1,12 @@
 package io.github.sakurawald.module.initializer.gameplay.multi_obsidian_platform;
 
-import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.github.sakurawald.auxiliary.LogUtil;
-import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;

@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.skin;
 
-import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.skin.SkinRestorer;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.MinecraftServer;
