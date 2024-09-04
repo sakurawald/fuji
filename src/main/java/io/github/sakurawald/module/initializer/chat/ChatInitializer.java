@@ -166,7 +166,7 @@ public class ChatInitializer extends ModuleInitializer {
 
         /* run mention player task */
         if (!mentionedPlayers.isEmpty()) {
-            MentionPlayersJob.scheduleJob(mentionedPlayers);
+            MentionPlayersJob.requestJob(Configs.configHandler.model().modules.chat.mention_player,mentionedPlayers);
         }
 
         return string;
