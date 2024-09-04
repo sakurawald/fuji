@@ -31,7 +31,6 @@ public class CommandHelper {
     }
 
     public static class Suggestion {
-
         public static <T> @NotNull SuggestionProvider<ServerCommandSource> ofRegistryKey(RegistryKey<? extends Registry<T>> registryKey) {
             return (context, builder) -> {
                 Registry<T> registry = IdentifierHelper.ofRegistry(registryKey);
@@ -49,35 +48,6 @@ public class CommandHelper {
                 }
                 return builder.buildFuture();
             };
-        }
-
-        public static @NotNull SuggestionProvider<ServerCommandSource> dimension() {
-            /*
-             The DimensionArgumentType.dimension() will not suggest the new registered dimension types.
-             Each time the server started, the dimensions will be shared with client and server.
-             */
-            return ofRegistryKey(RegistryKeys.DIMENSION);
-        }
-
-        public static @NotNull SuggestionProvider<ServerCommandSource> dimensionType() {
-            return ofRegistryKey(RegistryKeys.DIMENSION_TYPE);
-        }
-
-
-        private static @NotNull List<String>  getPlayerNameListFromUserCache() {
-            UserCache userCache = ServerHelper.getDefaultServer().getUserCache();
-            if (userCache == null) return List.of();
-
-            ArrayList<String> playerNames = new ArrayList<>();
-            userCache.byName.values().forEach(o -> playerNames.add(o.getProfile().getName()));
-            return playerNames;
-        }
-
-        public static @NotNull SuggestionProvider<ServerCommandSource> offlinePlayers() {
-            return ((context, builder) -> {
-                getPlayerNameListFromUserCache().forEach(builder::suggest);
-                return builder.buildFuture();
-            });
         }
     }
 
