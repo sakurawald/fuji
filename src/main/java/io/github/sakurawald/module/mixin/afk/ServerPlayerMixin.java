@@ -39,11 +39,13 @@ public abstract class ServerPlayerMixin extends PlayerEntity implements AfkState
     @Final
     public MinecraftServer server;
 
+    @Shadow public abstract long getLastActionTime();
+
     @Unique
     private boolean afk = false;
 
     @Unique
-    private long lastLastActionTime = 0;
+    private long snapshotLastActionTime = 0;
 
     public ServerPlayerMixin(World world, BlockPos blockPos, float f, GameProfile gameProfile) {
         super(world, blockPos, f, gameProfile);
@@ -83,18 +85,24 @@ public abstract class ServerPlayerMixin extends PlayerEntity implements AfkState
     }
 
     @Override
-    public void fuji$setLastLastActionTime(long lastActionTime) {
-        this.lastLastActionTime = lastActionTime;
+    public void fuji$setSnapshotLastActionTime(long lastActionTime) {
+        this.snapshotLastActionTime = lastActionTime;
     }
 
     @Override
-    public long fuji$getLastLastActionTime() {
-        return this.lastLastActionTime;
+    public long fuji$getSnapshotLastActionTime() {
+        // init
+        if (this.snapshotLastActionTime == 0) {
+            this.fuji$setSnapshotLastActionTime(this.getLastActionTime());
+        }
+
+        return this.snapshotLastActionTime;
     }
 
     @Override
     public void move(MovementType movementType, Vec3d vec3d) {
-        if (AfkInitializer.isPlayerActuallyMovedItself(movementType,vec3d)) {
+        AfkStateAccessor afkStateAccessor = (AfkStateAccessor) player;
+        if (afkStateAccessor.fuji$isAfk() && AfkInitializer.isPlayerActuallyMovedItself(movementType, vec3d)) {
             fuji$setAfk(false);
         }
 

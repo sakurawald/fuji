@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.afk.job;
 
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.job.impl.NPassMarkerJob;
@@ -23,25 +24,24 @@ public class AfkMarkerJob extends NPassMarkerJob<ServerPlayerEntity> {
     public boolean shouldMark(ServerPlayerEntity entity) {
         if (entity.isRemoved()) return false;
 
-        AfkStateAccessor afk_player = (AfkStateAccessor) entity;
-
         // get last action time
+        AfkStateAccessor afk_player = (AfkStateAccessor) entity;
         long lastActionTime = entity.getLastActionTime();
-        long lastLastActionTime = afk_player.fuji$getLastLastActionTime();
-        afk_player.fuji$setLastLastActionTime(lastActionTime);
+        long snapshotLastActionTime = afk_player.fuji$getSnapshotLastActionTime();
+
+        // update snapshotLastActionTime
+        afk_player.fuji$setSnapshotLastActionTime(lastActionTime);
 
         // diff last action time
-            /* note:
-            when a player joins the server,
-            we'll set lastLastActionTime's initial value to Player#getLastActionTime(),
-            but there are a little difference even if you call Player#getLastActionTime() again
-             */
-        return lastLastActionTime != 0 && lastActionTime - lastLastActionTime > 3000;
+        return (lastActionTime - snapshotLastActionTime) < 3000;
     }
 
     @Override
     public void onCompleted(ServerPlayerEntity entity) {
         AfkStateAccessor afk_player = (AfkStateAccessor) entity;
-        afk_player.fuji$setAfk(true);
+        // ignore if already in afk
+        if (!afk_player.fuji$isAfk()) {
+            afk_player.fuji$setAfk(true);
+        }
     }
 }
