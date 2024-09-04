@@ -47,7 +47,12 @@
   "depends": {
     "fabricloader": ">=0.15.11",
     "minecraft": "~1.21",
-    "java": ">=17",
+    "java": ">=21",
     "fabric-api": "*"
+  },
+  "suggests": {
+    "luckperms": "*",
+    "spark": "*",
+    "carpet": "*"
   }
 }
