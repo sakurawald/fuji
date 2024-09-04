@@ -1,2 +1,4 @@
-- this is the example change log
-- the second line
+- refactor: rename "common" into "core" in "config.json'
+- fix: the time diff logic. (afk module)
+- add: moved wrongly disabler module
+- feature: allow to custom the mention job. (tpa module)

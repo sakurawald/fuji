@@ -52,10 +52,11 @@ jobs:
             build/libs/!(*-@(dev|sources|javadoc)).jar
             build/libs/*-@(dev|sources|javadocs).jar
 
+          version-type: release
+          changelog-file: CHANGELOG.md
+
           modrinth-id: 1TowMm2v
           modrinth-token: "${{secrets.MODRINTH_TOKEN}}"
 
-          version-type: alpha
-          changelog-file: CHANGELOG.md
 #          curseforge-id: 123456
 #          curseforge-token: "${{env.CURSEFORGE_TOKEN}}"
