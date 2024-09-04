@@ -15,7 +15,7 @@ jobs:
           21,    # Current Java LTS & minimum supported by Minecraft
         ]
         # and run on both Linux and Windows
-        os: [ ubuntu-22.04, windows-2022 ]
+        os: [ ubuntu-22.04 ]
     runs-on: ${{ matrix.os }}
     permissions:
       contents: write
@@ -43,21 +43,8 @@ jobs:
       - name: mc-publish
         uses: Kir-Antipov/mc-publish@v3.3.0
         with:
+          modrinth-id: 1TowMm2v
+          modrinth-token: "${{env.MODRINTH_TOKEN}}"
+
 #          curseforge-id: 123456
 #          curseforge-token: "${{env.CURSEFORGE_TOKEN}}"
-          #github-token: ${{ secrets.GITHUB_TOKEN }}
-
-          modrinth-id: 1TowMm2v
-          modrinth-token: "${{secrets.MODRINTH_TOKEN}}"
-#
-#          github-tag: "v${{env.VERSION}}"
-#          github-token: "${{env.GITHUB_TOKEN}}"
-#
-#          name: "${{env.RELEASE_NAME}}"
-#          version: "${{env.VERSION}}"
-#          version-type: release
-#          changelog-file: CHANGELOG.md
-#
-#          loaders: fabric
-#          game-versions: "${{env.MINECRAFT_VERSION}}"
-#          java: "${{env.JAVA_VERSION}}"
