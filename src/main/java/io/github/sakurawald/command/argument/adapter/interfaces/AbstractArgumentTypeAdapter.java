@@ -5,7 +5,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.classgraph.ClassInfo;
 import io.github.sakurawald.auxiliary.ReflectionUtil;
-import io.github.sakurawald.module.ModuleManager;
+import io.github.sakurawald.module.common.manager.impl.module.ModuleManager;
 import io.github.sakurawald.module.common.manager.Managers;
 import lombok.SneakyThrows;
 import net.minecraft.server.command.CommandManager;

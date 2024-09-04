@@ -1,4 +1,4 @@
-package io.github.sakurawald.module;
+package io.github.sakurawald.module.common.manager.impl.module;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
