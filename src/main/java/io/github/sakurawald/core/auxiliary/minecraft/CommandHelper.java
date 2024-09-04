@@ -2,7 +2,6 @@ package io.github.sakurawald.core.auxiliary.minecraft;
 
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
-import io.github.sakurawald.core.accessor.UserCacheAccessor;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import net.minecraft.item.ItemStack;
@@ -15,7 +14,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.UserCache;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -62,12 +63,19 @@ public class CommandHelper {
             return ofRegistryKey(RegistryKeys.DIMENSION_TYPE);
         }
 
+
+        private static @NotNull List<String>  getPlayerNameListFromUserCache() {
+            UserCache userCache = ServerHelper.getDefaultServer().getUserCache();
+            if (userCache == null) return List.of();
+
+            ArrayList<String> playerNames = new ArrayList<>();
+            userCache.byName.values().forEach(o -> playerNames.add(o.getProfile().getName()));
+            return playerNames;
+        }
+
         public static @NotNull SuggestionProvider<ServerCommandSource> offlinePlayers() {
             return ((context, builder) -> {
-                UserCache gameProfileCache = ServerHelper.getDefaultServer().getUserCache();
-                if (gameProfileCache != null) {
-                    ((UserCacheAccessor) gameProfileCache).fuji$getNames().forEach(builder::suggest);
-                }
+                getPlayerNameListFromUserCache().forEach(builder::suggest);
                 return builder.buildFuture();
             });
         }
