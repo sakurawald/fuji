@@ -6,7 +6,7 @@ import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.wrapper.OfflinePlayerName;
-import io.github.sakurawald.module.common.exception.BreakException;
+import io.github.sakurawald.module.common.exception.SnackException;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.view.gui.EnderChestRedirectScreen;
 import io.github.sakurawald.module.initializer.view.gui.InventoryRedirectScreen;
@@ -19,7 +19,7 @@ public class InvViewInitializer extends ModuleInitializer {
     void checkSelfView(ServerPlayerEntity source, OfflinePlayerName target) {
         if (source.getGameProfile().getName().equals(target.getString())) {
             MessageHelper.sendMessage(source, "view.failed.self_view");
-            throw new BreakException();
+            throw new SnackException();
         }
     }
 
