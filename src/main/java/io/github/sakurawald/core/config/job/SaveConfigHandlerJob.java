@@ -12,9 +12,9 @@ import org.quartz.JobExecutionException;
 import java.util.function.Supplier;
 
 @NoArgsConstructor
-public class ConfigHandlerAutoSaveJob extends CronJob {
+public class SaveConfigHandlerJob extends CronJob {
 
-    public ConfigHandlerAutoSaveJob(String jobName, JobDataMap jobDataMap, Supplier<String> cronSupplier) {
+    public SaveConfigHandlerJob(String jobName, JobDataMap jobDataMap, Supplier<String> cronSupplier) {
         super(null, jobName, jobDataMap, cronSupplier);
     }
 

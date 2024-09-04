@@ -2,7 +2,7 @@ package io.github.sakurawald.core.manager.impl.scheduler;
 
 
 import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.core.config.job.ConfigHandlerAutoSaveJob;
+import io.github.sakurawald.core.config.job.SaveConfigHandlerJob;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.manager.abst.BaseManager;
 import io.github.sakurawald.core.auxiliary.LogUtil;
@@ -37,7 +37,7 @@ public class ScheduleManager extends BaseManager {
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> Managers.getScheduleManager().startScheduler());
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
-            Managers.getScheduleManager().triggerJobs(ConfigHandlerAutoSaveJob.class.getName());
+            Managers.getScheduleManager().triggerJobs(SaveConfigHandlerJob.class.getName());
             Managers.getScheduleManager().shutdownScheduler();
         });
     }
