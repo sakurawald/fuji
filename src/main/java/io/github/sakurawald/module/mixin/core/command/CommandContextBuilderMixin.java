@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.mixin.common.low_level.command;
+package io.github.sakurawald.module.mixin.core.command;
 
 import com.mojang.brigadier.context.CommandContextBuilder;
 import com.mojang.brigadier.context.ParsedArgument;

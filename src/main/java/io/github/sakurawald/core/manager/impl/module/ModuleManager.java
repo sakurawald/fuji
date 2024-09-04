@@ -21,7 +21,7 @@ import java.util.*;
 
 public class ModuleManager extends BaseManager {
 
-    public static final String COMMON_MODULE_ROOT = "common";
+    public static final String CORE_MODULE_ROOT = "core";
     private static JsonElement RC_CONFIG = null;
     private final Map<Class<? extends ModuleInitializer>, ModuleInitializer> moduleRegistry = new HashMap<>();
     private final Map<List<String>, Boolean> module2enable = new HashMap<>();
@@ -111,7 +111,7 @@ public class ModuleManager extends BaseManager {
         if (Configs.configHandler.model().common.debug.disable_all_modules) return false;
 
         // special case 2
-        if (modulePath.getFirst().equals(COMMON_MODULE_ROOT)) return true;
+        if (modulePath.getFirst().equals(CORE_MODULE_ROOT)) return true;
 
         // cache
         if (module2enable.containsKey(modulePath)) {
@@ -156,7 +156,7 @@ public class ModuleManager extends BaseManager {
     }
 
     /**
-     * @return the module path for given class name, if the class is not inside a module, then a special module path List.of("common") will be returned.
+     * @return the module path for given class name, if the class is not inside a module, then a special module path List.of("core") will be returned.
      */
     public static @NotNull List<String> computeModulePath(@NotNull JsonElement rcConfig, @NotNull String className) {
 
@@ -176,7 +176,7 @@ public class ModuleManager extends BaseManager {
         }
 
         if (left == -1) {
-            return List.of(COMMON_MODULE_ROOT);
+            return List.of(CORE_MODULE_ROOT);
         }
 
         String str = className.substring(left);
@@ -187,8 +187,8 @@ public class ModuleManager extends BaseManager {
 
         List<String> modulePath = new ArrayList<>(List.of(str.split("\\.")));
 
-        if (modulePath.getFirst().equals(COMMON_MODULE_ROOT)) {
-            return List.of(COMMON_MODULE_ROOT);
+        if (modulePath.getFirst().equals(CORE_MODULE_ROOT)) {
+            return List.of(CORE_MODULE_ROOT);
         }
 
         boolean flag;

@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.mixin.common.low_level.accessor;
+package io.github.sakurawald.module.mixin.core.accessor;
 
 import io.github.sakurawald.core.accessor.PlayerCombatStateAccessor;
 import net.minecraft.server.network.ServerPlayerEntity;

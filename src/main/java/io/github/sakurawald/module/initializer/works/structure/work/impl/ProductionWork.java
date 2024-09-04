@@ -8,7 +8,7 @@ import io.github.sakurawald.module.initializer.works.structure.WorksCache;
 import io.github.sakurawald.core.gui.ConfirmGui;
 import io.github.sakurawald.core.gui.InputSignGui;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
-import io.github.sakurawald.module.mixin.common.low_level.accessor.ThreadedAnvilChunkStorageMixin;
+import io.github.sakurawald.module.mixin.core.accessor.ThreadedAnvilChunkStorageMixin;
 import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
