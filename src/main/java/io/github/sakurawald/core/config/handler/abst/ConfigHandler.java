@@ -2,7 +2,7 @@ package io.github.sakurawald.core.config.handler.abst;
 
 import assets.fuji.Cat;
 import com.google.gson.*;
-import io.github.sakurawald.core.config.job.ConfigHandlerAutoSaveJob;
+import io.github.sakurawald.core.config.job.SaveConfigHandlerJob;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import io.github.sakurawald.core.auxiliary.JsonUtil;
@@ -87,7 +87,7 @@ public abstract class ConfigHandler<T> {
 
     public void setAutoSaveJob(@NotNull String cron) {
         String jobName = this.file.getName();
-        new ConfigHandlerAutoSaveJob(jobName, new JobDataMap() {
+        new SaveConfigHandlerJob(jobName, new JobDataMap() {
             {
                 this.put(ConfigHandler.class.getName(), ConfigHandler.this);
             }
