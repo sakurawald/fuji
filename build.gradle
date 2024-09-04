@@ -172,34 +172,4 @@ test {
 }
 
 /* validate the access widener file */
-//tasks.compileJava.dependsOn(validateAccessWidener)
-
-
-/* mixin Registry checker is used to check the un-registered mixins, to avoid un-expected circumstance. */
-//tasks.register("checkMixinRegistryTest") {
-//    outputs.upToDateWhen { false }
-//    test {
-//        filter {
-//            includeTestsMatching "CheckMixinRegistryTest.test"
-//        }
-//    }
-//}
-//tasks.compileJava.dependsOn(checkMixinRegistryTest)
-//
-///* module dependency checker is used to check whether a `module` reference another `module` directly or in-directly.
-//*
-//*  Our design objective is that: a module should be standalone, and should no reference other modules.
-//*  If two modules share the same code or the logic, then:
-//*    1. They should be re-organized as sub-module relation.
-//*    2. Or just extract the common codes into the `common` package.
-//*
-//* */
-//tasks.register("checkModuleDependencyTest") {
-//    outputs.upToDateWhen { false }
-//    test {
-//        filter {
-//            includeTestsMatching "CheckModuleDependencyTest.test"
-//        }
-//    }
-//}
-//tasks.compileJava.dependsOn(checkModuleDependencyTest)
+tasks.compileJava.dependsOn(validateAccessWidener)
