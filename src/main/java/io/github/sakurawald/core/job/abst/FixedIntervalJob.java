@@ -1,19 +1,16 @@
 package io.github.sakurawald.core.job.abst;
 
-import org.quartz.JobDataMap;
-import org.quartz.SimpleScheduleBuilder;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
+import org.quartz.*;
 
-public abstract class SimpleJob extends BaseJob {
+public abstract class FixedIntervalJob extends BaseJob {
 
     int intervalMs;
     int repeatCount;
 
     @SuppressWarnings("unused")
-    public SimpleJob() {}
+    public FixedIntervalJob() {}
 
-    public SimpleJob(String jobGroup, String jobName, JobDataMap jobDataMap, int intervalMs, int repeatCount) {
+    public FixedIntervalJob(String jobGroup, String jobName, JobDataMap jobDataMap, int intervalMs, int repeatCount) {
         super(jobGroup, jobName, jobDataMap);
         this.intervalMs = intervalMs;
         this.repeatCount = repeatCount;
