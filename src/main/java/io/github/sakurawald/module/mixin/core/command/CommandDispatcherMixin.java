@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.mixin.common.low_level.command;
+package io.github.sakurawald.module.mixin.core.command;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;

@@ -74,7 +74,7 @@ public class ModuleDependencyChecker {
         for (String ref : classRef.getReferenceList()) {
             String reference = String.join(".", ModuleManager.computeModulePath(rcConfig, ref));
             // skip -> common reference
-            if (reference.equals(ModuleManager.COMMON_MODULE_ROOT)) continue;
+            if (reference.equals(ModuleManager.CORE_MODULE_ROOT)) continue;
             // skip -> self reference
             if (definition.equals(reference)) continue;
             // skip -> parent reference
@@ -83,7 +83,7 @@ public class ModuleDependencyChecker {
             referenceList.add(reference);
         }
 
-        if (definition.equals(ModuleManager.COMMON_MODULE_ROOT) || definition.equals("tester")) return null;
+        if (definition.equals(ModuleManager.CORE_MODULE_ROOT) || definition.equals("tester")) return null;
         if (referenceList.isEmpty()) return null;
         return new Reference(definition, referenceList);
     }
