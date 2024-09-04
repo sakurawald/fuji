@@ -11,7 +11,7 @@ An essentials mod written just for fun.
 ## Feature
 
 - **light**: modules are light-weight.
-- **modular**: modules are disabled.
+- **modular**: modules can be disabled.
 - **fast**: code with performance in mind.
 - **easy**: text-based manual included.
 - **free**: it's free, open source, and GPL-licensed.
