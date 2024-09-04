@@ -2,7 +2,7 @@ package io.github.sakurawald.core.job.impl;
 
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.model.ConfigModel;
-import io.github.sakurawald.core.job.abst.SimpleJob;
+import io.github.sakurawald.core.job.abst.FixedIntervalJob;
 import lombok.NoArgsConstructor;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 @NoArgsConstructor
-public class MentionPlayersJob extends SimpleJob {
+public class MentionPlayersJob extends FixedIntervalJob {
 
     public MentionPlayersJob(JobDataMap jobDataMap, int intervalMs, int repeatCount) {
         super(null, null, jobDataMap, intervalMs, repeatCount);
