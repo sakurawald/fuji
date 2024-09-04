@@ -416,6 +416,7 @@ public class ConfigModel {
 
             public @NotNull ChatSpeedDisabler chat_speed_disabler = new ChatSpeedDisabler();
             public @NotNull MoveSpeedDisabler move_speed_disabler = new MoveSpeedDisabler();
+            public @NotNull MoveWronglyDisabler move_wrongly_disabler = new MoveWronglyDisabler();
             public @NotNull MaxPlayerDisabler max_player_disabler = new MaxPlayerDisabler();
 
             public class ChatSpeedDisabler {
@@ -423,6 +424,10 @@ public class ConfigModel {
             }
 
             public class MoveSpeedDisabler {
+                public boolean enable = false;
+            }
+
+            public class MoveWronglyDisabler {
                 public boolean enable = false;
             }
 
