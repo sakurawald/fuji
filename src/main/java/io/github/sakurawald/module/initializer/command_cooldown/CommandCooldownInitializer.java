@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_cooldown;
 
-import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import java.util.HashMap;
 import java.util.Map;

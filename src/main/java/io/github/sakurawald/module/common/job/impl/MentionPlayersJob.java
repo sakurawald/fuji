@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.common.job.impl;
 
-import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.config.model.ConfigModel;
+import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.config.model.ConfigModel;
 import io.github.sakurawald.module.common.job.abst.SimpleJob;
 import lombok.NoArgsConstructor;
 import net.kyori.adventure.key.Key;

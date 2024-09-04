@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.common.structure;
 
-import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;

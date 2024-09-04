@@ -1,12 +1,12 @@
 package io.github.sakurawald.module.initializer.view;
 
-import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
-import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandRequirement;
-import io.github.sakurawald.command.annotation.CommandSource;
-import io.github.sakurawald.command.argument.wrapper.OfflinePlayerName;
-import io.github.sakurawald.module.common.exception.SnackException;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.command.annotation.CommandNode;
+import io.github.sakurawald.core.command.annotation.CommandRequirement;
+import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.command.argument.wrapper.OfflinePlayerName;
+import io.github.sakurawald.core.command.exception.SnackException;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.view.gui.EnderChestRedirectScreen;
 import io.github.sakurawald.module.initializer.view.gui.InventoryRedirectScreen;

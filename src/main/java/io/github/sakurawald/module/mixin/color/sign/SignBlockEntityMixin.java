@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.color.sign;
 
-import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;

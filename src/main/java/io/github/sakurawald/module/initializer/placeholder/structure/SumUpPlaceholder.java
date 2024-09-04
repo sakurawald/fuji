@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.placeholder.structure;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import lombok.Getter;
 import lombok.ToString;
 import net.minecraft.util.WorldSavePath;

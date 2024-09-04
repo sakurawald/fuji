@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.chat.display.gui;
 
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.auxiliary.minecraft.GuiHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ContainerComponent;
 import net.minecraft.item.ItemStack;

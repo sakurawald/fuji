@@ -3,7 +3,7 @@ package io.github.sakurawald.module.mixin.command_cooldown;
 import com.mojang.brigadier.ParseResults;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.command_cooldown.CommandCooldownInitializer;
-import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;

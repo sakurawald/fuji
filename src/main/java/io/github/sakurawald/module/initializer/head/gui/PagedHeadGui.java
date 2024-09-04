@@ -8,7 +8,7 @@ import io.github.sakurawald.module.common.gui.PagedGui;
 import io.github.sakurawald.module.initializer.head.HeadInitializer;
 import io.github.sakurawald.module.initializer.head.structure.EconomyType;
 import io.github.sakurawald.module.initializer.head.structure.Head;
-import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;

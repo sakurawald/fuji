@@ -1,9 +1,9 @@
 package io.github.sakurawald.module.mixin.anti_build;
 
-import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.auxiliary.minecraft.IdentifierHelper;
-import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
-import io.github.sakurawald.auxiliary.minecraft.PermissionHelper;
+import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ActionResult;

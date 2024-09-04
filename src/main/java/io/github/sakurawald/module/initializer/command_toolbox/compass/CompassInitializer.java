@@ -1,11 +1,11 @@
 package io.github.sakurawald.module.initializer.command_toolbox.compass;
 
-import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandSource;
-import io.github.sakurawald.command.argument.wrapper.Dimension;
+import io.github.sakurawald.core.command.annotation.CommandNode;
+import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.command.argument.wrapper.Dimension;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LodestoneTrackerComponent;
 import net.minecraft.item.ItemStack;

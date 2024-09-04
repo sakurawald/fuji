@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.command_event;
 
-import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.common.service.command_executor.CommandExecutor;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;

@@ -1,10 +1,10 @@
 package io.github.sakurawald.module.initializer.command_attachment;
 
-import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandRequirement;
-import io.github.sakurawald.command.annotation.CommandSource;
-import io.github.sakurawald.command.argument.wrapper.GreedyString;
-import io.github.sakurawald.config.handler.abst.ConfigHandler;
+import io.github.sakurawald.core.command.annotation.CommandNode;
+import io.github.sakurawald.core.command.annotation.CommandRequirement;
+import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.command.argument.wrapper.GreedyString;
+import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -12,9 +12,9 @@ import io.github.sakurawald.module.initializer.command_attachment.command.argume
 import io.github.sakurawald.module.initializer.command_attachment.command.argument.wrapper.InteractType;
 import io.github.sakurawald.module.initializer.command_attachment.config.model.CommandAttachmentModel;
 import io.github.sakurawald.module.initializer.command_attachment.structure.CommandAttachmentEntry;
-import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
-import io.github.sakurawald.auxiliary.minecraft.NbtHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
 import lombok.SneakyThrows;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;

@@ -3,7 +3,7 @@ package io.github.sakurawald.module.mixin.works;
 import io.github.sakurawald.module.initializer.works.structure.WorksCache;
 import io.github.sakurawald.module.initializer.works.structure.work.impl.ProductionWork;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
-import io.github.sakurawald.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;

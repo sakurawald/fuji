@@ -1,9 +1,9 @@
 package io.github.sakurawald.module.initializer.functional.workbench;
 
-import io.github.sakurawald.command.annotation.CommandNode;
-import io.github.sakurawald.command.annotation.CommandSource;
+import io.github.sakurawald.core.command.annotation.CommandNode;
+import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;

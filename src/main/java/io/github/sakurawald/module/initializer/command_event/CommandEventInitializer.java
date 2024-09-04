@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_event;
 
-import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.common.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.ServerEntityWorldChangeEvents;

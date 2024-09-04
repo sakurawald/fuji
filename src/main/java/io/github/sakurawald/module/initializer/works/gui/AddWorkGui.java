@@ -2,14 +2,14 @@ package io.github.sakurawald.module.initializer.works.gui;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.config.handler.abst.ConfigHandler;
+import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.module.initializer.works.config.model.WorksModel;
 import io.github.sakurawald.module.common.gui.InputSignGui;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;
 import io.github.sakurawald.module.initializer.works.structure.work.impl.NonProductionWork;
 import io.github.sakurawald.module.initializer.works.structure.work.impl.ProductionWork;
-import io.github.sakurawald.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;

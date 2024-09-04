@@ -1,9 +1,9 @@
 package io.github.sakurawald.module.initializer.view.gui;
 
 import com.mojang.authlib.GameProfile;
-import io.github.sakurawald.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.auxiliary.minecraft.IdentifierHelper;
-import io.github.sakurawald.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;

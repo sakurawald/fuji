@@ -1,8 +1,7 @@
 package io.github.sakurawald.module.mixin.afk.effect;
 
 import com.mojang.authlib.GameProfile;
-import io.github.sakurawald.auxiliary.LogUtil;
-import io.github.sakurawald.config.Configs;
+import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.afk.AfkInitializer;
 import io.github.sakurawald.module.initializer.afk.accessor.AfkStateAccessor;
 import net.minecraft.entity.MovementType;
