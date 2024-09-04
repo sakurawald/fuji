@@ -1,7 +1,7 @@
 package io.github.sakurawald.config;
 
-import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
-import io.github.sakurawald.config.handler.ObjectConfigHandler;
+import io.github.sakurawald.config.handler.abst.ConfigHandler;
+import io.github.sakurawald.config.handler.impl.ObjectConfigHandler;
 import io.github.sakurawald.config.model.*;
 
 

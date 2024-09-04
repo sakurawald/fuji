@@ -2,7 +2,7 @@ package io.github.sakurawald.module.common.job.impl;
 
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.model.ConfigModel;
-import io.github.sakurawald.module.common.job.interfaces.SimpleJob;
+import io.github.sakurawald.module.common.job.abst.SimpleJob;
 import lombok.NoArgsConstructor;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;

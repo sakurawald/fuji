@@ -1,11 +1,10 @@
-package io.github.sakurawald.config.handler.interfaces;
+package io.github.sakurawald.config.handler.abst;
 
 import assets.fuji.Cat;
 import com.google.gson.*;
-import io.github.sakurawald.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.config.job.ConfigHandlerAutoSaveJob;
 import io.github.sakurawald.module.common.manager.Managers;
-import io.github.sakurawald.module.initializer.works.structure.work.interfaces.Work;
+import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import io.github.sakurawald.auxiliary.JsonUtil;
 import io.github.sakurawald.auxiliary.LogUtil;
 import lombok.Cleanup;

@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.works.gui;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
+import io.github.sakurawald.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.module.initializer.works.config.model.WorksModel;
 import io.github.sakurawald.module.common.gui.InputSignGui;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;

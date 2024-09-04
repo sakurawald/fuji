@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.works.structure.work.interfaces;
+package io.github.sakurawald.module.initializer.works.structure.work.abst;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

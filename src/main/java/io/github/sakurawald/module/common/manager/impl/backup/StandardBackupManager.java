@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class StandardBackupManager extends AbstractBackupManager {
+public class StandardBackupManager extends BaseBackupManager {
 
     public StandardBackupManager() {
         super(Fuji.CONFIG_PATH.resolve("backup"));

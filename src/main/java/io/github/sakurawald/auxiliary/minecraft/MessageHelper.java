@@ -11,7 +11,7 @@ import eu.pb4.placeholders.api.parsers.tag.TagRegistry;
 import eu.pb4.placeholders.api.parsers.tag.TextTag;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.config.Configs;
-import io.github.sakurawald.config.handler.ResourceConfigHandler;
+import io.github.sakurawald.config.handler.impl.ResourceConfigHandler;
 import io.github.sakurawald.auxiliary.LogUtil;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;

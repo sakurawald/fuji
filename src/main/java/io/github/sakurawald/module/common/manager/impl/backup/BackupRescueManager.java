@@ -15,7 +15,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BackupRescueManager extends AbstractBackupManager {
+public class BackupRescueManager extends BaseBackupManager {
 
     public BackupRescueManager() {
         super(Fuji.CONFIG_PATH.resolve("backup_rescue"));

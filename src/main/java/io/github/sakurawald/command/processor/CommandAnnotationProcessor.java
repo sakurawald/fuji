@@ -12,7 +12,7 @@ import io.github.sakurawald.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
-import io.github.sakurawald.command.argument.adapter.interfaces.AbstractArgumentTypeAdapter;
+import io.github.sakurawald.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.command.argument.structure.Argument;
 import io.github.sakurawald.module.common.exception.SnackException;
 import io.github.sakurawald.module.common.manager.Managers;
@@ -43,7 +43,7 @@ public class CommandAnnotationProcessor {
     public static void process() {
         CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) -> {
             /* environment */
-            AbstractArgumentTypeAdapter.registerAdapters();
+            BaseArgumentTypeAdapter.registerAdapters();
             CommandAnnotationProcessor.dispatcher = dispatcher;
             CommandAnnotationProcessor.registryAccess = registryAccess;
 
@@ -159,7 +159,7 @@ public class CommandAnnotationProcessor {
 
         if (expectedCommandSourceParameter == null) return true;
 
-        return AbstractArgumentTypeAdapter.getAdapter(expectedCommandSourceParameter).validateCommandSource(ctx);
+        return BaseArgumentTypeAdapter.getAdapter(expectedCommandSourceParameter).validateCommandSource(ctx);
     }
 
     private static com.mojang.brigadier.Command<ServerCommandSource> makeCommandFunction(Method method, Object instance) {
@@ -203,7 +203,7 @@ public class CommandAnnotationProcessor {
         for (Parameter parameter : parameters) {
 
             try {
-                Object arg = AbstractArgumentTypeAdapter.getAdapter(parameter).makeArgumentObject(ctx, parameter);
+                Object arg = BaseArgumentTypeAdapter.getAdapter(parameter).makeArgumentObject(ctx, parameter);
 
                 if (parameter.getType().equals(Optional.class)) {
                     arg = Optional.of(arg);
@@ -247,7 +247,7 @@ public class CommandAnnotationProcessor {
             throw new RuntimeException("It's like you specify a wrong `parameter index` for the command pattern.");
         }
 
-        return AbstractArgumentTypeAdapter.getAdapter(parameter).makeRequiredArgumentBuilder(parameter);
+        return BaseArgumentTypeAdapter.getAdapter(parameter).makeRequiredArgumentBuilder(parameter);
     }
 
     private static void registerOptionalArguments(List<Argument> arguments, Method method) {

@@ -9,7 +9,7 @@ import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
-import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
+import io.github.sakurawald.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_meta.json.command.argument.wrapper.JsonValueType;
 import io.github.sakurawald.auxiliary.minecraft.CommandHelper;

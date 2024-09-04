@@ -4,7 +4,7 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.argument.adapter.interfaces.AbstractArgumentTypeAdapter;
+import io.github.sakurawald.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.kit.KitInitializer;
 import io.github.sakurawald.module.initializer.kit.command.argument.wrapper.KitName;
@@ -14,7 +14,7 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
 @SuppressWarnings("unused")
-public class KitNameArgumentTypeAdapter extends AbstractArgumentTypeAdapter {
+public class KitNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     private static final KitInitializer initializer = Managers.getModuleManager().getInitializer(KitInitializer.class);
 

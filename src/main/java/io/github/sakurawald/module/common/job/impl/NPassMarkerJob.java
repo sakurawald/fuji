@@ -1,9 +1,7 @@
 package io.github.sakurawald.module.common.job.impl;
 
-import io.github.sakurawald.module.common.job.interfaces.CronJob;
-import lombok.AllArgsConstructor;
+import io.github.sakurawald.module.common.job.abst.CronJob;
 import lombok.NoArgsConstructor;
-import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 

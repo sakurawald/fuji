@@ -15,12 +15,13 @@ import java.nio.file.Path;
 // TODO: argument resolver for command alias module
 
 // TODO: closure factory method for AbstractJob
-// TODO: a `common` package in mixin package
-// TODO: manifold getInstance()
 // TODO: curse forge plugin
 
 // TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector, predicate, equal)
 // TODO: command combination
+
+// TODO: a `common` package in mixin package
+// TODO: manifold getInstance()
 
 public class Fuji implements ModInitializer {
 
