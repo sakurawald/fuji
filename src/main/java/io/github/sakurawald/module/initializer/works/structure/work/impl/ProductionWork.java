@@ -8,7 +8,6 @@ import io.github.sakurawald.module.initializer.works.structure.WorksCache;
 import io.github.sakurawald.core.gui.ConfirmGui;
 import io.github.sakurawald.core.gui.InputSignGui;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
-import io.github.sakurawald.module.mixin.core.accessor.ThreadedAnvilChunkStorageMixin;
 import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
@@ -24,6 +23,7 @@ import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ChunkHolder;
+import net.minecraft.server.world.ServerChunkLoadingManager;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -189,8 +189,8 @@ public class ProductionWork extends Work implements Schedulable {
         int hopperBlockCount = 0;
         int minecartHopperCount = 0;
         ServerWorld world = player.getServerWorld();
-        ThreadedAnvilChunkStorageMixin threadedAnvilChunkStorage = (ThreadedAnvilChunkStorageMixin) world.getChunkManager().chunkLoadingManager;
-        Iterable<ChunkHolder> chunkHolders = threadedAnvilChunkStorage.getChunks();
+
+        Iterable<ChunkHolder> chunkHolders = world.getChunkManager().chunkLoadingManager.entryIterator();
         for (ChunkHolder chunkHolder : chunkHolders) {
             WorldChunk worldChunk = chunkHolder.getWorldChunk();
             if (worldChunk == null) continue;

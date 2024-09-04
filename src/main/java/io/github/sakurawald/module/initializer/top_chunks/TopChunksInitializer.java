@@ -7,7 +7,6 @@ import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.top_chunks.structure.ChunkScore;
-import io.github.sakurawald.module.mixin.core.accessor.ThreadedAnvilChunkStorageMixin;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.kyori.adventure.text.Component;
@@ -50,8 +49,7 @@ public class TopChunksInitializer extends ModuleInitializer {
                 }
 
                 /* block-entity in this world */
-                ThreadedAnvilChunkStorageMixin threadedAnvilChunkStorage = (ThreadedAnvilChunkStorageMixin) world.getChunkManager().chunkLoadingManager;
-                Iterable<ChunkHolder> chunkHolders = threadedAnvilChunkStorage.getChunks();
+                Iterable<ChunkHolder> chunkHolders = world.getChunkManager().chunkLoadingManager.entryIterator();
                 for (ChunkHolder chunkHolder : chunkHolders) {
                     WorldChunk worldChunk = chunkHolder.getWorldChunk();
                     if (worldChunk == null) continue;
