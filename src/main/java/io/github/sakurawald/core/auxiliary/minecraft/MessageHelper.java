@@ -97,7 +97,7 @@ public class MessageHelper {
     }
 
     private @NotNull String getClientSideLanguage(@Nullable Object audience) {
-        String defaultLanguage = Configs.configHandler.model().common.language.default_language;
+        String defaultLanguage = Configs.configHandler.model().core.language.default_language;
 
         if (audience == null) {
             return defaultLanguage;
@@ -116,7 +116,7 @@ public class MessageHelper {
     private @NotNull JsonObject getLanguage(String lang) {
         // if target language is missing, we fall back to default_language
         if (!lang2json.containsKey(lang) && lang2json.get(lang) == UNSUPPORTED_LANGUAGE) {
-            lang = Configs.configHandler.model().common.language.default_language;
+            lang = Configs.configHandler.model().core.language.default_language;
         }
 
         loadLanguageIfAbsent(lang);
