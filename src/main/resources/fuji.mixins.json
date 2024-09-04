@@ -38,7 +38,6 @@
     "command_warmup.ServerPlayNetworkHandlerMixin",
     "core.accessor.ServerPlayerEntityMixin",
     "core.accessor.SimpleRegistryMixin",
-    "core.accessor.ThreadedAnvilChunkStorageMixin",
     "core.accessor.UserCacheMixin",
     "core.command.CommandContextBuilderMixin",
     "core.command.CommandDispatcherMixin",

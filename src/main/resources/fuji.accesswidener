@@ -23,3 +23,6 @@ accessible method net/minecraft/server/network/ServerPlayNetworkHandler handleDe
 
 # view module
 accessible field net/minecraft/server/MinecraftServer saveHandler Lnet/minecraft/world/PlayerSaveHandler;
+
+# works module + top chunks module
+accessible method net/minecraft/server/world/ServerChunkLoadingManager entryIterator ()Ljava/lang/Iterable;
