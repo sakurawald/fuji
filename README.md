@@ -1,6 +1,6 @@
 # Fuji-Fabric
 
-An essentials mod written just for fun.
+An essentials mod written for fabric platform.
 
 ![github workflow build job](https://img.shields.io/github/actions/workflow/status/sakurawald/fuji-fabric/build.yml)
 ![github last commit](https://img.shields.io/github/last-commit/sakurawald/fuji-fabric)
