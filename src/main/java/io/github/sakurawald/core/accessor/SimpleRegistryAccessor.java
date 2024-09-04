@@ -5,7 +5,6 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-@ApiStatus.Internal
 public interface SimpleRegistryAccessor<T> {
 
     @SuppressWarnings("unchecked")
