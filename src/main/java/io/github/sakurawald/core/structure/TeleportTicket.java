@@ -1,7 +1,7 @@
 package io.github.sakurawald.core.structure;
 
 import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.core.accessor.PlayerCombatStateAccessor;
+import io.github.sakurawald.core.accessor.PlayerCombatExtension;
 import io.github.sakurawald.core.manager.impl.bossbar.BossBarTicket;
 import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import lombok.Getter;
@@ -38,7 +38,7 @@ public class TeleportTicket extends BossBarTicket {
     public boolean preProgressChange() {
 
         // check combat
-        if (((PlayerCombatStateAccessor) player).fuji$inCombat()) {
+        if (((PlayerCombatExtension) player).fuji$inCombat()) {
             MessageHelper.sendActionBar(player, "teleport_warmup.in_combat");
             return false;
         }
