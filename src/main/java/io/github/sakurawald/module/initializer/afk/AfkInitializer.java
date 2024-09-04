@@ -4,7 +4,7 @@ import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.accessor.PlayerCombatStateAccessor;
+import io.github.sakurawald.core.accessor.PlayerCombatExtension;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.afk.accessor.AfkStateAccessor;
 import io.github.sakurawald.module.initializer.afk.job.AfkMarkerJob;
@@ -29,7 +29,7 @@ public class AfkInitializer extends ModuleInitializer {
         if (!player.isOnGround()
                 || player.isOnFire()
                 || player.inPowderSnow
-                || ((PlayerCombatStateAccessor) player).fuji$inCombat()) {
+                || ((PlayerCombatExtension) player).fuji$inCombat()) {
 
             MessageHelper.sendMessage(player, "afk.on.failed");
             return CommandHelper.Return.FAIL;
