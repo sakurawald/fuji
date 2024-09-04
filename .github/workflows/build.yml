@@ -47,8 +47,9 @@ jobs:
             fabric
             quilt
 
-          dependencies: |
-            placeholder-api@2.4.1+1.21(embedded)
+          files: |
+            build/libs/!(*-@(dev|sources|javadoc)).jar
+            build/libs/*-@(dev|sources|javadocs).jar
 
           modrinth-id: 1TowMm2v
           modrinth-token: "${{secrets.MODRINTH_TOKEN}}"

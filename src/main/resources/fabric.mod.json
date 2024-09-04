@@ -54,5 +54,12 @@
     "luckperms": "*",
     "spark": "*",
     "carpet": "*"
+  },
+  "custom": {
+    "mc-publish": {
+      "dependencies": [
+        "placeholder-api@2.4.1+1.21(embedded)"
+      ]
+    }
   }
 }
