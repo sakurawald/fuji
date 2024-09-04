@@ -10,10 +10,10 @@ An essentials mod written just for fun.
 
 ## Feature
 
-- **vanilla respect**: all modules are designed to be light-weight.
-- **fully modular**: all modules can be disabled.
-- **high performance**: code with performance in mind.
-- **easy to use**: a text-based manual is provided.
+- **light**: modules are light-weight.
+- **modular**: modules are disabled.
+- **fast**: code with performance in mind.
+- **easy**: text-based manual included.
 - **free**: it's free, open source, and GPL-licensed.
 
 ## Manual
