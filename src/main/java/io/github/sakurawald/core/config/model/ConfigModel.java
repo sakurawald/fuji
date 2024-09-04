@@ -12,10 +12,10 @@ import java.util.*;
 @SuppressWarnings("ALL")
 public class ConfigModel {
 
-    public @NotNull Common common = new Common();
+    public @NotNull Core core = new Core();
     public @NotNull Modules modules = new Modules();
 
-    public class Common {
+    public class Core {
 
         public @NotNull Debug debug = new Debug();
         public @NotNull Backup backup = new Backup();

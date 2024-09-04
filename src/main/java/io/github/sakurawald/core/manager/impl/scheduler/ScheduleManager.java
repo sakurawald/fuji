@@ -26,7 +26,7 @@ public class ScheduleManager extends BaseManager {
 
     {
         /* set logger level for quartz */
-        Level level = Level.getLevel(Configs.configHandler.model().common.quartz.logger_level);
+        Level level = Level.getLevel(Configs.configHandler.model().core.quartz.logger_level);
         Configurator.setAllLevels("org.quartz", level);
 
         // note: for some early initialize, here will cause NPE
