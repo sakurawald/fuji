@@ -6,7 +6,7 @@ public interface AfkStateAccessor {
 
     boolean fuji$isAfk();
 
-    void fuji$setLastLastActionTime(long lastActionTime);
+    void fuji$setSnapshotLastActionTime(long lastActionTime);
 
-    long fuji$getLastLastActionTime();
+    long fuji$getSnapshotLastActionTime();
 }
