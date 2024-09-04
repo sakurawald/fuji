@@ -4,7 +4,7 @@ import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandRequirement;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.command.argument.wrapper.GreedyString;
-import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
+import io.github.sakurawald.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.common.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;

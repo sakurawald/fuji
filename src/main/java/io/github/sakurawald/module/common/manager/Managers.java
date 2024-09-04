@@ -5,7 +5,7 @@ import io.github.sakurawald.module.common.manager.impl.attachment.AttachmentMana
 import io.github.sakurawald.module.common.manager.impl.backup.BackupRescueManager;
 import io.github.sakurawald.module.common.manager.impl.backup.StandardBackupManager;
 import io.github.sakurawald.module.common.manager.impl.bossbar.BossBarManager;
-import io.github.sakurawald.module.common.manager.impl.backup.AbstractBackupManager;
+import io.github.sakurawald.module.common.manager.impl.backup.BaseBackupManager;
 import io.github.sakurawald.module.common.manager.impl.scheduler.ScheduleManager;
 import lombok.Getter;
 
@@ -21,10 +21,10 @@ public class Managers {
     private static final ScheduleManager scheduleManager = new ScheduleManager();
 
     @Getter
-    private static final AbstractBackupManager standardBackupManager = new StandardBackupManager();
+    private static final BaseBackupManager standardBackupManager = new StandardBackupManager();
 
     @Getter
-    private static final AbstractBackupManager rescueBackupManager = new BackupRescueManager();
+    private static final BaseBackupManager rescueBackupManager = new BackupRescueManager();
 
     @Getter
     private static final AttachmentManager attachmentManager = new AttachmentManager();

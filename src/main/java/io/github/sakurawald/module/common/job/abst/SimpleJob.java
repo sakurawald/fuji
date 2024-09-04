@@ -1,11 +1,11 @@
-package io.github.sakurawald.module.common.job.interfaces;
+package io.github.sakurawald.module.common.job.abst;
 
 import org.quartz.JobDataMap;
 import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 
-public abstract class SimpleJob extends AbstractJob {
+public abstract class SimpleJob extends BaseJob {
 
     int intervalMs;
     int repeatCount;

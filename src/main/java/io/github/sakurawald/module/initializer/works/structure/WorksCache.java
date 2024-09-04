@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.works.structure;
 
-import io.github.sakurawald.module.initializer.works.structure.work.interfaces.Work;
+import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import lombok.Getter;
 import net.minecraft.util.math.BlockPos;
 import java.util.HashSet;

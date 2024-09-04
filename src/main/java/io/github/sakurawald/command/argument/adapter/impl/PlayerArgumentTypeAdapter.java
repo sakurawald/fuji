@@ -2,7 +2,7 @@ package io.github.sakurawald.command.argument.adapter.impl;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.command.argument.adapter.interfaces.AbstractArgumentTypeAdapter;
+import io.github.sakurawald.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.command.annotation.CommandSource;
 import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
 import lombok.SneakyThrows;
@@ -14,7 +14,7 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
 @SuppressWarnings("unused")
-public class PlayerArgumentTypeAdapter extends AbstractArgumentTypeAdapter {
+public class PlayerArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     public boolean match(Type type) {

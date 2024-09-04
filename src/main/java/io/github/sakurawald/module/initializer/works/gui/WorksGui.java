@@ -7,7 +7,7 @@ import eu.pb4.sgui.api.gui.layered.Layer;
 import io.github.sakurawald.module.common.gui.PagedGui;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;
 import io.github.sakurawald.module.initializer.works.structure.work.impl.ProductionWork;
-import io.github.sakurawald.module.initializer.works.structure.work.interfaces.Work;
+import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import io.github.sakurawald.auxiliary.minecraft.GuiHelper;
 import io.github.sakurawald.auxiliary.minecraft.MessageHelper;
 import io.github.sakurawald.auxiliary.minecraft.ServerHelper;

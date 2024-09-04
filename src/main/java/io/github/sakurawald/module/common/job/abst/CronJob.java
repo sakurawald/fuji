@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.common.job.interfaces;
+package io.github.sakurawald.module.common.job.abst;
 
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
@@ -7,7 +7,7 @@ import org.quartz.TriggerBuilder;
 
 import java.util.function.Supplier;
 
-public abstract class CronJob extends AbstractJob {
+public abstract class CronJob extends BaseJob {
 
     Supplier<String> cronSupplier;
 

@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.common.manager.impl.bossbar;
 
-import io.github.sakurawald.module.common.manager.interfaces.AbstractManager;
+import io.github.sakurawald.module.common.manager.abst.BaseManager;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.kyori.adventure.audience.Audience;
 import net.minecraft.server.MinecraftServer;
@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class BossBarManager extends AbstractManager {
+public class BossBarManager extends BaseManager {
 
     private final List<BossBarTicket> tickets = new ArrayList<>();
     private final List<BossBarTicket> addedTickets = new ArrayList<>();

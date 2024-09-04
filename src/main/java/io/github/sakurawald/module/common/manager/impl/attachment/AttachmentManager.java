@@ -1,8 +1,7 @@
 package io.github.sakurawald.module.common.manager.impl.attachment;
 
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.module.common.manager.interfaces.AbstractManager;
-import net.minecraft.nbt.NbtCompound;
+import io.github.sakurawald.module.common.manager.abst.BaseManager;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AttachmentManager extends AbstractManager {
+public class AttachmentManager extends BaseManager {
 
     private static final Path ATTACHMENT_STORAGE_PATH = Fuji.CONFIG_PATH.resolve("attachment");
 

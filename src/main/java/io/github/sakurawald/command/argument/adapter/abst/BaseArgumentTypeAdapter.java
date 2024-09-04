@@ -1,4 +1,4 @@
-package io.github.sakurawald.command.argument.adapter.interfaces;
+package io.github.sakurawald.command.argument.adapter.abst;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
@@ -19,23 +19,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class AbstractArgumentTypeAdapter {
+public abstract class BaseArgumentTypeAdapter {
 
-    private static final List<AbstractArgumentTypeAdapter> adapters = new ArrayList<>();
+    private static final List<BaseArgumentTypeAdapter> adapters = new ArrayList<>();
 
     @SneakyThrows
     public static void registerAdapters() {
         ModuleManager moduleManager = Managers.getModuleManager();
 
-        for (ClassInfo classInfo : ReflectionUtil.getClassInfoScanResult().getSubclasses(AbstractArgumentTypeAdapter.class)) {
+        for (ClassInfo classInfo : ReflectionUtil.getClassInfoScanResult().getSubclasses(BaseArgumentTypeAdapter.class)) {
             String className = classInfo.getName();
 
             // skip if the module path is not enabled.
             if (!moduleManager.shouldWeEnableThis(className)) continue;
 
-            Class<? extends AbstractArgumentTypeAdapter> clazz = (Class<? extends AbstractArgumentTypeAdapter>) Class.forName(classInfo.getName());
-            Constructor<? extends AbstractArgumentTypeAdapter> constructor = clazz.getDeclaredConstructor();
-            AbstractArgumentTypeAdapter instance = constructor.newInstance();
+            Class<? extends BaseArgumentTypeAdapter> clazz = (Class<? extends BaseArgumentTypeAdapter>) Class.forName(classInfo.getName());
+            Constructor<? extends BaseArgumentTypeAdapter> constructor = clazz.getDeclaredConstructor();
+            BaseArgumentTypeAdapter instance = constructor.newInstance();
             adapters.add(instance);
         }
     }
@@ -65,10 +65,10 @@ public abstract class AbstractArgumentTypeAdapter {
         return parameter.getType();
     }
 
-    public static AbstractArgumentTypeAdapter getAdapter(Parameter parameter) {
+    public static BaseArgumentTypeAdapter getAdapter(Parameter parameter) {
         Type type = unpackType(parameter);
 
-        for (AbstractArgumentTypeAdapter adapter : adapters) {
+        for (BaseArgumentTypeAdapter adapter : adapters) {
             if (adapter.match(type)) {
                 return adapter;
             }

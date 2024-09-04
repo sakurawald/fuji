@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.common.job.interfaces;
+package io.github.sakurawald.module.common.job.abst;
 
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.auxiliary.LogUtil;
@@ -6,8 +6,8 @@ import org.quartz.*;
 
 import java.util.*;
 
-public abstract class AbstractJob implements Job {
-    private static final Set<AbstractJob> reschedulableJobs = new HashSet<>();
+public abstract class BaseJob implements Job {
+    private static final Set<BaseJob> reschedulableJobs = new HashSet<>();
 
     protected boolean reschedulable = true;
     protected String jobGroup = null;
@@ -17,10 +17,10 @@ public abstract class AbstractJob implements Job {
 
     // note: the no arguments constructor is only used for quartz to create and use the `execute` closure
     @SuppressWarnings("unused")
-    public AbstractJob() {
+    public BaseJob() {
     }
 
-    public AbstractJob(String jobGroup, String jobName, JobDataMap jobDataMap) {
+    public BaseJob(String jobGroup, String jobName, JobDataMap jobDataMap) {
         if (jobGroup == null) {
             jobGroup = this.getClass().getName();
         }
@@ -65,7 +65,7 @@ public abstract class AbstractJob implements Job {
     }
 
     public static void rescheduleAll() {
-        for (AbstractJob reschedulableJob : reschedulableJobs) {
+        for (BaseJob reschedulableJob : reschedulableJobs) {
             reschedulableJob.reschedule();
         }
     }

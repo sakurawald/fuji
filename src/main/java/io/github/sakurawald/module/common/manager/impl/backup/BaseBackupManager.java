@@ -1,17 +1,17 @@
 package io.github.sakurawald.module.common.manager.impl.backup;
 
-import io.github.sakurawald.module.common.manager.interfaces.AbstractManager;
+import io.github.sakurawald.module.common.manager.abst.BaseManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 
-public abstract class AbstractBackupManager extends AbstractManager {
+public abstract class BaseBackupManager extends BaseManager {
 
     protected Path BACKUP_PATH;
 
-    public AbstractBackupManager(Path BACKUP_PATH) {
+    public BaseBackupManager(Path BACKUP_PATH) {
         this.BACKUP_PATH = BACKUP_PATH;
     }
 

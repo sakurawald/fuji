@@ -4,7 +4,7 @@ package io.github.sakurawald.module.common.manager.impl.scheduler;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.config.job.ConfigHandlerAutoSaveJob;
 import io.github.sakurawald.module.common.manager.Managers;
-import io.github.sakurawald.module.common.manager.interfaces.AbstractManager;
+import io.github.sakurawald.module.common.manager.abst.BaseManager;
 import io.github.sakurawald.auxiliary.LogUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -18,7 +18,7 @@ import org.quartz.impl.matchers.GroupMatcher;
 
 import java.util.*;
 
-public class ScheduleManager extends AbstractManager {
+public class ScheduleManager extends BaseManager {
 
     public static final String CRON_EVERY_MINUTE = "0 * * ? * * *";
 

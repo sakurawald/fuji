@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
-import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
+import io.github.sakurawald.config.handler.abst.ConfigHandler;
 
 public enum JsonValueType {
 

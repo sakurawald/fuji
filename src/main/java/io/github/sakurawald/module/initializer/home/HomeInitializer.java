@@ -2,8 +2,8 @@ package io.github.sakurawald.module.initializer.home;
 
 import io.github.sakurawald.command.annotation.CommandNode;
 import io.github.sakurawald.command.annotation.CommandSource;
-import io.github.sakurawald.config.handler.interfaces.ConfigHandler;
-import io.github.sakurawald.config.handler.ObjectConfigHandler;
+import io.github.sakurawald.config.handler.abst.ConfigHandler;
+import io.github.sakurawald.config.handler.impl.ObjectConfigHandler;
 import io.github.sakurawald.module.initializer.home.config.model.HomeModel;
 import io.github.sakurawald.module.common.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.module.common.structure.Position;

@@ -8,7 +8,7 @@ import io.github.sakurawald.auxiliary.LogUtil;
 import io.github.sakurawald.auxiliary.ReflectionUtil;
 import io.github.sakurawald.config.Configs;
 import io.github.sakurawald.module.common.manager.Managers;
-import io.github.sakurawald.module.common.manager.interfaces.AbstractManager;
+import io.github.sakurawald.module.common.manager.abst.BaseManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.mixin.GlobalMixinConfigPlugin;
 import lombok.SneakyThrows;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public class ModuleManager extends AbstractManager {
+public class ModuleManager extends BaseManager {
 
     public static final String COMMON_MODULE_ROOT = "common";
     private static JsonElement RC_CONFIG = null;
@@ -32,6 +32,7 @@ public class ModuleManager extends AbstractManager {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> this.serverStartupReport());
     }
 
+    @SuppressWarnings("unchecked")
     @SneakyThrows
     private void invokeModuleInitializers() {
         for (ClassInfo classInfo : ReflectionUtil.getClassInfoScanResult().getSubclasses(ModuleInitializer.class)) {
