@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.chat.history;
 
-import io.github.sakurawald.module.common.manager.Managers;
+import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.chat.history.ChatHistoryInitializer;
 import io.github.sakurawald.core.auxiliary.minecraft.EntityHelper;
 import net.minecraft.network.ClientConnection;

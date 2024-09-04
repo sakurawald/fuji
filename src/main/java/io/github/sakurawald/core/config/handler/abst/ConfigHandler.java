@@ -3,7 +3,7 @@ package io.github.sakurawald.core.config.handler.abst;
 import assets.fuji.Cat;
 import com.google.gson.*;
 import io.github.sakurawald.core.config.job.ConfigHandlerAutoSaveJob;
-import io.github.sakurawald.module.common.manager.Managers;
+import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import io.github.sakurawald.core.auxiliary.JsonUtil;
 import io.github.sakurawald.core.auxiliary.LogUtil;

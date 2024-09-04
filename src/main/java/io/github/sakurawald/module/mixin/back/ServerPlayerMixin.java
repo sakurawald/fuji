@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.back;
 
-import io.github.sakurawald.module.common.manager.Managers;
+import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.back.BackInitializer;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.network.packet.s2c.play.PositionFlag;

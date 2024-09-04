@@ -4,7 +4,7 @@ import carpet.commands.PlayerCommand;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.module.common.manager.Managers;
+import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager.FakePlayerManagerInitializer;
 import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;

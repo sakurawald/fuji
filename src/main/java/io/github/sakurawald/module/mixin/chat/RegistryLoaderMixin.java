@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.chat;
 
-import io.github.sakurawald.module.common.accessor.SimpleRegistryAccessor;
+import io.github.sakurawald.core.accessor.SimpleRegistryAccessor;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.registry.*;

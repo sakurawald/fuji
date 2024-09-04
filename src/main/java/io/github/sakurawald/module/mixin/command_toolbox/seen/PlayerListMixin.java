@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.command_toolbox.seen;
 
-import io.github.sakurawald.module.common.manager.Managers;
+import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.command_toolbox.seen.SeenInitializer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;

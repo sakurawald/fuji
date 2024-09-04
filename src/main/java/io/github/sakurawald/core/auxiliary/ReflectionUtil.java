@@ -3,7 +3,7 @@ package io.github.sakurawald.core.auxiliary;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ScanResult;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.module.common.manager.impl.module.ModuleManager;
+import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import lombok.experimental.UtilityClass;
 
 import java.lang.annotation.Annotation;

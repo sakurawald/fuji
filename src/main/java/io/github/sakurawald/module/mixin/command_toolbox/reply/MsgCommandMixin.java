@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.command_toolbox.reply;
 
-import io.github.sakurawald.module.common.manager.Managers;
+import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.command_toolbox.reply.ReplyInitializer;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;

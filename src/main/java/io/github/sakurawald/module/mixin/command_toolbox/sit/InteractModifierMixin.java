@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.command_toolbox.sit;
 
 import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.module.common.manager.Managers;
+import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.command_toolbox.sit.SitInitializer;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;

@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.command_rewrite;
 
 import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.module.common.structure.RegexRewriteEntry;
+import io.github.sakurawald.core.structure.RegexRewriteEntry;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import org.jetbrains.annotations.NotNull;

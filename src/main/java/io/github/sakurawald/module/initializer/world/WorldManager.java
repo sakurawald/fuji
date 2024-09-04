@@ -2,10 +2,10 @@ package io.github.sakurawald.module.initializer.world;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import io.github.sakurawald.module.common.manager.Managers;
-import io.github.sakurawald.module.common.structure.Position;
-import io.github.sakurawald.module.common.accessor.SimpleRegistryAccessor;
-import io.github.sakurawald.module.common.structure.TeleportTicket;
+import io.github.sakurawald.core.manager.Managers;
+import io.github.sakurawald.core.structure.Position;
+import io.github.sakurawald.core.accessor.SimpleRegistryAccessor;
+import io.github.sakurawald.core.structure.TeleportTicket;
 import io.github.sakurawald.module.initializer.world.accessor.IDimensionOptions;
 import io.github.sakurawald.module.initializer.world.structure.MyServerWorld;
 import io.github.sakurawald.module.initializer.world.structure.MyWorldProperties;

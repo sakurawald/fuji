@@ -2,7 +2,7 @@ package io.github.sakurawald.core.auxiliary.minecraft;
 
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
-import io.github.sakurawald.module.common.accessor.UserCacheAccessor;
+import io.github.sakurawald.core.accessor.UserCacheAccessor;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import net.minecraft.item.ItemStack;

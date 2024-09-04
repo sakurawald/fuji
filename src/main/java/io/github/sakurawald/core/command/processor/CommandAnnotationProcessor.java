@@ -15,7 +15,7 @@ import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.core.command.exception.SnackException;
-import io.github.sakurawald.module.common.manager.Managers;
+import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.CommandRegistryAccess;

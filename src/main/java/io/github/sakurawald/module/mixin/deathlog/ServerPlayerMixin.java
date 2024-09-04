@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.deathlog;
 
-import io.github.sakurawald.module.common.manager.Managers;
+import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.deathlog.DeathLogInitializer;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;

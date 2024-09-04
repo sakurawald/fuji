@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.nametag.job;
 
 import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.module.common.job.abst.CronJob;
+import io.github.sakurawald.core.job.abst.CronJob;
 import io.github.sakurawald.module.initializer.nametag.NametagInitializer;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
