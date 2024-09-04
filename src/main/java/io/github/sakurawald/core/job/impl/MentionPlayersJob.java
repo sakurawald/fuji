@@ -1,7 +1,5 @@
 package io.github.sakurawald.core.job.impl;
 
-import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.core.config.model.ConfigModel;
 import io.github.sakurawald.core.job.abst.FixedIntervalJob;
 import lombok.NoArgsConstructor;
 import net.kyori.adventure.key.Key;
@@ -19,14 +17,12 @@ public class MentionPlayersJob extends FixedIntervalJob {
 
     public MentionPlayersJob(JobDataMap jobDataMap, int intervalMs, int repeatCount) {
         super(null, null, jobDataMap, intervalMs, repeatCount);
-
     }
 
-    public static void scheduleJob(ArrayList<ServerPlayerEntity> players) {
-        ConfigModel.Modules.Chat.MentionPlayer mentionPlayer = Configs.configHandler.model().modules.chat.mention_player;
-        int intervalMs = mentionPlayer.interval_ms;
-        int repeatCount = mentionPlayer.repeat_count;
-        Sound sound = Sound.sound(Key.key(mentionPlayer.sound), Sound.Source.MUSIC, mentionPlayer.volume, mentionPlayer.pitch);
+    public static void requestJob(MentionPlayer setup, ArrayList<ServerPlayerEntity> players) {
+        int intervalMs = setup.interval_ms;
+        int repeatCount = setup.repeat_count;
+        Sound sound = Sound.sound(Key.key(setup.sound), Sound.Source.MUSIC, setup.volume, setup.pitch);
 
         new MentionPlayersJob(new JobDataMap() {
             {
@@ -36,8 +32,8 @@ public class MentionPlayersJob extends FixedIntervalJob {
         }, intervalMs, repeatCount).schedule();
     }
 
-    public static void scheduleJob(ServerPlayerEntity serverPlayer) {
-        scheduleJob(new ArrayList<>(Collections.singletonList(serverPlayer)));
+    public static void requestJob(MentionPlayer setup, ServerPlayerEntity serverPlayer) {
+        requestJob(setup, new ArrayList<>(Collections.singletonList(serverPlayer)));
     }
 
     @SuppressWarnings("unchecked")
@@ -49,5 +45,13 @@ public class MentionPlayersJob extends FixedIntervalJob {
             if (player == null) continue;
             player.playSound(sound);
         }
+    }
+
+    public static class MentionPlayer {
+        public @NotNull String sound = "entity.experience_orb.pickup";
+        public float volume = 100f;
+        public float pitch = 1f;
+        public int repeat_count = 3;
+        public int interval_ms = 1000;
     }
 }

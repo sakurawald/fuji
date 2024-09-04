@@ -1,12 +1,13 @@
 package io.github.sakurawald.module.initializer.tpa;
 
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.job.impl.MentionPlayersJob;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.tpa.structure.TpaRequest;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import lombok.Getter;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -66,7 +67,7 @@ public class TpaInitializer extends ModuleInitializer {
 
             ServerPlayerEntity who = request.getTeleportWho();
             ServerPlayerEntity to = request.getTeleportTo();
-            MentionPlayersJob.scheduleJob(request.isTpahere() ? to : who);
+            MentionPlayersJob.requestJob(Configs.configHandler.model().modules.tpa.mention_player, request.isTpahere() ? to : who);
             who.teleport((ServerWorld) to.getWorld(), to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
         } else if (status == ResponseStatus.DENY) {
             request.getSender().sendActionBar(request.asSenderComponent$Denied());
@@ -102,7 +103,7 @@ public class TpaInitializer extends ModuleInitializer {
 
         /* feedback */
         request.getReceiver().sendMessage(request.asReceiverComponent$Sent());
-        MentionPlayersJob.scheduleJob(request.getReceiver());
+        MentionPlayersJob.requestJob(Configs.configHandler.model().modules.tpa.mention_player, request.getReceiver());
         request.getSender().sendMessage(request.asSenderComponent$Sent());
         return CommandHelper.Return.SUCCESS;
     }
