@@ -21,16 +21,15 @@
   ],
   "contributors": [
     {
-      "name": "mcjunshi"
-    },
-    {
-      "name": "dirtTW"
-    },
-    {
-      "name": "example (this is the example for contributors)",
+      "name": "mcjunshi",
       "contact": {
-        "email": "example@gmail.com",
-        "homepage": "example.com"
+        "homepage": "https://github.com/mcjunshi"
+      }
+    },
+    {
+      "name": "dirtTW",
+      "contact": {
+        "homepage": "https://github.com/yichifauzi"
       }
     }
   ],
