@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.chat.history;
 
-import io.github.sakurawald.module.common.manager.Managers;
+import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.chat.history.ChatHistoryInitializer;
 import net.minecraft.network.message.SignedMessage;
 import net.minecraft.server.network.ServerPlayNetworkHandler;

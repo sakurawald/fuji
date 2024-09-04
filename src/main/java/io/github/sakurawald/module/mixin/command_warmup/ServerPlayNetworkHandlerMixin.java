@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.mixin.command_warmup;
 
 import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.module.common.manager.Managers;
-import io.github.sakurawald.module.common.structure.CommandWarmupTicket;
+import io.github.sakurawald.core.manager.Managers;
+import io.github.sakurawald.core.structure.CommandWarmupTicket;
 import net.minecraft.network.packet.c2s.play.CommandExecutionC2SPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;

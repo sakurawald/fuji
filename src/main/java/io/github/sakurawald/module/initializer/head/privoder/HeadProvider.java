@@ -7,7 +7,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.module.common.structure.Downloader;
+import io.github.sakurawald.core.structure.Downloader;
 import io.github.sakurawald.module.initializer.head.structure.Category;
 import io.github.sakurawald.module.initializer.head.structure.Head;
 import io.github.sakurawald.core.auxiliary.LogUtil;

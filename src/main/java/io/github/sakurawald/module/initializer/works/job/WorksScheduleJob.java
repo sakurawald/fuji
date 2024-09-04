@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.works.job;
 
-import io.github.sakurawald.module.common.job.abst.CronJob;
+import io.github.sakurawald.core.job.abst.CronJob;
 import io.github.sakurawald.module.initializer.works.abst.Schedulable;
 import io.github.sakurawald.module.initializer.works.structure.WorksCache;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;

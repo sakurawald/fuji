@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.common.low_level.accessor;
 
-import io.github.sakurawald.module.common.accessor.PlayerCombatStateAccessor;
+import io.github.sakurawald.core.accessor.PlayerCombatStateAccessor;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

@@ -6,7 +6,7 @@ import com.google.gson.JsonElement;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.config.model.ConfigModel;
 import io.github.sakurawald.core.meta.checker.module_dependency.structure.Reference;
-import io.github.sakurawald.module.common.manager.impl.module.ModuleManager;
+import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 

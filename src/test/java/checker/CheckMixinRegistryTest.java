@@ -3,7 +3,7 @@ package checker;
 import com.google.gson.*;
 import io.github.classgraph.ClassInfo;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
-import io.github.sakurawald.module.common.manager.impl.module.ModuleManager;
+import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;

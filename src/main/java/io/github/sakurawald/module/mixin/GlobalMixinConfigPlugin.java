@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin;
 
 import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.module.common.manager.Managers;
+import io.github.sakurawald.core.manager.Managers;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.tree.ClassNode;

@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.initializer.cleaner.job;
 
 import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.module.common.job.abst.CronJob;
-import io.github.sakurawald.module.common.manager.Managers;
+import io.github.sakurawald.core.job.abst.CronJob;
+import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.cleaner.CleanerInitializer;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

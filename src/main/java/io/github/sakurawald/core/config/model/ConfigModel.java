@@ -2,8 +2,8 @@ package io.github.sakurawald.core.config.model;
 
 
 import com.mojang.authlib.properties.Property;
-import io.github.sakurawald.module.common.structure.RegexRewriteEntry;
-import io.github.sakurawald.module.common.structure.TeleportSetup;
+import io.github.sakurawald.core.structure.RegexRewriteEntry;
+import io.github.sakurawald.core.structure.TeleportSetup;
 import io.github.sakurawald.module.initializer.command_alias.structure.CommandAliasEntry;
 import org.jetbrains.annotations.NotNull;
 

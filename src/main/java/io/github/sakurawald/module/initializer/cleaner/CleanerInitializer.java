@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.cleaner;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.module.common.structure.TypeFormatter;
+import io.github.sakurawald.core.structure.TypeFormatter;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.cleaner.job.CleanerJob;
 import io.github.sakurawald.core.auxiliary.LogUtil;

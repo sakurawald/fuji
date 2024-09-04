@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.common.low_level.accessor;
 
-import io.github.sakurawald.module.common.accessor.UserCacheAccessor;
+import io.github.sakurawald.core.accessor.UserCacheAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

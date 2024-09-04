@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.command_event;
 
 import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.module.common.service.command_executor.CommandExecutor;
+import io.github.sakurawald.core.service.command_executor.CommandExecutor;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;

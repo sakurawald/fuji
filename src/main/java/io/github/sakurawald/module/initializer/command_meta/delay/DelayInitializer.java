@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.command_meta.delay;
 import io.github.sakurawald.core.command.argument.wrapper.GreedyString;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
-import io.github.sakurawald.module.common.service.command_executor.CommandExecutor;
+import io.github.sakurawald.core.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;

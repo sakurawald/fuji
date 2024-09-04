@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.common.low_level.accessor;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import io.github.sakurawald.module.common.accessor.SimpleRegistryAccessor;
+import io.github.sakurawald.core.accessor.SimpleRegistryAccessor;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import it.unimi.dsi.fastutil.objects.Reference2IntMap;

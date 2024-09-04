@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.tpa;
 
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.module.common.job.impl.MentionPlayersJob;
+import io.github.sakurawald.core.job.impl.MentionPlayersJob;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.tpa.structure.TpaRequest;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
