@@ -15,10 +15,10 @@ public abstract class BaseBackupManager extends BaseManager {
         this.BACKUP_PATH = BACKUP_PATH;
     }
 
-
     @Override
     public void onInitialize() {
-        // no-op
+        // template method
+        this.backup();
     }
 
     protected abstract @NotNull List<File> getInputFiles();

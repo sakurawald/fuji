@@ -30,7 +30,7 @@ public class Fuji implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        Managers.getStandardBackupManager().backup();
+        Managers.getStandardBackupManager().onInitialize();
         Managers.getBossBarManager().onInitialize();
         Managers.getModuleManager().onInitialize();
         CommandAnnotationProcessor.process();
