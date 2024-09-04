@@ -8,6 +8,7 @@ import io.github.sakurawald.core.command.argument.wrapper.Dimension;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import lombok.SneakyThrows;
 import net.minecraft.command.argument.DimensionArgumentType;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.command.ServerCommandSource;
 
 import java.lang.reflect.Parameter;
@@ -27,7 +28,11 @@ public class DimensionArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(Parameter parameter) {
-        return super.makeRequiredArgumentBuilder(parameter).suggests(CommandHelper.Suggestion.dimension());
+            /*
+             The DimensionArgumentType.dimension() will not suggest the new registered dimension types.
+             Each time the server started, the dimensions will be shared with client and server.
+             */
+        return super.makeRequiredArgumentBuilder(parameter).suggests(CommandHelper.Suggestion.ofRegistryKey(RegistryKeys.DIMENSION));
     }
 
     @SneakyThrows

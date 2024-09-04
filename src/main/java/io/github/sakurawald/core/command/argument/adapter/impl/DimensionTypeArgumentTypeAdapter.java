@@ -7,6 +7,7 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.command.argument.wrapper.DimensionType;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.command.ServerCommandSource;
 
 import java.lang.reflect.Parameter;
@@ -32,6 +33,6 @@ public class DimensionTypeArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(Parameter parameter) {
-        return super.makeRequiredArgumentBuilder(parameter).suggests(CommandHelper.Suggestion.dimensionType());
+        return super.makeRequiredArgumentBuilder(parameter).suggests(CommandHelper.Suggestion.ofRegistryKey(RegistryKeys.DIMENSION_TYPE));
     }
 }
