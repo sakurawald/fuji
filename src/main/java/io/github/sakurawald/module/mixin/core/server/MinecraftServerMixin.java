@@ -14,7 +14,7 @@ public class MinecraftServerMixin {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void injectTheServerInstance(CallbackInfo ci) {
         MinecraftServer server = (MinecraftServer) (Object) this;
-        LogUtil.debug("MinecraftServerMixin: $init: {}", server);
+        LogUtil.debug("set the default minecraft servet to {}", server);
         ServerHelper.setServer(server);
     }
 }

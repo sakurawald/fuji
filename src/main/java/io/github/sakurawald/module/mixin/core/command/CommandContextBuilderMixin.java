@@ -18,7 +18,6 @@ public abstract class CommandContextBuilderMixin<S> implements CommandContextBui
     @Unique
     public CommandContextBuilder<S> fuji$withArguments(Map<String, ParsedArgument<S, ?>> arguments) {
         getArguments().putAll(arguments);
-        CommandContextBuilder that = (CommandContextBuilder) (Object) this;
-        return that;
+        return (CommandContextBuilder) (Object) this;
     }
 }
