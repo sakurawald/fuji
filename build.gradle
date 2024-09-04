@@ -2,7 +2,6 @@
 plugins {
     id "fabric-loom" version "1.7.+"
     id "maven-publish"
-    id "com.modrinth.minotaur" version "2.+"
     id "java"
     id "idea"
 }
@@ -145,25 +144,6 @@ publishing {
     // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {}
 }
-
-modrinth {
-    token = "$System.env.MODRINTH_TOKEN"
-    projectId = "1TowMm2v"
-    versionNumber = "$mod_version"
-    versionType = "release"
-    uploadFile = remapJar
-    gameVersions = ["1.21", "1.21.1"]
-    loaders = ["fabric", "quilt"]
-    dependencies {
-        required.project "fabric-api"
-        optional.project "luckperms"
-        optional.project "carpet"
-        optional.project "spark"
-        embedded.project "placeholder-api"
-    }
-    syncBodyFrom = rootProject.file("README.md").text
-}
-tasks.modrinth.dependsOn(tasks.modrinthSyncBody)
 
 /* test framework */
 test {
