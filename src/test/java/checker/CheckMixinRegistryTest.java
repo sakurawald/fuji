@@ -1,9 +1,12 @@
 package checker;
 
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.github.classgraph.ClassInfo;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
-import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -42,8 +45,8 @@ public class CheckMixinRegistryTest {
         registeredMixins.addAll(collectMixins(jsonElement, "client"));
         registeredMixins.addAll(collectMixins(jsonElement, "server"));
 
-       /* reflect */
-        String mixinPackage = ModuleManager.class.getPackageName() + ".mixin";
+        /* reflect */
+        String mixinPackage = Fuji.class.getPackageName() + ".module.mixin";
         List<String> unregisteredMixins = new ArrayList<>();
 
         for (ClassInfo classInfo : ReflectionUtil.getClassAnnotationInfoScanResult().getClassesWithAnnotation(Mixin.class)) {
