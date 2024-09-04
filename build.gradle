@@ -96,24 +96,6 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     include(implementation "io.github.classgraph:classgraph:${project.classgraph_version}")
-
-    implementation "systems.manifold:manifold-ext-rt:${project.manifold_version}"
-    annotationProcessor "systems.manifold:manifold-ext:${project.manifold_version}"
-    testAnnotationProcessor "systems.manifold:manifold-ext:${project.manifold_version}"
-}
-
-/* manifold */
-if (JavaVersion.current() != JavaVersion.VERSION_1_8 &&
-        sourceSets.main.allJava.files.any { it.name == "module-info.java" }) {
-    tasks.withType(JavaCompile) {
-        // if you DO define a module-info.java file:
-        options.compilerArgs += ['-Xplugin:Manifold', '--module-path', it.classpath.asPath]
-    }
-} else {
-    tasks.withType(JavaCompile) {
-        // If you DO NOT define a module-info.java file:
-        options.compilerArgs += ['-Xplugin:Manifold']
-    }
 }
 
 /* compile */
