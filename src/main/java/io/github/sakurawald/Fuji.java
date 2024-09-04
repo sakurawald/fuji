@@ -14,8 +14,6 @@ import java.nio.file.Path;
 // TODO: command attachment for entity, and block
 // TODO: argument resolver for command alias module
 
-// TODO: curse forge plugin
-
 // TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector, predicate, equal)
 // TODO: command combination
 
