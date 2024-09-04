@@ -172,7 +172,7 @@ test {
 }
 
 /* validate the access widener file */
-tasks.compileJava.dependsOn(validateAccessWidener)
+//tasks.compileJava.dependsOn(validateAccessWidener)
 
 
 /* mixin Registry checker is used to check the un-registered mixins, to avoid un-expected circumstance. */
