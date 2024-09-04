@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.mixin.back;
 
-import io.github.sakurawald.module.ModuleManager;
 import io.github.sakurawald.module.common.manager.Managers;
 import io.github.sakurawald.module.initializer.back.BackInitializer;
 import net.minecraft.entity.damage.DamageSource;
