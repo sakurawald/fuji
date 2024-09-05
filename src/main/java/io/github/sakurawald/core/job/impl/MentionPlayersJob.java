@@ -11,6 +11,7 @@ import org.quartz.JobExecutionContext;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @NoArgsConstructor
 public class MentionPlayersJob extends FixedIntervalJob {
@@ -19,7 +20,7 @@ public class MentionPlayersJob extends FixedIntervalJob {
         super(null, null, jobDataMap, intervalMs, repeatCount);
     }
 
-    public static void requestJob(MentionPlayer setup, ArrayList<ServerPlayerEntity> players) {
+    public static void requestJob(MentionPlayer setup, List<ServerPlayerEntity> players) {
         int intervalMs = setup.interval_ms;
         int repeatCount = setup.repeat_count;
         Sound sound = Sound.sound(Key.key(setup.sound), Sound.Source.MUSIC, setup.volume, setup.pitch);
@@ -39,7 +40,7 @@ public class MentionPlayersJob extends FixedIntervalJob {
     @SuppressWarnings("unchecked")
     @Override
     public void execute(@NotNull JobExecutionContext context) {
-        ArrayList<ServerPlayerEntity> players = (ArrayList<ServerPlayerEntity>) context.getJobDetail().getJobDataMap().get(ArrayList.class.getName());
+        List<ServerPlayerEntity> players = (ArrayList<ServerPlayerEntity>) context.getJobDetail().getJobDataMap().get(ArrayList.class.getName());
         Sound sound = (Sound) context.getJobDetail().getJobDataMap().get(Sound.class.getName());
         for (ServerPlayerEntity player : players) {
             if (player == null) continue;

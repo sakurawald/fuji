@@ -195,7 +195,7 @@ public abstract class Work {
     }
 
     public List<Text> asLore(ServerPlayerEntity player) {
-        ArrayList<Text> ret = new ArrayList<>();
+        List<Text> ret = new ArrayList<>();
         ret.add(MessageHelper.ofText(player, "works.work.prop.creator", this.creator));
         if (this.introduction != null)
             ret.add(MessageHelper.ofText(player, "works.work.prop.introduction", this.introduction));

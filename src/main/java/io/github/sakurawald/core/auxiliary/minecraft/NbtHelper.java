@@ -99,7 +99,7 @@ public class NbtHelper {
     public static @NotNull List<ItemStack> readSlotsNode(@Nullable NbtList node) {
         if (node == null) return new ArrayList<>();
 
-        ArrayList<ItemStack> ret = new ArrayList<>();
+        List<ItemStack> ret = new ArrayList<>();
         for (int i = 0; i < node.size(); i++) {
             ret.add(ItemStack.fromNbtOrEmpty(RegistryHelper.getDefaultWrapperLookup(), node.getCompound(i)));
         }
