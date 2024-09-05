@@ -1,1 +1,5 @@
-- docs: fix typos
+- refactor: use a better random number generator. (performance improved)
+- refactor: use a pixel art image for project icon.
+- refactor: use alternatives to apache compress library. (reduce the size of released jar file)
+- feature: now a detailed version number is provided.
+- docs: fix typos.
