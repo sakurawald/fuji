@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_meta.for_each;
 
-import io.github.sakurawald.core.command.argument.wrapper.GreedyString;
+import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.service.command_executor.CommandExecutor;
@@ -15,7 +15,7 @@ public class ForEachInitializer extends ModuleInitializer {
     @CommandNode("foreach")
     @CommandRequirement(level = 4)
     private int foreach(GreedyString rest) {
-        String $rest = rest.getString();
+        String $rest = rest.getValue();
         MinecraftServer server = ServerHelper.getDefaultServer();
 
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {

@@ -38,7 +38,7 @@ public class WarpInitializer extends ModuleInitializer {
 
     @CommandNode("tp")
     private int $tp(@CommandSource ServerPlayerEntity player, WarpName warpName) {
-        String name = warpName.getName();
+        String name = warpName.getValue();
 
         if (!data.model().warps.containsKey(name)) {
             MessageHelper.sendMessage(player, "warp.no_found", name);
@@ -53,7 +53,7 @@ public class WarpInitializer extends ModuleInitializer {
     @CommandNode("unset")
     @CommandRequirement(level = 4)
     private int $unset(@CommandSource ServerPlayerEntity player, WarpName warpName) {
-        String name = warpName.getName();
+        String name = warpName.getValue();
 
         if (!data.model().warps.containsKey(name)) {
             MessageHelper.sendMessage(player, "warp.no_found", name);
@@ -68,7 +68,7 @@ public class WarpInitializer extends ModuleInitializer {
     @CommandNode("set")
     @CommandRequirement(level = 4)
     private int $set(@CommandSource ServerPlayerEntity player, WarpName warpName, Optional<Boolean> override) {
-        String name = warpName.getName();
+        String name = warpName.getValue();
 
         if (data.model().warps.containsKey(name)) {
             if (!override.orElse(false)) {

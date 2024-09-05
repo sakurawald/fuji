@@ -1,9 +1,12 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 /* gradle env */
 plugins {
     id "fabric-loom" version "1.7.+"
     id "maven-publish"
     id "java"
     id "idea"
+    id "com.palantir.git-version" version "3.1.0"
 }
 
 repositories {
@@ -16,25 +19,24 @@ repositories {
     maven { url "https://projectlombok.org/edge-releases" }
 }
 
-/* project props */
-version = project.mod_version
+/* top-level props */
 group = project.maven_group
 
-base {
-    archivesName = project.mod_id
-}
+/* jar file name */
+def details = versionDetails()
+archivesBaseName = "${project.mod_id}-${project.mod_version}-${details.branchName}-${details.gitHash}"
 
 /* fabric env */
 loom {
-
     accessWidenerPath = file("src/main/resources/fuji.accesswidener")
 
     mods {
-        "fuji" {
+        "${project.mod_id}" {
             sourceSet sourceSets.main
         }
     }
 
+    // set the runServer() jvm args
     runs {
         configureEach {
             vmArgs("-Xms8G -Xmx8G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=40 -XX:G1MaxNewSizePercent=50 -XX:G1HeapRegionSize=16M -XX:G1ReservePercent=15 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -XX:+UseLargePages -XX:+UseTransparentHugePages -Duser.timezone=GMT+08 -Dfuji.level=debug -Dmixin.debug.export=false".split(" "))
@@ -102,15 +104,12 @@ tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
     it.options.release.set(21)
     configure(options) {
-        // for command annotation processor reflection
+        // include the 'parameter name' in compiled .class file, for command annotation processor reflection
         options.compilerArgs << '-parameters'
     }
 }
 
 java {
-    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-    // if it is present.
-    // If you remove this line, sources will not be generated.
     withSourcesJar()
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
@@ -118,23 +117,21 @@ java {
 
 /* build */
 processResources {
-    inputs.property "version", project.version
+    inputs.property "version", project.mod_version
     filesMatching("fabric.mod.json") {
-        expand "version": project.version
+        expand "version": project.mod_version
     }
 }
 
 jar {
-//    def gitProps = new Properties()
-//    file("git.properties").withInputStream { gitProps.load(it) }
-
     from("LICENSE") {
-        rename { "${it}-mc${minecraft_version}-${project.base.archivesName.get()}" }
+        rename { "${it}" }
     }
 }
 
 /* publish */
 publishing {
+
     publications {
         mavenJava(MavenPublication) {
             from components.java
@@ -153,3 +150,58 @@ test {
 
 /* validate the access widener file */
 tasks.compileJava.dependsOn(validateAccessWidener)
+
+/* compile latex */
+def processedTexDir = file("${layout.buildDirectory.get()}/processedTex")
+def outputTexFile = "fuji.pdf"
+tasks.register('processLatex', Copy) {
+    outputs.upToDateWhen { false }
+
+    // clean
+    doFirst {
+        if (processedTexDir.exists()) {
+            processedTexDir.deleteDir()
+            println "Deleted existing directory: $processedTexDir"
+        }
+    }
+
+    // copy
+    from("$projectDir/docs")
+    into("${processedTexDir}")
+    include "**/*.tex"
+
+    filter(ReplaceTokens, tokens: [
+            'TOKEN_MOD_VERSION' : project.mod_version,
+            'TOKEN_PROJECT_ROOT': project.rootDir.absolutePath
+    ])
+}
+
+tasks.register('compileLatex', Exec) {
+    def outDir = "$rootProject.projectDir/out"
+    doFirst {
+        def outFile = file(outDir)
+        if (!outFile.exists()) {
+            outFile.mkdirs()
+            println "Created output directory: $outFile"
+        }
+    }
+
+    workingDir = processedTexDir
+    commandLine "pdflatex",
+            "-file-line-error",
+            "-interaction=nonstopmode",
+            "-synctex=1",
+            "-output-format=pdf",
+            "-output-directory=${outDir}",
+            "-shell-escape",
+            "fuji.tex"
+
+    doLast {
+        println 'LaTeX compilation finished.'
+        copy {
+            from("${outDir}/${outputTexFile}")
+            into("$projectDir/docs/release")
+        }
+    }
+}
+tasks.compileLatex.dependsOn(processLatex)

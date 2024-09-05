@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.rtp;
 
-import io.github.sakurawald.core.command.argument.wrapper.Dimension;
+import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.structure.TeleportSetup;
@@ -19,7 +19,7 @@ public class RtpInitializer extends ModuleInitializer {
     @CommandNode("rtp")
     private int $rtp(@CommandSource ServerPlayerEntity player, Optional<Dimension> dimension) {
 
-        ServerWorld serverWorld = dimension.isPresent() ? dimension.get().getWorld() : player.getServerWorld();
+        ServerWorld serverWorld = dimension.isPresent() ? dimension.get().getValue() : player.getServerWorld();
 
         Optional<TeleportSetup> first = TeleportSetup.of(serverWorld);
         if (first.isEmpty()) {

@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.echo.send_broadcast;
 
-import io.github.sakurawald.core.command.argument.wrapper.GreedyString;
+import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -14,7 +14,7 @@ public class SendBroadcastInitializer extends ModuleInitializer {
     @CommandNode("send-broadcast")
     @CommandRequirement(level =  4)
     int sendBroadcast(GreedyString rest){
-        String message = rest.getString();
+        String message = rest.getValue();
 
         for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
             player.sendMessage(MessageHelper.ofText(player, false, message));

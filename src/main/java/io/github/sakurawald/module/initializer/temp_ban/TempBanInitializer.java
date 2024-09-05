@@ -9,8 +9,8 @@ import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.command.argument.wrapper.GameProfileCollection;
-import io.github.sakurawald.core.command.argument.wrapper.GreedyString;
+import io.github.sakurawald.core.command.argument.wrapper.impl.GameProfileCollection;
+import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import lombok.SneakyThrows;
 import net.minecraft.command.EntitySelector;
@@ -42,7 +42,7 @@ public class TempBanInitializer extends ModuleInitializer {
         // add
         Date expire = parseDate(expiry);
         ServerCommandSource serverCommandSource = ctx.getSource();
-        BannedIpEntry bannedIpEntry = new BannedIpEntry(ip, null, ctx.getSource().getName(), expire, reason.getString());
+        BannedIpEntry bannedIpEntry = new BannedIpEntry(ip, null, ctx.getSource().getName(), expire, reason.getValue());
         serverCommandSource.getServer().getPlayerManager().getIpBanList().add(bannedIpEntry);
         serverCommandSource.sendFeedback(() -> Text.translatable("commands.banip.success", ip, bannedIpEntry.getReason()), true);
 
@@ -65,9 +65,9 @@ public class TempBanInitializer extends ModuleInitializer {
         PlayerManager playerManager = server.getPlayerManager();
         Date expire = parseDate(expiry);
 
-        for (GameProfile gameProfile : collection.getCollection()) {
+        for (GameProfile gameProfile : collection.getValue()) {
             // add
-            BannedPlayerEntry bannedPlayerEntry = new BannedPlayerEntry(gameProfile, null, ctx.getSource().getName(), expire, reason.getString());
+            BannedPlayerEntry bannedPlayerEntry = new BannedPlayerEntry(gameProfile, null, ctx.getSource().getName(), expire, reason.getValue());
             playerManager.getUserBanList().add(bannedPlayerEntry);
             ctx.getSource().sendFeedback(() -> Text.translatable("commands.ban.success", Text.literal(gameProfile.getName()), bannedPlayerEntry.getReason()), true);
 

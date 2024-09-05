@@ -57,7 +57,7 @@ public class ModuleManager extends BaseManager {
     }
 
     private void serverStartupReport() {
-        ArrayList<String> enabledModuleList = new ArrayList<>();
+        List<String> enabledModuleList = new ArrayList<>();
         module2enable.forEach((module, enable) -> {
             if (enable) enabledModuleList.add(String.join(".", module));
         });

@@ -14,6 +14,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.HashSet;
+import java.util.Set;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.HopperBlockEntity;
@@ -57,7 +59,7 @@ public abstract class HopperBlockEntityMixin extends LootableContainerBlockEntit
         if (itemStack.isEmpty()) return;
 
         // If this hopper is a work's hopper, then we exclude it from carpet hoppers
-        HashSet<Work> works;
+        Set<Work> works;
         if (container2 instanceof HopperBlockEntity hb) {
             works = WorksCache.getBlockpos2works().get(hb.getPos());
         } else if (container2 instanceof HopperMinecartEntity mh) {

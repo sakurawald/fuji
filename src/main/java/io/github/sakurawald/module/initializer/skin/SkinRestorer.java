@@ -18,10 +18,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
@@ -35,7 +32,7 @@ public class SkinRestorer {
 
     public static CompletableFuture<Pair<Collection<ServerPlayerEntity>, Collection<GameProfile>>> setSkinAsync(@NotNull MinecraftServer server, @NotNull Collection<GameProfile> targets, @NotNull Supplier<Property> skinSupplier) {
         return CompletableFuture.<Pair<Property, Collection<GameProfile>>>supplyAsync(() -> {
-            HashSet<GameProfile> acceptedProfiles = new HashSet<>();
+            Set<GameProfile> acceptedProfiles = new HashSet<>();
             Property skin = skinSupplier.get();
 
             LogUtil.debug("skinSupplier.get() -> skin = {}", skin);
@@ -56,7 +53,7 @@ public class SkinRestorer {
                 return Pair.of(Collections.emptySet(), Collections.emptySet());
 
             Collection<GameProfile> acceptedProfiles = pair.right();
-            HashSet<ServerPlayerEntity> acceptedPlayers = new HashSet<>();
+            Set<ServerPlayerEntity> acceptedPlayers = new HashSet<>();
             JsonObject newSkinJson = gson.fromJson(new String(Base64.getDecoder().decode(skin.value()), StandardCharsets.UTF_8), JsonObject.class);
             newSkinJson.remove("timestamp");
             for (GameProfile profile : acceptedProfiles) {

@@ -8,7 +8,7 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.command.argument.wrapper.GreedyString;
+import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_meta.json.command.argument.wrapper.JsonValueType;
@@ -60,7 +60,7 @@ public class JsonInitializer extends ModuleInitializer {
     @CommandNode("write")
     int write(@CommandSource CommandContext<ServerCommandSource> ctx, String filePath, String jsonPath, JsonValueType valueType, GreedyString value) {
         operateJson(filePath, (documentContext, path) -> {
-            Object obj = valueType.parse(value.getString());
+            Object obj = valueType.parse(value.getValue());
             documentContext.set(jsonPath, obj);
             return true;
         });
@@ -83,7 +83,7 @@ public class JsonInitializer extends ModuleInitializer {
     @CommandNode("put")
     int put(@CommandSource CommandContext<ServerCommandSource> ctx, String filePath, String jsonPath, String jsonKey, JsonValueType valueType, GreedyString value) {
         operateJson(filePath, (documentContext, path) -> {
-            Object obj = valueType.parse(value.getString());
+            Object obj = valueType.parse(value.getValue());
             documentContext.put(jsonPath, jsonKey, obj);
             return true;
         });

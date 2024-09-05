@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.command_toolbox.help_op;
 
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.command.argument.wrapper.GreedyString;
+import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
@@ -26,7 +26,7 @@ public class HelpOpInitializer extends ModuleInitializer {
             return CommandHelper.Return.FAIL;
         }
 
-        Text text = MessageHelper.ofText(player, "helpop.format", player.getGameProfile().getName(), message.getString());
+        Text text = MessageHelper.ofText(player, "helpop.format", player.getGameProfile().getName(), message.getValue());
         ops.forEach(o -> o.sendMessage(text));
 
         MessageHelper.sendMessage(player,"helpop.success");

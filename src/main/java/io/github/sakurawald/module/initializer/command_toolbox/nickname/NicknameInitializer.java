@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.nickname;
 
-import io.github.sakurawald.core.command.argument.wrapper.GreedyString;
+import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
@@ -26,7 +26,7 @@ public class NicknameInitializer extends ModuleInitializer {
     @CommandNode("set")
     private int $set(@CommandSource ServerPlayerEntity player, GreedyString format) {
             String name = player.getGameProfile().getName();
-            nicknameHandler.model().format.player2format.put(name, format.getString());
+            nicknameHandler.model().format.player2format.put(name, format.getValue());
             nicknameHandler.saveToDisk();
 
             MessageHelper.sendMessage(player, "nickname.set");

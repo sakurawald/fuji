@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.command_attachment;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.command.argument.wrapper.GreedyString;
+import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.service.command_executor.CommandExecutor;
@@ -102,7 +102,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         CommandAttachmentModel model = this.getModel(uuid);
 
         // new entry
-        String $command = command.getString();
+        String $command = command.getValue();
         InteractType $interactType = interactType.orElse(InteractType.BOTH);
         ExecuteAsType $executeAsType = executeAsType.orElse(ExecuteAsType.FAKE_OP);
         Integer $maxUseTimes = maxUseTimes.orElse(Integer.MAX_VALUE);

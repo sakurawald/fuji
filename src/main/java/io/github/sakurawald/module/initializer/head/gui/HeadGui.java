@@ -13,6 +13,7 @@ import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HeadGui extends SimpleGui {
     protected final ServerPlayerEntity player;
@@ -40,7 +41,7 @@ public class HeadGui extends SimpleGui {
 
     private void addCategoryButton(int slotIndex, @NotNull Category category) {
         this.setSlot(slotIndex, category.of(player), (i, type, action, gui) -> {
-            ArrayList<Head> entities = new ArrayList<>(HeadProvider.getHeads().get(category));
+            List<Head> entities = new ArrayList<>(HeadProvider.getHeads().get(category));
             Text title = category.getDisplayName(player);
             new PagedHeadGui(this, player, title, entities, 0).open();
         });

@@ -5,7 +5,7 @@ import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.command.argument.wrapper.GreedyString;
+import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
@@ -126,7 +126,7 @@ public class ChatInitializer extends ModuleInitializer {
     private int $format(@CommandSource ServerPlayerEntity player, GreedyString format) {
         /* save the format*/
         String name = player.getGameProfile().getName();
-        String $format = format.getString();
+        String $format = format.getValue();
         chatHandler.model().format.player2format.put(name, $format);
         chatHandler.saveToDisk();
 
@@ -151,7 +151,7 @@ public class ChatInitializer extends ModuleInitializer {
 
     private String resolveMentionTag(@NotNull String string) {
         /* resolve player tag */
-        ArrayList<ServerPlayerEntity> mentionedPlayers = new ArrayList<>();
+        List<ServerPlayerEntity> mentionedPlayers = new ArrayList<>();
 
         String[] playerNames = ServerHelper.getDefaultServer().getPlayerNames();
         // fix: mention the longest name first
