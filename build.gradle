@@ -24,7 +24,7 @@ group = project.maven_group
 
 /* jar file name */
 def details = versionDetails()
-archivesBaseName = "${project.mod_id}-${project.mod_version}-${details.branchName}-${details.gitHash}"
+version = "${project.mod_id}-${project.mod_version}-${details.branchName}-${details.gitHash}"
 
 /* fabric env */
 loom {
