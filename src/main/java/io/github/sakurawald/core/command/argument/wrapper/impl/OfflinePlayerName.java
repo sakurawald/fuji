@@ -1,10 +1,9 @@
 package io.github.sakurawald.core.command.argument.wrapper.impl;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import io.github.sakurawald.core.command.argument.wrapper.abst.StringValue;
 
-@Getter
-@AllArgsConstructor
-public class OfflinePlayerName {
-    String string;
+public class OfflinePlayerName extends StringValue {
+    public OfflinePlayerName(String value) {
+        super(value);
+    }
 }

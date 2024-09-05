@@ -112,7 +112,7 @@ public class KitInitializer extends ModuleInitializer {
     @CommandNode("give")
     private int $give(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player, KitName kit) {
 
-        Kit $kit = readKit(kit.getString());
+        Kit $kit = readKit(kit.getValue());
         if ($kit.getStackList().isEmpty()) {
             MessageHelper.sendMessage(ctx.getSource(), "kit.kit.empty");
             return CommandHelper.Return.FAIL;

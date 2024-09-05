@@ -46,7 +46,7 @@ public class HomeInitializer extends ModuleInitializer {
     @CommandNode("home tp")
     private int $tp(@CommandSource ServerPlayerEntity player, HomeName home) {
         Map<String, Position> name2position = ofHomes(player);
-        String homeName = home.getString();
+        String homeName = home.getValue();
         if (!name2position.containsKey(homeName)) {
             MessageHelper.sendMessage(player, "home.no_found", homeName);
             return 0;
@@ -60,7 +60,7 @@ public class HomeInitializer extends ModuleInitializer {
     @CommandNode("home unset")
     private int $unset(@CommandSource ServerPlayerEntity player, HomeName home) {
         Map<String, Position> name2position = ofHomes(player);
-        String homeName = home.getString();
+        String homeName = home.getValue();
         if (!name2position.containsKey(homeName)) {
             MessageHelper.sendMessage(player, "home.no_found", homeName);
             return 0;
@@ -74,7 +74,7 @@ public class HomeInitializer extends ModuleInitializer {
     @CommandNode("home set")
     private int $set(@CommandSource ServerPlayerEntity player, HomeName home, Optional<Boolean> override) {
         Map<String, Position> name2position = ofHomes(player);
-        String homeName = home.getString();
+        String homeName = home.getValue();
 
         if (name2position.containsKey(homeName)) {
             if (!override.orElse(false)) {

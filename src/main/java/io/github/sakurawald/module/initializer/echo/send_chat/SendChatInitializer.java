@@ -13,7 +13,7 @@ public class SendChatInitializer extends ModuleInitializer {
     @CommandNode("send-chat")
     @CommandRequirement(level = 4)
     int sendChat(ServerPlayerEntity player, GreedyString message) {
-        SignedMessage signedMessage = SignedMessage.ofUnsigned(message.getString());
+        SignedMessage signedMessage = SignedMessage.ofUnsigned(message.getValue());
         player.networkHandler.handleDecoratedMessage(signedMessage);
         return CommandHelper.Return.SUCCESS;
     }

@@ -84,7 +84,7 @@ public class SendToastInitializer extends ModuleInitializer {
 
         Item $icon = icon.orElse(Items.SLIME_BALL);
         AdvancementFrame $toastType = toastType.orElse(AdvancementFrame.CHALLENGE);
-        Text title = MessageHelper.ofText(player, false, message.getString());
+        Text title = MessageHelper.ofText(player, false, message.getValue());
         this.sendToast(player, $toastType, $icon, title);
 
         MessageHelper.sendMessage(ctx.getSource(), "operation.success");

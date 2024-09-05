@@ -102,7 +102,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         CommandAttachmentModel model = this.getModel(uuid);
 
         // new entry
-        String $command = command.getString();
+        String $command = command.getValue();
         InteractType $interactType = interactType.orElse(InteractType.BOTH);
         ExecuteAsType $executeAsType = executeAsType.orElse(ExecuteAsType.FAKE_OP);
         Integer $maxUseTimes = maxUseTimes.orElse(Integer.MAX_VALUE);

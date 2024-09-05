@@ -25,7 +25,7 @@ public class DelayInitializer extends ModuleInitializer {
     @CommandRequirement(level = 4)
     private int delay(int time, GreedyString rest) {
 
-        String $rest = rest.getString();
+        String $rest = rest.getValue();
 
         executor.schedule(() -> {
             CommandExecutor.executeCommandAsConsole(null, $rest);

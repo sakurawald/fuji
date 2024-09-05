@@ -22,7 +22,7 @@ public class AttachmentInitializer extends ModuleInitializer {
     @CommandNode("set")
     @SneakyThrows
     int set(@CommandSource CommandContext<ServerCommandSource> ctx, SubjectName subject, SubjectId uuid, GreedyString data) {
-        Managers.getAttachmentManager().setAttachment(subject.getName(), uuid.getUuid(), data.getString());
+        Managers.getAttachmentManager().setAttachment(subject.getValue(), uuid.getValue(), data.getValue());
 
         MessageHelper.sendMessage(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
@@ -30,7 +30,7 @@ public class AttachmentInitializer extends ModuleInitializer {
 
     @CommandNode("unset")
     int unset(@CommandSource CommandContext<ServerCommandSource> ctx, SubjectName subject, SubjectId uuid) {
-        boolean flag = Managers.getAttachmentManager().unsetAttachment(subject.getName(), uuid.getUuid());
+        boolean flag = Managers.getAttachmentManager().unsetAttachment(subject.getValue(), uuid.getValue());
 
         MessageHelper.sendMessage(ctx.getSource(), flag ? "operation.success" : "operation.fail");
         return CommandHelper.Return.SUCCESS;
@@ -39,7 +39,7 @@ public class AttachmentInitializer extends ModuleInitializer {
     @SneakyThrows
     @CommandNode("get")
     int get(@CommandSource CommandContext<ServerCommandSource> ctx, SubjectName subject, SubjectId uuid) {
-        String attachment = Managers.getAttachmentManager().getAttachment(subject.getName(), uuid.getUuid());
+        String attachment = Managers.getAttachmentManager().getAttachment(subject.getValue(), uuid.getValue());
 
         ctx.getSource().sendMessage(Text.literal(attachment));
         return CommandHelper.Return.SUCCESS;

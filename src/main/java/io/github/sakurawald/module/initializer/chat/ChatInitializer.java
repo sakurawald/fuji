@@ -126,7 +126,7 @@ public class ChatInitializer extends ModuleInitializer {
     private int $format(@CommandSource ServerPlayerEntity player, GreedyString format) {
         /* save the format*/
         String name = player.getGameProfile().getName();
-        String $format = format.getString();
+        String $format = format.getValue();
         chatHandler.model().format.player2format.put(name, $format);
         chatHandler.saveToDisk();
 

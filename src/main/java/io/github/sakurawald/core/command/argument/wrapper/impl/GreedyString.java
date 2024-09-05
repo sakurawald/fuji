@@ -1,10 +1,10 @@
 package io.github.sakurawald.core.command.argument.wrapper.impl;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import io.github.sakurawald.core.command.argument.wrapper.abst.StringValue;
 
-@AllArgsConstructor
-@Getter
-public class GreedyString {
-    String string;
+public class GreedyString extends StringValue {
+
+    public GreedyString(String value) {
+        super(value);
+    }
 }

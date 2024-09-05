@@ -17,7 +17,7 @@ public class ChainInitializer extends ModuleInitializer {
     @CommandRequirement(level = 4)
     private int chain(GreedyString rest) {
 
-        String $rest = rest.getString();
+        String $rest = rest.getValue();
 
         Matcher matcher = CHAIN_COMMAND_PARSER.matcher($rest);
         if (matcher.find()) {

@@ -13,7 +13,7 @@ public class SendActionbar extends ModuleInitializer {
     @CommandNode("send-actionbar")
     @CommandRequirement(level = 4)
     int sendActionBar(ServerPlayerEntity player, GreedyString rest) {
-        player.sendActionBar(MessageHelper.ofText(player, false, rest.getString()));
+        player.sendActionBar(MessageHelper.ofText(player, false, rest.getValue()));
         return CommandHelper.Return.SUCCESS;
     }
 
