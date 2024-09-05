@@ -154,6 +154,8 @@ tasks.compileJava.dependsOn(validateAccessWidener)
 /* compile latex */
 def processedTexDir = file("${layout.buildDirectory.get()}/processedTex")
 def outputTexFile = "fuji.pdf"
+def docsDir = "$projectDir/docs"
+
 tasks.register('processLatex', Copy) {
     outputs.upToDateWhen { false }
 
@@ -166,7 +168,7 @@ tasks.register('processLatex', Copy) {
     }
 
     // copy
-    from("$projectDir/docs")
+    from(docsDir)
     into("${processedTexDir}")
     include "**/*.tex"
 
@@ -200,7 +202,7 @@ tasks.register('compileLatex', Exec) {
         println 'LaTeX compilation finished.'
         copy {
             from("${outDir}/${outputTexFile}")
-            into("$projectDir/docs/release")
+            into("${docsDir}/release")
         }
     }
 }
