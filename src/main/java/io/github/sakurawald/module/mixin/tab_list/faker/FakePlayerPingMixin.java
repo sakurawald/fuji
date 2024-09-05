@@ -16,7 +16,7 @@ public class FakePlayerPingMixin {
     void fakePing(@NotNull CallbackInfoReturnable<Integer> cir) {
         int min = Configs.configHandler.model().modules.tab_list.faker.ping.min_ping;
         int max = Configs.configHandler.model().modules.tab_list.faker.ping.max_ping;
-        int ping = RandomUtil.getRng().nextInt(min, max);
+        int ping = RandomUtil.getRandom().nextInt(min, max);
         cir.setReturnValue(ping);
     }
 
