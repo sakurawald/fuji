@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.quartz.JobExecutionContext;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ManageFakePlayersJob extends CronJob {
 
@@ -31,7 +32,7 @@ public class ManageFakePlayersJob extends CronJob {
         for (String playerName : module.player2fakePlayers.keySet()) {
             /* check for renew limits */
             long expiration = module.player2expiration.getOrDefault(playerName, 0L);
-            ArrayList<String> fakePlayers = module.player2fakePlayers.getOrDefault(playerName, module.CONSTANT_EMPTY_LIST);
+            List<String> fakePlayers = module.player2fakePlayers.getOrDefault(playerName, module.CONSTANT_EMPTY_LIST);
             if (expiration <= currentTimeMS) {
                 /* auto-renew for online-playerName */
                 ServerPlayerEntity playerByName = ServerHelper.getDefaultServer().getPlayerManager().getPlayer(playerName);

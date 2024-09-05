@@ -23,9 +23,9 @@ import java.time.LocalTime;
 import java.util.*;
 
 public class FakePlayerManagerInitializer extends ModuleInitializer {
-    public final ArrayList<String> CONSTANT_EMPTY_LIST = new ArrayList<>();
-    public final HashMap<String, ArrayList<String>> player2fakePlayers = new HashMap<>();
-    public final HashMap<String, Long> player2expiration = new HashMap<>();
+    public final List<String> CONSTANT_EMPTY_LIST = new ArrayList<>();
+    public final Map<String, List<String>> player2fakePlayers = new HashMap<>();
+    public final Map<String, Long> player2expiration = new HashMap<>();
 
     @Override
     public void onInitialize() {
@@ -47,7 +47,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         /* output */
         StringBuilder builder = new StringBuilder();
         for (String player : player2fakePlayers.keySet()) {
-            ArrayList<String> fakePlayers = player2fakePlayers.get(player);
+            List<String> fakePlayers = player2fakePlayers.get(player);
             if (fakePlayers.isEmpty()) continue;
             builder.append(player).append(": ");
             for (String fakePlayer : fakePlayers) {
@@ -75,11 +75,11 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
 
     public void validateFakePlayers() {
         /* remove invalid fake-player */
-        Iterator<Map.Entry<String, ArrayList<String>>> it = player2fakePlayers.entrySet().iterator();
+        Iterator<Map.Entry<String, List<String>>> it = player2fakePlayers.entrySet().iterator();
         while (it.hasNext()) {
-            Map.Entry<String, ArrayList<String>> entry = it.next();
+            Map.Entry<String, List<String>> entry = it.next();
 
-            ArrayList<String> myFakePlayers = entry.getValue();
+            List<String> myFakePlayers = entry.getValue();
             // fix: NPE
             if (myFakePlayers == null || myFakePlayers.isEmpty()) {
                 it.remove();
@@ -117,12 +117,12 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         // bypass: op
         if (ServerHelper.getDefaultServer().getPlayerManager().isOperator(player.getGameProfile())) return true;
 
-        ArrayList<String> myFakePlayers = this.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), CONSTANT_EMPTY_LIST);
+        List<String> myFakePlayers = this.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), CONSTANT_EMPTY_LIST);
         return myFakePlayers.contains(fakePlayer);
     }
 
     public int getCurrentAmountLimit() {
-        ArrayList<List<Integer>> rules = Configs.configHandler.model().modules.gameplay.carpet.fake_player_manager.caps_limit_rule;
+        List<List<Integer>> rules = Configs.configHandler.model().modules.gameplay.carpet.fake_player_manager.caps_limit_rule;
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
         int currentDays = currentDate.getDayOfWeek().getValue();

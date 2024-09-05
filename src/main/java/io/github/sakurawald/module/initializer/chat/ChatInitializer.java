@@ -151,7 +151,7 @@ public class ChatInitializer extends ModuleInitializer {
 
     private String resolveMentionTag(@NotNull String string) {
         /* resolve player tag */
-        ArrayList<ServerPlayerEntity> mentionedPlayers = new ArrayList<>();
+        List<ServerPlayerEntity> mentionedPlayers = new ArrayList<>();
 
         String[] playerNames = ServerHelper.getDefaultServer().getPlayerNames();
         // fix: mention the longest name first

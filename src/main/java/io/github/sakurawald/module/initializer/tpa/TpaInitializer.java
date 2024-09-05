@@ -13,6 +13,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
@@ -20,7 +21,7 @@ import java.util.Optional;
 public class TpaInitializer extends ModuleInitializer {
 
     @Getter
-    private final ArrayList<TpaRequest> requests = new ArrayList<>();
+    private final List<TpaRequest> requests = new ArrayList<>();
 
     @CommandNode("tpa")
     private int $tpa(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {

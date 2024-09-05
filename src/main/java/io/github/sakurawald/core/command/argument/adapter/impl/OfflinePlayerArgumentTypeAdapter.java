@@ -33,7 +33,7 @@ public class OfflinePlayerArgumentTypeAdapter extends BaseArgumentTypeAdapter {
         UserCache userCache = ServerHelper.getDefaultServer().getUserCache();
         if (userCache == null) return List.of();
 
-        ArrayList<String> playerNames = new ArrayList<>();
+        List<String> playerNames = new ArrayList<>();
         userCache.byName.values().forEach(o -> playerNames.add(o.getProfile().getName()));
         return playerNames;
     }
