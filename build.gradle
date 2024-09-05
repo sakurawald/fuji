@@ -24,7 +24,7 @@ group = project.maven_group
 
 /* jar file name */
 def details = versionDetails()
-archivesBaseName = "${project.mod_id}-${project.mod_version}-${details.branchName}-${details.gitHash}"
+version = "${project.mod_version}-${details.branchName}-${details.gitHash}"
 
 /* fabric env */
 loom {
@@ -79,13 +79,6 @@ dependencies {
 
     implementation "me.lucko:spark-api:${project.spark_api_version}"
 
-    include(implementation "org.apache.commons:commons-compress:${project.apache_commons_compression_version}")
-
-    include(implementation "org.apache.commons:commons-rng-core:${project.apache_commons_rng_version}")
-    include(implementation "org.apache.commons:commons-rng-client-api:${project.apache_commons_rng_version}")
-    include(implementation "org.apache.commons:commons-rng-simple:${project.apache_commons_rng_version}")
-
-
     include(implementation "commons-io:commons-io:${project.apache_commons_io_version}")
 
     include(implementation "org.jetbrains:annotations:${project.jetbrains_annotations_version}")
@@ -110,16 +103,16 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 java {
-    withSourcesJar()
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
 }
 
 /* build */
 processResources {
-    inputs.property "version", project.mod_version
+    outputs.upToDateWhen { false }
+
     filesMatching("fabric.mod.json") {
-        expand "version": project.mod_version
+        expand "version": project.version
     }
 }
 
@@ -173,7 +166,7 @@ tasks.register('processLatex', Copy) {
     include "**/*.tex"
 
     filter(ReplaceTokens, tokens: [
-            'TOKEN_MOD_VERSION' : project.mod_version,
+            'TOKEN_MOD_VERSION' : project.version.toString(),
             'TOKEN_PROJECT_ROOT': project.rootDir.absolutePath
     ])
 }
