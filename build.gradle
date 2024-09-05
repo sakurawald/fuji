@@ -79,8 +79,6 @@ dependencies {
 
     implementation "me.lucko:spark-api:${project.spark_api_version}"
 
-    include(implementation "org.apache.commons:commons-compress:${project.apache_commons_compression_version}")
-
     include(implementation "commons-io:commons-io:${project.apache_commons_io_version}")
 
     include(implementation "org.jetbrains:annotations:${project.jetbrains_annotations_version}")
@@ -105,7 +103,6 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 java {
-    withSourcesJar()
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
 }
