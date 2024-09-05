@@ -24,7 +24,7 @@ group = project.maven_group
 
 /* jar file name */
 def details = versionDetails()
-version = "${project.mod_id}-${project.mod_version}-${details.branchName}-${details.gitHash}"
+version = "${project.mod_version}-${details.branchName}-${details.gitHash}"
 
 /* fabric env */
 loom {
@@ -109,9 +109,10 @@ java {
 
 /* build */
 processResources {
-    inputs.property "version", project.mod_version
+    outputs.upToDateWhen { false }
+
     filesMatching("fabric.mod.json") {
-        expand "version": project.mod_version
+        expand "version": project.version
     }
 }
 
@@ -165,7 +166,7 @@ tasks.register('processLatex', Copy) {
     include "**/*.tex"
 
     filter(ReplaceTokens, tokens: [
-            'TOKEN_MOD_VERSION' : project.mod_version,
+            'TOKEN_MOD_VERSION' : project.version.toString(),
             'TOKEN_PROJECT_ROOT': project.rootDir.absolutePath
     ])
 }
