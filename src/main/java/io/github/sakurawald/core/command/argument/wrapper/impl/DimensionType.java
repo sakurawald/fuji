@@ -1,10 +1,9 @@
 package io.github.sakurawald.core.command.argument.wrapper.impl;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import io.github.sakurawald.core.command.argument.wrapper.abst.StringValue;
 
-@Data
-@AllArgsConstructor
-public class DimensionType {
-    String identifier;
+public class DimensionType extends StringValue {
+    public DimensionType(String value) {
+        super(value);
+    }
 }

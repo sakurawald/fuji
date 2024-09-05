@@ -109,7 +109,7 @@ public class DeathLogInitializer extends ModuleInitializer {
 
     @CommandNode("view")
     private int $view(@CommandSource ServerPlayerEntity player, OfflinePlayerName from) {
-        String $from = from.getString();
+        String $from = from.getValue();
         NbtCompound root = NbtHelper.read(STORAGE_PATH.resolve(getFileName($from)));
         if (root == null || root.isEmpty()) {
             player.sendMessage(Component.text("No deathlog found."));

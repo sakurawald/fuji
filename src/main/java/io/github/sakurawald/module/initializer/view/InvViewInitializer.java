@@ -17,7 +17,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class InvViewInitializer extends ModuleInitializer {
 
     void checkSelfView(ServerPlayerEntity source, OfflinePlayerName target) {
-        if (source.getGameProfile().getName().equals(target.getString())) {
+        if (source.getGameProfile().getName().equals(target.getValue())) {
             MessageHelper.sendMessage(source, "view.failed.self_view");
             throw new SnackException();
         }
@@ -27,7 +27,7 @@ public class InvViewInitializer extends ModuleInitializer {
     int inv(@CommandSource ServerPlayerEntity source, OfflinePlayerName target) {
         checkSelfView(source, target);
 
-        source.openHandledScreen(new InventoryRedirectScreen(source, target.getString()).makeFactory());
+        source.openHandledScreen(new InventoryRedirectScreen(source, target.getValue()).makeFactory());
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -35,7 +35,7 @@ public class InvViewInitializer extends ModuleInitializer {
     int ender(@CommandSource ServerPlayerEntity source, OfflinePlayerName target) {
         checkSelfView(source, target);
 
-        source.openHandledScreen(new EnderChestRedirectScreen(source, target.getString()).makeFactory());
+        source.openHandledScreen(new EnderChestRedirectScreen(source, target.getValue()).makeFactory());
         return CommandHelper.Return.SUCCESS;
     }
 }

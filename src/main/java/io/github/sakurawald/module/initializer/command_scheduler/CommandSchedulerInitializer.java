@@ -56,7 +56,7 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
     @CommandNode("trigger")
     private int $trigger(ScheduleJobName jobName) {
         schedulerHandler.model().scheduleJobs.forEach(job -> {
-            if (job.getName().equals(jobName.getName())) {
+            if (job.getName().equals(jobName.getValue())) {
                 job.trigger();
             }
         });

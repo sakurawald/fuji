@@ -42,7 +42,7 @@ public class TempBanInitializer extends ModuleInitializer {
         // add
         Date expire = parseDate(expiry);
         ServerCommandSource serverCommandSource = ctx.getSource();
-        BannedIpEntry bannedIpEntry = new BannedIpEntry(ip, null, ctx.getSource().getName(), expire, reason.getString());
+        BannedIpEntry bannedIpEntry = new BannedIpEntry(ip, null, ctx.getSource().getName(), expire, reason.getValue());
         serverCommandSource.getServer().getPlayerManager().getIpBanList().add(bannedIpEntry);
         serverCommandSource.sendFeedback(() -> Text.translatable("commands.banip.success", ip, bannedIpEntry.getReason()), true);
 
@@ -65,9 +65,9 @@ public class TempBanInitializer extends ModuleInitializer {
         PlayerManager playerManager = server.getPlayerManager();
         Date expire = parseDate(expiry);
 
-        for (GameProfile gameProfile : collection.getCollection()) {
+        for (GameProfile gameProfile : collection.getValue()) {
             // add
-            BannedPlayerEntry bannedPlayerEntry = new BannedPlayerEntry(gameProfile, null, ctx.getSource().getName(), expire, reason.getString());
+            BannedPlayerEntry bannedPlayerEntry = new BannedPlayerEntry(gameProfile, null, ctx.getSource().getName(), expire, reason.getValue());
             playerManager.getUserBanList().add(bannedPlayerEntry);
             ctx.getSource().sendFeedback(() -> Text.translatable("commands.ban.success", Text.literal(gameProfile.getName()), bannedPlayerEntry.getReason()), true);
 

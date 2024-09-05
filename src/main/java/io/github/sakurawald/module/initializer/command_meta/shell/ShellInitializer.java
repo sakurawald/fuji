@@ -27,7 +27,7 @@ public class ShellInitializer extends ModuleInitializer {
             throw new RuntimeException("Refuse to execute shell command: please read the official wiki.");
         }
 
-        String $rest = rest.getString();
+        String $rest = rest.getValue();
 
         CompletableFuture.runAsync(() -> {
             try {

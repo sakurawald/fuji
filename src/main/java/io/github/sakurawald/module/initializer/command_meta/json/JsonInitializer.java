@@ -60,7 +60,7 @@ public class JsonInitializer extends ModuleInitializer {
     @CommandNode("write")
     int write(@CommandSource CommandContext<ServerCommandSource> ctx, String filePath, String jsonPath, JsonValueType valueType, GreedyString value) {
         operateJson(filePath, (documentContext, path) -> {
-            Object obj = valueType.parse(value.getString());
+            Object obj = valueType.parse(value.getValue());
             documentContext.set(jsonPath, obj);
             return true;
         });
@@ -83,7 +83,7 @@ public class JsonInitializer extends ModuleInitializer {
     @CommandNode("put")
     int put(@CommandSource CommandContext<ServerCommandSource> ctx, String filePath, String jsonPath, String jsonKey, JsonValueType valueType, GreedyString value) {
         operateJson(filePath, (documentContext, path) -> {
-            Object obj = valueType.parse(value.getString());
+            Object obj = valueType.parse(value.getValue());
             documentContext.put(jsonPath, jsonKey, obj);
             return true;
         });

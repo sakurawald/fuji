@@ -26,7 +26,7 @@ public class NicknameInitializer extends ModuleInitializer {
     @CommandNode("set")
     private int $set(@CommandSource ServerPlayerEntity player, GreedyString format) {
             String name = player.getGameProfile().getName();
-            nicknameHandler.model().format.player2format.put(name, format.getString());
+            nicknameHandler.model().format.player2format.put(name, format.getValue());
             nicknameHandler.saveToDisk();
 
             MessageHelper.sendMessage(player, "nickname.set");

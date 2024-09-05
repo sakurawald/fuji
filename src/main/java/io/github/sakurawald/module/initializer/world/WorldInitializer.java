@@ -11,8 +11,8 @@ import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
 import io.github.sakurawald.core.command.argument.wrapper.impl.DimensionType;
 import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
 import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.world.config.model.WorldModel;
 import io.github.sakurawald.module.initializer.world.structure.DimensionEntry;
@@ -79,7 +79,7 @@ public class WorldInitializer extends ModuleInitializer {
     @CommandNode("world create")
     private int $create(@CommandSource CommandContext<ServerCommandSource> ctx, String name,
                         Optional<Long> seed, DimensionType dimensionType) {
-        Identifier dimensionTypeIdentifier = Identifier.of(dimensionType.getIdentifier());
+        Identifier dimensionTypeIdentifier = Identifier.of(dimensionType.getValue());
         String FUJI_DIMENSION_NAMESPACE = "fuji";
         Identifier dimensionIdentifier = Identifier.of(FUJI_DIMENSION_NAMESPACE, name);
 

@@ -14,7 +14,7 @@ public class SendBroadcastInitializer extends ModuleInitializer {
     @CommandNode("send-broadcast")
     @CommandRequirement(level =  4)
     int sendBroadcast(GreedyString rest){
-        String message = rest.getString();
+        String message = rest.getValue();
 
         for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
             player.sendMessage(MessageHelper.ofText(player, false, message));

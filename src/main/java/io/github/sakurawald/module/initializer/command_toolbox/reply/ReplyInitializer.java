@@ -27,7 +27,7 @@ public class ReplyInitializer extends ModuleInitializer {
         String target = this.player2target.get(player.getGameProfile().getName());
 
         try {
-            ServerHelper.getDefaultServer().getCommandManager().getDispatcher().execute("msg %s %s".formatted(target, message.getString()), player.getCommandSource());
+            ServerHelper.getDefaultServer().getCommandManager().getDispatcher().execute("msg %s %s".formatted(target, message.getValue()), player.getCommandSource());
         } catch (CommandSyntaxException e) {
             MessageHelper.sendMessage(player, "reply.no_target");
         }
