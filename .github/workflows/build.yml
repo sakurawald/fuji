@@ -53,5 +53,5 @@ jobs:
 
           github-token: ${{ secrets.GIT_TOKEN }}
 
-#          curseforge-id: 123456
-#          curseforge-token: "${{env.CURSEFORGE_TOKEN}}"
+          curseforge-id: 1096649
+          curseforge-token: "${{secrets.CURSEFORGE_TOKEN}}"
