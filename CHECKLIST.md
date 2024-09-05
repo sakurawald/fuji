@@ -11,9 +11,8 @@ It's good to have a checklist, to avoid forgetting something.
 - test the jar file in a real environment.
 
 ## Update to a new version
-
 - update the version in "gradle.properties"
 - update change log in "CHANGELOG.md"
 - test the jar file in a real environment.
-- publish the pdf file
-- publish the jar file
+- publish the pdf file in "dev" branch.
+- merge changes from "dev" branch into "release" branch.
