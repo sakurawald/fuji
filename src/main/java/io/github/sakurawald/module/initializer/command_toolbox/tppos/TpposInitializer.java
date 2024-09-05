@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.tppos;
 
-import io.github.sakurawald.core.command.argument.wrapper.Dimension;
+import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -36,7 +36,7 @@ public class TpposInitializer extends ModuleInitializer {
             , Optional<Integer> maxTryTimes
     ) {
 
-        ServerWorld world = dimension.isPresent() ? dimension.get().getWorld() : player.getServerWorld();
+        ServerWorld world = dimension.isPresent() ? dimension.get().getValue() : player.getServerWorld();
 
         if (x.isPresent() || y.isPresent() || z.isPresent()) {
             double $x = x.orElse(player.getX());

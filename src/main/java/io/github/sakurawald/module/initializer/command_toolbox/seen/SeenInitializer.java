@@ -1,7 +1,8 @@
 package io.github.sakurawald.module.initializer.command_toolbox.seen;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.core.command.argument.wrapper.OfflinePlayerName;
+import io.github.sakurawald.core.command.annotation.CommandRequirement;
+import io.github.sakurawald.core.command.argument.wrapper.impl.OfflinePlayerName;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
@@ -15,7 +16,6 @@ import lombok.Getter;
 import net.minecraft.server.command.ServerCommandSource;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
-
 public class SeenInitializer extends ModuleInitializer {
 
     @Getter
@@ -32,8 +32,9 @@ public class SeenInitializer extends ModuleInitializer {
     }
 
     @CommandNode("seen")
+    @CommandRequirement(level = 4)
     private int $seen(@CommandSource CommandContext<ServerCommandSource> ctx, OfflinePlayerName playerName) {
-        String target = playerName.getString();
+        String target = playerName.getValue();
 
         if (data.model().player2seen.containsKey(target)) {
             Long time = data.model().player2seen.get(target);

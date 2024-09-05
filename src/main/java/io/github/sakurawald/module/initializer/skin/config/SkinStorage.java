@@ -20,7 +20,7 @@ public class SkinStorage {
 
     public Property getRandomSkin(UUID uuid) {
         if (!skinMap.containsKey(uuid)) {
-            ArrayList<Property> defaultSkins = Configs.configHandler.model().modules.skin.random_skins;
+            List<Property> defaultSkins = Configs.configHandler.model().modules.skin.random_skins;
             Property skin = defaultSkins.get(new Random().nextInt(defaultSkins.size()));
             setSkin(uuid, skin);
         }

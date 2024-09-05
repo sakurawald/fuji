@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class ChunkScore implements Comparable<ChunkScore> {
@@ -29,7 +30,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
     @Getter
     private final ChunkPos chunkPos;
     @Getter
-    private final ArrayList<String> players = new ArrayList<>();
+    private final List<String> players = new ArrayList<>();
     @Getter
     private int score;
 

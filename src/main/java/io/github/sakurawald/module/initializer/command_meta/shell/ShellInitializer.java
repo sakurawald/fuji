@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_meta.shell;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.core.command.argument.wrapper.GreedyString;
+import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -27,7 +27,7 @@ public class ShellInitializer extends ModuleInitializer {
             throw new RuntimeException("Refuse to execute shell command: please read the official wiki.");
         }
 
-        String $rest = rest.getString();
+        String $rest = rest.getValue();
 
         CompletableFuture.runAsync(() -> {
             try {

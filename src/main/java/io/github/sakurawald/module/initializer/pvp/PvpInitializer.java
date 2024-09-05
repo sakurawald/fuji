@@ -13,6 +13,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.HashSet;
+import java.util.Set;
 
 
 public class PvpInitializer extends ModuleInitializer {
@@ -31,7 +32,7 @@ public class PvpInitializer extends ModuleInitializer {
 
     @CommandNode("pvp on")
     private int $on(@CommandSource ServerPlayerEntity player) {
-        HashSet<String> whitelist = pvpHandler.model().whitelist;
+        Set<String> whitelist = pvpHandler.model().whitelist;
         String name = player.getGameProfile().getName();
         if (!whitelist.contains(name)) {
             whitelist.add(name);
@@ -48,7 +49,7 @@ public class PvpInitializer extends ModuleInitializer {
 
     @CommandNode("pvp off")
     private int $off(@CommandSource ServerPlayerEntity player) {
-            HashSet<String> whitelist = pvpHandler.model().whitelist;
+            Set<String> whitelist = pvpHandler.model().whitelist;
             String name = player.getGameProfile().getName();
             if (whitelist.contains(name)) {
                 whitelist.remove(name);
@@ -64,7 +65,7 @@ public class PvpInitializer extends ModuleInitializer {
 
     @CommandNode("pvp status")
     private int $status(@CommandSource ServerPlayerEntity player) {
-            HashSet<String> whitelist = pvpHandler.model().whitelist;
+            Set<String> whitelist = pvpHandler.model().whitelist;
             player.sendMessage(MessageHelper.ofComponent(player, "pvp.status")
                     .append(whitelist.contains(player.getGameProfile().getName()) ? MessageHelper.ofComponent(player, "on") : MessageHelper.ofComponent(player, "off")));
             return CommandHelper.Return.SUCCESS;
@@ -72,7 +73,7 @@ public class PvpInitializer extends ModuleInitializer {
 
     @CommandNode("pvp list")
     private int $list(@CommandSource CommandContext<ServerCommandSource> ctx) {
-        HashSet<String> whitelist = pvpHandler.model().whitelist;
+        Set<String> whitelist = pvpHandler.model().whitelist;
         MessageHelper.sendMessage(ctx.getSource(), "pvp.list", whitelist);
         return CommandHelper.Return.SUCCESS;
     }

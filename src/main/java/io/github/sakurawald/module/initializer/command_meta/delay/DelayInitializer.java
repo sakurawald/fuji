@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_meta.delay;
 
-import io.github.sakurawald.core.command.argument.wrapper.GreedyString;
+import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.service.command_executor.CommandExecutor;
@@ -25,7 +25,7 @@ public class DelayInitializer extends ModuleInitializer {
     @CommandRequirement(level = 4)
     private int delay(int time, GreedyString rest) {
 
-        String $rest = rest.getString();
+        String $rest = rest.getValue();
 
         executor.schedule(() -> {
             CommandExecutor.executeCommandAsConsole(null, $rest);

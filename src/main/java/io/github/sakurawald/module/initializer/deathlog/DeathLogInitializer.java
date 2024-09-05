@@ -5,7 +5,7 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.command.argument.wrapper.OfflinePlayerName;
+import io.github.sakurawald.core.command.argument.wrapper.impl.OfflinePlayerName;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
@@ -109,7 +109,7 @@ public class DeathLogInitializer extends ModuleInitializer {
 
     @CommandNode("view")
     private int $view(@CommandSource ServerPlayerEntity player, OfflinePlayerName from) {
-        String $from = from.getString();
+        String $from = from.getValue();
         NbtCompound root = NbtHelper.read(STORAGE_PATH.resolve(getFileName($from)));
         if (root == null || root.isEmpty()) {
             player.sendMessage(Component.text("No deathlog found."));
