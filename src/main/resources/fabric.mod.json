@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "fuji",
-  "version": "1.5.2",
+  "version": "${version}",
   "name": "Fuji",
   "icon": "assets/fuji/icon.png",
   "description": "A mod that provides many essential and useful modules for vanilla survival.",
