@@ -140,7 +140,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
 
             int i;
             try {
-                i = RandomUtil.getRng().nextInt(Integer.parseInt(split[0]), Integer.parseInt(split[1]));
+                i = RandomUtil.getRandom().nextInt(Integer.parseInt(split[0]), Integer.parseInt(split[1]));
             } catch (Exception e) {
                 return PlaceholderResult.invalid();
             }

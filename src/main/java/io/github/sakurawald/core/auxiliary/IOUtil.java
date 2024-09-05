@@ -22,30 +22,34 @@ import java.nio.file.attribute.FileTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @UtilityClass
 public class IOUtil {
 
     @SneakyThrows
     public static void compressFiles(@NotNull List<File> input, @NotNull File output) {
-        if (!output.exists()) {
-            output.createNewFile();
-        }
+        final int BUFFER_SIZE = 4096;
 
         try (FileOutputStream fos = new FileOutputStream(output);
-             ArchiveOutputStream<ZipArchiveEntry> archiveOut = new ZipArchiveOutputStream(fos)) {
+             ZipOutputStream zos = new ZipOutputStream(fos)) {
+
             for (File file : input) {
-                if (file.isFile() && file.exists()) {
-                    ZipArchiveEntry entry = new ZipArchiveEntry(file, getEntryName(file));
-                    archiveOut.putArchiveEntry(entry);
+                if (file.isFile()) {
                     try (FileInputStream fis = new FileInputStream(file)) {
-                        byte[] buffer = new byte[1024];
-                        int len;
-                        while ((len = fis.read(buffer)) > 0) {
-                            archiveOut.write(buffer, 0, len);
+                        ZipEntry zipEntry = new ZipEntry(getEntryName(file));
+                        zos.putNextEntry(zipEntry);
+
+                        byte[] buffer = new byte[BUFFER_SIZE];
+                        int length;
+
+                        while ((length = fis.read(buffer)) > 0) {
+                            zos.write(buffer, 0, length);
                         }
+
+                        zos.closeEntry();
                     }
-                    archiveOut.closeArchiveEntry();
                 }
             }
         }
