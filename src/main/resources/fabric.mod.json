@@ -7,13 +7,13 @@
   "description": "An essentials mod written for fabric platform.",
   "license": "GPL-3.0",
   "contact": {
-    "homepage": "https://github.com/SakuraWald",
+    "homepage": "https://github.com/sakurawald",
     "sources": "https://github.com/sakurawald/fuji/",
     "issues": "https://github.com/sakurawald/fuji/issues"
   },
   "authors": [
     {
-      "name": "SakuraWald",
+      "name": "sakurawald",
       "contact": {
         "email": "sakurawald@gmail.com"
       }
