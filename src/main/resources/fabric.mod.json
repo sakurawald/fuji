@@ -4,7 +4,7 @@
   "version": "${version}",
   "name": "Fuji",
   "icon": "assets/fuji/icon.png",
-  "description": "A mod that provides many essential and useful modules for vanilla survival.",
+  "description": "An essentials mod written for fabric platform.",
   "license": "GPL-3.0",
   "contact": {
     "homepage": "https://github.com/SakuraWald",
