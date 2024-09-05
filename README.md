@@ -1,11 +1,11 @@
-# Fuji-Fabric
+# Fuji
 
 An essentials mod written for fabric platform.
 
-![github workflow build job](https://img.shields.io/github/actions/workflow/status/sakurawald/fuji-fabric/build.yml)
-![github last commit](https://img.shields.io/github/last-commit/sakurawald/fuji-fabric)
+![github workflow build job](https://img.shields.io/github/actions/workflow/status/sakurawald/fuji/build.yml)
+![github last commit](https://img.shields.io/github/last-commit/sakurawald/fuji)
 ![modrinth download counter](https://img.shields.io/modrinth/dt/1TowMm2v)
-![github release](https://img.shields.io/github/v/release/sakurawald/fuji-fabric)
+![github release](https://img.shields.io/github/v/release/sakurawald/fuji)
 ![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)
 
 ## Feature
@@ -19,12 +19,12 @@ An essentials mod written for fabric platform.
 ## Manual
 
 Download a copy of [fuji-manual.pdf](
-https://github.com/sakurawald/fuji-fabric/raw/dev/docs/release/fuji.pdf)
+https://github.com/sakurawald/fuji/raw/dev/docs/release/fuji.pdf)
 
 ## Credit
 
 This software uses the following open source
-packages: [credit](https://github.com/sakurawald/fuji-fabric/blob/dev/CREDIT)
+packages: [credit](https://github.com/sakurawald/fuji/blob/dev/CREDIT)
 
 ## License
 
