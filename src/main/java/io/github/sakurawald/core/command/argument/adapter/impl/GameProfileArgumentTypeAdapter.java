@@ -3,7 +3,7 @@ package io.github.sakurawald.core.command.argument.adapter.impl;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
-import io.github.sakurawald.core.command.argument.wrapper.GameProfileCollection;
+import io.github.sakurawald.core.command.argument.wrapper.impl.GameProfileCollection;
 import lombok.SneakyThrows;
 import net.minecraft.command.argument.GameProfileArgumentType;
 import net.minecraft.server.command.ServerCommandSource;

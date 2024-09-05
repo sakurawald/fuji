@@ -1,11 +1,10 @@
-package io.github.sakurawald.core.command.argument.wrapper;
+package io.github.sakurawald.core.command.argument.wrapper.impl;
 
 import com.mojang.authlib.GameProfile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Collection;
-import java.util.Collections;
 
 @Data
 @AllArgsConstructor
