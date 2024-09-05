@@ -81,11 +81,6 @@ dependencies {
 
     include(implementation "org.apache.commons:commons-compress:${project.apache_commons_compression_version}")
 
-    include(implementation "org.apache.commons:commons-rng-core:${project.apache_commons_rng_version}")
-    include(implementation "org.apache.commons:commons-rng-client-api:${project.apache_commons_rng_version}")
-    include(implementation "org.apache.commons:commons-rng-simple:${project.apache_commons_rng_version}")
-
-
     include(implementation "commons-io:commons-io:${project.apache_commons_io_version}")
 
     include(implementation "org.jetbrains:annotations:${project.jetbrains_annotations_version}")
