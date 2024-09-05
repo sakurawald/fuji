@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_meta.chain;
 
-import io.github.sakurawald.core.command.argument.wrapper.GreedyString;
+import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.service.command_executor.CommandExecutor;

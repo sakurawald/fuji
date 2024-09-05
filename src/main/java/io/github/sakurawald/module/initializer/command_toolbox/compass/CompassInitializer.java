@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.command_toolbox.compass;
 
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.command.argument.wrapper.Dimension;
+import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
@@ -39,7 +39,7 @@ public class CompassInitializer extends ModuleInitializer {
     @CommandNode("track pos")
     int track(@CommandSource ServerPlayerEntity player, Dimension dimension, BlockPos blockPos) {
         return acceptCompassItem(player,(itemStack) -> {
-           this.setTrackedTarget(itemStack, dimension.getWorld(), blockPos);
+           this.setTrackedTarget(itemStack, dimension.getValue(), blockPos);
            return CommandHelper.Return.SUCCESS;
         });
     }

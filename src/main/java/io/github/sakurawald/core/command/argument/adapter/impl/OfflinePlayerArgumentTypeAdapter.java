@@ -6,7 +6,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
-import io.github.sakurawald.core.command.argument.wrapper.OfflinePlayerName;
+import io.github.sakurawald.core.command.argument.wrapper.impl.OfflinePlayerName;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.util.UserCache;
 import org.jetbrains.annotations.NotNull;

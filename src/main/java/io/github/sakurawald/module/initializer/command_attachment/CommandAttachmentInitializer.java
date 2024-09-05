@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.command_attachment;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.command.argument.wrapper.GreedyString;
+import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.service.command_executor.CommandExecutor;

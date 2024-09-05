@@ -1,7 +1,6 @@
-package io.github.sakurawald.core.command.argument.wrapper;
+package io.github.sakurawald.core.command.argument.wrapper.impl;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 
 @AllArgsConstructor

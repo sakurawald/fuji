@@ -8,8 +8,8 @@ import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.command.argument.wrapper.Dimension;
-import io.github.sakurawald.core.command.argument.wrapper.DimensionType;
+import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
+import io.github.sakurawald.core.command.argument.wrapper.impl.DimensionType;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
 import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
@@ -67,7 +67,7 @@ public class WorldInitializer extends ModuleInitializer {
 
     @CommandNode("world tp")
     private int $tp(@CommandSource ServerPlayerEntity player, Dimension dimension) {
-        ServerWorld world = dimension.getWorld();
+        ServerWorld world = dimension.getValue();
 
         BlockPos spawnPos = world.getSpawnPos();
 
@@ -102,7 +102,7 @@ public class WorldInitializer extends ModuleInitializer {
     @SneakyThrows
     @CommandNode("world delete")
     private int $delete(@CommandSource CommandContext<ServerCommandSource> ctx, Dimension dimension) {
-        ServerWorld world = dimension.getWorld();
+        ServerWorld world = dimension.getValue();
 
         String identifier = IdentifierHelper.ofString(world);
         checkBlacklist(ctx, identifier);
@@ -131,7 +131,7 @@ public class WorldInitializer extends ModuleInitializer {
     @CommandNode("world reset")
     private int $reset(@CommandSource CommandContext<ServerCommandSource> ctx, Optional<Boolean> useTheSameSeed, Dimension dimension) {
         // draw seed and save
-        ServerWorld world = dimension.getWorld();
+        ServerWorld world = dimension.getValue();
         String identifier = IdentifierHelper.ofString(world);
         checkBlacklist(ctx, identifier);
 
