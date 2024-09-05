@@ -393,7 +393,7 @@ public class ConfigModel {
         public class WorldDownloader {
             public boolean enable = false;
 
-            public String url_format = "http://example.com:%port%%path%";
+            public String url_format = "http://localhost:%port%%path%";
 
             public int port = 22222;
 
