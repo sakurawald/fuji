@@ -4,11 +4,12 @@ It's good to have a checklist, to avoid forgetting something.
 
 ## Bump version
 - read the change log of minecraft version
-- fabric loader version
-- mapping version
-- dependency mod version
+- update fabric loader version
+- update mappings version
+- update dependent mod version
 
 ## Update to a new version
+
 - update version in "fabric.mod.json"
 - update version in "gradle.properties"
 - update version in "commands.tex"
