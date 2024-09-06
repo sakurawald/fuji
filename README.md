@@ -6,9 +6,6 @@ A mod that ports EssentialsX / CMI from bukkit to fabric.
 ![github last commit](https://img.shields.io/github/last-commit/sakurawald/fuji)
 ![github release](https://img.shields.io/github/v/release/sakurawald/fuji)
 ![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)
-![curseforge download counter](https://img.shields.io/curseforge/dt/1096649?logo=curseforge)
-![modrinth download counter](https://img.shields.io/modrinth/dt/1TowMm2v?logo=modrinth)
-![github download counter](https://img.shields.io/github/downloads/sakurawald/fuji/total?logo=github)
 
 ## Feature
 
