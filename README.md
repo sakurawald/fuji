@@ -1,6 +1,6 @@
 # Fuji
 
-An essentials mod written for fabric platform.
+An essentials mod that ports EssentialsX / CMI from bukkit to fabric.
 
 ![github workflow build job](https://img.shields.io/github/actions/workflow/status/sakurawald/fuji/build.yml)
 ![github last commit](https://img.shields.io/github/last-commit/sakurawald/fuji)
