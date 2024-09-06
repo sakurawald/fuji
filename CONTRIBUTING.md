@@ -1,1 +1,1 @@
-Read the chapter `Development` in fuji manual pdf.
+Read the chapter `Development` in fuji manual.
