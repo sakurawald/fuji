@@ -24,7 +24,7 @@ https://github.com/sakurawald/fuji/raw/dev/docs/release/fuji.pdf)
 ## Credit
 
 This software uses the following open source
-packages: [credit](https://github.com/sakurawald/fuji/blob/dev/CREDIT)
+packages: [credit](https://github.com/sakurawald/fuji/blob/dev/CREDIT.md)
 
 ## License
 
