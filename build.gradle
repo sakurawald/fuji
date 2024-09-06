@@ -145,56 +145,61 @@ test {
 tasks.compileJava.dependsOn(validateAccessWidener)
 
 /* compile latex */
-def processedTexDir = file("${layout.buildDirectory.get()}/processedTex")
+def processTexDir = file("${layout.buildDirectory.get()}/processTeX")
 def outputTexFile = "fuji.pdf"
 def docsDir = "$projectDir/docs"
+def texOutDir = "${layout.buildDirectory.get()}/outTex"
 
 tasks.register('processLatex', Copy) {
     outputs.upToDateWhen { false }
 
     // clean
     doFirst {
-        if (processedTexDir.exists()) {
-            processedTexDir.deleteDir()
-            println "Deleted existing directory: $processedTexDir"
+        if (processTexDir.exists()) {
+            processTexDir.deleteDir()
+            println "Deleted existing directory: $processTexDir"
         }
     }
 
     // copy
     from(docsDir)
-    into("${processedTexDir}")
+    into("${processTexDir}")
     include "**/*.tex"
 
     filter(ReplaceTokens, tokens: [
             'TOKEN_MOD_VERSION' : project.version.toString(),
-            'TOKEN_PROJECT_ROOT': project.rootDir.absolutePath
+            'TOKEN_PROJECT_ROOT': project.rootDir.absolutePath,
+            'TOKEN_TEX_OUT_DIR' : texOutDir.toString()
     ])
 }
 
 tasks.register('compileLatex', Exec) {
-    def outDir = "$rootProject.projectDir/out"
     doFirst {
-        def outFile = file(outDir)
+        def outFile = file(texOutDir)
         if (!outFile.exists()) {
             outFile.mkdirs()
             println "Created output directory: $outFile"
         }
     }
 
-    workingDir = processedTexDir
-    commandLine "pdflatex",
-            "-file-line-error",
-            "-interaction=nonstopmode",
-            "-synctex=1",
-            "-output-format=pdf",
-            "-output-directory=${outDir}",
-            "-shell-escape",
-            "fuji.tex"
+    workingDir = processTexDir
+
+    int runs = 2
+    for (int i = 0; i < runs; i++) {
+        commandLine "pdflatex",
+                "-file-line-error",
+                "-interaction=nonstopmode",
+                "-synctex=1",
+                "-output-format=pdf",
+                "-output-directory=${texOutDir}",
+                "-shell-escape",
+                "fuji.tex"
+    }
 
     doLast {
         println 'LaTeX compilation finished.'
         copy {
-            from("${outDir}/${outputTexFile}")
+            from("${texOutDir}/${outputTexFile}")
             into("${docsDir}/release")
         }
     }
