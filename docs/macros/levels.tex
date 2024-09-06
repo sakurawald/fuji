@@ -1,32 +1,53 @@
+%! suppress = DiscouragedUseOfDef
 %! suppress = Makeatletter
 \usepackage{titlesec}
-\newcommand{\LevelZero}[1]{\chapter{#1}}
-\newcommand{\LevelOne}[1]{\section{#1}}
-\newcommand{\LevelTwo}[1]{\subsection{#1}}
-\newcommand{\LevelThree}[1]{\subsubsection{#1}}
-\newcommand{\LevelFour}[1]{\paragraph{#1}\mbox{}\\}
-\newcommand{\LevelFive}[1]{\subparagraph{#1}\mbox{}\\}
 
-\titlespacing*{\subparagraph}{15pt}{0ex plus 1ex minus .2ex}{1em}
-
-% define new levels
+% set max depth
 \setcounter{secnumdepth}{10}
 \setcounter{tocdepth}{10}
 
-% \subsubparagraph
+% level 0
+\newcommand{\LevelZero}[1]{\chapter{#1}}
+
+% level 1
+\newcommand{\LevelOne}[1]{\section{#1}}
+
+% level 2
+\newcommand{\LevelTwo}[1]{\subsection{#1}}
+
+% level 3
+\newcommand{\LevelThree}[1]{\subsubsection{#1}}
+
+% level 4
+\makeatletter
+\let\stdl@paragraph\l@paragraph
+\renewcommand*{\l@paragraph}[2]{\stdl@paragraph{\hspace{10pt}#1}{#2}}
+\makeatother
+\newcommand{\LevelFour}[1]{\paragraph{#1}\mbox{}\\}
+
+% level 5
+\makeatletter
+\let\stdl@subparagraph\l@subparagraph
+\renewcommand*{\l@subparagraph}[2]{\stdl@subparagraph{\hspace{40pt}#1}{#2}}
+\makeatother
+
+\titlespacing*{\subparagraph}{15pt}{0ex plus 1ex minus .2ex}{1em}
+
+\newcommand{\LevelFive}[1]{\subparagraph{#1}\mbox{}\\}
+
+% level 6
 \titleclass{\subsubparagraph}{straight}[\subparagraph]
 \newcounter{subsubparagraph}[subparagraph]
 \renewcommand{\thesubsubparagraph}{\thesubparagraph.\arabic{subsubparagraph}}
 \titleformat{\subsubparagraph}[runin]
 {\normalfont\normalsize\bfseries}{\thesubsubparagraph}{1em}{}
 \makeatletter
-\newcommand\l@subsubparagraph{\@dottedtocline{6}{14em}{7em}}
+\newcommand\l@subsubparagraph{\@dottedtocline{6}{220pt}{7em}}
 \makeatother
 \newcommand{\LevelSix}[1]{\subsubparagraph{#1}\mbox{}\\}
-
 \titlespacing*{\subsubparagraph}{32pt}{2pt}{0pt}
 
-% \subsubsubparagraph
+% level 7
 \titleclass{\subsubsubparagraph}{straight}[\subsubparagraph]
 \newcounter{subsubsubparagraph}[subsubparagraph]
 \renewcommand{\thesubsubsubparagraph}{\thesubsubparagraph.\arabic{subsubsubparagraph}}
@@ -38,7 +59,7 @@
 \makeatother
 \newcommand{\LevelSeven}[1]{\subsubsubparagraph{#1}\mbox{}\\}
 
-% \subsubsubsubparagraph
+% level 8
 \titleclass{\subsubsubsubparagraph}{straight}[\subsubsubparagraph]
 \newcounter{subsubsubsubparagraph}[subsubsubparagraph]
 \renewcommand{\thesubsubsubsubparagraph}{\thesubsubsubparagraph.\arabic{subsubsubsubparagraph}}
