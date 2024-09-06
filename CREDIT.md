@@ -1,3 +1,5 @@
+# Credit
+
 We reference source and ideas from the following projects:
 - https://www.zrips.net/cmi/
 - https://essentialsx.net/
