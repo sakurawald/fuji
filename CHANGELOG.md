@@ -1,2 +1,3 @@
 - feature: use compile-time reflection to boost the module loader at server start up stage, and also improve the compatibility with other mods.
 - feature: pass the compatibility with sinytra-connector mod.
+- feature: improve the `zh_tw` language support (by **@yichifauzi**).
