@@ -1,7 +1,7 @@
 package io.github.sakurawald.core.config.handler.abst;
 
-import assets.fuji.Cat;
 import com.google.gson.*;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.config.job.SaveConfigHandlerJob;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
@@ -43,7 +43,7 @@ public abstract class ConfigHandler<T> {
 
     public static @Nullable JsonElement getJsonElement(@NotNull String resourcePath) {
         try {
-            InputStream inputStream = Cat.class.getResourceAsStream(resourcePath);
+            InputStream inputStream = Fuji.class.getResourceAsStream(resourcePath);
             assert inputStream != null;
             @Cleanup Reader reader = new BufferedReader(new InputStreamReader(inputStream));
             return JsonParser.parseReader(reader);
@@ -139,27 +139,27 @@ public abstract class ConfigHandler<T> {
 
     private boolean rescueMode(@NotNull JsonObject currentJson, String currentPath, String key, JsonElement value) {
         LogUtil.warn("""
-                                            
+
                 # What happened ?
                 There is an incompatibility issue in the configuration file `{}`.
                   - Actual value of key `{}` does not match the expected type.
-                                            
+
                 Possible reason:
                   1. In the new version of fuji, the key has changed its type.
                   2. The configuration file was been accidentally modified.
-                                            
+
                 How can I solve this ?
-                                            
+
                   - Manually:
                     1. Backup the folder `<your-server-root>/config/fuji`
                     2. Use your `text-editor` to open the file `{}`
                     3. Find the `key` in path `{}`
                     4. Make sure again you have backup your folder in `step 1`
                     5. Delete the `key`, and re-start the server. Fuji will re-generate the missing keys.
-                                            
+
                   - Automatically:
                     If you want to `back up the folder` and `delete the key`, press "y" and enter. (y/n)
-                                            
+
                 """, file.getAbsoluteFile(), currentPath, file.getAbsoluteFile(), currentPath);
 
         /* ynop query */
