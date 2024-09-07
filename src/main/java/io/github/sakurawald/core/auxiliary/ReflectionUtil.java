@@ -1,21 +1,28 @@
 package io.github.sakurawald.core.auxiliary;
 
 import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ScanResult;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.manager.impl.module.ModuleManager;
+import lombok.Cleanup;
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @UtilityClass
 public class ReflectionUtil {
 
-    private static ScanResult CLASS_INFO_SCAN_RESULT = null;
-    private static ScanResult CLASS_ANNOTATION_SCAN_RESULT = null;
+    public static final String MODULE_INITIALIZER_GRAPH_FILE_NAME = "module-initializer-graph.txt";
+    public static final String ARGUMENT_TYPE_ADAPTER_GRAPH_FILE_NAME = "argument-type-adapter-graph.txt";
+    public static final String SRC_MAIN_RESOURCES = "src/main/resources/";
 
     public static Set<Method> getMethodsWithAnnotation(Class<?> clazz, Class<? extends Annotation> annotation) {
         Set<Method> methods = new HashSet<>();
@@ -29,35 +36,26 @@ public class ReflectionUtil {
         return methods;
     }
 
-    private static ClassGraph makeBaseClassGraph() {
-        return new ClassGraph();
+    public static ClassGraph makeBaseClassGraph() {
+        return new ClassGraph()
+            .acceptPackages(Fuji.class.getPackageName());
     }
 
-    // Use Class.forName() to call context class loader, so that fabric's knot class loader will be used.
-    public static ScanResult getClassInfoScanResult() {
-        if (CLASS_INFO_SCAN_RESULT == null) {
-            CLASS_INFO_SCAN_RESULT = makeBaseClassGraph()
-                    .enableClassInfo()
-                    .acceptPackages(Fuji.class.getPackageName())
-                    .scan();
+    @SneakyThrows
+    public static List<String> getGraph(String graphName) {
+        InputStream inputStream = ReflectionUtil.class.getResourceAsStream(graphName);
+
+        assert inputStream != null;
+        @Cleanup BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        List<String> lines = new ArrayList<>();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            lines.add(line);
         }
-
-        return CLASS_INFO_SCAN_RESULT;
-    }
-
-    public static ScanResult getClassAnnotationInfoScanResult() {
-        if (CLASS_ANNOTATION_SCAN_RESULT == null) {
-            CLASS_ANNOTATION_SCAN_RESULT = makeBaseClassGraph()
-                    .enableClassInfo()
-                    .enableAnnotationInfo()
-                    .acceptPackages(Fuji.class.getPackageName())
-                    .scan();
-        }
-
-        return CLASS_ANNOTATION_SCAN_RESULT;
+        return lines;
     }
 
     public static String getModulePath(Object object) {
-        return String.join(".",ModuleManager.computeModulePath(object.getClass().getName()));
+        return String.join(".", ModuleManager.computeModulePath(object.getClass().getName()));
     }
 }
