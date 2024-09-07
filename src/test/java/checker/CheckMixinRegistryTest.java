@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.github.classgraph.ClassInfo;
+import io.github.classgraph.ScanResult;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import lombok.Cleanup;
@@ -49,18 +50,23 @@ public class CheckMixinRegistryTest {
         String mixinPackage = Fuji.class.getPackageName() + ".module.mixin";
         List<String> unregisteredMixins = new ArrayList<>();
 
-        for (ClassInfo classInfo : ReflectionUtil.getClassAnnotationInfoScanResult().getClassesWithAnnotation(Mixin.class)) {
-            String mixinName = classInfo.getName().substring(mixinPackage.length() + 1);
 
-            if (!registeredMixins.contains(mixinName)) {
-                unregisteredMixins.add(mixinName);
+        try (ScanResult scanResult = ReflectionUtil.makeBaseClassGraph()
+            .enableAllInfo()
+            .scan()) {
+
+            for (ClassInfo classInfo : scanResult.getClassesWithAnnotation(Mixin.class)) {
+                String mixinName = classInfo.getName().substring(mixinPackage.length() + 1);
+
+                if (!registeredMixins.contains(mixinName)) {
+                    unregisteredMixins.add(mixinName);
+                }
             }
         }
 
         if (!unregisteredMixins.isEmpty()) {
             throw new RuntimeException("Mixins not registered: " + unregisteredMixins);
         }
-
     }
 }
 
