@@ -75,7 +75,6 @@ dependencies {
 
     include(modImplementation("eu.pb4:sgui:${project.sgui_version}"))
     include(modImplementation("eu.pb4:placeholder-api:${project.placeholder_api_version}"))
-    include(modImplementation("eu.pb4:polymer-virtual-entity:${project.polymer_virtual_entity_version}"))
 
     implementation "me.lucko:spark-api:${project.spark_api_version}"
 
@@ -145,56 +144,64 @@ test {
 tasks.compileJava.dependsOn(validateAccessWidener)
 
 /* compile latex */
-def processedTexDir = file("${layout.buildDirectory.get()}/processedTex")
+def processTexDir = file("${layout.buildDirectory.get()}/processTeX")
 def outputTexFile = "fuji.pdf"
-def docsDir = "$projectDir/docs"
+def docsDir = file("$projectDir/docs")
+def texOutDir = file("${layout.buildDirectory.get()}/outTex")
+
+def recreateDir(File dir) {
+    if (dir.exists()) {
+        println "Delete existing directory: $dir"
+        dir.deleteDir()
+    }
+    println "Mkdir the directory: $dir"
+    dir.mkdirs()
+}
 
 tasks.register('processLatex', Copy) {
     outputs.upToDateWhen { false }
 
     // clean
     doFirst {
-        if (processedTexDir.exists()) {
-            processedTexDir.deleteDir()
-            println "Deleted existing directory: $processedTexDir"
-        }
+        recreateDir(processTexDir)
     }
 
     // copy
     from(docsDir)
-    into("${processedTexDir}")
+    into("${processTexDir}")
     include "**/*.tex"
 
     filter(ReplaceTokens, tokens: [
-            'TOKEN_MOD_VERSION' : project.version.toString(),
-            'TOKEN_PROJECT_ROOT': project.rootDir.absolutePath
+        'TOKEN_MOD_VERSION' : project.version.toString(),
+        'TOKEN_PROJECT_ROOT': project.rootDir.absolutePath,
+        'TOKEN_TEX_OUT_DIR' : texOutDir.toString()
     ])
 }
 
-tasks.register('compileLatex', Exec) {
-    def outDir = "$rootProject.projectDir/out"
+tasks.register('compileLatex') {
     doFirst {
-        def outFile = file(outDir)
-        if (!outFile.exists()) {
-            outFile.mkdirs()
-            println "Created output directory: $outFile"
-        }
+        recreateDir(texOutDir)
     }
 
-    workingDir = processedTexDir
-    commandLine "pdflatex",
-            "-file-line-error",
-            "-interaction=nonstopmode",
-            "-synctex=1",
-            "-output-format=pdf",
-            "-output-directory=${outDir}",
-            "-shell-escape",
-            "fuji.tex"
-
     doLast {
-        println 'LaTeX compilation finished.'
+        2.times{
+            exec {
+                workingDir = processTexDir
+                commandLine "pdflatex",
+                    "-file-line-error",
+                    "-interaction=nonstopmode",
+                    "-synctex=1",
+                    "-output-format=pdf",
+                    "-output-directory=${texOutDir}",
+                    "-shell-escape",
+                    "fuji.tex"
+                println("Compile TeX once.")
+            }
+        }
+        println 'Finish the loop of compiling TeX.'
+
         copy {
-            from("${outDir}/${outputTexFile}")
+            from("${texOutDir}/${outputTexFile}")
             into("${docsDir}/release")
         }
     }

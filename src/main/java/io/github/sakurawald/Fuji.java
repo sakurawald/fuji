@@ -7,18 +7,6 @@ import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Path;
 
-// TODO: rank module (track, requirement)
-// TODO: hologram module (facility)
-// TODO: spawn/respawn control
-
-// TODO: command attachment for entity, and block
-// TODO: argument resolver for command alias module
-
-// TODO: curse forge plugin
-
-// TODO: a lisp-like DSL (parser, code-walker, transformer, analyzer, nbt selector, predicate, equal)
-// TODO: command combination
-
 public class Fuji implements ModInitializer {
 
     public static final String MOD_ID = "fuji";

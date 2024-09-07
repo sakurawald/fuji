@@ -8,7 +8,7 @@ jobs:
         java: [
           21,
         ]
-        os: [ ubuntu-22.04 ]
+        os: [ ubuntu-latest ]
     runs-on: ${{ matrix.os }}
     permissions:
       contents: write
@@ -51,7 +51,7 @@ jobs:
           modrinth-id: 1TowMm2v
           modrinth-token: "${{secrets.MODRINTH_TOKEN}}"
 
-          github-token: ${{ secrets.GIT_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-#          curseforge-id: 123456
-#          curseforge-token: "${{env.CURSEFORGE_TOKEN}}"
+          curseforge-id: 1096649
+          curseforge-token: "${{secrets.CURSEFORGE_TOKEN}}"

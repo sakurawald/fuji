@@ -1,5 +1,2 @@
-- refactor: use a better random number generator. (performance improved)
-- refactor: use a pixel art image for project icon.
-- refactor: use alternatives to apache compress library. (reduce the size of released jar file)
-- feature: now a detailed version number is provided.
-- docs: fix typos.
+- refactor: use the vanilla minecraft functions to implement the nametag module. (better performance)
+- feature: adjust the nametag initial position so that the new joined player will not see the riding animation.

@@ -1,11 +1,9 @@
 # gradle
 .gradle/
-local.properties
 build/
 out/
 classes/
-_minted-fuji
-docs/_minted-fuji
+local.properties
 
 # eclipse
 *.launch
@@ -15,6 +13,9 @@ docs/_minted-fuji
 *.iml
 *.ipr
 *.iws
+
+# vim
+.vim/
 
 # vscode
 .settings/
@@ -27,16 +28,15 @@ bin/
 *.DS_Store
 
 # fabric
-/run/
+run/
 
-# java
+# jvm
 hs_err_*.log
 replay_*.log
 *.hprof
 *.jfr
 output/
 logs/
-.vim/
 
 # yarn
 remappedSrc
