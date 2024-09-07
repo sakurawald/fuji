@@ -27,3 +27,28 @@ accessible field net/minecraft/server/MinecraftServer saveHandler Lnet/minecraft
 
 # works module + top chunks module
 accessible method net/minecraft/server/world/ServerChunkLoadingManager entryIterator ()Ljava/lang/Iterable;
+
+# nametag
+accessible field net/minecraft/entity/decoration/DisplayEntity$TextDisplayEntity TEXT Lnet/minecraft/entity/data/TrackedData;
+accessible method net/minecraft/entity/decoration/DisplayEntity$TextDisplayEntity setText (Lnet/minecraft/text/Text;)V
+
+accessible method net/minecraft/entity/decoration/DisplayEntity setBillboardMode (Lnet/minecraft/entity/decoration/DisplayEntity$BillboardMode;)V
+accessible field net/minecraft/entity/decoration/DisplayEntity$BillboardMode CENTER Lnet/minecraft/entity/decoration/DisplayEntity$BillboardMode;
+
+accessible field net/minecraft/entity/decoration/DisplayEntity TRANSLATION Lnet/minecraft/entity/data/TrackedData;
+
+accessible method net/minecraft/entity/decoration/DisplayEntity setDisplayWidth (F)V
+accessible method net/minecraft/entity/decoration/DisplayEntity setDisplayHeight (F)V
+
+accessible method net/minecraft/entity/decoration/DisplayEntity$TextDisplayEntity setBackground (I)V
+accessible method net/minecraft/entity/decoration/DisplayEntity$TextDisplayEntity setTextOpacity (B)V
+
+accessible field net/minecraft/entity/decoration/DisplayEntity SCALE Lnet/minecraft/entity/data/TrackedData;
+
+accessible field net/minecraft/entity/decoration/DisplayEntity$TextDisplayEntity TEXT_DISPLAY_FLAGS Lnet/minecraft/entity/data/TrackedData;
+
+accessible method net/minecraft/entity/decoration/DisplayEntity setShadowRadius (F)V
+accessible method net/minecraft/entity/decoration/DisplayEntity setShadowStrength (F)V
+
+accessible method net/minecraft/entity/decoration/DisplayEntity setViewRange (F)V
+accessible method net/minecraft/entity/decoration/DisplayEntity setBrightness (Lnet/minecraft/entity/decoration/Brightness;)V

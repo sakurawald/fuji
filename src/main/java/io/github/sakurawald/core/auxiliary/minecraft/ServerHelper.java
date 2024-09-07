@@ -2,6 +2,7 @@ package io.github.sakurawald.core.auxiliary.minecraft;
 
 import com.mojang.authlib.GameProfile;
 import lombok.Setter;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -36,5 +37,20 @@ public class ServerHelper {
 
     public static boolean isPlayerOnline(String name) {
         return getDefaultServer().getPlayerManager().getPlayerList().stream().anyMatch(p -> p.getGameProfile().getName().equals(name));
+    }
+
+    public static void sendPacketToAll(Packet<?> packet) {
+        getPlayerManager().sendToAll(packet);
+    }
+
+    public static void sendPacketToAllExcept(Packet<?> packet, ServerPlayerEntity player) {
+        for (ServerPlayerEntity serverPlayerEntity : getPlayerManager().getPlayerList()) {
+            if (serverPlayerEntity == player) continue;
+            serverPlayerEntity.networkHandler.sendPacket(packet);
+        }
+    }
+
+    public static void sendPacket(Packet<?> packet, ServerPlayerEntity player) {
+        player.networkHandler.sendPacket(packet);
     }
 }
