@@ -211,7 +211,7 @@
   "warp.unset.success": "<gold>傳送點 %s 已移除.",
   "command_attachment.query.no_attachment": "<red>該物品沒有綁定的指令.",
   "helpop.success": "<green>成功向管理員請求協助.",
-  "helpop.fail": "<red>沒有管理員線上.",
+  "helpop.fail": "<red>沒有管理員在線上.",
   "helpop.format": "<orange>玩家 %s 請求協助: %s",
   "near.format": "<orange>附近玩家清單: %s",
   "compass.no_compass": "<red>您需要手持羅盤.",
