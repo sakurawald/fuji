@@ -142,7 +142,7 @@
   "tpa.no_relative_ticket": "<red>沒有相關的傳送請求",
   "tpa.others_to_you": "<yellow>%s --> 您",
   "tpa.player_not_found": "<red>未找到玩家",
-  "tpa.request_to_self": "<red>無法傳送傳送請求給自己",
+  "tpa.request_to_self": "<red>無法發送傳送請求給自己",
   "tpa.similar_request_exists": "<red>已存在相似的傳送請求",
   "tpa.you_to_others": "<yellow>您 --> %s",
   "trashcan.gui.title": "<red>垃圾桶",
