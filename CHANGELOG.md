@@ -1,2 +1,2 @@
-- refactor: use the vanilla minecraft functions to implement the nametag module. (better performance)
-- feature: adjust the nametag initial position so that the new joined player will not see the riding animation.
+- feature: use compile-time reflection to boost the module loader at server start up stage, and also improve the compatibility with other mods.
+- feature: pass the compatibility with sinytra-connector mod.
