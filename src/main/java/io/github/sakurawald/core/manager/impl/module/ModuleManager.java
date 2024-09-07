@@ -2,7 +2,6 @@ package io.github.sakurawald.core.manager.impl.module;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.github.classgraph.ClassInfo;
 import io.github.sakurawald.core.auxiliary.JsonUtil;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
@@ -35,9 +34,8 @@ public class ModuleManager extends BaseManager {
     @SuppressWarnings("unchecked")
     @SneakyThrows
     private void invokeModuleInitializers() {
-        for (ClassInfo classInfo : ReflectionUtil.getClassInfoScanResult().getSubclasses(ModuleInitializer.class)) {
+        for (String className : ReflectionUtil.getGraph(ReflectionUtil.MODULE_INITIALIZER_GRAPH_FILE_NAME)) {
             // module dispatch
-            String className = classInfo.getName();
             if (!Managers.getModuleManager().shouldWeEnableThis(className)) continue;
 
             Class<? extends ModuleInitializer> clazz = (Class<? extends ModuleInitializer>) Class.forName(className);
@@ -47,12 +45,12 @@ public class ModuleManager extends BaseManager {
 
     public void reloadModules() {
         moduleRegistry.values().forEach(initializer -> {
-                    try {
-                        initializer.onReload();
-                    } catch (Exception e) {
-                        LogUtil.cryLoudly("Failed to reload module.", e);
-                    }
+                try {
+                    initializer.onReload();
+                } catch (Exception e) {
+                    LogUtil.cryLoudly("Failed to reload module.", e);
                 }
+            }
         );
     }
 

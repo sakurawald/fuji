@@ -91,6 +91,7 @@ dependencies {
     include(implementation "io.github.classgraph:classgraph:${project.classgraph_version}")
 }
 
+
 /* compile */
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
@@ -184,7 +185,7 @@ tasks.register('compileLatex') {
     }
 
     doLast {
-        2.times{
+        2.times {
             exec {
                 workingDir = processTexDir
                 commandLine "pdflatex",
@@ -207,3 +208,6 @@ tasks.register('compileLatex') {
     }
 }
 tasks.compileLatex.dependsOn(processLatex)
+
+/* generate graph */
+tasks.runServer.dependsOn(test)

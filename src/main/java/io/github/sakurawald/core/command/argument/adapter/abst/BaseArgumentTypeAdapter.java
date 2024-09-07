@@ -3,7 +3,6 @@ package io.github.sakurawald.core.command.argument.adapter.abst;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.classgraph.ClassInfo;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import io.github.sakurawald.core.manager.Managers;
@@ -27,13 +26,12 @@ public abstract class BaseArgumentTypeAdapter {
     public static void registerAdapters() {
         ModuleManager moduleManager = Managers.getModuleManager();
 
-        for (ClassInfo classInfo : ReflectionUtil.getClassInfoScanResult().getSubclasses(BaseArgumentTypeAdapter.class)) {
-            String className = classInfo.getName();
+        for (String className: ReflectionUtil.getGraph(ReflectionUtil.ARGUMENT_TYPE_ADAPTER_GRAPH_FILE_NAME)) {
 
             // skip if the module path is not enabled.
             if (!moduleManager.shouldWeEnableThis(className)) continue;
 
-            Class<? extends BaseArgumentTypeAdapter> clazz = (Class<? extends BaseArgumentTypeAdapter>) Class.forName(classInfo.getName());
+            Class<? extends BaseArgumentTypeAdapter> clazz = (Class<? extends BaseArgumentTypeAdapter>) Class.forName(className);
             Constructor<? extends BaseArgumentTypeAdapter> constructor = clazz.getDeclaredConstructor();
             BaseArgumentTypeAdapter instance = constructor.newInstance();
             adapters.add(instance);
