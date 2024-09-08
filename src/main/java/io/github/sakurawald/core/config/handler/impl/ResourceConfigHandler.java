@@ -48,7 +48,7 @@ public class ResourceConfigHandler extends ConfigHandler<JsonElement> {
             }
 
         } catch (IOException e) {
-            LogUtil.cryLoudly("Load config failed", e);
+            LogUtil.error("Load config failed", e);
         }
     }
 

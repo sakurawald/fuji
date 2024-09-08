@@ -50,7 +50,7 @@ public class ObjectConfigHandler<T> extends ConfigHandler<T> {
 
         } catch (IOException | NoSuchMethodException | InstantiationException | IllegalAccessException |
                  InvocationTargetException e) {
-            LogUtil.cryLoudly("Load config failed: ", e);
+            LogUtil.error("Load config failed: ", e);
         }
     }
 
