@@ -1,8 +1,8 @@
 package io.github.sakurawald.core.config.job;
 
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.core.job.abst.CronJob;
-import io.github.sakurawald.core.auxiliary.LogUtil;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.quartz.JobDataMap;

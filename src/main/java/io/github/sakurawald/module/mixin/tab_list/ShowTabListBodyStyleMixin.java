@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.mixin.tab_list;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.auxiliary.RandomUtil;
+import io.github.sakurawald.core.config.Configs;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;

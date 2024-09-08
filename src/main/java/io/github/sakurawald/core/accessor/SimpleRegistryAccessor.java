@@ -2,7 +2,6 @@ package io.github.sakurawald.core.accessor;
 
 import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 public interface SimpleRegistryAccessor<T> {

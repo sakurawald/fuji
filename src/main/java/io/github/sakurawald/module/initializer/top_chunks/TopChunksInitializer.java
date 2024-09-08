@@ -1,14 +1,14 @@
 package io.github.sakurawald.module.initializer.top_chunks;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.top_chunks.structure.ChunkScore;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.minecraft.block.entity.BlockEntity;

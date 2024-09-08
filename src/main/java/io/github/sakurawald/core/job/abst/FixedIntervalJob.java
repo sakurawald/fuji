@@ -1,7 +1,10 @@
 package io.github.sakurawald.core.job.abst;
 
 import lombok.NoArgsConstructor;
-import org.quartz.*;
+import org.quartz.JobDataMap;
+import org.quartz.SimpleScheduleBuilder;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 
 @NoArgsConstructor
 public abstract class FixedIntervalJob extends BaseJob {

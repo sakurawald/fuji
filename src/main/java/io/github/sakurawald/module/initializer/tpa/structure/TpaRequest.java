@@ -1,9 +1,9 @@
 package io.github.sakurawald.module.initializer.tpa.structure;
 
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.tpa.TpaInitializer;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import lombok.Getter;
 import lombok.ToString;
 import net.kyori.adventure.text.Component;

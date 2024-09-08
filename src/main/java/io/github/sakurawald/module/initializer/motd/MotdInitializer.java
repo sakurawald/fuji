@@ -2,17 +2,16 @@ package io.github.sakurawald.module.initializer.motd;
 
 import com.google.common.base.Preconditions;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
-import javax.imageio.ImageIO;
-
+import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.module.initializer.ModuleInitializer;
 import lombok.Setter;
 import net.minecraft.server.ServerMetadata;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;

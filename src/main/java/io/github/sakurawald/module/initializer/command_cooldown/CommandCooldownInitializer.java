@@ -2,10 +2,11 @@ package io.github.sakurawald.module.initializer.command_cooldown;
 
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import java.util.HashMap;
-import java.util.Map;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CommandCooldownInitializer extends ModuleInitializer {
 

@@ -1,21 +1,9 @@
 package io.github.sakurawald.module.mixin.works;
 
-import io.github.sakurawald.module.initializer.works.structure.WorksCache;
-import io.github.sakurawald.module.initializer.works.structure.work.impl.ProductionWork;
-import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-
-import java.util.HashSet;
-import java.util.Set;
-
+import io.github.sakurawald.module.initializer.works.structure.WorksCache;
+import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
+import io.github.sakurawald.module.initializer.works.structure.work.impl.ProductionWork;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.block.entity.HopperBlockEntity;
@@ -25,6 +13,16 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+
+import java.util.Set;
 
 // the priority of carpet's is 1000
 @Mixin(value = HopperBlockEntity.class, priority = 999)

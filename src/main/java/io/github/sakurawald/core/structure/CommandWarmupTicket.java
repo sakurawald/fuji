@@ -1,7 +1,7 @@
 package io.github.sakurawald.core.structure;
 
-import io.github.sakurawald.core.manager.impl.bossbar.BossBarTicket;
 import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.manager.impl.bossbar.BossBarTicket;
 import lombok.Getter;
 import net.kyori.adventure.bossbar.BossBar;
 import net.minecraft.server.network.ServerPlayerEntity;

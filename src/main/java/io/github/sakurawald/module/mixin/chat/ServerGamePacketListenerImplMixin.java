@@ -1,9 +1,9 @@
 package io.github.sakurawald.module.mixin.chat;
 
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.chat.ChatInitializer;
-import io.github.sakurawald.core.auxiliary.LogUtil;
 import net.minecraft.network.message.SignedMessage;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;

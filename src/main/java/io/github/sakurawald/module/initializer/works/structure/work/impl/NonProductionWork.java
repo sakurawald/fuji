@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.initializer.works.structure.work.impl;
 
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import lombok.NoArgsConstructor;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;

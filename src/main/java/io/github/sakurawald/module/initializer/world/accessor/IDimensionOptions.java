@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.initializer.world.accessor;
 
 import net.minecraft.world.dimension.DimensionOptions;
-import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.Predicate;
 

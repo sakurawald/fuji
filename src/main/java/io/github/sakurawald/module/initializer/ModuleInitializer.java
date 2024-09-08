@@ -1,11 +1,6 @@
 package io.github.sakurawald.module.initializer;
 
 
-import com.mojang.brigadier.CommandDispatcher;
-import net.minecraft.command.CommandRegistryAccess;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-
 /**
  * Tips:
  * 1. Don't catch and handle the command exception, just use @SneakThrow and CommandSyntaxException.
