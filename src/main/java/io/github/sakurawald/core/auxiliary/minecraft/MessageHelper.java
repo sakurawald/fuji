@@ -155,7 +155,7 @@ public class MessageHelper {
      *  All methods that return `Vomponent` are converted from this method.
      * */
     public static @NotNull Text ofText(@NonNull NodeParser parser, @Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
-        String string = isKey ? getString(audience, keyOrString, args) : keyOrString;
+        String string = isKey ? getString(audience, keyOrString) : keyOrString;
 
         // format
         string = formatString(string, args);
@@ -188,8 +188,8 @@ public class MessageHelper {
         return ofText(null, false, str, args);
     }
 
-    public static @NotNull List<Text> ofTextList(@Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
-        String lines = isKey ? getString(audience, keyOrString, args) : keyOrString;
+    public static @NotNull List<Text> ofTextList(@Nullable Audience audience, boolean isKey, String keyOrString) {
+        String lines = isKey ? getString(audience, keyOrString) : keyOrString;
 
         List<Text> ret = new ArrayList<>();
         for (String line : lines.split("\n|<newline>")) {
@@ -198,8 +198,8 @@ public class MessageHelper {
         return ret;
     }
 
-    public static @NotNull List<Text> ofTextList(@Nullable Audience audience, String key, Object... args) {
-        return ofTextList(audience, true, key, args);
+    public static @NotNull List<Text> ofTextList(@Nullable Audience audience, String key) {
+        return ofTextList(audience, true, key);
     }
 
     public static @NotNull Text toText(@NotNull Component component) {

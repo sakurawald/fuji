@@ -7,7 +7,6 @@ import io.github.sakurawald.module.initializer.skin.SkinRestorer;
 import io.github.sakurawald.module.initializer.skin.provider.MojangSkinProvider;
 import net.minecraft.server.network.ServerLoginNetworkHandler;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
