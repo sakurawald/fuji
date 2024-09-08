@@ -1,12 +1,20 @@
 package io.github.sakurawald.core.config.handler.abst;
 
 import com.google.gson.*;
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.Option;
+import com.jayway.jsonpath.ParseContext;
+import com.jayway.jsonpath.spi.json.GsonJsonProvider;
+import com.jayway.jsonpath.spi.json.JsonProvider;
+import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
+import com.jayway.jsonpath.spi.mapper.MappingProvider;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.auxiliary.JsonUtil;
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.config.job.SaveConfigHandlerJob;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
-import io.github.sakurawald.core.auxiliary.JsonUtil;
-import io.github.sakurawald.core.auxiliary.LogUtil;
 import lombok.Cleanup;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
@@ -17,25 +25,60 @@ import org.quartz.JobDataMap;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.EnumSet;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 public abstract class ConfigHandler<T> {
+
     private static final Pattern MAP_TYPE_MATCHER = Pattern.compile(".+2.+");
 
     @Getter
     protected static final Gson gson = new GsonBuilder()
-            .setPrettyPrinting()
-            .disableHtmlEscaping()
-            .serializeNulls()
-            .registerTypeAdapter(Work.class, new Work.WorkTypeAdapter())
-            .create();
+        .setPrettyPrinting()
+        .disableHtmlEscaping()
+        .serializeNulls()
+        .registerTypeAdapter(Work.class, new Work.WorkTypeAdapter())
+        .create();
 
     protected File file;
     protected @Nullable T model;
     protected boolean alreadyBackup;
+
+    protected static ParseContext jsonPathParser = null;
+
+    static {
+        // configure json path library
+        Configuration.setDefaults(new com.jayway.jsonpath.Configuration.Defaults() {
+            private final JsonProvider jsonProvider = new GsonJsonProvider();
+            private final MappingProvider mappingProvider = new GsonMappingProvider();
+
+            @Override
+            public JsonProvider jsonProvider() {
+                return jsonProvider;
+            }
+
+            @Override
+            public MappingProvider mappingProvider() {
+                return mappingProvider;
+            }
+
+            @Override
+            public Set<Option> options() {
+                return EnumSet.noneOf(Option.class);
+            }
+        });
+    }
+
+    public static ParseContext getJsonPathParser() {
+        if (jsonPathParser == null) {
+            jsonPathParser = JsonPath.using(Configuration.defaultConfiguration());
+        }
+
+        return jsonPathParser;
+    }
 
     public ConfigHandler(File file) {
         this.file = file;
@@ -140,27 +183,27 @@ public abstract class ConfigHandler<T> {
     private boolean rescueMode(@NotNull JsonObject currentJson, String currentPath, String key, JsonElement value) {
         LogUtil.warn("""
 
-                # What happened ?
-                There is an incompatibility issue in the configuration file `{}`.
-                  - Actual value of key `{}` does not match the expected type.
+            # What happened ?
+            There is an incompatibility issue in the configuration file `{}`.
+              - Actual value of key `{}` does not match the expected type.
 
-                Possible reason:
-                  1. In the new version of fuji, the key has changed its type.
-                  2. The configuration file was been accidentally modified.
+            Possible reason:
+              1. In the new version of fuji, the key has changed its type.
+              2. The configuration file was been accidentally modified.
 
-                How can I solve this ?
+            How can I solve this ?
 
-                  - Manually:
-                    1. Backup the folder `<your-server-root>/config/fuji`
-                    2. Use your `text-editor` to open the file `{}`
-                    3. Find the `key` in path `{}`
-                    4. Make sure again you have backup your folder in `step 1`
-                    5. Delete the `key`, and re-start the server. Fuji will re-generate the missing keys.
+              - Manually:
+                1. Backup the folder `<your-server-root>/config/fuji`
+                2. Use your `text-editor` to open the file `{}`
+                3. Find the `key` in path `{}`
+                4. Make sure again you have backup your folder in `step 1`
+                5. Delete the `key`, and re-start the server. Fuji will re-generate the missing keys.
 
-                  - Automatically:
-                    If you want to `back up the folder` and `delete the key`, press "y" and enter. (y/n)
+              - Automatically:
+                If you want to `back up the folder` and `delete the key`, press "y" and enter. (y/n)
 
-                """, file.getAbsoluteFile(), currentPath, file.getAbsoluteFile(), currentPath);
+            """, file.getAbsoluteFile(), currentPath, file.getAbsoluteFile(), currentPath);
 
         /* ynop query */
         Scanner scanner = new Scanner(System.in);
