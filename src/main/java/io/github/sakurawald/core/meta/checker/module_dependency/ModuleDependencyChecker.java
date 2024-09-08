@@ -1,9 +1,8 @@
 package io.github.sakurawald.core.meta.checker.module_dependency;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.core.config.model.ConfigModel;
 import io.github.sakurawald.core.meta.checker.module_dependency.structure.Reference;
 import io.github.sakurawald.core.manager.impl.module.ModuleManager;
@@ -25,8 +24,7 @@ public class ModuleDependencyChecker {
 
     private static final Pattern importPattern = Pattern.compile("import\\s+(\\S+);");
     private static final Pattern staticImportPattern = Pattern.compile("import\\s+static\\s+(\\S+)\\.\\S+;");
-    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private static final JsonElement rcConfig = gson.toJsonTree(new ConfigModel());
+    private static final JsonElement rcConfig = ConfigHandler.getGson().toJsonTree(new ConfigModel());
 
     private List<String> extractMatches(Pattern pattern, String text, int group) {
         Matcher matcher = pattern.matcher(text);
