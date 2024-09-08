@@ -1,4 +1,4 @@
-package checker;
+package tests;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -11,7 +11,7 @@ import lombok.Cleanup;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.spongepowered.asm.mixin.Mixin;
-import utility.TestUtility;
+import auxiliary.TestUtility;
 
 import java.io.*;
 import java.util.ArrayList;

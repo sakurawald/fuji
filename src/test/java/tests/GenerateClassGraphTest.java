@@ -1,4 +1,4 @@
-package generator;
+package tests;
 
 import io.github.classgraph.ScanResult;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
@@ -6,7 +6,7 @@ import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeA
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
-import utility.TestUtility;
+import auxiliary.TestUtility;
 
 import java.io.File;
 import java.io.PrintWriter;
