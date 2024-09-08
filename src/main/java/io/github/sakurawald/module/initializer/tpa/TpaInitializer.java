@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.tpa;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.Configs;
@@ -56,7 +56,7 @@ public class TpaInitializer extends ModuleInitializer {
                                 : (request.getSender().equals(target) && request.getReceiver().equals(source)))
                 .findFirst();
         if (requestOptional.isEmpty()) {
-            MessageHelper.sendActionBarByKey(source, "tpa.no_relative_ticket");
+            LanguageHelper.sendActionBarByKey(source, "tpa.no_relative_ticket");
             return CommandHelper.Return.FAIL;
         }
 
@@ -88,13 +88,13 @@ public class TpaInitializer extends ModuleInitializer {
 
         /* has similar request ? */
         if (request.getSender().equals(request.getReceiver())) {
-            MessageHelper.sendActionBarByKey(request.getSender(), "tpa.request_to_self");
+            LanguageHelper.sendActionBarByKey(request.getSender(), "tpa.request_to_self");
 
             return CommandHelper.Return.FAIL;
         }
 
         if (requests.stream().anyMatch(request::similarTo)) {
-            MessageHelper.sendActionBarByKey(request.getSender(), "tpa.similar_request_exists");
+            LanguageHelper.sendActionBarByKey(request.getSender(), "tpa.similar_request_exists");
             return CommandHelper.Return.FAIL;
         }
 

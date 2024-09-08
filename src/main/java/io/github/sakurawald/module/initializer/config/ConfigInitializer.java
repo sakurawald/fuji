@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.config;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -28,7 +28,7 @@ public class ConfigInitializer extends ModuleInitializer {
         // reload jobs
         BaseJob.rescheduleAll();
 
-        MessageHelper.sendMessageByKey(ctx.getSource(), "reload");
+        LanguageHelper.sendMessageByKey(ctx.getSource(), "reload");
         return CommandHelper.Return.SUCCESS;
     }
 

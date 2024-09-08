@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_attachment;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -94,7 +94,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         // get model
         ItemStack mainHandStack = player.getMainHandStack();
         if (mainHandStack.isEmpty()) {
-            MessageHelper.sendMessageByKey(player,"operation.fail");
+            LanguageHelper.sendMessageByKey(player,"operation.fail");
             return CommandHelper.Return.FAIL;
         }
 
@@ -113,7 +113,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         // save model
         this.setModel(uuid, model);
 
-        MessageHelper.sendMessageByKey(player, "operation.success");
+        LanguageHelper.sendMessageByKey(player, "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -121,14 +121,14 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     int detachAll(@CommandSource ServerPlayerEntity player) {
         ItemStack mainHandStack = player.getMainHandStack();
         if (mainHandStack.isEmpty()) {
-            MessageHelper.sendMessageByKey(player, "operation.fail");
+            LanguageHelper.sendMessageByKey(player, "operation.fail");
             return CommandHelper.Return.FAIL;
         }
 
         String uuid = NbtHelper.getOrMakeUUIDNbt(mainHandStack);
         Managers.getAttachmentManager().unsetAttachment(COMMAND_ATTACHMENT_SUBJECT_NAME, uuid);
 
-        MessageHelper.sendMessageByKey(player, "operation.success");
+        LanguageHelper.sendMessageByKey(player, "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -137,13 +137,13 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     int query(@CommandSource ServerPlayerEntity player) {
         ItemStack mainHandStack = player.getMainHandStack();
         if (mainHandStack.isEmpty()) {
-            MessageHelper.sendMessageByKey(player, "operation.fail");
+            LanguageHelper.sendMessageByKey(player, "operation.fail");
             return CommandHelper.Return.FAIL;
         }
 
         String uuid = NbtHelper.getUuid(mainHandStack.get(DataComponentTypes.CUSTOM_DATA));
         if (uuid == null) {
-            MessageHelper.sendMessageByKey(player, "command_attachment.query.no_attachment");
+            LanguageHelper.sendMessageByKey(player, "command_attachment.query.no_attachment");
             return CommandHelper.Return.SUCCESS;
         }
 

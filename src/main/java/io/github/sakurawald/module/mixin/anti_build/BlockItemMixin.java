@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.anti_build;
 
 import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.config.Configs;
 import net.minecraft.block.BlockState;
@@ -27,7 +27,7 @@ public class BlockItemMixin {
         if (Configs.configHandler.model().modules.anti_build.anti.place_block.id.contains(id)
             && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("place_block", id))
         ) {
-            player.sendMessage(MessageHelper.getTextByKey(player, "anti_build.disallow"));
+            player.sendMessage(LanguageHelper.getTextByKey(player, "anti_build.disallow"));
             cir.setReturnValue(false);
         }
     }

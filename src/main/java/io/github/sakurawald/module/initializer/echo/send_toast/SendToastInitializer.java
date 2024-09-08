@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.echo.send_toast;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -89,10 +89,10 @@ public class SendToastInitializer extends ModuleInitializer {
 
         Item $icon = icon.orElse(Items.SLIME_BALL);
         AdvancementFrame $toastType = toastType.orElse(AdvancementFrame.CHALLENGE);
-        Text title = MessageHelper.getTextByValue(player, message.getValue());
+        Text title = LanguageHelper.getTextByValue(player, message.getValue());
         this.sendToast(player, $toastType, $icon, title);
 
-        MessageHelper.sendMessageByKey(ctx.getSource(), "operation.success");
+        LanguageHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 

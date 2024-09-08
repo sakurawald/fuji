@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.help_op;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -22,14 +22,14 @@ public class HelpOpInitializer extends ModuleInitializer {
         List<ServerPlayerEntity> ops = playerManager.getPlayerList().stream().filter(p -> playerManager.isOperator(p.getGameProfile())).toList();
 
         if (ops.isEmpty()) {
-            MessageHelper.sendMessageByKey(player,"helpop.fail");
+            LanguageHelper.sendMessageByKey(player,"helpop.fail");
             return CommandHelper.Return.FAIL;
         }
 
-        Text text = MessageHelper.getTextByKey(player, "helpop.format", player.getGameProfile().getName(), message.getValue());
+        Text text = LanguageHelper.getTextByKey(player, "helpop.format", player.getGameProfile().getName(), message.getValue());
         ops.forEach(o -> o.sendMessage(text));
 
-        MessageHelper.sendMessageByKey(player,"helpop.success");
+        LanguageHelper.sendMessageByKey(player,"helpop.success");
         return CommandHelper.Return.SUCCESS;
     }
 

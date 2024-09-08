@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.view.gui;
 
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.DoubleInventory;
 import net.minecraft.inventory.Inventory;
@@ -14,7 +14,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class InventoryRedirectScreen extends RedirectScreenHandlerFactory {
 
     public InventoryRedirectScreen(ServerPlayerEntity sourcePlayer,String targetPlayerName) {
-        super(targetPlayerName, MessageHelper.getTextByKey(sourcePlayer,"view.inv.title", targetPlayerName));
+        super(targetPlayerName, LanguageHelper.getTextByKey(sourcePlayer,"view.inv.title", targetPlayerName));
     }
 
     @Override

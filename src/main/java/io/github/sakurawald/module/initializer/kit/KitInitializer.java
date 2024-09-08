@@ -4,7 +4,7 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -114,7 +114,7 @@ public class KitInitializer extends ModuleInitializer {
 
         Kit $kit = readKit(kit.getValue());
         if ($kit.getStackList().isEmpty()) {
-            MessageHelper.sendMessageByKey(ctx.getSource(), "kit.kit.empty");
+            LanguageHelper.sendMessageByKey(ctx.getSource(), "kit.kit.empty");
             return CommandHelper.Return.FAIL;
         }
 

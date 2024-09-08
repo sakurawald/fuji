@@ -8,7 +8,7 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -181,7 +181,7 @@ public class CommandAnnotationProcessor {
                 if (theRealException instanceof SnackException snakeException) {
                     // report it
                     if (snakeException.getMessage() != null) {
-                        ctx.getSource().sendMessage(MessageHelper.getTextByValue(ctx.getSource(), "<red>--- Fuji Snake Exception ---\nClass: %s\nMethod: %s\nMessage: %s", instance.getClass().getName(), method.getName(), snakeException.getMessage()));
+                        ctx.getSource().sendMessage(LanguageHelper.getTextByValue(ctx.getSource(), "<red>--- Fuji Snake Exception ---\nClass: %s\nMethod: %s\nMessage: %s", instance.getClass().getName(), method.getName(), snakeException.getMessage()));
                     }
 
                     // swallow it

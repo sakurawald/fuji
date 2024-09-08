@@ -3,7 +3,7 @@ package io.github.sakurawald.core.service.random_teleport;
 import com.google.common.base.Stopwatch;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.structure.Position;
 import io.github.sakurawald.core.structure.TeleportSetup;
@@ -37,7 +37,7 @@ public class RandomTeleport {
 
             ServerWorld world = IdentifierHelper.ofServerWorld(Identifier.of(setup.getDimension()));
             if (world == null) {
-                MessageHelper.sendMessageByKey(player,"dimension.no_found");
+                LanguageHelper.sendMessageByKey(player,"dimension.no_found");
                 return;
             }
 
@@ -50,7 +50,7 @@ public class RandomTeleport {
             } while (result.isEmpty() && triedTimes <= setup.getMaxTryTimes());
 
             if (result.isEmpty()) {
-                MessageHelper.sendMessageByKey(player, "rtp.fail");
+                LanguageHelper.sendMessageByKey(player, "rtp.fail");
                 return;
             }
 

@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.pvp;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
@@ -37,12 +37,12 @@ public class PvpInitializer extends ModuleInitializer {
             whitelist.add(name);
             pvpHandler.saveToDisk();
 
-            MessageHelper.sendMessageByKey(player, "pvp.on");
+            LanguageHelper.sendMessageByKey(player, "pvp.on");
 
             return CommandHelper.Return.SUCCESS;
         }
 
-        MessageHelper.sendMessageByKey(player, "pvp.on.already");
+        LanguageHelper.sendMessageByKey(player, "pvp.on.already");
         return CommandHelper.Return.FAIL;
     }
 
@@ -54,27 +54,27 @@ public class PvpInitializer extends ModuleInitializer {
                 whitelist.remove(name);
                 pvpHandler.saveToDisk();
 
-                MessageHelper.sendMessageByKey(player, "pvp.off");
+                LanguageHelper.sendMessageByKey(player, "pvp.off");
                 return CommandHelper.Return.SUCCESS;
             }
 
-            MessageHelper.sendMessageByKey(player, "pvp.off.already");
+            LanguageHelper.sendMessageByKey(player, "pvp.off.already");
             return CommandHelper.Return.FAIL;
     }
 
     @CommandNode("pvp status")
     private int $status(@CommandSource ServerPlayerEntity player) {
             Set<String> whitelist = pvpHandler.model().whitelist;
-            player.sendMessage(MessageHelper.getTextByKey(player, "pvp.status")
+            player.sendMessage(LanguageHelper.getTextByKey(player, "pvp.status")
                     .asComponent()
-                    .append(whitelist.contains(player.getGameProfile().getName()) ? MessageHelper.getTextByKey(player, "on") : MessageHelper.getTextByKey(player, "off")));
+                    .append(whitelist.contains(player.getGameProfile().getName()) ? LanguageHelper.getTextByKey(player, "on") : LanguageHelper.getTextByKey(player, "off")));
             return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("pvp list")
     private int $list(@CommandSource CommandContext<ServerCommandSource> ctx) {
         Set<String> whitelist = pvpHandler.model().whitelist;
-        MessageHelper.sendMessageByKey(ctx.getSource(), "pvp.list", whitelist);
+        LanguageHelper.sendMessageByKey(ctx.getSource(), "pvp.list", whitelist);
         return CommandHelper.Return.SUCCESS;
     }
 
