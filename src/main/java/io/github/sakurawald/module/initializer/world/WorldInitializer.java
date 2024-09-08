@@ -10,6 +10,7 @@ import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
 import io.github.sakurawald.core.command.argument.wrapper.impl.DimensionType;
+import io.github.sakurawald.core.command.exception.SnackException;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
@@ -123,7 +124,8 @@ public class WorldInitializer extends ModuleInitializer {
 
     private void checkBlacklist(CommandContext<ServerCommandSource> ctx, String identifier) {
         if (Configs.configHandler.model().modules.world.blacklist.dimension_list.contains(identifier)) {
-            throw new IllegalArgumentException(MessageHelper.getString(ctx.getSource(), "world.dimension.blacklist", identifier));
+            MessageHelper.sendMessage(ctx.getSource(), "world.dimension.blacklist", identifier);
+            throw new SnackException();
         }
     }
 
