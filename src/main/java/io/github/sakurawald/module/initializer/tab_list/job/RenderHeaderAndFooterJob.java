@@ -5,7 +5,6 @@ import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.job.abst.CronJob;
 import io.github.sakurawald.module.initializer.tab_list.TabListInitializer;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 public class RenderHeaderAndFooterJob extends CronJob {
 

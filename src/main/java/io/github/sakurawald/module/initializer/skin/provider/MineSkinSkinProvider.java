@@ -14,8 +14,6 @@ import java.net.URI;
 public class MineSkinSkinProvider {
 
     private static final String API_SERVER = "https://api.mineskin.org/generate/url";
-    private static final String USER_AGENT = "SkinRestorer";
-    private static final String TYPE = "application/json";
 
     public static @Nullable Property getSkin(String url, @NotNull SkinVariant variant) {
         try {

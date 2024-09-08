@@ -66,7 +66,7 @@ public abstract class BossBarTicket {
         this.audiences.clear();
     }
 
-    @SuppressWarnings("EmptyMethod")
+    @SuppressWarnings({"EmptyMethod", "unused"})
     public void onAudienceDisconnected(Audience audience) {
         // no-op
     }

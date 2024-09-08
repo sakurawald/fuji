@@ -17,7 +17,7 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-@SuppressWarnings({"unused", "InfiniteRecursion", "LombokGetterMayBeUsed"})
+@SuppressWarnings({"unused", "InfiniteRecursion"})
 public class FilteredRegistry<T> extends SimpleRegistry<T> {
     private final @NotNull Registry<T> source;
     private final Predicate<T> check;

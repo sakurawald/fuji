@@ -44,6 +44,7 @@ public class SitInitializer extends ModuleInitializer {
         return !player.hasVehicle() && !player.isFallFlying() && !player.isSleeping() && !player.isSwimming() && !player.isSpectator();
     }
 
+    @SuppressWarnings("deprecation")
     @CommandNode("sit")
     private int $sit(@CommandSource ServerPlayerEntity player) {
         // fix: if the player stand in the slab/stair block

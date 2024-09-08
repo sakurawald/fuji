@@ -18,6 +18,7 @@ public abstract class BaseJob implements Job {
     protected TriggerKey triggerKey = null;
 
     // note: the no arguments constructor is only used for quartz to create and use the `execute` closure
+    @SuppressWarnings("unused")
     public BaseJob() {
     }
 

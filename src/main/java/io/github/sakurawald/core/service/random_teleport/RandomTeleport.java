@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 /**
- * We reference the rtp code from https://github.com/John-Paul-R/Essential-Commands at the early stage of this project.
+ * We reference the rtp code from <a href="https://github.com/John-Paul-R/Essential-Commands">...</a> at the early stage of this project.
  */
 public class RandomTeleport {
 
