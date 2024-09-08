@@ -3,9 +3,9 @@ package io.github.sakurawald.core.gui;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import eu.pb4.sgui.api.gui.layered.LayeredGui;
-import io.github.sakurawald.core.gui.layer.SingleLineLayer;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.gui.layer.SingleLineLayer;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.minecraft.screen.ScreenHandlerType;
@@ -79,13 +79,14 @@ public abstract class PagedGui<T> extends LayeredGui {
         PagedGui<T> make = make(this.parent, getPlayer(), prefixTitle, filter(keywords), 0);
 
         // override the title
-        Text page = MessageHelper.ofText(getPlayer(), true, "gui.page.title", this.getCurrentPageNumber(), this.getMaxPageNumber());
-        Text title = MessageHelper.ofText(getPlayer(), "gui.search.title", keywords)
+        Text page = LanguageHelper.getTextByKey(getPlayer(), "gui.page.title", this.getCurrentPageNumber(), this.getMaxPageNumber());
+        Text title = LanguageHelper.getTextByKey(getPlayer(), "gui.search.title", keywords)
                 .copy().append(page);
         make.setTitle(title);
         return make;
     }
 
+    @SuppressWarnings("unused")
     protected void addEntity(T entity) {
         this.entities.add(entity);
         this.reopen();
@@ -107,8 +108,8 @@ public abstract class PagedGui<T> extends LayeredGui {
 
     private void drawTitle() {
         Component formatted = this.prefixTitle.asComponent()
-                .append(MessageHelper.ofText(getPlayer(), true, "gui.page.title", this.getCurrentPageNumber(), this.getMaxPageNumber()));
-        this.setTitle(MessageHelper.toText(formatted));
+                .append(LanguageHelper.getTextByKey(getPlayer(), "gui.page.title", this.getCurrentPageNumber(), this.getMaxPageNumber()));
+        this.setTitle(LanguageHelper.toText(formatted));
     }
 
     private int getEntitySize() {

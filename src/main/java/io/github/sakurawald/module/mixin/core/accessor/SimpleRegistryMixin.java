@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-@SuppressWarnings("unused")
 @Mixin(SimpleRegistry.class)
 public abstract class SimpleRegistryMixin<T> implements SimpleRegistryAccessor<T>, MutableRegistry<T> {
 

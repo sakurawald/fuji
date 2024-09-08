@@ -1,14 +1,16 @@
 package io.github.sakurawald.core.job.abst;
 
-import org.quartz.*;
+import lombok.NoArgsConstructor;
+import org.quartz.JobDataMap;
+import org.quartz.SimpleScheduleBuilder;
+import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 
+@NoArgsConstructor
 public abstract class FixedIntervalJob extends BaseJob {
 
     int intervalMs;
     int repeatCount;
-
-    @SuppressWarnings("unused")
-    public FixedIntervalJob() {}
 
     public FixedIntervalJob(String jobGroup, String jobName, JobDataMap jobDataMap, int intervalMs, int repeatCount) {
         super(jobGroup, jobName, jobDataMap);

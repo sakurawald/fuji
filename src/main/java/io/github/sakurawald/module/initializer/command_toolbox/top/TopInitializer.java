@@ -1,11 +1,11 @@
 package io.github.sakurawald.module.initializer.command_toolbox.top;
 
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.structure.Position;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Heightmap;
@@ -21,7 +21,7 @@ public class TopInitializer extends ModuleInitializer {
         Position position = Position.of(player).withY(topPosition.getY());
         position.teleport(player);
 
-        MessageHelper.sendMessage(player, "top");
+        LanguageHelper.sendMessageByKey(player, "top");
         return CommandHelper.Return.SUCCESS;
     }
 

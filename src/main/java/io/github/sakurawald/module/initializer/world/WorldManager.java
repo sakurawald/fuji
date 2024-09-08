@@ -2,15 +2,15 @@ package io.github.sakurawald.module.initializer.world;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import io.github.sakurawald.core.accessor.SimpleRegistryAccessor;
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.structure.Position;
-import io.github.sakurawald.core.accessor.SimpleRegistryAccessor;
 import io.github.sakurawald.core.structure.TeleportTicket;
 import io.github.sakurawald.module.initializer.world.accessor.IDimensionOptions;
 import io.github.sakurawald.module.initializer.world.structure.MyServerWorld;
 import io.github.sakurawald.module.initializer.world.structure.MyWorldProperties;
 import io.github.sakurawald.module.initializer.world.structure.VoidWorldGenerationProgressListener;
-import io.github.sakurawald.core.auxiliary.LogUtil;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import lombok.SneakyThrows;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -44,6 +44,7 @@ public class WorldManager {
         ServerTickEvents.START_SERVER_TICK.register(server -> tick());
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void requestToDeleteWorld(@NotNull ServerWorld world) {
         MinecraftServer server = world.getServer();
         server.submit(() -> {
@@ -138,6 +139,7 @@ public class WorldManager {
         return new DimensionOptions(template.dimensionTypeEntry(), template.chunkGenerator());
     }
 
+    @SuppressWarnings("deprecation")
     public static void requestToCreateWorld(@NotNull MinecraftServer server, Identifier dimensionIdentifier, @NotNull Identifier dimenstionTypeIdentifier, long seed) {
         /* create the world */
         // note: we use the same WorldData from OVERWORLD

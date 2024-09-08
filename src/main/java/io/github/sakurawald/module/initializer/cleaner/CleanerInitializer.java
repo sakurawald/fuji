@@ -1,15 +1,15 @@
 package io.github.sakurawald.module.initializer.cleaner;
 
+import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.structure.TypeFormatter;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.cleaner.job.CleanerJob;
-import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -107,7 +107,7 @@ public class CleanerInitializer extends ModuleInitializer {
                 .append(TypeFormatter.formatTypes(null, counter)).build();
 
         for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
-            Component component = MessageHelper.ofComponent(player, "cleaner.broadcast", counter.values().stream().mapToInt(Integer::intValue).sum());
+            Component component = LanguageHelper.getTextByKey(player, "cleaner.broadcast", counter.values().stream().mapToInt(Integer::intValue).sum()).asComponent();
             component = component.hoverEvent(HoverEvent.showText(hoverTextComponent));
             player.sendMessage(component);
         }

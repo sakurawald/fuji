@@ -2,13 +2,13 @@ package io.github.sakurawald.module.initializer.deathlog;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.OfflinePlayerName;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -25,6 +25,7 @@ import net.minecraft.util.Uuids;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -51,9 +52,10 @@ public class DeathLogInitializer extends ModuleInitializer {
     private final String XP_PROGRESS = "xp_progress";
     private final String INVENTORY = "inventory";
 
+    @SneakyThrows
     @Override
     public void onInitialize() {
-        STORAGE_PATH.toFile().mkdirs();
+        Files.createDirectories(STORAGE_PATH);
     }
 
     @SneakyThrows

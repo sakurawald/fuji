@@ -3,15 +3,15 @@ package io.github.sakurawald.module.initializer.world_downloader;
 import com.google.common.collect.EvictingQueue;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
+import io.github.sakurawald.core.auxiliary.IOUtil;
+import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.world_downloader.structure.FileDownloadHandler;
-import io.github.sakurawald.core.auxiliary.IOUtil;
-import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import lombok.SneakyThrows;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
@@ -97,9 +97,9 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         contextQueue.add(path);
         File file = compressRegionFile(player);
         double BYTE_TO_MEGABYTE = 1.0 * 1024 * 1024;
-        MessageHelper.sendBroadcast("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
+        LanguageHelper.sendBroadcastByKey("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
         server.createContext(path, new FileDownloadHandler(this, file, Configs.configHandler.model().modules.world_downloader.bytes_per_second_limit));
-        MessageHelper.sendMessage(player, "world_downloader.response", url);
+        LanguageHelper.sendMessageByKey(player, "world_downloader.response", url);
         return CommandHelper.Return.SUCCESS;
     }
 

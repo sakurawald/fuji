@@ -3,11 +3,11 @@ package io.github.sakurawald.module.mixin.gameplay.carpet.fake_player_manager;
 import carpet.commands.PlayerCommand;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager.FakePlayerManagerInitializer;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
@@ -52,7 +52,7 @@ public abstract class PlayerCommandMixin {
         if (player == null) return;
 
         if (!module.canSpawnFakePlayer(player)) {
-            MessageHelper.sendMessage(player, "fake_player_manager.spawn.limit_exceed");
+            LanguageHelper.sendMessageByKey(player, "fake_player_manager.spawn.limit_exceed");
             cir.setReturnValue(0);
         }
 
@@ -77,7 +77,7 @@ public abstract class PlayerCommandMixin {
     private static void $cantManipulate(@NotNull CommandContext<ServerCommandSource> context, @NotNull CallbackInfoReturnable<Boolean> cir) {
         String fakePlayerName = StringArgumentType.getString(context, "player");
         if (!module.canManipulateFakePlayer(context, fakePlayerName)) {
-            MessageHelper.sendMessage(context.getSource(), "fake_player_manager.manipulate.forbidden");
+            LanguageHelper.sendMessageByKey(context.getSource(), "fake_player_manager.manipulate.forbidden");
             cir.setReturnValue(true);
         }
     }

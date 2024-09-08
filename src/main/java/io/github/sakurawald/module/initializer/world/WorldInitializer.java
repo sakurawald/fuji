@@ -3,13 +3,14 @@ package io.github.sakurawald.module.initializer.world;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
 import io.github.sakurawald.core.command.argument.wrapper.impl.DimensionType;
+import io.github.sakurawald.core.command.exception.SnackException;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
@@ -84,7 +85,7 @@ public class WorldInitializer extends ModuleInitializer {
         Identifier dimensionIdentifier = Identifier.of(FUJI_DIMENSION_NAMESPACE, name);
 
         if (IdentifierHelper.ofRegistry(RegistryKeys.DIMENSION).containsId(dimensionIdentifier)) {
-            MessageHelper.sendMessage(ctx.getSource(), "world.dimension.exist");
+            LanguageHelper.sendMessageByKey(ctx.getSource(), "world.dimension.exist");
             return CommandHelper.Return.FAIL;
         }
 
@@ -94,7 +95,7 @@ public class WorldInitializer extends ModuleInitializer {
         storage.model().dimension_list.add(new DimensionEntry(true, dimensionIdentifier.toString(), dimensionTypeIdentifier.toString(), $seed));
         storage.saveToDisk();
 
-        MessageHelper.sendBroadcast("world.dimension.created", dimensionIdentifier);
+        LanguageHelper.sendBroadcastByKey("world.dimension.created", dimensionIdentifier);
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -111,19 +112,20 @@ public class WorldInitializer extends ModuleInitializer {
 
         Optional<DimensionEntry> first = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
         if (first.isEmpty()) {
-            MessageHelper.sendMessage(ctx.getSource(), "world.dimension.not_exist");
+            LanguageHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found");
             return CommandHelper.Return.FAIL;
         }
         storage.model().dimension_list.remove(first.get());
         storage.saveToDisk();
 
-        MessageHelper.sendBroadcast("world.dimension.deleted", identifier);
+        LanguageHelper.sendBroadcastByKey("world.dimension.deleted", identifier);
         return CommandHelper.Return.SUCCESS;
     }
 
     private void checkBlacklist(CommandContext<ServerCommandSource> ctx, String identifier) {
         if (Configs.configHandler.model().modules.world.blacklist.dimension_list.contains(identifier)) {
-            throw new IllegalArgumentException(MessageHelper.getString(ctx.getSource(), "world.dimension.blacklist", identifier));
+            LanguageHelper.sendMessageByKey(ctx.getSource(), "world.dimension.blacklist", identifier);
+            throw new SnackException();
         }
     }
 
@@ -137,14 +139,13 @@ public class WorldInitializer extends ModuleInitializer {
 
         Optional<DimensionEntry> first = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
         if (first.isEmpty()) {
-            MessageHelper.sendMessage(ctx.getSource(), "world.dimension.not_exist");
+            LanguageHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found");
             return CommandHelper.Return.FAIL;
         }
         // just delete it
         WorldManager.requestToDeleteWorld(world);
 
         Boolean $useTheSameSeed = useTheSameSeed.orElse(false);
-
 
         long newSeed = $useTheSameSeed ? first.get().getSeed() : RandomSeed.getSeed();
         WorldManager.requestToCreateWorld(ServerHelper.getDefaultServer(), Identifier.of(identifier), Identifier.of(first.get().getDimensionType()), newSeed);
@@ -153,7 +154,7 @@ public class WorldInitializer extends ModuleInitializer {
         first.get().setSeed(newSeed);
         storage.saveToDisk();
 
-        MessageHelper.sendBroadcast("world.dimension.reset", identifier);
+        LanguageHelper.sendBroadcastByKey("world.dimension.reset", identifier);
         return CommandHelper.Return.SUCCESS;
     }
 }

@@ -1,11 +1,11 @@
 package io.github.sakurawald.module.initializer.command_toolbox.sit;
 
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.EntityHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.EntityHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -44,13 +44,14 @@ public class SitInitializer extends ModuleInitializer {
         return !player.hasVehicle() && !player.isFallFlying() && !player.isSleeping() && !player.isSwimming() && !player.isSpectator();
     }
 
+    @SuppressWarnings("deprecation")
     @CommandNode("sit")
     private int $sit(@CommandSource ServerPlayerEntity player) {
         // fix: if the player stand in the slab/stair block
         BlockPos steppingBlockPos = EntityHelper.getSteppingBlockPos(player);
         BlockState steppingBlockState = player.getWorld().getBlockState(steppingBlockPos);
         if (!canSit(player) || steppingBlockState.isAir() || steppingBlockState.isLiquid()) {
-            MessageHelper.sendActionBar(player, "sit.fail");
+            LanguageHelper.sendActionBarByKey(player, "sit.fail");
             return CommandHelper.Return.FAIL;
         }
 

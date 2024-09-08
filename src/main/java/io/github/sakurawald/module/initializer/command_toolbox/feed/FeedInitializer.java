@@ -1,10 +1,10 @@
 package io.github.sakurawald.module.initializer.command_toolbox.feed;
 
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -18,7 +18,7 @@ public class FeedInitializer extends ModuleInitializer {
         foodData.setSaturationLevel(5);
         foodData.setExhaustion(0);
 
-        MessageHelper.sendMessage(player, "feed");
+        LanguageHelper.sendMessageByKey(player, "feed");
         return CommandHelper.Return.SUCCESS;
     }
 

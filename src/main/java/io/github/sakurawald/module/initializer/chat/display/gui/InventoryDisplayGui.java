@@ -44,7 +44,7 @@ public class InventoryDisplayGui extends DisplayGuiBuilder {
 
         /* construct offhand */
         SlotClickForDeeperDisplayCallback slotClickForDeeperDisplayCallback = new SlotClickForDeeperDisplayCallback(gui, player);
-        gui.setSlot(7, offhand.get(0), slotClickForDeeperDisplayCallback);
+        gui.setSlot(7, offhand.getFirst(), slotClickForDeeperDisplayCallback);
 
         /* construct items */
         for (int i = LINE_SIZE * 5; i < LINE_SIZE * 6; i++) {

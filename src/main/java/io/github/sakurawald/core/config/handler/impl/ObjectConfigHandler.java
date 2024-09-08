@@ -4,8 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonWriter;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
 
@@ -50,7 +50,7 @@ public class ObjectConfigHandler<T> extends ConfigHandler<T> {
 
         } catch (IOException | NoSuchMethodException | InstantiationException | IllegalAccessException |
                  InvocationTargetException e) {
-            LogUtil.cryLoudly("Load config failed: ", e);
+            LogUtil.error("Load config failed: ", e);
         }
     }
 

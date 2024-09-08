@@ -15,6 +15,7 @@ public abstract class CommandContextBuilderMixin<S> implements CommandContextBui
     @Accessor(value = "arguments", remap = false)
     public abstract Map<String, ParsedArgument<S, ?>> getArguments();
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Unique
     public CommandContextBuilder<S> fuji$withArguments(Map<String, ParsedArgument<S, ?>> arguments) {
         getArguments().putAll(arguments);

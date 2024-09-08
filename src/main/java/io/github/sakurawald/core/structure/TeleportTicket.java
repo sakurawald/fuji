@@ -1,9 +1,9 @@
 package io.github.sakurawald.core.structure;
 
-import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.accessor.PlayerCombatExtension;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.manager.impl.bossbar.BossBarTicket;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import lombok.Getter;
 import net.kyori.adventure.bossbar.BossBar;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -18,7 +18,7 @@ public class TeleportTicket extends BossBarTicket {
     private final Position destination;
 
     private TeleportTicket(@NotNull ServerPlayerEntity player, Position source, Position destination, float progress) {
-        super(BossBar.bossBar(MessageHelper.ofComponent(player, "teleport_warmup.bossbar.name"), progress, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS), Configs.configHandler.model().modules.teleport_warmup.warmup_second * 1000, List.of(player)
+        super(BossBar.bossBar(LanguageHelper.getTextByKey(player, "teleport_warmup.bossbar.name"), progress, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS), Configs.configHandler.model().modules.teleport_warmup.warmup_second * 1000, List.of(player)
         );
         this.player = player;
         this.source = source;
@@ -39,7 +39,7 @@ public class TeleportTicket extends BossBarTicket {
 
         // check combat
         if (((PlayerCombatExtension) player).fuji$inCombat()) {
-            MessageHelper.sendActionBar(player, "teleport_warmup.in_combat");
+            LanguageHelper.sendActionBarByKey(player, "teleport_warmup.in_combat");
             return false;
         }
 

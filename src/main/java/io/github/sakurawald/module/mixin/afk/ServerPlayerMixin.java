@@ -2,6 +2,7 @@ package io.github.sakurawald.module.mixin.afk;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.authlib.GameProfile;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.model.ConfigModel;
 import io.github.sakurawald.core.service.command_executor.CommandExecutor;
@@ -26,8 +27,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-import static io.github.sakurawald.core.auxiliary.minecraft.MessageHelper.ofText;
-
 // to override tab list name in `tab list module`
 @Mixin(value = ServerPlayerEntity.class, priority = 1000 - 250)
 public abstract class ServerPlayerMixin extends PlayerEntity implements AfkStateAccessor {
@@ -39,7 +38,8 @@ public abstract class ServerPlayerMixin extends PlayerEntity implements AfkState
     @Final
     public MinecraftServer server;
 
-    @Shadow public abstract long getLastActionTime();
+    @Shadow
+    public abstract long getLastActionTime();
 
     @Unique
     private boolean afk = false;
@@ -55,7 +55,7 @@ public abstract class ServerPlayerMixin extends PlayerEntity implements AfkState
     public Text $getPlayerListName(Text original) {
         AfkStateAccessor accessor = (AfkStateAccessor) player;
         if (accessor.fuji$isAfk()) {
-            return ofText(player, false, Configs.configHandler.model().modules.afk.format);
+            return LanguageHelper.getTextByValue(player, Configs.configHandler.model().modules.afk.format);
         }
 
         return original;

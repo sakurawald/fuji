@@ -1,9 +1,9 @@
 package io.github.sakurawald.module.mixin.command_cooldown;
 
 import com.mojang.brigadier.ParseResults;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.command_cooldown.CommandCooldownInitializer;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -29,7 +29,7 @@ public class CommandsMixin {
 
         long cooldown = module.calculateCommandCooldown(player, string);
         if (cooldown > 0) {
-            MessageHelper.sendActionBar(player, "command_cooldown.cooldown", cooldown / 1000);
+            LanguageHelper.sendActionBarByKey(player, "command_cooldown.cooldown", cooldown / 1000);
             ci.cancel();
         }
     }

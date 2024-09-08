@@ -62,25 +62,18 @@ dependencies {
     testAnnotationProcessor "org.projectlombok:lombok:${project.lombok_version}"
 
     implementation "com.google.code.gson:gson:${project.gson_version}"
-    include(implementation "com.jayway.jsonpath:json-path:${project.json_path_version}")
-    include(implementation "net.minidev:json-smart:${project.json_path_smart_version}")
-    include(implementation "net.minidev:accessors-smart:${project.json_path_smart_version}")
+    include(implementation("com.jayway.jsonpath:json-path:${project.json_path_version}"))
 
     modImplementation("carpet:fabric-carpet:${project.carpet_core_version}")
 
     include(implementation "net.luckperms:api:${project.luckperms_api_version}")
 
     include(modImplementation("net.kyori:adventure-platform-fabric:${project.adventure_platform_fabric_version}"))
-    include(implementation "net.kyori:adventure-text-minimessage:${project.adventure_api_version}")
 
     include(modImplementation("eu.pb4:sgui:${project.sgui_version}"))
     include(modImplementation("eu.pb4:placeholder-api:${project.placeholder_api_version}"))
 
     implementation "me.lucko:spark-api:${project.spark_api_version}"
-
-    include(implementation "commons-io:commons-io:${project.apache_commons_io_version}")
-
-    include(implementation "org.jetbrains:annotations:${project.jetbrains_annotations_version}")
 
     include(implementation "org.quartz-scheduler:quartz:${project.quartz_version}")
 
@@ -88,7 +81,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    include(implementation "io.github.classgraph:classgraph:${project.classgraph_version}")
+    testImplementation "io.github.classgraph:classgraph:${project.classgraph_version}"
 }
 
 

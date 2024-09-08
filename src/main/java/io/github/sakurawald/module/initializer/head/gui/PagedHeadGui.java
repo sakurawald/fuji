@@ -4,11 +4,11 @@ import eu.pb4.sgui.api.ClickType;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.gui.PagedGui;
 import io.github.sakurawald.module.initializer.head.HeadInitializer;
 import io.github.sakurawald.module.initializer.head.structure.EconomyType;
 import io.github.sakurawald.module.initializer.head.structure.Head;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -34,7 +34,7 @@ public class PagedHeadGui extends PagedGui<Head> {
         var builder = GuiElementBuilder.from(entity.of());
         if (HeadInitializer.headHandler.model().economyType != EconomyType.FREE) {
             builder.addLoreLine(Text.empty());
-            builder.addLoreLine(MessageHelper.ofText(getPlayer(), "head.price").copy().append(EconomyType.getCost()));
+            builder.addLoreLine(LanguageHelper.getTextByKey(getPlayer(), "head.price").copy().append(EconomyType.getCost()));
         }
         builder.setCallback((index, type, action) -> processHeadClick(entity, type));
         return builder.build();

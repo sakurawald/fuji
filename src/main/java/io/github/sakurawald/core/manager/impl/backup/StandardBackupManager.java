@@ -1,9 +1,10 @@
 package io.github.sakurawald.core.manager.impl.backup;
 
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.IOUtil;
+import io.github.sakurawald.core.config.Configs;
+import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -58,11 +59,12 @@ public class StandardBackupManager extends BaseBackupManager {
         return files;
     }
 
+    @SneakyThrows
     protected void trimBackup() {
         List<Path> latestFiles = IOUtil.getLatestFiles(BACKUP_PATH);
         Iterator<Path> iterator = latestFiles.iterator();
         while (iterator.hasNext() && latestFiles.size() > Configs.configHandler.model().core.backup.max_slots - 1) {
-            iterator.next().toFile().delete();
+            Files.delete(iterator.next());
             iterator.remove();
         }
     }
@@ -79,9 +81,10 @@ public class StandardBackupManager extends BaseBackupManager {
         IOUtil.compressFiles(getInputFiles(), getOutputFile());
     }
 
+    @SneakyThrows
     @Override
     public void backup() {
-        BACKUP_PATH.toFile().mkdirs();
+        Files.createDirectories(BACKUP_PATH);
         trimBackup();
         makeBackup();
     }

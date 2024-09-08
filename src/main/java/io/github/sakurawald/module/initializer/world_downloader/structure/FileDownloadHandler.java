@@ -2,8 +2,8 @@ package io.github.sakurawald.module.initializer.world_downloader.structure;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import io.github.sakurawald.module.initializer.world_downloader.WorldDownloaderInitializer;
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.module.initializer.world_downloader.WorldDownloaderInitializer;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;

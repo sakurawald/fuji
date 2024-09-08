@@ -2,6 +2,10 @@ package io.github.sakurawald.module.initializer.kit;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -9,10 +13,6 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.kit.command.argument.wrapper.KitName;
 import io.github.sakurawald.module.initializer.kit.gui.KitEditorGui;
 import io.github.sakurawald.module.initializer.kit.structure.Kit;
-import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
 import lombok.SneakyThrows;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -114,7 +114,7 @@ public class KitInitializer extends ModuleInitializer {
 
         Kit $kit = readKit(kit.getValue());
         if ($kit.getStackList().isEmpty()) {
-            MessageHelper.sendMessage(ctx.getSource(), "kit.kit.empty");
+            LanguageHelper.sendMessageByKey(ctx.getSource(), "kit.kit.empty");
             return CommandHelper.Return.FAIL;
         }
 

@@ -18,7 +18,6 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
-@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 @UtilityClass
 public class PermissionHelper {
 
@@ -65,18 +64,20 @@ public class PermissionHelper {
                 .getPermissionData().checkPermission(permission);
     }
 
-    public static boolean hasPermission(UUID uuid, @NotNull String permission) {
+    public static boolean hasPermission(UUID uuid, @Nullable String permission) {
+        if (permission == null) return false;
         return checkPermission(uuid, permission).asBoolean();
     }
 
-    public static <T> @NonNull Optional<T> getMeta(@NotNull UUID uuid, @NotNull String meta, @NonNull Function<String, ? extends T> valueTransformer) {
+    public static <T> @NonNull Optional<T> getMeta(@NotNull UUID uuid, @Nullable String meta, @NonNull Function<String, ? extends T> valueTransformer) {
+        if (meta == null) return Optional.empty();
+
         LuckPerms api = getAPI();
         if (api == null) {
             return Optional.empty();
         }
 
         User user = loadUser(api, uuid);
-
         return user.getCachedData()
                 .getMetaData()
                 .getMetaValue(meta, valueTransformer);
@@ -97,7 +98,7 @@ public class PermissionHelper {
 
     }
 
-    public static <T> @Nullable String getSuffix(UUID uuid) {
+    public static @Nullable String getSuffix(UUID uuid) {
         LuckPerms api = getAPI();
         if (api == null) {
             return null;
@@ -118,6 +119,7 @@ public class PermissionHelper {
         }
     }
 
+    @SuppressWarnings("unused")
     public static void setPermission(UUID uuid, @NotNull String string) {
         LuckPerms api = getAPI();
         ensureApiNotNull(api);
@@ -132,6 +134,7 @@ public class PermissionHelper {
         getAPI().getUserManager().saveUser(user);
     }
 
+    @SuppressWarnings("unused")
     public static void unsetPermission(UUID uuid, @NotNull String string) {
         LuckPerms api = getAPI();
         ensureApiNotNull(api);
@@ -141,6 +144,7 @@ public class PermissionHelper {
         getAPI().getUserManager().saveUser(user);
     }
 
+    @SuppressWarnings("unused")
     public static void setMeta(UUID uuid, @NotNull String key, @NotNull String value) {
         LuckPerms api = getAPI();
         ensureApiNotNull(api);

@@ -1,17 +1,17 @@
 package io.github.sakurawald.module.initializer.command_toolbox.seen;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.core.command.annotation.CommandRequirement;
-import io.github.sakurawald.core.command.argument.wrapper.impl.OfflinePlayerName;
+import io.github.sakurawald.core.auxiliary.DateUtil;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
+import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.command.argument.wrapper.impl.OfflinePlayerName;
 import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
-import io.github.sakurawald.module.initializer.command_toolbox.seen.config.model.SeenModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.DateUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.module.initializer.command_toolbox.seen.config.model.SeenModel;
 import lombok.Getter;
 import net.minecraft.server.command.ServerCommandSource;
 
@@ -38,9 +38,9 @@ public class SeenInitializer extends ModuleInitializer {
 
         if (data.model().player2seen.containsKey(target)) {
             Long time = data.model().player2seen.get(target);
-            MessageHelper.sendMessage(ctx.getSource(), "seen.success", target, DateUtil.toStandardDateFormat(time));
+            LanguageHelper.sendMessageByKey(ctx.getSource(), "seen.success", target, DateUtil.toStandardDateFormat(time));
         } else {
-            MessageHelper.sendMessage(ctx.getSource(), "seen.fail");
+            LanguageHelper.sendMessageByKey(ctx.getSource(), "seen.fail");
         }
         return CommandHelper.Return.SUCCESS;
     }

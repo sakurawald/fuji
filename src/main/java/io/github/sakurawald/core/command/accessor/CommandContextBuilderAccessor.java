@@ -7,6 +7,7 @@ import java.util.Map;
 
 public interface CommandContextBuilderAccessor<S> {
 
+    @SuppressWarnings("EmptyMethod")
     Map<String, ParsedArgument<S, ?>> getArguments();
 
     @SuppressWarnings("UnusedReturnValue")

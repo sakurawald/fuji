@@ -4,15 +4,11 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.skin.enums.SkinVariant;
 import io.github.sakurawald.module.initializer.skin.provider.MineSkinSkinProvider;
 import io.github.sakurawald.module.initializer.skin.provider.MojangSkinProvider;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.function.Supplier;
-
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.GameProfileArgumentType;
@@ -20,6 +16,10 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Supplier;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -79,16 +79,16 @@ public class SkinInitializer extends ModuleInitializer {
             Collection<ServerPlayerEntity> players = pair.left();
 
             if (profiles.isEmpty()) {
-                MessageHelper.sendMessage(src, "skin.action.failed");
+                LanguageHelper.sendMessageByKey(src, "skin.action.failed");
                 return;
             }
             if (setByOperator) {
-                MessageHelper.sendMessage(src, "skin.action.affected_profile", String.join(", ", profiles.stream().map(GameProfile::getName).toList()));
+                LanguageHelper.sendMessageByKey(src, "skin.action.affected_profile", String.join(", ", profiles.stream().map(GameProfile::getName).toList()));
                 if (!players.isEmpty()) {
-                    MessageHelper.sendMessage(src, "skin.action.affected_player", String.join(", ", players.stream().map(p -> p.getGameProfile().getName()).toList()));
+                    LanguageHelper.sendMessageByKey(src, "skin.action.affected_player", String.join(", ", players.stream().map(p -> p.getGameProfile().getName()).toList()));
                 }
             } else {
-                MessageHelper.sendMessage(src, "skin.action.ok");
+                LanguageHelper.sendMessageByKey(src, "skin.action.ok");
             }
         });
         return targets.size();

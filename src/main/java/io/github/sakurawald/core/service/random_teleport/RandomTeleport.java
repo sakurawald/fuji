@@ -1,12 +1,12 @@
 package io.github.sakurawald.core.service.random_teleport;
 
 import com.google.common.base.Stopwatch;
+import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.structure.Position;
 import io.github.sakurawald.core.structure.TeleportSetup;
-import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 /**
- * We reference the rtp code from https://github.com/John-Paul-R/Essential-Commands at the early stage of this project.
+ * We reference the rtp code from <a href="https://github.com/John-Paul-R/Essential-Commands">...</a> at the early stage of this project.
  */
 public class RandomTeleport {
 
@@ -37,7 +37,7 @@ public class RandomTeleport {
 
             ServerWorld world = IdentifierHelper.ofServerWorld(Identifier.of(setup.getDimension()));
             if (world == null) {
-                MessageHelper.sendMessage(player,"dimension.no_found");
+                LanguageHelper.sendMessageByKey(player,"world.dimension.not_found");
                 return;
             }
 
@@ -50,7 +50,7 @@ public class RandomTeleport {
             } while (result.isEmpty() && triedTimes <= setup.getMaxTryTimes());
 
             if (result.isEmpty()) {
-                MessageHelper.sendMessage(player, "rtp.fail");
+                LanguageHelper.sendMessageByKey(player, "rtp.fail");
                 return;
             }
 

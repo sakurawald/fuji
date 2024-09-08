@@ -3,12 +3,6 @@ package io.github.sakurawald.module.initializer.world.structure;
 import com.google.common.collect.Iterators;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Lifecycle;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.SimpleRegistry;
@@ -16,8 +10,14 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings({"unused", "InfiniteRecursion", "LombokGetterMayBeUsed"})
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
+
+@SuppressWarnings({"unused", "InfiniteRecursion"})
 public class FilteredRegistry<T> extends SimpleRegistry<T> {
     private final @NotNull Registry<T> source;
     private final Predicate<T> check;
@@ -28,7 +28,7 @@ public class FilteredRegistry<T> extends SimpleRegistry<T> {
         this.check = check;
     }
 
-    public Registry<T> getSource() {
+    public @NotNull Registry<T> getSource() {
         return this.source;
     }
 

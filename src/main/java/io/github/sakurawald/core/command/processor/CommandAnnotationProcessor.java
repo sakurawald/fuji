@@ -8,6 +8,7 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -16,14 +17,16 @@ import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeA
 import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.core.command.exception.SnackException;
 import io.github.sakurawald.core.manager.Managers;
+import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.HoverEvent;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -64,13 +67,13 @@ public class CommandAnnotationProcessor {
     private static void processClass(Class<?> clazz, Object instance) {
         Set<Method> methods = ReflectionUtil.getMethodsWithAnnotation(clazz, CommandNode.class);
         for (Method method : methods) {
-            processMethod(clazz, method, instance);
+            processMethod(clazz, instance, method);
         }
     }
 
-    private static void processMethod(Class<?> clazz, Method method, Object instance) {
+    private static void processMethod(Class<?> clazz, Object instance, Method method) {
         if (!method.getReturnType().equals(Integer.class)
-                && !method.getReturnType().equals(int.class)) {
+            && !method.getReturnType().equals(int.class)) {
             throw new RuntimeException("The method `%s` in class `%s` must return Integer.".formatted(method.getName(), clazz.getName()));
         }
 
@@ -87,7 +90,7 @@ public class CommandAnnotationProcessor {
 
         /* first pass */
         List<ArgumentBuilder<ServerCommandSource, ?>> builders = makeArgumentBuilders(pattern, method);
-        com.mojang.brigadier.Command<ServerCommandSource> function = makeCommandFunction(method, instance);
+        com.mojang.brigadier.Command<ServerCommandSource> function = makeCommandFunction(instance, method);
 
         // set requirement (class)
         if (clazz.isAnnotationPresent(CommandRequirement.class)) {
@@ -162,7 +165,7 @@ public class CommandAnnotationProcessor {
         return BaseArgumentTypeAdapter.getAdapter(expectedCommandSourceParameter).validateCommandSource(ctx);
     }
 
-    private static com.mojang.brigadier.Command<ServerCommandSource> makeCommandFunction(Method method, Object instance) {
+    private static com.mojang.brigadier.Command<ServerCommandSource> makeCommandFunction(Object instance, Method method) {
         return (ctx) -> {
             // validate command source
             if (!validateCommandSource(ctx, method)) {
@@ -177,12 +180,17 @@ public class CommandAnnotationProcessor {
                 // don't swallow the exception.
                 Throwable theRealException = e.getCause();
 
-                if (theRealException instanceof SnackException) {
+                if (theRealException instanceof SnackException snakeException) {
+                    // report it
+                    if (snakeException.getMessage() != null) {
+                        reportException(ctx.getSource(), instance, method, theRealException);
+                    }
+
                     // swallow it
                     return CommandHelper.Return.FAIL;
                 }
 
-                sendCommandExceptionToSource(ctx.getSource(), theRealException);
+                reportException(ctx.getSource(), instance, method, theRealException);
                 return CommandHelper.Return.FAIL;
             }
 
@@ -190,11 +198,34 @@ public class CommandAnnotationProcessor {
         };
     }
 
-    private static void sendCommandExceptionToSource(ServerCommandSource source, Throwable exception) {
-        MutableText mutableText = Text.literal("[fuji exception handler] " + exception.toString());
-        source.sendError(Text.translatable("command.failed").styled(style -> style.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, mutableText))));
-    }
 
+    private static void reportException(ServerCommandSource source, Object instance, Method method, Throwable throwable) {
+        // report to console
+        String string = """
+            [Fuji Exception Catcher]
+            - Source: %s
+            - Module: %s
+            - Class: %s
+            - Method: %s
+            - Message: %s
+
+            """.formatted(
+            source.getName()
+            , ModuleManager.computeModulePath(instance.getClass().getName())
+            , instance.getClass().getName()
+            , method.getName()
+            , throwable.toString());
+        LogUtil.error(string, throwable);
+
+        // report to command source
+        String stacktrace = String.join("\n", LogUtil.getStackTraceAsList(throwable));
+        Component report = LanguageHelper.getTextByValue(source, string)
+            .asComponent()
+            .color(NamedTextColor.RED)
+            .hoverEvent(HoverEvent.showText(Component.text("Click to copy the stacktrace.")))
+            .clickEvent(ClickEvent.copyToClipboard(stacktrace));
+        source.sendMessage(report);
+    }
 
     private static List<Object> makeCommandFunctionArgs(CommandContext<ServerCommandSource> ctx, Method method) {
         List<Object> args = new ArrayList<>();
@@ -261,7 +292,7 @@ public class CommandAnnotationProcessor {
             Parameter parameter = method.getParameters()[index];
 
             ArgumentBuilder<ServerCommandSource, ?> optionalArgumentBuilder = literal("--" + optionalArgument.getArgumentName())
-                    .then(makeRequiredArgumentBuilder(parameter).executes(function).redirect(root));
+                .then(makeRequiredArgumentBuilder(parameter).executes(function).redirect(root));
 
             // register it
             root.addChild(optionalArgumentBuilder.build());

@@ -47,8 +47,8 @@ public abstract class BossBarTicket {
         return this.bossbar.progress();
     }
 
-    public @NotNull BossBar progress(float progress) {
-        return this.bossbar.progress(progress);
+    public void progress(float progress) {
+        this.bossbar.progress(progress);
     }
 
     public void addAudience(@NotNull Audience audience) {
@@ -66,6 +66,7 @@ public abstract class BossBarTicket {
         this.audiences.clear();
     }
 
+    @SuppressWarnings({"EmptyMethod", "unused"})
     public void onAudienceDisconnected(Audience audience) {
         // no-op
     }

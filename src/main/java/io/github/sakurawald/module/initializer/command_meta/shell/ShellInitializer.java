@@ -1,14 +1,14 @@
 package io.github.sakurawald.module.initializer.command_meta.shell;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
+import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class ShellInitializer extends ModuleInitializer {
 
+    @SuppressWarnings("deprecation")
     @CommandNode("shell")
     @CommandRequirement(level = 4)
     private int shell(@CommandSource CommandContext<ServerCommandSource> ctx, GreedyString rest) {
@@ -48,7 +49,7 @@ public class ShellInitializer extends ModuleInitializer {
                 LogUtil.info(output.toString());
                 ctx.getSource().sendMessage(Text.literal(output.toString()));
             } catch (IOException | InterruptedException e) {
-                LogUtil.cryLoudly("Failed to execute a shell command.", e);
+                LogUtil.error("Failed to execute a shell command.", e);
             }
         });
 

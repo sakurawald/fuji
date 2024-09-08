@@ -1,13 +1,13 @@
 package io.github.sakurawald.module.initializer.head.structure;
 
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
-import java.util.UUID;
-
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.UUID;
 
 public enum Category {
     ALPHABET("alphabet",
@@ -82,7 +82,7 @@ public enum Category {
     }
 
     public @NotNull Text getDisplayName(ServerPlayerEntity player) {
-        return MessageHelper.ofText(player, "head.category." + name);
+        return LanguageHelper.getTextByKey(player, "head.category." + name);
     }
 
     public @NotNull String getFileName() {

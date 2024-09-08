@@ -1,10 +1,10 @@
 package io.github.sakurawald.module.initializer.command_toolbox.fly;
 
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 
@@ -20,7 +20,7 @@ public class FlyInitializer extends ModuleInitializer {
         }
 
         player.sendAbilitiesUpdate();
-        MessageHelper.sendMessage(player, flag ? "fly.on" : "fly.off");
+        LanguageHelper.sendMessageByKey(player, flag ? "fly.on" : "fly.off");
         return CommandHelper.Return.SUCCESS;
     }
 }

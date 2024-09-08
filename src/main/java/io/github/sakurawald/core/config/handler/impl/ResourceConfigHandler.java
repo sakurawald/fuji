@@ -4,12 +4,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonWriter;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
+import java.nio.file.Files;
 
 
 public class ResourceConfigHandler extends ConfigHandler<JsonElement> {
@@ -37,6 +38,8 @@ public class ResourceConfigHandler extends ConfigHandler<JsonElement> {
 
                 // merge older json with newer json
                 JsonElement newerJsonElement = ResourceConfigHandler.getJsonElement(this.resourcePath);
+                assert newerJsonElement != null;
+
                 mergeJson(olderJsonElement, newerJsonElement);
 
                 // read merged json
@@ -45,17 +48,16 @@ public class ResourceConfigHandler extends ConfigHandler<JsonElement> {
             }
 
         } catch (IOException e) {
-            LogUtil.cryLoudly("Load config failed", e);
+            LogUtil.error("Load config failed", e);
         }
     }
 
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void saveToDisk() {
         try {
             // Should we generate a default config instance ?
             if (!file.exists()) {
-                this.file.getParentFile().mkdirs();
+                Files.createDirectories(this.file.getParentFile().toPath());
                 this.model = ResourceConfigHandler.getJsonElement(this.resourcePath);
             }
 

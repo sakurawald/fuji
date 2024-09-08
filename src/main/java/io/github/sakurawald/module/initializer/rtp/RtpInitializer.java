@@ -1,14 +1,14 @@
 package io.github.sakurawald.module.initializer.rtp;
 
-import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
-import io.github.sakurawald.core.command.annotation.CommandNode;
-import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.structure.TeleportSetup;
-import io.github.sakurawald.core.service.random_teleport.RandomTeleport;
-import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.command.annotation.CommandNode;
+import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
+import io.github.sakurawald.core.service.random_teleport.RandomTeleport;
+import io.github.sakurawald.core.structure.TeleportSetup;
+import io.github.sakurawald.module.initializer.ModuleInitializer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 
@@ -23,12 +23,12 @@ public class RtpInitializer extends ModuleInitializer {
 
         Optional<TeleportSetup> first = TeleportSetup.of(serverWorld);
         if (first.isEmpty()) {
-            MessageHelper.sendMessage(player, "rtp.dimension.disallow", IdentifierHelper.ofString(serverWorld));
+            LanguageHelper.sendMessageByKey(player, "rtp.dimension.disallow", IdentifierHelper.ofString(serverWorld));
             return CommandHelper.Return.FAIL;
         }
 
-        MessageHelper.sendActionBar(player, "rtp.tip");
-        RandomTeleport.request(player, first.get(), (position -> MessageHelper.sendMessage(player, "rtp.success")));
+        LanguageHelper.sendActionBarByKey(player, "rtp.tip");
+        RandomTeleport.request(player, first.get(), (position -> LanguageHelper.sendMessageByKey(player, "rtp.success")));
         return CommandHelper.Return.SUCCESS;
     }
 }

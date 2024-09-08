@@ -1,14 +1,14 @@
 package io.github.sakurawald.module.initializer.top_chunks;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.top_chunks.structure.ChunkScore;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.minecraft.block.entity.BlockEntity;
@@ -99,7 +99,7 @@ public class TopChunksInitializer extends ModuleInitializer {
             BlockPos blockPos = chunkPos.getStartPos();
             PlayerEntity nearestPlayer = world.getClosestPlayer(blockPos.getX(), blockPos.getY(), blockPos.getZ(), Configs.configHandler.model().modules.top_chunks.nearest_distance, false);
             if (nearestPlayer != null) {
-                chunkScore.getPlayers().add(MessageHelper.getString(source, "top_chunks.prop.players.nearest", nearestPlayer.getGameProfile().getName()));
+                chunkScore.getPlayers().add(LanguageHelper.getValue(source, "top_chunks.prop.players.nearest", nearestPlayer.getGameProfile().getName()));
             }
         }
     }

@@ -2,15 +2,15 @@ package io.github.sakurawald.module.initializer.works.structure.work.impl;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.module.initializer.works.abst.Schedulable;
-import io.github.sakurawald.module.initializer.works.structure.WorksCache;
-import io.github.sakurawald.core.gui.ConfirmGui;
-import io.github.sakurawald.core.gui.InputSignGui;
-import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.gui.ConfirmGui;
+import io.github.sakurawald.core.gui.InputSignGui;
+import io.github.sakurawald.module.initializer.works.abst.Schedulable;
+import io.github.sakurawald.module.initializer.works.structure.WorksCache;
+import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import lombok.NoArgsConstructor;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.minecraft.block.entity.BlockEntity;
@@ -23,7 +23,6 @@ import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ChunkHolder;
-import net.minecraft.server.world.ServerChunkLoadingManager;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -60,13 +59,13 @@ public class ProductionWork extends Work implements Schedulable {
         sortedStream.forEach(entry -> {
             String key = entry.getKey();
             double rate = entry.getValue() * ((double) (3600 * 1000) / ((Math.min(this.sample.sampleEndTimeMS, currentTimeMS)) - this.sample.sampleStartTimeMS));
-            net.kyori.adventure.text.Component component = MessageHelper.ofComponent(player, "works.production_work.prop.sample_counter.entry", entry.getValue(), rate)
+            net.kyori.adventure.text.Component component = LanguageHelper.getTextByKey(player, "works.production_work.prop.sample_counter.entry", entry.getValue(), rate).asComponent()
                     .replaceText(TextReplacementConfig.builder().matchLiteral("[item]").replacement(Text.translatable(key)).build());
-            ret.add(MessageHelper.toText(component));
+            ret.add(LanguageHelper.toText(component));
         });
 
         if (ret.isEmpty()) {
-            ret.add(MessageHelper.ofText(player, "works.production_work.prop.sample_counter.empty"));
+            ret.add(LanguageHelper.getTextByKey(player, "works.production_work.prop.sample_counter.empty"));
         }
         return ret;
     }
@@ -77,15 +76,15 @@ public class ProductionWork extends Work implements Schedulable {
         List<Text> ret = super.asLore(player);
         // note: hide sample info in lore if sample not exists
         if (this.sample.sampleStartTimeMS == 0) {
-            ret.addAll((MessageHelper.ofTextList(player, "works.production_work.sample.not_exists")));
+            ret.addAll((LanguageHelper.getTextListByKey(player, "works.production_work.sample.not_exists")));
             return ret;
         }
 
-        ret.add(MessageHelper.ofText(player, "works.production_work.prop.sample_start_time", DateUtil.toStandardDateFormat(this.sample.sampleStartTimeMS)));
-        ret.add(MessageHelper.ofText(player, "works.production_work.prop.sample_end_time", DateUtil.toStandardDateFormat(this.sample.sampleEndTimeMS)));
-        ret.add(MessageHelper.ofText(player, "works.production_work.prop.sample_dimension", this.sample.sampleDimension));
-        ret.add(MessageHelper.ofText(player, "works.production_work.prop.sample_coordinate", this.sample.sampleX, this.sample.sampleY, this.sample.sampleZ));
-        ret.add(MessageHelper.ofText(player, "works.production_work.prop.sample_distance", this.sample.sampleDistance));
+        ret.add(LanguageHelper.getTextByKey(player, "works.production_work.prop.sample_start_time", DateUtil.toStandardDateFormat(this.sample.sampleStartTimeMS)));
+        ret.add(LanguageHelper.getTextByKey(player, "works.production_work.prop.sample_end_time", DateUtil.toStandardDateFormat(this.sample.sampleEndTimeMS)));
+        ret.add(LanguageHelper.getTextByKey(player, "works.production_work.prop.sample_dimension", this.sample.sampleDimension));
+        ret.add(LanguageHelper.getTextByKey(player, "works.production_work.prop.sample_coordinate", this.sample.sampleX, this.sample.sampleY, this.sample.sampleZ));
+        ret.add(LanguageHelper.getTextByKey(player, "works.production_work.prop.sample_distance", this.sample.sampleDistance));
 
         // check npe to avoid broken
         if (this.sample.sampleCounter != null) {
@@ -93,7 +92,7 @@ public class ProductionWork extends Work implements Schedulable {
             if (this.sample.sampleCounter.size() > Configs.configHandler.model().modules.works.sample_counter_top_n) {
                 trimCounter();
             }
-            ret.add(MessageHelper.ofText(player, "works.production_work.prop.sample_counter"));
+            ret.add(LanguageHelper.getTextByKey(player, "works.production_work.prop.sample_counter"));
             ret.addAll(formatSampleCounter(player));
         }
         return ret;
@@ -113,12 +112,12 @@ public class ProductionWork extends Work implements Schedulable {
                 try {
                     current = Integer.parseInt(this.getLine(0).getString());
                 } catch (NumberFormatException e) {
-                    MessageHelper.sendActionBar(player, "input.syntax.error");
+                    LanguageHelper.sendActionBarByKey(player, "input.syntax.error");
                     return;
                 }
 
                 if (current > limit) {
-                    MessageHelper.sendActionBar(player, "input.limit.error");
+                    LanguageHelper.sendActionBarByKey(player, "input.limit.error");
                     return;
                 }
 
@@ -137,12 +136,12 @@ public class ProductionWork extends Work implements Schedulable {
     @Override
     public void openSpecializedSettingsGui(ServerPlayerEntity player, @NotNull SimpleGui parentGui) {
         final SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X1, player, false);
-        gui.setTitle(MessageHelper.ofText(player, "works.work.set.specialized_settings.title"));
+        gui.setTitle(LanguageHelper.getTextByKey(player, "works.work.set.specialized_settings.title"));
         gui.setLockPlayerInventory(true);
         gui.addSlot(new GuiElementBuilder()
                 .setItem(Items.CLOCK)
-                .setName(MessageHelper.ofText(player, "works.production_work.set.sample"))
-                .setLore(MessageHelper.ofTextList(player, "works.production_work.set.sample.lore"))
+                .setName(LanguageHelper.getTextByKey(player, "works.production_work.set.sample"))
+                .setLore(LanguageHelper.getTextListByKey(player, "works.production_work.set.sample.lore"))
                 .setCallback(() -> new ConfirmGui(player) {
                             @Override
                             public void onConfirm() {
@@ -161,6 +160,7 @@ public class ProductionWork extends Work implements Schedulable {
         return System.currentTimeMillis() < this.sample.sampleEndTimeMS;
     }
 
+    @SuppressWarnings("EmptyMethod")
     @Override
     public Item asItem() {
         return super.asItem();
@@ -214,7 +214,7 @@ public class ProductionWork extends Work implements Schedulable {
             }
         }
 
-        MessageHelper.sendMessage(player, "works.production_work.sample.resolve_hoppers.response", hopperBlockCount, minecartHopperCount);
+        LanguageHelper.sendMessageByKey(player, "works.production_work.sample.resolve_hoppers.response", hopperBlockCount, minecartHopperCount);
         return hopperBlockCount + minecartHopperCount;
     }
 
@@ -234,17 +234,17 @@ public class ProductionWork extends Work implements Schedulable {
         this.sample.sampleZ = player.getZ();
         this.sample.sampleCounter = new HashMap<>();
         if (this.resolveHoppers(player) == 0) {
-            MessageHelper.sendMessage(player, "operation.cancelled");
+            LanguageHelper.sendMessageByKey(player, "operation.cancelled");
             return;
         }
 
-        MessageHelper.sendBroadcast("works.production_work.sample.start", name, this.creator);
+        LanguageHelper.sendBroadcastByKey("works.production_work.sample.start", name, this.creator);
     }
 
     public void endSample() {
         // unbind all block pos
         WorksCache.unbind(this);
-        MessageHelper.sendBroadcast("works.production_work.sample.end", this.name, this.creator);
+        LanguageHelper.sendBroadcastByKey("works.production_work.sample.end", this.name, this.creator);
 
         // trim counter to avoid spam
         trimCounter();

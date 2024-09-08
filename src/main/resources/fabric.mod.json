@@ -4,7 +4,7 @@
   "version": "${version}",
   "name": "Fuji",
   "icon": "assets/fuji/icon.png",
-  "description": "An essentials mod written for fabric platform.",
+  "description": "A mod that ports EssentialsX / CMI from bukkit to fabric.",
   "license": "GPL-3.0",
   "contact": {
     "homepage": "https://github.com/sakurawald",

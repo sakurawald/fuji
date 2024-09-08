@@ -1,7 +1,5 @@
 package io.github.sakurawald.core.service.random_teleport;
 
-import java.util.Optional;
-import java.util.OptionalInt;
 import net.minecraft.block.BlockState;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.world.ServerWorld;
@@ -13,6 +11,9 @@ import net.minecraft.world.chunk.ChunkSection;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.dimension.DimensionTypes;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
+import java.util.OptionalInt;
 
 public enum HeightFindingStrategy implements HeightFinder {
     SKY_TO_SURFACE__FIRST_SOLID(HeightFindingStrategy::findYTopBottom),

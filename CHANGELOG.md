@@ -1,3 +1,4 @@
-- feature: use compile-time reflection to boost the module loader at server start up stage, and also improve the compatibility with other mods.
-- feature: pass the compatibility with sinytra-connector mod.
-- feature: improve the `zh_tw` language support (by **@yichifauzi**).
+- feature: add a fuji exception catcher to catch exceptions during the execution of fuji commands, and provide a user-friendly exception report, to the command source, and the console.
+- feature: fix many typos in language keys and language values for language files.
+- feature: soft fail if the target dimension not found. (works module)
+- refactor: optimize the build script of project. (reduce the size of released jar)

@@ -1,11 +1,11 @@
 package io.github.sakurawald.module.initializer.command_toolbox.ping;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -17,7 +17,7 @@ public class PingInitializer extends ModuleInitializer {
         String name = target.getGameProfile().getName();
 
         int latency = target.networkHandler.getLatency();
-        MessageHelper.sendMessage(ctx.getSource(), "ping.player", name, latency);
+        LanguageHelper.sendMessageByKey(ctx.getSource(), "ping.player", name, latency);
 
         return CommandHelper.Return.SUCCESS;
     }

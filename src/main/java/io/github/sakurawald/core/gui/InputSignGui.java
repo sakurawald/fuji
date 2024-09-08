@@ -1,7 +1,7 @@
 package io.github.sakurawald.core.gui;
 
 import eu.pb4.sgui.api.gui.SignGui;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.DyeColor;
@@ -16,7 +16,7 @@ public class InputSignGui extends SignGui {
         this.setSignType(Blocks.CHERRY_WALL_SIGN);
         this.setColor(DyeColor.BLACK);
         if (promptKey != null) {
-            this.setLine(3, MessageHelper.ofText(player, true, promptKey));
+            this.setLine(3, LanguageHelper.getTextByKey(player, promptKey));
         }
         this.setAutoUpdate(false);
     }

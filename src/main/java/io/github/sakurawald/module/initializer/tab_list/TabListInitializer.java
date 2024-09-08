@@ -1,12 +1,12 @@
 package io.github.sakurawald.module.initializer.tab_list;
 
+import io.github.sakurawald.core.auxiliary.RandomUtil;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.model.ConfigModel;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.tab_list.job.RenderHeaderAndFooterJob;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
-import io.github.sakurawald.core.auxiliary.RandomUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.network.packet.s2c.play.PlayerListHeaderS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
@@ -40,8 +40,8 @@ public class TabListInitializer extends ModuleInitializer {
         String headerControl = RandomUtil.drawList(config.style.header);
         String footerControl = RandomUtil.drawList(config.style.footer);
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-            @NotNull Text header = MessageHelper.ofText(player, false, headerControl);
-            @NotNull Text footer = MessageHelper.ofText(player, false, footerControl);
+            @NotNull Text header = LanguageHelper.getTextByValue(player, headerControl);
+            @NotNull Text footer = LanguageHelper.getTextByValue(player, footerControl);
             player.networkHandler.sendPacket(new PlayerListHeaderS2CPacket(header, footer));
         }
 

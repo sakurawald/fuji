@@ -40,6 +40,7 @@ public class AttachmentManager extends BaseManager {
         }
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public File getAttachmentFile(String subject, String uuid) {
         File file = ATTACHMENT_STORAGE_PATH.resolve(subject).resolve(uuid).toFile();
         file.getParentFile().mkdirs();

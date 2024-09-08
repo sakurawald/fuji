@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.color.sign;
 
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -24,7 +24,7 @@ public class SignBlockEntityMixin {
             String string = PlainTextComponentSerializer.plainText().serialize(messages[i].asComponent());
 
             Component formated = MiniMessage.miniMessage().deserialize(string);
-            newMessages[i] = MessageHelper.toText(formated);
+            newMessages[i] = LanguageHelper.toText(formated);
         }
 
         return new SignText(newMessages, newMessages, signText.getColor(), signText.isGlowing());

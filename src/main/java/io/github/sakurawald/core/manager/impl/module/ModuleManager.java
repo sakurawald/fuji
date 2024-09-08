@@ -48,7 +48,7 @@ public class ModuleManager extends BaseManager {
                 try {
                     initializer.onReload();
                 } catch (Exception e) {
-                    LogUtil.cryLoudly("Failed to reload module.", e);
+                    LogUtil.error("Failed to reload module.", e);
                 }
             }
         );
@@ -64,6 +64,7 @@ public class ModuleManager extends BaseManager {
         LogUtil.info("Enabled {}/{} modules -> {}", enabledModuleList.size(), module2enable.size(), enabledModuleList);
     }
 
+    @SuppressWarnings("unused")
     @ApiStatus.AvailableSince("1.1.5")
     public boolean isModuleEnabled(List<String> modulePath) {
         return module2enable.get(modulePath);
@@ -83,7 +84,7 @@ public class ModuleManager extends BaseManager {
                     moduleInitializer.doInitialize();
                     moduleRegistry.put(clazz, moduleInitializer);
                 } catch (Exception e) {
-                    LogUtil.cryLoudly("Failed to initialize module %s.".formatted(clazz.getSimpleName()), e);
+                    LogUtil.error("Failed to initialize module %s.".formatted(clazz.getSimpleName()), e);
                 }
             }
         }
@@ -211,7 +212,6 @@ public class ModuleManager extends BaseManager {
         return modulePath;
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean isRequiredModsInstalled(@NotNull List<String> modulePath) {
 
         if (modulePath.contains("carpet")) {

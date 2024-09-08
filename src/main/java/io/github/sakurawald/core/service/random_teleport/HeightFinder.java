@@ -1,7 +1,8 @@
 package io.github.sakurawald.core.service.random_teleport;
 
-import java.util.OptionalInt;
 import net.minecraft.world.chunk.Chunk;
+
+import java.util.OptionalInt;
 
 @FunctionalInterface
 public interface HeightFinder {

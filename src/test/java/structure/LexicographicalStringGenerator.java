@@ -1,9 +1,9 @@
-package io.github.sakurawald.core.meta.generator.lexical_table;
+package structure;
 
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings({"MismatchedQueryAndUpdateOfStringBuilder", "unused"})
+@SuppressWarnings({"unused", "MismatchedQueryAndUpdateOfStringBuilder"})
 @UtilityClass
 public class LexicographicalStringGenerator {
 

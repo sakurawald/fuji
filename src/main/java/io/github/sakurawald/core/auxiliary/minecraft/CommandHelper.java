@@ -7,16 +7,12 @@ import lombok.experimental.UtilityClass;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.UserCache;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -57,7 +53,7 @@ public class CommandHelper {
         public static int playerOnlyCommand(@NotNull CommandContext<ServerCommandSource> ctx, @NotNull Function<ServerPlayerEntity, Integer> function) {
             ServerPlayerEntity player = ctx.getSource().getPlayer();
             if (player == null) {
-                MessageHelper.sendMessage(ctx.getSource(), "command.player_only");
+                LanguageHelper.sendMessageByKey(ctx.getSource(), "command.player_only");
                 return Return.SUCCESS;
             }
 
@@ -69,7 +65,7 @@ public class CommandHelper {
             return playerOnlyCommand(ctx, player -> {
                 ItemStack mainHandStack = player.getMainHandStack();
                 if (mainHandStack.isEmpty()) {
-                    MessageHelper.sendMessage(player, "item.empty");
+                    LanguageHelper.sendMessageByKey(player, "item.empty.not_allow");
                     return Return.FAIL;
                 }
                 return consumer.apply(player, mainHandStack);

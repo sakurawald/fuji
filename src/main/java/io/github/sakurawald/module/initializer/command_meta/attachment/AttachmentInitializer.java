@@ -1,6 +1,8 @@
 package io.github.sakurawald.module.initializer.command_meta.attachment;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -9,8 +11,6 @@ import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_meta.attachment.command.argument.wrapper.SubjectId;
 import io.github.sakurawald.module.initializer.command_meta.attachment.command.argument.wrapper.SubjectName;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import lombok.SneakyThrows;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
@@ -24,7 +24,7 @@ public class AttachmentInitializer extends ModuleInitializer {
     int set(@CommandSource CommandContext<ServerCommandSource> ctx, SubjectName subject, SubjectId uuid, GreedyString data) {
         Managers.getAttachmentManager().setAttachment(subject.getValue(), uuid.getValue(), data.getValue());
 
-        MessageHelper.sendMessage(ctx.getSource(), "operation.success");
+        LanguageHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -32,7 +32,7 @@ public class AttachmentInitializer extends ModuleInitializer {
     int unset(@CommandSource CommandContext<ServerCommandSource> ctx, SubjectName subject, SubjectId uuid) {
         boolean flag = Managers.getAttachmentManager().unsetAttachment(subject.getValue(), uuid.getValue());
 
-        MessageHelper.sendMessage(ctx.getSource(), flag ? "operation.success" : "operation.fail");
+        LanguageHelper.sendMessageByKey(ctx.getSource(), flag ? "operation.success" : "operation.fail");
         return CommandHelper.Return.SUCCESS;
     }
 

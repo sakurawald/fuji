@@ -1,9 +1,9 @@
 package io.github.sakurawald.module.mixin.command_attachment;
 
+import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.command_attachment.CommandAttachmentInitializer;
 import io.github.sakurawald.module.initializer.command_attachment.command.argument.wrapper.InteractType;
-import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
@@ -19,7 +19,7 @@ import java.util.List;
 public abstract class ServerPlayNetworkHandlerMixin {
 
     @Unique
-    ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+    final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
     @Unique
     private static final CommandAttachmentInitializer module = Managers.getModuleManager().getInitializer(CommandAttachmentInitializer.class);

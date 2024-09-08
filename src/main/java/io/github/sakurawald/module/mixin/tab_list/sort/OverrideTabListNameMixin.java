@@ -1,10 +1,11 @@
 package io.github.sakurawald.module.mixin.tab_list.sort;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import io.github.sakurawald.core.auxiliary.RandomUtil;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.tab_list.sort.structure.TabListEntry;
-import io.github.sakurawald.core.auxiliary.RandomUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -13,12 +14,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import static io.github.sakurawald.core.auxiliary.minecraft.MessageHelper.ofText;
+import java.util.*;
 
 // the last to check the return value
 @Mixin(value = ServerPlayerEntity.class, priority = 1000 - 125)
@@ -54,12 +50,8 @@ public abstract class OverrideTabListNameMixin {
 
             Text realPlayerGetDisplayName = realPlayerGetDisplayNameSave.get(name);
             // if nobody sets the display name, then we can set it.
-            if (realPlayerGetDisplayName == null) {
-                return ofText(entry.getRealPlayer(), false, RandomUtil.drawList(Configs.configHandler.model().modules.tab_list.style.body));
-            } else {
-                // someone else set teh display name, we should respect it.
-                return realPlayerGetDisplayName;
-            }
+            // someone else set teh display name, we should respect it.
+            return Objects.requireNonNullElseGet(realPlayerGetDisplayName, () -> LanguageHelper.getTextByValue(entry.getRealPlayer(), RandomUtil.drawList(Configs.configHandler.model().modules.tab_list.style.body)));
 
         } else {
             /* listen to real player's get display name invoke, and sync it to the dummy-player */

@@ -1,10 +1,9 @@
 package io.github.sakurawald.module.initializer.command_meta.json;
 
-import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.DocumentContext;
-import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -12,8 +11,6 @@ import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_meta.json.command.argument.wrapper.JsonValueType;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import lombok.SneakyThrows;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
@@ -28,12 +25,10 @@ import java.util.function.BiFunction;
 @CommandRequirement(level = 4)
 public class JsonInitializer extends ModuleInitializer {
 
-    private static final Configuration CONFIGURATION = Configuration.defaultConfiguration().jsonProvider(new GsonJsonProvider());
-
     @SneakyThrows
     void operateJson(String filePath, BiFunction<DocumentContext, Path, Boolean> function) {
         Path path = Path.of(filePath);
-        DocumentContext documentContext = JsonPath.using(CONFIGURATION).parse(path.toFile());
+        DocumentContext documentContext = ConfigHandler.getJsonPathParser().parse(path.toFile());
         Boolean destructiveFlag = function.apply(documentContext, path);
 
         if (destructiveFlag) {
@@ -65,7 +60,7 @@ public class JsonInitializer extends ModuleInitializer {
             return true;
         });
 
-        MessageHelper.sendMessage(ctx.getSource(), "operation.success");
+        LanguageHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -76,7 +71,7 @@ public class JsonInitializer extends ModuleInitializer {
             return true;
         });
 
-        MessageHelper.sendMessage(ctx.getSource(), "operation.success");
+        LanguageHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -88,7 +83,7 @@ public class JsonInitializer extends ModuleInitializer {
             return true;
         });
 
-        MessageHelper.sendMessage(ctx.getSource(), "operation.success");
+        LanguageHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -99,7 +94,7 @@ public class JsonInitializer extends ModuleInitializer {
             return true;
         });
 
-        MessageHelper.sendMessage(ctx.getSource(), "operation.success");
+        LanguageHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 }

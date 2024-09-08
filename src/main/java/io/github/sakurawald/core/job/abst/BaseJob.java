@@ -1,10 +1,12 @@
 package io.github.sakurawald.core.job.abst;
 
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.manager.Managers;
 import org.quartz.*;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 public abstract class BaseJob implements Job {
     private static final Set<BaseJob> reschedulableJobs = new HashSet<>();

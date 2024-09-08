@@ -4,8 +4,8 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
-import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import io.github.sakurawald.core.manager.Managers;
+import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import lombok.SneakyThrows;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -22,6 +22,7 @@ public abstract class BaseArgumentTypeAdapter {
 
     private static final List<BaseArgumentTypeAdapter> adapters = new ArrayList<>();
 
+    @SuppressWarnings("unchecked")
     @SneakyThrows
     public static void registerAdapters() {
         ModuleManager moduleManager = Managers.getModuleManager();

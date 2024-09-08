@@ -2,15 +2,15 @@ package io.github.sakurawald.module.initializer.head.privoder;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.core.structure.Downloader;
 import io.github.sakurawald.module.initializer.head.structure.Category;
 import io.github.sakurawald.module.initializer.head.structure.Head;
-import io.github.sakurawald.core.auxiliary.LogUtil;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
 
@@ -68,14 +68,14 @@ public class HeadProvider {
             JsonArray headsJson = JsonParser.parseReader(new InputStreamReader(stream)).getAsJsonArray();
             for (JsonElement headJson : headsJson) {
                 try {
-                    Head head = new Gson().fromJson(headJson, Head.class);
+                    Head head = ConfigHandler.getGson().fromJson(headJson, Head.class);
                     result.put(category, head);
                 } catch (Exception e) {
                     LogUtil.warn("Invalid head: " + headJson);
                 }
             }
         } catch (IOException e) {
-            LogUtil.cryLoudly("Failed to load head category.", e);
+            LogUtil.error("Failed to load head category.", e);
         }
     }
 }

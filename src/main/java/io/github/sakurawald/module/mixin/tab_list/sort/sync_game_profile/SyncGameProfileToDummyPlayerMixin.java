@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.tab_list.sort.sync_game_profile;
 
-import io.github.sakurawald.module.initializer.tab_list.sort.structure.TabListEntry;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.module.initializer.tab_list.sort.structure.TabListEntry;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerRemoveS2CPacket;
 import net.minecraft.server.PlayerManager;
@@ -32,7 +32,7 @@ public class SyncGameProfileToDummyPlayerMixin {
     }
 
     @Unique
-    private static Set<String> visited = new HashSet<>();
+    private static final Set<String> visited = new HashSet<>();
 
     @Unique
     void syncGameProfileChangeToDummyPlayer(Collection<ServerPlayerEntity> players) {
