@@ -15,4 +15,3 @@
 - rename: some functions should be renamed.
 - add: a lisp-like DSL, including a parse, transformer, analyzer, code-walker, with some built-in functions: predicate,
   equal...
-- refactor: a unified way to report exceptions during the command execution. 
