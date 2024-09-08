@@ -9,24 +9,23 @@ import io.github.sakurawald.module.initializer.command_alias.structure.CommandAl
 
 import java.util.*;
 
-@SuppressWarnings("ALL")
 public class ConfigModel {
 
     public Core core = new Core();
     public Modules modules = new Modules();
 
-    public class Core {
+    public static class Core {
 
         public Debug debug = new Debug();
         public Backup backup = new Backup();
         public Language language = new Language();
         public Quartz quartz = new Quartz();
 
-        public class Quartz {
+        public static class Quartz {
             public String logger_level = "WARN";
         }
 
-        public class Backup {
+        public static class Backup {
 
             public int max_slots = 15;
             public List<String> skip = new ArrayList<>() {
@@ -36,16 +35,17 @@ public class ConfigModel {
             };
         }
 
-        public class Language {
+        public static class Language {
             public String default_language = "en_us";
         }
 
-        public class Debug {
+        public static class Debug {
             public boolean disable_all_modules = false;
         }
     }
 
-    public class Modules {
+    @SuppressWarnings("unused")
+    public static class Modules {
         public Config config = new Config();
         public Language language = new Language();
         public Chat chat = new Chat();
@@ -95,12 +95,12 @@ public class ConfigModel {
         public CommandMeta command_meta = new CommandMeta();
         public Gameplay gameplay = new Gameplay();
 
-        public class World {
+        public static class World {
             public boolean enable = false;
 
             public Blacklist blacklist = new Blacklist();
 
-            public class Blacklist {
+            public static class Blacklist {
                 public List<String> dimension_list = new ArrayList<>() {
                     {
                         this.add("minecraft:overworld");
@@ -111,7 +111,7 @@ public class ConfigModel {
             }
         }
 
-        public class MOTD {
+        public static class MOTD {
             public boolean enable = false;
 
             public List<String> list = new ArrayList<>() {
@@ -122,24 +122,24 @@ public class ConfigModel {
 
             public Icon icon = new Icon();
 
-            public class Icon {
+            public static class Icon {
                 public boolean enable = true;
 
             }
         }
 
-        public class Nametag {
+        public static class Nametag {
             public boolean enable = false;
             public String update_cron = "* * * ? * *";
 
             public Style style = new Style();
 
-            public class Style {
+            public static class Style {
                 public String text = "<#B1B2FF>%fuji:player_playtime%\uD83D\uDD25 %fuji:player_mined%⛏ %fuji:player_placed%\uD83D\uDD33 %fuji:player_killed%\uD83D\uDDE1 %fuji:player_moved%\uD83C\uDF0D\n<dark_green>%player:displayname_visual%";
 
                 public Offset offset = new Offset();
 
-                public class Offset {
+                public static class Offset {
                     public float x = 0f;
                     public float y = 0.2f;
                     public float z = 0f;
@@ -147,14 +147,14 @@ public class ConfigModel {
 
                 public Size size = new Size();
 
-                public class Size {
+                public static class Size {
                     public float height = 0f;
                     public float width = 0f;
                 }
 
                 public Scale scale = new Scale();
 
-                public class Scale {
+                public static class Scale {
                     public float x = 1.0f;
                     public float y = 1.0f;
                     public float z = 1.0f;
@@ -162,7 +162,7 @@ public class ConfigModel {
 
                 public Brightness brightness = new Brightness();
 
-                public class Brightness {
+                public static class Brightness {
                     public boolean override_brightness = false;
                     public int block = 15;
                     public int sky = 15;
@@ -170,7 +170,7 @@ public class ConfigModel {
 
                 public Shadow shadow = new Shadow();
 
-                public class Shadow {
+                public static class Shadow {
                     public boolean shadow = false;
                     public float shadow_radius = 0f;
                     public float shadow_strength = 1f;
@@ -178,7 +178,7 @@ public class ConfigModel {
 
                 public Color color = new Color();
 
-                public class Color {
+                public static class Color {
                     public int background = 1073741824;
                     public byte text_opacity = -1;
                 }
@@ -187,14 +187,14 @@ public class ConfigModel {
 
             public Render render = new Render();
 
-            public class Render {
+            public static class Render {
                 public boolean see_through_blocks = false;
                 public float view_range = 1.0f;
             }
 
         }
 
-        public class TeleportWarmup {
+        public static class TeleportWarmup {
             public boolean enable = false;
 
             public int warmup_second = 3;
@@ -203,7 +203,7 @@ public class ConfigModel {
 
             public Dimension dimension = new Dimension();
 
-            public class Dimension {
+            public static class Dimension {
                 public Set<String> list = new HashSet<>() {
                     {
                         this.add("minecraft:overworld");
@@ -214,7 +214,7 @@ public class ConfigModel {
             }
         }
 
-        public class CommandCooldown {
+        public static class CommandCooldown {
             public boolean enable = false;
 
             public HashMap<String, Long> regex2ms = new HashMap<>() {
@@ -226,7 +226,7 @@ public class ConfigModel {
             };
         }
 
-        public class CommandWarmup {
+        public static class CommandWarmup {
             public boolean enable = false;
 
             public HashMap<String, Integer> regex2ms = new HashMap<>() {
@@ -236,7 +236,7 @@ public class ConfigModel {
             };
         }
 
-        public class TopChunks {
+        public static class TopChunks {
             public boolean enable = false;
 
 
@@ -304,13 +304,13 @@ public class ConfigModel {
                 }
             };
 
-            public class Top {
+            public static class Top {
                 public int rows = 10;
                 public int columns = 10;
             }
         }
 
-        public class Chat {
+        public static class Chat {
             public boolean enable = false;
 
             public String format = "<#B1B2FF>[%fuji:player_playtime%\uD83D\uDD25 %fuji:player_mined%⛏ %fuji:player_placed%\uD83D\uDD33 %fuji:player_killed%\uD83D\uDDE1 %fuji:player_moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:'/msg %player:name% '><hover:show_text:'Time: %fuji:date%<newline><italic>Click to Message'>%player:displayname_visual%</hover></click></dark_green>> %message%";
@@ -321,20 +321,20 @@ public class ConfigModel {
             public History history = new History();
             public Spy spy = new Spy();
 
-            public class History {
+            public static class History {
                 public boolean enable = true;
 
                 public int buffer_size = 50;
             }
 
-            public class Display {
+            public static class Display {
 
                 public boolean enable = true;
 
                 public int expiration_duration_s = 3600;
             }
 
-            public class Rewrite {
+            public static class Rewrite {
                 public List<RegexRewriteEntry> regex = new ArrayList<>() {
                     {
                         this.add(new RegexRewriteEntry("^BV(\\w{10})", "<underline><blue><hover:show_text:'$1'><click:open_url:'https://www.bilibili.com/video/BV$1'>bilibili $1</click></hover></blue></underline>"));
@@ -347,13 +347,13 @@ public class ConfigModel {
                 };
             }
 
-            public class Spy {
+            public static class Spy {
                 public boolean output_unparsed_message_into_console = false;
             }
 
         }
 
-        public class Skin {
+        public static class Skin {
             public boolean enable = false;
 
             public Property default_skin = new Property("textures", "eyJ0aW1lc3RhbXAiOjE1ODYzMjc4ODA1NjYsInByb2ZpbGVJZCI6ImI3MzY3YzA2MjYxYzRlYjBiN2Y3OGY3YzUxNzBiNzQ4IiwicHJvZmlsZU5hbWUiOiJFbXB0eUlyb255Iiwic2lnbmF0dXJlUmVxdWlyZWQiOnRydWUsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS84NWZmZjI1ZDY2NzIwNmYyZTQ2ZDQ0MmNmMzU4YjNmMWVjMzYxMzgzOTE3NTFiYTZlZGY5NjVmZmM4M2I4NjAzIiwibWV0YWRhdGEiOnsibW9kZWwiOiJzbGltIn19fX0=",
@@ -370,19 +370,19 @@ public class ConfigModel {
             };
         }
 
-        public class Back {
+        public static class Back {
             public boolean enable = false;
 
             public double ignore_distance = 32d;
         }
 
-        public class Tpa {
+        public static class Tpa {
             public boolean enable = false;
             public int timeout = 300;
             public MentionPlayersJob.MentionPlayer mention_player = new MentionPlayersJob.MentionPlayer();
         }
 
-        public class Works {
+        public static class Works {
             public boolean enable = false;
 
             public int sample_time_ms = 60 * 1000 * 60;
@@ -390,7 +390,7 @@ public class ConfigModel {
             public int sample_counter_top_n = 20;
         }
 
-        public class WorldDownloader {
+        public static class WorldDownloader {
             public boolean enable = false;
 
             public String url_format = "http://localhost:%port%%path%";
@@ -402,7 +402,7 @@ public class ConfigModel {
             public int context_cache_size = 5;
         }
 
-        public class Disabler {
+        public static class Disabler {
             public boolean enable = false;
 
             public ChatSpeedDisabler chat_speed_disabler = new ChatSpeedDisabler();
@@ -410,28 +410,28 @@ public class ConfigModel {
             public MoveWronglyDisabler move_wrongly_disabler = new MoveWronglyDisabler();
             public MaxPlayerDisabler max_player_disabler = new MaxPlayerDisabler();
 
-            public class ChatSpeedDisabler {
+            public static class ChatSpeedDisabler {
                 public boolean enable = false;
             }
 
-            public class MoveSpeedDisabler {
+            public static class MoveSpeedDisabler {
                 public boolean enable = false;
             }
 
-            public class MoveWronglyDisabler {
+            public static class MoveWronglyDisabler {
                 public boolean enable = false;
             }
 
-            public class MaxPlayerDisabler {
+            public static class MaxPlayerDisabler {
                 public boolean enable = false;
             }
         }
 
-        public class DeathLog {
+        public static class DeathLog {
             public boolean enable = false;
         }
 
-        public class Echo {
+        public static class Echo {
             public boolean enable = false;
 
             public SendMessage send_message = new SendMessage();
@@ -441,94 +441,94 @@ public class ConfigModel {
             public SendToast send_toast = new SendToast();
             public SendChat send_chat = new SendChat();
 
-            public class SendMessage {
+            public static class SendMessage {
                 public boolean enable = true;
             }
 
-            public class SendBroadcast {
+            public static class SendBroadcast {
                 public boolean enable = true;
             }
 
-            public class SendActionBar {
+            public static class SendActionBar {
                 public boolean enable = true;
             }
 
-            public class SendTitle {
+            public static class SendTitle {
                 public boolean enable = true;
             }
 
-            public class SendToast {
+            public static class SendToast {
                 public boolean enable = true;
             }
 
-            public class SendChat {
+            public static class SendChat {
                 public boolean enable = true;
             }
         }
 
-        public class View {
+        public static class View {
             public boolean enable = false;
         }
 
-        public class Placeholder {
+        public static class Placeholder {
             public boolean enable = false;
         }
 
-        public class Pvp {
+        public static class Pvp {
             public boolean enable = false;
         }
 
-        public class Whitelist {
+        public static class Whitelist {
             public boolean enable = false;
         }
 
-        public class CommandPermission {
+        public static class CommandPermission {
             public boolean enable = false;
         }
 
-        public class Head {
+        public static class Head {
 
             public boolean enable = false;
         }
 
-        public class Profiler {
+        public static class Profiler {
             public boolean enable = false;
         }
 
-        public class CommandSpy {
+        public static class CommandSpy {
             public boolean enable = false;
         }
 
-        public class CommandScheduler {
+        public static class CommandScheduler {
             public boolean enable = false;
         }
 
-        public class Config {
+        public static class Config {
             public boolean enable = false;
         }
 
-        public class Tester {
+        public static class Tester {
             public boolean enable = false;
         }
 
-        public class Language {
+        public static class Language {
             public boolean enable = false;
         }
 
-        public class Afk {
+        public static class Afk {
             public boolean enable = false;
 
             public String format = "<gray>[AFK] %player:displayname_visual%";
 
             public AfkChecker afk_checker = new AfkChecker();
 
-            public class AfkChecker {
+            public static class AfkChecker {
                 public String cron = "0 0/5 * ? * *";
             }
 
             public AfkEvent afk_event = new AfkEvent();
 
-            public class AfkEvent {
+            public static class AfkEvent {
                 public List<String> on_enter_afk = new ArrayList<>() {
                     {
                         this.add("send-broadcast <gold>Player %player:name% is now afk");
@@ -546,7 +546,7 @@ public class ConfigModel {
 
             public AfkEffect effect = new AfkEffect();
 
-            public class AfkEffect {
+            public static class AfkEffect {
                 public boolean enable = true;
 
                 public boolean invulnerable = true;
@@ -558,14 +558,14 @@ public class ConfigModel {
 
         }
 
-        public class Rtp {
+        public static class Rtp {
 
             public boolean enable = false;
 
             public Setup setup = new Setup();
 
-            public class Setup {
-                public List<TeleportSetup> dimension = new ArrayList() {
+            public static class Setup {
+                public List<TeleportSetup> dimension = new ArrayList<>() {
 
                     {
                         this.add(new TeleportSetup("minecraft:overworld", 0, 0, false, 1000, 5000, -64, 320, 16));
@@ -582,15 +582,15 @@ public class ConfigModel {
 
         }
 
-        public class CommandInteractive {
+        public static class CommandInteractive {
             public boolean enable = false;
         }
 
-        public class Home {
+        public static class Home {
             public boolean enable = false;
         }
 
-        public class SystemMessage {
+        public static class SystemMessage {
             public boolean enable = false;
 
             public Map<String, String> key2value = new HashMap<>() {
@@ -601,7 +601,7 @@ public class ConfigModel {
 
         }
 
-        public class CommandAlias {
+        public static class CommandAlias {
             public boolean enable = false;
             public List<CommandAliasEntry> alias = new ArrayList<>() {
                 {
@@ -612,11 +612,11 @@ public class ConfigModel {
             };
         }
 
-        public class CommandAttachment {
+        public static class CommandAttachment {
             public boolean enable = false;
         }
 
-        public class CommandRewrite {
+        public static class CommandRewrite {
             public boolean enable = false;
             public List<RegexRewriteEntry> regex = new ArrayList<>() {
                 {
@@ -626,24 +626,24 @@ public class ConfigModel {
 
         }
 
-        public class Multiplier {
+        public static class Multiplier {
             public boolean enable = false;
 
         }
 
-        public class AntiBuild {
+        public static class AntiBuild {
             public boolean enable = false;
 
             public Anti anti = new Anti();
 
-            public class Anti {
+            public static class Anti {
                 public Break break_block = new Break();
                 public Place place_block = new Place();
                 public InteractItem interact_item = new InteractItem();
                 public InteractBlock interact_block = new InteractBlock();
                 public InteractEntity interact_entity = new InteractEntity();
 
-                public class Break {
+                public static class Break {
                     public Set<String> id = new HashSet<>() {
                         {
                             this.add("minecraft:gold_block");
@@ -651,7 +651,7 @@ public class ConfigModel {
                     };
                 }
 
-                public class Place {
+                public static class Place {
                     public Set<String> id = new HashSet<>() {
                         {
                             this.add("minecraft:tnt");
@@ -659,7 +659,7 @@ public class ConfigModel {
                     };
                 }
 
-                public class InteractItem {
+                public static class InteractItem {
                     public Set<String> id = new HashSet<>() {
                         {
                             this.add("minecraft:lava_bucket");
@@ -667,7 +667,7 @@ public class ConfigModel {
                     };
                 }
 
-                public class InteractBlock {
+                public static class InteractBlock {
                     public Set<String> id = new HashSet<>() {
                         {
                             this.add("minecraft:lever");
@@ -675,7 +675,7 @@ public class ConfigModel {
                     };
                 }
 
-                public class InteractEntity {
+                public static class InteractEntity {
                     public Set<String> id = new HashSet<>() {
                         {
                             this.add("minecraft:villager");
@@ -686,22 +686,22 @@ public class ConfigModel {
             }
         }
 
-        public class Color {
+        public static class Color {
             public boolean enable = false;
 
             public Sign sign = new Sign();
             public Anvil anvil = new Anvil();
 
-            public class Sign {
+            public static class Sign {
                 public boolean enable = true;
             }
 
-            public class Anvil {
+            public static class Anvil {
                 public boolean enable = true;
             }
         }
 
-        public class Functional {
+        public static class Functional {
             public boolean enable = false;
 
             public Workbench workbench = new Workbench();
@@ -714,68 +714,68 @@ public class ConfigModel {
             public Smithing smithing = new Smithing();
             public Loom loom = new Loom();
 
-            public class Workbench {
+            public static class Workbench {
                 public boolean enable = false;
             }
 
-            public class Enchantment {
+            public static class Enchantment {
 
                 public boolean enable = false;
 
                 public OverridePower override_power = new OverridePower();
 
-                public class OverridePower {
+                public static class OverridePower {
 
                     public boolean enable = false;
                     public int power_provider_amount = 15;
                 }
             }
 
-            public class GrindStone {
+            public static class GrindStone {
                 public boolean enable = false;
             }
 
-            public class StoneCutter {
-
-                public boolean enable = false;
-            }
-
-            public class Anvil {
+            public static class StoneCutter {
 
                 public boolean enable = false;
             }
 
-            public class Cartography {
+            public static class Anvil {
+
                 public boolean enable = false;
             }
 
-            public class EnderChest {
+            public static class Cartography {
                 public boolean enable = false;
             }
 
-            public class Smithing {
+            public static class EnderChest {
                 public boolean enable = false;
             }
 
-            public class Loom {
+            public static class Smithing {
+                public boolean enable = false;
+            }
+
+            public static class Loom {
                 public boolean enable = false;
             }
 
         }
 
-        public class Gameplay {
+        public static class Gameplay {
             public boolean enable = false;
 
             public MultiObsidianPlatform multi_obsidian_platform = new MultiObsidianPlatform();
             public Carpet carpet = new Carpet();
 
-            public class Carpet {
+            public static class Carpet {
                 public boolean enable = false;
 
                 public FakePlayerManager fake_player_manager = new FakePlayerManager();
                 public BetterInfo better_info = new BetterInfo();
 
-                public class FakePlayerManager {
+                public static class FakePlayerManager {
                     public boolean enable = false;
 
                     public List<List<Integer>> caps_limit_rule = new ArrayList<>() {
@@ -791,20 +791,20 @@ public class ConfigModel {
                     public boolean use_local_random_skins_for_fake_player = true;
                 }
 
-                public class BetterInfo {
+                public static class BetterInfo {
                     public boolean enable = false;
                 }
             }
 
 
-            public class MultiObsidianPlatform {
+            public static class MultiObsidianPlatform {
                 public boolean enable = false;
                 public double factor = 4;
             }
         }
 
 
-        public class CommandMeta {
+        public static class CommandMeta {
             public boolean enable = false;
 
             public Run run = new Run();
@@ -815,38 +815,38 @@ public class ConfigModel {
             public Attachment attachment = new Attachment();
             public Shell shell = new Shell();
 
-            public class Run {
+            public static class Run {
                 public boolean enable = false;
             }
 
-            public class ForEach {
+            public static class ForEach {
                 public boolean enable = false;
             }
 
-            public class Chain {
+            public static class Chain {
                 public boolean enable = false;
             }
 
-            public class Delay {
+            public static class Delay {
                 public boolean enable = false;
             }
 
-            public class Json {
+            public static class Json {
                 public boolean enable = false;
             }
 
-            public class Attachment {
+            public static class Attachment {
                 public boolean enable = false;
             }
 
-            public class Shell {
+            public static class Shell {
                 public String enable_warning = "ENABLE THIS MODULE IS POTENTIAL TO HARM YOUR COMPUTER! YOU NEED TO CHANGE THIS FIELD INTO `CONFIRM` TO ENABLE THIS MODULE";
                 public boolean enable = false;
             }
 
         }
 
-        public class CommandToolbox {
+        public static class CommandToolbox {
             public boolean enable = false;
             public Bed bed = new Bed();
             public Extinguish extinguish = new Extinguish();
@@ -875,39 +875,39 @@ public class ConfigModel {
             public Jump jump = new Jump();
             public Compass compass = new Compass();
 
-            public class Bed {
+            public static class Bed {
                 public boolean enable = false;
             }
 
-            public class Extinguish {
+            public static class Extinguish {
                 public boolean enable = false;
             }
 
-            public class Feed {
+            public static class Feed {
                 public boolean enable = false;
             }
 
-            public class Fly {
+            public static class Fly {
                 public boolean enable = false;
             }
 
-            public class God {
+            public static class God {
                 public boolean enable = false;
             }
 
-            public class Hat {
+            public static class Hat {
                 public boolean enable = false;
             }
 
-            public class Heal {
+            public static class Heal {
                 public boolean enable = false;
             }
 
-            public class Lore {
+            public static class Lore {
                 public boolean enable = false;
             }
 
-            public class Sit {
+            public static class Sit {
                 public boolean enable = false;
                 public boolean allow_right_click_sit = true;
                 public boolean allow_sneaking_to_sit = false;
@@ -916,85 +916,85 @@ public class ConfigModel {
                 public int max_distance_to_sit = -1;
             }
 
-            public class More {
+            public static class More {
                 public boolean enable = false;
             }
 
-            public class Ping {
+            public static class Ping {
                 public boolean enable = false;
             }
 
-            public class Realname {
-                public boolean enable = false;
-
-            }
-
-            public class Nickname {
-                public boolean enable = false;
-            }
-
-            public class Repair {
+            public static class Realname {
                 public boolean enable = false;
 
             }
 
-            public class Reply {
+            public static class Nickname {
                 public boolean enable = false;
             }
 
-            public class Seen {
+            public static class Repair {
+                public boolean enable = false;
+
+            }
+
+            public static class Reply {
                 public boolean enable = false;
             }
 
-            public class Suicide {
+            public static class Seen {
                 public boolean enable = false;
             }
 
-            public class Top {
+            public static class Suicide {
                 public boolean enable = false;
             }
 
-            public class TrashCan {
+            public static class Top {
                 public boolean enable = false;
             }
 
-            public class Tppos {
+            public static class TrashCan {
                 public boolean enable = false;
             }
 
-            public class Warp {
+            public static class Tppos {
                 public boolean enable = false;
             }
 
-            public class Burn {
+            public static class Warp {
                 public boolean enable = false;
             }
 
-            public class HelpOp {
+            public static class Burn {
                 public boolean enable = false;
             }
 
-            public class Near {
+            public static class HelpOp {
                 public boolean enable = false;
             }
 
-            public class Jump {
+            public static class Near {
                 public boolean enable = false;
             }
 
-            public class Compass {
+            public static class Jump {
+                public boolean enable = false;
+            }
+
+            public static class Compass {
                 public boolean enable = false;
             }
         }
 
-        public class TabList {
+        public static class TabList {
             public boolean enable = false;
             public String update_cron = "* * * ? * *";
             public Style style = new Style();
             public Sort sort = new Sort();
             public Faker faker = new Faker();
 
-            public class Style {
+            public static class Style {
                 public List<String> header = new ArrayList<>() {
                     {
                         this.add("<#FFA1F5>PlayerList<newline>------%server:online%/%server:max_players%------");
@@ -1013,42 +1013,42 @@ public class ConfigModel {
                 };
             }
 
-            public class Sort {
+            public static class Sort {
                 public boolean enable = false;
 
-                public SyncGameProgile sync_game_profile = new SyncGameProgile();
+                public SyncGameProfile sync_game_profile = new SyncGameProfile();
 
-                public class SyncGameProgile {
+                public static class SyncGameProfile {
                     public boolean enable = true;
                 }
             }
 
-            public class Faker {
+            public static class Faker {
                 public boolean enable = false;
                 public Ping ping = new Ping();
 
-                public class Ping {
+                public static class Ping {
                     public int min_ping = 15;
                     public int max_ping = 35;
                 }
             }
         }
 
-        public class Kit {
+        public static class Kit {
             public boolean enable = false;
         }
 
-        public class TempBan {
+        public static class TempBan {
             public boolean enable = false;
         }
 
-        public class CommandEvent {
+        public static class CommandEvent {
 
             public boolean enable = false;
 
             public Event event = new Event();
 
-            public class Event {
+            public static class Event {
 
                 public OnPlayerDeath on_player_death = new OnPlayerDeath();
                 public AfterPlayerBreakBlock after_player_break_block = new AfterPlayerBreakBlock();
@@ -1059,7 +1059,7 @@ public class ConfigModel {
                 public OnPlayerJoined on_player_joined = new OnPlayerJoined();
                 public OnPlayerLeft on_player_left = new OnPlayerLeft();
 
-                public class OnPlayerDeath {
+                public static class OnPlayerDeath {
                     public List<String> command_list = new ArrayList<>() {
                         {
                             this.add("send-message %player:name% you just die.");
@@ -1067,7 +1067,7 @@ public class ConfigModel {
                     };
                 }
 
-                public class AfterPlayerBreakBlock {
+                public static class AfterPlayerBreakBlock {
                     public List<String> command_list = new ArrayList<>() {
                         {
                             this.add("send-message %player:name% you just break a block.");
@@ -1076,7 +1076,7 @@ public class ConfigModel {
                     };
                 }
 
-                public class AfterPlayerPlaceBlock {
+                public static class AfterPlayerPlaceBlock {
                     public List<String> command_list = new ArrayList<>() {
                         {
                             this.add("send-message %player:name% you just place a block.");
@@ -1084,7 +1084,7 @@ public class ConfigModel {
                     };
                 }
 
-                public class AfterPlayerRespawn {
+                public static class AfterPlayerRespawn {
                     public List<String> command_list = new ArrayList<>() {
                         {
                             this.add("give %player:name% minecraft:apple 8");
@@ -1092,7 +1092,7 @@ public class ConfigModel {
                     };
                 }
 
-                public class AfterPlayerChangeWorld {
+                public static class AfterPlayerChangeWorld {
                     public List<String> command_list = new ArrayList<>() {
                         {
                             this.add("send-message %player:name% You are in %world:id% now!");
@@ -1100,7 +1100,7 @@ public class ConfigModel {
                     };
                 }
 
-                public class OnPlayerFirstJoined {
+                public static class OnPlayerFirstJoined {
                     public List<String> command_list = new ArrayList<>() {
                         {
                             this.add("send-broadcast <rainbow>welcome new player %player:name% to join us!");
@@ -1108,7 +1108,7 @@ public class ConfigModel {
                     };
                 }
 
-                public class OnPlayerJoined {
+                public static class OnPlayerJoined {
                     public List<String> command_list = new ArrayList<>() {
                         {
                             this.add("send-message %player:name% welcome to the server.");
@@ -1116,7 +1116,7 @@ public class ConfigModel {
                     };
                 }
 
-                public class OnPlayerLeft {
+                public static class OnPlayerLeft {
                     public List<String> command_list = new ArrayList<>() {
                         {
                             this.add("send-broadcast %player:name% left the server.");
@@ -1126,7 +1126,7 @@ public class ConfigModel {
             }
         }
 
-        public class Cleaner {
+        public static class Cleaner {
 
             public boolean enable = false;
 
@@ -1143,7 +1143,7 @@ public class ConfigModel {
 
             public Ignore ignore = new Ignore();
 
-            public class Ignore {
+            public static class Ignore {
                 public boolean ignoreItemEntity = false;
                 public boolean ignoreLivingEntity = true;
                 public boolean ignoreNamedEntity = true;
