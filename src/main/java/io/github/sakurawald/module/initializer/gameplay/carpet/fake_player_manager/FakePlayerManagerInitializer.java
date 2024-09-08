@@ -60,11 +60,6 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    public boolean hasFakePlayers(@NotNull ServerPlayerEntity player) {
-        validateFakePlayers();
-        return player2fakePlayers.containsKey(player.getGameProfile().getName());
-    }
-
     public void renewFakePlayers(@NotNull ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
         int duration = Configs.configHandler.model().modules.gameplay.carpet.fake_player_manager.renew_duration_ms;
