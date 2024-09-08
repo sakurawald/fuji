@@ -10,6 +10,10 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @UtilityClass
 public class LogUtil {
 
@@ -48,4 +52,9 @@ public class LogUtil {
         return logger;
     }
 
+     public static List<String> getStackTraceAsList(Throwable throwable) {
+        return Arrays.stream(throwable.getStackTrace())
+                     .map(StackTraceElement::toString)
+                     .collect(Collectors.toList());
+    }
 }
