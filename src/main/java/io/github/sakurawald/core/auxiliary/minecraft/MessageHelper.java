@@ -38,14 +38,14 @@ import java.util.Map;
 @UtilityClass
 public class MessageHelper {
     public static final NodeParser POWERFUL_PARSER = NodeParser.builder()
-            .quickText()
-            .simplifiedTextFormat()
-            .globalPlaceholders()
-            .markdown()
-            .build();
+        .quickText()
+        .simplifiedTextFormat()
+        .globalPlaceholders()
+        .markdown()
+        .build();
 
     public static final NodeParser PLACEHOLDER_PARSER = NodeParser.builder()
-            .globalPlaceholders().build();
+        .globalPlaceholders().build();
 
     private static final FabricServerAudiences adventure = FabricServerAudiences.of(ServerHelper.getDefaultServer());
     private static final Map<String, String> player2lang = new HashMap<>();
@@ -56,12 +56,12 @@ public class MessageHelper {
         writeDefaultLanguageFiles();
 
         TagRegistry.registerDefault(
-                TextTag.self(
-                        "newline",
-                        "formatting",
-                        true,
-                        (nodes, data, parser) -> new LiteralNode("\n")
-                )
+            TextTag.self(
+                "newline",
+                "formatting",
+                true,
+                (nodes, data, parser) -> new LiteralNode("\n")
+            )
         );
 
     }
@@ -132,8 +132,7 @@ public class MessageHelper {
 
         /* get value */
         if (json.has(key)) {
-            String value = json.get(key).getAsString();
-            return formatString(value, args);
+            return json.get(key).getAsString();
         }
 
         String errorString = "Language '%s' miss the key '%s'".formatted(lang, key);
@@ -157,6 +156,9 @@ public class MessageHelper {
      * */
     public static @NotNull Text ofText(@NonNull NodeParser parser, @Nullable Audience audience, boolean isKey, String keyOrString, Object... args) {
         String string = isKey ? getString(audience, keyOrString, args) : keyOrString;
+
+        // format
+        string = formatString(string, args);
 
         PlaceholderContext placeholderContext;
         if (audience instanceof PlayerEntity playerEntity) {

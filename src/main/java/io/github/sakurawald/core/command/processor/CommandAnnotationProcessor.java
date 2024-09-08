@@ -8,6 +8,7 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -70,7 +71,7 @@ public class CommandAnnotationProcessor {
 
     private static void processMethod(Class<?> clazz, Method method, Object instance) {
         if (!method.getReturnType().equals(Integer.class)
-                && !method.getReturnType().equals(int.class)) {
+            && !method.getReturnType().equals(int.class)) {
             throw new RuntimeException("The method `%s` in class `%s` must return Integer.".formatted(method.getName(), clazz.getName()));
         }
 
@@ -177,7 +178,12 @@ public class CommandAnnotationProcessor {
                 // don't swallow the exception.
                 Throwable theRealException = e.getCause();
 
-                if (theRealException instanceof SnackException) {
+                if (theRealException instanceof SnackException snakeException) {
+                    // report it
+                    if (snakeException.getMessage() != null) {
+                        ctx.getSource().sendMessage(MessageHelper.ofText("<red>--- Fuji Snake Exception ---\nClass: %s\nMethod: %s\nMessage: %s", instance.getClass().getName(), method.getName(), snakeException.getMessage()));
+                    }
+
                     // swallow it
                     return CommandHelper.Return.FAIL;
                 }
@@ -261,7 +267,7 @@ public class CommandAnnotationProcessor {
             Parameter parameter = method.getParameters()[index];
 
             ArgumentBuilder<ServerCommandSource, ?> optionalArgumentBuilder = literal("--" + optionalArgument.getArgumentName())
-                    .then(makeRequiredArgumentBuilder(parameter).executes(function).redirect(root));
+                .then(makeRequiredArgumentBuilder(parameter).executes(function).redirect(root));
 
             // register it
             root.addChild(optionalArgumentBuilder.build());
