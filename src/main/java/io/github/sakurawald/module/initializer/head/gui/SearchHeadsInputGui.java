@@ -1,9 +1,9 @@
 package io.github.sakurawald.module.initializer.head.gui;
 
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import io.github.sakurawald.core.gui.InputSignGui;
 import io.github.sakurawald.module.initializer.head.privoder.HeadProvider;
 import io.github.sakurawald.module.initializer.head.structure.Head;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 

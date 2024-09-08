@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.initializer.top_chunks.structure;
 
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.structure.TypeFormatter;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;

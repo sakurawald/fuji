@@ -1,11 +1,11 @@
 package io.github.sakurawald.module.initializer.command_toolbox.realname;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.minecraft.server.command.ServerCommandSource;

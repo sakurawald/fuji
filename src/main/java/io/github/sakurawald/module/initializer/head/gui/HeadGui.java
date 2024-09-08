@@ -2,10 +2,10 @@ package io.github.sakurawald.module.initializer.head.gui;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import io.github.sakurawald.module.initializer.head.privoder.HeadProvider;
 import io.github.sakurawald.module.initializer.head.structure.Category;
 import io.github.sakurawald.module.initializer.head.structure.Head;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;

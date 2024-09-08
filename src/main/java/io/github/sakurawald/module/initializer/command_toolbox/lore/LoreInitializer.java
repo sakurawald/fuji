@@ -1,12 +1,12 @@
 package io.github.sakurawald.module.initializer.command_toolbox.lore;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
-import io.github.sakurawald.core.command.annotation.CommandNode;
-import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.command.annotation.CommandNode;
+import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
+import io.github.sakurawald.module.initializer.ModuleInitializer;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.server.command.ServerCommandSource;

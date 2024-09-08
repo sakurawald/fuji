@@ -2,9 +2,9 @@ package io.github.sakurawald.core.command.argument.adapter.impl;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
-import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import lombok.SneakyThrows;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;

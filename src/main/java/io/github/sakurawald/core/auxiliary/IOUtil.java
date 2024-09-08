@@ -2,9 +2,6 @@ package io.github.sakurawald.core.auxiliary;
 
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
-import org.apache.commons.compress.archivers.ArchiveOutputStream;
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 

@@ -1,14 +1,14 @@
 package io.github.sakurawald.module.initializer.chat.display.helper;
 
-import io.github.sakurawald.module.initializer.chat.display.structure.SoftReferenceMap;
-import io.github.sakurawald.module.initializer.chat.display.gui.*;
 import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.UUID;
+import io.github.sakurawald.module.initializer.chat.display.gui.*;
+import io.github.sakurawald.module.initializer.chat.display.structure.SoftReferenceMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.UUID;
 
 public class DisplayHelper {
 

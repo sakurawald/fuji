@@ -1,9 +1,9 @@
 package io.github.sakurawald.module.initializer.command_toolbox.extinguish;
 
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 

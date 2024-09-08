@@ -1,14 +1,14 @@
 package io.github.sakurawald.module.initializer.command_toolbox.nickname;
 
-import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
-import io.github.sakurawald.core.command.annotation.CommandNode;
-import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
-import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
-import io.github.sakurawald.module.initializer.command_toolbox.nickname.config.model.NicknameModel;
-import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.command.annotation.CommandNode;
+import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
+import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
+import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.command_toolbox.nickname.config.model.NicknameModel;
 import lombok.Getter;
 import net.minecraft.server.network.ServerPlayerEntity;
 

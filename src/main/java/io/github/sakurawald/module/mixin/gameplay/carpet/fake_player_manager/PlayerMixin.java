@@ -1,9 +1,9 @@
 package io.github.sakurawald.module.mixin.gameplay.carpet.fake_player_manager;
 
 import carpet.patches.EntityPlayerMPFake;
+import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager.FakePlayerManagerInitializer;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

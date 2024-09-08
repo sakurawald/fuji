@@ -2,9 +2,10 @@ package io.github.sakurawald.module.mixin.skin;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.module.initializer.skin.SkinRestorer;
 import io.github.sakurawald.module.initializer.skin.provider.MojangSkinProvider;
-import io.github.sakurawald.core.auxiliary.LogUtil;
+import net.minecraft.server.network.ServerLoginNetworkHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.concurrent.CompletableFuture;
-import net.minecraft.server.network.ServerLoginNetworkHandler;
 
 @Mixin(ServerLoginNetworkHandler.class)
 public abstract class ServerLoginNetworkHandlerMixin {
