@@ -12,7 +12,6 @@ import net.minecraft.server.command.ServerCommandSource;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
-@SuppressWarnings("unused")
 public class ScheduleJobArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override

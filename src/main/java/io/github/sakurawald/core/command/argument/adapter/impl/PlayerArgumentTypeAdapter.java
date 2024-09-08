@@ -13,7 +13,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
-@SuppressWarnings("unused")
 public class PlayerArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
