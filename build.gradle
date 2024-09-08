@@ -76,8 +76,6 @@ dependencies {
 
     implementation "me.lucko:spark-api:${project.spark_api_version}"
 
-//    include(implementation "org.jetbrains:annotations:${project.jetbrains_annotations_version}")
-
     include(implementation "org.quartz-scheduler:quartz:${project.quartz_version}")
 
     testImplementation(platform("org.junit:junit-bom:${project.junit_version}"))
