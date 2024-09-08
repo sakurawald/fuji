@@ -20,8 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 
-    @Unique
-    ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+    @Unique final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
     public ServerPlayerEntityMixin(World world, BlockPos blockPos, float f, GameProfile gameProfile) {
         super(world, blockPos, f, gameProfile);

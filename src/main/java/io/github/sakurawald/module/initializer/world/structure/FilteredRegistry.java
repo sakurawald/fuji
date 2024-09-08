@@ -28,7 +28,7 @@ public class FilteredRegistry<T> extends SimpleRegistry<T> {
         this.check = check;
     }
 
-    public Registry<T> getSource() {
+    public @NotNull Registry<T> getSource() {
         return this.source;
     }
 

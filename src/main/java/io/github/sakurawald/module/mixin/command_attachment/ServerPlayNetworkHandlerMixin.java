@@ -19,7 +19,7 @@ import java.util.List;
 public abstract class ServerPlayNetworkHandlerMixin {
 
     @Unique
-    ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+    final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
     @Unique
     private static final CommandAttachmentInitializer module = Managers.getModuleManager().getInitializer(CommandAttachmentInitializer.class);

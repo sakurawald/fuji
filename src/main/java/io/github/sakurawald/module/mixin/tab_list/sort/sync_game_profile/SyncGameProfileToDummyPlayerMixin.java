@@ -32,7 +32,7 @@ public class SyncGameProfileToDummyPlayerMixin {
     }
 
     @Unique
-    private static Set<String> visited = new HashSet<>();
+    private static final Set<String> visited = new HashSet<>();
 
     @Unique
     void syncGameProfileChangeToDummyPlayer(Collection<ServerPlayerEntity> players) {

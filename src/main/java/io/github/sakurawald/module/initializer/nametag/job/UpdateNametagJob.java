@@ -5,7 +5,6 @@ import io.github.sakurawald.core.job.abst.CronJob;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.nametag.NametagInitializer;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 public class UpdateNametagJob extends CronJob {
 
@@ -16,7 +15,7 @@ public class UpdateNametagJob extends CronJob {
     }
 
     @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException {
+    public void execute(JobExecutionContext context) {
         nametagInitializer.updateNametags();
     }
 }

@@ -64,6 +64,7 @@ public class ModuleManager extends BaseManager {
         LogUtil.info("Enabled {}/{} modules -> {}", enabledModuleList.size(), module2enable.size(), enabledModuleList);
     }
 
+    @SuppressWarnings("unused")
     @ApiStatus.AvailableSince("1.1.5")
     public boolean isModuleEnabled(List<String> modulePath) {
         return module2enable.get(modulePath);

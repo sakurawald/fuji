@@ -27,13 +27,11 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
         Managers.getScheduleManager().deleteJobs(CommandScheduleJob.class);
         schedulerHandler.model().scheduleJobs.forEach(scheduleJob -> {
             if (scheduleJob.isEnable()) {
-                scheduleJob.getCrons().forEach(cron -> {
-                    new CommandScheduleJob(new JobDataMap() {
-                        {
-                            this.put("job", scheduleJob);
-                        }
-                    }, () -> cron).schedule();
-                });
+                scheduleJob.getCrons().forEach(cron -> new CommandScheduleJob(new JobDataMap() {
+                    {
+                        this.put("job", scheduleJob);
+                    }
+                }, () -> cron).schedule());
 
                 LogUtil.info("[Command Scheduler] schedule job -> {}", scheduleJob.getName());
             }

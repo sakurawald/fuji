@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.mixin.works;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.module.initializer.works.structure.WorksCache;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
@@ -39,8 +40,8 @@ public abstract class HopperBlockEntityMixin extends LootableContainerBlockEntit
     }
 
 
-    @Inject(method = "transfer(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/inventory/Inventory;Lnet/minecraft/item/ItemStack;ILnet/minecraft/util/math/Direction;)Lnet/minecraft/item/ItemStack;", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;decrement(I)V", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILHARD)
-    private static void $ifHopperHasMergableSlot(Inventory container, Inventory container2, @NotNull ItemStack itemStack, int i, Direction direction, CallbackInfoReturnable<ItemStack> cir, ItemStack itemStack2, boolean bl, boolean bl2, int j, int k) {
+    @Inject(method = "transfer(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/inventory/Inventory;Lnet/minecraft/item/ItemStack;ILnet/minecraft/util/math/Direction;)Lnet/minecraft/item/ItemStack;", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;decrement(I)V", shift = At.Shift.BEFORE))
+    private static void $ifHopperHasMergableSlot(Inventory container, Inventory container2, @NotNull ItemStack itemStack, int i, Direction direction, CallbackInfoReturnable<ItemStack> cir, @Local(ordinal = 2) int k) {
         // Note: here we must copy the itemstack before ItemStack#shrink.
         // If the count of itemStack is shark to 0, then it may become AIR, and then we can't count it any more.
         ItemStack copy = itemStack.copy();

@@ -26,6 +26,7 @@ public abstract class NPassMarkerJob<T> extends CronJob {
 
     public abstract boolean shouldMark(T entity);
 
+    @SuppressWarnings({"EmptyMethod", "unused"})
     public void onMarked(T entity) {
         // no-op
     }
@@ -33,7 +34,7 @@ public abstract class NPassMarkerJob<T> extends CronJob {
     public abstract void onCompleted(T entity);
 
     @Override
-    public final void execute(JobExecutionContext context) throws JobExecutionException {
+    public final void execute(JobExecutionContext context) {
         for (T entity : getEntityList()) {
             if (shouldMark(entity)) {
                 counter.put(entity, counter.getOrDefault(entity, 0) + 1);

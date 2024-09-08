@@ -160,6 +160,7 @@ public class ProductionWork extends Work implements Schedulable {
         return System.currentTimeMillis() < this.sample.sampleEndTimeMS;
     }
 
+    @SuppressWarnings("EmptyMethod")
     @Override
     public Item asItem() {
         return super.asItem();

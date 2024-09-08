@@ -13,10 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static io.github.sakurawald.core.auxiliary.minecraft.MessageHelper.ofText;
 
@@ -54,12 +51,8 @@ public abstract class OverrideTabListNameMixin {
 
             Text realPlayerGetDisplayName = realPlayerGetDisplayNameSave.get(name);
             // if nobody sets the display name, then we can set it.
-            if (realPlayerGetDisplayName == null) {
-                return ofText(entry.getRealPlayer(), false, RandomUtil.drawList(Configs.configHandler.model().modules.tab_list.style.body));
-            } else {
-                // someone else set teh display name, we should respect it.
-                return realPlayerGetDisplayName;
-            }
+            // someone else set teh display name, we should respect it.
+            return Objects.requireNonNullElseGet(realPlayerGetDisplayName, () -> ofText(entry.getRealPlayer(), false, RandomUtil.drawList(Configs.configHandler.model().modules.tab_list.style.body)));
 
         } else {
             /* listen to real player's get display name invoke, and sync it to the dummy-player */

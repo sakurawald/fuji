@@ -10,8 +10,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class Downloader {
 
-    URL url;
-    File destination;
+    final URL url;
+    final File destination;
 
     public Downloader(URL url, File destination) {
         this.url = url;

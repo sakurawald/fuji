@@ -22,13 +22,11 @@ public class WorksInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {
         worksHandler.loadFromDisk();
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-            new WorksScheduleJob(new JobDataMap() {
-                {
-                    this.put(MinecraftServer.class.getName(), server);
-                }
-            }, () -> ScheduleManager.CRON_EVERY_MINUTE).schedule();
-        });
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> new WorksScheduleJob(new JobDataMap() {
+            {
+                this.put(MinecraftServer.class.getName(), server);
+            }
+        }, () -> ScheduleManager.CRON_EVERY_MINUTE).schedule());
     }
 
     @Override
