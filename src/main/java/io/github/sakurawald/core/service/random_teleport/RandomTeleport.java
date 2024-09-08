@@ -37,7 +37,7 @@ public class RandomTeleport {
 
             ServerWorld world = IdentifierHelper.ofServerWorld(Identifier.of(setup.getDimension()));
             if (world == null) {
-                LanguageHelper.sendMessageByKey(player,"dimension.no_found");
+                LanguageHelper.sendMessageByKey(player,"world.dimension.not_found");
                 return;
             }
 

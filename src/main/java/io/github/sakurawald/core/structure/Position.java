@@ -70,7 +70,7 @@ public class Position {
         RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(this.level));
         ServerWorld serverLevel = ServerHelper.getDefaultServer().getWorld(worldKey);
         if (serverLevel == null) {
-            LanguageHelper.sendMessageByKey(player, "level.no_exists", this.level);
+            LanguageHelper.sendMessageByKey(player, "world.dimension.not_found", this.level);
             return;
         }
 

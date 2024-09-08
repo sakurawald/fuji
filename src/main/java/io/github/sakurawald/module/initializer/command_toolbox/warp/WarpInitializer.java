@@ -41,7 +41,7 @@ public class WarpInitializer extends ModuleInitializer {
         String name = warpName.getValue();
 
         if (!data.model().warps.containsKey(name)) {
-            LanguageHelper.sendMessageByKey(player, "warp.no_found", name);
+            LanguageHelper.sendMessageByKey(player, "warp.not_found", name);
             return 0;
         }
 
@@ -56,7 +56,7 @@ public class WarpInitializer extends ModuleInitializer {
         String name = warpName.getValue();
 
         if (!data.model().warps.containsKey(name)) {
-            LanguageHelper.sendMessageByKey(player, "warp.no_found", name);
+            LanguageHelper.sendMessageByKey(player, "warp.not_found", name);
             return 0;
         }
 
