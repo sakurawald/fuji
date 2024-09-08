@@ -1,10 +1,10 @@
 package io.github.sakurawald.module.initializer.skin;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.module.initializer.skin.config.SkinIO;
 import io.github.sakurawald.module.initializer.skin.config.SkinStorage;
 import io.github.sakurawald.core.auxiliary.LogUtil;
@@ -26,7 +26,6 @@ import java.util.function.Supplier;
 // Special thanks to: https://github.com/Suiranoil/SkinRestorer
 public class SkinRestorer {
 
-    private static final Gson gson = new Gson();
     @Getter
     private static final SkinStorage skinStorage = new SkinStorage(new SkinIO(Fuji.CONFIG_PATH.resolve("skin")));
 
@@ -54,7 +53,7 @@ public class SkinRestorer {
 
             Collection<GameProfile> acceptedProfiles = pair.right();
             Set<ServerPlayerEntity> acceptedPlayers = new HashSet<>();
-            JsonObject newSkinJson = gson.fromJson(new String(Base64.getDecoder().decode(skin.value()), StandardCharsets.UTF_8), JsonObject.class);
+            JsonObject newSkinJson = ConfigHandler.getGson().fromJson(new String(Base64.getDecoder().decode(skin.value()), StandardCharsets.UTF_8), JsonObject.class);
             newSkinJson.remove("timestamp");
             for (GameProfile profile : acceptedProfiles) {
                 ServerPlayerEntity player = server.getPlayerManager().getPlayer(profile.getId());
@@ -103,7 +102,7 @@ public class SkinRestorer {
             return false;
 
         try {
-            JsonObject jy = gson.fromJson(new String(Base64.getDecoder().decode(py.value()), StandardCharsets.UTF_8), JsonObject.class);
+            JsonObject jy = ConfigHandler.getGson().fromJson(new String(Base64.getDecoder().decode(py.value()), StandardCharsets.UTF_8), JsonObject.class);
             jy.remove("timestamp");
             return x.equals(jy);
         } catch (Exception ex) {
