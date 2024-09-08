@@ -20,7 +20,7 @@ public class HatInitializer extends ModuleInitializer {
 
         player.equipStack(EquipmentSlot.HEAD, mainHandItem);
         player.setStackInHand(Hand.MAIN_HAND, headSlotItem);
-        MessageHelper.sendMessage(player, "hat.success");
+        MessageHelper.sendMessageByKey(player, "hat.success");
         return CommandHelper.Return.SUCCESS;
     }
 

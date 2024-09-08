@@ -32,17 +32,17 @@ public class KitEditorGui extends PagedGui<Kit> {
     private static final KitInitializer module = Managers.getModuleManager().getInitializer(KitInitializer.class);
 
     public KitEditorGui(ServerPlayerEntity player, @NotNull List<Kit> entities, int pageIndex) {
-        super(null, player, MessageHelper.ofText(player, true, "kit.gui.editor.title"), entities, pageIndex);
+        super(null, player, MessageHelper.getTextByKey(player, "kit.gui.editor.title"), entities, pageIndex);
 
         SingleLineLayer singleLineLayer = new SingleLineLayer();
         singleLineLayer.setSlot(1, GuiHelper.makeHelpButton(player)
-                .setLore(MessageHelper.ofTextList(player, "kit.gui.editor.help.lore")));
+                .setLore(MessageHelper.getTextListByKey(player, "kit.gui.editor.help.lore")));
         singleLineLayer.setSlot(4, GuiHelper.makeAddButton(player).setCallback(() -> new InputSignGui(player, "prompt.input.name") {
             @Override
             public void onClose() {
                 String name = getLine(0).getString().trim();
                 if (name.isEmpty()) {
-                    MessageHelper.sendActionBar(player, "operation.cancelled");
+                    MessageHelper.sendActionBarByKey(player, "operation.cancelled");
                     return;
                 }
 
@@ -83,7 +83,7 @@ public class KitEditorGui extends PagedGui<Kit> {
                         module.writeKit(kit.withStackList(itemStacks));
                     }
 
-                }, MessageHelper.ofText(player, true, "kit.gui.editor.kit.title", kit.getName()));
+                }, MessageHelper.getTextByKey(player, "kit.gui.editor.kit.title", kit.getName()));
 
         player.openHandledScreen(simpleNamedScreenHandlerFactory);
     }
@@ -105,7 +105,7 @@ public class KitEditorGui extends PagedGui<Kit> {
 
                     if (event.shift && event.isRight) {
                         module.deleteKit(entity.getName());
-                        MessageHelper.sendActionBar(getPlayer(), "deleted");
+                        MessageHelper.sendActionBarByKey(getPlayer(), "deleted");
 
                         deleteEntity(entity);
                     }

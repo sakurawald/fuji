@@ -14,7 +14,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class InventoryRedirectScreen extends RedirectScreenHandlerFactory {
 
     public InventoryRedirectScreen(ServerPlayerEntity sourcePlayer,String targetPlayerName) {
-        super(targetPlayerName, MessageHelper.ofText(sourcePlayer,"view.inv.title", targetPlayerName));
+        super(targetPlayerName, MessageHelper.getTextByKey(sourcePlayer,"view.inv.title", targetPlayerName));
     }
 
     @Override

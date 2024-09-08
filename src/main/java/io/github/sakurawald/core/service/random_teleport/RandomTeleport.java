@@ -37,7 +37,7 @@ public class RandomTeleport {
 
             ServerWorld world = IdentifierHelper.ofServerWorld(Identifier.of(setup.getDimension()));
             if (world == null) {
-                MessageHelper.sendMessage(player,"dimension.no_found");
+                MessageHelper.sendMessageByKey(player,"dimension.no_found");
                 return;
             }
 
@@ -50,7 +50,7 @@ public class RandomTeleport {
             } while (result.isEmpty() && triedTimes <= setup.getMaxTryTimes());
 
             if (result.isEmpty()) {
-                MessageHelper.sendMessage(player, "rtp.fail");
+                MessageHelper.sendMessageByKey(player, "rtp.fail");
                 return;
             }
 

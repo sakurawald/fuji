@@ -40,7 +40,7 @@ public class ServerPlayerInteractionManagerMixin {
         if (Configs.configHandler.model().modules.anti_build.anti.break_block.id.contains(id)
                 && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("break_block", id))
         ) {
-            MessageHelper.sendMessage(player, "anti_build.disallow");
+            MessageHelper.sendMessageByKey(player, "anti_build.disallow");
             cir.setReturnValue(false);
         }
 
@@ -53,7 +53,7 @@ public class ServerPlayerInteractionManagerMixin {
         if (Configs.configHandler.model().modules.anti_build.anti.interact_item.id.contains(id)
                 && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_item", id))
         ) {
-            MessageHelper.sendMessage(player, "anti_build.disallow");
+            MessageHelper.sendMessageByKey(player, "anti_build.disallow");
             cir.setReturnValue(ActionResult.FAIL);
         }
     }
@@ -67,7 +67,7 @@ public class ServerPlayerInteractionManagerMixin {
         if (Configs.configHandler.model().modules.anti_build.anti.interact_block.id.contains(id)
                 && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_block", id))
         ) {
-            MessageHelper.sendMessage(player, "anti_build.disallow");
+            MessageHelper.sendMessageByKey(player, "anti_build.disallow");
             cir.setReturnValue(ActionResult.FAIL);
         }
     }

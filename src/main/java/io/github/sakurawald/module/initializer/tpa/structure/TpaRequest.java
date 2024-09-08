@@ -76,14 +76,14 @@ public class TpaRequest {
     }
 
     public @NotNull Component asSenderComponent$Description() {
-        return tpahere ? MessageHelper.ofComponent(getSender(), "tpa.others_to_you", receiver.getGameProfile().getName())
-                : MessageHelper.ofComponent(getSender(), "tpa.you_to_others", receiver.getGameProfile().getName());
+        return tpahere ? MessageHelper.getTextByKey(getSender(), "tpa.others_to_you", receiver.getGameProfile().getName()).asComponent()
+                : MessageHelper.getTextByKey(getSender(), "tpa.you_to_others", receiver.getGameProfile().getName()).asComponent();
     }
 
     public @NotNull Component asSenderComponent$Sent() {
         TextComponent cancelComponent = Component
                 .text(CROSS).color(NamedTextColor.RED)
-                .hoverEvent(HoverEvent.showText(MessageHelper.ofComponent(getSender(), "cancel")))
+                .hoverEvent(HoverEvent.showText(MessageHelper.getTextByKey(getSender(), "cancel")))
                 .clickEvent(ClickEvent.runCommand("/tpacancel %s".formatted(getReceiver().getGameProfile().getName())));
 
         return asSenderComponent$Description()
@@ -92,16 +92,16 @@ public class TpaRequest {
     }
 
     public @NotNull Component asReceiverComponent$Description() {
-        return tpahere ? MessageHelper.ofComponent(getReceiver(), "tpa.you_to_others", sender.getGameProfile().getName())
-                : MessageHelper.ofComponent(getReceiver(), "tpa.others_to_you", sender.getGameProfile().getName());
+        return tpahere ? MessageHelper.getTextByKey(getReceiver(), "tpa.you_to_others", sender.getGameProfile().getName()).asComponent()
+                : MessageHelper.getTextByKey(getReceiver(), "tpa.others_to_you", sender.getGameProfile().getName()).asComponent();
     }
 
     public @NotNull Component asReceiverComponent$Sent() {
         Component acceptComponent = Component.text(TICK).color(NamedTextColor.GREEN)
-                .hoverEvent(HoverEvent.showText(MessageHelper.ofComponent(getReceiver(), "accept")))
+                .hoverEvent(HoverEvent.showText(MessageHelper.getTextByKey(getReceiver(), "accept")))
                 .clickEvent(ClickEvent.runCommand("/tpaaccept %s".formatted(sender.getGameProfile().getName())));
         Component denyComponent = Component.text(CROSS).color(NamedTextColor.RED)
-                .hoverEvent(HoverEvent.showText(MessageHelper.ofComponent(getReceiver(), "deny")))
+                .hoverEvent(HoverEvent.showText(MessageHelper.getTextByKey(getReceiver(), "deny")))
                 .clickEvent(ClickEvent.runCommand("/tpadeny %s".formatted(sender.getGameProfile().getName())));
         return asReceiverComponent$Description()
                 .appendSpace()

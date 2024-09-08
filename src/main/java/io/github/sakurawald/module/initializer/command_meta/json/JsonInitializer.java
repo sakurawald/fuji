@@ -60,7 +60,7 @@ public class JsonInitializer extends ModuleInitializer {
             return true;
         });
 
-        MessageHelper.sendMessage(ctx.getSource(), "operation.success");
+        MessageHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -71,7 +71,7 @@ public class JsonInitializer extends ModuleInitializer {
             return true;
         });
 
-        MessageHelper.sendMessage(ctx.getSource(), "operation.success");
+        MessageHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -83,7 +83,7 @@ public class JsonInitializer extends ModuleInitializer {
             return true;
         });
 
-        MessageHelper.sendMessage(ctx.getSource(), "operation.success");
+        MessageHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -94,7 +94,7 @@ public class JsonInitializer extends ModuleInitializer {
             return true;
         });
 
-        MessageHelper.sendMessage(ctx.getSource(), "operation.success");
+        MessageHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 }

@@ -18,7 +18,7 @@ public class InvViewInitializer extends ModuleInitializer {
 
     void checkSelfView(ServerPlayerEntity source, OfflinePlayerName target) {
         if (source.getGameProfile().getName().equals(target.getValue())) {
-            MessageHelper.sendMessage(source, "view.failed.self_view");
+            MessageHelper.sendMessageByKey(source, "view.failed.self_view");
             throw new SnackException();
         }
     }

@@ -15,14 +15,14 @@ public class DisplayHelper {
     private static final SoftReferenceMap<String, DisplayGuiBuilder> uuid2gui = new SoftReferenceMap<>();
 
     public static String createInventoryDisplay(@NotNull ServerPlayerEntity player) {
-        Text title = MessageHelper.ofText(player, "display.gui.title", player.getGameProfile().getName());
+        Text title = MessageHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName());
         String uuid = UUID.randomUUID().toString();
         uuid2gui.put(uuid, new InventoryDisplayGui(title, player));
         return uuid;
     }
 
     public static String createEnderChestDisplay(@NotNull ServerPlayerEntity player) {
-        Text title = MessageHelper.ofText(player, "display.gui.title", player.getGameProfile().getName());
+        Text title = MessageHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName());
         String uuid = UUID.randomUUID().toString();
         uuid2gui.put(uuid, new EnderChestDisplayGui(title, player));
         return uuid;
@@ -31,7 +31,7 @@ public class DisplayHelper {
     public static String createItemDisplay(@NotNull ServerPlayerEntity player) {
         /* new object */
         DisplayGuiBuilder displayGuiBuilder;
-        Text title = MessageHelper.ofText(player, "display.gui.title", player.getGameProfile().getName());
+        Text title = MessageHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName());
         ItemStack itemStack = player.getMainHandStack().copy();
         if (DisplayGuiBuilder.isShulkerBox(itemStack)) {
             // shulker-box item
@@ -50,7 +50,7 @@ public class DisplayHelper {
     public static void viewDisplay(@NotNull ServerPlayerEntity player, String displayUUID) {
         DisplayGuiBuilder displayGuiBuilder = uuid2gui.get(displayUUID);
         if (displayGuiBuilder == null) {
-            MessageHelper.sendMessage(player, "display.invalid");
+            MessageHelper.sendMessageByKey(player, "display.invalid");
             return;
         }
         displayGuiBuilder.build(player).open();

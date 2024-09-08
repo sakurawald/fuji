@@ -40,8 +40,8 @@ public class TabListInitializer extends ModuleInitializer {
         String headerControl = RandomUtil.drawList(config.style.header);
         String footerControl = RandomUtil.drawList(config.style.footer);
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-            @NotNull Text header = MessageHelper.ofText(player, false, headerControl);
-            @NotNull Text footer = MessageHelper.ofText(player, false, footerControl);
+            @NotNull Text header = MessageHelper.getTextByValue(player, headerControl);
+            @NotNull Text footer = MessageHelper.getTextByValue(player, footerControl);
             player.networkHandler.sendPacket(new PlayerListHeaderS2CPacket(header, footer));
         }
 

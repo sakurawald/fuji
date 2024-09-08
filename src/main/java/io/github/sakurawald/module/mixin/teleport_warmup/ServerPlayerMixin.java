@@ -57,7 +57,7 @@ public abstract class ServerPlayerMixin {
             ci.cancel();
         } else {
             if (!ticket.isCompleted()) {
-                MessageHelper.sendActionBar(player, "teleport_warmup.another_teleportation_in_progress");
+                MessageHelper.sendActionBarByKey(player, "teleport_warmup.another_teleportation_in_progress");
                 ci.cancel();
             }
         }

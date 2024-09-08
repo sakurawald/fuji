@@ -38,9 +38,9 @@ public class SeenInitializer extends ModuleInitializer {
 
         if (data.model().player2seen.containsKey(target)) {
             Long time = data.model().player2seen.get(target);
-            MessageHelper.sendMessage(ctx.getSource(), "seen.success", target, DateUtil.toStandardDateFormat(time));
+            MessageHelper.sendMessageByKey(ctx.getSource(), "seen.success", target, DateUtil.toStandardDateFormat(time));
         } else {
-            MessageHelper.sendMessage(ctx.getSource(), "seen.fail");
+            MessageHelper.sendMessageByKey(ctx.getSource(), "seen.fail");
         }
         return CommandHelper.Return.SUCCESS;
     }

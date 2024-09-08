@@ -114,7 +114,7 @@ public class NametagInitializer extends ModuleInitializer {
             nametag.setText(Text.empty());
             nametag.setBackground(-1);
         } else {
-            Text text = MessageHelper.ofText(player, false, config.style.text);
+            Text text = MessageHelper.getTextByValue(player, config.style.text);
             nametag.setText(text);
 
             nametag.getDataTracker().set(DisplayEntity.TRANSLATION, new Vector3f(config.style.offset.x, config.style.offset.y, config.style.offset.z));

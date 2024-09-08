@@ -18,7 +18,7 @@ public class FeedInitializer extends ModuleInitializer {
         foodData.setSaturationLevel(5);
         foodData.setExhaustion(0);
 
-        MessageHelper.sendMessage(player, "feed");
+        MessageHelper.sendMessageByKey(player, "feed");
         return CommandHelper.Return.SUCCESS;
     }
 

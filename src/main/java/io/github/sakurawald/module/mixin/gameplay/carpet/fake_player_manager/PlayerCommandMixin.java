@@ -52,7 +52,7 @@ public abstract class PlayerCommandMixin {
         if (player == null) return;
 
         if (!module.canSpawnFakePlayer(player)) {
-            MessageHelper.sendMessage(player, "fake_player_manager.spawn.limit_exceed");
+            MessageHelper.sendMessageByKey(player, "fake_player_manager.spawn.limit_exceed");
             cir.setReturnValue(0);
         }
 
@@ -77,7 +77,7 @@ public abstract class PlayerCommandMixin {
     private static void $cantManipulate(@NotNull CommandContext<ServerCommandSource> context, @NotNull CallbackInfoReturnable<Boolean> cir) {
         String fakePlayerName = StringArgumentType.getString(context, "player");
         if (!module.canManipulateFakePlayer(context, fakePlayerName)) {
-            MessageHelper.sendMessage(context.getSource(), "fake_player_manager.manipulate.forbidden");
+            MessageHelper.sendMessageByKey(context.getSource(), "fake_player_manager.manipulate.forbidden");
             cir.setReturnValue(true);
         }
     }

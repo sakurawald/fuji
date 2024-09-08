@@ -85,24 +85,24 @@ public class ChunkScore implements Comparable<ChunkScore> {
 
         String chunkLocation;
         if (Configs.configHandler.model().modules.top_chunks.hide_location) {
-            chunkLocation = MessageHelper.getString(source, "top_chunks.prop.hidden");
+            chunkLocation = MessageHelper.getValue(source, "top_chunks.prop.hidden");
             if (source.hasPermissionLevel(4)) {
-                chunkLocation = MessageHelper.getString(source, "top_chunks.prop.hidden.bypass", this.getChunkPos().toString());
+                chunkLocation = MessageHelper.getValue(source, "top_chunks.prop.hidden.bypass", this.getChunkPos().toString());
             }
         } else {
             chunkLocation = this.getChunkPos().toString();
         }
 
         Component hoverTextComponent = Component.text().color(NamedTextColor.GOLD)
-                .append(MessageHelper.ofComponent(source, "top_chunks.prop.dimension", this.dimension.getRegistryKey().getValue()))
+                .append(MessageHelper.getTextByKey(source, "top_chunks.prop.dimension", this.dimension.getRegistryKey().getValue()))
                 .append(Component.newline())
-                .append(MessageHelper.ofComponent(source, "top_chunks.prop.chunk", chunkLocation))
+                .append(MessageHelper.getTextByKey(source, "top_chunks.prop.chunk", chunkLocation))
                 .append(Component.newline())
-                .append(MessageHelper.ofComponent(source, "top_chunks.prop.score", this.score))
+                .append(MessageHelper.getTextByKey(source, "top_chunks.prop.score", this.score))
                 .append(Component.newline())
-                .append(MessageHelper.ofComponent(source, "top_chunks.prop.players", this.players))
+                .append(MessageHelper.getTextByKey(source, "top_chunks.prop.players", this.players))
                 .append(Component.newline())
-                .append(MessageHelper.ofComponent(source, "top_chunks.prop.types"))
+                .append(MessageHelper.getTextByKey(source, "top_chunks.prop.types"))
                 .append(TypeFormatter.formatTypes(source, this.type2amount)).build();
         return Component.text()
                 .color(this.players.isEmpty() ? NamedTextColor.GRAY : NamedTextColor.DARK_GREEN)

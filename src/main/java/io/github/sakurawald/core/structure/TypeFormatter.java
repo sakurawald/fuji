@@ -28,8 +28,9 @@ public class TypeFormatter {
     public static @NotNull Component formatTypes(ServerCommandSource source, Map<String, Integer> type2amount) {
         TextComponent.Builder ret = Component.text();
         type2amount.forEach((k, v) -> {
-            Component component = MessageHelper.ofComponent(source, "types.entry", v)
-                    .replaceText(TextReplacementConfig.builder().matchLiteral("[type]").replacement(Component.translatable(k)).build());
+            Component component = MessageHelper.getTextByKey(source, "types.entry", v)
+                .asComponent()
+                .replaceText(TextReplacementConfig.builder().matchLiteral("[type]").replacement(Component.translatable(k)).build());
             ret.append(component);
         });
         return ret.asComponent();

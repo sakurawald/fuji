@@ -34,7 +34,7 @@ public class PagedHeadGui extends PagedGui<Head> {
         var builder = GuiElementBuilder.from(entity.of());
         if (HeadInitializer.headHandler.model().economyType != EconomyType.FREE) {
             builder.addLoreLine(Text.empty());
-            builder.addLoreLine(MessageHelper.ofText(getPlayer(), "head.price").copy().append(EconomyType.getCost()));
+            builder.addLoreLine(MessageHelper.getTextByKey(getPlayer(), "head.price").copy().append(EconomyType.getCost()));
         }
         builder.setCallback((index, type, action) -> processHeadClick(entity, type));
         return builder.build();

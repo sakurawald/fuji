@@ -14,7 +14,7 @@ public class HealInitializer extends ModuleInitializer {
     @CommandNode("heal")
     private int $heal(@CommandSource ServerPlayerEntity player) {
         player.setHealth(player.getMaxHealth());
-        MessageHelper.sendMessage(player, "heal");
+        MessageHelper.sendMessageByKey(player, "heal");
         return CommandHelper.Return.SUCCESS;
     }
 

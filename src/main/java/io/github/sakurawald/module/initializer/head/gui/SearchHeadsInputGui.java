@@ -33,7 +33,7 @@ public class SearchHeadsInputGui extends InputSignGui {
                         || head.getTagsOrEmpty().toLowerCase().contains(keywords.toLowerCase()))
                 .collect(Collectors.toList());
 
-        Text title = MessageHelper.ofText(player, "gui.search.title", keywords);
+        Text title = MessageHelper.getTextByKey(player, "gui.search.title", keywords);
         new PagedHeadGui(this.parentGui, player, title, entities, 0).open();
     }
 }

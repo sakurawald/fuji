@@ -79,16 +79,16 @@ public class SkinInitializer extends ModuleInitializer {
             Collection<ServerPlayerEntity> players = pair.left();
 
             if (profiles.isEmpty()) {
-                MessageHelper.sendMessage(src, "skin.action.failed");
+                MessageHelper.sendMessageByKey(src, "skin.action.failed");
                 return;
             }
             if (setByOperator) {
-                MessageHelper.sendMessage(src, "skin.action.affected_profile", String.join(", ", profiles.stream().map(GameProfile::getName).toList()));
+                MessageHelper.sendMessageByKey(src, "skin.action.affected_profile", String.join(", ", profiles.stream().map(GameProfile::getName).toList()));
                 if (!players.isEmpty()) {
-                    MessageHelper.sendMessage(src, "skin.action.affected_player", String.join(", ", players.stream().map(p -> p.getGameProfile().getName()).toList()));
+                    MessageHelper.sendMessageByKey(src, "skin.action.affected_player", String.join(", ", players.stream().map(p -> p.getGameProfile().getName()).toList()));
                 }
             } else {
-                MessageHelper.sendMessage(src, "skin.action.ok");
+                MessageHelper.sendMessageByKey(src, "skin.action.ok");
             }
         });
         return targets.size();

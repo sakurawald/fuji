@@ -24,7 +24,7 @@ public class AttachmentInitializer extends ModuleInitializer {
     int set(@CommandSource CommandContext<ServerCommandSource> ctx, SubjectName subject, SubjectId uuid, GreedyString data) {
         Managers.getAttachmentManager().setAttachment(subject.getValue(), uuid.getValue(), data.getValue());
 
-        MessageHelper.sendMessage(ctx.getSource(), "operation.success");
+        MessageHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -32,7 +32,7 @@ public class AttachmentInitializer extends ModuleInitializer {
     int unset(@CommandSource CommandContext<ServerCommandSource> ctx, SubjectName subject, SubjectId uuid) {
         boolean flag = Managers.getAttachmentManager().unsetAttachment(subject.getValue(), uuid.getValue());
 
-        MessageHelper.sendMessage(ctx.getSource(), flag ? "operation.success" : "operation.fail");
+        MessageHelper.sendMessageByKey(ctx.getSource(), flag ? "operation.success" : "operation.fail");
         return CommandHelper.Return.SUCCESS;
     }
 
