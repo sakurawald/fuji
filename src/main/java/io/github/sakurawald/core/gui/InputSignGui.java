@@ -16,7 +16,7 @@ public class InputSignGui extends SignGui {
         this.setSignType(Blocks.CHERRY_WALL_SIGN);
         this.setColor(DyeColor.BLACK);
         if (promptKey != null) {
-            this.setLine(3, MessageHelper.ofText(player, true, promptKey));
+            this.setLine(3, MessageHelper.getTextByKey(player, promptKey));
         }
         this.setAutoUpdate(false);
     }

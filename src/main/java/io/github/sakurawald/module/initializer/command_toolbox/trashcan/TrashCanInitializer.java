@@ -19,7 +19,7 @@ public class TrashCanInitializer extends ModuleInitializer {
         int rows = 3;
         SimpleInventory simpleInventory = new SimpleInventory(rows * 9);
 
-        player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> new GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X3, i, inventory, simpleInventory, rows), MessageHelper.ofText(player, "trashcan.gui.title")));
+        player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> new GenericContainerScreenHandler(ScreenHandlerType.GENERIC_9X3, i, inventory, simpleInventory, rows), MessageHelper.getTextByKey(player, "trashcan.gui.title")));
         player.incrementStat(Stats.INTERACT_WITH_CRAFTING_TABLE);
         return CommandHelper.Return.SUCCESS;
     }

@@ -85,7 +85,7 @@ public class WorldInitializer extends ModuleInitializer {
         Identifier dimensionIdentifier = Identifier.of(FUJI_DIMENSION_NAMESPACE, name);
 
         if (IdentifierHelper.ofRegistry(RegistryKeys.DIMENSION).containsId(dimensionIdentifier)) {
-            MessageHelper.sendMessage(ctx.getSource(), "world.dimension.exist");
+            MessageHelper.sendMessageByKey(ctx.getSource(), "world.dimension.exist");
             return CommandHelper.Return.FAIL;
         }
 
@@ -95,7 +95,7 @@ public class WorldInitializer extends ModuleInitializer {
         storage.model().dimension_list.add(new DimensionEntry(true, dimensionIdentifier.toString(), dimensionTypeIdentifier.toString(), $seed));
         storage.saveToDisk();
 
-        MessageHelper.sendBroadcast("world.dimension.created", dimensionIdentifier);
+        MessageHelper.sendBroadcastByKey("world.dimension.created", dimensionIdentifier);
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -112,19 +112,19 @@ public class WorldInitializer extends ModuleInitializer {
 
         Optional<DimensionEntry> first = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
         if (first.isEmpty()) {
-            MessageHelper.sendMessage(ctx.getSource(), "world.dimension.not_exist");
+            MessageHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_exist");
             return CommandHelper.Return.FAIL;
         }
         storage.model().dimension_list.remove(first.get());
         storage.saveToDisk();
 
-        MessageHelper.sendBroadcast("world.dimension.deleted", identifier);
+        MessageHelper.sendBroadcastByKey("world.dimension.deleted", identifier);
         return CommandHelper.Return.SUCCESS;
     }
 
     private void checkBlacklist(CommandContext<ServerCommandSource> ctx, String identifier) {
         if (Configs.configHandler.model().modules.world.blacklist.dimension_list.contains(identifier)) {
-            MessageHelper.sendMessage(ctx.getSource(), "world.dimension.blacklist", identifier);
+            MessageHelper.sendMessageByKey(ctx.getSource(), "world.dimension.blacklist", identifier);
             throw new SnackException();
         }
     }
@@ -139,14 +139,13 @@ public class WorldInitializer extends ModuleInitializer {
 
         Optional<DimensionEntry> first = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
         if (first.isEmpty()) {
-            MessageHelper.sendMessage(ctx.getSource(), "world.dimension.not_exist");
+            MessageHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_exist");
             return CommandHelper.Return.FAIL;
         }
         // just delete it
         WorldManager.requestToDeleteWorld(world);
 
         Boolean $useTheSameSeed = useTheSameSeed.orElse(false);
-
 
         long newSeed = $useTheSameSeed ? first.get().getSeed() : RandomSeed.getSeed();
         WorldManager.requestToCreateWorld(ServerHelper.getDefaultServer(), Identifier.of(identifier), Identifier.of(first.get().getDimensionType()), newSeed);
@@ -155,7 +154,7 @@ public class WorldInitializer extends ModuleInitializer {
         first.get().setSeed(newSeed);
         storage.saveToDisk();
 
-        MessageHelper.sendBroadcast("world.dimension.reset", identifier);
+        MessageHelper.sendBroadcastByKey("world.dimension.reset", identifier);
         return CommandHelper.Return.SUCCESS;
     }
 }

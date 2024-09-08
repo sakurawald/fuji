@@ -63,63 +63,64 @@ public class ChatInitializer extends ModuleInitializer {
 
     private void registerPosPlaceholder() {
         Placeholders.register(
-                Identifier.of(Fuji.MOD_ID, "pos"),
-                (ctx, arg) -> {
-                    if (ctx.player() == null) PlaceholderResult.invalid();
+            Identifier.of(Fuji.MOD_ID, "pos"),
+            (ctx, arg) -> {
+                if (ctx.player() == null) PlaceholderResult.invalid();
 
-                    ServerPlayerEntity player = ctx.player();
+                ServerPlayerEntity player = ctx.player();
 
-                    int x = player.getBlockX();
-                    int y = player.getBlockY();
-                    int z = player.getBlockZ();
-                    String dim_name = player.getWorld().getRegistryKey().getValue().toString();
-                    String dim_display_name = MessageHelper.getString(player, dim_name);
+                int x = player.getBlockX();
+                int y = player.getBlockY();
+                int z = player.getBlockZ();
+                String dim_name = player.getWorld().getRegistryKey().getValue().toString();
+                String dim_display_name = MessageHelper.getValue(player, dim_name);
 
-                    String clickCommand = MessageHelper.getString(player, "chat.xaero_waypoint_add.command", x, y, z, dim_name.replaceAll(":", "\\$"));
+                String clickCommand = MessageHelper.getValue(player, "chat.xaero_waypoint_add.command");
 
-                    String hoverString = MessageHelper.getString(player, "chat.current_pos");
-                    switch (dim_name) {
-                        case "minecraft:overworld":
-                            hoverString += "\n" + MessageHelper.getString(player, "minecraft:the_nether")
-                                    + ": %d %s %d".formatted(x / 8, y, z / 8);
-                            break;
-                        case "minecraft:the_nether":
-                            hoverString += "\n" + MessageHelper.getString(player, "minecraft:overworld")
-                                    + ": %d %s %d".formatted(x * 8, y, z * 8);
-                            break;
-                    }
+                String hoverString = MessageHelper.getValue(player, "chat.current_pos");
+                switch (dim_name) {
+                    case "minecraft:overworld":
+                        hoverString += "\n" + MessageHelper.getValue(player, "minecraft:the_nether")
+                            + ": %d %s %d".formatted(x / 8, y, z / 8);
+                        break;
+                    case "minecraft:the_nether":
+                        hoverString += "\n" + MessageHelper.getValue(player, "minecraft:overworld")
+                            + ": %d %s %d".formatted(x * 8, y, z * 8);
+                        break;
+                }
 
-                    Component component = MessageHelper.ofComponent(player, true, "placeholder.pos", x, y, z, dim_display_name)
-                            .clickEvent(ClickEvent.runCommand(clickCommand))
-                            .hoverEvent(Component.text(hoverString + "\n").append(MessageHelper.ofComponent(player, "chat.xaero_waypoint_add")));
+                Component component = MessageHelper.getTextByKey(player, "placeholder.pos", x, y, z, dim_display_name)
+                    .asComponent()
+                    .clickEvent(ClickEvent.runCommand(clickCommand))
+                    .hoverEvent(Component.text(hoverString + "\n").append(MessageHelper.getTextByKey(player, "chat.xaero_waypoint_add")));
 
-                    return PlaceholderResult.value(MessageHelper.toText(component));
-                });
+                return PlaceholderResult.value(MessageHelper.toText(component));
+            });
 
     }
 
     private void registerPrefixPlaceholder() {
         Placeholders.register(
-                Identifier.of(Fuji.MOD_ID, "player_prefix"),
-                (ctx, arg) -> {
-                    if (ctx.player() == null) PlaceholderResult.invalid();
+            Identifier.of(Fuji.MOD_ID, "player_prefix"),
+            (ctx, arg) -> {
+                if (ctx.player() == null) PlaceholderResult.invalid();
 
-                    ServerPlayerEntity player = ctx.player();
-                    String prefix = PermissionHelper.getPrefix(player.getUuid());
-                    return PlaceholderResult.value(MessageHelper.ofText(prefix));
-                });
+                ServerPlayerEntity player = ctx.player();
+                String prefix = PermissionHelper.getPrefix(player.getUuid());
+                return PlaceholderResult.value(MessageHelper.getTextByValue(player, prefix));
+            });
     }
 
     private void registerSuffixPlaceholder() {
         Placeholders.register(
-                Identifier.of(Fuji.MOD_ID, "player_suffix"),
-                (ctx, arg) -> {
-                    if (ctx.player() == null) PlaceholderResult.invalid();
+            Identifier.of(Fuji.MOD_ID, "player_suffix"),
+            (ctx, arg) -> {
+                if (ctx.player() == null) PlaceholderResult.invalid();
 
-                    ServerPlayerEntity player = ctx.player();
-                    String prefix = PermissionHelper.getSuffix(player.getUuid());
-                    return PlaceholderResult.value(MessageHelper.ofText(prefix));
-                });
+                ServerPlayerEntity player = ctx.player();
+                String prefix = PermissionHelper.getSuffix(player.getUuid());
+                return PlaceholderResult.value(MessageHelper.getTextByValue(player,prefix));
+            });
     }
 
     @CommandNode("chat format set")
@@ -131,9 +132,9 @@ public class ChatInitializer extends ModuleInitializer {
         chatHandler.saveToDisk();
 
         /* feedback */
-        $format = MessageHelper.getString(player, "chat.format.set").replace("%s", $format);
+        $format = MessageHelper.getValue(player, "chat.format.set").replace("%s", $format);
         Component component = miniMessage.deserialize($format).asComponent()
-                .replaceText(builder -> builder.match("%message%").replacement(MessageHelper.ofComponent(player, "chat.format.show")));
+            .replaceText(builder -> builder.match("%message%").replacement(MessageHelper.getTextByKey(player, "chat.format.show")));
 
         player.sendMessage(component);
         return CommandHelper.Return.SUCCESS;
@@ -144,7 +145,7 @@ public class ChatInitializer extends ModuleInitializer {
         String name = player.getGameProfile().getName();
         chatHandler.model().format.player2format.remove(name);
         chatHandler.saveToDisk();
-        MessageHelper.sendMessage(player, "chat.format.reset");
+        MessageHelper.sendMessageByKey(player, "chat.format.reset");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -166,7 +167,7 @@ public class ChatInitializer extends ModuleInitializer {
 
         /* run mention player task */
         if (!mentionedPlayers.isEmpty()) {
-            MentionPlayersJob.requestJob(Configs.configHandler.model().modules.chat.mention_player,mentionedPlayers);
+            MentionPlayersJob.requestJob(Configs.configHandler.model().modules.chat.mention_player, mentionedPlayers);
         }
 
         return string;
@@ -184,14 +185,14 @@ public class ChatInitializer extends ModuleInitializer {
         message = resolvePatterns(message);
         message = resolveMentionTag(message);
         message = chatHandler.model().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
-                .replace("%message%", message);
+            .replace("%message%", message);
 
         /* parse format */
         String format = Configs.configHandler.model().modules.chat.format;
 
         /* combine */
         String string = format.replace("%message%", message);
-        return MessageHelper.ofText(player, false, string);
+        return MessageHelper.getTextByValue(player, string);
     }
 
 }

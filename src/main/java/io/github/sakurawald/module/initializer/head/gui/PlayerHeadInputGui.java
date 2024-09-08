@@ -30,7 +30,7 @@ public class PlayerHeadInputGui extends AnvilInputGui {
     public PlayerHeadInputGui(@NotNull HeadGui parentGui) {
         super(parentGui.player, false);
         this.parentGui = parentGui;
-        this.setTitle(MessageHelper.ofText(player, "head.category.player"));
+        this.setTitle(MessageHelper.getTextByKey(player, "head.category.player"));
         this.setSlot(1, GuiHelper.makeBarrier());
         this.resetResultSlot();
     }
@@ -93,7 +93,7 @@ public class PlayerHeadInputGui extends AnvilInputGui {
                         .setSkullOwner(profile, ServerHelper.getDefaultServer());
                 if (HeadInitializer.headHandler.model().economyType != EconomyType.FREE) {
                     builder.addLoreLine(Text.empty());
-                    builder.addLoreLine(MessageHelper.ofText(player, "head.price").copy().append(EconomyType.getCost()));
+                    builder.addLoreLine(MessageHelper.getTextByKey(player, "head.price").copy().append(EconomyType.getCost()));
                 }
                 ItemStack resultStack = builder.asStack();
 

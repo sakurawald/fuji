@@ -25,6 +25,6 @@ public class NonProductionWork extends Work {
 
     @Override
     public void openSpecializedSettingsGui(@NotNull ServerPlayerEntity player, SimpleGui parentGui) {
-        MessageHelper.sendActionBar(player, "works.non_production_work.specialized_settings.not_found");
+        MessageHelper.sendActionBarByKey(player, "works.non_production_work.specialized_settings.not_found");
     }
 }

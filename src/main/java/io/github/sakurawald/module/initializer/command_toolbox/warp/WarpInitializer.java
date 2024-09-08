@@ -41,7 +41,7 @@ public class WarpInitializer extends ModuleInitializer {
         String name = warpName.getValue();
 
         if (!data.model().warps.containsKey(name)) {
-            MessageHelper.sendMessage(player, "warp.no_found", name);
+            MessageHelper.sendMessageByKey(player, "warp.no_found", name);
             return 0;
         }
 
@@ -56,12 +56,12 @@ public class WarpInitializer extends ModuleInitializer {
         String name = warpName.getValue();
 
         if (!data.model().warps.containsKey(name)) {
-            MessageHelper.sendMessage(player, "warp.no_found", name);
+            MessageHelper.sendMessageByKey(player, "warp.no_found", name);
             return 0;
         }
 
         data.model().warps.remove(name);
-        MessageHelper.sendMessage(player, "warp.unset.success", name);
+        MessageHelper.sendMessageByKey(player, "warp.unset.success", name);
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -72,19 +72,19 @@ public class WarpInitializer extends ModuleInitializer {
 
         if (data.model().warps.containsKey(name)) {
             if (!override.orElse(false)) {
-                MessageHelper.sendMessage(player, "warp.set.fail.need_override", name);
+                MessageHelper.sendMessageByKey(player, "warp.set.fail.need_override", name);
                 return CommandHelper.Return.FAIL;
             }
         }
 
         data.model().warps.put(name, new WarpEntry(Position.of(player)));
-        MessageHelper.sendMessage(player, "warp.set.success", name);
+        MessageHelper.sendMessageByKey(player, "warp.set.success", name);
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("list")
     private int $list(@CommandSource ServerPlayerEntity player) {
-        MessageHelper.sendMessage(player, "warp.list", data.model().warps.keySet());
+        MessageHelper.sendMessageByKey(player, "warp.list", data.model().warps.keySet());
         return CommandHelper.Return.SUCCESS;
     }
 }

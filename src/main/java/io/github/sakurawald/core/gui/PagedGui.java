@@ -79,8 +79,8 @@ public abstract class PagedGui<T> extends LayeredGui {
         PagedGui<T> make = make(this.parent, getPlayer(), prefixTitle, filter(keywords), 0);
 
         // override the title
-        Text page = MessageHelper.ofText(getPlayer(), true, "gui.page.title", this.getCurrentPageNumber(), this.getMaxPageNumber());
-        Text title = MessageHelper.ofText(getPlayer(), "gui.search.title", keywords)
+        Text page = MessageHelper.getTextByKey(getPlayer(), "gui.page.title", this.getCurrentPageNumber(), this.getMaxPageNumber());
+        Text title = MessageHelper.getTextByKey(getPlayer(), "gui.search.title", keywords)
                 .copy().append(page);
         make.setTitle(title);
         return make;
@@ -108,7 +108,7 @@ public abstract class PagedGui<T> extends LayeredGui {
 
     private void drawTitle() {
         Component formatted = this.prefixTitle.asComponent()
-                .append(MessageHelper.ofText(getPlayer(), true, "gui.page.title", this.getCurrentPageNumber(), this.getMaxPageNumber()));
+                .append(MessageHelper.getTextByKey(getPlayer(), "gui.page.title", this.getCurrentPageNumber(), this.getMaxPageNumber()));
         this.setTitle(MessageHelper.toText(formatted));
     }
 

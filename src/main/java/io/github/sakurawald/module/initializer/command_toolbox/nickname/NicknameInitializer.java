@@ -29,7 +29,7 @@ public class NicknameInitializer extends ModuleInitializer {
             nicknameHandler.model().format.player2format.put(name, format.getValue());
             nicknameHandler.saveToDisk();
 
-            MessageHelper.sendMessage(player, "nickname.set");
+            MessageHelper.sendMessageByKey(player, "nickname.set");
             return CommandHelper.Return.SUCCESS;
     }
 
@@ -39,7 +39,7 @@ public class NicknameInitializer extends ModuleInitializer {
         nicknameHandler.model().format.player2format.remove(name);
         nicknameHandler.saveToDisk();
 
-        MessageHelper.sendMessage(player, "nickname.unset");
+        MessageHelper.sendMessageByKey(player, "nickname.unset");
         return CommandHelper.Return.SUCCESS;
     }
 }

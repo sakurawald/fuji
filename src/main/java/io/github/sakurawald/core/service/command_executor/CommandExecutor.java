@@ -42,9 +42,9 @@ public class CommandExecutor {
         try {
             // parse placeholders
             if (contextPlayer != null) {
-                command = MessageHelper.ofString(contextPlayer, command);
+                command = MessageHelper.resolvePlaceholder(contextPlayer, command);
             } else {
-                command = MessageHelper.ofString(ServerHelper.getDefaultServer(), command);
+                command = MessageHelper.resolvePlaceholder(ServerHelper.getDefaultServer(), command);
             }
 
             return server.getCommandManager().getDispatcher().execute(command, server.getCommandSource());
@@ -56,7 +56,7 @@ public class CommandExecutor {
 
 
     public static int executeCommandAsPlayer(@NotNull ServerPlayerEntity player, String command, Function<ServerCommandSource, ServerCommandSource> source) {
-        command = MessageHelper.ofString(player, command);
+        command = MessageHelper.resolvePlaceholder(player, command);
 
         CommandManager commandManager = ServerHelper.getDefaultServer().getCommandManager();
         CommandDispatcher<ServerCommandSource> dispatcher = commandManager.getDispatcher();

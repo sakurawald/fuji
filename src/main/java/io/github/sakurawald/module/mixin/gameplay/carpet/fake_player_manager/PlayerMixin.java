@@ -43,7 +43,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
                 // main-hand and off-hand will both trigger this event
                 if (hand == Hand.MAIN_HAND) {
-                    MessageHelper.sendMessage(source, "fake_player_manager.manipulate.forbidden");
+                    MessageHelper.sendMessageByKey(source, "fake_player_manager.manipulate.forbidden");
                 }
             }
         }

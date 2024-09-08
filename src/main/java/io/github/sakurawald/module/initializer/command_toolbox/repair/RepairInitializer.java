@@ -13,7 +13,7 @@ public class RepairInitializer extends ModuleInitializer {
     @CommandNode("repair")
     private int $repair(@CommandSource ServerPlayerEntity player) {
         player.getMainHandStack().setDamage(0);
-        MessageHelper.sendMessage(player, "repair");
+        MessageHelper.sendMessageByKey(player, "repair");
         return CommandHelper.Return.SUCCESS;
     }
 

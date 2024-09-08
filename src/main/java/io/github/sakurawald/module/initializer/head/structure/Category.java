@@ -82,7 +82,7 @@ public enum Category {
     }
 
     public @NotNull Text getDisplayName(ServerPlayerEntity player) {
-        return MessageHelper.ofText(player, "head.category." + name);
+        return MessageHelper.getTextByKey(player, "head.category." + name);
     }
 
     public @NotNull String getFileName() {

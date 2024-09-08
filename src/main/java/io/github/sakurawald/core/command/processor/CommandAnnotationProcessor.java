@@ -181,7 +181,7 @@ public class CommandAnnotationProcessor {
                 if (theRealException instanceof SnackException snakeException) {
                     // report it
                     if (snakeException.getMessage() != null) {
-                        ctx.getSource().sendMessage(MessageHelper.ofText("<red>--- Fuji Snake Exception ---\nClass: %s\nMethod: %s\nMessage: %s", instance.getClass().getName(), method.getName(), snakeException.getMessage()));
+                        ctx.getSource().sendMessage(MessageHelper.getTextByValue(ctx.getSource(), "<red>--- Fuji Snake Exception ---\nClass: %s\nMethod: %s\nMessage: %s", instance.getClass().getName(), method.getName(), snakeException.getMessage()));
                     }
 
                     // swallow it

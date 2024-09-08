@@ -11,8 +11,7 @@
   to change the order of argument.
 - add: a command-suit/command-sequence/command-bundle module, to execute commands.
 - feature: add a json transformer layer for config read function, to provides some version migration help.
-- make: more tests to check something.
-- make: a test to check the symbol reference in the project.
+- make: some tests to check the symbol reference in the project.
 - rename: some functions should be renamed.
 - add: a lisp-like DSL, including a parse, transformer, analyzer, code-walker, with some built-in functions: predicate,
   equal...

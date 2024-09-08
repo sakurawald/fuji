@@ -56,7 +56,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
             builder.append("\n");
         }
         ServerCommandSource source = context.getSource();
-        source.sendMessage(MessageHelper.ofComponent(source, "fake_player_manager.who.header").append(Component.text(builder.toString())));
+        source.sendMessage(MessageHelper.getTextByKey(source, "fake_player_manager.who.header").asComponent().append(Component.text(builder.toString())));
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -65,7 +65,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         int duration = Configs.configHandler.model().modules.gameplay.carpet.fake_player_manager.renew_duration_ms;
         long newTime = System.currentTimeMillis() + duration;
         player2expiration.put(name, newTime);
-        MessageHelper.sendMessage(player, "fake_player_manager.renew.success", DateUtil.toStandardDateFormat(newTime));
+        MessageHelper.sendMessageByKey(player, "fake_player_manager.renew.success", DateUtil.toStandardDateFormat(newTime));
     }
 
     public void validateFakePlayers() {

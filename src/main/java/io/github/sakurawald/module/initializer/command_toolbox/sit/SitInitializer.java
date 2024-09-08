@@ -51,7 +51,7 @@ public class SitInitializer extends ModuleInitializer {
         BlockPos steppingBlockPos = EntityHelper.getSteppingBlockPos(player);
         BlockState steppingBlockState = player.getWorld().getBlockState(steppingBlockPos);
         if (!canSit(player) || steppingBlockState.isAir() || steppingBlockState.isLiquid()) {
-            MessageHelper.sendActionBar(player, "sit.fail");
+            MessageHelper.sendActionBarByKey(player, "sit.fail");
             return CommandHelper.Return.FAIL;
         }
 

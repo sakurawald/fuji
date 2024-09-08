@@ -21,7 +21,7 @@ public class TopInitializer extends ModuleInitializer {
         Position position = Position.of(player).withY(topPosition.getY());
         position.teleport(player);
 
-        MessageHelper.sendMessage(player, "top");
+        MessageHelper.sendMessageByKey(player, "top");
         return CommandHelper.Return.SUCCESS;
     }
 

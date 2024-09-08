@@ -67,7 +67,7 @@ public class MotdInitializer extends ModuleInitializer {
     }
 
     public @NotNull Text getRandomDescription() {
-        return MessageHelper.ofText(motd.get(new Random().nextInt(motd.size())));
+        return MessageHelper.getTextByValue(null,motd.get(new Random().nextInt(motd.size())));
     }
 
 }

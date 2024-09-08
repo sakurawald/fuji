@@ -29,7 +29,7 @@ public class CommandsMixin {
 
         long cooldown = module.calculateCommandCooldown(player, string);
         if (cooldown > 0) {
-            MessageHelper.sendActionBar(player, "command_cooldown.cooldown", cooldown / 1000);
+            MessageHelper.sendActionBarByKey(player, "command_cooldown.cooldown", cooldown / 1000);
             ci.cancel();
         }
     }

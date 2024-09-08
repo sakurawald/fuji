@@ -13,7 +13,7 @@ public class SendMessageInitializer extends ModuleInitializer {
     @CommandNode("send-message")
     @CommandRequirement(level = 4)
     int sendMessage(ServerPlayerEntity player, GreedyString rest) {
-        player.sendMessage(MessageHelper.ofText(player, false, rest.getValue()));
+        player.sendMessage(MessageHelper.getTextByValue(player, rest.getValue()));
         return CommandHelper.Return.SUCCESS;
     }
 

@@ -28,7 +28,7 @@ public class ConfigInitializer extends ModuleInitializer {
         // reload jobs
         BaseJob.rescheduleAll();
 
-        MessageHelper.sendMessage(ctx.getSource(), "reload");
+        MessageHelper.sendMessageByKey(ctx.getSource(), "reload");
         return CommandHelper.Return.SUCCESS;
     }
 

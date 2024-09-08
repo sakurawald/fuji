@@ -114,7 +114,7 @@ public class KitInitializer extends ModuleInitializer {
 
         Kit $kit = readKit(kit.getValue());
         if ($kit.getStackList().isEmpty()) {
-            MessageHelper.sendMessage(ctx.getSource(), "kit.kit.empty");
+            MessageHelper.sendMessageByKey(ctx.getSource(), "kit.kit.empty");
             return CommandHelper.Return.FAIL;
         }
 

@@ -23,7 +23,7 @@ public class BackInitializer extends ModuleInitializer {
     private int $back(@CommandSource ServerPlayerEntity player) {
         Position lastPos = player2lastPos.get(player.getName().getString());
         if (lastPos == null) {
-            MessageHelper.sendActionBar(player, "back.no_previous_position");
+            MessageHelper.sendActionBarByKey(player, "back.no_previous_position");
             return CommandHelper.Return.FAIL;
         }
 

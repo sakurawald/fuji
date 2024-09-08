@@ -17,7 +17,7 @@ public class BurnInitializer extends ModuleInitializer {
     int burn(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player, int ticks) {
         player.setFireTicks(ticks);
 
-        MessageHelper.sendMessage(ctx.getSource(), "operation.success");
+        MessageHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 }

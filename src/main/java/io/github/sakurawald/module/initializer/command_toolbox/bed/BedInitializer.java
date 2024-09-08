@@ -22,12 +22,12 @@ public class BedInitializer extends ModuleInitializer {
 
         ServerWorld serverLevel = ServerHelper.getDefaultServer().getWorld(respawnDimension);
         if (respawnPosition == null || serverLevel == null) {
-            MessageHelper.sendMessage(player, "bed.not_found");
+            MessageHelper.sendMessageByKey(player, "bed.not_found");
             return CommandHelper.Return.FAIL;
         }
 
         player.teleport(serverLevel, respawnPosition.getX(), respawnPosition.getY(), respawnPosition.getZ(), player.getYaw(), player.getPitch());
-        MessageHelper.sendMessage(player, "bed.success");
+        MessageHelper.sendMessageByKey(player, "bed.success");
         return CommandHelper.Return.SUCCESS;
     }
 }

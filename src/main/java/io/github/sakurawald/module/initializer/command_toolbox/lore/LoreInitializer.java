@@ -28,7 +28,7 @@ public class LoreInitializer extends ModuleInitializer {
     @CommandNode("lore set")
     private int $set(@CommandSource CommandContext<ServerCommandSource> ctx, GreedyString lore) {
         return CommandHelper.Pattern.itemOnHandCommand(ctx, (player, item) -> {
-            List<Text> texts = MessageHelper.ofTextList(player, false, lore.getValue());
+            List<Text> texts = MessageHelper.getTextListByValue(player, lore.getValue());
             LoreComponent loreComponent = new LoreComponent(texts);
             item.set(DataComponentTypes.LORE, loreComponent);
             return CommandHelper.Return.SUCCESS;

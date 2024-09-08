@@ -17,7 +17,7 @@ public class GodInitializer extends ModuleInitializer {
         player.getAbilities().invulnerable = flag;
         player.sendAbilitiesUpdate();
 
-        MessageHelper.sendMessage(player, flag ? "god.on" : "god.off");
+        MessageHelper.sendMessageByKey(player, flag ? "god.on" : "god.off");
         return CommandHelper.Return.SUCCESS;
     }
 

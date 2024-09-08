@@ -9,7 +9,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class EnderChestRedirectScreen extends RedirectScreenHandlerFactory {
 
     public EnderChestRedirectScreen(ServerPlayerEntity sourcePlayer, String targetPlayerName) {
-        super(targetPlayerName, MessageHelper.ofText(sourcePlayer, "view.ender.title", targetPlayerName));
+        super(targetPlayerName, MessageHelper.getTextByKey(sourcePlayer, "view.ender.title", targetPlayerName));
     }
 
     @Override

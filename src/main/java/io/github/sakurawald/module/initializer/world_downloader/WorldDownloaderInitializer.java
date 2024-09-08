@@ -97,9 +97,9 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         contextQueue.add(path);
         File file = compressRegionFile(player);
         double BYTE_TO_MEGABYTE = 1.0 * 1024 * 1024;
-        MessageHelper.sendBroadcast("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
+        MessageHelper.sendBroadcastByKey("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
         server.createContext(path, new FileDownloadHandler(this, file, Configs.configHandler.model().modules.world_downloader.bytes_per_second_limit));
-        MessageHelper.sendMessage(player, "world_downloader.response", url);
+        MessageHelper.sendMessageByKey(player, "world_downloader.response", url);
         return CommandHelper.Return.SUCCESS;
     }
 

@@ -32,13 +32,13 @@ public abstract class PvpToggleMixin extends PlayerEntity {
         if (player == null) return;
 
         if (!module.contains(sourcePlayer.getGameProfile().getName())) {
-            MessageHelper.sendMessage(player, "pvp.check.off.me");
+            MessageHelper.sendMessageByKey(player, "pvp.check.off.me");
             cir.setReturnValue(false);
             return;
         }
 
         if (!module.contains(this.getGameProfile().getName())) {
-            MessageHelper.sendMessage(player, "pvp.check.off.others", this.getGameProfile().getName());
+            MessageHelper.sendMessageByKey(player, "pvp.check.off.others", this.getGameProfile().getName());
             cir.setReturnValue(false);
         }
     }

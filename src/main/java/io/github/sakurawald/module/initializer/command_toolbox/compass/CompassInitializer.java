@@ -24,7 +24,7 @@ public class CompassInitializer extends ModuleInitializer {
     int acceptCompassItem(ServerPlayerEntity source, Function<ItemStack, Integer> function) {
         ItemStack itemStack = source.getMainHandStack();
         if (!itemStack.getItem().equals(Items.COMPASS)) {
-            MessageHelper.sendMessage(source, "compass.no_compass");
+            MessageHelper.sendMessageByKey(source, "compass.no_compass");
             return CommandHelper.Return.FAIL;
         }
 

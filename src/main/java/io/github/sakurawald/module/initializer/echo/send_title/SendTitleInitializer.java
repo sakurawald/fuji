@@ -33,13 +33,13 @@ public class SendTitleInitializer extends ModuleInitializer {
         int $stayTicks = stayTicks.orElse(70);
         int $fadeOutTicks = fadeOutTicks.orElse(20);
 
-        Component mainTitleComponent = MessageHelper.ofComponent(player, false, $mainTitle);
-        Component subTitleComponent = MessageHelper.ofComponent(player, false, $subTitle);
+        Component mainTitleComponent = MessageHelper.getTextByValue(player, $mainTitle).asComponent();
+        Component subTitleComponent = MessageHelper.getTextByValue(player, $subTitle).asComponent();
         Title.Times times = Title.Times.times(Ticks.duration($fadeInTicks), Ticks.duration($stayTicks), Ticks.duration($fadeOutTicks));
         Title title = Title.title(mainTitleComponent, subTitleComponent, times);
         player.showTitle(title);
 
-        MessageHelper.sendMessage(ctx.getSource(), "operation.success");
+        MessageHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 }

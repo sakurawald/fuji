@@ -107,7 +107,7 @@ public class CleanerInitializer extends ModuleInitializer {
                 .append(TypeFormatter.formatTypes(null, counter)).build();
 
         for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
-            Component component = MessageHelper.ofComponent(player, "cleaner.broadcast", counter.values().stream().mapToInt(Integer::intValue).sum());
+            Component component = MessageHelper.getTextByKey(player, "cleaner.broadcast", counter.values().stream().mapToInt(Integer::intValue).sum()).asComponent();
             component = component.hoverEvent(HoverEvent.showText(hoverTextComponent));
             player.sendMessage(component);
         }
