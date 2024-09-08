@@ -23,7 +23,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-// Thanks to: https://modrinth.com/mod/skinrestorer
+// Special thanks to: https://github.com/Suiranoil/SkinRestorer
 public class SkinRestorer {
 
     private static final Gson gson = new Gson();

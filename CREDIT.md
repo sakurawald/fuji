@@ -1,12 +1,12 @@
 # Credit
 
 We reference source and ideas from the following projects:
-- https://www.zrips.net/cmi/
-- https://essentialsx.net/
-- https://v2.nucleuspowered.org/
-- https://modrinth.com/mod/essential-commands
-- https://modrinth.com/mod/skinrestorer
-- https://modrinth.com/mod/headindex
-- https://modrinth.com/mod/sit
-- https://github.com/henkelmax/admiral
+- https://github.com/BradBot1/FabricSit
+- https://github.com/EssentialsX/Essentials/
+- https://github.com/John-Paul-R/Essential-Commands
+- https://github.com/NucleusPowered/Nucleus
+- https://github.com/PotatoPresident/HeadIndex
 - https://github.com/Revxrsal/Lamp
+- https://github.com/Suiranoil/SkinRestorer
+- https://github.com/Zrips/CMI-API 
+- https://github.com/henkelmax/admiral
