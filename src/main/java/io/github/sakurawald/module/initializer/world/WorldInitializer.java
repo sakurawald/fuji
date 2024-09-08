@@ -112,7 +112,7 @@ public class WorldInitializer extends ModuleInitializer {
 
         Optional<DimensionEntry> first = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
         if (first.isEmpty()) {
-            LanguageHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_exist");
+            LanguageHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found");
             return CommandHelper.Return.FAIL;
         }
         storage.model().dimension_list.remove(first.get());
@@ -139,7 +139,7 @@ public class WorldInitializer extends ModuleInitializer {
 
         Optional<DimensionEntry> first = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
         if (first.isEmpty()) {
-            LanguageHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_exist");
+            LanguageHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found");
             return CommandHelper.Return.FAIL;
         }
         // just delete it

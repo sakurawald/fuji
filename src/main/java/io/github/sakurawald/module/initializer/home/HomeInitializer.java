@@ -48,7 +48,7 @@ public class HomeInitializer extends ModuleInitializer {
         Map<String, Position> name2position = ofHomes(player);
         String homeName = home.getValue();
         if (!name2position.containsKey(homeName)) {
-            LanguageHelper.sendMessageByKey(player, "home.no_found", homeName);
+            LanguageHelper.sendMessageByKey(player, "home.not_found", homeName);
             return 0;
         }
 
@@ -62,7 +62,7 @@ public class HomeInitializer extends ModuleInitializer {
         Map<String, Position> name2position = ofHomes(player);
         String homeName = home.getValue();
         if (!name2position.containsKey(homeName)) {
-            LanguageHelper.sendMessageByKey(player, "home.no_found", homeName);
+            LanguageHelper.sendMessageByKey(player, "home.not_found", homeName);
             return 0;
         }
 

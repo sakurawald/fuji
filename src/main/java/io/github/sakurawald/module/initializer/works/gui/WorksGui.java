@@ -36,7 +36,7 @@ public class WorksGui extends PagedGui<Work> {
         );
         controlLayer.addSlot(new GuiElementBuilder()
             .setItem(Items.PLAYER_HEAD)
-            .setName(LanguageHelper.getTextByKey(player, "works.list.help"))
+            .setName(LanguageHelper.getTextByKey(player, "help"))
             .setSkullOwner(GuiHelper.Icon.QUESTION_MARK_ICON)
             .setLore(LanguageHelper.getTextListByKey(player, "works.list.help.lore")));
 
@@ -84,7 +84,7 @@ public class WorksGui extends PagedGui<Work> {
                     if (level != null) {
                         player.teleport(level, entity.x, entity.y, entity.z, entity.yaw, entity.pitch);
                     } else {
-                        LanguageHelper.sendMessageByKey(player, "dimension.no_found");
+                        LanguageHelper.sendMessageByKey(player, "world.dimension.not_found");
                     }
 
                     this.close();

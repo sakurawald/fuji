@@ -65,7 +65,7 @@ public class CommandHelper {
             return playerOnlyCommand(ctx, player -> {
                 ItemStack mainHandStack = player.getMainHandStack();
                 if (mainHandStack.isEmpty()) {
-                    LanguageHelper.sendMessageByKey(player, "item.empty");
+                    LanguageHelper.sendMessageByKey(player, "item.empty.not_allow");
                     return Return.FAIL;
                 }
                 return consumer.apply(player, mainHandStack);
