@@ -21,7 +21,6 @@ import java.util.concurrent.CompletableFuture;
 public abstract class ServerLoginNetworkHandlerMixin {
 
     @Shadow
-    @Nullable
     private GameProfile profile;
 
     @Unique

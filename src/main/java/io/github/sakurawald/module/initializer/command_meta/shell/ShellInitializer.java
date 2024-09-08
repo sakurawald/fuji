@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class ShellInitializer extends ModuleInitializer {
 
+    @SuppressWarnings("deprecation")
     @CommandNode("shell")
     @CommandRequirement(level = 4)
     private int shell(@CommandSource CommandContext<ServerCommandSource> ctx, GreedyString rest) {

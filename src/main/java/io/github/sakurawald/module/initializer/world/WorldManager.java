@@ -139,6 +139,7 @@ public class WorldManager {
         return new DimensionOptions(template.dimensionTypeEntry(), template.chunkGenerator());
     }
 
+    @SuppressWarnings("deprecation")
     public static void requestToCreateWorld(@NotNull MinecraftServer server, Identifier dimensionIdentifier, @NotNull Identifier dimenstionTypeIdentifier, long seed) {
         /* create the world */
         // note: we use the same WorldData from OVERWORLD
