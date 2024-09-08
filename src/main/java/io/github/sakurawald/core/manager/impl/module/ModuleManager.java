@@ -48,7 +48,7 @@ public class ModuleManager extends BaseManager {
                 try {
                     initializer.onReload();
                 } catch (Exception e) {
-                    LogUtil.cryLoudly("Failed to reload module.", e);
+                    LogUtil.error("Failed to reload module.", e);
                 }
             }
         );
@@ -84,7 +84,7 @@ public class ModuleManager extends BaseManager {
                     moduleInitializer.doInitialize();
                     moduleRegistry.put(clazz, moduleInitializer);
                 } catch (Exception e) {
-                    LogUtil.cryLoudly("Failed to initialize module %s.".formatted(clazz.getSimpleName()), e);
+                    LogUtil.error("Failed to initialize module %s.".formatted(clazz.getSimpleName()), e);
                 }
             }
         }

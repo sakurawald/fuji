@@ -49,7 +49,7 @@ public class CommandExecutor {
 
             return server.getCommandManager().getDispatcher().execute(command, server.getCommandSource());
         } catch (CommandSyntaxException e) {
-            LogUtil.cryLoudly("CommandExecuter fails to execute commands.", e);
+            LogUtil.error("CommandExecuter fails to execute commands.", e);
         }
         return CommandHelper.Return.FAIL;
     }
@@ -68,7 +68,7 @@ public class CommandExecutor {
         try {
             return dispatcher.execute(parseResults);
         } catch (CommandSyntaxException e) {
-            LogUtil.cryLoudly("CommandExecuter fails to execute commands.", e);
+            LogUtil.error("CommandExecuter fails to execute commands.", e);
         }
 
         return CommandHelper.Return.FAIL;

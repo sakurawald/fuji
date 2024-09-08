@@ -48,8 +48,4 @@ public class LogUtil {
         return logger;
     }
 
-    public static void cryLoudly(String message, Exception e) {
-        LOGGER.error(message, e);
-    }
-
 }
