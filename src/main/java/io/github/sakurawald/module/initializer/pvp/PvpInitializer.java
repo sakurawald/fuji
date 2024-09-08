@@ -12,7 +12,6 @@ import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import java.util.HashSet;
 import java.util.Set;
 
 
@@ -78,7 +77,6 @@ public class PvpInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean contains(String name) {
         return pvpHandler.model().whitelist.contains(name);
     }

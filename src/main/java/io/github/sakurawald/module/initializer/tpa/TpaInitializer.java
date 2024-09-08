@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 
 @SuppressWarnings("LombokGetterMayBeUsed")
-
 public class TpaInitializer extends ModuleInitializer {
 
     @Getter

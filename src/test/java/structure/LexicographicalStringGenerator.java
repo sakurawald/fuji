@@ -3,7 +3,7 @@ package structure;
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings({"MismatchedQueryAndUpdateOfStringBuilder", "unused"})
+@SuppressWarnings({"unused", "MismatchedQueryAndUpdateOfStringBuilder"})
 @UtilityClass
 public class LexicographicalStringGenerator {
 

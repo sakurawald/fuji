@@ -6,7 +6,6 @@ import net.minecraft.server.dedicated.DedicatedPlayerManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-@SuppressWarnings("unused")
 @Mixin(DedicatedPlayerManager.class)
 public abstract class DedicatedPlayerManagerMixin {
 

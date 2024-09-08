@@ -22,7 +22,6 @@ public class AttachmentManager extends BaseManager {
     }
 
 
-    @SuppressWarnings("DataFlowIssue")
     public List<String> listSubjectName() {
         try {
             return Arrays.stream(ATTACHMENT_STORAGE_PATH.toFile().listFiles()).filter(File::isDirectory).map(File::getName).collect(Collectors.toList());
@@ -31,7 +30,6 @@ public class AttachmentManager extends BaseManager {
         }
     }
 
-    @SuppressWarnings("DataFlowIssue")
     public List<String> listSubjectId(String subject) {
         try {
             return Arrays.stream(ATTACHMENT_STORAGE_PATH.resolve(subject).toFile().listFiles()).filter(File::isFile).map(File::getName).collect(Collectors.toList());

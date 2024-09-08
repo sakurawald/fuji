@@ -50,7 +50,6 @@ public class ResourceConfigHandler extends ConfigHandler<JsonElement> {
     }
 
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void saveToDisk() {
         try {
             // Should we generate a default config instance ?

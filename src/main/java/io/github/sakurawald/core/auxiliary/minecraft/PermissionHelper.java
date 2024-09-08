@@ -18,7 +18,6 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
-@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 @UtilityClass
 public class PermissionHelper {
 
@@ -97,7 +96,7 @@ public class PermissionHelper {
 
     }
 
-    public static <T> @Nullable String getSuffix(UUID uuid) {
+    public static @Nullable String getSuffix(UUID uuid) {
         LuckPerms api = getAPI();
         if (api == null) {
             return null;
@@ -118,6 +117,7 @@ public class PermissionHelper {
         }
     }
 
+    @SuppressWarnings("unused")
     public static void setPermission(UUID uuid, @NotNull String string) {
         LuckPerms api = getAPI();
         ensureApiNotNull(api);
@@ -132,6 +132,7 @@ public class PermissionHelper {
         getAPI().getUserManager().saveUser(user);
     }
 
+    @SuppressWarnings("unused")
     public static void unsetPermission(UUID uuid, @NotNull String string) {
         LuckPerms api = getAPI();
         ensureApiNotNull(api);
@@ -141,6 +142,7 @@ public class PermissionHelper {
         getAPI().getUserManager().saveUser(user);
     }
 
+    @SuppressWarnings("unused")
     public static void setMeta(UUID uuid, @NotNull String key, @NotNull String value) {
         LuckPerms api = getAPI();
         ensureApiNotNull(api);

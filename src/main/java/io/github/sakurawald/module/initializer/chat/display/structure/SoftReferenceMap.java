@@ -6,7 +6,6 @@ import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings("unused")
 public class SoftReferenceMap<K, V> {
     private final Map<K, SoftReference<V>> map = new HashMap<>();
 

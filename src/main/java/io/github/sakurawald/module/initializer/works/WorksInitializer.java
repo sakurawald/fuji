@@ -15,7 +15,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.quartz.JobDataMap;
 
-@SuppressWarnings("SameReturnValue")
 public class WorksInitializer extends ModuleInitializer {
 
     public static final ConfigHandler<WorksModel> worksHandler = new ObjectConfigHandler<>("works.json", WorksModel.class);
