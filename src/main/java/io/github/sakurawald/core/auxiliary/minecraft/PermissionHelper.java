@@ -64,18 +64,20 @@ public class PermissionHelper {
                 .getPermissionData().checkPermission(permission);
     }
 
-    public static boolean hasPermission(UUID uuid, @NotNull String permission) {
+    public static boolean hasPermission(UUID uuid, @Nullable String permission) {
+        if (permission == null) return false;
         return checkPermission(uuid, permission).asBoolean();
     }
 
-    public static <T> @NonNull Optional<T> getMeta(@NotNull UUID uuid, @NotNull String meta, @NonNull Function<String, ? extends T> valueTransformer) {
+    public static <T> @NonNull Optional<T> getMeta(@NotNull UUID uuid, @Nullable String meta, @NonNull Function<String, ? extends T> valueTransformer) {
+        if (meta == null) return Optional.empty();
+
         LuckPerms api = getAPI();
         if (api == null) {
             return Optional.empty();
         }
 
         User user = loadUser(api, uuid);
-
         return user.getCachedData()
                 .getMetaData()
                 .getMetaValue(meta, valueTransformer);

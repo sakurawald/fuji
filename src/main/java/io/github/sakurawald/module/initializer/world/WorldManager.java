@@ -44,6 +44,7 @@ public class WorldManager {
         ServerTickEvents.START_SERVER_TICK.register(server -> tick());
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void requestToDeleteWorld(@NotNull ServerWorld world) {
         MinecraftServer server = world.getServer();
         server.submit(() -> {

@@ -3,7 +3,6 @@ package io.github.sakurawald.core.job.impl;
 import io.github.sakurawald.core.job.abst.CronJob;
 import lombok.NoArgsConstructor;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 import java.util.Collection;
 import java.util.HashMap;

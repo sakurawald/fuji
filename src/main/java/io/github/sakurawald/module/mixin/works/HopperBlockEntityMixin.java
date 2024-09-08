@@ -21,7 +21,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.Set;
 
@@ -36,7 +35,7 @@ public abstract class HopperBlockEntityMixin extends LootableContainerBlockEntit
 
     @Inject(method = "transfer(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/inventory/Inventory;Lnet/minecraft/item/ItemStack;ILnet/minecraft/util/math/Direction;)Lnet/minecraft/item/ItemStack;", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/Inventory;setStack(ILnet/minecraft/item/ItemStack;)V", shift = At.Shift.AFTER))
     private static void $ifHopperHasEmptySlot(Inventory container, Inventory container2, @NotNull ItemStack itemStack, int i, Direction direction, CallbackInfoReturnable<ItemStack> cir) {
-        count(container, container2, itemStack, direction, cir);
+        count(container, container2, itemStack);
     }
 
 
@@ -47,11 +46,11 @@ public abstract class HopperBlockEntityMixin extends LootableContainerBlockEntit
         ItemStack copy = itemStack.copy();
         copy.setCount(k);
 
-        count(container, container2, copy, direction, cir);
+        count(container, container2, copy);
     }
 
     @Unique
-    private static void count(@Nullable Inventory container, Inventory container2, @NotNull ItemStack itemStack, Direction direction, CallbackInfoReturnable<ItemStack> cir) {
+    private static void count(@Nullable Inventory container, Inventory container2, @NotNull ItemStack itemStack) {
         // note: if the container == null, then means it's the source-hopper
         if (container != null) return;
         if (itemStack.isEmpty()) return;

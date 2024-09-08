@@ -37,6 +37,8 @@ public class ResourceConfigHandler extends ConfigHandler<JsonElement> {
 
                 // merge older json with newer json
                 JsonElement newerJsonElement = ResourceConfigHandler.getJsonElement(this.resourcePath);
+                assert newerJsonElement != null;
+
                 mergeJson(olderJsonElement, newerJsonElement);
 
                 // read merged json

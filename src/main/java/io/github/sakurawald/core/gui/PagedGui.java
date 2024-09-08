@@ -86,6 +86,7 @@ public abstract class PagedGui<T> extends LayeredGui {
         return make;
     }
 
+    @SuppressWarnings("unused")
     protected void addEntity(T entity) {
         this.entities.add(entity);
         this.reopen();
