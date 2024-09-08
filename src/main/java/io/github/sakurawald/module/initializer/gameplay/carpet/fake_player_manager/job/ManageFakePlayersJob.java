@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager.job;
 
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.job.abst.CronJob;
 import io.github.sakurawald.core.manager.Managers;
@@ -44,7 +44,7 @@ public class ManageFakePlayersJob extends CronJob {
                     ServerPlayerEntity fakePlayer = ServerHelper.getDefaultServer().getPlayerManager().getPlayer(fakePlayerName);
                     if (fakePlayer == null) return;
                     fakePlayer.kill();
-                    MessageHelper.sendBroadcastByKey("fake_player_manager.kick_for_expiration", fakePlayer.getGameProfile().getName(), playerName);
+                    LanguageHelper.sendBroadcastByKey("fake_player_manager.kick_for_expiration", fakePlayer.getGameProfile().getName(), playerName);
                 }
                 // remove entry
                 module.player2expiration.remove(playerName);
@@ -59,7 +59,7 @@ public class ManageFakePlayersJob extends CronJob {
                 if (fakePlayer == null) continue;
                 fakePlayer.kill();
 
-                MessageHelper.sendBroadcastByKey("fake_player_manager.kick_for_amount", fakePlayer.getGameProfile().getName(), playerName);
+                LanguageHelper.sendBroadcastByKey("fake_player_manager.kick_for_amount", fakePlayer.getGameProfile().getName(), playerName);
             }
         }
     }

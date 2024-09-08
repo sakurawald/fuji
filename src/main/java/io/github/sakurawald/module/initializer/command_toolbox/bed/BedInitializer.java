@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.bed;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -22,12 +22,12 @@ public class BedInitializer extends ModuleInitializer {
 
         ServerWorld serverLevel = ServerHelper.getDefaultServer().getWorld(respawnDimension);
         if (respawnPosition == null || serverLevel == null) {
-            MessageHelper.sendMessageByKey(player, "bed.not_found");
+            LanguageHelper.sendMessageByKey(player, "bed.not_found");
             return CommandHelper.Return.FAIL;
         }
 
         player.teleport(serverLevel, respawnPosition.getX(), respawnPosition.getY(), respawnPosition.getZ(), player.getYaw(), player.getPitch());
-        MessageHelper.sendMessageByKey(player, "bed.success");
+        LanguageHelper.sendMessageByKey(player, "bed.success");
         return CommandHelper.Return.SUCCESS;
     }
 }

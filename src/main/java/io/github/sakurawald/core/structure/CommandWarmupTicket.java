@@ -1,6 +1,6 @@
 package io.github.sakurawald.core.structure;
 
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.manager.impl.bossbar.BossBarTicket;
 import lombok.Getter;
 import net.kyori.adventure.bossbar.BossBar;
@@ -28,7 +28,7 @@ public class CommandWarmupTicket extends BossBarTicket {
     }
 
     public static CommandWarmupTicket of(ServerPlayerEntity player, String command, int ms) {
-        BossBar bossbar = BossBar.bossBar(MessageHelper.getTextByKey(player, "command_warmup.bossbar.name", command), 0f, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS);
+        BossBar bossbar = BossBar.bossBar(LanguageHelper.getTextByKey(player, "command_warmup.bossbar.name", command), 0f, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS);
         return new CommandWarmupTicket(bossbar, ms, player, command);
     }
 

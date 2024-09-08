@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.nametag;
 
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -114,7 +114,7 @@ public class NametagInitializer extends ModuleInitializer {
             nametag.setText(Text.empty());
             nametag.setBackground(-1);
         } else {
-            Text text = MessageHelper.getTextByValue(player, config.style.text);
+            Text text = LanguageHelper.getTextByValue(player, config.style.text);
             nametag.setText(text);
 
             nametag.getDataTracker().set(DisplayEntity.TRANSLATION, new Vector3f(config.style.offset.x, config.style.offset.y, config.style.offset.z));

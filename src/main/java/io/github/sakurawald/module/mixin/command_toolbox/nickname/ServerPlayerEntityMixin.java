@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.command_toolbox.nickname;
 
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.module.initializer.command_toolbox.nickname.NicknameInitializer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
@@ -23,7 +23,7 @@ public class ServerPlayerEntityMixin {
         String format = NicknameInitializer.getNicknameHandler().model().format.player2format.get(player.getGameProfile().getName());
 
         if (format != null) {
-            cir.setReturnValue(MessageHelper.getTextByValue(null,format));
+            cir.setReturnValue(LanguageHelper.getTextByValue(null,format));
         }
     }
 

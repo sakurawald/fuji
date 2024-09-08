@@ -8,7 +8,7 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.AnvilInputGui;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.module.initializer.head.HeadInitializer;
 import io.github.sakurawald.module.initializer.head.structure.EconomyType;
@@ -30,7 +30,7 @@ public class PlayerHeadInputGui extends AnvilInputGui {
     public PlayerHeadInputGui(@NotNull HeadGui parentGui) {
         super(parentGui.player, false);
         this.parentGui = parentGui;
-        this.setTitle(MessageHelper.getTextByKey(player, "head.category.player"));
+        this.setTitle(LanguageHelper.getTextByKey(player, "head.category.player"));
         this.setSlot(1, GuiHelper.makeBarrier());
         this.resetResultSlot();
     }
@@ -93,7 +93,7 @@ public class PlayerHeadInputGui extends AnvilInputGui {
                         .setSkullOwner(profile, ServerHelper.getDefaultServer());
                 if (HeadInitializer.headHandler.model().economyType != EconomyType.FREE) {
                     builder.addLoreLine(Text.empty());
-                    builder.addLoreLine(MessageHelper.getTextByKey(player, "head.price").copy().append(EconomyType.getCost()));
+                    builder.addLoreLine(LanguageHelper.getTextByKey(player, "head.price").copy().append(EconomyType.getCost()));
                 }
                 ItemStack resultStack = builder.asStack();
 

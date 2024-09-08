@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.echo.send_broadcast;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -17,7 +17,7 @@ public class SendBroadcastInitializer extends ModuleInitializer {
         String message = rest.getValue();
 
         for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
-            player.sendMessage(MessageHelper.getTextByValue(player, message));
+            player.sendMessage(LanguageHelper.getTextByValue(player, message));
         }
         return CommandHelper.Return.SUCCESS;
     }

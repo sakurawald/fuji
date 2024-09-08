@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 @UtilityClass
-public class MessageHelper {
+public class LanguageHelper {
 
     private static final NodeParser POWERFUL_PARSER = NodeParser.builder()
         .quickText()
@@ -155,7 +155,7 @@ public class MessageHelper {
     }
 
     public static @NotNull String resolvePlaceholder(@Nullable Object audience, String value) {
-        Component component = MessageHelper.getText(PLACEHOLDER_PARSER, audience, false, value).asComponent();
+        Component component = LanguageHelper.getText(PLACEHOLDER_PARSER, audience, false, value).asComponent();
         return PlainTextComponentSerializer.plainText().serialize(component);
     }
 
@@ -227,7 +227,7 @@ public class MessageHelper {
         LogUtil.info(PlainTextComponentSerializer.plainText().serialize(component));
 
         for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
-            MessageHelper.sendMessageByKey(player, key, args);
+            LanguageHelper.sendMessageByKey(player, key, args);
         }
     }
 

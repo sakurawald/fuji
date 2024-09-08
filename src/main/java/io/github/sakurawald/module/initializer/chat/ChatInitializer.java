@@ -4,7 +4,7 @@ import eu.pb4.placeholders.api.PlaceholderResult;
 import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -73,28 +73,28 @@ public class ChatInitializer extends ModuleInitializer {
                 int y = player.getBlockY();
                 int z = player.getBlockZ();
                 String dim_name = player.getWorld().getRegistryKey().getValue().toString();
-                String dim_display_name = MessageHelper.getValue(player, dim_name);
+                String dim_display_name = LanguageHelper.getValue(player, dim_name);
 
-                String clickCommand = MessageHelper.getValue(player, "chat.xaero_waypoint_add.command");
+                String clickCommand = LanguageHelper.getValue(player, "chat.xaero_waypoint_add.command");
 
-                String hoverString = MessageHelper.getValue(player, "chat.current_pos");
+                String hoverString = LanguageHelper.getValue(player, "chat.current_pos");
                 switch (dim_name) {
                     case "minecraft:overworld":
-                        hoverString += "\n" + MessageHelper.getValue(player, "minecraft:the_nether")
+                        hoverString += "\n" + LanguageHelper.getValue(player, "minecraft:the_nether")
                             + ": %d %s %d".formatted(x / 8, y, z / 8);
                         break;
                     case "minecraft:the_nether":
-                        hoverString += "\n" + MessageHelper.getValue(player, "minecraft:overworld")
+                        hoverString += "\n" + LanguageHelper.getValue(player, "minecraft:overworld")
                             + ": %d %s %d".formatted(x * 8, y, z * 8);
                         break;
                 }
 
-                Component component = MessageHelper.getTextByKey(player, "placeholder.pos", x, y, z, dim_display_name)
+                Component component = LanguageHelper.getTextByKey(player, "placeholder.pos", x, y, z, dim_display_name)
                     .asComponent()
                     .clickEvent(ClickEvent.runCommand(clickCommand))
-                    .hoverEvent(Component.text(hoverString + "\n").append(MessageHelper.getTextByKey(player, "chat.xaero_waypoint_add")));
+                    .hoverEvent(Component.text(hoverString + "\n").append(LanguageHelper.getTextByKey(player, "chat.xaero_waypoint_add")));
 
-                return PlaceholderResult.value(MessageHelper.toText(component));
+                return PlaceholderResult.value(LanguageHelper.toText(component));
             });
 
     }
@@ -107,7 +107,7 @@ public class ChatInitializer extends ModuleInitializer {
 
                 ServerPlayerEntity player = ctx.player();
                 String prefix = PermissionHelper.getPrefix(player.getUuid());
-                return PlaceholderResult.value(MessageHelper.getTextByValue(player, prefix));
+                return PlaceholderResult.value(LanguageHelper.getTextByValue(player, prefix));
             });
     }
 
@@ -119,7 +119,7 @@ public class ChatInitializer extends ModuleInitializer {
 
                 ServerPlayerEntity player = ctx.player();
                 String prefix = PermissionHelper.getSuffix(player.getUuid());
-                return PlaceholderResult.value(MessageHelper.getTextByValue(player,prefix));
+                return PlaceholderResult.value(LanguageHelper.getTextByValue(player,prefix));
             });
     }
 
@@ -132,9 +132,9 @@ public class ChatInitializer extends ModuleInitializer {
         chatHandler.saveToDisk();
 
         /* feedback */
-        $format = MessageHelper.getValue(player, "chat.format.set").replace("%s", $format);
+        $format = LanguageHelper.getValue(player, "chat.format.set").replace("%s", $format);
         Component component = miniMessage.deserialize($format).asComponent()
-            .replaceText(builder -> builder.match("%message%").replacement(MessageHelper.getTextByKey(player, "chat.format.show")));
+            .replaceText(builder -> builder.match("%message%").replacement(LanguageHelper.getTextByKey(player, "chat.format.show")));
 
         player.sendMessage(component);
         return CommandHelper.Return.SUCCESS;
@@ -145,7 +145,7 @@ public class ChatInitializer extends ModuleInitializer {
         String name = player.getGameProfile().getName();
         chatHandler.model().format.player2format.remove(name);
         chatHandler.saveToDisk();
-        MessageHelper.sendMessageByKey(player, "chat.format.reset");
+        LanguageHelper.sendMessageByKey(player, "chat.format.reset");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -192,7 +192,7 @@ public class ChatInitializer extends ModuleInitializer {
 
         /* combine */
         String string = format.replace("%message%", message);
-        return MessageHelper.getTextByValue(player, string);
+        return LanguageHelper.getTextByValue(player, string);
     }
 
 }

@@ -5,7 +5,7 @@ import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.MessageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
@@ -42,9 +42,9 @@ public class CommandExecutor {
         try {
             // parse placeholders
             if (contextPlayer != null) {
-                command = MessageHelper.resolvePlaceholder(contextPlayer, command);
+                command = LanguageHelper.resolvePlaceholder(contextPlayer, command);
             } else {
-                command = MessageHelper.resolvePlaceholder(ServerHelper.getDefaultServer(), command);
+                command = LanguageHelper.resolvePlaceholder(ServerHelper.getDefaultServer(), command);
             }
 
             return server.getCommandManager().getDispatcher().execute(command, server.getCommandSource());
@@ -56,7 +56,7 @@ public class CommandExecutor {
 
 
     public static int executeCommandAsPlayer(@NotNull ServerPlayerEntity player, String command, Function<ServerCommandSource, ServerCommandSource> source) {
-        command = MessageHelper.resolvePlaceholder(player, command);
+        command = LanguageHelper.resolvePlaceholder(player, command);
 
         CommandManager commandManager = ServerHelper.getDefaultServer().getCommandManager();
         CommandDispatcher<ServerCommandSource> dispatcher = commandManager.getDispatcher();
