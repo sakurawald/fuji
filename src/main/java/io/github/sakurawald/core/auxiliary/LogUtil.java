@@ -15,30 +15,25 @@ public class LogUtil {
 
     private static final @NotNull Logger LOGGER = createLogger(StringUtils.capitalize(Fuji.MOD_ID));
 
-    @SuppressWarnings("unused")
-    public static Logger getDefaultLogger() {
-        return LOGGER;
-    }
-
-    @SuppressWarnings("StringConcatenationArgumentToLogCall")
     public static void debug(String message, Object... args) {
         if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-            LOGGER.info("\u001B[35m[DEV] " + message, args);
+            String format = "\u001B[35m[DEV] " + message;
+            LOGGER.info(format, args);
         } else {
             LOGGER.debug(message, args);
         }
     }
 
     public static void info(String message, Object... args) {
-        LOGGER.info(message,args);
+        LOGGER.info(message, args);
     }
 
     public static void warn(String message, Object... args) {
-        LOGGER.warn(message,args);
+        LOGGER.warn(message, args);
     }
 
     public static void error(String message, Object... args) {
-        LOGGER.error(message,args);
+        LOGGER.error(message, args);
     }
 
     public static @NotNull Logger createLogger(String name) {

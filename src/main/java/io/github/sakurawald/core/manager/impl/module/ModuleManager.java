@@ -211,7 +211,6 @@ public class ModuleManager extends BaseManager {
         return modulePath;
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean isRequiredModsInstalled(@NotNull List<String> modulePath) {
 
         if (modulePath.contains("carpet")) {

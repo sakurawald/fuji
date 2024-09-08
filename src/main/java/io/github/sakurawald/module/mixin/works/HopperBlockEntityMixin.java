@@ -51,7 +51,6 @@ public abstract class HopperBlockEntityMixin extends LootableContainerBlockEntit
         count(container, container2, copy, direction, cir);
     }
 
-    @SuppressWarnings("unused")
     @Unique
     private static void count(@Nullable Inventory container, Inventory container2, @NotNull ItemStack itemStack, Direction direction, CallbackInfoReturnable<ItemStack> cir) {
         // note: if the container == null, then means it's the source-hopper
