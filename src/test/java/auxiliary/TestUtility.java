@@ -1,4 +1,4 @@
-package utility;
+package auxiliary;
 
 import io.github.classgraph.ClassGraph;
 import io.github.sakurawald.Fuji;

@@ -1,4 +1,4 @@
-package io.github.sakurawald.core.meta.checker.module_dependency.structure;
+package structure;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
