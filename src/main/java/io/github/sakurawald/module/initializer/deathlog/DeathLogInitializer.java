@@ -25,6 +25,7 @@ import net.minecraft.util.Uuids;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -51,9 +52,10 @@ public class DeathLogInitializer extends ModuleInitializer {
     private final String XP_PROGRESS = "xp_progress";
     private final String INVENTORY = "inventory";
 
+    @SneakyThrows
     @Override
     public void onInitialize() {
-        STORAGE_PATH.toFile().mkdirs();
+        Files.createDirectories(STORAGE_PATH);
     }
 
     @SneakyThrows

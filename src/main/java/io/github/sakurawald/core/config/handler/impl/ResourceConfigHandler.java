@@ -10,6 +10,7 @@ import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
+import java.nio.file.Files;
 
 
 public class ResourceConfigHandler extends ConfigHandler<JsonElement> {
@@ -56,7 +57,7 @@ public class ResourceConfigHandler extends ConfigHandler<JsonElement> {
         try {
             // Should we generate a default config instance ?
             if (!file.exists()) {
-                this.file.getParentFile().mkdirs();
+                Files.createDirectories(this.file.getParentFile().toPath());
                 this.model = ResourceConfigHandler.getJsonElement(this.resourcePath);
             }
 
