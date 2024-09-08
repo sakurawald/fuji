@@ -10,7 +10,6 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
 
-@SuppressWarnings("unused")
 public class FloatArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public boolean match(Type type) {

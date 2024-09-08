@@ -13,7 +13,6 @@ import net.minecraft.server.command.ServerCommandSource;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
-@SuppressWarnings("unused")
 public class WarpNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     private static final WarpInitializer initializer = Managers.getModuleManager().getInitializer(WarpInitializer.class);
 

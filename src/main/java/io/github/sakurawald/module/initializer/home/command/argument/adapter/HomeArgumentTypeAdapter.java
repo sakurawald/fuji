@@ -16,7 +16,6 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-@SuppressWarnings("unused")
 public class HomeArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     private static final HomeInitializer initializer = Managers.getModuleManager().getInitializer(HomeInitializer.class);

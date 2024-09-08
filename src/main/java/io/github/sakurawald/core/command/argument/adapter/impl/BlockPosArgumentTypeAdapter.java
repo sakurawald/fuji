@@ -11,7 +11,6 @@ import net.minecraft.util.math.BlockPos;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
-@SuppressWarnings("unused")
 public class BlockPosArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
