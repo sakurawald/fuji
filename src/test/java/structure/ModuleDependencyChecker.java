@@ -25,6 +25,7 @@ public class ModuleDependencyChecker {
     private static final Pattern staticImportPattern = Pattern.compile("import\\s+static\\s+(\\S+)\\.\\S+;");
     private static final JsonElement rcConfig = ConfigHandler.getGson().toJsonTree(new ConfigModel());
 
+    @SuppressWarnings("SameParameterValue")
     private List<String> extractMatches(Pattern pattern, String text, int group) {
         Matcher matcher = pattern.matcher(text);
 

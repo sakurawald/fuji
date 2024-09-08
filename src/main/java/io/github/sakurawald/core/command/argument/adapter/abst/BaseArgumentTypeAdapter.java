@@ -22,6 +22,7 @@ public abstract class BaseArgumentTypeAdapter {
 
     private static final List<BaseArgumentTypeAdapter> adapters = new ArrayList<>();
 
+    @SuppressWarnings("unchecked")
     @SneakyThrows
     public static void registerAdapters() {
         ModuleManager moduleManager = Managers.getModuleManager();

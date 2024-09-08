@@ -9,7 +9,7 @@ import java.util.List;
 
 public abstract class BaseBackupManager extends BaseManager {
 
-    protected Path BACKUP_PATH;
+    protected final Path BACKUP_PATH;
 
     public BaseBackupManager(Path BACKUP_PATH) {
         this.BACKUP_PATH = BACKUP_PATH;

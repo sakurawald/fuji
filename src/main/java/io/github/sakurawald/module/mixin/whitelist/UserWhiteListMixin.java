@@ -20,7 +20,7 @@ public class UserWhiteListMixin {
      * After that, the server will always use the player's offline-uuid in usercache.json to check whitelist (and other list, like ban list, op list).
      * <p>
      * If you use white-list=true with online-mode=false, then the cases is:
-     * 1. for online-player, everything is ok.
+     * 1. for online-player, everything is OK.
      * 2. for offline-player, the whitelist will always check the online-uuid, so you need to type /whitelist off to disable whitelist,
      * and let the offline-player join the game, so that the usercache.json can be updated to the offline-uuid.
      * <p>

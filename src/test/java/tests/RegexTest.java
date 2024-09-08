@@ -20,6 +20,7 @@ public class RegexTest {
         );
     }
 
+    @SuppressWarnings("ReplaceOnLiteralHasNoEffect")
     @Test
     void testNoEffect() {
         assertEquals("/first alice"

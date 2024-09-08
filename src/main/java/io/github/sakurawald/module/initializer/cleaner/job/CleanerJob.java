@@ -5,7 +5,6 @@ import io.github.sakurawald.core.job.abst.CronJob;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.cleaner.CleanerInitializer;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 
 public class CleanerJob extends CronJob {
 
@@ -16,7 +15,7 @@ public class CleanerJob extends CronJob {
     }
 
     @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException {
+    public void execute(JobExecutionContext context) {
         INITIALIZER.clean();
     }
 }
