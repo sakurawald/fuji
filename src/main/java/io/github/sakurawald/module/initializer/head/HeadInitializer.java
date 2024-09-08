@@ -14,7 +14,7 @@ import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-// Special thanks to: https://modrinth.com/mod/headindex
+// Special thanks to: https://github.com/PotatoPresident/HeadIndex
 public class HeadInitializer extends ModuleInitializer {
 
     public static final ConfigHandler<HeadModel> headHandler = new ObjectConfigHandler<>("head.json", HeadModel.class);
