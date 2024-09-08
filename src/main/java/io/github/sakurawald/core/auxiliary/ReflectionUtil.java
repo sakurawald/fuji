@@ -1,7 +1,5 @@
 package io.github.sakurawald.core.auxiliary;
 
-import io.github.classgraph.ClassGraph;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
@@ -36,10 +34,6 @@ public class ReflectionUtil {
         return methods;
     }
 
-    public static ClassGraph makeBaseClassGraph() {
-        return new ClassGraph()
-            .acceptPackages(Fuji.class.getPackageName());
-    }
 
     @SneakyThrows
     public static List<String> getGraph(String graphName) {

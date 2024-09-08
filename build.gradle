@@ -86,7 +86,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    include(implementation "io.github.classgraph:classgraph:${project.classgraph_version}")
+    testImplementation "io.github.classgraph:classgraph:${project.classgraph_version}"
 }
 
 

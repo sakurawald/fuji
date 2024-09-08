@@ -7,11 +7,11 @@ import com.google.gson.JsonParser;
 import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ScanResult;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.spongepowered.asm.mixin.Mixin;
+import utility.TestUtility;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class CheckMixinRegistryTest {
         List<String> unregisteredMixins = new ArrayList<>();
 
 
-        try (ScanResult scanResult = ReflectionUtil.makeBaseClassGraph()
+        try (ScanResult scanResult = TestUtility.makeBaseClassGraph()
             .enableAllInfo()
             .scan()) {
 
