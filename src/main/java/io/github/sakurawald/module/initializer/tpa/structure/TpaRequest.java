@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.tpa.structure;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.tpa.TpaInitializer;
@@ -76,7 +76,7 @@ public class TpaRequest {
     }
 
     public @NotNull Component asSenderComponent$Description() {
-        return tpahere ? LanguageHelper.getTextByKey(getSender(), "tpa.others_to_you", receiver.getGameProfile().getName()).asComponent()
+        return tpahere ? LocaleHelper.getTextByKey(getSender(), "tpa.others_to_you", receiver.getGameProfile().getName()).asComponent()
                 : LanguageHelper.getTextByKey(getSender(), "tpa.you_to_others", receiver.getGameProfile().getName()).asComponent();
     }
 

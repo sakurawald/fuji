@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.chat.display.helper;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.module.initializer.chat.display.gui.*;
 import io.github.sakurawald.module.initializer.chat.display.structure.SoftReferenceMap;
 import net.minecraft.item.ItemStack;
@@ -15,7 +15,7 @@ public class DisplayHelper {
     private static final SoftReferenceMap<String, DisplayGuiBuilder> uuid2gui = new SoftReferenceMap<>();
 
     public static String createInventoryDisplay(@NotNull ServerPlayerEntity player) {
-        Text title = LanguageHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName());
+        Text title = LocaleHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName());
         String uuid = UUID.randomUUID().toString();
         uuid2gui.put(uuid, new InventoryDisplayGui(title, player));
         return uuid;

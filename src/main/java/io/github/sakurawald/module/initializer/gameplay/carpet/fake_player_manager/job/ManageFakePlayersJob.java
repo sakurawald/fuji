@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager.job;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.job.abst.CronJob;
 import io.github.sakurawald.core.manager.Managers;

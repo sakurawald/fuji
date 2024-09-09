@@ -50,41 +50,41 @@ public class GuiHelper {
     public static GuiElementBuilder makePreviousPageButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(LanguageHelper.getTextByKey(player, "previous_page"))
+                .setName(LocaleHelper.getTextByKey(player, "previous_page"))
                 .setSkullOwner(Icon.PREVIOUS_PAGE_ICON);
     }
 
     public static GuiElementBuilder makeNextPageButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(LanguageHelper.getTextByKey(player, "next_page"))
+                .setName(LocaleHelper.getTextByKey(player, "next_page"))
                 .setSkullOwner(Icon.NEXT_PAGE_ICON);
     }
 
     public static GuiElementBuilder makeBackButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(LanguageHelper.getTextByKey(player, "back"))
+                .setName(LocaleHelper.getTextByKey(player, "back"))
                 .setSkullOwner(Icon.PREVIOUS_PAGE_ICON);
     }
 
     public static GuiElementBuilder makeSearchButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
                 .setItem(Items.COMPASS)
-                .setName(LanguageHelper.getTextByKey(player, "search"));
+                .setName(LocaleHelper.getTextByKey(player, "search"));
     }
 
     public static GuiElementBuilder makeAddButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(LanguageHelper.getTextByKey(player, "add"))
+                .setName(LocaleHelper.getTextByKey(player, "add"))
                 .setSkullOwner(GuiHelper.Icon.PLUS_ICON);
     }
 
     public static GuiElementBuilder makeHelpButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(LanguageHelper.getTextByKey(player, "help"))
+                .setName(LocaleHelper.getTextByKey(player, "help"))
                 .setSkullOwner(Icon.HEART_ICON);
     }
 

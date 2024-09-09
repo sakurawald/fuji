@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.system_message;
 
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.config.Configs;
 import net.minecraft.text.MutableText;
@@ -42,7 +42,7 @@ public interface ComponentMixin {
             }
             String value = key2value.get(key);
             String miniMessageSource = MutableText.of(new TranslatableTextContent("force_fallback", value, args)).getString();
-            return LanguageHelper.getTextByValue(null,miniMessageSource).copy();
+            return LocaleHelper.getTextByValue(null,miniMessageSource).copy();
         }
         return null;
     }

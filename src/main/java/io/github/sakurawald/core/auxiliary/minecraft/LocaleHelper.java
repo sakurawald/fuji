@@ -36,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 @UtilityClass
-public class LanguageHelper {
+public class LocaleHelper {
 
     private static final NodeParser POWERFUL_PARSER = NodeParser.builder()
         .quickText()
@@ -155,7 +155,7 @@ public class LanguageHelper {
     }
 
     public static @NotNull String resolvePlaceholder(@Nullable Object audience, String value) {
-        Component component = LanguageHelper.getText(PLACEHOLDER_PARSER, audience, false, value).asComponent();
+        Component component = LocaleHelper.getText(PLACEHOLDER_PARSER, audience, false, value).asComponent();
         return PlainTextComponentSerializer.plainText().serialize(component);
     }
 
@@ -227,7 +227,7 @@ public class LanguageHelper {
         LogUtil.info(PlainTextComponentSerializer.plainText().serialize(component));
 
         for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
-            LanguageHelper.sendMessageByKey(player, key, args);
+            LocaleHelper.sendMessageByKey(player, key, args);
         }
     }
 

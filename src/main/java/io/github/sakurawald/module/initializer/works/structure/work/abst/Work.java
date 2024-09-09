@@ -8,7 +8,7 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.gui.ConfirmGui;
 import io.github.sakurawald.core.gui.InputSignGui;
@@ -106,7 +106,7 @@ public abstract class Work {
         Work work = this;
         final SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X1, player, false);
         gui.setLockPlayerInventory(true);
-        gui.setTitle(LanguageHelper.getTextByKey(player, "works.work.set.general_settings.title"));
+        gui.setTitle(LocaleHelper.getTextByKey(player, "works.work.set.general_settings.title"));
         gui.addSlot(new GuiElementBuilder()
             .setItem(Items.NAME_TAG)
             .setName(LanguageHelper.getTextByKey(player, "works.work.set.target.name"))
