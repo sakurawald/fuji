@@ -23,12 +23,12 @@ public class RtpInitializer extends ModuleInitializer {
 
         Optional<TeleportSetup> first = TeleportSetup.of(serverWorld);
         if (first.isEmpty()) {
-            LanguageHelper.sendMessageByKey(player, "rtp.dimension.disallow", IdentifierHelper.ofString(serverWorld));
+            LocaleHelper.sendMessageByKey(player, "rtp.dimension.disallow", IdentifierHelper.ofString(serverWorld));
             return CommandHelper.Return.FAIL;
         }
 
-        LanguageHelper.sendActionBarByKey(player, "rtp.tip");
-        RandomTeleport.request(player, first.get(), (position -> LanguageHelper.sendMessageByKey(player, "rtp.success")));
+        LocaleHelper.sendActionBarByKey(player, "rtp.tip");
+        RandomTeleport.request(player, first.get(), (position -> LocaleHelper.sendMessageByKey(player, "rtp.success")));
         return CommandHelper.Return.SUCCESS;
     }
 }

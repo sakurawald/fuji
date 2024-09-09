@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.nickname;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
@@ -29,7 +29,7 @@ public class NicknameInitializer extends ModuleInitializer {
             nicknameHandler.model().format.player2format.put(name, format.getValue());
             nicknameHandler.saveToDisk();
 
-            LanguageHelper.sendMessageByKey(player, "nickname.set");
+            LocaleHelper.sendMessageByKey(player, "nickname.set");
             return CommandHelper.Return.SUCCESS;
     }
 
@@ -39,7 +39,7 @@ public class NicknameInitializer extends ModuleInitializer {
         nicknameHandler.model().format.player2format.remove(name);
         nicknameHandler.saveToDisk();
 
-        LanguageHelper.sendMessageByKey(player, "nickname.unset");
+        LocaleHelper.sendMessageByKey(player, "nickname.unset");
         return CommandHelper.Return.SUCCESS;
     }
 }

@@ -1,6 +1,6 @@
 package io.github.sakurawald.core.gui;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public abstract class ConfirmGui extends InputSignGui {
@@ -11,7 +11,7 @@ public abstract class ConfirmGui extends InputSignGui {
     @Override
     public void onClose() {
         if (!this.getLine(0).getString().equals("confirm")) {
-            LanguageHelper.sendActionBarByKey(player, "operation.cancelled");
+            LocaleHelper.sendActionBarByKey(player, "operation.cancelled");
             return;
         }
         onConfirm();

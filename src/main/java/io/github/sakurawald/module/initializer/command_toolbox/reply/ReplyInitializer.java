@@ -29,7 +29,7 @@ public class ReplyInitializer extends ModuleInitializer {
         try {
             ServerHelper.getDefaultServer().getCommandManager().getDispatcher().execute("msg %s %s".formatted(target, message.getValue()), player.getCommandSource());
         } catch (CommandSyntaxException e) {
-            LanguageHelper.sendMessageByKey(player, "reply.no_target");
+            LocaleHelper.sendMessageByKey(player, "reply.no_target");
         }
 
         return CommandHelper.Return.SUCCESS;

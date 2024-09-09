@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.warp;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -41,7 +41,7 @@ public class WarpInitializer extends ModuleInitializer {
         String name = warpName.getValue();
 
         if (!data.model().warps.containsKey(name)) {
-            LanguageHelper.sendMessageByKey(player, "warp.not_found", name);
+            LocaleHelper.sendMessageByKey(player, "warp.not_found", name);
             return 0;
         }
 
@@ -56,12 +56,12 @@ public class WarpInitializer extends ModuleInitializer {
         String name = warpName.getValue();
 
         if (!data.model().warps.containsKey(name)) {
-            LanguageHelper.sendMessageByKey(player, "warp.not_found", name);
+            LocaleHelper.sendMessageByKey(player, "warp.not_found", name);
             return 0;
         }
 
         data.model().warps.remove(name);
-        LanguageHelper.sendMessageByKey(player, "warp.unset.success", name);
+        LocaleHelper.sendMessageByKey(player, "warp.unset.success", name);
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -72,19 +72,19 @@ public class WarpInitializer extends ModuleInitializer {
 
         if (data.model().warps.containsKey(name)) {
             if (!override.orElse(false)) {
-                LanguageHelper.sendMessageByKey(player, "warp.set.fail.need_override", name);
+                LocaleHelper.sendMessageByKey(player, "warp.set.fail.need_override", name);
                 return CommandHelper.Return.FAIL;
             }
         }
 
         data.model().warps.put(name, new WarpEntry(Position.of(player)));
-        LanguageHelper.sendMessageByKey(player, "warp.set.success", name);
+        LocaleHelper.sendMessageByKey(player, "warp.set.success", name);
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("list")
     private int $list(@CommandSource ServerPlayerEntity player) {
-        LanguageHelper.sendMessageByKey(player, "warp.list", data.model().warps.keySet());
+        LocaleHelper.sendMessageByKey(player, "warp.list", data.model().warps.keySet());
         return CommandHelper.Return.SUCCESS;
     }
 }

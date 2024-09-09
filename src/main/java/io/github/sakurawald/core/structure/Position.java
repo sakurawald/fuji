@@ -1,7 +1,7 @@
 package io.github.sakurawald.core.structure;
 
 import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import lombok.Data;
 import lombok.With;
@@ -70,7 +70,7 @@ public class Position {
         RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(this.level));
         ServerWorld serverLevel = ServerHelper.getDefaultServer().getWorld(worldKey);
         if (serverLevel == null) {
-            LanguageHelper.sendMessageByKey(player, "world.dimension.not_found", this.level);
+            LocaleHelper.sendMessageByKey(player, "world.dimension.not_found", this.level);
             return;
         }
 

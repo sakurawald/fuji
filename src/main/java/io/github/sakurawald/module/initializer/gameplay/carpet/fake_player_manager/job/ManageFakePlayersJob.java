@@ -44,7 +44,7 @@ public class ManageFakePlayersJob extends CronJob {
                     ServerPlayerEntity fakePlayer = ServerHelper.getDefaultServer().getPlayerManager().getPlayer(fakePlayerName);
                     if (fakePlayer == null) return;
                     fakePlayer.kill();
-                    LanguageHelper.sendBroadcastByKey("fake_player_manager.kick_for_expiration", fakePlayer.getGameProfile().getName(), playerName);
+                    LocaleHelper.sendBroadcastByKey("fake_player_manager.kick_for_expiration", fakePlayer.getGameProfile().getName(), playerName);
                 }
                 // remove entry
                 module.player2expiration.remove(playerName);
@@ -59,7 +59,7 @@ public class ManageFakePlayersJob extends CronJob {
                 if (fakePlayer == null) continue;
                 fakePlayer.kill();
 
-                LanguageHelper.sendBroadcastByKey("fake_player_manager.kick_for_amount", fakePlayer.getGameProfile().getName(), playerName);
+                LocaleHelper.sendBroadcastByKey("fake_player_manager.kick_for_amount", fakePlayer.getGameProfile().getName(), playerName);
             }
         }
     }
