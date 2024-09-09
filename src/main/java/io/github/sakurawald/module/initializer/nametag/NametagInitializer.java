@@ -79,7 +79,7 @@ public class NametagInitializer extends ModuleInitializer {
             EntityPassengersSetS2CPacket entityPassengersSetS2CPacket = new EntityPassengersSetS2CPacket(key);
             player.networkHandler.sendPacket(entityPassengersSetS2CPacket);
 
-            ServerHelper.sendPacketToAll(new EntityTrackerUpdateS2CPacket(value.getId(), value.getDataTracker().getChangedEntries()));
+            player.networkHandler.send(new EntityTrackerUpdateS2CPacket(value.getId(), value.getDataTracker().getChangedEntries());
         });
     }
 
