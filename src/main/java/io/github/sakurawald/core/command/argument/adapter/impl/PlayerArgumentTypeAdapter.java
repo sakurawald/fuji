@@ -2,7 +2,7 @@ package io.github.sakurawald.core.command.argument.adapter.impl;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import lombok.SneakyThrows;
@@ -39,7 +39,7 @@ public class PlayerArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     public boolean validateCommandSource(CommandContext<ServerCommandSource> context) {
         ServerPlayerEntity player = context.getSource().getPlayer();
         if (player == null) {
-            LanguageHelper.sendMessageByKey(context.getSource(), "command.player_only");
+            LocaleHelper.sendMessageByKey(context.getSource(), "command.player_only");
             return false;
         }
 

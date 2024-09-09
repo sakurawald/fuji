@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.color.anvil;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import net.minecraft.screen.AnvilScreenHandler;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,11 +16,11 @@ public abstract class AnvilScreenHandlerMixin {
 
     @ModifyArg(method = "updateResult", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;set(Lnet/minecraft/component/ComponentType;Ljava/lang/Object;)Ljava/lang/Object;", ordinal = 0))
     public @NotNull Object updateResult(Object text) {
-        return LanguageHelper.getTextByValue(null,newItemName);
+        return LocaleHelper.getTextByValue(null,newItemName);
     }
 
     @ModifyArg(method = "setNewItemName", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;set(Lnet/minecraft/component/ComponentType;Ljava/lang/Object;)Ljava/lang/Object;", ordinal = 0))
     public @NotNull Object newItemName(Object text) {
-        return LanguageHelper.getTextByValue(null,newItemName);
+        return LocaleHelper.getTextByValue(null,newItemName);
     }
 }

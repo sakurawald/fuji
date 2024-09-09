@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.anti_build;
 
 import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.config.Configs;
 import net.minecraft.entity.Entity;
@@ -28,7 +28,7 @@ public abstract class EntityMixin {
         ) {
 
             if (hand == Hand.MAIN_HAND) {
-                player.sendMessage(LanguageHelper.getTextByKey(player, "anti_build.disallow"));
+                player.sendMessage(LocaleHelper.getTextByKey(player, "anti_build.disallow"));
             }
 
             cir.setReturnValue(ActionResult.FAIL);

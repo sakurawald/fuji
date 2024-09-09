@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.tab_list;
 
 import io.github.sakurawald.core.auxiliary.RandomUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.model.ConfigModel;
@@ -40,8 +40,8 @@ public class TabListInitializer extends ModuleInitializer {
         String headerControl = RandomUtil.drawList(config.style.header);
         String footerControl = RandomUtil.drawList(config.style.footer);
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
-            @NotNull Text header = LanguageHelper.getTextByValue(player, headerControl);
-            @NotNull Text footer = LanguageHelper.getTextByValue(player, footerControl);
+            @NotNull Text header = LocaleHelper.getTextByValue(player, headerControl);
+            @NotNull Text footer = LocaleHelper.getTextByValue(player, footerControl);
             player.networkHandler.sendPacket(new PlayerListHeaderS2CPacket(header, footer));
         }
 

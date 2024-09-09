@@ -22,7 +22,7 @@ public class DisplayHelper {
     }
 
     public static String createEnderChestDisplay(@NotNull ServerPlayerEntity player) {
-        Text title = LanguageHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName());
+        Text title = LocaleHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName());
         String uuid = UUID.randomUUID().toString();
         uuid2gui.put(uuid, new EnderChestDisplayGui(title, player));
         return uuid;
@@ -31,7 +31,7 @@ public class DisplayHelper {
     public static String createItemDisplay(@NotNull ServerPlayerEntity player) {
         /* new object */
         DisplayGuiBuilder displayGuiBuilder;
-        Text title = LanguageHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName());
+        Text title = LocaleHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName());
         ItemStack itemStack = player.getMainHandStack().copy();
         if (DisplayGuiBuilder.isShulkerBox(itemStack)) {
             // shulker-box item
@@ -50,7 +50,7 @@ public class DisplayHelper {
     public static void viewDisplay(@NotNull ServerPlayerEntity player, String displayUUID) {
         DisplayGuiBuilder displayGuiBuilder = uuid2gui.get(displayUUID);
         if (displayGuiBuilder == null) {
-            LanguageHelper.sendMessageByKey(player, "display.invalid");
+            LocaleHelper.sendMessageByKey(player, "display.invalid");
             return;
         }
         displayGuiBuilder.build(player).open();

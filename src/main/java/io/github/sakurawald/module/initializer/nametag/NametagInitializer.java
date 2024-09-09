@@ -79,7 +79,7 @@ public class NametagInitializer extends ModuleInitializer {
             EntityPassengersSetS2CPacket entityPassengersSetS2CPacket = new EntityPassengersSetS2CPacket(key);
             player.networkHandler.sendPacket(entityPassengersSetS2CPacket);
 
-            player.networkHandler.send(new EntityTrackerUpdateS2CPacket(value.getId(), value.getDataTracker().getChangedEntries());
+            player.networkHandler.sendPacket(new EntityTrackerUpdateS2CPacket(value.getId(), value.getDataTracker().getChangedEntries()));
         });
     }
 
@@ -114,7 +114,7 @@ public class NametagInitializer extends ModuleInitializer {
             nametag.setText(Text.empty());
             nametag.setBackground(-1);
         } else {
-            Text text = LanguageHelper.getTextByValue(player, config.style.text);
+            Text text = LocaleHelper.getTextByValue(player, config.style.text);
             nametag.setText(text);
 
             nametag.getDataTracker().set(DisplayEntity.TRANSLATION, new Vector3f(config.style.offset.x, config.style.offset.y, config.style.offset.z));

@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.cleaner;
 
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -107,7 +107,7 @@ public class CleanerInitializer extends ModuleInitializer {
                 .append(TypeFormatter.formatTypes(null, counter)).build();
 
         for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
-            Component component = LanguageHelper.getTextByKey(player, "cleaner.broadcast", counter.values().stream().mapToInt(Integer::intValue).sum()).asComponent();
+            Component component = LocaleHelper.getTextByKey(player, "cleaner.broadcast", counter.values().stream().mapToInt(Integer::intValue).sum()).asComponent();
             component = component.hoverEvent(HoverEvent.showText(hoverTextComponent));
             player.sendMessage(component);
         }

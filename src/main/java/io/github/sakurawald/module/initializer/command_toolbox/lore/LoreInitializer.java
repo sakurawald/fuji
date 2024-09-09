@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.command_toolbox.lore;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
@@ -28,7 +28,7 @@ public class LoreInitializer extends ModuleInitializer {
     @CommandNode("lore set")
     private int $set(@CommandSource CommandContext<ServerCommandSource> ctx, GreedyString lore) {
         return CommandHelper.Pattern.itemOnHandCommand(ctx, (player, item) -> {
-            List<Text> texts = LanguageHelper.getTextListByValue(player, lore.getValue());
+            List<Text> texts = LocaleHelper.getTextListByValue(player, lore.getValue());
             LoreComponent loreComponent = new LoreComponent(texts);
             item.set(DataComponentTypes.LORE, loreComponent);
             return CommandHelper.Return.SUCCESS;

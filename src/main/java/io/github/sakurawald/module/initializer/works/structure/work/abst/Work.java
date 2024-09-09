@@ -109,67 +109,67 @@ public abstract class Work {
         gui.setTitle(LocaleHelper.getTextByKey(player, "works.work.set.general_settings.title"));
         gui.addSlot(new GuiElementBuilder()
             .setItem(Items.NAME_TAG)
-            .setName(LanguageHelper.getTextByKey(player, "works.work.set.target.name"))
+            .setName(LocaleHelper.getTextByKey(player, "works.work.set.target.name"))
             .setCallback(() -> new InputSignGui(player, null) {
                 @Override
                 public void onClose() {
                     String newValue = this.reduceInput();
                     if (newValue == null) {
-                        LanguageHelper.sendActionBarByKey(player, "works.work.add.empty_name");
+                        LocaleHelper.sendActionBarByKey(player, "works.work.add.empty_name");
                         return;
                     }
                     work.name = newValue;
-                    LanguageHelper.sendMessageByKey(player, "works.work.set.done", work.name);
+                    LocaleHelper.sendMessageByKey(player, "works.work.set.done", work.name);
                 }
             }.open())
         );
         gui.addSlot(new GuiElementBuilder()
             .setItem(Items.CHERRY_HANGING_SIGN)
-            .setName(LanguageHelper.getTextByKey(player, "works.work.set.target.introduction"))
+            .setName(LocaleHelper.getTextByKey(player, "works.work.set.target.introduction"))
             .setCallback(() -> new InputSignGui(player, null) {
                 @Override
                 public void onClose() {
                     work.introduction = this.reduceInput();
-                    LanguageHelper.sendMessageByKey(player, "works.work.set.done", work.introduction);
+                    LocaleHelper.sendMessageByKey(player, "works.work.set.done", work.introduction);
                 }
             }.open())
         );
         gui.addSlot(new GuiElementBuilder()
             .setItem(Items.END_PORTAL_FRAME)
-            .setName(LanguageHelper.getTextByKey(player, "works.work.set.target.position"))
+            .setName(LocaleHelper.getTextByKey(player, "works.work.set.target.position"))
             .setCallback(() -> {
                 work.level = player.getServerWorld().getRegistryKey().getValue().toString();
                 work.x = player.getPos().x;
                 work.y = player.getPos().y;
                 work.z = player.getPos().z;
-                LanguageHelper.sendMessageByKey(player, "works.work.set.done", "(%s, %f, %f, %f)".formatted(work.level, work.x, work.y, work.z));
+                LocaleHelper.sendMessageByKey(player, "works.work.set.done", "(%s, %f, %f, %f)".formatted(work.level, work.x, work.y, work.z));
                 gui.close();
             })
         );
         gui.addSlot(new GuiElementBuilder()
             .setItem(Items.PAINTING)
-            .setName(LanguageHelper.getTextByKey(player, "works.work.set.target.icon"))
+            .setName(LocaleHelper.getTextByKey(player, "works.work.set.target.icon"))
             .setCallback(() -> {
                 ItemStack mainHandItem = player.getMainHandStack();
                 if (mainHandItem.isEmpty()) {
-                    LanguageHelper.sendActionBarByKey(player, "works.work.set.target.icon.no_item");
+                    LocaleHelper.sendActionBarByKey(player, "works.work.set.target.icon.no_item");
                     gui.close();
                     return;
                 }
                 work.icon = Registries.ITEM.getId(mainHandItem.getItem()).toString();
-                LanguageHelper.sendMessageByKey(player, "works.work.set.done", work.icon);
+                LocaleHelper.sendMessageByKey(player, "works.work.set.done", work.icon);
                 gui.close();
             })
         );
 
         gui.addSlot(new GuiElementBuilder()
             .setItem(Items.BARRIER)
-            .setName(LanguageHelper.getTextByKey(player, "works.work.set.target.delete"))
+            .setName(LocaleHelper.getTextByKey(player, "works.work.set.target.delete"))
             .setCallback(() -> new ConfirmGui(player) {
                 @Override
                 public void onConfirm() {
                     WorksInitializer.worksHandler.model().works.remove(work);
-                    LanguageHelper.sendActionBarByKey(player, "works.work.delete.done");
+                    LocaleHelper.sendActionBarByKey(player, "works.work.delete.done");
                 }
             }.open())
 
@@ -202,12 +202,12 @@ public abstract class Work {
 
     public List<Text> asLore(ServerPlayerEntity player) {
         List<Text> ret = new ArrayList<>();
-        ret.add(LanguageHelper.getTextByKey(player, "works.work.prop.creator", this.creator));
+        ret.add(LocaleHelper.getTextByKey(player, "works.work.prop.creator", this.creator));
         if (this.introduction != null)
-            ret.add(LanguageHelper.getTextByKey(player, "works.work.prop.introduction", this.introduction));
-        ret.add(LanguageHelper.getTextByKey(player, "works.work.prop.time", DateUtil.toStandardDateFormat(this.createTimeMS)));
-        ret.add(LanguageHelper.getTextByKey(player, "works.work.prop.dimension", this.level));
-        ret.add(LanguageHelper.getTextByKey(player, "works.work.prop.coordinate", this.x, this.y, this.z));
+            ret.add(LocaleHelper.getTextByKey(player, "works.work.prop.introduction", this.introduction));
+        ret.add(LocaleHelper.getTextByKey(player, "works.work.prop.time", DateUtil.toStandardDateFormat(this.createTimeMS)));
+        ret.add(LocaleHelper.getTextByKey(player, "works.work.prop.dimension", this.level));
+        ret.add(LocaleHelper.getTextByKey(player, "works.work.prop.coordinate", this.x, this.y, this.z));
         return ret;
     }
 

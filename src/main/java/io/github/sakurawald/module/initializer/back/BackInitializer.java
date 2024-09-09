@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.back;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.Configs;
@@ -23,7 +23,7 @@ public class BackInitializer extends ModuleInitializer {
     private int $back(@CommandSource ServerPlayerEntity player) {
         Position lastPos = player2lastPos.get(player.getName().getString());
         if (lastPos == null) {
-            LanguageHelper.sendActionBarByKey(player, "back.no_previous_position");
+            LocaleHelper.sendActionBarByKey(player, "back.no_previous_position");
             return CommandHelper.Return.FAIL;
         }
 

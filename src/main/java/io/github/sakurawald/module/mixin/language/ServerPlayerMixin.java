@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.language;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import net.minecraft.network.packet.c2s.common.SyncedClientOptions;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
@@ -17,6 +17,6 @@ public abstract class ServerPlayerMixin {
     @Inject(method = "setClientOptions", at = @At("HEAD"))
     public void putClientSideLanguage(@NotNull SyncedClientOptions clientInformation, CallbackInfo ci) {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-        LanguageHelper.setClientSideLanguage(player.getGameProfile().getName(), clientInformation.comp_1951());
+        LocaleHelper.setClientSideLanguage(player.getGameProfile().getName(), clientInformation.comp_1951());
     }
 }

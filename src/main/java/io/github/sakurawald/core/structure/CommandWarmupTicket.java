@@ -28,7 +28,7 @@ public class CommandWarmupTicket extends BossBarTicket {
     }
 
     public static CommandWarmupTicket of(ServerPlayerEntity player, String command, int ms) {
-        BossBar bossbar = BossBar.bossBar(LanguageHelper.getTextByKey(player, "command_warmup.bossbar.name", command), 0f, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS);
+        BossBar bossbar = BossBar.bossBar(LocaleHelper.getTextByKey(player, "command_warmup.bossbar.name", command), 0f, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS);
         return new CommandWarmupTicket(bossbar, ms, player, command);
     }
 

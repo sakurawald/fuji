@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.home;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -48,7 +48,7 @@ public class HomeInitializer extends ModuleInitializer {
         Map<String, Position> name2position = ofHomes(player);
         String homeName = home.getValue();
         if (!name2position.containsKey(homeName)) {
-            LanguageHelper.sendMessageByKey(player, "home.not_found", homeName);
+            LocaleHelper.sendMessageByKey(player, "home.not_found", homeName);
             return 0;
         }
 
@@ -62,12 +62,12 @@ public class HomeInitializer extends ModuleInitializer {
         Map<String, Position> name2position = ofHomes(player);
         String homeName = home.getValue();
         if (!name2position.containsKey(homeName)) {
-            LanguageHelper.sendMessageByKey(player, "home.not_found", homeName);
+            LocaleHelper.sendMessageByKey(player, "home.not_found", homeName);
             return 0;
         }
 
         name2position.remove(homeName);
-        LanguageHelper.sendMessageByKey(player, "home.unset.success", homeName);
+        LocaleHelper.sendMessageByKey(player, "home.unset.success", homeName);
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -78,26 +78,26 @@ public class HomeInitializer extends ModuleInitializer {
 
         if (name2position.containsKey(homeName)) {
             if (!override.orElse(false)) {
-                LanguageHelper.sendMessageByKey(player, "home.set.fail.need_override", homeName);
+                LocaleHelper.sendMessageByKey(player, "home.set.fail.need_override", homeName);
                 return CommandHelper.Return.FAIL;
             }
         }
 
         Optional<Integer> limit = PermissionHelper.getMeta(player.getUuid(), "fuji.home.home_limit", Integer::valueOf);
         if (limit.isPresent() && name2position.size() >= limit.get()) {
-            LanguageHelper.sendMessageByKey(player, "home.set.fail.limit");
+            LocaleHelper.sendMessageByKey(player, "home.set.fail.limit");
             return CommandHelper.Return.FAIL;
         }
 
         name2position.put(homeName, Position.of(player));
-        LanguageHelper.sendMessageByKey(player, "home.set.success", homeName);
+        LocaleHelper.sendMessageByKey(player, "home.set.success", homeName);
         return CommandHelper.Return.SUCCESS;
     }
 
 
     @CommandNode("home list")
     private int $list(@CommandSource ServerPlayerEntity player) {
-        LanguageHelper.sendMessageByKey(player, "home.list", ofHomes(player).keySet());
+        LocaleHelper.sendMessageByKey(player, "home.list", ofHomes(player).keySet());
         return CommandHelper.Return.SUCCESS;
     }
 

@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.world;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -85,7 +85,7 @@ public class WorldInitializer extends ModuleInitializer {
         Identifier dimensionIdentifier = Identifier.of(FUJI_DIMENSION_NAMESPACE, name);
 
         if (IdentifierHelper.ofRegistry(RegistryKeys.DIMENSION).containsId(dimensionIdentifier)) {
-            LanguageHelper.sendMessageByKey(ctx.getSource(), "world.dimension.exist");
+            LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.exist");
             return CommandHelper.Return.FAIL;
         }
 
@@ -95,7 +95,7 @@ public class WorldInitializer extends ModuleInitializer {
         storage.model().dimension_list.add(new DimensionEntry(true, dimensionIdentifier.toString(), dimensionTypeIdentifier.toString(), $seed));
         storage.saveToDisk();
 
-        LanguageHelper.sendBroadcastByKey("world.dimension.created", dimensionIdentifier);
+        LocaleHelper.sendBroadcastByKey("world.dimension.created", dimensionIdentifier);
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -112,19 +112,19 @@ public class WorldInitializer extends ModuleInitializer {
 
         Optional<DimensionEntry> first = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
         if (first.isEmpty()) {
-            LanguageHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found");
+            LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found");
             return CommandHelper.Return.FAIL;
         }
         storage.model().dimension_list.remove(first.get());
         storage.saveToDisk();
 
-        LanguageHelper.sendBroadcastByKey("world.dimension.deleted", identifier);
+        LocaleHelper.sendBroadcastByKey("world.dimension.deleted", identifier);
         return CommandHelper.Return.SUCCESS;
     }
 
     private void checkBlacklist(CommandContext<ServerCommandSource> ctx, String identifier) {
         if (Configs.configHandler.model().modules.world.blacklist.dimension_list.contains(identifier)) {
-            LanguageHelper.sendMessageByKey(ctx.getSource(), "world.dimension.blacklist", identifier);
+            LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.blacklist", identifier);
             throw new SnackException();
         }
     }
@@ -139,7 +139,7 @@ public class WorldInitializer extends ModuleInitializer {
 
         Optional<DimensionEntry> first = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
         if (first.isEmpty()) {
-            LanguageHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found");
+            LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found");
             return CommandHelper.Return.FAIL;
         }
         // just delete it
@@ -154,7 +154,7 @@ public class WorldInitializer extends ModuleInitializer {
         first.get().setSeed(newSeed);
         storage.saveToDisk();
 
-        LanguageHelper.sendBroadcastByKey("world.dimension.reset", identifier);
+        LocaleHelper.sendBroadcastByKey("world.dimension.reset", identifier);
         return CommandHelper.Return.SUCCESS;
     }
 }

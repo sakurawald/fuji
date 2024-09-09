@@ -94,7 +94,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         // get model
         ItemStack mainHandStack = player.getMainHandStack();
         if (mainHandStack.isEmpty()) {
-            LanguageHelper.sendMessageByKey(player,"operation.fail");
+            LocaleHelper.sendMessageByKey(player,"operation.fail");
             return CommandHelper.Return.FAIL;
         }
 
@@ -113,7 +113,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         // save model
         this.setModel(uuid, model);
 
-        LanguageHelper.sendMessageByKey(player, "operation.success");
+        LocaleHelper.sendMessageByKey(player, "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -121,14 +121,14 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     int detachAll(@CommandSource ServerPlayerEntity player) {
         ItemStack mainHandStack = player.getMainHandStack();
         if (mainHandStack.isEmpty()) {
-            LanguageHelper.sendMessageByKey(player, "operation.fail");
+            LocaleHelper.sendMessageByKey(player, "operation.fail");
             return CommandHelper.Return.FAIL;
         }
 
         String uuid = NbtHelper.getOrMakeUUIDNbt(mainHandStack);
         Managers.getAttachmentManager().unsetAttachment(COMMAND_ATTACHMENT_SUBJECT_NAME, uuid);
 
-        LanguageHelper.sendMessageByKey(player, "operation.success");
+        LocaleHelper.sendMessageByKey(player, "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -137,13 +137,13 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     int query(@CommandSource ServerPlayerEntity player) {
         ItemStack mainHandStack = player.getMainHandStack();
         if (mainHandStack.isEmpty()) {
-            LanguageHelper.sendMessageByKey(player, "operation.fail");
+            LocaleHelper.sendMessageByKey(player, "operation.fail");
             return CommandHelper.Return.FAIL;
         }
 
         String uuid = NbtHelper.getUuid(mainHandStack.get(DataComponentTypes.CUSTOM_DATA));
         if (uuid == null) {
-            LanguageHelper.sendMessageByKey(player, "command_attachment.query.no_attachment");
+            LocaleHelper.sendMessageByKey(player, "command_attachment.query.no_attachment");
             return CommandHelper.Return.SUCCESS;
         }
 

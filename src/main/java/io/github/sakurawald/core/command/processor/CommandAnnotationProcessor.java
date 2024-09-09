@@ -8,7 +8,7 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -219,7 +219,7 @@ public class CommandAnnotationProcessor {
 
         // report to command source
         String stacktrace = String.join("\n", LogUtil.getStackTraceAsList(throwable));
-        Component report = LanguageHelper.getTextByValue(source, string)
+        Component report = LocaleHelper.getTextByValue(source, string)
             .asComponent()
             .color(NamedTextColor.RED)
             .hoverEvent(HoverEvent.showText(Component.text("Click to copy the stacktrace.")))

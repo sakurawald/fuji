@@ -28,14 +28,14 @@ public class HeadGui extends SimpleGui {
             addCategoryButton(index, category);
             ++index;
         }
-        this.setTitle(LanguageHelper.getTextByKey(player, "head.title"));
+        this.setTitle(LocaleHelper.getTextByKey(player, "head.title"));
         this.setSlot(this.getSize() - 1, new GuiElementBuilder()
                 .setItem(Items.COMPASS)
-                .setName(LanguageHelper.getTextByKey(player, "search"))
+                .setName(LocaleHelper.getTextByKey(player, "search"))
                 .setCallback((index1, type1, action) -> new SearchHeadsInputGui(this).open()));
         this.setSlot(this.getSize() - 2, new GuiElementBuilder()
                 .setItem(Items.PLAYER_HEAD)
-                .setName(LanguageHelper.getTextByKey(player, "head.category.player"))
+                .setName(LocaleHelper.getTextByKey(player, "head.category.player"))
                 .setCallback((index1, type1, action) -> new PlayerHeadInputGui(this).open()));
     }
 
