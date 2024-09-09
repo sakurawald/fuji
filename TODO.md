@@ -15,3 +15,4 @@
 - rename: some functions should be renamed.
 - add: a lisp-like DSL, including a parse, transformer, analyzer, code-walker, with some built-in functions: predicate,
   equal...
+- add: the locale integration with crowin..
