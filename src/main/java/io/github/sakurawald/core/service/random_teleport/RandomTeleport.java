@@ -2,7 +2,7 @@ package io.github.sakurawald.core.service.random_teleport;
 
 import com.google.common.base.Stopwatch;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.structure.Position;
@@ -35,7 +35,7 @@ public class RandomTeleport {
             LogUtil.info("Request rtp: {}", player.getGameProfile().getName());
             Stopwatch timer = Stopwatch.createStarted();
 
-            ServerWorld world = IdentifierHelper.ofServerWorld(Identifier.of(setup.getDimension()));
+            ServerWorld world = RegistryHelper.ofServerWorld(Identifier.of(setup.getDimension()));
             if (world == null) {
                 LocaleHelper.sendMessageByKey(player,"world.dimension.not_found");
                 return;

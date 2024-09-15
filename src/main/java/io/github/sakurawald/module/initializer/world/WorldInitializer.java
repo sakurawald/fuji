@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.world;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -84,7 +84,7 @@ public class WorldInitializer extends ModuleInitializer {
         String FUJI_DIMENSION_NAMESPACE = "fuji";
         Identifier dimensionIdentifier = Identifier.of(FUJI_DIMENSION_NAMESPACE, name);
 
-        if (IdentifierHelper.ofRegistry(RegistryKeys.DIMENSION).containsId(dimensionIdentifier)) {
+        if (RegistryHelper.ofRegistry(RegistryKeys.DIMENSION).containsId(dimensionIdentifier)) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.exist");
             return CommandHelper.Return.FAIL;
         }
@@ -105,7 +105,7 @@ public class WorldInitializer extends ModuleInitializer {
     private int $delete(@CommandSource CommandContext<ServerCommandSource> ctx, Dimension dimension) {
         ServerWorld world = dimension.getValue();
 
-        String identifier = IdentifierHelper.ofString(world);
+        String identifier = RegistryHelper.ofString(world);
         checkBlacklist(ctx, identifier);
 
         WorldManager.requestToDeleteWorld(world);
@@ -134,7 +134,7 @@ public class WorldInitializer extends ModuleInitializer {
     private int $reset(@CommandSource CommandContext<ServerCommandSource> ctx, Optional<Boolean> useTheSameSeed, Dimension dimension) {
         // draw seed and save
         ServerWorld world = dimension.getValue();
-        String identifier = IdentifierHelper.ofString(world);
+        String identifier = RegistryHelper.ofString(world);
         checkBlacklist(ctx, identifier);
 
         Optional<DimensionEntry> first = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();

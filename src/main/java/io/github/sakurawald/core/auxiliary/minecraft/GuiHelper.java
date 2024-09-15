@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 @UtilityClass
 public class GuiHelper {
 
+    @SuppressWarnings("unused")
     public static class Item {
         public static final ItemStack PLACEHOLDER = Items.GRAY_STAINED_GLASS_PANE.getDefaultStack();
         public static final ItemStack EMPTY = Items.AIR.getDefaultStack();
@@ -36,7 +37,7 @@ public class GuiHelper {
         return new GuiElementBuilder()
                 .setItem(Items.BARRIER)
                 .hideTooltip()
-                .setComponent(DataComponentTypes.CUSTOM_NAME, Text.literal(""))
+                .setComponent(DataComponentTypes.CUSTOM_NAME, Text.empty())
                 .build();
 
     }

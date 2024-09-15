@@ -48,7 +48,7 @@ public class SitInitializer extends ModuleInitializer {
     @CommandNode("sit")
     private int $sit(@CommandSource ServerPlayerEntity player) {
         // fix: if the player stand in the slab/stair block
-        BlockPos steppingBlockPos = EntityHelper.getSteppingBlockPos(player);
+        BlockPos steppingBlockPos = player.getSteppingPos();
         BlockState steppingBlockState = player.getWorld().getBlockState(steppingBlockPos);
         if (!canSit(player) || steppingBlockState.isAir() || steppingBlockState.isLiquid()) {
             LocaleHelper.sendActionBarByKey(player, "sit.fail");
