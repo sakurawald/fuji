@@ -51,11 +51,13 @@ public class CommandAnnotationProcessor {
     public static void process() {
         CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) -> {
             /* environment */
-            BaseArgumentTypeAdapter.registerAdapters();
             CommandAnnotationProcessor.dispatcher = dispatcher;
             CommandAnnotationProcessor.registryAccess = registryAccess;
 
-            /* process */
+            /* register argument type adapters */
+            BaseArgumentTypeAdapter.registerAdapters();
+
+            /* register commands */
             processClasses();
         }));
     }
