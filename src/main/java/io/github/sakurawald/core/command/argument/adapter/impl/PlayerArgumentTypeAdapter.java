@@ -36,7 +36,7 @@ public class PlayerArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     }
 
     @Override
-    public boolean validateCommandSource(CommandContext<ServerCommandSource> context) {
+    public boolean verifyCommandSource(CommandContext<ServerCommandSource> context) {
         ServerPlayerEntity player = context.getSource().getPlayer();
         if (player == null) {
             LocaleHelper.sendMessageByKey(context.getSource(), "command.player_only");

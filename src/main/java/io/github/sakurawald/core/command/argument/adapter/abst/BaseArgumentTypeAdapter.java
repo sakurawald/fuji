@@ -52,7 +52,7 @@ public abstract class BaseArgumentTypeAdapter {
 
     public abstract Object makeArgumentObject(CommandContext<ServerCommandSource> context, Parameter parameter);
 
-    public boolean validateCommandSource(CommandContext<ServerCommandSource> context) {
+    public boolean verifyCommandSource(CommandContext<ServerCommandSource> context) {
         return true;
     }
 
