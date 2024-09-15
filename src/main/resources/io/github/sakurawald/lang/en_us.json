@@ -80,7 +80,7 @@
     "input.limit.error": "<red>Input limit exceed",
     "input.syntax.error": "<red>Input Syntax Error",
     "item.empty.not_allow": "<red>Item can't be empty",
-    "kit.gui.editor.help.lore": "<green> - Left click -> edit a kit<newline> - Shift + Right click -> delete a kit",
+    "kit.gui.editor.help.lore": "<green> - Left click -> edit a kit<newline><green> - Shift + Right click -> delete a kit",
     "kit.gui.editor.kit.title": "<blue>Kit %s",
     "kit.gui.editor.title": "<blue>Kit Editor",
     "kit.kit.empty": "<red>The kit is empty",
