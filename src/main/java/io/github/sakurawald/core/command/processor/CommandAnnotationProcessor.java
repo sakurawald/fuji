@@ -15,7 +15,7 @@ import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.command.argument.structure.Argument;
-import io.github.sakurawald.core.command.exception.SnackException;
+import io.github.sakurawald.core.command.exception.AbortOperationException;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -180,7 +180,7 @@ public class CommandAnnotationProcessor {
                 // don't swallow the exception.
                 Throwable theRealException = e.getCause();
 
-                if (theRealException instanceof SnackException snakeException) {
+                if (theRealException instanceof AbortOperationException snakeException) {
                     // report it
                     if (snakeException.getMessage() != null) {
                         reportException(ctx.getSource(), instance, method, theRealException);
