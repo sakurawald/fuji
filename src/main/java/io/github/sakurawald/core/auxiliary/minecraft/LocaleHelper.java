@@ -91,21 +91,17 @@ public class LocaleHelper {
         try {
             is = FileUtils.openInputStream(Fuji.CONFIG_PATH.resolve("lang").resolve(lang + ".json").toFile());
 
-            JsonObject jsonObject = JsonParser.parseReader(new InputStreamReader(is)).getAsJsonObject();
-            lang2json.put(lang, jsonObject);
+            lang2json.put(lang, JsonParser.parseReader(new InputStreamReader(is)).getAsJsonObject());
             LogUtil.info("Language {} loaded.", lang);
         } catch (IOException e) {
-            LogUtil.warn("Failed to load language '{}'", lang);
             lang2json.put(lang, UNSUPPORTED_LANGUAGE_MARKER);
+            LogUtil.warn("Failed to load language '{}'", lang);
         }
     }
 
     private @NotNull String getClientSideLanguage(@Nullable Object audience) {
         String defaultLanguage = Configs.configHandler.model().core.language.default_language;
-
-        if (audience == null) {
-            return defaultLanguage;
-        }
+        if (audience == null) return defaultLanguage;
 
         PlayerEntity player = switch (audience) {
             case ServerPlayerEntity serverPlayerEntity -> serverPlayerEntity;
@@ -114,16 +110,16 @@ public class LocaleHelper {
             default -> null;
         };
 
+        // always use default_language for non-player object.
         return player == null ? defaultLanguage : player2lang.getOrDefault(player.getGameProfile().getName(), defaultLanguage);
     }
 
     private @NotNull JsonObject getLanguageJsonObject(String lang) {
-        // if target language is missing, we fall back to default_language
-        if (!lang2json.containsKey(lang) && lang2json.get(lang) == UNSUPPORTED_LANGUAGE_MARKER) {
-            lang = Configs.configHandler.model().core.language.default_language;
+        // load language object from disk for the first time
+        if (!lang2json.containsKey(lang)) {
+            loadLanguageIfAbsent(lang);
         }
 
-        loadLanguageIfAbsent(lang);
         return lang2json.get(lang);
     }
 
@@ -133,6 +129,12 @@ public class LocaleHelper {
 
         /* get json */
         JsonObject json = getLanguageJsonObject(lang);
+
+        /* use fallback language if the client-side language is not supported in the server-side. */
+        if (json == UNSUPPORTED_LANGUAGE_MARKER) {
+            lang = Configs.configHandler.model().core.language.default_language;
+            json = getLanguageJsonObject(lang);
+        }
 
         /* get value */
         if (json.has(key)) {
