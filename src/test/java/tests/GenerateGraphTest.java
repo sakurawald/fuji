@@ -15,7 +15,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class GenerateClassGraphTest {
+public class GenerateGraphTest {
 
     public static final Path COMPILE_TIME_SRC_MAIN_RESOURCES_PATH = Path.of("src/main/resources/");
     public static final Path COMPILE_TIME_GRAPH_PATH = COMPILE_TIME_SRC_MAIN_RESOURCES_PATH.resolve(ReflectionUtil.class.getPackageName().replace(".", "/"));
