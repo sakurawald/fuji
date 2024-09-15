@@ -11,6 +11,7 @@ import eu.pb4.placeholders.api.parsers.tag.TagRegistry;
 import eu.pb4.placeholders.api.parsers.tag.TextTag;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.handler.impl.ResourceConfigHandler;
 import lombok.NonNull;
@@ -69,9 +70,9 @@ public class LocaleHelper {
     }
 
     private static void writeDefaultLanguageFiles() {
-        new ResourceConfigHandler("lang/en_us.json").loadFromDisk();
-        new ResourceConfigHandler("lang/zh_cn.json").loadFromDisk();
-        new ResourceConfigHandler("lang/zh_tw.json").loadFromDisk();
+        for (String lang : ReflectionUtil.getGraph(ReflectionUtil.LANGUAGE_GRAPH_FILE_NAME)) {
+            new ResourceConfigHandler("lang/" + lang).loadFromDisk();
+        }
     }
 
     // clear the map to remove `UNSUPPORTED LANGUAGE`
