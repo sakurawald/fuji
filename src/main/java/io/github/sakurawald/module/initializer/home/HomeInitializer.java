@@ -8,7 +8,7 @@ import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
 import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
-import io.github.sakurawald.core.structure.Position;
+import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.home.command.argument.wrapper.HomeName;
 import io.github.sakurawald.module.initializer.home.config.model.HomeModel;
@@ -36,30 +36,30 @@ public class HomeInitializer extends ModuleInitializer {
         data.loadFromDisk();
     }
 
-    public Map<String, Position> ofHomes(@NotNull ServerPlayerEntity player) {
+    public Map<String, SpatialPose> ofHomes(@NotNull ServerPlayerEntity player) {
         String playerName = player.getGameProfile().getName();
-        Map<String, Map<String, Position>> homes = data.model().homes;
+        Map<String, Map<String, SpatialPose>> homes = data.model().homes;
         homes.computeIfAbsent(playerName, k -> new HashMap<>());
         return homes.get(playerName);
     }
 
     @CommandNode("home tp")
     private int $tp(@CommandSource ServerPlayerEntity player, HomeName home) {
-        Map<String, Position> name2position = ofHomes(player);
+        Map<String, SpatialPose> name2position = ofHomes(player);
         String homeName = home.getValue();
         if (!name2position.containsKey(homeName)) {
             LocaleHelper.sendMessageByKey(player, "home.not_found", homeName);
             return 0;
         }
 
-        Position position = name2position.get(homeName);
-        position.teleport(player);
+        SpatialPose spatialPose = name2position.get(homeName);
+        spatialPose.teleport(player);
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("home unset")
     private int $unset(@CommandSource ServerPlayerEntity player, HomeName home) {
-        Map<String, Position> name2position = ofHomes(player);
+        Map<String, SpatialPose> name2position = ofHomes(player);
         String homeName = home.getValue();
         if (!name2position.containsKey(homeName)) {
             LocaleHelper.sendMessageByKey(player, "home.not_found", homeName);
@@ -73,7 +73,7 @@ public class HomeInitializer extends ModuleInitializer {
 
     @CommandNode("home set")
     private int $set(@CommandSource ServerPlayerEntity player, HomeName home, Optional<Boolean> override) {
-        Map<String, Position> name2position = ofHomes(player);
+        Map<String, SpatialPose> name2position = ofHomes(player);
         String homeName = home.getValue();
 
         if (name2position.containsKey(homeName)) {
@@ -89,7 +89,7 @@ public class HomeInitializer extends ModuleInitializer {
             return CommandHelper.Return.FAIL;
         }
 
-        name2position.put(homeName, Position.of(player));
+        name2position.put(homeName, SpatialPose.of(player));
         LocaleHelper.sendMessageByKey(player, "home.set.success", homeName);
         return CommandHelper.Return.SUCCESS;
     }

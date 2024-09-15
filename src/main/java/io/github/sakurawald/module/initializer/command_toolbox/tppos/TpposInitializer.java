@@ -7,7 +7,7 @@ import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
 import io.github.sakurawald.core.service.random_teleport.RandomTeleport;
-import io.github.sakurawald.core.structure.Position;
+import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.core.structure.TeleportSetup;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -44,8 +44,8 @@ public class TpposInitializer extends ModuleInitializer {
             double $z = z.orElse(player.getZ());
             float $yaw = yaw.orElse(player.getYaw());
             float $pitch = pitch.orElse(player.getPitch());
-            Position position = new Position(world, $x, $y, $z, $yaw, $pitch);
-            position.teleport(player);
+            SpatialPose spatialPose = new SpatialPose(world, $x, $y, $z, $yaw, $pitch);
+            spatialPose.teleport(player);
             return CommandHelper.Return.SUCCESS;
         }
 

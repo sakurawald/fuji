@@ -8,7 +8,7 @@ import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
 import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
-import io.github.sakurawald.core.structure.Position;
+import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_toolbox.warp.command.argument.wrapper.WarpName;
 import io.github.sakurawald.module.initializer.command_toolbox.warp.config.model.WarpModel;
@@ -77,7 +77,7 @@ public class WarpInitializer extends ModuleInitializer {
             }
         }
 
-        data.model().warps.put(name, new WarpEntry(Position.of(player)));
+        data.model().warps.put(name, new WarpEntry(SpatialPose.of(player)));
         LocaleHelper.sendMessageByKey(player, "warp.set.success", name);
         return CommandHelper.Return.SUCCESS;
     }

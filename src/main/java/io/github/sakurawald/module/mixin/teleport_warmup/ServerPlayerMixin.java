@@ -6,7 +6,7 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.manager.impl.bossbar.BossBarTicket;
-import io.github.sakurawald.core.structure.Position;
+import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.core.structure.TeleportTicket;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -51,8 +51,8 @@ public abstract class ServerPlayerMixin {
         if (ticket == null) {
             ticket = TeleportTicket.of(
                     player
-                    , Position.of(player)
-                    , new Position(targetWorld, x, y, z, yaw, pitch));
+                    , SpatialPose.of(player)
+                    , new SpatialPose(targetWorld, x, y, z, yaw, pitch));
             Managers.getBossBarManager().addTicket(ticket);
             ci.cancel();
         } else {
