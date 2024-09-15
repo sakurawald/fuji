@@ -43,13 +43,12 @@ public class ServerHelper {
         getPlayerManager().sendToAll(packet);
     }
 
+    @SuppressWarnings("unused")
     public static void sendPacketToAllExcept(Packet<?> packet, ServerPlayerEntity player) {
-        for (ServerPlayerEntity serverPlayerEntity : getPlayerManager().getPlayerList()) {
-            if (serverPlayerEntity == player) continue;
-            serverPlayerEntity.networkHandler.sendPacket(packet);
-        }
+        getPlayerManager().getPlayerList().stream().filter(it -> it != player).forEach(p -> p.networkHandler.sendPacket(packet));
     }
 
+    @SuppressWarnings("unused")
     public static void sendPacket(Packet<?> packet, ServerPlayerEntity player) {
         player.networkHandler.sendPacket(packet);
     }
