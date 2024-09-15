@@ -19,7 +19,7 @@ public class SaveConfigHandlerJob extends CronJob {
 
     @Override
     public void execute(@NotNull JobExecutionContext context) {
-        LogUtil.debug("AutoSave ConfigWrapper {}", context.getJobDetail().getKey().getName());
+        LogUtil.debug("save configuration file {}", context.getJobDetail().getKey().getName());
         ConfigHandler<?> configHandler = (ConfigHandler<?>) context.getJobDetail().getJobDataMap().get(ConfigHandler.class.getName());
         configHandler.saveToDisk();
     }

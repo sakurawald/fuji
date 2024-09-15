@@ -77,7 +77,6 @@ public class ModuleManager extends BaseManager {
      * (If a module is enabled, but the module doesn't extend AbstractModule, then this me*
      * hod will also return null, but the module doesn't extend AbstractModule, then this method will also return null.)
      */
-    @ApiStatus.AvailableSince("1.1.5")
     public <T extends ModuleInitializer> T getInitializer(@NotNull Class<T> clazz) {
         if (!moduleRegistry.containsKey(clazz)) {
             if (shouldWeEnableThis(clazz.getName())) {
