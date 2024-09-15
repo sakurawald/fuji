@@ -34,7 +34,6 @@ public class ReflectionUtil {
         return methods;
     }
 
-
     @SneakyThrows
     public static List<String> getGraph(String graphName) {
         InputStream inputStream = ReflectionUtil.class.getResourceAsStream(graphName);

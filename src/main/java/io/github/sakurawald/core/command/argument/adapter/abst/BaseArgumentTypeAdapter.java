@@ -5,7 +5,6 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.manager.Managers;
-import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import lombok.SneakyThrows;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -25,18 +24,20 @@ public abstract class BaseArgumentTypeAdapter {
     @SuppressWarnings("unchecked")
     @SneakyThrows
     public static void registerAdapters() {
-        ModuleManager moduleManager = Managers.getModuleManager();
+        ReflectionUtil.getGraph(ReflectionUtil.ARGUMENT_TYPE_ADAPTER_GRAPH_FILE_NAME)
+            .stream()
+            .filter(className -> Managers.getModuleManager().shouldWeEnableThis(className))
+            .forEach(className -> {
+                try {
+                    Class<? extends BaseArgumentTypeAdapter> clazz = (Class<? extends BaseArgumentTypeAdapter>) Class.forName(className);
+                    Constructor<? extends BaseArgumentTypeAdapter> constructor = clazz.getDeclaredConstructor();
+                    BaseArgumentTypeAdapter instance = constructor.newInstance();
+                    adapters.add(instance);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
 
-        for (String className: ReflectionUtil.getGraph(ReflectionUtil.ARGUMENT_TYPE_ADAPTER_GRAPH_FILE_NAME)) {
-
-            // skip if the module path is not enabled.
-            if (!moduleManager.shouldWeEnableThis(className)) continue;
-
-            Class<? extends BaseArgumentTypeAdapter> clazz = (Class<? extends BaseArgumentTypeAdapter>) Class.forName(className);
-            Constructor<? extends BaseArgumentTypeAdapter> constructor = clazz.getDeclaredConstructor();
-            BaseArgumentTypeAdapter instance = constructor.newInstance();
-            adapters.add(instance);
-        }
     }
 
     public abstract boolean match(Type type);
