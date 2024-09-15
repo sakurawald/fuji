@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.tppos;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -58,7 +58,7 @@ public class TpposInitializer extends ModuleInitializer {
         int $maxY = maxY.orElse(world.getTopY());
         int $maxTryTimes = maxTryTimes.orElse(8);
 
-        TeleportSetup teleportSetup = new TeleportSetup(IdentifierHelper.ofString(world), $centerX, $centerZ, $circle, $minRange, $maxRange, $minY
+        TeleportSetup teleportSetup = new TeleportSetup(RegistryHelper.ofString(world), $centerX, $centerZ, $circle, $minRange, $maxRange, $minY
                 , $maxY, $maxTryTimes);
 
         RandomTeleport.request(player, teleportSetup,null);

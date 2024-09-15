@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.teleport_warmup;
 
 import io.github.sakurawald.core.auxiliary.minecraft.EntityHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.manager.Managers;
@@ -37,7 +37,7 @@ public abstract class ServerPlayerMixin {
 
     @Inject(method = "teleport(Lnet/minecraft/server/world/ServerWorld;DDDFF)V", at = @At("HEAD"), cancellable = true)
     public void interceptTeleportAndAddTicket(@NotNull ServerWorld targetWorld, double x, double y, double z, float yaw, float pitch, @NotNull CallbackInfo ci) {
-        if (!Configs.configHandler.model().modules.teleport_warmup.dimension.list.contains(IdentifierHelper.ofString(targetWorld))) {
+        if (!Configs.configHandler.model().modules.teleport_warmup.dimension.list.contains(RegistryHelper.ofString(targetWorld))) {
             return;
         }
 

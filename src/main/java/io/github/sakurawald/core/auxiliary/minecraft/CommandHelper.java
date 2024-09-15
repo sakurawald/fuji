@@ -27,9 +27,9 @@ public class CommandHelper {
     }
 
     public static class Suggestion {
-        public static <T> @NotNull SuggestionProvider<ServerCommandSource> ofRegistryKey(RegistryKey<? extends Registry<T>> registryKey) {
+        public static <T> @NotNull SuggestionProvider<ServerCommandSource> identifiers(RegistryKey<? extends Registry<T>> registryKey) {
             return (context, builder) -> {
-                Registry<T> registry = IdentifierHelper.ofRegistry(registryKey);
+                Registry<T> registry = RegistryHelper.ofRegistry(registryKey);
                 Iterator<T> iterator = registry.iterator();
                 while (iterator.hasNext()) {
                     T entry;
@@ -71,7 +71,7 @@ public class CommandHelper {
         }
 
         @SneakyThrows
-        public static int itemOnHandCommand(@NotNull CommandContext<ServerCommandSource> ctx, @NotNull BiFunction<ServerPlayerEntity, ItemStack, Integer> consumer) {
+        public static int itemInHandCommand(@NotNull CommandContext<ServerCommandSource> ctx, @NotNull BiFunction<ServerPlayerEntity, ItemStack, Integer> consumer) {
             return playerOnlyCommand(ctx, player -> {
                 ItemStack mainHandStack = player.getMainHandStack();
                 if (mainHandStack.isEmpty()) {

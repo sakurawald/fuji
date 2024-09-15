@@ -1,6 +1,6 @@
 package io.github.sakurawald.core.structure;
 
-import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import lombok.Data;
@@ -47,7 +47,7 @@ public class Position {
     }
 
     public ServerWorld ofDimension() {
-        return IdentifierHelper.ofServerWorld(Identifier.of(this.level));
+        return RegistryHelper.ofServerWorld(Identifier.of(this.level));
     }
 
     public @NotNull BlockPos ofBlockPos() {

@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.anti_build;
 
-import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.config.Configs;
@@ -36,7 +36,7 @@ public class ServerPlayerInteractionManagerMixin {
     void $tryBreak(BlockPos blockPos, @NotNull CallbackInfoReturnable<Boolean> cir) {
         BlockState blockState = this.world.getBlockState(blockPos);
 
-        String id = IdentifierHelper.ofString(blockState);
+        String id = RegistryHelper.ofString(blockState);
         if (Configs.configHandler.model().modules.anti_build.anti.break_block.id.contains(id)
                 && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("break_block", id))
         ) {
@@ -48,7 +48,7 @@ public class ServerPlayerInteractionManagerMixin {
 
     @Inject(method = "interactItem", at = @At("HEAD"), cancellable = true)
     void $interactItem(ServerPlayerEntity serverPlayerEntity, World world, @NotNull ItemStack itemStack, Hand hand, @NotNull CallbackInfoReturnable<ActionResult> cir) {
-        String id = IdentifierHelper.ofString(itemStack);
+        String id = RegistryHelper.ofString(itemStack);
 
         if (Configs.configHandler.model().modules.anti_build.anti.interact_item.id.contains(id)
                 && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_item", id))
@@ -62,7 +62,7 @@ public class ServerPlayerInteractionManagerMixin {
     void $interactBlock(ServerPlayerEntity serverPlayerEntity, @NotNull World world, ItemStack itemStack, Hand hand, @NotNull BlockHitResult blockHitResult, @NotNull CallbackInfoReturnable<ActionResult> cir) {
         BlockPos blockPos = blockHitResult.getBlockPos();
         BlockState blockState = world.getBlockState(blockPos);
-        String id = IdentifierHelper.ofString(blockState);
+        String id = RegistryHelper.ofString(blockState);
 
         if (Configs.configHandler.model().modules.anti_build.anti.interact_block.id.contains(id)
                 && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_block", id))
