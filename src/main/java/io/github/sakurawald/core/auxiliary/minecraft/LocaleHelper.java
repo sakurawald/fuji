@@ -49,11 +49,11 @@ public class LocaleHelper {
     private static final NodeParser PLACEHOLDER_PARSER = NodeParser.builder()
         .globalPlaceholders().build();
 
-    private static final FabricServerAudiences adventure = FabricServerAudiences.of(ServerHelper.getDefaultServer());
+    private static final FabricServerAudiences ADVENTURE_INSTANCE = FabricServerAudiences.of(ServerHelper.getDefaultServer());
 
     private static final Map<String, String> player2lang = new HashMap<>();
     private static final Map<String, JsonObject> lang2json = new HashMap<>();
-    private static final JsonObject UNSUPPORTED_LANGUAGE = new JsonObject();
+    private static final JsonObject UNSUPPORTED_LANGUAGE_MARKER = new JsonObject();
 
     static {
         writeDefaultLanguageFiles();
@@ -95,8 +95,8 @@ public class LocaleHelper {
             lang2json.put(lang, jsonObject);
             LogUtil.info("Language {} loaded.", lang);
         } catch (IOException e) {
-            LogUtil.error("Failed to load language '{}'", lang);
-            lang2json.put(lang, UNSUPPORTED_LANGUAGE);
+            LogUtil.warn("Failed to load language '{}'", lang);
+            lang2json.put(lang, UNSUPPORTED_LANGUAGE_MARKER);
         }
     }
 
@@ -119,7 +119,7 @@ public class LocaleHelper {
 
     private @NotNull JsonObject getLanguageJsonObject(String lang) {
         // if target language is missing, we fall back to default_language
-        if (!lang2json.containsKey(lang) && lang2json.get(lang) == UNSUPPORTED_LANGUAGE) {
+        if (!lang2json.containsKey(lang) && lang2json.get(lang) == UNSUPPORTED_LANGUAGE_MARKER) {
             lang = Configs.configHandler.model().core.language.default_language;
         }
 
@@ -139,9 +139,10 @@ public class LocaleHelper {
             return json.get(key).getAsString();
         }
 
-        String errorString = "Language '%s' miss the key '%s'".formatted(lang, key);
-        LogUtil.error(errorString);
-        return errorString;
+        // always fallback string for missing keys
+        String fallbackString = "(no key `%s` in language `%s`)".formatted(key, lang);
+        LogUtil.warn("{} triggered by {}", fallbackString, audience);
+        return fallbackString;
     }
 
     public static @NotNull String getValue(@Nullable Object audience, String key, Object... args) {
@@ -211,7 +212,11 @@ public class LocaleHelper {
     }
 
     public static @NotNull Text toText(@NotNull Component component) {
-        return adventure.toNative(component);
+        return ADVENTURE_INSTANCE.toNative(component);
+    }
+
+    public static String flatten(@NotNull Component component) {
+        return PlainTextComponentSerializer.plainText().serialize(component);
     }
 
     public static void sendMessageByKey(@NotNull Audience audience, String key, Object... args) {
@@ -225,7 +230,7 @@ public class LocaleHelper {
     public static void sendBroadcastByKey(@NotNull String key, Object... args) {
         // fix: log broadcast for console
         Component component = getTextByKey(null, key, args).asComponent();
-        LogUtil.info(PlainTextComponentSerializer.plainText().serialize(component));
+        LogUtil.info(flatten(component));
 
         for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
             LocaleHelper.sendMessageByKey(player, key, args);

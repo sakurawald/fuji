@@ -21,7 +21,7 @@ public class SignBlockEntityMixin {
         Text[] messages = signText.getMessages(false);
         Text[] newMessages = new Text[messages.length];
         for (int i = 0; i < messages.length; i++) {
-            String string = PlainTextComponentSerializer.plainText().serialize(messages[i].asComponent());
+            String string = LocaleHelper.flatten(messages[i].asComponent());
 
             Component formated = MiniMessage.miniMessage().deserialize(string);
             newMessages[i] = LocaleHelper.toText(formated);
