@@ -40,9 +40,9 @@ public class Argument {
     public String toString() {
         if (this.isRequiredArgument()) {
             if (isOptional) {
-                return "[$%d = %s]".formatted(this.methodParameterIndex, this.argumentName);
+                return "[%s $%d]".formatted(this.argumentName, this.methodParameterIndex);
             } else {
-                return "<$%d = %s>".formatted(this.methodParameterIndex, this.argumentName);
+                return "<%s $%d>".formatted(this.argumentName, this.methodParameterIndex);
             }
         }
 
