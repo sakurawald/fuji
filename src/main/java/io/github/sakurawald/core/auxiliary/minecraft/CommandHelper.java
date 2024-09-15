@@ -33,9 +33,19 @@ public class CommandHelper {
                 Iterator<T> iterator = registry.iterator();
                 while (iterator.hasNext()) {
                     T entry;
+
+                    /*
+                     * Steps to trigger the following exception:
+                     * 1. /world create 1 minecraft:overworld
+                     * 2. /world delete fuji:1
+                     * 3. /world tp
+                     *
+                     * Failed to handle packet net.minecraft.network.packet.c2s.play.RequestCommandCompletionsC2SPacket@72fe7802, suppressing error
+                     *  java.lang.NullPointerException: null
+                     */
                     try {
                         entry = iterator.next();
-                    } catch (Exception e) {
+                    } catch (NullPointerException e) {
                         continue;
                     }
 
