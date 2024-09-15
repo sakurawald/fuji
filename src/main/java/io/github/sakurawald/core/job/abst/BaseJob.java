@@ -46,7 +46,7 @@ public abstract class BaseJob implements Job {
 
     public void schedule() {
         try {
-            LogUtil.debug("Schedule job -> {}", this);
+            LogUtil.debug("schedule job -> {}", this);
             Managers.getScheduleManager().scheduleJob(this.jobDetail, this.makeTrigger());
 
             if (this.reschedulable) {
