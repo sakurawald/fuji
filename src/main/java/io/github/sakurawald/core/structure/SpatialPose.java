@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 @Data
 @With
-public class Position {
+public class SpatialPose {
     private String level;
     private double x;
     private double y;
@@ -24,7 +24,7 @@ public class Position {
     private float yaw;
     private float pitch;
 
-    public Position(String level, double x, double y, double z, float yaw, float pitch) {
+    public SpatialPose(String level, double x, double y, double z, float yaw, float pitch) {
         this.level = level;
         this.x = x;
         this.y = y;
@@ -33,17 +33,17 @@ public class Position {
         this.pitch = pitch;
     }
 
-    public Position(@NotNull World level, double x, double y, double z, float yaw, float pitch) {
+    public SpatialPose(@NotNull World level, double x, double y, double z, float yaw, float pitch) {
         this(level.getRegistryKey().getValue().toString(), x, y, z, yaw, pitch);
     }
 
-    public static @NotNull Position of(@NotNull ServerPlayerEntity player) {
-        return new Position(player.getWorld().getRegistryKey().getValue().toString(), player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch());
+    public static @NotNull SpatialPose of(@NotNull ServerPlayerEntity player) {
+        return new SpatialPose(player.getWorld().getRegistryKey().getValue().toString(), player.getX(), player.getY(), player.getZ(), player.getYaw(), player.getPitch());
     }
 
-    public static @NotNull Position of(@NotNull ServerPlayerEntity player, @NotNull ServerWorld world) {
+    public static @NotNull SpatialPose of(@NotNull ServerPlayerEntity player, @NotNull ServerWorld world) {
         BlockPos spawnPos = world.getSpawnPos();
-        return new Position(world, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), player.getYaw(), player.getPitch());
+        return new SpatialPose(world, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), player.getYaw(), player.getPitch());
     }
 
     public ServerWorld ofDimension() {
@@ -58,11 +58,11 @@ public class Position {
         return this.level.equals(level.getRegistryKey().getValue().toString());
     }
 
-    public double distanceToSqr(@NotNull Position position) {
-        if (!this.level.equals(position.level)) return Double.MAX_VALUE;
-        double x = this.x - position.x;
-        double y = this.y - position.y;
-        double z = this.z - position.z;
+    public double distanceToSqr(@NotNull SpatialPose spatialPose) {
+        if (!this.level.equals(spatialPose.level)) return Double.MAX_VALUE;
+        double x = this.x - spatialPose.x;
+        double y = this.y - spatialPose.y;
+        double z = this.z - spatialPose.z;
         return x * x + y * y + z * z;
     }
 
