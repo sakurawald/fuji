@@ -18,7 +18,7 @@ import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.core.command.exception.AbortOperationException;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.manager.impl.module.ModuleManager;
-import io.github.sakurawald.module.initializer.ModuleInitializer;
+import lombok.Getter;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -34,14 +34,19 @@ import java.lang.reflect.Parameter;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
 
 public class CommandAnnotationProcessor {
+
     private static final String REQUIRED_ARGUMENT_PLACEHOLDER = "$";
-    public static CommandDispatcher<ServerCommandSource> dispatcher;
-    public static CommandRegistryAccess registryAccess;
+
+    @Getter
+    private static CommandDispatcher<ServerCommandSource> dispatcher;
+    @Getter
+    private static CommandRegistryAccess registryAccess;
 
     public static void process() {
         CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) -> {
@@ -50,18 +55,16 @@ public class CommandAnnotationProcessor {
             CommandAnnotationProcessor.dispatcher = dispatcher;
             CommandAnnotationProcessor.registryAccess = registryAccess;
 
-            /* scan */
-            scanClass();
+            /* process */
+            processClasses();
         }));
     }
 
-    private static void scanClass() {
-        Collection<ModuleInitializer> initializers = Managers.getModuleManager().getRegisteredInitializers();
-
-        for (ModuleInitializer initializer : initializers) {
-            Class<?> clazz = initializer.getClass();
-            processClass(clazz, initializer);
-        }
+    private static void processClasses() {
+        Managers.getModuleManager().getRegisteredInitializers()
+            .stream()
+            .filter(Objects::nonNull)
+            .forEach(initializer -> processClass(initializer.getClass(), initializer));
     }
 
     private static void processClass(Class<?> clazz, Object instance) {
@@ -77,30 +80,30 @@ public class CommandAnnotationProcessor {
             throw new RuntimeException("The method `%s` in class `%s` must return Integer.".formatted(method.getName(), clazz.getName()));
         }
 
+        // ignore visibility
         method.setAccessible(true);
 
-        // build
+        // make argument list
         List<Argument> pattern = makeArgumentList(clazz, method);
-
         if (pattern.isEmpty()) {
-            throw new RuntimeException("The @Command annotation of method `%s` in class `%s` must have at least one argument.".formatted(method.getName(), clazz.getName()));
+            throw new RuntimeException("The @CommandNode annotation of method `%s` in class `%s` must have at least one argument.".formatted(method.getName(), clazz.getName()));
         }
+        LogUtil.debug("register command: /{}", pattern.stream().map(Argument::toString).collect(Collectors.joining(" ")));
 
-        LogUtil.debug("register command -> {}", pattern);
-
-        /* first pass */
+        /* first pass -> make non-optional arguments (literal + required) */
         List<ArgumentBuilder<ServerCommandSource, ?>> builders = makeArgumentBuilders(pattern, method);
         com.mojang.brigadier.Command<ServerCommandSource> function = makeCommandFunction(instance, method);
 
-        // set requirement (class)
+        /* set requirement (class) */
         if (clazz.isAnnotationPresent(CommandRequirement.class)) {
             setRequirement(builders.getFirst(), clazz.getAnnotation(CommandRequirement.class));
         }
 
+        /* register it */
         LiteralArgumentBuilder<ServerCommandSource> root = makeRootArgumentBuilder(builders, (last) -> last.executes(function));
         dispatcher.register(root);
 
-        /* second pass */
+        /* second pass -> make optional arguments */
         registerOptionalArguments(pattern, method);
     }
 
@@ -126,23 +129,35 @@ public class CommandAnnotationProcessor {
         List<Argument> ret = new ArrayList<>();
 
         CommandNode classAnnotation = clazz.getAnnotation(CommandNode.class);
-        if (classAnnotation != null) {
+        if (classAnnotation != null && !classAnnotation.value().isBlank()) {
             ret.add(new Argument(classAnnotation.value().trim()));
         }
 
         CommandNode methodAnnotation = method.getAnnotation(CommandNode.class);
-        String[] split = methodAnnotation.value().trim().split(" ");
-        for (String s : split) {
-            ret.add(new Argument(s));
-        }
+        Arrays.stream(methodAnnotation.value().trim().split(" "))
+            .filter(node -> !node.isBlank())
+            .forEach(node -> ret.add(new Argument(node)));
 
-        // auto complete the required arguments
-        if (ret.stream().filter(p -> p.getArgumentName().startsWith(REQUIRED_ARGUMENT_PLACEHOLDER)).findAny().isEmpty()) {
+        boolean isParameterIndexSpecifiedManually = ret.stream().anyMatch(p -> p.getArgumentName().startsWith(REQUIRED_ARGUMENT_PLACEHOLDER));
+        if (isParameterIndexSpecifiedManually) {
+            /* fill the command pattern manually. */
+            for (int i = 0; i < ret.size(); i++) {
+                // find $1, $2 ... and replace them with the correct argument.
+                Argument argument = ret.get(i);
+                if (!argument.getArgumentName().startsWith(REQUIRED_ARGUMENT_PLACEHOLDER)) continue;
+
+                int methodParameterIndex = Integer.parseInt(argument.getArgumentName().substring(REQUIRED_ARGUMENT_PLACEHOLDER.length()));
+                Parameter parameter = method.getParameters()[methodParameterIndex];
+                // e.g. replace $1 with the parameter in method whose index is 1.
+                ret.set(i, new Argument(parameter.getName(), methodParameterIndex, parameter.getType().equals(Optional.class)));
+            }
+        } else {
+            /* fill the command pattern automatically. */
             Parameter[] parameters = method.getParameters();
             for (int index = 0; index < parameters.length; index++) {
                 Parameter parameter = parameters[index];
+                // ignore @CommandSource, since it won't provide value for command argument.
                 if (parameter.isAnnotationPresent(CommandSource.class)) continue;
-
                 ret.add(new Argument(parameter.getName(), index, parameter.getType().equals(Optional.class)));
             }
         }
@@ -150,7 +165,7 @@ public class CommandAnnotationProcessor {
         return ret;
     }
 
-    private static boolean validateCommandSource(CommandContext<ServerCommandSource> ctx, Method method) {
+    private static boolean verifyCommandSource(CommandContext<ServerCommandSource> ctx, Method method) {
         Parameter expectedCommandSourceParameter = null;
 
         for (Parameter parameter : method.getParameters()) {
@@ -162,13 +177,13 @@ public class CommandAnnotationProcessor {
 
         if (expectedCommandSourceParameter == null) return true;
 
-        return BaseArgumentTypeAdapter.getAdapter(expectedCommandSourceParameter).validateCommandSource(ctx);
+        return BaseArgumentTypeAdapter.getAdapter(expectedCommandSourceParameter).verifyCommandSource(ctx);
     }
 
     private static com.mojang.brigadier.Command<ServerCommandSource> makeCommandFunction(Object instance, Method method) {
         return (ctx) -> {
-            // validate command source
-            if (!validateCommandSource(ctx, method)) {
+            // verify command source
+            if (!verifyCommandSource(ctx, method)) {
                 return CommandHelper.Return.FAIL;
             }
 
@@ -282,14 +297,14 @@ public class CommandAnnotationProcessor {
     }
 
     private static void registerOptionalArguments(List<Argument> arguments, Method method) {
-        List<String> path = Argument.ofLowestNonOptionalNodePath(arguments);
+        List<String> path = Argument.getCommandPathUntilOptionalArgumentNode(arguments);
         com.mojang.brigadier.tree.CommandNode<ServerCommandSource> root = dispatcher.findNode(path);
         com.mojang.brigadier.Command<ServerCommandSource> function = root.getCommand();
 
         // filter
         arguments.stream().filter(Argument::isOptional).forEach(optionalArgument -> {
-            int index = optionalArgument.getMethodParameterIndex();
-            Parameter parameter = method.getParameters()[index];
+            int parameterIndex = optionalArgument.getMethodParameterIndex();
+            Parameter parameter = method.getParameters()[parameterIndex];
 
             ArgumentBuilder<ServerCommandSource, ?> optionalArgumentBuilder = literal("--" + optionalArgument.getArgumentName())
                 .then(makeRequiredArgumentBuilder(parameter).executes(function).redirect(root));
