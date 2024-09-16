@@ -25,6 +25,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.command.CommandRegistryAccess;
+import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -35,9 +36,6 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import static net.minecraft.server.command.CommandManager.literal;
-
 
 public class CommandAnnotationProcessor {
 
@@ -286,7 +284,7 @@ public class CommandAnnotationProcessor {
     }
 
     private static LiteralArgumentBuilder<ServerCommandSource> makeLiteralArgumentBuilder(String name) {
-        return literal(name);
+        return CommandManager.literal(name);
     }
 
     private static RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(Parameter parameter) {
@@ -308,7 +306,7 @@ public class CommandAnnotationProcessor {
             int parameterIndex = optionalArgument.getMethodParameterIndex();
             Parameter parameter = method.getParameters()[parameterIndex];
 
-            ArgumentBuilder<ServerCommandSource, ?> optionalArgumentBuilder = literal("--" + optionalArgument.getArgumentName())
+            ArgumentBuilder<ServerCommandSource, ?> optionalArgumentBuilder = CommandManager.literal("--" + optionalArgument.getArgumentName())
                 .then(makeRequiredArgumentBuilder(parameter).executes(function).redirect(root));
 
             // register it
