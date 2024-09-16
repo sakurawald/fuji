@@ -74,7 +74,7 @@ public abstract class SimpleRegistryMixin<T> implements SimpleRegistryAccessor<T
             this.keyToEntryInfo.remove(this.key);
             return true;
         } catch (Throwable e) {
-            LogUtil.error("Failed to remove entry: {}", entry.toString());
+            LogUtil.error("failed to remove entry: {}", entry.toString());
             return false;
         }
     }

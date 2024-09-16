@@ -95,7 +95,7 @@ public class LocaleHelper {
             LogUtil.info("language {} loaded.", lang);
         } catch (IOException e) {
             lang2json.put(lang, UNSUPPORTED_LANGUAGE_MARKER);
-            LogUtil.warn("failed to load language '{}'", lang);
+            LogUtil.warn("failed to load language `{}`", lang);
         }
     }
 

@@ -36,7 +36,7 @@ public class SkinRestorer {
 
             LogUtil.debug("skinSupplier.get() -> skin = {}", skin);
             if (skin == null) {
-                LogUtil.error("Cannot get the skin for {}", targets.stream().findFirst().orElseThrow());
+                LogUtil.error("cannot get the skin for {}", targets.stream().findFirst().orElseThrow());
                 return Pair.of(null, Collections.emptySet());
             }
 
@@ -106,7 +106,7 @@ public class SkinRestorer {
             jy.remove("timestamp");
             return x.equals(jy);
         } catch (Exception ex) {
-            LogUtil.info("Can not compare skin", ex);
+            LogUtil.info("can not compare skin", ex);
             return false;
         }
     }

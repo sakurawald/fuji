@@ -57,7 +57,7 @@ public class NbtHelper {
             String node = nodes[i];
 
             if (!root.contains(node)) {
-                LogUtil.error("Nbt {} don't has path {}", root, path);
+                LogUtil.error("nbt {} don't has path {}", root, path);
             }
 
             root = root.getCompound(node);

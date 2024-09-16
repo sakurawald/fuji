@@ -60,10 +60,10 @@ public class ScheduleManager extends BaseManager {
 
     private void deleteJobs(List<JobKey> jobKeys) {
         try {
-            LogUtil.debug("Delete job keys: {}", jobKeys);
+            LogUtil.debug("delete job keys: {}", jobKeys);
             this.scheduler.deleteJobs(jobKeys);
         } catch (SchedulerException e) {
-            LogUtil.error("Failed to delete jobs: " + e);
+            LogUtil.error("failed to delete jobs: " + e);
         }
     }
 
@@ -72,7 +72,7 @@ public class ScheduleManager extends BaseManager {
         try {
             return scheduler.getJobKeys(groupMatcher);
         } catch (SchedulerException e) {
-            LogUtil.error("Exception in ScheduleUtil.getJobKeys", e);
+            LogUtil.error("exception in ScheduleUtil.getJobKeys", e);
         }
         return Collections.emptySet();
     }
@@ -82,7 +82,7 @@ public class ScheduleManager extends BaseManager {
             try {
                 scheduler.triggerJob(jobKey);
             } catch (SchedulerException e) {
-                LogUtil.error("Exception in ScheduleUtil.triggerJobs", e);
+                LogUtil.error("exception in ScheduleUtil.triggerJobs", e);
             }
         });
     }
@@ -102,7 +102,7 @@ public class ScheduleManager extends BaseManager {
         try {
             scheduler.start();
         } catch (SchedulerException e) {
-            LogUtil.error("Exception in ScheduleUtil.startScheduler", e);
+            LogUtil.error("exception in ScheduleUtil.startScheduler", e);
         }
     }
 
@@ -116,7 +116,7 @@ public class ScheduleManager extends BaseManager {
             }
 
         } catch (SchedulerException e) {
-            LogUtil.error("Exception in ScheduleUtil.shutdownScheduler", e);
+            LogUtil.error("exception in ScheduleUtil.shutdownScheduler", e);
         }
     }
 }

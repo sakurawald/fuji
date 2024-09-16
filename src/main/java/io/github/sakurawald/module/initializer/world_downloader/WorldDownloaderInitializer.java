@@ -55,7 +55,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
             server = HttpServer.create(new InetSocketAddress(Configs.configHandler.model().modules.world_downloader.port), 0);
             server.start();
         } catch (IOException e) {
-            LogUtil.error("Failed to start http server: {}", e.getMessage());
+            LogUtil.error("failed to start http server: {}", e.getMessage());
         }
     }
 
@@ -132,7 +132,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        LogUtil.info("Generate region file: {}", output.getAbsolutePath());
+        LogUtil.info("generate region file: {}", output.getAbsolutePath());
         return output;
     }
 
