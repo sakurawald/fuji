@@ -4,7 +4,7 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.gui.ConfirmGui;
 import io.github.sakurawald.core.gui.InputSignGui;
@@ -59,13 +59,13 @@ public class ProductionWork extends Work implements Schedulable {
         sortedStream.forEach(entry -> {
             String key = entry.getKey();
             double rate = entry.getValue() * ((double) (3600 * 1000) / ((Math.min(this.sample.sampleEndTimeMS, currentTimeMS)) - this.sample.sampleStartTimeMS));
-            net.kyori.adventure.text.Component component = LanguageHelper.getTextByKey(player, "works.production_work.prop.sample_counter.entry", entry.getValue(), rate).asComponent()
+            net.kyori.adventure.text.Component component = LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_counter.entry", entry.getValue(), rate).asComponent()
                     .replaceText(TextReplacementConfig.builder().matchLiteral("[item]").replacement(Text.translatable(key)).build());
-            ret.add(LanguageHelper.toText(component));
+            ret.add(LocaleHelper.toText(component));
         });
 
         if (ret.isEmpty()) {
-            ret.add(LanguageHelper.getTextByKey(player, "works.production_work.prop.sample_counter.empty"));
+            ret.add(LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_counter.empty"));
         }
         return ret;
     }
@@ -76,15 +76,15 @@ public class ProductionWork extends Work implements Schedulable {
         List<Text> ret = super.asLore(player);
         // note: hide sample info in lore if sample not exists
         if (this.sample.sampleStartTimeMS == 0) {
-            ret.addAll((LanguageHelper.getTextListByKey(player, "works.production_work.sample.not_exists")));
+            ret.addAll((LocaleHelper.getTextListByKey(player, "works.production_work.sample.not_exists")));
             return ret;
         }
 
-        ret.add(LanguageHelper.getTextByKey(player, "works.production_work.prop.sample_start_time", DateUtil.toStandardDateFormat(this.sample.sampleStartTimeMS)));
-        ret.add(LanguageHelper.getTextByKey(player, "works.production_work.prop.sample_end_time", DateUtil.toStandardDateFormat(this.sample.sampleEndTimeMS)));
-        ret.add(LanguageHelper.getTextByKey(player, "works.production_work.prop.sample_dimension", this.sample.sampleDimension));
-        ret.add(LanguageHelper.getTextByKey(player, "works.production_work.prop.sample_coordinate", this.sample.sampleX, this.sample.sampleY, this.sample.sampleZ));
-        ret.add(LanguageHelper.getTextByKey(player, "works.production_work.prop.sample_distance", this.sample.sampleDistance));
+        ret.add(LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_start_time", DateUtil.toStandardDateFormat(this.sample.sampleStartTimeMS)));
+        ret.add(LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_end_time", DateUtil.toStandardDateFormat(this.sample.sampleEndTimeMS)));
+        ret.add(LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_dimension", this.sample.sampleDimension));
+        ret.add(LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_coordinate", this.sample.sampleX, this.sample.sampleY, this.sample.sampleZ));
+        ret.add(LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_distance", this.sample.sampleDistance));
 
         // check npe to avoid broken
         if (this.sample.sampleCounter != null) {
@@ -92,7 +92,7 @@ public class ProductionWork extends Work implements Schedulable {
             if (this.sample.sampleCounter.size() > Configs.configHandler.model().modules.works.sample_counter_top_n) {
                 trimCounter();
             }
-            ret.add(LanguageHelper.getTextByKey(player, "works.production_work.prop.sample_counter"));
+            ret.add(LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_counter"));
             ret.addAll(formatSampleCounter(player));
         }
         return ret;
@@ -112,12 +112,12 @@ public class ProductionWork extends Work implements Schedulable {
                 try {
                     current = Integer.parseInt(this.getLine(0).getString());
                 } catch (NumberFormatException e) {
-                    LanguageHelper.sendActionBarByKey(player, "input.syntax.error");
+                    LocaleHelper.sendActionBarByKey(player, "input.syntax.error");
                     return;
                 }
 
                 if (current > limit) {
-                    LanguageHelper.sendActionBarByKey(player, "input.limit.error");
+                    LocaleHelper.sendActionBarByKey(player, "input.limit.error");
                     return;
                 }
 
@@ -136,12 +136,12 @@ public class ProductionWork extends Work implements Schedulable {
     @Override
     public void openSpecializedSettingsGui(ServerPlayerEntity player, @NotNull SimpleGui parentGui) {
         final SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X1, player, false);
-        gui.setTitle(LanguageHelper.getTextByKey(player, "works.work.set.specialized_settings.title"));
+        gui.setTitle(LocaleHelper.getTextByKey(player, "works.work.set.specialized_settings.title"));
         gui.setLockPlayerInventory(true);
         gui.addSlot(new GuiElementBuilder()
                 .setItem(Items.CLOCK)
-                .setName(LanguageHelper.getTextByKey(player, "works.production_work.set.sample"))
-                .setLore(LanguageHelper.getTextListByKey(player, "works.production_work.set.sample.lore"))
+                .setName(LocaleHelper.getTextByKey(player, "works.production_work.set.sample"))
+                .setLore(LocaleHelper.getTextListByKey(player, "works.production_work.set.sample.lore"))
                 .setCallback(() -> new ConfirmGui(player) {
                             @Override
                             public void onConfirm() {
@@ -214,7 +214,7 @@ public class ProductionWork extends Work implements Schedulable {
             }
         }
 
-        LanguageHelper.sendMessageByKey(player, "works.production_work.sample.resolve_hoppers.response", hopperBlockCount, minecartHopperCount);
+        LocaleHelper.sendMessageByKey(player, "works.production_work.sample.resolve_hoppers.response", hopperBlockCount, minecartHopperCount);
         return hopperBlockCount + minecartHopperCount;
     }
 
@@ -234,17 +234,17 @@ public class ProductionWork extends Work implements Schedulable {
         this.sample.sampleZ = player.getZ();
         this.sample.sampleCounter = new HashMap<>();
         if (this.resolveHoppers(player) == 0) {
-            LanguageHelper.sendMessageByKey(player, "operation.cancelled");
+            LocaleHelper.sendMessageByKey(player, "operation.cancelled");
             return;
         }
 
-        LanguageHelper.sendBroadcastByKey("works.production_work.sample.start", name, this.creator);
+        LocaleHelper.sendBroadcastByKey("works.production_work.sample.start", name, this.creator);
     }
 
     public void endSample() {
         // unbind all block pos
         WorksCache.unbind(this);
-        LanguageHelper.sendBroadcastByKey("works.production_work.sample.end", this.name, this.creator);
+        LocaleHelper.sendBroadcastByKey("works.production_work.sample.end", this.name, this.creator);
 
         // trim counter to avoid spam
         trimCounter();

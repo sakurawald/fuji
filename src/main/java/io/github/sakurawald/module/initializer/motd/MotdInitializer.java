@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.motd;
 import com.google.common.base.Preconditions;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import lombok.Setter;
@@ -47,7 +47,7 @@ public class MotdInitializer extends ModuleInitializer {
         ICON_FOLDER.mkdirs();
         File[] icons = ICON_FOLDER.listFiles();
         if (icons == null || icons.length == 0) {
-            LogUtil.warn("No icons found in {}", ICON_FOLDER.getAbsolutePath());
+            LogUtil.warn("no icons found in {}", ICON_FOLDER.getAbsolutePath());
             return Optional.empty();
         }
 
@@ -60,14 +60,14 @@ public class MotdInitializer extends ModuleInitializer {
             byteArrayOutputStream = new ByteArrayOutputStream();
             ImageIO.write(bufferedImage, "PNG", byteArrayOutputStream);
         } catch (IOException e) {
-            LogUtil.warn("Failed to encode favicon", e);
+            LogUtil.warn("failed to encode favicon", e);
             return Optional.empty();
         }
         return Optional.of(new ServerMetadata.Favicon(byteArrayOutputStream.toByteArray()));
     }
 
     public @NotNull Text getRandomDescription() {
-        return LanguageHelper.getTextByValue(null,motd.get(new Random().nextInt(motd.size())));
+        return LocaleHelper.getTextByValue(null,motd.get(new Random().nextInt(motd.size())));
     }
 
 }

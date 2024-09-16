@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.chat.display;
 import eu.pb4.placeholders.api.PlaceholderResult;
 import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.chat.display.helper.DisplayHelper;
@@ -29,11 +29,11 @@ public class ChatDisplayInitializer extends ModuleInitializer {
                 ServerPlayerEntity player = ctx.player();
                 String displayUUID = DisplayHelper.createEnderChestDisplay(player);
                 Component replacement =
-                    LanguageHelper.getTextByKey(player, "display.ender_chest.text")
+                    LocaleHelper.getTextByKey(player, "display.ender_chest.text")
                         .asComponent()
-                        .hoverEvent(LanguageHelper.getTextByKey(player, "display.click.prompt").asComponent())
+                        .hoverEvent(LocaleHelper.getTextByKey(player, "display.click.prompt").asComponent())
                         .clickEvent(buildDisplayClickEvent(displayUUID));
-                return PlaceholderResult.value(LanguageHelper.toText(replacement));
+                return PlaceholderResult.value(LocaleHelper.toText(replacement));
             });
     }
 
@@ -46,12 +46,12 @@ public class ChatDisplayInitializer extends ModuleInitializer {
                 ServerPlayerEntity player = ctx.player();
                 String displayUUID = DisplayHelper.createInventoryDisplay(player);
                 Component replacement =
-                    LanguageHelper.getTextByKey(player, "display.inventory.text")
+                    LocaleHelper.getTextByKey(player, "display.inventory.text")
                         .asComponent()
-                        .hoverEvent(LanguageHelper.getTextByKey(player, "display.click.prompt").asComponent())
+                        .hoverEvent(LocaleHelper.getTextByKey(player, "display.click.prompt").asComponent())
                         .clickEvent(buildDisplayClickEvent(displayUUID));
 
-                return PlaceholderResult.value(LanguageHelper.toText(replacement));
+                return PlaceholderResult.value(LocaleHelper.toText(replacement));
             });
     }
 
@@ -65,12 +65,12 @@ public class ChatDisplayInitializer extends ModuleInitializer {
                 String displayUUID = DisplayHelper.createItemDisplay(player);
 
                 Component component =
-                    LanguageHelper.getTextByKey(player, "display.item.text")
+                    LocaleHelper.getTextByKey(player, "display.item.text")
                         .asComponent()
                         .replaceText(builder -> builder.matchLiteral("[item]").replacement(Component.translatable(player.getMainHandStack().getTranslationKey())))
-                        .hoverEvent(LanguageHelper.getTextByKey(player, "display.click.prompt").asComponent())
+                        .hoverEvent(LocaleHelper.getTextByKey(player, "display.click.prompt").asComponent())
                         .clickEvent(buildDisplayClickEvent(displayUUID));
-                return PlaceholderResult.value(LanguageHelper.toText(component));
+                return PlaceholderResult.value(LocaleHelper.toText(component));
             });
     }
 

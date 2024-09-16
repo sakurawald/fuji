@@ -55,7 +55,7 @@ public class HeadProvider {
                 };
                 downloader.start();
             } catch (IOException e) {
-                LogUtil.warn("Failed to download heads from URL {}", URL);
+                LogUtil.warn("failed to download heads from URL {}", URL);
             }
         }
         return result;
@@ -63,7 +63,7 @@ public class HeadProvider {
 
     private static void loadCategory(HashMultimap<Category, Head> result, Category category) {
         try {
-            LogUtil.info("Load head category: {}", category.name);
+            LogUtil.info("load head category: {}", category.name);
             var stream = Files.newInputStream(STORAGE_PATH.resolve(category.name + ".json"));
             JsonArray headsJson = JsonParser.parseReader(new InputStreamReader(stream)).getAsJsonArray();
             for (JsonElement headJson : headsJson) {
@@ -71,11 +71,11 @@ public class HeadProvider {
                     Head head = ConfigHandler.getGson().fromJson(headJson, Head.class);
                     result.put(category, head);
                 } catch (Exception e) {
-                    LogUtil.warn("Invalid head: " + headJson);
+                    LogUtil.warn("invalid head: " + headJson);
                 }
             }
         } catch (IOException e) {
-            LogUtil.error("Failed to load head category.", e);
+            LogUtil.error("failed to load head category.", e);
         }
     }
 }

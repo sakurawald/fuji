@@ -1,4 +1,12 @@
-- feature: add a fuji exception catcher to catch exceptions during the execution of fuji commands, and provide a user-friendly exception report, to the command source, and the console.
-- feature: fix many typos in language keys and language values for language files.
-- feature: soft fail if the target dimension not found. (works module)
-- refactor: optimize the build script of project. (reduce the size of released jar)
+- refactor: rename the `languafe files`. (e.g. from `en_us.json` to `en_US.json`)
+- fix: use default_language as fallback if the server can't support the client-side language. (language module)
+- fix: possible to trigger ConcurrentModificationException in UpdateNametagJob if using `/fuji reload`. (nametag module)
+- refactor: extract the configuration of `skin module` from `config.json` into `skin.json` file.
+- add: the most top 30 used languages into the default generated languages files.
+- feature: add `secutiry` option for security purpose. (shell module)
+- feature: add a dependency checker to check the dependency reference. (enhance the compatibility with other mods.)
+- feature: optimize the packet sending logic. (nametag module) 
+- feature: a more unified style for console logging.
+- feature: log the console on writing default configuration files.
+- feature: log the console if a language key is missing in a language file.
+- feature: use orange color for the command execution exception, instead of the red color.

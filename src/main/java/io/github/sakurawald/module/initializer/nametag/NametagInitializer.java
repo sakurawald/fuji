@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.nametag;
 
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -20,8 +20,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3f;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class NametagInitializer extends ModuleInitializer {
@@ -30,7 +30,7 @@ public class NametagInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        player2nametag = new HashMap<>();
+        player2nametag = new ConcurrentHashMap<>();
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new UpdateNametagJob().schedule());
     }
@@ -79,7 +79,7 @@ public class NametagInitializer extends ModuleInitializer {
             EntityPassengersSetS2CPacket entityPassengersSetS2CPacket = new EntityPassengersSetS2CPacket(key);
             player.networkHandler.sendPacket(entityPassengersSetS2CPacket);
 
-            ServerHelper.sendPacketToAll(new EntityTrackerUpdateS2CPacket(value.getId(), value.getDataTracker().getChangedEntries()));
+            player.networkHandler.sendPacket(new EntityTrackerUpdateS2CPacket(value.getId(), value.getDataTracker().getChangedEntries()));
         });
     }
 
@@ -114,7 +114,7 @@ public class NametagInitializer extends ModuleInitializer {
             nametag.setText(Text.empty());
             nametag.setBackground(-1);
         } else {
-            Text text = LanguageHelper.getTextByValue(player, config.style.text);
+            Text text = LocaleHelper.getTextByValue(player, config.style.text);
             nametag.setText(text);
 
             nametag.getDataTracker().set(DisplayEntity.TRANSLATION, new Vector3f(config.style.offset.x, config.style.offset.y, config.style.offset.z));

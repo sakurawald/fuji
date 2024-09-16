@@ -124,7 +124,7 @@ public abstract class ConfigHandler<T> {
         try {
             Files.copy(file.toPath(), backupFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            LogUtil.error("Backup file failed: {}", e.getMessage());
+            LogUtil.error("backup file failed: {}", e.getMessage());
         }
     }
 
@@ -174,7 +174,7 @@ public abstract class ConfigHandler<T> {
                 // note: for JsonArray, we will not directly set array elements, but we will add new properties for every array element (language default empty-value). e.g. For List<ExamplePojo>, we will never change the size of this list, but we will add missing properties for every ExamplePojo with the language default empty-value.
                 if (!currentJson.has(key)) {
                     currentJson.add(key, value);
-                    LogUtil.warn("Add missing json property: file = {}, key = {}, value = {}", this.file.getName(), key, value);
+                    LogUtil.warn("add missing json property: file = {}, key = {}, value = {}", this.file.getName(), key, value);
                 }
             }
         }
@@ -211,7 +211,7 @@ public abstract class ConfigHandler<T> {
         if (input.equalsIgnoreCase("y")) {
             if (!this.alreadyBackup) {
                 Managers.getRescueBackupManager().backup();
-                LogUtil.warn("Backup the `config/fuji` folder into `config/fuji/backup_rescue` folder successfully.");
+                LogUtil.warn("backup the `config/fuji` folder into `config/fuji/backup_rescue` folder successfully.");
                 this.alreadyBackup = true;
             }
 

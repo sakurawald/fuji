@@ -20,7 +20,7 @@ public class ReflectionUtil {
 
     public static final String MODULE_INITIALIZER_GRAPH_FILE_NAME = "module-initializer-graph.txt";
     public static final String ARGUMENT_TYPE_ADAPTER_GRAPH_FILE_NAME = "argument-type-adapter-graph.txt";
-    public static final String SRC_MAIN_RESOURCES = "src/main/resources/";
+    public static final String LANGUAGE_GRAPH_FILE_NAME = "language-graph.txt";
 
     public static Set<Method> getMethodsWithAnnotation(Class<?> clazz, Class<? extends Annotation> annotation) {
         Set<Method> methods = new HashSet<>();
@@ -33,7 +33,6 @@ public class ReflectionUtil {
         }
         return methods;
     }
-
 
     @SneakyThrows
     public static List<String> getGraph(String graphName) {

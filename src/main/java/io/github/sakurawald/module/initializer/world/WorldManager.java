@@ -5,7 +5,7 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import io.github.sakurawald.core.accessor.SimpleRegistryAccessor;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.manager.Managers;
-import io.github.sakurawald.core.structure.Position;
+import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.core.structure.TeleportTicket;
 import io.github.sakurawald.module.initializer.world.accessor.IDimensionOptions;
 import io.github.sakurawald.module.initializer.world.structure.MyServerWorld;
@@ -79,8 +79,8 @@ public class WorldManager {
         List<ServerPlayerEntity> players = new ArrayList<>(world.getPlayers());
         for (ServerPlayerEntity player : players) {
             // fix: if the player is inside resource-world while resetting the worlds, then resource worlds will delay its deletion until the player left the resource-world.
-            Position from = Position.of(player);
-            Position to = new Position(overworld, spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5, 0, 0);
+            SpatialPose from = SpatialPose.of(player);
+            SpatialPose to = new SpatialPose(overworld, spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5, 0, 0);
 
             TeleportTicket teleportTicket = TeleportTicket.ofInstantTicket(player, from, to);
             Managers.getBossBarManager().addTicket(teleportTicket);
@@ -165,7 +165,7 @@ public class WorldManager {
                     true,
                     null);
         } catch (Exception e) {
-            LogUtil.warn("Failed to create world: worldId = {}, dimensionTypeId = {}, error = {}", dimensionIdentifier, dimenstionTypeIdentifier, e);
+            LogUtil.warn("failed to create world: worldId = {}, dimensionTypeId = {}, error = {}", dimensionIdentifier, dimenstionTypeIdentifier, e);
             return;
         }
 

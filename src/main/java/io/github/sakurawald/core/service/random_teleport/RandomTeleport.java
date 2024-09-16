@@ -2,10 +2,10 @@ package io.github.sakurawald.core.service.random_teleport;
 
 import com.google.common.base.Stopwatch;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
-import io.github.sakurawald.core.structure.Position;
+import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.core.structure.TeleportSetup;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -30,14 +30,14 @@ import java.util.function.Consumer;
  */
 public class RandomTeleport {
 
-    public static void request(@NotNull ServerPlayerEntity player, @NotNull TeleportSetup setup, @Nullable Consumer<Position> postConsumer) {
+    public static void request(@NotNull ServerPlayerEntity player, @NotNull TeleportSetup setup, @Nullable Consumer<SpatialPose> postConsumer) {
         CompletableFuture.runAsync(() -> {
-            LogUtil.info("Request rtp: {}", player.getGameProfile().getName());
+            LogUtil.info("request rtp: {}", player.getGameProfile().getName());
             Stopwatch timer = Stopwatch.createStarted();
 
-            ServerWorld world = IdentifierHelper.ofServerWorld(Identifier.of(setup.getDimension()));
+            ServerWorld world = RegistryHelper.ofServerWorld(Identifier.of(setup.getDimension()));
             if (world == null) {
-                LanguageHelper.sendMessageByKey(player,"world.dimension.not_found");
+                LocaleHelper.sendMessageByKey(player,"world.dimension.not_found");
                 return;
             }
 
@@ -50,25 +50,25 @@ public class RandomTeleport {
             } while (result.isEmpty() && triedTimes <= setup.getMaxTryTimes());
 
             if (result.isEmpty()) {
-                LanguageHelper.sendMessageByKey(player, "rtp.fail");
+                LocaleHelper.sendMessageByKey(player, "rtp.fail");
                 return;
             }
 
             // teleport the player
-            Position position = new Position(world, result.get().getX() + 0.5, result.get().getY(), result.get().getZ() + 0.5, 0, 0);
+            SpatialPose spatialPose = new SpatialPose(world, result.get().getX() + 0.5, result.get().getY(), result.get().getZ() + 0.5, 0, 0);
             ServerHelper.getDefaultServer().executeSync(()-> {
                 // run the teleport action in main-thread
-                position.teleport(player);
+                spatialPose.teleport(player);
             });
 
             // post consumer
             if (postConsumer != null) {
-                postConsumer.accept(position);
+                postConsumer.accept(spatialPose);
             }
 
             // cost
             var cost = timer.stop();
-            LogUtil.info("Response rtp: {} has been teleported to ({} {} {} {}) (cost = {})", player.getGameProfile().getName(), world.getRegistryKey().getValue(), result.get().getX(), result.get().getY(), result.get().getZ(), cost);
+            LogUtil.info("response rtp: {} has been teleported to ({} {} {} {}) (cost = {})", player.getGameProfile().getName(), world.getRegistryKey().getValue(), result.get().getX(), result.get().getY(), result.get().getZ(), cost);
         });
     }
 

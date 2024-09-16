@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.command_toolbox.sit;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.EntityHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -48,10 +48,10 @@ public class SitInitializer extends ModuleInitializer {
     @CommandNode("sit")
     private int $sit(@CommandSource ServerPlayerEntity player) {
         // fix: if the player stand in the slab/stair block
-        BlockPos steppingBlockPos = EntityHelper.getSteppingBlockPos(player);
+        BlockPos steppingBlockPos = player.getSteppingPos();
         BlockState steppingBlockState = player.getWorld().getBlockState(steppingBlockPos);
         if (!canSit(player) || steppingBlockState.isAir() || steppingBlockState.isLiquid()) {
-            LanguageHelper.sendActionBarByKey(player, "sit.fail");
+            LocaleHelper.sendActionBarByKey(player, "sit.fail");
             return CommandHelper.Return.FAIL;
         }
 

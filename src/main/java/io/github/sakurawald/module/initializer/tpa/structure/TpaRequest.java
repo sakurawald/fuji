@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.tpa.structure;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.tpa.TpaInitializer;
@@ -76,14 +76,14 @@ public class TpaRequest {
     }
 
     public @NotNull Component asSenderComponent$Description() {
-        return tpahere ? LanguageHelper.getTextByKey(getSender(), "tpa.others_to_you", receiver.getGameProfile().getName()).asComponent()
-                : LanguageHelper.getTextByKey(getSender(), "tpa.you_to_others", receiver.getGameProfile().getName()).asComponent();
+        return tpahere ? LocaleHelper.getTextByKey(getSender(), "tpa.others_to_you", receiver.getGameProfile().getName()).asComponent()
+                : LocaleHelper.getTextByKey(getSender(), "tpa.you_to_others", receiver.getGameProfile().getName()).asComponent();
     }
 
     public @NotNull Component asSenderComponent$Sent() {
         TextComponent cancelComponent = Component
                 .text(CROSS).color(NamedTextColor.RED)
-                .hoverEvent(HoverEvent.showText(LanguageHelper.getTextByKey(getSender(), "cancel")))
+                .hoverEvent(HoverEvent.showText(LocaleHelper.getTextByKey(getSender(), "cancel")))
                 .clickEvent(ClickEvent.runCommand("/tpacancel %s".formatted(getReceiver().getGameProfile().getName())));
 
         return asSenderComponent$Description()
@@ -92,16 +92,16 @@ public class TpaRequest {
     }
 
     public @NotNull Component asReceiverComponent$Description() {
-        return tpahere ? LanguageHelper.getTextByKey(getReceiver(), "tpa.you_to_others", sender.getGameProfile().getName()).asComponent()
-                : LanguageHelper.getTextByKey(getReceiver(), "tpa.others_to_you", sender.getGameProfile().getName()).asComponent();
+        return tpahere ? LocaleHelper.getTextByKey(getReceiver(), "tpa.you_to_others", sender.getGameProfile().getName()).asComponent()
+                : LocaleHelper.getTextByKey(getReceiver(), "tpa.others_to_you", sender.getGameProfile().getName()).asComponent();
     }
 
     public @NotNull Component asReceiverComponent$Sent() {
         Component acceptComponent = Component.text(TICK).color(NamedTextColor.GREEN)
-                .hoverEvent(HoverEvent.showText(LanguageHelper.getTextByKey(getReceiver(), "accept")))
+                .hoverEvent(HoverEvent.showText(LocaleHelper.getTextByKey(getReceiver(), "accept")))
                 .clickEvent(ClickEvent.runCommand("/tpaaccept %s".formatted(sender.getGameProfile().getName())));
         Component denyComponent = Component.text(CROSS).color(NamedTextColor.RED)
-                .hoverEvent(HoverEvent.showText(LanguageHelper.getTextByKey(getReceiver(), "deny")))
+                .hoverEvent(HoverEvent.showText(LocaleHelper.getTextByKey(getReceiver(), "deny")))
                 .clickEvent(ClickEvent.runCommand("/tpadeny %s".formatted(sender.getGameProfile().getName())));
         return asReceiverComponent$Description()
                 .appendSpace()

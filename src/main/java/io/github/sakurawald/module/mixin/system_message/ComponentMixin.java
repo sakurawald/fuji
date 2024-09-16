@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.system_message;
 
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.config.Configs;
 import net.minecraft.text.MutableText;
@@ -37,12 +37,12 @@ public interface ComponentMixin {
         Map<String, String> key2value = Configs.configHandler.model().modules.system_message.key2value;
         if (key2value.containsKey(key)) {
             if (ServerHelper.getDefaultServer() == null) {
-                LogUtil.warn("Server is null currently -> cannot hijack message key: {}", key);
+                LogUtil.warn("server is null currently -> cannot hijack message key: {}", key);
                 return null;
             }
             String value = key2value.get(key);
             String miniMessageSource = MutableText.of(new TranslatableTextContent("force_fallback", value, args)).getString();
-            return LanguageHelper.getTextByValue(null,miniMessageSource).copy();
+            return LocaleHelper.getTextByValue(null,miniMessageSource).copy();
         }
         return null;
     }

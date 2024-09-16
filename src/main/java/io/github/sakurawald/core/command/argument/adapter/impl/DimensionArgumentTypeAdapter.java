@@ -31,7 +31,7 @@ public class DimensionArgumentTypeAdapter extends BaseArgumentTypeAdapter {
              The DimensionArgumentType.dimension() will not suggest the new registered dimension types.
              Each time the server started, the dimensions will be shared with client and server.
              */
-        return super.makeRequiredArgumentBuilder(parameter).suggests(CommandHelper.Suggestion.ofRegistryKey(RegistryKeys.DIMENSION));
+        return super.makeRequiredArgumentBuilder(parameter).suggests(CommandHelper.Suggestion.identifiers(RegistryKeys.DIMENSION));
     }
 
     @SneakyThrows

@@ -204,3 +204,24 @@ tasks.compileLatex.dependsOn(processLatex)
 
 /* generate graph */
 tasks.runServer.dependsOn(test)
+
+/* copy translation files into resource directory */
+tasks.register('copyTranslationFiles', Copy) {
+    outputs.upToDateWhen { false }
+
+    def langDir = file("$projectDir/src/main/resources/io/github/sakurawald/lang")
+    def translationDir = file("$projectDir/crowdin")
+
+    // clean
+    doFirst {
+        recreateDir(langDir)
+    }
+
+    // copy
+    from(translationDir)
+    into("${langDir}")
+    include "**/*.json"
+
+}
+tasks.runServer.dependsOn(copyTranslationFiles)
+

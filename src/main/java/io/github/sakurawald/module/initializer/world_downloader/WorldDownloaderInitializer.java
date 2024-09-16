@@ -6,7 +6,7 @@ import com.sun.net.httpserver.HttpServer;
 import io.github.sakurawald.core.auxiliary.IOUtil;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.Configs;
@@ -55,7 +55,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
             server = HttpServer.create(new InetSocketAddress(Configs.configHandler.model().modules.world_downloader.port), 0);
             server.start();
         } catch (IOException e) {
-            LogUtil.error("Failed to start http server: {}", e.getMessage());
+            LogUtil.error("failed to start http server: {}", e.getMessage());
         }
     }
 
@@ -97,9 +97,9 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         contextQueue.add(path);
         File file = compressRegionFile(player);
         double BYTE_TO_MEGABYTE = 1.0 * 1024 * 1024;
-        LanguageHelper.sendBroadcastByKey("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
+        LocaleHelper.sendBroadcastByKey("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
         server.createContext(path, new FileDownloadHandler(this, file, Configs.configHandler.model().modules.world_downloader.bytes_per_second_limit));
-        LanguageHelper.sendMessageByKey(player, "world_downloader.response", url);
+        LocaleHelper.sendMessageByKey(player, "world_downloader.response", url);
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -132,7 +132,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        LogUtil.info("Generate region file: {}", output.getAbsolutePath());
+        LogUtil.info("generate region file: {}", output.getAbsolutePath());
         return output;
     }
 

@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.head.structure;
 
-import io.github.sakurawald.core.auxiliary.minecraft.ItemHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.module.initializer.head.HeadInitializer;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.item.PlayerInventoryStorage;
@@ -39,6 +39,6 @@ public enum EconomyType {
     }
 
     private static @NotNull Item getCostItem() {
-        return ItemHelper.ofItem(HeadInitializer.headHandler.model().costType);
+        return RegistryHelper.ofItem(HeadInitializer.headHandler.model().costType);
     }
 }

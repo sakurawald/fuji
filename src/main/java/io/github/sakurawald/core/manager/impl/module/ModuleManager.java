@@ -10,7 +10,6 @@ import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.manager.abst.BaseManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.mixin.GlobalMixinConfigPlugin;
-import lombok.SneakyThrows;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.ApiStatus;
@@ -32,15 +31,18 @@ public class ModuleManager extends BaseManager {
     }
 
     @SuppressWarnings("unchecked")
-    @SneakyThrows
     private void invokeModuleInitializers() {
-        for (String className : ReflectionUtil.getGraph(ReflectionUtil.MODULE_INITIALIZER_GRAPH_FILE_NAME)) {
-            // module dispatch
-            if (!Managers.getModuleManager().shouldWeEnableThis(className)) continue;
-
-            Class<? extends ModuleInitializer> clazz = (Class<? extends ModuleInitializer>) Class.forName(className);
-            this.getInitializer(clazz);
-        }
+        ReflectionUtil.getGraph(ReflectionUtil.MODULE_INITIALIZER_GRAPH_FILE_NAME)
+            .stream()
+            .filter(className -> Managers.getModuleManager().shouldWeEnableThis(className))
+            .forEach(className -> {
+                try {
+                    Class<? extends ModuleInitializer> clazz = (Class<? extends ModuleInitializer>) Class.forName(className);
+                    this.getInitializer(clazz);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
     }
 
     public void reloadModules() {
@@ -48,7 +50,7 @@ public class ModuleManager extends BaseManager {
                 try {
                     initializer.onReload();
                 } catch (Exception e) {
-                    LogUtil.error("Failed to reload module.", e);
+                    LogUtil.error("failed to reload module.", e);
                 }
             }
         );
@@ -61,7 +63,7 @@ public class ModuleManager extends BaseManager {
         });
 
         enabledModuleList.sort(String::compareTo);
-        LogUtil.info("Enabled {}/{} modules -> {}", enabledModuleList.size(), module2enable.size(), enabledModuleList);
+        LogUtil.info("enabled {}/{} modules -> {}", enabledModuleList.size(), module2enable.size(), enabledModuleList);
     }
 
     @SuppressWarnings("unused")
@@ -75,7 +77,6 @@ public class ModuleManager extends BaseManager {
      * (If a module is enabled, but the module doesn't extend AbstractModule, then this me*
      * hod will also return null, but the module doesn't extend AbstractModule, then this method will also return null.)
      */
-    @ApiStatus.AvailableSince("1.1.5")
     public <T extends ModuleInitializer> T getInitializer(@NotNull Class<T> clazz) {
         if (!moduleRegistry.containsKey(clazz)) {
             if (shouldWeEnableThis(clazz.getName())) {
@@ -84,7 +85,7 @@ public class ModuleManager extends BaseManager {
                     moduleInitializer.doInitialize();
                     moduleRegistry.put(clazz, moduleInitializer);
                 } catch (Exception e) {
-                    LogUtil.error("Failed to initialize module %s.".formatted(clazz.getSimpleName()), e);
+                    LogUtil.error("failed to initialize module %s.".formatted(clazz.getSimpleName()), e);
                 }
             }
         }
@@ -119,7 +120,7 @@ public class ModuleManager extends BaseManager {
 
         // soft fail if required mod is not installed.
         if (!isRequiredModsInstalled(modulePath)) {
-            LogUtil.warn("Refuse to load module {} (reason: the required dependency mod isn't installed)", modulePath);
+            LogUtil.warn("refuse to load module {} (reason: the required dependency mod isn't installed)", modulePath);
             module2enable.put(modulePath, false);
             return false;
         }

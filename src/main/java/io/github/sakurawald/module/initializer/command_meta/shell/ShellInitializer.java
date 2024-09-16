@@ -3,10 +3,12 @@ package io.github.sakurawald.module.initializer.command_meta.shell;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
+import io.github.sakurawald.core.command.exception.AbortOperationException;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import net.minecraft.server.command.ServerCommandSource;
@@ -20,16 +22,31 @@ import java.util.concurrent.CompletableFuture;
 
 public class ShellInitializer extends ModuleInitializer {
 
+    private void checkSecurity(CommandContext<ServerCommandSource> ctx) {
+        var config = Configs.configHandler.model().modules.command_meta.shell;
+
+        if (!config.enable_warning.equals("CONFIRM")) {
+            throw new AbortOperationException("Refuse to execute shell command: please read the official wiki.");
+        }
+
+        if (config.security.only_allow_console && ctx.getSource().getPlayer() != null) {
+            LocaleHelper.sendMessageByKey(ctx.getSource(), "command.console_only");
+            throw new AbortOperationException();
+        }
+
+        if (ctx.getSource().getName() != null && !config.security.allowed_player_names.contains(ctx.getSource().getName())) {
+            throw new AbortOperationException("You are not in the allowed player name list.");
+        }
+
+    }
+
     @SuppressWarnings("deprecation")
     @CommandNode("shell")
     @CommandRequirement(level = 4)
     private int shell(@CommandSource CommandContext<ServerCommandSource> ctx, GreedyString rest) {
-        if (!Configs.configHandler.model().modules.command_meta.shell.enable_warning.equals("CONFIRM")) {
-            throw new RuntimeException("Refuse to execute shell command: please read the official wiki.");
-        }
+        checkSecurity(ctx);
 
         String $rest = rest.getValue();
-
         CompletableFuture.runAsync(() -> {
             try {
                 LogUtil.info("shell exec: {}", $rest);
@@ -49,7 +66,7 @@ public class ShellInitializer extends ModuleInitializer {
                 LogUtil.info(output.toString());
                 ctx.getSource().sendMessage(Text.literal(output.toString()));
             } catch (IOException | InterruptedException e) {
-                LogUtil.error("Failed to execute a shell command.", e);
+                LogUtil.error("failed to execute a shell command.", e);
             }
         });
 

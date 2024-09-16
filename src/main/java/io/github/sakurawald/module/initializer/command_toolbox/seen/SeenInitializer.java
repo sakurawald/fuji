@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.command_toolbox.seen;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -38,9 +38,9 @@ public class SeenInitializer extends ModuleInitializer {
 
         if (data.model().player2seen.containsKey(target)) {
             Long time = data.model().player2seen.get(target);
-            LanguageHelper.sendMessageByKey(ctx.getSource(), "seen.success", target, DateUtil.toStandardDateFormat(time));
+            LocaleHelper.sendMessageByKey(ctx.getSource(), "seen.success", target, DateUtil.toStandardDateFormat(time));
         } else {
-            LanguageHelper.sendMessageByKey(ctx.getSource(), "seen.fail");
+            LocaleHelper.sendMessageByKey(ctx.getSource(), "seen.fail");
         }
         return CommandHelper.Return.SUCCESS;
     }
