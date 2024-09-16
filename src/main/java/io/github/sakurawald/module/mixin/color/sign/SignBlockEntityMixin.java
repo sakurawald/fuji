@@ -3,7 +3,6 @@ package io.github.sakurawald.module.mixin.color.sign;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.block.entity.SignText;
 import net.minecraft.text.Text;
