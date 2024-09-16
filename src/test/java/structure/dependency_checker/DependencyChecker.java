@@ -1,0 +1,56 @@
+package structure.dependency_checker;
+
+import lombok.SneakyThrows;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.*;
+
+public abstract class DependencyChecker {
+
+    private @NotNull List<Dependency> reduce(@NotNull List<Dependency> deps) {
+        // merge
+        Map<String, Dependency> map = new HashMap<>();
+        for (Dependency dep : deps) {
+            map.putIfAbsent(dep.definition, dep);
+            map.get(dep.definition).getReference().addAll(dep.reference);
+        }
+
+        //reduce
+        for (Dependency dep : map.values()) {
+            Set<String> set = new HashSet<>(dep.reference);
+            dep.reference.clear();
+            dep.reference.addAll(set);
+        }
+
+        return map.values().stream().toList();
+    }
+
+    public abstract Dependency makeDependency(Path file);
+
+    @SneakyThrows
+    public List<Dependency> makeDependencies(Path dir) {
+        /* per class reference */
+        List<Dependency> dependencies = new ArrayList<>();
+
+        Files.walkFileTree(dir, new SimpleFileVisitor<>() {
+            @Override
+            public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) {
+                Dependency dependency = makeDependency(path);
+                if (dependency != null) {
+                    dependencies.add(dependency);
+                }
+
+                return FileVisitResult.CONTINUE;
+            }
+        });
+
+        /* reduce */
+        return this.reduce(dependencies);
+    }
+}
