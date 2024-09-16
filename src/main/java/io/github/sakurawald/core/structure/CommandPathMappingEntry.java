@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.command_alias.structure;
+package io.github.sakurawald.core.structure;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class CommandAliasEntry {
+public class CommandPathMappingEntry {
     public List<String> from;
     public List<String> to;
 }
