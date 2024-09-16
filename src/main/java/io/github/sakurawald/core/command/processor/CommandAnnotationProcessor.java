@@ -23,7 +23,7 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -236,7 +236,7 @@ public class CommandAnnotationProcessor {
         String stacktrace = String.join("\n", LogUtil.getStackTraceAsList(throwable));
         Component report = LocaleHelper.getTextByValue(source, string)
             .asComponent()
-            .color(NamedTextColor.RED)
+            .color(TextColor.color(255, 95, 0))
             .hoverEvent(HoverEvent.showText(Component.text("Click to copy the stacktrace.")))
             .clickEvent(ClickEvent.copyToClipboard(stacktrace));
         source.sendMessage(report);
