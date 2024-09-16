@@ -2,7 +2,6 @@ package structure.dependency_checker;
 
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
