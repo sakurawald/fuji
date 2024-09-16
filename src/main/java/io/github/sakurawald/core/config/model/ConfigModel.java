@@ -1,9 +1,9 @@
 package io.github.sakurawald.core.config.model;
 
 import io.github.sakurawald.core.job.impl.MentionPlayersJob;
+import io.github.sakurawald.core.structure.CommandPathMappingEntry;
 import io.github.sakurawald.core.structure.RegexRewriteEntry;
 import io.github.sakurawald.core.structure.TeleportSetup;
-import io.github.sakurawald.core.structure.CommandPathMappingEntry;
 
 import java.util.*;
 
@@ -827,6 +827,14 @@ public class ConfigModel {
             public static class Shell {
                 public String enable_warning = "ENABLE THIS MODULE IS POTENTIAL TO HARM YOUR COMPUTER! YOU NEED TO CHANGE THIS FIELD INTO `CONFIRM` TO ENABLE THIS MODULE";
                 public boolean enable = false;
+
+
+                public Security security = new Security();
+
+                public static class Security {
+                    public boolean only_allow_console = true;
+                    public List<String> allowed_player_names = new ArrayList<>();
+                }
             }
 
         }

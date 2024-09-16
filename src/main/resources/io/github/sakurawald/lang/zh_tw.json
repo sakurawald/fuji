@@ -20,6 +20,7 @@
     "chat.xaero_waypoint_add.command": "/xaero_waypoint_add:定位點:·:%d:%s:%d:0:false:0:Internal_%s_waypoints",
     "cleaner.broadcast": "<red>清理器剛剛完成了清理 (%s 個實體)",
     "command.args.number_not_match": "<red>參數數量不匹配。",
+    "command.console_only": "<red>该指令只能由控制台执行",
     "command.player_only": "<red>該指令只能由玩家執行",
     "command_attachment.query.no_attachment": "<red>該物品沒有綁定的指令.",
     "command_cooldown.cooldown": "<yellow>%d 秒",
