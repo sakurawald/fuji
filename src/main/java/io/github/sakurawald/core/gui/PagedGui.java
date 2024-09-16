@@ -7,9 +7,9 @@ import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.gui.layer.SingleLineLayer;
 import lombok.Getter;
-import net.kyori.adventure.text.Component;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -107,9 +107,8 @@ public abstract class PagedGui<T> extends LayeredGui {
 
 
     private void drawTitle() {
-        Component formatted = this.prefixTitle.asComponent()
-                .append(LocaleHelper.getTextByKey(getPlayer(), "gui.page.title", this.getCurrentPageNumber(), this.getMaxPageNumber()));
-        this.setTitle(LocaleHelper.toText(formatted));
+        MutableText formatted = this.prefixTitle.copy().append(LocaleHelper.getTextByKey(getPlayer(), "gui.page.title", this.getCurrentPageNumber(), this.getMaxPageNumber()));
+        this.setTitle(formatted);
     }
 
     private int getEntitySize() {
