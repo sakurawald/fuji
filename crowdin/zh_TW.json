@@ -167,7 +167,7 @@
     "works.list.my_works": "<#FFA1F5>我的作品",
     "works.list.title": "<#6528F7>作品集",
     "works.non_production_work.name": "<green>非生產裝置",
-    "works.non_production_work.specialized_settings.not_found": "<#FFA1F5>No specialized settings",
+    "works.non_production_work.specialized_settings.not_found": "<#FFA1F5>无特殊设置",
     "works.production_work.name": "<red>生產裝置",
     "works.production_work.prompt.input.sample_distance": "輸入採樣距離",
     "works.production_work.prop.sample_coordinate": "<#A076F9>採樣座標：%.3f %.3f %.3f",
