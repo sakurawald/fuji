@@ -5,7 +5,7 @@ import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.core.job.impl.MentionPlayersJob;
 import io.github.sakurawald.core.structure.RegexRewriteEntry;
 import io.github.sakurawald.core.structure.TeleportSetup;
-import io.github.sakurawald.module.initializer.command_alias.structure.CommandAliasEntry;
+import io.github.sakurawald.core.structure.CommandPathMappingEntry;
 
 import java.util.*;
 
@@ -603,11 +603,11 @@ public class ConfigModel {
 
         public static class CommandAlias {
             public boolean enable = false;
-            public List<CommandAliasEntry> alias = new ArrayList<>() {
+            public List<CommandPathMappingEntry> alias = new ArrayList<>() {
                 {
-                    this.add(new CommandAliasEntry(List.of("r"), List.of("reply")));
-                    this.add(new CommandAliasEntry(List.of("sudo"), List.of("run", "as", "fake-op")));
-                    this.add(new CommandAliasEntry(List.of("i", "want", "to", "modify", "chat"), List.of("chat", "format")));
+                    this.add(new CommandPathMappingEntry(List.of("r"), List.of("reply")));
+                    this.add(new CommandPathMappingEntry(List.of("sudo"), List.of("run", "as", "fake-op")));
+                    this.add(new CommandPathMappingEntry(List.of("i", "want", "to", "modify", "chat"), List.of("chat", "format")));
                 }
             };
         }

@@ -8,7 +8,7 @@ import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.command_alias.structure.CommandAliasEntry;
+import io.github.sakurawald.core.structure.CommandPathMappingEntry;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.command.ServerCommandSource;
 import org.jetbrains.annotations.NotNull;
@@ -21,13 +21,13 @@ public class CommandAliasInitializer extends ModuleInitializer {
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register((server -> {
             CommandDispatcher<ServerCommandSource> dispatcher = ServerHelper.getDefaultServer().getCommandManager().getDispatcher();
-            for (CommandAliasEntry entry : Configs.configHandler.model().modules.command_alias.alias) {
+            for (CommandPathMappingEntry entry : Configs.configHandler.model().modules.command_alias.alias) {
                 registerCommandAliasEntry(dispatcher, entry);
             }
         }));
     }
 
-    private void registerCommandAliasEntry(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, @NotNull CommandAliasEntry entry) {
+    private void registerCommandAliasEntry(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, @NotNull CommandPathMappingEntry entry) {
         LiteralArgumentBuilder<ServerCommandSource> builder = null;
 
         for (int i = entry.from.size() - 1; i >= 0; i--) {
