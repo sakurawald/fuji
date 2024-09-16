@@ -48,7 +48,7 @@ public class ResourceConfigHandler extends ConfigHandler<JsonElement> {
             }
 
         } catch (IOException e) {
-            LogUtil.error("Load config failed", e);
+            LogUtil.error("load config failed", e);
         }
     }
 
@@ -57,7 +57,7 @@ public class ResourceConfigHandler extends ConfigHandler<JsonElement> {
         try {
             // Should we generate a default config instance ?
             if (!file.exists()) {
-                LogUtil.info("Write default configuration: {}", this.file.getAbsolutePath());
+                LogUtil.info("write default configuration: {}", this.file.getAbsolutePath());
                 Files.createDirectories(this.file.getParentFile().toPath());
                 this.model = ResourceConfigHandler.getJsonElement(this.resourcePath);
             }

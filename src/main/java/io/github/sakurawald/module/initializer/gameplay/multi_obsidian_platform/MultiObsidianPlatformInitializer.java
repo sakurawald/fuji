@@ -35,7 +35,7 @@ public class MultiObsidianPlatformInitializer extends ModuleInitializer {
             }
         }
 
-        LogUtil.warn("BlockPos {} is not END_PORTAL and we can't find a nearby END_PORTAL block !", bp);
+        LogUtil.warn("the BlockPos {} is not END_PORTAL and we can't find a nearby END_PORTAL block !", bp);
         return bp;
     }
 

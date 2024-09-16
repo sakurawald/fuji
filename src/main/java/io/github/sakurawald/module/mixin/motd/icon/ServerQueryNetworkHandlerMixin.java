@@ -47,7 +47,7 @@ public abstract class ServerQueryNetworkHandlerMixin {
     public @NotNull ServerMetadata handleStatusRequest(final net.minecraft.server.network.ServerQueryNetworkHandler instance) {
         ServerMetadata vanillaStatus = ServerHelper.getDefaultServer().getServerMetadata();
         if (vanillaStatus == null) {
-            LogUtil.warn("Can't inject into the vanilla server status. (reason: the vanilla one is null)");
+            LogUtil.warn("can't inject into the vanilla server status. (reason: the vanilla one is null)");
             return new ServerMetadata(module.getRandomDescription(), Optional.empty(), Optional.empty(), module.getRandomIcon(), false);
         }
 

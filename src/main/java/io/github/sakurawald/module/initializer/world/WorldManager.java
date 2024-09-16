@@ -165,7 +165,7 @@ public class WorldManager {
                     true,
                     null);
         } catch (Exception e) {
-            LogUtil.warn("Failed to create world: worldId = {}, dimensionTypeId = {}, error = {}", dimensionIdentifier, dimenstionTypeIdentifier, e);
+            LogUtil.warn("failed to create world: worldId = {}, dimensionTypeId = {}, error = {}", dimensionIdentifier, dimenstionTypeIdentifier, e);
             return;
         }
 

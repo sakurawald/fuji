@@ -47,7 +47,7 @@ public class MotdInitializer extends ModuleInitializer {
         ICON_FOLDER.mkdirs();
         File[] icons = ICON_FOLDER.listFiles();
         if (icons == null || icons.length == 0) {
-            LogUtil.warn("No icons found in {}", ICON_FOLDER.getAbsolutePath());
+            LogUtil.warn("no icons found in {}", ICON_FOLDER.getAbsolutePath());
             return Optional.empty();
         }
 
@@ -60,7 +60,7 @@ public class MotdInitializer extends ModuleInitializer {
             byteArrayOutputStream = new ByteArrayOutputStream();
             ImageIO.write(bufferedImage, "PNG", byteArrayOutputStream);
         } catch (IOException e) {
-            LogUtil.warn("Failed to encode favicon", e);
+            LogUtil.warn("failed to encode favicon", e);
             return Optional.empty();
         }
         return Optional.of(new ServerMetadata.Favicon(byteArrayOutputStream.toByteArray()));

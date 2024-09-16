@@ -124,7 +124,7 @@ public abstract class ConfigHandler<T> {
         try {
             Files.copy(file.toPath(), backupFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            LogUtil.error("Backup file failed: {}", e.getMessage());
+            LogUtil.error("backup file failed: {}", e.getMessage());
         }
     }
 
@@ -211,7 +211,7 @@ public abstract class ConfigHandler<T> {
         if (input.equalsIgnoreCase("y")) {
             if (!this.alreadyBackup) {
                 Managers.getRescueBackupManager().backup();
-                LogUtil.warn("Backup the `config/fuji` folder into `config/fuji/backup_rescue` folder successfully.");
+                LogUtil.warn("backup the `config/fuji` folder into `config/fuji/backup_rescue` folder successfully.");
                 this.alreadyBackup = true;
             }
 

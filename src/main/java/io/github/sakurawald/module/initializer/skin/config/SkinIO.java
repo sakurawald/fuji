@@ -27,7 +27,7 @@ public class SkinIO {
             String string = org.apache.commons.io.FileUtils.readFileToString(file, StandardCharsets.UTF_8);
             return ConfigHandler.getGson().fromJson(string, Property.class);
         } catch (IOException e) {
-            LogUtil.error("Load skin failed: " + e.getMessage());
+            LogUtil.error("load skin failed: " + e.getMessage());
         }
         return null;
     }
@@ -36,7 +36,7 @@ public class SkinIO {
         try {
             org.apache.commons.io.FileUtils.writeStringToFile(new File(savePath.toFile(), uuid + FILE_EXTENSION), ConfigHandler.getGson().toJson(skin), StandardCharsets.UTF_8);
         } catch (IOException e) {
-            LogUtil.error("Save skin failed: " + e.getMessage());
+            LogUtil.error("save skin failed: " + e.getMessage());
         }
     }
 }

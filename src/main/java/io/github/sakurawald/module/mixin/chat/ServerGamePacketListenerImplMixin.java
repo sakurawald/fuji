@@ -29,7 +29,7 @@ public abstract class ServerGamePacketListenerImplMixin {
         String string = original.getContent().getString();
 
         if (Configs.configHandler.model().modules.chat.spy.output_unparsed_message_into_console) {
-            LogUtil.info("[Chat Spy] <{}> {}", player.getGameProfile().getName(), string);
+            LogUtil.info("[chat spy] <{}> {}", player.getGameProfile().getName(), string);
         }
 
         Text text = module.parseText(player, string);

@@ -100,7 +100,7 @@ public class CleanerInitializer extends ModuleInitializer {
         // avoid spam
         if (counter.isEmpty()) return;
 
-        LogUtil.info("[Cleaner] remove entities: {}",counter);
+        LogUtil.info("[cleaner] remove entities: {}",counter);
 
         Component hoverTextComponent = Component.text()
                 .color(NamedTextColor.GOLD)
