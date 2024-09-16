@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.view.gui;
 
 import com.mojang.authlib.GameProfile;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -47,7 +47,7 @@ public abstract class RedirectScreenHandlerFactory {
         if (root == null) return;
         if (root.contains(DIMENSION)) {
             String dimensionId = root.getString(DIMENSION);
-            ServerWorld world = IdentifierHelper.ofServerWorld(Identifier.of(dimensionId));
+            ServerWorld world = RegistryHelper.ofServerWorld(Identifier.of(dimensionId));
             if (world != null) {
                 player.setServerWorld(world);
             }

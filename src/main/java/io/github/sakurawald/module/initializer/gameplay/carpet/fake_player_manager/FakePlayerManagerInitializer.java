@@ -4,7 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -12,9 +12,9 @@ import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager.job.ManageFakePlayersJob;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.kyori.adventure.text.Component;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.Uuids;
 import org.jetbrains.annotations.NotNull;
 
@@ -56,7 +56,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
             builder.append("\n");
         }
         ServerCommandSource source = context.getSource();
-        source.sendMessage(LanguageHelper.getTextByKey(source, "fake_player_manager.who.header").asComponent().append(Component.text(builder.toString())));
+        source.sendMessage(LocaleHelper.getTextByKey(source, "fake_player_manager.who.header").copy().append(Text.literal(builder.toString())));
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -65,7 +65,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         int duration = Configs.configHandler.model().modules.gameplay.carpet.fake_player_manager.renew_duration_ms;
         long newTime = System.currentTimeMillis() + duration;
         player2expiration.put(name, newTime);
-        LanguageHelper.sendMessageByKey(player, "fake_player_manager.renew.success", DateUtil.toStandardDateFormat(newTime));
+        LocaleHelper.sendMessageByKey(player, "fake_player_manager.renew.success", DateUtil.toStandardDateFormat(newTime));
     }
 
     public void validateFakePlayers() {

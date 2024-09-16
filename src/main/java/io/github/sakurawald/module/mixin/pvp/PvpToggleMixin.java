@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.pvp;
 
 import com.mojang.authlib.GameProfile;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.pvp.PvpInitializer;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,13 +32,13 @@ public abstract class PvpToggleMixin extends PlayerEntity {
         if (player == null) return;
 
         if (!module.contains(sourcePlayer.getGameProfile().getName())) {
-            LanguageHelper.sendMessageByKey(player, "pvp.check.off.me");
+            LocaleHelper.sendMessageByKey(player, "pvp.check.off.me");
             cir.setReturnValue(false);
             return;
         }
 
         if (!module.contains(this.getGameProfile().getName())) {
-            LanguageHelper.sendMessageByKey(player, "pvp.check.off.others", this.getGameProfile().getName());
+            LocaleHelper.sendMessageByKey(player, "pvp.check.off.others", this.getGameProfile().getName());
             cir.setReturnValue(false);
         }
     }

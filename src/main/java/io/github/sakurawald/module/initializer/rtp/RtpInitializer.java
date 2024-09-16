@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.initializer.rtp;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
@@ -23,12 +23,12 @@ public class RtpInitializer extends ModuleInitializer {
 
         Optional<TeleportSetup> first = TeleportSetup.of(serverWorld);
         if (first.isEmpty()) {
-            LanguageHelper.sendMessageByKey(player, "rtp.dimension.disallow", IdentifierHelper.ofString(serverWorld));
+            LocaleHelper.sendMessageByKey(player, "rtp.dimension.disallow", RegistryHelper.ofString(serverWorld));
             return CommandHelper.Return.FAIL;
         }
 
-        LanguageHelper.sendActionBarByKey(player, "rtp.tip");
-        RandomTeleport.request(player, first.get(), (position -> LanguageHelper.sendMessageByKey(player, "rtp.success")));
+        LocaleHelper.sendActionBarByKey(player, "rtp.tip");
+        RandomTeleport.request(player, first.get(), (position -> LocaleHelper.sendMessageByKey(player, "rtp.success")));
         return CommandHelper.Return.SUCCESS;
     }
 }

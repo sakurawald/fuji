@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.afk;
 
 import io.github.sakurawald.core.accessor.PlayerCombatExtension;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -31,12 +31,12 @@ public class AfkInitializer extends ModuleInitializer {
                 || player.inPowderSnow
                 || ((PlayerCombatExtension) player).fuji$inCombat()) {
 
-            LanguageHelper.sendMessageByKey(player, "afk.on.failed");
+            LocaleHelper.sendMessageByKey(player, "afk.on.failed");
             return CommandHelper.Return.FAIL;
         }
 
         ((AfkStateAccessor) player).fuji$setAfk(true);
-        LanguageHelper.sendMessageByKey(player, "afk.on");
+        LocaleHelper.sendMessageByKey(player, "afk.on");
         return CommandHelper.Return.SUCCESS;
     }
 

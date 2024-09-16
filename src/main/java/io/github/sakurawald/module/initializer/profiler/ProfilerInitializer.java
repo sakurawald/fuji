@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.profiler;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -52,7 +52,7 @@ public class ProfilerInitializer extends ModuleInitializer {
             } catch (Exception ignored) {
             }
             if (spark == null) {
-                LanguageHelper.sendMessageByKey(source, "profiler.spark.no_instance");
+                LocaleHelper.sendMessageByKey(source, "profiler.spark.no_instance");
                 return;
             }
 
@@ -112,7 +112,7 @@ public class ProfilerInitializer extends ModuleInitializer {
             double cpu_system_15m = cpuSystem.poll(StatisticWindow.CpuUsage.MINUTES_15) * 100;
 
             Map<String, GarbageCollector> gc = spark.gc();
-            Component gcComponent = LanguageHelper.getTextByKey(source, "profiler.format.gc.head").asComponent();
+            Component gcComponent = LocaleHelper.getTextByKey(source, "profiler.format.gc.head").asComponent();
             int i = 0;
             for (GarbageCollector garbageCollector : gc.values()) {
                 String name = garbageCollector.name();
@@ -120,11 +120,11 @@ public class ProfilerInitializer extends ModuleInitializer {
                 double avgTime = garbageCollector.avgTime();
                 long totalCollections = garbageCollector.totalCollections();
                 long totalTime = garbageCollector.totalTime();
-                gcComponent = gcComponent.append(LanguageHelper.getTextByKey(source, i == gc.values().size() - 1 ? "profiler.format.gc.last" : "profiler.format.gc.no_last", name, avgFrequency, avgTime, totalCollections, totalTime));
+                gcComponent = gcComponent.append(LocaleHelper.getTextByKey(source, i == gc.values().size() - 1 ? "profiler.format.gc.last" : "profiler.format.gc.no_last", name, avgFrequency, avgTime, totalCollections, totalTime));
                 i++;
             }
 
-            Component memComponent = LanguageHelper.getTextByKey(source, "profiler.format.mem.head").asComponent();
+            Component memComponent = LocaleHelper.getTextByKey(source, "profiler.format.mem.head").asComponent();
             List<MemoryPoolMXBean> memoryPoolMXBeans = ManagementFactory.getMemoryPoolMXBeans();
             i = 0;
             for (MemoryPoolMXBean memoryPoolMXBean : memoryPoolMXBeans) {
@@ -135,12 +135,12 @@ public class ProfilerInitializer extends ModuleInitializer {
                 String used = formatBytes(memoryUsage.getUsed());
                 String committed = formatBytes(memoryUsage.getCommitted());
                 String max = formatBytes(memoryUsage.getMax());
-                memComponent = memComponent.append(LanguageHelper.getTextByKey(source, i == memoryPoolMXBeans.size() - 1 ? "profiler.format.mem.last" : "profiler.format.mem.no_last", name, type, init, used, committed, max));
+                memComponent = memComponent.append(LocaleHelper.getTextByKey(source, i == memoryPoolMXBeans.size() - 1 ? "profiler.format.mem.last" : "profiler.format.mem.no_last", name, type, init, used, committed, max));
                 i++;
             }
 
             /* output */
-            Component formatComponent = LanguageHelper.getTextByKey(source, "profiler.format"
+            Component formatComponent = LocaleHelper.getTextByKey(source, "profiler.format"
                     , os_name, os_version, os_arch
                     , vmName, vmVersion
                     , tps_5s, tps_10s, tps_1m, tps_5m, tps_15m

@@ -11,6 +11,7 @@ import eu.pb4.placeholders.api.parsers.tag.TagRegistry;
 import eu.pb4.placeholders.api.parsers.tag.TextTag;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.handler.impl.ResourceConfigHandler;
 import lombok.NonNull;
@@ -36,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 @UtilityClass
-public class LanguageHelper {
+public class LocaleHelper {
 
     private static final NodeParser POWERFUL_PARSER = NodeParser.builder()
         .quickText()
@@ -48,11 +49,11 @@ public class LanguageHelper {
     private static final NodeParser PLACEHOLDER_PARSER = NodeParser.builder()
         .globalPlaceholders().build();
 
-    private static final FabricServerAudiences adventure = FabricServerAudiences.of(ServerHelper.getDefaultServer());
+    private static final FabricServerAudiences ADVENTURE_INSTANCE = FabricServerAudiences.of(ServerHelper.getDefaultServer());
 
     private static final Map<String, String> player2lang = new HashMap<>();
     private static final Map<String, JsonObject> lang2json = new HashMap<>();
-    private static final JsonObject UNSUPPORTED_LANGUAGE = new JsonObject();
+    private static final JsonObject UNSUPPORTED_LANGUAGE_MARKER = new JsonObject();
 
     static {
         writeDefaultLanguageFiles();
@@ -69,9 +70,9 @@ public class LanguageHelper {
     }
 
     private static void writeDefaultLanguageFiles() {
-        new ResourceConfigHandler("lang/en_us.json").loadFromDisk();
-        new ResourceConfigHandler("lang/zh_cn.json").loadFromDisk();
-        new ResourceConfigHandler("lang/zh_tw.json").loadFromDisk();
+        for (String lang : ReflectionUtil.getGraph(ReflectionUtil.LANGUAGE_GRAPH_FILE_NAME)) {
+            new ResourceConfigHandler("lang/" + lang).loadFromDisk();
+        }
     }
 
     // clear the map to remove `UNSUPPORTED LANGUAGE`
@@ -90,21 +91,29 @@ public class LanguageHelper {
         try {
             is = FileUtils.openInputStream(Fuji.CONFIG_PATH.resolve("lang").resolve(lang + ".json").toFile());
 
-            JsonObject jsonObject = JsonParser.parseReader(new InputStreamReader(is)).getAsJsonObject();
-            lang2json.put(lang, jsonObject);
-            LogUtil.info("Language {} loaded.", lang);
+            lang2json.put(lang, JsonParser.parseReader(new InputStreamReader(is)).getAsJsonObject());
+            LogUtil.info("language {} loaded.", lang);
         } catch (IOException e) {
-            LogUtil.error("Failed to load language '{}'", lang);
-            lang2json.put(lang, UNSUPPORTED_LANGUAGE);
+            lang2json.put(lang, UNSUPPORTED_LANGUAGE_MARKER);
+            LogUtil.warn("failed to load language '{}'", lang);
         }
+    }
+
+    private String getCanonicalLanguage(String input) {
+        if (input == null || !input.contains("_")) {
+            return input;
+        }
+
+        String[] parts = input.split("_");
+
+        String language = parts[0].toLowerCase();
+        String region = parts[1].toUpperCase();
+        return language + "_" + region;
     }
 
     private @NotNull String getClientSideLanguage(@Nullable Object audience) {
         String defaultLanguage = Configs.configHandler.model().core.language.default_language;
-
-        if (audience == null) {
-            return defaultLanguage;
-        }
+        if (audience == null) return getCanonicalLanguage(defaultLanguage);
 
         PlayerEntity player = switch (audience) {
             case ServerPlayerEntity serverPlayerEntity -> serverPlayerEntity;
@@ -113,16 +122,16 @@ public class LanguageHelper {
             default -> null;
         };
 
-        return player == null ? defaultLanguage : player2lang.getOrDefault(player.getGameProfile().getName(), defaultLanguage);
+        // always use default_language for non-player object.
+        return getCanonicalLanguage(player == null ? defaultLanguage : player2lang.getOrDefault(player.getGameProfile().getName(), defaultLanguage));
     }
 
     private @NotNull JsonObject getLanguageJsonObject(String lang) {
-        // if target language is missing, we fall back to default_language
-        if (!lang2json.containsKey(lang) && lang2json.get(lang) == UNSUPPORTED_LANGUAGE) {
-            lang = Configs.configHandler.model().core.language.default_language;
+        // load language object from disk for the first time
+        if (!lang2json.containsKey(lang)) {
+            loadLanguageIfAbsent(lang);
         }
 
-        loadLanguageIfAbsent(lang);
         return lang2json.get(lang);
     }
 
@@ -133,14 +142,21 @@ public class LanguageHelper {
         /* get json */
         JsonObject json = getLanguageJsonObject(lang);
 
+        /* use fallback language if the client-side language is not supported in the server-side. */
+        if (json == UNSUPPORTED_LANGUAGE_MARKER) {
+            lang = getCanonicalLanguage(Configs.configHandler.model().core.language.default_language);
+            json = getLanguageJsonObject(lang);
+        }
+
         /* get value */
         if (json.has(key)) {
             return json.get(key).getAsString();
         }
 
-        String errorString = "Language '%s' miss the key '%s'".formatted(lang, key);
-        LogUtil.error(errorString);
-        return errorString;
+        // always fallback string for missing keys
+        String fallbackString = "(no key `%s` in language `%s`)".formatted(key, lang);
+        LogUtil.warn("{} triggered by {}", fallbackString, audience);
+        return fallbackString;
     }
 
     public static @NotNull String getValue(@Nullable Object audience, String key, Object... args) {
@@ -155,7 +171,7 @@ public class LanguageHelper {
     }
 
     public static @NotNull String resolvePlaceholder(@Nullable Object audience, String value) {
-        Component component = LanguageHelper.getText(PLACEHOLDER_PARSER, audience, false, value).asComponent();
+        Component component = LocaleHelper.getText(PLACEHOLDER_PARSER, audience, false, value).asComponent();
         return PlainTextComponentSerializer.plainText().serialize(component);
     }
 
@@ -210,7 +226,11 @@ public class LanguageHelper {
     }
 
     public static @NotNull Text toText(@NotNull Component component) {
-        return adventure.toNative(component);
+        return ADVENTURE_INSTANCE.toNative(component);
+    }
+
+    public static String flatten(@NotNull Component component) {
+        return PlainTextComponentSerializer.plainText().serialize(component);
     }
 
     public static void sendMessageByKey(@NotNull Audience audience, String key, Object... args) {
@@ -224,10 +244,10 @@ public class LanguageHelper {
     public static void sendBroadcastByKey(@NotNull String key, Object... args) {
         // fix: log broadcast for console
         Component component = getTextByKey(null, key, args).asComponent();
-        LogUtil.info(PlainTextComponentSerializer.plainText().serialize(component));
+        LogUtil.info(flatten(component));
 
         for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
-            LanguageHelper.sendMessageByKey(player, key, args);
+            LocaleHelper.sendMessageByKey(player, key, args);
         }
     }
 

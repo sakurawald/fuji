@@ -32,6 +32,6 @@ public class DimensionTypeArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(Parameter parameter) {
-        return super.makeRequiredArgumentBuilder(parameter).suggests(CommandHelper.Suggestion.ofRegistryKey(RegistryKeys.DIMENSION_TYPE));
+        return super.makeRequiredArgumentBuilder(parameter).suggests(CommandHelper.Suggestion.identifiers(RegistryKeys.DIMENSION_TYPE));
     }
 }

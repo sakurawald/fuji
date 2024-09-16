@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.motd;
 import com.google.common.base.Preconditions;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import lombok.Setter;
@@ -67,7 +67,7 @@ public class MotdInitializer extends ModuleInitializer {
     }
 
     public @NotNull Text getRandomDescription() {
-        return LanguageHelper.getTextByValue(null,motd.get(new Random().nextInt(motd.size())));
+        return LocaleHelper.getTextByValue(null,motd.get(new Random().nextInt(motd.size())));
     }
 
 }

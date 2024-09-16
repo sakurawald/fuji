@@ -1,12 +1,12 @@
 package io.github.sakurawald.module.mixin.teleport_warmup;
 
 import io.github.sakurawald.core.auxiliary.minecraft.EntityHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.manager.impl.bossbar.BossBarTicket;
-import io.github.sakurawald.core.structure.Position;
+import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.core.structure.TeleportTicket;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -37,7 +37,7 @@ public abstract class ServerPlayerMixin {
 
     @Inject(method = "teleport(Lnet/minecraft/server/world/ServerWorld;DDDFF)V", at = @At("HEAD"), cancellable = true)
     public void interceptTeleportAndAddTicket(@NotNull ServerWorld targetWorld, double x, double y, double z, float yaw, float pitch, @NotNull CallbackInfo ci) {
-        if (!Configs.configHandler.model().modules.teleport_warmup.dimension.list.contains(IdentifierHelper.ofString(targetWorld))) {
+        if (!Configs.configHandler.model().modules.teleport_warmup.dimension.list.contains(RegistryHelper.ofString(targetWorld))) {
             return;
         }
 
@@ -51,13 +51,13 @@ public abstract class ServerPlayerMixin {
         if (ticket == null) {
             ticket = TeleportTicket.of(
                     player
-                    , Position.of(player)
-                    , new Position(targetWorld, x, y, z, yaw, pitch));
+                    , SpatialPose.of(player)
+                    , new SpatialPose(targetWorld, x, y, z, yaw, pitch));
             Managers.getBossBarManager().addTicket(ticket);
             ci.cancel();
         } else {
             if (!ticket.isCompleted()) {
-                LanguageHelper.sendActionBarByKey(player, "teleport_warmup.another_teleportation_in_progress");
+                LocaleHelper.sendActionBarByKey(player, "teleport_warmup.another_teleportation_in_progress");
                 ci.cancel();
             }
         }

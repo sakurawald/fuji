@@ -4,8 +4,11 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.skin.config.model.SkinModel;
 import io.github.sakurawald.module.initializer.skin.enums.SkinVariant;
 import io.github.sakurawald.module.initializer.skin.provider.MineSkinSkinProvider;
 import io.github.sakurawald.module.initializer.skin.provider.MojangSkinProvider;
@@ -27,9 +30,17 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 public class SkinInitializer extends ModuleInitializer {
 
+    public final ConfigHandler<SkinModel> data = new ObjectConfigHandler<>("skin.json", SkinModel.class);
+
     @Override
     public void onInitialize() {
         CommandRegistrationCallback.EVENT.register(this::registerCommand);
+        data.loadFromDisk();
+    }
+
+    @Override
+    public void onReload() {
+        data.loadFromDisk();
     }
 
     public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess commandBuildContext, CommandManager.RegistrationEnvironment commandSelection) {
@@ -79,16 +90,16 @@ public class SkinInitializer extends ModuleInitializer {
             Collection<ServerPlayerEntity> players = pair.left();
 
             if (profiles.isEmpty()) {
-                LanguageHelper.sendMessageByKey(src, "skin.action.failed");
+                LocaleHelper.sendMessageByKey(src, "skin.action.failed");
                 return;
             }
             if (setByOperator) {
-                LanguageHelper.sendMessageByKey(src, "skin.action.affected_profile", String.join(", ", profiles.stream().map(GameProfile::getName).toList()));
+                LocaleHelper.sendMessageByKey(src, "skin.action.affected_profile", String.join(", ", profiles.stream().map(GameProfile::getName).toList()));
                 if (!players.isEmpty()) {
-                    LanguageHelper.sendMessageByKey(src, "skin.action.affected_player", String.join(", ", players.stream().map(p -> p.getGameProfile().getName()).toList()));
+                    LocaleHelper.sendMessageByKey(src, "skin.action.affected_player", String.join(", ", players.stream().map(p -> p.getGameProfile().getName()).toList()));
                 }
             } else {
-                LanguageHelper.sendMessageByKey(src, "skin.action.ok");
+                LocaleHelper.sendMessageByKey(src, "skin.action.ok");
             }
         });
         return targets.size();
