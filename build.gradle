@@ -220,7 +220,7 @@ tasks.register('copyTranslationFiles', Copy) {
     include "**/*.json"
 
 }
-tasks.compileJava.dependsOn(copyTranslationFiles)
+tasks.runServer.dependsOn(copyTranslationFiles)
 
 
 /* generate graph */
