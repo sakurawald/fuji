@@ -10,6 +10,12 @@ It's good to have a checklist, to avoid forgetting something.
 - update the version of dependent mods
 - test the jar file in a real environment.
 
+## Test new version
+- test interesting commands. (from a to z)
+- test interesting mixins.
+- test the integration with carpet-fabric.
+- test the integration with luckperms.
+
 ## Update to a new version
 - update the version in "gradle.properties"
 - update change log in "CHANGELOG.md"
