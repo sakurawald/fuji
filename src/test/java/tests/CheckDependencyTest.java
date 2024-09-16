@@ -66,7 +66,9 @@ public class CheckDependencyTest {
                 COMPILE_TIME_SOURCE_PATH.resolve("io/github/sakurawald/core/config"))
             .stream()
             .filter(dep -> {
-                dep.filterReference(PREFIX_COM_MOJANG);
+                dep.filterReference(
+                    PREFIX_COM_MOJANG
+                    , PREFIX_NET_MINECRAFT);
                 return !dep.getReference().isEmpty();
             });
 
