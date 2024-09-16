@@ -92,10 +92,10 @@ public class LocaleHelper {
             is = FileUtils.openInputStream(Fuji.CONFIG_PATH.resolve("lang").resolve(lang + ".json").toFile());
 
             lang2json.put(lang, JsonParser.parseReader(new InputStreamReader(is)).getAsJsonObject());
-            LogUtil.info("Language {} loaded.", lang);
+            LogUtil.info("language {} loaded.", lang);
         } catch (IOException e) {
             lang2json.put(lang, UNSUPPORTED_LANGUAGE_MARKER);
-            LogUtil.warn("Failed to load language '{}'", lang);
+            LogUtil.warn("failed to load language '{}'", lang);
         }
     }
 
