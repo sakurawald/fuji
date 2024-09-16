@@ -7,14 +7,15 @@ assignees: ''
 
 ---
 
-**To Reproduce**
-Steps to reproduce the behavior:
+How to Reproduce the bug?
 
-**Expected behavior**
+What is the expected behavior?
 A clear and concise description of what you expected to happen.
 
-**Actual behavior**
+What is the actual behavior?
 A clear and concise description of what the bug is.
 
-**Server Logs**
 Please upload the server logs using https://mclo.gs/
+```
+Here is my server logs link: 
+```
