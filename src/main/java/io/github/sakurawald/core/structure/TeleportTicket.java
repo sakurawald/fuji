@@ -1,7 +1,7 @@
 package io.github.sakurawald.core.structure;
 
 import io.github.sakurawald.core.accessor.PlayerCombatExtension;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.manager.impl.bossbar.BossBarTicket;
 import lombok.Getter;
@@ -14,22 +14,22 @@ import java.util.List;
 @Getter
 public class TeleportTicket extends BossBarTicket {
     private final @NotNull ServerPlayerEntity player;
-    private final Position source;
-    private final Position destination;
+    private final SpatialPose source;
+    private final SpatialPose destination;
 
-    private TeleportTicket(@NotNull ServerPlayerEntity player, Position source, Position destination, float progress) {
-        super(BossBar.bossBar(LanguageHelper.getTextByKey(player, "teleport_warmup.bossbar.name"), progress, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS), Configs.configHandler.model().modules.teleport_warmup.warmup_second * 1000, List.of(player)
+    private TeleportTicket(@NotNull ServerPlayerEntity player, SpatialPose source, SpatialPose destination, float progress) {
+        super(BossBar.bossBar(LocaleHelper.getTextByKey(player, "teleport_warmup.bossbar.name"), progress, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS), Configs.configHandler.model().modules.teleport_warmup.warmup_second * 1000, List.of(player)
         );
         this.player = player;
         this.source = source;
         this.destination = destination;
     }
 
-    public static @NotNull TeleportTicket of(@NotNull ServerPlayerEntity player, Position source, Position destination) {
+    public static @NotNull TeleportTicket of(@NotNull ServerPlayerEntity player, SpatialPose source, SpatialPose destination) {
         return new TeleportTicket(player, source, destination, 0f);
     }
 
-    public static @NotNull TeleportTicket ofInstantTicket(@NotNull ServerPlayerEntity player, Position source, Position destination) {
+    public static @NotNull TeleportTicket ofInstantTicket(@NotNull ServerPlayerEntity player, SpatialPose source, SpatialPose destination) {
         return new TeleportTicket(player, source, destination, 1f);
     }
 
@@ -39,7 +39,7 @@ public class TeleportTicket extends BossBarTicket {
 
         // check combat
         if (((PlayerCombatExtension) player).fuji$inCombat()) {
-            LanguageHelper.sendActionBarByKey(player, "teleport_warmup.in_combat");
+            LocaleHelper.sendActionBarByKey(player, "teleport_warmup.in_combat");
             return false;
         }
 

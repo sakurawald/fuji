@@ -174,7 +174,7 @@ public abstract class ConfigHandler<T> {
                 // note: for JsonArray, we will not directly set array elements, but we will add new properties for every array element (language default empty-value). e.g. For List<ExamplePojo>, we will never change the size of this list, but we will add missing properties for every ExamplePojo with the language default empty-value.
                 if (!currentJson.has(key)) {
                     currentJson.add(key, value);
-                    LogUtil.warn("Add missing json property: file = {}, key = {}, value = {}", this.file.getName(), key, value);
+                    LogUtil.warn("add missing json property: file = {}, key = {}, value = {}", this.file.getName(), key, value);
                 }
             }
         }

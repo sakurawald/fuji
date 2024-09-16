@@ -2,7 +2,7 @@ package io.github.sakurawald.module.mixin.afk;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.authlib.GameProfile;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.model.ConfigModel;
 import io.github.sakurawald.core.service.command_executor.CommandExecutor;
@@ -55,7 +55,7 @@ public abstract class ServerPlayerMixin extends PlayerEntity implements AfkState
     public Text $getPlayerListName(Text original) {
         AfkStateAccessor accessor = (AfkStateAccessor) player;
         if (accessor.fuji$isAfk()) {
-            return LanguageHelper.getTextByValue(player, Configs.configHandler.model().modules.afk.format);
+            return LocaleHelper.getTextByValue(player, Configs.configHandler.model().modules.afk.format);
         }
 
         return original;

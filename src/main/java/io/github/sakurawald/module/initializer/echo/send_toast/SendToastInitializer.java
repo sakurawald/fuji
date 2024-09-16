@@ -2,12 +2,12 @@ package io.github.sakurawald.module.initializer.echo.send_toast;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
-import io.github.sakurawald.core.command.exception.SnackException;
+import io.github.sakurawald.core.command.exception.AbortOperationException;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import net.minecraft.advancement.*;
 import net.minecraft.advancement.criterion.CriterionProgress;
@@ -60,7 +60,7 @@ public class SendToastInitializer extends ModuleInitializer {
 
         CriterionProgress criterionProgress = advancementProgress.getCriterionProgress(IMPOSSIBLE);
         if (criterionProgress == null) {
-            throw new SnackException("It's strange that the statement `advancementProgress.getCriterionProgress(IMPOSSIBLE) is null, abort this advancement packet making.`");
+            throw new AbortOperationException("It's strange that the statement `advancementProgress.getCriterionProgress(IMPOSSIBLE) is null, abort this advancement packet making.`");
         }
 
         criterionProgress.obtain();
@@ -89,10 +89,10 @@ public class SendToastInitializer extends ModuleInitializer {
 
         Item $icon = icon.orElse(Items.SLIME_BALL);
         AdvancementFrame $toastType = toastType.orElse(AdvancementFrame.CHALLENGE);
-        Text title = LanguageHelper.getTextByValue(player, message.getValue());
+        Text title = LocaleHelper.getTextByValue(player, message.getValue());
         this.sendToast(player, $toastType, $icon, title);
 
-        LanguageHelper.sendMessageByKey(ctx.getSource(), "operation.success");
+        LocaleHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 

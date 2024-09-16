@@ -27,15 +27,25 @@ public class CommandHelper {
     }
 
     public static class Suggestion {
-        public static <T> @NotNull SuggestionProvider<ServerCommandSource> ofRegistryKey(RegistryKey<? extends Registry<T>> registryKey) {
+        public static <T> @NotNull SuggestionProvider<ServerCommandSource> identifiers(RegistryKey<? extends Registry<T>> registryKey) {
             return (context, builder) -> {
-                Registry<T> registry = IdentifierHelper.ofRegistry(registryKey);
+                Registry<T> registry = RegistryHelper.ofRegistry(registryKey);
                 Iterator<T> iterator = registry.iterator();
                 while (iterator.hasNext()) {
                     T entry;
+
+                    /*
+                     * Steps to trigger the following exception:
+                     * 1. /world create 1 minecraft:overworld
+                     * 2. /world delete fuji:1
+                     * 3. /world tp
+                     *
+                     * Failed to handle packet net.minecraft.network.packet.c2s.play.RequestCommandCompletionsC2SPacket@72fe7802, suppressing error
+                     *  java.lang.NullPointerException: null
+                     */
                     try {
                         entry = iterator.next();
-                    } catch (Exception e) {
+                    } catch (NullPointerException e) {
                         continue;
                     }
 
@@ -53,7 +63,7 @@ public class CommandHelper {
         public static int playerOnlyCommand(@NotNull CommandContext<ServerCommandSource> ctx, @NotNull Function<ServerPlayerEntity, Integer> function) {
             ServerPlayerEntity player = ctx.getSource().getPlayer();
             if (player == null) {
-                LanguageHelper.sendMessageByKey(ctx.getSource(), "command.player_only");
+                LocaleHelper.sendMessageByKey(ctx.getSource(), "command.player_only");
                 return Return.SUCCESS;
             }
 
@@ -61,11 +71,11 @@ public class CommandHelper {
         }
 
         @SneakyThrows
-        public static int itemOnHandCommand(@NotNull CommandContext<ServerCommandSource> ctx, @NotNull BiFunction<ServerPlayerEntity, ItemStack, Integer> consumer) {
+        public static int itemInHandCommand(@NotNull CommandContext<ServerCommandSource> ctx, @NotNull BiFunction<ServerPlayerEntity, ItemStack, Integer> consumer) {
             return playerOnlyCommand(ctx, player -> {
                 ItemStack mainHandStack = player.getMainHandStack();
                 if (mainHandStack.isEmpty()) {
-                    LanguageHelper.sendMessageByKey(player, "item.empty.not_allow");
+                    LocaleHelper.sendMessageByKey(player, "item.empty.not_allow");
                     return Return.FAIL;
                 }
                 return consumer.apply(player, mainHandStack);

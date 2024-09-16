@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.echo.send_title;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LanguageHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -33,13 +33,13 @@ public class SendTitleInitializer extends ModuleInitializer {
         int $stayTicks = stayTicks.orElse(70);
         int $fadeOutTicks = fadeOutTicks.orElse(20);
 
-        Component mainTitleComponent = LanguageHelper.getTextByValue(player, $mainTitle).asComponent();
-        Component subTitleComponent = LanguageHelper.getTextByValue(player, $subTitle).asComponent();
+        Component mainTitleComponent = LocaleHelper.getTextByValue(player, $mainTitle).asComponent();
+        Component subTitleComponent = LocaleHelper.getTextByValue(player, $subTitle).asComponent();
         Title.Times times = Title.Times.times(Ticks.duration($fadeInTicks), Ticks.duration($stayTicks), Ticks.duration($fadeOutTicks));
         Title title = Title.title(mainTitleComponent, subTitleComponent, times);
         player.showTitle(title);
 
-        LanguageHelper.sendMessageByKey(ctx.getSource(), "operation.success");
+        LocaleHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 }

@@ -1,6 +1,6 @@
 package io.github.sakurawald.core.structure;
 
-import io.github.sakurawald.core.auxiliary.minecraft.IdentifierHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.config.Configs;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,12 +26,12 @@ public class TeleportSetup {
 
     // circle
     public ServerWorld ofWorld() {
-        return IdentifierHelper.ofServerWorld(Identifier.of(this.dimension));
+        return RegistryHelper.ofServerWorld(Identifier.of(this.dimension));
     }
 
     public static @NotNull Optional<TeleportSetup> of(@NotNull ServerWorld world) {
         List<TeleportSetup> list = Configs.configHandler.model().modules.rtp.setup.dimension;
-        String dimension = IdentifierHelper.ofString(world);
+        String dimension = RegistryHelper.ofString(world);
         return list.stream().filter(o -> o.getDimension().equals(dimension)).findFirst();
     }
 }
