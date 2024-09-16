@@ -10,10 +10,9 @@ import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.core.structure.CommandPathMappingEntry;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import org.jetbrains.annotations.NotNull;
-
-import static net.minecraft.server.command.CommandManager.literal;
 
 public class CommandAliasInitializer extends ModuleInitializer {
 
@@ -41,11 +40,11 @@ public class CommandAliasInitializer extends ModuleInitializer {
                     return;
                 }
 
-                builder = literal(name).redirect(target);
+                builder = CommandManager.literal(name).redirect(target);
                 continue;
             }
 
-            builder = literal(name).then(builder);
+            builder = CommandManager.literal(name).then(builder);
         }
 
         dispatcher.register(builder);
