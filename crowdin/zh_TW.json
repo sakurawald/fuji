@@ -175,7 +175,7 @@
     "works.production_work.prop.sample_counter.empty": "<#A076F9> - 無任何物品",
     "works.production_work.prop.sample_counter.entry": "<#A076F9> - [物品] * %d (%.1f/h)",
     "works.production_work.prop.sample_dimension": "<#A076F9>採樣維度：%s",
-    "works.production_work.prop.sample_distance": "<#A076F9>採樣距離：%s",
+    "works.production_work.prop.sample_distance": "<#A076F9>採樣距離：%d",
     "works.production_work.prop.sample_end_time": "<#A076F9>採樣結束時間：%s",
     "works.production_work.prop.sample_start_time": "<#A076F9>採樣開始時間：%s",
     "works.production_work.sample.end": "<#FFA1F5>作品 %s (%s) 的產量測量已結束",
