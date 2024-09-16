@@ -20,8 +20,8 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import org.joml.Vector3f;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 public class NametagInitializer extends ModuleInitializer {
@@ -30,7 +30,7 @@ public class NametagInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        player2nametag = new HashMap<>();
+        player2nametag = new ConcurrentHashMap<>();
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new UpdateNametagJob().schedule());
     }
