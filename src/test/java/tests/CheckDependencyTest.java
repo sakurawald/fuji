@@ -17,23 +17,23 @@ import java.util.stream.Stream;
 public class CheckDependencyTest {
     private static final Path COMPILE_TIME_SOURCE_PATH = Path.of("src", "main", "java");
 
-    private static final String PREFIX_IO_GITHUB_SAKURAWALD = "io.github.sakurawald";
-    private static final String PREFIX_IO_GITHUB_SAKURAWALD_MODULE = "io.github.sakurawald.module";
+    private static final String PROJECT_PACKAGE = "io.github.sakurawald";
+    private static final String PROJECT_MODULE_PACKAGE = "io.github.sakurawald.module";
 
-    private static final Path COMPILE_TIME_MAIN_PACKAGE_PATH = COMPILE_TIME_SOURCE_PATH.resolve(PREFIX_IO_GITHUB_SAKURAWALD.replace(".", "/"));
+    private static final Path COMPILE_TIME_MAIN_PACKAGE_PATH = COMPILE_TIME_SOURCE_PATH.resolve(PROJECT_PACKAGE.replace(".", "/"));
 
-    private static final String PREFIX_JAVA = "java.";
-    private static final String PREFIX_ORG_JETBRAINS = "org.jetbrains";
-    private static final String PREFIX_LOMBOK = "lombok.";
+    private static final String JAVA_PACKAGE = "java.";
+    private static final String JETBRAINS_ANNOTATION_PACKAGE = "org.jetbrains";
+    private static final String LOMBOK_PACKAGE = "lombok.";
 
-    private static final String PREFIX_NET_MINECRAFT = "net.minecraft";
-    private static final String PREFIX_COM_MOJANG = "com.mojang";
+    private static final String NET_MINECRAFT_PACKAGE = "net.minecraft";
+    private static final String COM_MOJANG_PACKAGE = "com.mojang";
 
-    private static final String[] MOJANG_PACKAGES = new String[]{PREFIX_COM_MOJANG, PREFIX_NET_MINECRAFT};
+    private static final String[] MOJANG_PACKAGES = new String[]{COM_MOJANG_PACKAGE, NET_MINECRAFT_PACKAGE};
     private static final String[] BASE_PACKAGES = new String[]{
-        PREFIX_JAVA
-        , PREFIX_ORG_JETBRAINS
-        , PREFIX_LOMBOK
+        JAVA_PACKAGE
+        , JETBRAINS_ANNOTATION_PACKAGE
+        , LOMBOK_PACKAGE
         , MinecraftServer.class.getName()
         , ServerPlayerEntity.class.getName()
     };
@@ -55,7 +55,7 @@ public class CheckDependencyTest {
             .stream()
             .filter(dep -> {
                 dep.filterReference(
-                    PREFIX_IO_GITHUB_SAKURAWALD_MODULE
+                    PROJECT_MODULE_PACKAGE
                 );
                 dep.excludeReference(
                     ModuleInitializer.class.getName()
