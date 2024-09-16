@@ -38,22 +38,6 @@ public class CheckDependencyTest {
     }
 
     @Test
-    void testCoreConfigModelDependency() {
-        Stream<Dependency> dependencies = new ClassDependencyChecker().makeDependencies(
-                COMPILE_TIME_SOURCE_PATH.resolve("io/github/sakurawald/core/config"))
-            .stream()
-            .filter(dep -> {
-                dep.filterReference(PREFIX_COM_MOJANG);
-                return !dep.getReference().isEmpty();
-            });
-
-        dependencies.forEach(dep -> {
-            System.out.println(dep);
-            throw new RuntimeException("one config model in `core` package references mojang classes.");
-        });
-    }
-
-    @Test
     void testCoreDependency() {
         Stream<Dependency> dependencies = new ClassDependencyChecker().makeDependencies(
                 COMPILE_TIME_SOURCE_PATH.resolve("io/github/sakurawald/core"))
@@ -75,4 +59,21 @@ public class CheckDependencyTest {
             throw new RuntimeException("the `core` package references the `module` package.");
         });
     }
+
+    @Test
+    void testCoreConfigModelDependency() {
+        Stream<Dependency> dependencies = new ClassDependencyChecker().makeDependencies(
+                COMPILE_TIME_SOURCE_PATH.resolve("io/github/sakurawald/core/config"))
+            .stream()
+            .filter(dep -> {
+                dep.filterReference(PREFIX_COM_MOJANG);
+                return !dep.getReference().isEmpty();
+            });
+
+        dependencies.forEach(dep -> {
+            System.out.println(dep);
+            throw new RuntimeException("one config model in `core` package references mojang classes.");
+        });
+    }
+
 }

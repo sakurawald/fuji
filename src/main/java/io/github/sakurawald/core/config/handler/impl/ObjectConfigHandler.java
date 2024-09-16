@@ -59,7 +59,7 @@ public class ObjectConfigHandler<T> extends ConfigHandler<T> {
         try {
             // Should we generate a default config instance ?
             if (!file.exists()) {
-                LogUtil.info("Write default configuration to disk: {}", this.file.getAbsolutePath());
+                LogUtil.info("Write default configuration: {}", this.file.getAbsolutePath());
                 //noinspection ResultOfMethodCallIgnored
                 this.file.getParentFile().mkdirs();
                 this.model = configClass.getDeclaredConstructor().newInstance();
