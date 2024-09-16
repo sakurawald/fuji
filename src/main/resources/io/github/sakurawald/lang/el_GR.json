@@ -20,6 +20,7 @@
     "chat.xaero_waypoint_add.command": "/xaero_waypoint_add:Waypoint:·:%d:%s:%d:0:false:0:Internal_%s_waypoints",
     "cleaner.broadcast": "<red>The cleaner just finished cleaning. (%s entities)",
     "command.args.number_not_match": "<red>The number of args not matched.",
+    "command.console_only": "<red>This command can only be executed by the console.",
     "command.player_only": "<red>This command can only be executed by a player",
     "command_attachment.query.no_attachment": "<red>No attachments.",
     "command_cooldown.cooldown": "<yellow>%d s",
