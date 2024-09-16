@@ -99,9 +99,21 @@ public class LocaleHelper {
         }
     }
 
+    private String getCanonicalLanguage(String input) {
+        if (input == null || !input.contains("_")) {
+            return input;
+        }
+
+        String[] parts = input.split("_");
+
+        String language = parts[0].toLowerCase();
+        String region = parts[1].toUpperCase();
+        return language + "_" + region;
+    }
+
     private @NotNull String getClientSideLanguage(@Nullable Object audience) {
         String defaultLanguage = Configs.configHandler.model().core.language.default_language;
-        if (audience == null) return defaultLanguage;
+        if (audience == null) return getCanonicalLanguage(defaultLanguage);
 
         PlayerEntity player = switch (audience) {
             case ServerPlayerEntity serverPlayerEntity -> serverPlayerEntity;
@@ -111,7 +123,7 @@ public class LocaleHelper {
         };
 
         // always use default_language for non-player object.
-        return player == null ? defaultLanguage : player2lang.getOrDefault(player.getGameProfile().getName(), defaultLanguage);
+        return getCanonicalLanguage(player == null ? defaultLanguage : player2lang.getOrDefault(player.getGameProfile().getName(), defaultLanguage));
     }
 
     private @NotNull JsonObject getLanguageJsonObject(String lang) {
@@ -132,7 +144,7 @@ public class LocaleHelper {
 
         /* use fallback language if the client-side language is not supported in the server-side. */
         if (json == UNSUPPORTED_LANGUAGE_MARKER) {
-            lang = Configs.configHandler.model().core.language.default_language;
+            lang = getCanonicalLanguage(Configs.configHandler.model().core.language.default_language);
             json = getLanguageJsonObject(lang);
         }
 

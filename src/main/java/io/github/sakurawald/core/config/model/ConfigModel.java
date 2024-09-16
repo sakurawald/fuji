@@ -34,7 +34,7 @@ public class ConfigModel {
         }
 
         public static class Language {
-            public String default_language = "en_us";
+            public String default_language = "en_US";
         }
 
         public static class Debug {
