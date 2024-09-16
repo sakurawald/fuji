@@ -49,7 +49,7 @@ public class CheckDependencyTest {
 
         dependencies.forEach(dep -> {
             System.out.println(dep);
-            throw new RuntimeException("one config model references mojang classes.");
+            throw new RuntimeException("one config model in `core` package references mojang classes.");
         });
     }
 
