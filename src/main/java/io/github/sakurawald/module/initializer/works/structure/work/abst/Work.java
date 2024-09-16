@@ -219,8 +219,8 @@ public abstract class Work {
         return ret;
     }
 
-
     public static class WorkTypeAdapter implements JsonDeserializer<Work> {
+
         @Override
         public @Nullable Work deserialize(@NotNull JsonElement json, Type typeOfT, @NotNull JsonDeserializationContext context) throws JsonParseException {
             String type = json.getAsJsonObject().get("type").getAsString();
