@@ -202,6 +202,9 @@ tasks.register('compileLatex') {
 }
 tasks.compileLatex.dependsOn(processLatex)
 
+/* generate graph */
+tasks.runServer.dependsOn(test)
+
 /* copy translation files into resource directory */
 tasks.register('copyTranslationFiles', Copy) {
     outputs.upToDateWhen { false }
@@ -222,6 +225,3 @@ tasks.register('copyTranslationFiles', Copy) {
 }
 tasks.runServer.dependsOn(copyTranslationFiles)
 
-
-/* generate graph */
-tasks.runServer.dependsOn(test)
