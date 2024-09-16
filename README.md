@@ -21,7 +21,8 @@ Download a copy of [fuji-manual.pdf](
 https://github.com/sakurawald/fuji/raw/dev/docs/release/fuji.pdf)
 
 ## Contribution
-Help us translate the language files, see: [crowdin-project](https://crowdin.com/project/fuji-fabric)
+
+Help us translate this project, see: [crowdin-project](https://crowdin.com/project/fuji-fabric)
 
 ## Credit
 
