@@ -23,6 +23,4 @@ What is the actual behavior?
 
 
 Please upload the server logs using https://mclo.gs/
-```
-Here is my server logs link: 
-```
+Yes, my logs link is: 
