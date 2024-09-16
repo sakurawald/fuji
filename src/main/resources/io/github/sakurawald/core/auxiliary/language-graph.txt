@@ -1,3 +1,3 @@
-en_us.json
-zh_tw.json
-zh_cn.json
+en_US.json
+zh_CN.json
+zh_TW.json
