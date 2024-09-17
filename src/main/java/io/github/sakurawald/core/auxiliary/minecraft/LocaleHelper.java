@@ -194,7 +194,7 @@ public class LocaleHelper {
 
     public static @NotNull String resolvePlaceholder(@Nullable Object audience, String value) {
         Component component = LocaleHelper.getText(PLACEHOLDER_PARSER, audience, false, value).asComponent();
-        return PlainTextComponentSerializer.plainText().serialize(component);
+        return flatten(component);
     }
 
     /* This is the core method to map `String` into `Component`.
