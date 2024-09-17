@@ -10,30 +10,30 @@ import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
+import java.nio.file.Path;
 
 
 public class ObjectConfigurationHandler<T> extends ConfigurationHandler<T> {
 
     final Class<T> typeOfModel;
 
-    private ObjectConfigurationHandler(File file, Class<T> typeOfModel) {
-        super(file);
-        this.file = file;
+    private ObjectConfigurationHandler(Path path, Class<T> typeOfModel) {
+        super(path);
         this.typeOfModel = typeOfModel;
     }
 
     public ObjectConfigurationHandler(@NotNull String other, Class<T> typeOfModel) {
-        this(Fuji.CONFIG_PATH.resolve(other).toFile(), typeOfModel);
+        this(Fuji.CONFIG_PATH.resolve(other), typeOfModel);
     }
 
     public void loadFromDisk() {
         // Does the file exist?
         try {
-            if (!file.exists()) {
+            if (!path.toFile().exists()) {
                 saveToDisk();
             } else {
                 // read older json from disk
-                @Cleanup Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this.file)));
+                @Cleanup Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this.path.toFile())));
                 JsonElement currentJsonElement = JsonParser.parseReader(reader);
 
                 // merge older json with newer json
@@ -56,15 +56,15 @@ public class ObjectConfigurationHandler<T> extends ConfigurationHandler<T> {
     public void saveToDisk() {
         try {
             // Should we generate a default config instance ?
-            if (!file.exists()) {
-                LogUtil.info("write default configuration: {}", this.file.getAbsolutePath());
+            if (!this.path.toFile().exists()) {
+                LogUtil.info("write default configuration: {}", this.path.toFile().getAbsolutePath());
                 //noinspection ResultOfMethodCallIgnored
-                this.file.getParentFile().mkdirs();
+                this.path.toFile().getParentFile().mkdirs();
                 this.model = typeOfModel.getDeclaredConstructor().newInstance();
             }
 
             // Save.
-            JsonWriter jsonWriter = gson.newJsonWriter(new BufferedWriter(new FileWriter(this.file)));
+            JsonWriter jsonWriter = gson.newJsonWriter(new BufferedWriter(new FileWriter(this.path.toFile())));
             gson.toJson(this.model, typeOfModel, jsonWriter);
             jsonWriter.close();
         } catch (Exception e) {
