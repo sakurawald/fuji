@@ -12,8 +12,8 @@ import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
 import io.github.sakurawald.core.command.argument.wrapper.impl.DimensionType;
 import io.github.sakurawald.core.command.exception.AbortOperationException;
 import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
-import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
+import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.world.config.model.WorldModel;
 import io.github.sakurawald.module.initializer.world.structure.DimensionEntry;
@@ -47,7 +47,7 @@ import java.util.Optional;
 @CommandRequirement(level = 4)
 public class WorldInitializer extends ModuleInitializer {
 
-    private final ConfigHandler<WorldModel> storage = new ObjectConfigHandler<>("world.json", WorldModel.class);
+    private final ConfigurationHandler<WorldModel> storage = new ObjectConfigurationHandler<>("world.json", WorldModel.class);
 
     @Override
     public void onInitialize() {

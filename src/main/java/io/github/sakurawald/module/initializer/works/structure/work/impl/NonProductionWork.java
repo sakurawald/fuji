@@ -15,7 +15,7 @@ public class NonProductionWork extends Work {
 
     @Override
     protected @NotNull String getType() {
-        return WorkTypeAdapter.WorkType.NonProductionWork.name();
+        return Work.WorkType.NonProductionWork.name();
     }
 
     @Override

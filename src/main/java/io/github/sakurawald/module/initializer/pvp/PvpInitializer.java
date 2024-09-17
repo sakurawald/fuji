@@ -5,8 +5,8 @@ import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
-import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
+import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.pvp.config.model.PvPModel;
 import net.minecraft.server.command.ServerCommandSource;
@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class PvpInitializer extends ModuleInitializer {
 
-    public static final ConfigHandler<PvPModel> pvpHandler = new ObjectConfigHandler<>("pvp.json", PvPModel.class);
+    public static final ConfigurationHandler<PvPModel> pvpHandler = new ObjectConfigurationHandler<>("pvp.json", PvPModel.class);
 
     @Override
     public void onInitialize() {

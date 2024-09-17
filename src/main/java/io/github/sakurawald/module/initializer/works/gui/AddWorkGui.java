@@ -4,7 +4,7 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
+import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
 import io.github.sakurawald.core.gui.InputSignGui;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;
 import io.github.sakurawald.module.initializer.works.config.model.WorksModel;
@@ -36,7 +36,7 @@ public class AddWorkGui extends InputSignGui {
         selectWorkTypeGui.setTitle(LocaleHelper.getTextByKey(player, "works.work.add.select_work_type.title"));
         GuiHelper.fill(selectWorkTypeGui, GuiHelper.Item.PLACEHOLDER);
 
-        ConfigHandler<WorksModel> worksHandler = WorksInitializer.worksHandler;
+        ConfigurationHandler<WorksModel> worksHandler = WorksInitializer.worksHandler;
         selectWorkTypeGui.setSlot(11, new GuiElementBuilder().setItem(Items.GUNPOWDER).setName(LocaleHelper.getTextByKey(player, "works.non_production_work.name")).setCallback(() -> {
             // add
             worksHandler.model().works.addFirst(new NonProductionWork(player, name));

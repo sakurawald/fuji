@@ -5,7 +5,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonWriter;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
+import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
 import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,16 +13,16 @@ import java.io.*;
 import java.nio.file.Files;
 
 
-public class ResourceConfigHandler extends ConfigHandler<JsonElement> {
+public class ResourceConfigurationHandler extends ConfigurationHandler<JsonElement> {
 
     final String resourcePath;
 
-    public ResourceConfigHandler(File file, String resourcePath) {
+    public ResourceConfigurationHandler(File file, String resourcePath) {
         super(file);
         this.resourcePath = resourcePath;
     }
 
-    public ResourceConfigHandler(@NotNull String resourcePath) {
+    public ResourceConfigurationHandler(@NotNull String resourcePath) {
         this(Fuji.CONFIG_PATH.resolve(resourcePath).toFile(), resourcePath);
     }
 
@@ -37,7 +37,7 @@ public class ResourceConfigHandler extends ConfigHandler<JsonElement> {
                 JsonElement olderJsonElement = JsonParser.parseReader(reader);
 
                 // merge older json with newer json
-                JsonElement newerJsonElement = ResourceConfigHandler.getJsonElement(this.resourcePath);
+                JsonElement newerJsonElement = ResourceConfigurationHandler.getJsonElement(this.resourcePath);
                 assert newerJsonElement != null;
 
                 mergeJson(olderJsonElement, newerJsonElement);
@@ -59,7 +59,7 @@ public class ResourceConfigHandler extends ConfigHandler<JsonElement> {
             if (!file.exists()) {
                 LogUtil.info("write default configuration: {}", this.file.getAbsolutePath());
                 Files.createDirectories(this.file.getParentFile().toPath());
-                this.model = ResourceConfigHandler.getJsonElement(this.resourcePath);
+                this.model = ResourceConfigurationHandler.getJsonElement(this.resourcePath);
             }
 
             // Save.

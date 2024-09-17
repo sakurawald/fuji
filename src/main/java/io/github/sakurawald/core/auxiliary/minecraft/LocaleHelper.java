@@ -13,7 +13,7 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.core.config.handler.impl.ResourceConfigHandler;
+import io.github.sakurawald.core.config.handler.impl.ResourceConfigurationHandler;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.audience.Audience;
@@ -71,7 +71,7 @@ public class LocaleHelper {
 
     private static void writeDefaultLanguageFiles() {
         for (String languageFile : ReflectionUtil.getGraph(ReflectionUtil.LANGUAGE_GRAPH_FILE_NAME)) {
-            new ResourceConfigHandler("lang/" + languageFile).loadFromDisk();
+            new ResourceConfigurationHandler("lang/" + languageFile).loadFromDisk();
         }
     }
 
