@@ -51,10 +51,6 @@ public abstract class Work {
     public float pitch;
     public @Nullable String icon;
 
-    static {
-        ConfigurationHandler.registerTypeAdapter(Work.class, new WorkTypeAdapter());
-    }
-
     @SuppressWarnings("unused")
     public Work() {
         // for gson

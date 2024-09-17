@@ -10,6 +10,7 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.works.config.model.WorksModel;
 import io.github.sakurawald.module.initializer.works.gui.WorksGui;
 import io.github.sakurawald.module.initializer.works.job.WorksScheduleJob;
+import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -21,6 +22,7 @@ public class WorksInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
+        ConfigurationHandler.registerTypeAdapter(Work.class, new Work.WorkTypeAdapter());
         worksHandler.loadFromDisk();
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new WorksScheduleJob(new JobDataMap() {
             {
