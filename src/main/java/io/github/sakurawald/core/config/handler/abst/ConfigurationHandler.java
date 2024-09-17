@@ -9,12 +9,10 @@ import com.jayway.jsonpath.spi.json.GsonJsonProvider;
 import com.jayway.jsonpath.spi.json.JsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
 import com.jayway.jsonpath.spi.mapper.MappingProvider;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.JsonUtil;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.config.job.SaveConfigurationHandlerJob;
 import io.github.sakurawald.core.manager.Managers;
-import lombok.Cleanup;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -50,28 +48,32 @@ public abstract class ConfigurationHandler<T> {
         .serializeNulls()
         .create();
 
-    protected File file;
+    protected @NotNull File file;
     protected @Nullable T model;
     protected boolean alreadyBackup;
 
-    protected static ParseContext jsonPathParser = null;
-    static {
-        configureJsonPathLibrary();
+    private static ParseContext jsonPathParser = null;
+
+    public static ParseContext getJsonPathParser() {
+        if (jsonPathParser == null) {
+            configureJsonPathLibrary();
+            jsonPathParser = JsonPath.using(Configuration.defaultConfiguration());
+        }
+
+        return jsonPathParser;
     }
 
     private static void configureJsonPathLibrary() {
         Configuration.setDefaults(new Configuration.Defaults() {
-            private final JsonProvider jsonProvider = new GsonJsonProvider();
-            private final MappingProvider mappingProvider = new GsonMappingProvider();
 
             @Override
             public JsonProvider jsonProvider() {
-                return jsonProvider;
+                return new GsonJsonProvider();
             }
 
             @Override
             public MappingProvider mappingProvider() {
-                return mappingProvider;
+                return new GsonMappingProvider();
             }
 
             @Override
@@ -85,29 +87,8 @@ public abstract class ConfigurationHandler<T> {
         gson = gson.newBuilder().registerTypeAdapter(type, typeAdapter).create();
     }
 
-    public static ParseContext getJsonPathParser() {
-        if (jsonPathParser == null) {
-            jsonPathParser = JsonPath.using(Configuration.defaultConfiguration());
-        }
-
-        return jsonPathParser;
-    }
-
-    public ConfigurationHandler(File file) {
+    public ConfigurationHandler(@NotNull File file) {
         this.file = file;
-    }
-
-    public static @Nullable JsonElement getJsonElement(@NotNull String resourcePath) {
-        try {
-            InputStream inputStream = Fuji.class.getResourceAsStream(resourcePath);
-            assert inputStream != null;
-            @Cleanup Reader reader = new BufferedReader(new InputStreamReader(inputStream));
-            return JsonParser.parseReader(reader);
-        } catch (Exception e) {
-            LogUtil.error(e.getMessage());
-        }
-
-        return null;
     }
 
     public abstract void loadFromDisk();
@@ -126,6 +107,9 @@ public abstract class ConfigurationHandler<T> {
         return gson.toJsonTree(this.model);
     }
 
+    /**
+     * This method exists for performance purpose.
+     */
     public void setAutoSaveJob(@NotNull String cron) {
         String jobName = this.file.getName();
         new SaveConfigurationHandlerJob(jobName, new JobDataMap() {

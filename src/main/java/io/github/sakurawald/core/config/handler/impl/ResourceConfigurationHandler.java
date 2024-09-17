@@ -8,6 +8,7 @@ import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
 import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -26,6 +27,19 @@ public class ResourceConfigurationHandler extends ConfigurationHandler<JsonEleme
         this(Fuji.CONFIG_PATH.resolve(resourcePath).toFile(), resourcePath);
     }
 
+    private static @Nullable JsonElement getJsonElement(@NotNull String resourcePath) {
+        try {
+            InputStream inputStream = Fuji.class.getResourceAsStream(resourcePath);
+            assert inputStream != null;
+            @Cleanup Reader reader = new BufferedReader(new InputStreamReader(inputStream));
+            return JsonParser.parseReader(reader);
+        } catch (Exception e) {
+            LogUtil.error(e.getMessage());
+        }
+
+        return null;
+    }
+
     public void loadFromDisk() {
         // Does the file exist?
         try {
@@ -37,7 +51,7 @@ public class ResourceConfigurationHandler extends ConfigurationHandler<JsonEleme
                 JsonElement olderJsonElement = JsonParser.parseReader(reader);
 
                 // merge older json with newer json
-                JsonElement newerJsonElement = ResourceConfigurationHandler.getJsonElement(this.resourcePath);
+                JsonElement newerJsonElement = getJsonElement(this.resourcePath);
                 assert newerJsonElement != null;
 
                 mergeJson(olderJsonElement, newerJsonElement);
@@ -59,7 +73,7 @@ public class ResourceConfigurationHandler extends ConfigurationHandler<JsonEleme
             if (!file.exists()) {
                 LogUtil.info("write default configuration: {}", this.file.getAbsolutePath());
                 Files.createDirectories(this.file.getParentFile().toPath());
-                this.model = ResourceConfigurationHandler.getJsonElement(this.resourcePath);
+                this.model = getJsonElement(this.resourcePath);
             }
 
             // Save.
