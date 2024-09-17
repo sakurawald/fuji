@@ -46,17 +46,17 @@ public class CleanerInitializer extends ModuleInitializer {
 
         var config = Configs.configHandler.model().modules.cleaner.ignore;
 
-        if (config.ignoreItemEntity && entity instanceof ItemEntity) return true;
-        if (config.ignoreLivingEntity && entity.isLiving()) return true;
-        if (config.ignoreNamedEntity) {
+        if (config.ignore_item_entity && entity instanceof ItemEntity) return true;
+        if (config.ignore_living_entity && entity.isLiving()) return true;
+        if (config.ignore_named_entity) {
             if (entity.hasCustomName()) return true;
             if (entity instanceof ItemEntity ie && ie.getStack().get(DataComponentTypes.CUSTOM_NAME) != null)
                 return true;
         }
-        if (config.ignoreEntityWithVehicle && entity.hasVehicle()) return true;
-        if (config.ignoreEntityWithPassengers && entity.hasPassengers()) return true;
-        if (config.ignoreGlowingEntity && entity.isGlowing()) return true;
-        if (config.ignoreLeashedEntity && entity instanceof Leashable leashable && leashable.isLeashed()) return true;
+        if (config.ignore_entity_with_vehicle && entity.hasVehicle()) return true;
+        if (config.ignore_entity_with_passengers && entity.hasPassengers()) return true;
+        if (config.ignore_glowing_entity && entity.isGlowing()) return true;
+        if (config.ignore_leashed_entity && entity instanceof Leashable leashable && leashable.isLeashed()) return true;
 
         return false;
     }

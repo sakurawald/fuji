@@ -1137,13 +1137,13 @@ public class ConfigModel {
             public Ignore ignore = new Ignore();
 
             public static class Ignore {
-                public boolean ignoreItemEntity = false;
-                public boolean ignoreLivingEntity = true;
-                public boolean ignoreNamedEntity = true;
-                public boolean ignoreEntityWithVehicle = true;
-                public boolean ignoreEntityWithPassengers = true;
-                public boolean ignoreGlowingEntity = true;
-                public boolean ignoreLeashedEntity = true;
+                public boolean ignore_item_entity = false;
+                public boolean ignore_living_entity = true;
+                public boolean ignore_named_entity = true;
+                public boolean ignore_entity_with_vehicle = true;
+                public boolean ignore_entity_with_passengers = true;
+                public boolean ignore_glowing_entity = true;
+                public boolean ignore_leashed_entity = true;
             }
         }
 
