@@ -19,8 +19,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.quartz.JobDataMap;
 
-import java.io.*;
 import java.lang.reflect.Type;
+import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.Scanner;
@@ -48,7 +48,7 @@ public abstract class ConfigurationHandler<T> {
         .serializeNulls()
         .create();
 
-    protected @NotNull File file;
+    protected @NotNull Path path;
     @Getter
     protected @Nullable T model;
     protected boolean alreadyBackup;
@@ -88,8 +88,8 @@ public abstract class ConfigurationHandler<T> {
         gson = gson.newBuilder().registerTypeAdapter(type, typeAdapter).create();
     }
 
-    public ConfigurationHandler(@NotNull File file) {
-        this.file = file;
+    public ConfigurationHandler(@NotNull Path path) {
+        this.path = path;
     }
 
     public abstract void loadFromDisk();
@@ -108,7 +108,7 @@ public abstract class ConfigurationHandler<T> {
      * This method exists for performance purpose.
      */
     public void setAutoSaveJob(@NotNull String cron) {
-        String jobName = this.file.getName();
+        String jobName = this.path.toFile().getName();
         new SaveConfigurationHandlerJob(jobName, new JobDataMap() {
             {
                 this.put(ConfigurationHandler.class.getName(), ConfigurationHandler.this);
@@ -153,7 +153,7 @@ public abstract class ConfigurationHandler<T> {
                 // note: for JsonArray, we will not directly set array elements, but we will add new properties for every array element (language default empty-value). e.g. For List<ExamplePojo>, we will never change the size of this list, but we will add missing properties for every ExamplePojo with the language default empty-value.
                 if (!currentJson.has(key)) {
                     currentJson.add(key, value);
-                    LogUtil.warn("add missing json key-value pair: file = {}, key = {}, value = {}", this.file.getName(), key, value);
+                    LogUtil.warn("add missing json key-value pair: file = {}, key = {}, value = {}", this.path.toFile().getName(), key, value);
                 }
             }
         }
@@ -182,7 +182,7 @@ public abstract class ConfigurationHandler<T> {
               - Automatically:
                 If you want to `back up the folder` and `delete the key`, press "y" and enter. (y/n)
 
-            """, file.getAbsoluteFile(), currentPath, file.getAbsoluteFile(), currentPath);
+            """, this.path.toFile().getAbsoluteFile(), currentPath, this.path.toFile().getAbsoluteFile(), currentPath);
 
         /* ynop query */
         Scanner scanner = new Scanner(System.in);
