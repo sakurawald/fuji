@@ -51,8 +51,8 @@ public class LocaleHelper {
 
     private static final FabricServerAudiences ADVENTURE_INSTANCE = FabricServerAudiences.of(ServerHelper.getDefaultServer());
 
-    private static final Map<String, String> player2lang = new HashMap<>();
-    private static final Map<String, JsonObject> lang2json = new HashMap<>();
+    private static final Map<String, String> player2code = new HashMap<>();
+    private static final Map<String, JsonObject> code2json = new HashMap<>();
     private static final JsonObject UNSUPPORTED_LANGUAGE_MARKER = new JsonObject();
 
     static {
@@ -70,36 +70,37 @@ public class LocaleHelper {
     }
 
     private static void writeDefaultLanguageFiles() {
-        for (String lang : ReflectionUtil.getGraph(ReflectionUtil.LANGUAGE_GRAPH_FILE_NAME)) {
-            new ResourceConfigHandler("lang/" + lang).loadFromDisk();
+        for (String languageFile : ReflectionUtil.getGraph(ReflectionUtil.LANGUAGE_GRAPH_FILE_NAME)) {
+            new ResourceConfigHandler("lang/" + languageFile).loadFromDisk();
         }
     }
 
     // clear the map to remove `UNSUPPORTED LANGUAGE`
-    public static void forgetLoadedLanguages() {
-        lang2json.clear();
+    public static void clearLoadedLanguageJsons() {
+        code2json.clear();
     }
 
-    public static void setClientSideLanguage(String playerName, String language) {
-        player2lang.put(playerName, language);
+    public static void setClientSideLanguageCode(String playerName, String languageRepresentationUsedByMojang) {
+        // mojang network protocol use a strange language representation, mojang use `en_us` instead of `en_US`
+        player2code.put(playerName, convertToLanguageCode(languageRepresentationUsedByMojang));
     }
 
-    private static void loadLanguageIfAbsent(String lang) {
-        if (lang2json.containsKey(lang)) return;
+    private static void loadLanguageJsonIfAbsent(String languageCode) {
+        if (code2json.containsKey(languageCode)) return;
 
         InputStream is;
         try {
-            is = FileUtils.openInputStream(Fuji.CONFIG_PATH.resolve("lang").resolve(lang + ".json").toFile());
+            is = FileUtils.openInputStream(Fuji.CONFIG_PATH.resolve("lang").resolve(languageCode + ".json").toFile());
 
-            lang2json.put(lang, JsonParser.parseReader(new InputStreamReader(is)).getAsJsonObject());
-            LogUtil.info("language {} loaded.", lang);
+            code2json.put(languageCode, JsonParser.parseReader(new InputStreamReader(is)).getAsJsonObject());
+            LogUtil.info("language {} loaded.", languageCode);
         } catch (IOException e) {
-            lang2json.put(lang, UNSUPPORTED_LANGUAGE_MARKER);
-            LogUtil.warn("failed to load language `{}`", lang);
+            code2json.put(languageCode, UNSUPPORTED_LANGUAGE_MARKER);
+            LogUtil.warn("failed to load language `{}`", languageCode);
         }
     }
 
-    private String getCanonicalLanguage(String input) {
+    private String convertToLanguageCode(String input) {
         if (input == null || !input.contains("_")) {
             return input;
         }
@@ -111,9 +112,8 @@ public class LocaleHelper {
         return language + "_" + region;
     }
 
-    private @NotNull String getClientSideLanguage(@Nullable Object audience) {
-        String defaultLanguage = Configs.configHandler.model().core.language.default_language;
-        if (audience == null) return getCanonicalLanguage(defaultLanguage);
+    private @NotNull String getClientSideLanguageCode(@Nullable Object audience) {
+        if (audience == null) return getDefaultLanguageCode();
 
         PlayerEntity player = switch (audience) {
             case ServerPlayerEntity serverPlayerEntity -> serverPlayerEntity;
@@ -123,40 +123,62 @@ public class LocaleHelper {
         };
 
         // always use default_language for non-player object.
-        return getCanonicalLanguage(player == null ? defaultLanguage : player2lang.getOrDefault(player.getGameProfile().getName(), defaultLanguage));
+        if (player == null) return getDefaultLanguageCode();
+
+        return player2code.getOrDefault(player.getGameProfile().getName(), getDefaultLanguageCode());
     }
 
-    private @NotNull JsonObject getLanguageJsonObject(String lang) {
+    private @NotNull JsonObject getLanguageJsonObject(String languageCode) {
         // load language object from disk for the first time
-        if (!lang2json.containsKey(lang)) {
-            loadLanguageIfAbsent(lang);
-        }
+        loadLanguageJsonIfAbsent(languageCode);
 
-        return lang2json.get(lang);
+        return code2json.get(languageCode);
     }
+
 
     public static @NotNull String getValue(@Nullable Object audience, String key) {
-        /* get lang */
-        String lang = getClientSideLanguage(audience);
+        String languageCode = getClientSideLanguageCode(audience);
 
+        String value = getValue(languageCode, key);
+        if (value != null) return value;
+
+        // always fallback string for missing keys
+        String fallbackValue = "(no key `%s` in language `%s`)".formatted(key, languageCode);
+        LogUtil.warn("{} triggered by {}", fallbackValue, audience);
+        return fallbackValue;
+    }
+
+    private static String getDefaultLanguageCode() {
+        // allow user to write `en_us` in `config.json`.
+        return convertToLanguageCode(Configs.configHandler.model().core.language.default_language);
+    }
+
+    private static boolean isDefaultLanguageCode(String languageCode) {
+        return languageCode.equals(getDefaultLanguageCode());
+    }
+
+    private static @Nullable String getValue(String languageCode, String key) {
         /* get json */
-        JsonObject json = getLanguageJsonObject(lang);
+        JsonObject languageJson = getLanguageJsonObject(languageCode);
 
         /* use fallback language if the client-side language is not supported in the server-side. */
-        if (json == UNSUPPORTED_LANGUAGE_MARKER) {
-            lang = getCanonicalLanguage(Configs.configHandler.model().core.language.default_language);
-            json = getLanguageJsonObject(lang);
+        if (languageJson == UNSUPPORTED_LANGUAGE_MARKER) {
+            languageCode = getDefaultLanguageCode();
+            languageJson = getLanguageJsonObject(languageCode);
         }
 
         /* get value */
-        if (json.has(key)) {
-            return json.get(key).getAsString();
+        if (languageJson.has(key)) {
+            return languageJson.get(key).getAsString();
         }
 
-        // always fallback string for missing keys
-        String fallbackString = "(no key `%s` in language `%s`)".formatted(key, lang);
-        LogUtil.warn("{} triggered by {}", fallbackString, audience);
-        return fallbackString;
+        // use partial locale
+        if (!isDefaultLanguageCode(languageCode)) {
+            return getValue(getDefaultLanguageCode(), key);
+        }
+
+        // if the language key is missing in the default language, then we have nothing to do.
+        return null;
     }
 
     public static @NotNull String getValue(@Nullable Object audience, String key, Object... args) {

@@ -7,24 +7,20 @@ assignees: ''
 
 ---
 
-**To Reproduce**
-Steps to reproduce the behavior:
+How to Reproduce the bug?
 
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
 
-**Actual behavior**
-A clear and concise description of what the bug is.
 
-**Environment (please complete the following information):**
+What is the expected behavior?
 
-- Fabric Loader Version: 
-- Fuji version:
 
-**Additional context**
-Add any other context about the problem here.
+
+
+What is the actual behavior?
+
+
+
+
+Please upload the server logs using https://mclo.gs/
+Yes, my logs link is: 

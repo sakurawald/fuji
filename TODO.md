@@ -12,4 +12,3 @@
 - add: a lisp-like DSL, including a parse, transformer, analyzer, code-walker, with some built-in functions: predicate,
   equal...
 - feature: add a json transformer layer for config read function, to provides some version migration help.
-- add: the locale integration with crowin..
