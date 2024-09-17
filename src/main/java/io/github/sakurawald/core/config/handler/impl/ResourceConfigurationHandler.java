@@ -70,8 +70,7 @@ public class ResourceConfigurationHandler extends ConfigurationHandler<JsonEleme
 
     public void writeDisk() {
         try {
-            // Should we generate a default config instance ?
-            if (Files.notExists(this.path)) {
+            if (this.model == null) {
                 LogUtil.info("write default configuration: {}", this.path.toFile().getAbsolutePath());
                 Files.createDirectories(this.path.toFile().getParentFile().toPath());
                 this.model = readJsonTreeFromResource(this.resourcePath);
