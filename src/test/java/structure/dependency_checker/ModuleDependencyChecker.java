@@ -11,15 +11,15 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModuleDependencyChecker extends ClassDependencyChecker {
+public class ModuleDependencyChecker extends FileDependencyChecker {
 
     public static final JsonElement rcConfig = ConfigHandler.getGson().toJsonTree(new ConfigModel());
 
-    private Dependency groupSymbol(Dependency classRef) {
-        String definition = String.join(".", ModuleManager.computeModulePath(rcConfig, classRef.getDefinition()));
+    private @Nullable Dependency groupSymbol(Dependency dep) {
+        String definition = String.join(".", ModuleManager.computeModulePath(rcConfig, dep.getDefinition()));
         List<String> referenceList = new ArrayList<>();
 
-        for (String ref : classRef.getReference()) {
+        for (String ref : dep.getReference()) {
             String reference = String.join(".", ModuleManager.computeModulePath(rcConfig, ref));
             // skip -> common reference
             if (reference.equals(ModuleManager.CORE_MODULE_ROOT)) continue;

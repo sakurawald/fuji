@@ -6,7 +6,7 @@ import io.github.sakurawald.module.mixin.GlobalMixinConfigPlugin;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.junit.jupiter.api.Test;
-import structure.dependency_checker.ClassDependencyChecker;
+import structure.dependency_checker.FileDependencyChecker;
 import structure.dependency_checker.Dependency;
 import structure.dependency_checker.ModuleDependencyChecker;
 
@@ -50,7 +50,7 @@ public class CheckDependencyTest {
 
     @Test
     void testCoreDependency() {
-        Stream<Dependency> dependencies = new ClassDependencyChecker().makeDependencies(
+        Stream<Dependency> dependencies = new FileDependencyChecker().makeDependencies(
                 COMPILE_TIME_MAIN_PACKAGE_PATH.resolve("core"))
             .stream()
             .filter(dep -> {
@@ -73,7 +73,7 @@ public class CheckDependencyTest {
 
     @Test
     void testCoreConfigDependency() {
-        Stream<Dependency> dependencies = new ClassDependencyChecker().makeDependencies(
+        Stream<Dependency> dependencies = new FileDependencyChecker().makeDependencies(
                 COMPILE_TIME_MAIN_PACKAGE_PATH.resolve("core").resolve("config"))
             .stream()
             .filter(dep -> {
@@ -89,7 +89,7 @@ public class CheckDependencyTest {
 
     @Test
     void testCoreManagerDependency() {
-        Stream<Dependency> dependencies = new ClassDependencyChecker().makeDependencies(
+        Stream<Dependency> dependencies = new FileDependencyChecker().makeDependencies(
                 COMPILE_TIME_MAIN_PACKAGE_PATH.resolve("core").resolve("manager"))
             .stream()
             .filter(dep -> {
@@ -107,7 +107,7 @@ public class CheckDependencyTest {
 
     @Test
     void testCoreJobDependency() {
-        Stream<Dependency> dependencies = new ClassDependencyChecker().makeDependencies(
+        Stream<Dependency> dependencies = new FileDependencyChecker().makeDependencies(
                 COMPILE_TIME_MAIN_PACKAGE_PATH.resolve("core").resolve("job"))
             .stream()
             .filter(dep -> {

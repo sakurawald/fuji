@@ -10,7 +10,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 
-public abstract class DependencyChecker {
+public abstract class BaseDependencyChecker {
 
     private @NotNull List<Dependency> reduce(@NotNull List<Dependency> deps) {
         // merge
@@ -34,7 +34,7 @@ public abstract class DependencyChecker {
 
     @SneakyThrows
     public List<Dependency> makeDependencies(Path dir) {
-        /* per class reference */
+        /* make */
         List<Dependency> dependencies = new ArrayList<>();
 
         Files.walkFileTree(dir, new SimpleFileVisitor<>() {
