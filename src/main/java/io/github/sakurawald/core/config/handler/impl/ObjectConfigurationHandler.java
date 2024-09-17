@@ -1,16 +1,10 @@
 package io.github.sakurawald.core.config.handler.impl;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonWriter;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
-import lombok.Cleanup;
+import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 
@@ -27,46 +21,10 @@ public class ObjectConfigurationHandler<T> extends BaseConfigurationHandler<T> {
         this(Fuji.CONFIG_PATH.resolve(other), typeOfModel);
     }
 
-    public void readDisk() {
-        try {
-            if (Files.notExists(this.path)) {
-                writeDisk();
-            } else {
-                // read data tree from disk
-                @Cleanup Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this.path.toFile())));
-                JsonElement dataTree = JsonParser.parseReader(reader);
-
-                // merge data tree with schema tree
-                T defaultJsonInstance = typeOfModel.getDeclaredConstructor().newInstance();
-                JsonElement schemaTree = gson.toJsonTree(defaultJsonInstance, typeOfModel);
-                mergeJsonTree(dataTree, schemaTree);
-
-                // use merged tree
-                this.model = gson.fromJson(dataTree, typeOfModel);
-            }
-
-        } catch (Exception e) {
-            LogUtil.error("failed to read configuration file {} from disk.", this.path, e);
-        }
-    }
-
-
-    public void writeDisk() {
-        try {
-            // set default data tree
-            if (this.model == null) {
-                LogUtil.info("write default configuration: {}", this.path.toFile().getAbsolutePath());
-                this.model = typeOfModel.getDeclaredConstructor().newInstance();
-            }
-
-            // write data tree to disk
-            Files.createDirectories(this.path.getParent());
-            JsonWriter jsonWriter = gson.newJsonWriter(new BufferedWriter(new FileWriter(this.path.toFile())));
-            gson.toJson(this.model, typeOfModel, jsonWriter);
-            jsonWriter.close();
-        } catch (Exception e) {
-            LogUtil.error("failed to write configuration file {} to disk.", this.path, e);
-        }
+    @SneakyThrows
+    @Override
+    public T getDefaultModel() {
+        return typeOfModel.getDeclaredConstructor().newInstance();
     }
 
 }
