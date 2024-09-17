@@ -35,7 +35,6 @@ import java.util.regex.Pattern;
  * I write some rules here to avoid forgetting.
  * 1. Only use static inner class in config model java object, this is because a historical design problem in java.
  * 2. The new gson type adapter should be registered before the call to loadFromDisk()
- *
  */
 public abstract class ConfigurationHandler<T> {
 
@@ -43,8 +42,13 @@ public abstract class ConfigurationHandler<T> {
 
     @Getter
     protected static Gson gson = new GsonBuilder()
+        // the default naming policy is IDENTIFY, we ensure that the naming style is consistency, whatever the internal name is.
+        .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+        // for human
         .setPrettyPrinting()
+        // for mini-message language
         .disableHtmlEscaping()
+        // null-value is value, we should serialize it.
         .serializeNulls()
         .create();
 
