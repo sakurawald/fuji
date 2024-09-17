@@ -28,7 +28,7 @@ public class ResourceConfigurationHandler extends ConfigurationHandler<JsonEleme
         this(Fuji.CONFIG_PATH.resolve(resourcePath), resourcePath);
     }
 
-    private static @Nullable JsonElement getJsonElement(@NotNull String resourcePath) {
+    private static @Nullable JsonElement readJsonTreeFromResource(@NotNull String resourcePath) {
         try {
             InputStream inputStream = Fuji.class.getResourceAsStream(resourcePath);
             assert inputStream != null;
@@ -44,7 +44,7 @@ public class ResourceConfigurationHandler extends ConfigurationHandler<JsonEleme
     public void readFromDisk() {
         // Does the file exist?
         try {
-            if (!path.toFile().exists()) {
+            if (Files.notExists(this.path)) {
                 writeToDisk();
             } else {
                 // read older json from disk
@@ -52,10 +52,10 @@ public class ResourceConfigurationHandler extends ConfigurationHandler<JsonEleme
                 JsonElement olderJsonElement = JsonParser.parseReader(reader);
 
                 // merge older json with newer json
-                JsonElement newerJsonElement = getJsonElement(this.resourcePath);
+                JsonElement newerJsonElement = readJsonTreeFromResource(this.resourcePath);
                 assert newerJsonElement != null;
 
-                mergeJson(olderJsonElement, newerJsonElement);
+                mergeJsonTree(olderJsonElement, newerJsonElement);
 
                 // read merged json
                 model = olderJsonElement;
@@ -74,7 +74,7 @@ public class ResourceConfigurationHandler extends ConfigurationHandler<JsonEleme
             if (!this.path.toFile().exists()) {
                 LogUtil.info("write default configuration: {}", this.path.toFile().getAbsolutePath());
                 Files.createDirectories(this.path.toFile().getParentFile().toPath());
-                this.model = getJsonElement(this.resourcePath);
+                this.model = readJsonTreeFromResource(this.resourcePath);
             }
 
             // Save.

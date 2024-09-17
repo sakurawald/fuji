@@ -20,7 +20,7 @@ import java.util.*;
 public class ModuleManager extends BaseManager {
 
     public static final String CORE_MODULE_ROOT = "core";
-    private static JsonElement RC_CONFIG = null;
+    private static JsonElement RC_JSON_TREE = null;
     private final Map<Class<? extends ModuleInitializer>, ModuleInitializer> moduleRegistry = new HashMap<>();
     private final Map<List<String>, Boolean> module2enable = new HashMap<>();
 
@@ -127,7 +127,7 @@ public class ModuleManager extends BaseManager {
 
         // check enable-supplier
         boolean enable = true;
-        JsonObject parent = RC_CONFIG.getAsJsonObject().get("modules").getAsJsonObject();
+        JsonObject parent = RC_JSON_TREE.getAsJsonObject().get("modules").getAsJsonObject();
         for (String node : modulePath) {
             parent = parent.getAsJsonObject(node);
 
@@ -148,11 +148,11 @@ public class ModuleManager extends BaseManager {
     }
 
     public static @NotNull List<String> computeModulePath(@NotNull String className) {
-        if (RC_CONFIG == null) {
-            RC_CONFIG = Configs.configHandler.toJsonElement();
+        if (RC_JSON_TREE == null) {
+            RC_JSON_TREE = Configs.configHandler.convertModelToJsonTree();
         }
 
-        return computeModulePath(RC_CONFIG, className);
+        return computeModulePath(RC_JSON_TREE, className);
     }
 
     /**
