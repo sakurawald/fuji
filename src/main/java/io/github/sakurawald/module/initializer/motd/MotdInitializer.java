@@ -30,17 +30,17 @@ public class MotdInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        setMotd(Configs.configHandler.model().modules.motd.list);
+        setMotd(Configs.configHandler.getModel().modules.motd.list);
     }
 
     @Override
     public void onReload() {
-        setMotd(Configs.configHandler.model().modules.motd.list);
+        setMotd(Configs.configHandler.getModel().modules.motd.list);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public @NotNull Optional<ServerMetadata.Favicon> getRandomIcon() {
-        if (!Configs.configHandler.model().modules.motd.icon.enable) {
+        if (!Configs.configHandler.getModel().modules.motd.icon.enable) {
             return Optional.empty();
         }
 

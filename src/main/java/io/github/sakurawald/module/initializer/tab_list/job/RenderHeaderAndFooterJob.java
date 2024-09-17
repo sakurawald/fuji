@@ -9,7 +9,7 @@ import org.quartz.JobExecutionContext;
 public class RenderHeaderAndFooterJob extends CronJob {
 
     public RenderHeaderAndFooterJob() {
-        super(() -> Configs.configHandler.model().modules.tab_list.update_cron);
+        super(() -> Configs.configHandler.getModel().modules.tab_list.update_cron);
     }
 
     @Override

@@ -17,7 +17,7 @@ public class CommandCooldownInitializer extends ModuleInitializer {
         // find the matched cooldown-entry
         HashMap<String, Long> commandRegex2LastExecutedTimeMS = map.computeIfAbsent(player, k -> new HashMap<>());
         long leftTime = 0;
-        for (Map.Entry<String, Long> entry : Configs.configHandler.model().modules.command_cooldown.regex2ms.entrySet()) {
+        for (Map.Entry<String, Long> entry : Configs.configHandler.getModel().modules.command_cooldown.regex2ms.entrySet()) {
             if (!commandLine.matches(entry.getKey())) continue;
 
             long commandLineLastExecutedTimeMS = commandRegex2LastExecutedTimeMS.computeIfAbsent(entry.getKey(), k -> 0L);

@@ -15,7 +15,7 @@ public class ServerPlayerEntityMixin {
     @Inject(method = "onDeath", at = @At("HEAD"))
     public void onPlayerDeath(DamageSource damageSource, CallbackInfo ci) {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-        CommandExecutor.executeSpecializedCommand(player, Configs.configHandler.model().modules.command_event.event.on_player_death.command_list);
+        CommandExecutor.executeSpecializedCommand(player, Configs.configHandler.getModel().modules.command_event.event.on_player_death.command_list);
     }
 
 }

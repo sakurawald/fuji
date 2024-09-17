@@ -8,7 +8,11 @@
 - feature: let command attachment module supports entity and block.
 - feature: write a DSL for command alias module, so that the module can support command argument, and maybe the ability
   to change the order of argument.
-- add: a command-suit/command-sequence/command-bundle module, to execute commands.
+- add: a sleep module. (controls the sleep behaviour)
+- add: a command-suit/command-sequence/command-bundle module, to execute commands. (/rules, /vote)
+- feature: /tppos --offlinePos
 - add: a lisp-like DSL, including a parse, transformer, analyzer, code-walker, with some built-in functions: predicate,
   equal...
+- remove: unused language keys in language files.
+
 - feature: add a json transformer layer for config read function, to provides some version migration help.

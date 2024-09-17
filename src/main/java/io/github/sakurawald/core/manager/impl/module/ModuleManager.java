@@ -108,7 +108,7 @@ public class ModuleManager extends BaseManager {
 
     private boolean shouldWeEnableThis(@NotNull List<String> modulePath) {
         // special case 1
-        if (Configs.configHandler.model().core.debug.disable_all_modules) return false;
+        if (Configs.configHandler.getModel().core.debug.disable_all_modules) return false;
 
         // special case 2
         if (modulePath.getFirst().equals(CORE_MODULE_ROOT)) return true;

@@ -32,7 +32,7 @@ public class ScheduleJobArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(Parameter parameter) {
         return super.makeRequiredArgumentBuilder(parameter).suggests((context, builder) -> {
-            CommandSchedulerInitializer.getSchedulerHandler().model().scheduleJobs.forEach(job -> builder.suggest(job.getName()));
+            CommandSchedulerInitializer.getSchedulerHandler().getModel().scheduleJobs.forEach(job -> builder.suggest(job.getName()));
             return builder.buildFuture();
         });
     }

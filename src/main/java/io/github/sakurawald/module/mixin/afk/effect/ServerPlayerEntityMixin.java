@@ -39,7 +39,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     public void move(MovementType movementType, Vec3d vec3d) {
 
         AfkStateAccessor afkStateAccessor = (AfkStateAccessor) player;
-        if (!Configs.configHandler.model().modules.afk.effect.moveable && afkStateAccessor.fuji$isAfk()) {
+        if (!Configs.configHandler.getModel().modules.afk.effect.moveable && afkStateAccessor.fuji$isAfk()) {
             double originalX = player.getX();
             double originalY = player.getY();
             double originalZ = player.getZ();

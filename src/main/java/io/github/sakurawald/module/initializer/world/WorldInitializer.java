@@ -56,7 +56,7 @@ public class WorldInitializer extends ModuleInitializer {
     }
 
     public void loadWorlds(@NotNull MinecraftServer server) {
-        for (DimensionEntry dimensionEntry : storage.model().dimension_list) {
+        for (DimensionEntry dimensionEntry : storage.getModel().dimension_list) {
             if (!dimensionEntry.isEnable()) continue;
 
             Identifier dimensionType = Identifier.of(dimensionEntry.getDimensionType());
@@ -92,7 +92,7 @@ public class WorldInitializer extends ModuleInitializer {
         long $seed = seed.orElse(RandomSeed.getSeed());
         WorldManager.requestToCreateWorld(ServerHelper.getDefaultServer(), dimensionIdentifier, dimensionTypeIdentifier, $seed);
 
-        storage.model().dimension_list.add(new DimensionEntry(true, dimensionIdentifier.toString(), dimensionTypeIdentifier.toString(), $seed));
+        storage.getModel().dimension_list.add(new DimensionEntry(true, dimensionIdentifier.toString(), dimensionTypeIdentifier.toString(), $seed));
         storage.saveToDisk();
 
         LocaleHelper.sendBroadcastByKey("world.dimension.created", dimensionIdentifier);
@@ -110,12 +110,12 @@ public class WorldInitializer extends ModuleInitializer {
 
         WorldManager.requestToDeleteWorld(world);
 
-        Optional<DimensionEntry> first = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
+        Optional<DimensionEntry> first = storage.getModel().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
         if (first.isEmpty()) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found");
             return CommandHelper.Return.FAIL;
         }
-        storage.model().dimension_list.remove(first.get());
+        storage.getModel().dimension_list.remove(first.get());
         storage.saveToDisk();
 
         LocaleHelper.sendBroadcastByKey("world.dimension.deleted", identifier);
@@ -123,7 +123,7 @@ public class WorldInitializer extends ModuleInitializer {
     }
 
     private void checkBlacklist(CommandContext<ServerCommandSource> ctx, String identifier) {
-        if (Configs.configHandler.model().modules.world.blacklist.dimension_list.contains(identifier)) {
+        if (Configs.configHandler.getModel().modules.world.blacklist.dimension_list.contains(identifier)) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.blacklist", identifier);
             throw new AbortOperationException();
         }
@@ -137,7 +137,7 @@ public class WorldInitializer extends ModuleInitializer {
         String identifier = RegistryHelper.ofString(world);
         checkBlacklist(ctx, identifier);
 
-        Optional<DimensionEntry> first = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
+        Optional<DimensionEntry> first = storage.getModel().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
         if (first.isEmpty()) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found");
             return CommandHelper.Return.FAIL;

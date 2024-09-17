@@ -70,7 +70,7 @@ public class TopChunksInitializer extends ModuleInitializer {
             }
 
             /* send output */
-            ConfigModel.Modules.TopChunks topChunks = Configs.configHandler.model().modules.top_chunks;
+            ConfigModel.Modules.TopChunks topChunks = Configs.configHandler.getModel().modules.top_chunks;
             calculateNearestPlayer(ctx.getSource(), PQ, topChunks.top.rows * topChunks.top.columns);
 
             TextComponent.Builder textComponentBuilder = Component.text();
@@ -97,7 +97,7 @@ public class TopChunksInitializer extends ModuleInitializer {
             World world = chunkScore.getDimension();
             ChunkPos chunkPos = chunkScore.getChunkPos();
             BlockPos blockPos = chunkPos.getStartPos();
-            PlayerEntity nearestPlayer = world.getClosestPlayer(blockPos.getX(), blockPos.getY(), blockPos.getZ(), Configs.configHandler.model().modules.top_chunks.nearest_distance, false);
+            PlayerEntity nearestPlayer = world.getClosestPlayer(blockPos.getX(), blockPos.getY(), blockPos.getZ(), Configs.configHandler.getModel().modules.top_chunks.nearest_distance, false);
             if (nearestPlayer != null) {
                 chunkScore.getPlayers().add(LocaleHelper.getValue(source, "top_chunks.prop.players.nearest", nearestPlayer.getGameProfile().getName()));
             }

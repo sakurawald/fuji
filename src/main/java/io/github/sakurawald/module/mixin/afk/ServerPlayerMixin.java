@@ -55,7 +55,7 @@ public abstract class ServerPlayerMixin extends PlayerEntity implements AfkState
     public Text $getPlayerListName(Text original) {
         AfkStateAccessor accessor = (AfkStateAccessor) player;
         if (accessor.fuji$isAfk()) {
-            return LocaleHelper.getTextByValue(player, Configs.configHandler.model().modules.afk.format);
+            return LocaleHelper.getTextByValue(player, Configs.configHandler.getModel().modules.afk.format);
         }
 
         return original;
@@ -74,7 +74,7 @@ public abstract class ServerPlayerMixin extends PlayerEntity implements AfkState
         this.server.getPlayerManager().sendToAll(new PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME, (ServerPlayerEntity) (Object) this));
 
         // trigger event
-        ConfigModel.Modules.Afk.AfkEvent afkEvent = Configs.configHandler.model().modules.afk.afk_event;
+        ConfigModel.Modules.Afk.AfkEvent afkEvent = Configs.configHandler.getModel().modules.afk.afk_event;
         List<String> commandList = this.afk ? afkEvent.on_enter_afk : afkEvent.on_leave_afk;
         CommandExecutor.executeSpecializedCommand(player, commandList);
     }

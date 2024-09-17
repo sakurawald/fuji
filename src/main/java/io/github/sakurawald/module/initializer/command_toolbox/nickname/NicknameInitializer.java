@@ -26,7 +26,7 @@ public class NicknameInitializer extends ModuleInitializer {
     @CommandNode("set")
     private int $set(@CommandSource ServerPlayerEntity player, GreedyString format) {
             String name = player.getGameProfile().getName();
-            nicknameHandler.model().format.player2format.put(name, format.getValue());
+            nicknameHandler.getModel().format.player2format.put(name, format.getValue());
             nicknameHandler.saveToDisk();
 
             LocaleHelper.sendMessageByKey(player, "nickname.set");
@@ -36,7 +36,7 @@ public class NicknameInitializer extends ModuleInitializer {
     @CommandNode("reset")
     private int $reset(@CommandSource ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
-        nicknameHandler.model().format.player2format.remove(name);
+        nicknameHandler.getModel().format.player2format.remove(name);
         nicknameHandler.saveToDisk();
 
         LocaleHelper.sendMessageByKey(player, "nickname.unset");

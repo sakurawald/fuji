@@ -23,7 +23,7 @@ public abstract class EntityMixin {
         Entity entity = (Entity) (Object) this;
         String id = RegistryHelper.ofString(entity);
 
-        if (Configs.configHandler.model().modules.anti_build.anti.interact_entity.id.contains(id)
+        if (Configs.configHandler.getModel().modules.anti_build.anti.interact_entity.id.contains(id)
             && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_entity", id))
         ) {
 

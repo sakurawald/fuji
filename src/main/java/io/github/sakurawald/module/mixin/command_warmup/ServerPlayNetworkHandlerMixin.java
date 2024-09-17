@@ -23,7 +23,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
 
     @Unique
     public int getMs(@NotNull String commandLine) {
-        for (Map.Entry<String, Integer> entry : Configs.configHandler.model().modules.command_warmup.regex2ms.entrySet()) {
+        for (Map.Entry<String, Integer> entry : Configs.configHandler.getModel().modules.command_warmup.regex2ms.entrySet()) {
             if (!commandLine.matches(entry.getKey())) continue;
             return entry.getValue();
         }

@@ -55,7 +55,7 @@ public class InteractModifierMixin {
     public void rightClickToSit(@NotNull ServerPlayerEntity player, @NotNull World world, ItemStack stack, Hand hand, @NotNull BlockHitResult hitResult, @NotNull CallbackInfoReturnable<ActionResult> callbackInfoReturnable) {
 
         /* conditioner */
-        var config = Configs.configHandler.model().modules.command_toolbox.sit;
+        var config = Configs.configHandler.getModel().modules.command_toolbox.sit;
 
         if (!config.allow_right_click_sit) return;
         if (!config.allow_sneaking_to_sit && player.isSneaking()) return;

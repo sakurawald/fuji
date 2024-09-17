@@ -23,7 +23,7 @@ public abstract class ShowTabListBodyStyleMixin {
     Text modifyPlayerListName(@Nullable Text original) {
         // respect other's modification.
         if (original == null) {
-            return LocaleHelper.getTextByValue(player, RandomUtil.drawList(Configs.configHandler.model().modules.tab_list.style.body));
+            return LocaleHelper.getTextByValue(player, RandomUtil.drawList(Configs.configHandler.getModel().modules.tab_list.style.body));
         }
 
         return original;

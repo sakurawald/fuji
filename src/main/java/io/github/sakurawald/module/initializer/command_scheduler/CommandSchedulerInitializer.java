@@ -25,7 +25,7 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
 
     private void updateJobs() {
         Managers.getScheduleManager().deleteJobs(CommandScheduleJob.class);
-        schedulerHandler.model().scheduleJobs.forEach(scheduleJob -> {
+        schedulerHandler.getModel().scheduleJobs.forEach(scheduleJob -> {
             if (scheduleJob.isEnable()) {
                 scheduleJob.getCrons().forEach(cron -> new CommandScheduleJob(new JobDataMap() {
                     {
@@ -53,7 +53,7 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
 
     @CommandNode("trigger")
     private int $trigger(ScheduleJobName jobName) {
-        schedulerHandler.model().scheduleJobs.forEach(job -> {
+        schedulerHandler.getModel().scheduleJobs.forEach(job -> {
             if (job.getName().equals(jobName.getValue())) {
                 job.trigger();
             }

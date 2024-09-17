@@ -36,7 +36,7 @@ public class TabListInitializer extends ModuleInitializer {
 
     public static void render(@NotNull MinecraftServer server) {
 
-        ConfigModel.Modules.TabList config = Configs.configHandler.model().modules.tab_list;
+        ConfigModel.Modules.TabList config = Configs.configHandler.getModel().modules.tab_list;
         String headerControl = RandomUtil.drawList(config.style.header);
         String footerControl = RandomUtil.drawList(config.style.footer);
         for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
