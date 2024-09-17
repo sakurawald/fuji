@@ -8,7 +8,7 @@ public class LanguageInitializer extends ModuleInitializer {
 
     @Override
     public void onReload() {
-        LocaleHelper.forgetLoadedLanguages();
+        LocaleHelper.clearLoadedLanguageJsons();
     }
 
 }
