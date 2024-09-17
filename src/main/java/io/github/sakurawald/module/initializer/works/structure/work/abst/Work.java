@@ -10,6 +10,7 @@ import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
 import io.github.sakurawald.core.gui.ConfirmGui;
 import io.github.sakurawald.core.gui.InputSignGui;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;
@@ -34,7 +35,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Data
-
 public abstract class Work {
 
     public String type;
@@ -50,6 +50,10 @@ public abstract class Work {
     public float yaw;
     public float pitch;
     public @Nullable String icon;
+
+    static {
+        ConfigurationHandler.registerTypeAdapter(Work.class, new WorkTypeAdapter());
+    }
 
     @SuppressWarnings("unused")
     public Work() {
@@ -219,18 +223,22 @@ public abstract class Work {
         return ret;
     }
 
+    public enum WorkType {NonProductionWork, ProductionWork}
+
     public static class WorkTypeAdapter implements JsonDeserializer<Work> {
 
         @Override
         public @Nullable Work deserialize(@NotNull JsonElement json, Type typeOfT, @NotNull JsonDeserializationContext context) throws JsonParseException {
             String type = json.getAsJsonObject().get("type").getAsString();
+
             if (type.equals(WorkType.NonProductionWork.name()))
                 return context.deserialize(json, NonProductionWork.class);
-            if (type.equals(WorkType.ProductionWork.name())) return context.deserialize(json, ProductionWork.class);
+            if (type.equals(WorkType.ProductionWork.name()))
+                return context.deserialize(json, ProductionWork.class);
+
             return null;
         }
 
-        public enum WorkType {NonProductionWork, ProductionWork}
     }
 }
 
