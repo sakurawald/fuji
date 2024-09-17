@@ -60,7 +60,6 @@ public class CheckDependencyTest {
                 dep.excludeReference(
                     ModuleInitializer.class.getName()
                     , GlobalMixinConfigPlugin.class.getName()
-                    , Work.class.getName()
                 );
                 return !dep.getReference().isEmpty();
             });
