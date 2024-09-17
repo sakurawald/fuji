@@ -10,21 +10,20 @@ import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 
 
 public class ObjectConfigurationHandler<T> extends ConfigurationHandler<T> {
 
-    final Class<T> configClass;
+    final Class<T> typeOfModel;
 
-    public ObjectConfigurationHandler(File file, Class<T> configClass) {
+    private ObjectConfigurationHandler(File file, Class<T> typeOfModel) {
         super(file);
         this.file = file;
-        this.configClass = configClass;
+        this.typeOfModel = typeOfModel;
     }
 
-    public ObjectConfigurationHandler(@NotNull String child, Class<T> configClass) {
-        this(new File(Fuji.CONFIG_PATH.toString(), child), configClass);
+    public ObjectConfigurationHandler(@NotNull String other, Class<T> typeOfModel) {
+        this(Fuji.CONFIG_PATH.resolve(other).toFile(), typeOfModel);
     }
 
     public void loadFromDisk() {
@@ -38,18 +37,17 @@ public class ObjectConfigurationHandler<T> extends ConfigurationHandler<T> {
                 JsonElement currentJsonElement = JsonParser.parseReader(reader);
 
                 // merge older json with newer json
-                T defaultJsonInstance = configClass.getDeclaredConstructor().newInstance();
-                JsonElement defaultJsonElement = gson.toJsonTree(defaultJsonInstance, configClass);
+                T defaultJsonInstance = typeOfModel.getDeclaredConstructor().newInstance();
+                JsonElement defaultJsonElement = gson.toJsonTree(defaultJsonInstance, typeOfModel);
                 mergeJson(currentJsonElement, defaultJsonElement);
 
                 // read merged json
-                model = gson.fromJson(currentJsonElement, configClass);
+                model = gson.fromJson(currentJsonElement, typeOfModel);
 
                 this.saveToDisk();
             }
 
-        } catch (IOException | NoSuchMethodException | InstantiationException | IllegalAccessException |
-                 InvocationTargetException e) {
+        } catch (Exception e) {
             LogUtil.error("load config failed: ", e);
         }
     }
@@ -62,15 +60,14 @@ public class ObjectConfigurationHandler<T> extends ConfigurationHandler<T> {
                 LogUtil.info("write default configuration: {}", this.file.getAbsolutePath());
                 //noinspection ResultOfMethodCallIgnored
                 this.file.getParentFile().mkdirs();
-                this.model = configClass.getDeclaredConstructor().newInstance();
+                this.model = typeOfModel.getDeclaredConstructor().newInstance();
             }
 
             // Save.
             JsonWriter jsonWriter = gson.newJsonWriter(new BufferedWriter(new FileWriter(this.file)));
-            gson.toJson(this.model, configClass, jsonWriter);
+            gson.toJson(this.model, typeOfModel, jsonWriter);
             jsonWriter.close();
-        } catch (IOException | InstantiationException | NoSuchMethodException | IllegalAccessException |
-                 InvocationTargetException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

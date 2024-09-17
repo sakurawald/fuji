@@ -12,7 +12,7 @@ import com.jayway.jsonpath.spi.mapper.MappingProvider;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.JsonUtil;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.config.job.SaveConfigHandlerJob;
+import io.github.sakurawald.core.config.job.SaveConfigurationHandlerJob;
 import io.github.sakurawald.core.manager.Managers;
 import lombok.Cleanup;
 import lombok.Getter;
@@ -23,8 +23,6 @@ import org.quartz.JobDataMap;
 
 import java.io.*;
 import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.Scanner;
@@ -57,15 +55,12 @@ public abstract class ConfigurationHandler<T> {
     protected boolean alreadyBackup;
 
     protected static ParseContext jsonPathParser = null;
-
-    public static void registerTypeAdapter(Type type, Object typeAdapter) {
-        gson = gson.newBuilder().registerTypeAdapter(type, typeAdapter).create();
+    static {
+        configureJsonPathLibrary();
     }
 
-    static {
-
-        // configure json path library
-        Configuration.setDefaults(new com.jayway.jsonpath.Configuration.Defaults() {
+    private static void configureJsonPathLibrary() {
+        Configuration.setDefaults(new Configuration.Defaults() {
             private final JsonProvider jsonProvider = new GsonJsonProvider();
             private final MappingProvider mappingProvider = new GsonMappingProvider();
 
@@ -84,6 +79,10 @@ public abstract class ConfigurationHandler<T> {
                 return EnumSet.noneOf(Option.class);
             }
         });
+    }
+
+    public static void registerTypeAdapter(Type type, Object typeAdapter) {
+        gson = gson.newBuilder().registerTypeAdapter(type, typeAdapter).create();
     }
 
     public static ParseContext getJsonPathParser() {
@@ -115,7 +114,6 @@ public abstract class ConfigurationHandler<T> {
 
     public abstract void saveToDisk();
 
-
     public T model() {
         return this.model;
     }
@@ -128,30 +126,16 @@ public abstract class ConfigurationHandler<T> {
         return gson.toJsonTree(this.model);
     }
 
-    @SuppressWarnings("unused")
-    public void backupFromDisk() {
-        if (!file.exists()) return;
-        String originalFileName = file.getName();
-        String backupFileName = originalFileName + ".bak";
-        String backupFilePath = file.getParent() + File.separator + backupFileName;
-        File backupFile = new File(backupFilePath);
-        try {
-            Files.copy(file.toPath(), backupFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            LogUtil.error("backup file failed: {}", e.getMessage());
-        }
-    }
-
     public void setAutoSaveJob(@NotNull String cron) {
         String jobName = this.file.getName();
-        new SaveConfigHandlerJob(jobName, new JobDataMap() {
+        new SaveConfigurationHandlerJob(jobName, new JobDataMap() {
             {
                 this.put(ConfigurationHandler.class.getName(), ConfigurationHandler.this);
             }
         }, () -> cron).schedule();
     }
 
-    public void mergeJson(@NotNull JsonElement oldJson, @NotNull JsonElement newJson) {
+    protected void mergeJson(@NotNull JsonElement oldJson, @NotNull JsonElement newJson) {
         if (!oldJson.isJsonObject() || !newJson.isJsonObject()) {
             throw new IllegalArgumentException("Both elements must be JSON objects.");
         }
