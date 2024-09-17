@@ -23,12 +23,12 @@ public class SeenInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        data.loadFromDisk();
+        data.readFromDisk();
     }
 
     @Override
     public void onReload() {
-        data.loadFromDisk();
+        data.readFromDisk();
     }
 
     @CommandNode("seen")
