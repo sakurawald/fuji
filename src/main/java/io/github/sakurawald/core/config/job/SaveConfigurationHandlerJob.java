@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 
+import java.sql.SQLOutput;
 import java.util.function.Supplier;
 
 @NoArgsConstructor
@@ -19,6 +20,7 @@ public class SaveConfigurationHandlerJob extends CronJob {
 
     @Override
     public void execute(@NotNull JobExecutionContext context) {
+        // the debug() function is not guaranteed to be printed while shutdown the jvm.
         LogUtil.debug("save configuration file {}", context.getJobDetail().getKey().getName());
 
         ConfigurationHandler<?> configHandler = (ConfigurationHandler<?>) context.getJobDetail().getJobDataMap().get(ConfigurationHandler.class.getName());

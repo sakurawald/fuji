@@ -40,6 +40,7 @@ public class ScheduleManager extends BaseManager {
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> Managers.getScheduleManager().startScheduler());
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
+            LogUtil.info("trigger configuration file saving jobs.");
             Managers.getScheduleManager().triggerJobs(SaveConfigurationHandlerJob.class.getName());
             Managers.getScheduleManager().shutdownScheduler();
         });
