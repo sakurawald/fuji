@@ -11,7 +11,7 @@ public class UpdateNametagJob extends CronJob {
     private final NametagInitializer nametagInitializer = Managers.getModuleManager().getInitializer(NametagInitializer.class);
 
     public UpdateNametagJob() {
-        super(() -> Configs.configHandler.model().modules.nametag.update_cron);
+        super(() -> Configs.configHandler.getModel().modules.nametag.update_cron);
     }
 
     @Override

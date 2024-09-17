@@ -105,7 +105,7 @@ public class NametagInitializer extends ModuleInitializer {
 
     private void updateNametag(DisplayEntity.TextDisplayEntity nametag, ServerPlayerEntity player) {
         /* update props of nametag entity */
-        var config = Configs.configHandler.model().modules.nametag;
+        var config = Configs.configHandler.getModel().modules.nametag;
 
         nametag.setBillboardMode(DisplayEntity.BillboardMode.CENTER);
 

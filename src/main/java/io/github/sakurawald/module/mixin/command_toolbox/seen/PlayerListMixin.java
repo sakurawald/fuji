@@ -20,7 +20,7 @@ public abstract class PlayerListMixin {
 
     @Inject(method = "remove", at = @At("TAIL"))
     private void savePlayerDisconnectedTime(@NotNull ServerPlayerEntity player, CallbackInfo ci) {
-        module.getData().model().player2seen.put(player.getGameProfile().getName(), System.currentTimeMillis());
+        module.getData().getModel().player2seen.put(player.getGameProfile().getName(), System.currentTimeMillis());
         module.getData().saveToDisk();
     }
 

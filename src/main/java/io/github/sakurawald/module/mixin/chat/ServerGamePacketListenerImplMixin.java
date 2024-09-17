@@ -28,7 +28,7 @@ public abstract class ServerGamePacketListenerImplMixin {
     public @NotNull SignedMessage modifyChatMessageSentByPlayers(@NotNull SignedMessage original) {
         String string = original.getContent().getString();
 
-        if (Configs.configHandler.model().modules.chat.spy.output_unparsed_message_into_console) {
+        if (Configs.configHandler.getModel().modules.chat.spy.output_unparsed_message_into_console) {
             LogUtil.info("[chat spy] <{}> {}", player.getGameProfile().getName(), string);
         }
 

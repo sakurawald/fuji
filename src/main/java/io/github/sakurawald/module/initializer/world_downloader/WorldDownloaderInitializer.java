@@ -38,7 +38,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        contextQueue = EvictingQueue.create(Configs.configHandler.model().modules.world_downloader.context_cache_size);
+        contextQueue = EvictingQueue.create(Configs.configHandler.getModel().modules.world_downloader.context_cache_size);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         }
 
         try {
-            server = HttpServer.create(new InetSocketAddress(Configs.configHandler.model().modules.world_downloader.port), 0);
+            server = HttpServer.create(new InetSocketAddress(Configs.configHandler.getModel().modules.world_downloader.port), 0);
             server.start();
         } catch (IOException e) {
             LogUtil.error("failed to start http server: {}", e.getMessage());
@@ -86,9 +86,9 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         }
 
         /* create context */
-        String url = Configs.configHandler.model().modules.world_downloader.url_format;
+        String url = Configs.configHandler.getModel().modules.world_downloader.url_format;
 
-        int port = Configs.configHandler.model().modules.world_downloader.port;
+        int port = Configs.configHandler.getModel().modules.world_downloader.port;
         url = url.replace("%port%", String.valueOf(port));
 
         String path = "/download/" + UUID.randomUUID();
@@ -98,7 +98,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         File file = compressRegionFile(player);
         double BYTE_TO_MEGABYTE = 1.0 * 1024 * 1024;
         LocaleHelper.sendBroadcastByKey("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
-        server.createContext(path, new FileDownloadHandler(this, file, Configs.configHandler.model().modules.world_downloader.bytes_per_second_limit));
+        server.createContext(path, new FileDownloadHandler(this, file, Configs.configHandler.getModel().modules.world_downloader.bytes_per_second_limit));
         LocaleHelper.sendMessageByKey(player, "world_downloader.response", url);
         return CommandHelper.Return.SUCCESS;
     }

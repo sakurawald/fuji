@@ -23,7 +23,7 @@ import java.util.concurrent.CompletableFuture;
 public class ShellInitializer extends ModuleInitializer {
 
     private void checkSecurity(CommandContext<ServerCommandSource> ctx) {
-        var config = Configs.configHandler.model().modules.command_meta.shell;
+        var config = Configs.configHandler.getModel().modules.command_meta.shell;
 
         if (!config.enable_warning.equals("CONFIRM")) {
             throw new AbortOperationException("Refuse to execute shell command: please read the official wiki.");

@@ -3,6 +3,7 @@
 We reference source and ideas from the following projects:
 - https://github.com/BradBot1/FabricSit
 - https://github.com/EssentialsX/Essentials/
+- https://github.com/ForgeEssentials/ForgeEssentials
 - https://github.com/John-Paul-R/Essential-Commands
 - https://github.com/NucleusPowered/Nucleus
 - https://github.com/PotatoPresident/HeadIndex

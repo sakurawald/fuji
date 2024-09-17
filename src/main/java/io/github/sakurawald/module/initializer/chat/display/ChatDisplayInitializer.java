@@ -80,7 +80,7 @@ public class ChatDisplayInitializer extends ModuleInitializer {
             if (audience instanceof ServerCommandSource css && css.getPlayer() != null) {
                 DisplayHelper.viewDisplay(css.getPlayer(), displayUUID);
             }
-        }, ClickCallback.Options.builder().lifetime(Duration.of(Configs.configHandler.model().modules.chat.display.expiration_duration_s, ChronoUnit.SECONDS))
+        }, ClickCallback.Options.builder().lifetime(Duration.of(Configs.configHandler.getModel().modules.chat.display.expiration_duration_s, ChronoUnit.SECONDS))
             .uses(Integer.MAX_VALUE).build());
     }
 

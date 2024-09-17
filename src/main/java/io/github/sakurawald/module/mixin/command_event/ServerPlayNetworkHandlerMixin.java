@@ -20,6 +20,6 @@ public class ServerPlayNetworkHandlerMixin {
 
     @Inject(at = @At("HEAD"), method = "onDisconnected")
     private void onPlayerLeft(DisconnectionInfo disconnectionInfo, CallbackInfo ci) {
-        CommandExecutor.executeSpecializedCommand(player, Configs.configHandler.model().modules.command_event.event.on_player_left.command_list);
+        CommandExecutor.executeSpecializedCommand(player, Configs.configHandler.getModel().modules.command_event.event.on_player_left.command_list);
     }
 }

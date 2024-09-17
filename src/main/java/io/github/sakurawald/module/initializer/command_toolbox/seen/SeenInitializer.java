@@ -36,8 +36,8 @@ public class SeenInitializer extends ModuleInitializer {
     private int $seen(@CommandSource CommandContext<ServerCommandSource> ctx, OfflinePlayerName playerName) {
         String target = playerName.getValue();
 
-        if (data.model().player2seen.containsKey(target)) {
-            Long time = data.model().player2seen.get(target);
+        if (data.getModel().player2seen.containsKey(target)) {
+            Long time = data.getModel().player2seen.get(target);
             LocaleHelper.sendMessageByKey(ctx.getSource(), "seen.success", target, DateUtil.toStandardDateFormat(time));
         } else {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "seen.fail");

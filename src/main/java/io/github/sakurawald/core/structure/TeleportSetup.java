@@ -30,7 +30,7 @@ public class TeleportSetup {
     }
 
     public static @NotNull Optional<TeleportSetup> of(@NotNull ServerWorld world) {
-        List<TeleportSetup> list = Configs.configHandler.model().modules.rtp.setup.dimension;
+        List<TeleportSetup> list = Configs.configHandler.getModel().modules.rtp.setup.dimension;
         String dimension = RegistryHelper.ofString(world);
         return list.stream().filter(o -> o.getDimension().equals(dimension)).findFirst();
     }

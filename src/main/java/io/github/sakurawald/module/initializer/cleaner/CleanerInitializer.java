@@ -44,7 +44,7 @@ public class CleanerInitializer extends ModuleInitializer {
         if (entity instanceof BlockAttachedEntity) return true;
         if (entity instanceof VehicleEntity) return true;
 
-        var config = Configs.configHandler.model().modules.cleaner.ignore;
+        var config = Configs.configHandler.getModel().modules.cleaner.ignore;
 
         if (config.ignore_item_entity && entity instanceof ItemEntity) return true;
         if (config.ignore_living_entity && entity.isLiving()) return true;
@@ -62,7 +62,7 @@ public class CleanerInitializer extends ModuleInitializer {
     }
 
     private boolean shouldRemove(String key, int age) {
-        Map<String, Integer> regex2age = Configs.configHandler.model().modules.cleaner.key2age;
+        Map<String, Integer> regex2age = Configs.configHandler.getModel().modules.cleaner.key2age;
         return regex2age.containsKey(key) && age >= regex2age.get(key);
     }
 

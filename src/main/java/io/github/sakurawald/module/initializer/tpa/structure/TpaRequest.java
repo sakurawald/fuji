@@ -67,7 +67,7 @@ public class TpaRequest {
                         module.getRequests().remove(that);
                     }
                 },
-                Configs.configHandler.model().modules.tpa.timeout * 1000L
+                Configs.configHandler.getModel().modules.tpa.timeout * 1000L
         );
     }
 

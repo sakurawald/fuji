@@ -49,6 +49,7 @@ public abstract class ConfigurationHandler<T> {
         .create();
 
     protected @NotNull File file;
+    @Getter
     protected @Nullable T model;
     protected boolean alreadyBackup;
 
@@ -94,10 +95,6 @@ public abstract class ConfigurationHandler<T> {
     public abstract void loadFromDisk();
 
     public abstract void saveToDisk();
-
-    public T model() {
-        return this.model;
-    }
 
     public JsonElement toJsonElement() {
         if (this.model == null) {

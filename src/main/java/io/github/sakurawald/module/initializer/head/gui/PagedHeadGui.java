@@ -32,7 +32,7 @@ public class PagedHeadGui extends PagedGui<Head> {
     @Override
     public GuiElementInterface toGuiElement(Head entity) {
         var builder = GuiElementBuilder.from(entity.of());
-        if (HeadInitializer.headHandler.model().economyType != EconomyType.FREE) {
+        if (HeadInitializer.headHandler.getModel().economyType != EconomyType.FREE) {
             builder.addLoreLine(Text.empty());
             builder.addLoreLine(LocaleHelper.getTextByKey(getPlayer(), "head.price").copy().append(EconomyType.getCost()));
         }
@@ -72,7 +72,7 @@ public class PagedHeadGui extends PagedGui<Head> {
             if (type.isLeft) {
                 EconomyType.tryPurchase(player, 1, () -> cursorStack.increment(1));
             } else if (type.isRight) {
-                if (HeadInitializer.headHandler.model().economyType == EconomyType.FREE)
+                if (HeadInitializer.headHandler.getModel().economyType == EconomyType.FREE)
                     cursorStack.decrement(1);
             } else if (type.isMiddle) {
                 var amount = headStack.getMaxCount() - cursorStack.getCount();
@@ -82,7 +82,7 @@ public class PagedHeadGui extends PagedGui<Head> {
                 });
             }
         } else {
-            if (HeadInitializer.headHandler.model().economyType ==EconomyType.FREE)
+            if (HeadInitializer.headHandler.getModel().economyType ==EconomyType.FREE)
                 player.currentScreenHandler.setCursorStack(ItemStack.EMPTY);
         }
     }

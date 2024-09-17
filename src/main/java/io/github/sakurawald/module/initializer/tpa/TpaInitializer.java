@@ -67,7 +67,7 @@ public class TpaInitializer extends ModuleInitializer {
 
             ServerPlayerEntity who = request.getTeleportWho();
             ServerPlayerEntity to = request.getTeleportTo();
-            MentionPlayersJob.requestJob(Configs.configHandler.model().modules.tpa.mention_player, request.isTpahere() ? to : who);
+            MentionPlayersJob.requestJob(Configs.configHandler.getModel().modules.tpa.mention_player, request.isTpahere() ? to : who);
             who.teleport((ServerWorld) to.getWorld(), to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
         } else if (status == ResponseStatus.DENY) {
             request.getSender().sendActionBar(request.asSenderComponent$Denied());
@@ -103,7 +103,7 @@ public class TpaInitializer extends ModuleInitializer {
 
         /* feedback */
         request.getReceiver().sendMessage(request.asReceiverComponent$Sent());
-        MentionPlayersJob.requestJob(Configs.configHandler.model().modules.tpa.mention_player, request.getReceiver());
+        MentionPlayersJob.requestJob(Configs.configHandler.getModel().modules.tpa.mention_player, request.getReceiver());
         request.getSender().sendMessage(request.asSenderComponent$Sent());
         return CommandHelper.Return.SUCCESS;
     }

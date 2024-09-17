@@ -34,7 +34,7 @@ public interface ComponentMixin {
 
     @Unique
     private static @Nullable MutableText transform(String key, Object... args) {
-        Map<String, String> key2value = Configs.configHandler.model().modules.system_message.key2value;
+        Map<String, String> key2value = Configs.configHandler.getModel().modules.system_message.key2value;
         if (key2value.containsKey(key)) {
             if (ServerHelper.getDefaultServer() == null) {
                 LogUtil.warn("server is null currently -> cannot hijack message key: {}", key);

@@ -10,7 +10,6 @@ import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
-import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
 import io.github.sakurawald.core.gui.ConfirmGui;
 import io.github.sakurawald.core.gui.InputSignGui;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;
@@ -73,7 +72,7 @@ public abstract class Work {
     }
 
     private static @Nullable Work getWorkByID(String uuid) {
-        List<Work> works = WorksInitializer.worksHandler.model().works;
+        List<Work> works = WorksInitializer.worksHandler.getModel().works;
         for (Work work : works) {
             if (work.getId().equals(uuid)) {
                 return work;
@@ -168,7 +167,7 @@ public abstract class Work {
             .setCallback(() -> new ConfirmGui(player) {
                 @Override
                 public void onConfirm() {
-                    WorksInitializer.worksHandler.model().works.remove(work);
+                    WorksInitializer.worksHandler.getModel().works.remove(work);
                     LocaleHelper.sendActionBarByKey(player, "works.work.delete.done");
                 }
             }.open())

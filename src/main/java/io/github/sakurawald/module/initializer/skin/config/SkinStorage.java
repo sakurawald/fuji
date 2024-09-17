@@ -22,7 +22,7 @@ public class SkinStorage {
 
     public Property getRandomSkin(UUID uuid) {
         if (!skinMap.containsKey(uuid)) {
-            List<Property> defaultSkins = initializer.data.model().random_skins;
+            List<Property> defaultSkins = initializer.data.getModel().random_skins;
             Property skin = defaultSkins.get(new Random().nextInt(defaultSkins.size()));
             setSkin(uuid, skin);
         }
@@ -31,7 +31,7 @@ public class SkinStorage {
     }
 
     public Property getDefaultSkin() {
-        return initializer.data.model().default_skin;
+        return initializer.data.getModel().default_skin;
     }
 
     public Property getSkin(UUID uuid) {

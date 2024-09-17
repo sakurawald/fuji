@@ -150,7 +150,7 @@ public class LocaleHelper {
 
     private static String getDefaultLanguageCode() {
         // allow user to write `en_us` in `config.json`.
-        return convertToLanguageCode(Configs.configHandler.model().core.language.default_language);
+        return convertToLanguageCode(Configs.configHandler.getModel().core.language.default_language);
     }
 
     private static boolean isDefaultLanguageCode(String languageCode) {

@@ -66,7 +66,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
     public void sumUpScore() {
         this.score = 0;
         for (String type : this.type2amount.keySet()) {
-            HashMap<String, Integer> type2score = Configs.configHandler.model().modules.top_chunks.type2score;
+            HashMap<String, Integer> type2score = Configs.configHandler.getModel().modules.top_chunks.type2score;
             this.score += type2score.getOrDefault(type, type2score.get("default")) * type2amount.get(type);
         }
     }
@@ -84,7 +84,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
     public @NotNull Component asComponent(@NotNull ServerCommandSource source) {
 
         String chunkLocation;
-        if (Configs.configHandler.model().modules.top_chunks.hide_location) {
+        if (Configs.configHandler.getModel().modules.top_chunks.hide_location) {
             chunkLocation = LocaleHelper.getValue(source, "top_chunks.prop.hidden");
             if (source.hasPermissionLevel(4)) {
                 chunkLocation = LocaleHelper.getValue(source, "top_chunks.prop.hidden.bypass", this.getChunkPos().toString());

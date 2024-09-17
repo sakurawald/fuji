@@ -16,12 +16,12 @@ public class ChatHistoryInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        chatHistory = EvictingQueue.create(Configs.configHandler.model().modules.chat.history.buffer_size);
+        chatHistory = EvictingQueue.create(Configs.configHandler.getModel().modules.chat.history.buffer_size);
     }
 
     @Override
     public void onReload() {
-        EvictingQueue<Text> newQueue = EvictingQueue.create(Configs.configHandler.model().modules.chat.history.buffer_size);
+        EvictingQueue<Text> newQueue = EvictingQueue.create(Configs.configHandler.getModel().modules.chat.history.buffer_size);
         newQueue.addAll(chatHistory);
         chatHistory.clear();
         chatHistory = newQueue;

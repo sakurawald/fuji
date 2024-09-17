@@ -18,7 +18,7 @@ public class TeleportTicket extends BossBarTicket {
     private final SpatialPose destination;
 
     private TeleportTicket(@NotNull ServerPlayerEntity player, SpatialPose source, SpatialPose destination, float progress) {
-        super(BossBar.bossBar(LocaleHelper.getTextByKey(player, "teleport_warmup.bossbar.name"), progress, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS), Configs.configHandler.model().modules.teleport_warmup.warmup_second * 1000, List.of(player)
+        super(BossBar.bossBar(LocaleHelper.getTextByKey(player, "teleport_warmup.bossbar.name"), progress, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS), Configs.configHandler.getModel().modules.teleport_warmup.warmup_second * 1000, List.of(player)
         );
         this.player = player;
         this.source = source;
@@ -44,7 +44,7 @@ public class TeleportTicket extends BossBarTicket {
         }
 
         // check damage
-        final double INTERRUPT_DISTANCE = Configs.configHandler.model().modules.teleport_warmup.interrupt_distance;
+        final double INTERRUPT_DISTANCE = Configs.configHandler.getModel().modules.teleport_warmup.interrupt_distance;
         if (player.getPos().squaredDistanceTo(this.source.getX(), this.source.getY(), this.source.getZ()) >= INTERRUPT_DISTANCE) {
             return false;
         }
