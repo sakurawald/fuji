@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 /**
  * I write some rules here to avoid forgetting.
  * 1. Only use static inner class in config model java object, this is because a historical design problem in java.
- * 2. Only register gson type adapter inside the static initialization block of a pojo entity.
+ * 2. The new gson type adapter should be registered before the call to loadFromDisk()
  *
  */
 public abstract class ConfigurationHandler<T> {
