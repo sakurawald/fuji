@@ -42,7 +42,7 @@ public class ObjectConfigurationHandler<T> extends ConfigurationHandler<T> {
                 mergeJsonTree(dataTree, schemaTree);
 
                 // use merged tree
-                model = gson.fromJson(dataTree, typeOfModel);
+                this.model = gson.fromJson(dataTree, typeOfModel);
             }
 
         } catch (Exception e) {
@@ -53,8 +53,7 @@ public class ObjectConfigurationHandler<T> extends ConfigurationHandler<T> {
 
     public void writeDisk() {
         try {
-            // Should we generate a default config instance ?
-            if (Files.notExists(this.path)) {
+            if (this.model == null) {
                 LogUtil.info("write default configuration: {}", this.path.toFile().getAbsolutePath());
                 //noinspection ResultOfMethodCallIgnored
                 this.path.toFile().getParentFile().mkdirs();
