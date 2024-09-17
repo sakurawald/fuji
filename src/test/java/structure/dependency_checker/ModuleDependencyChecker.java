@@ -2,7 +2,7 @@ package structure.dependency_checker;
 
 import com.google.gson.JsonElement;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.model.ConfigModel;
 import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import org.jetbrains.annotations.Nullable;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ModuleDependencyChecker extends FileDependencyChecker {
 
-    public static final JsonElement rcConfig = ConfigurationHandler.getGson().toJsonTree(new ConfigModel());
+    public static final JsonElement rcConfig = BaseConfigurationHandler.getGson().toJsonTree(new ConfigModel());
 
     private @Nullable Dependency groupSymbol(Dependency dep) {
         String definition = String.join(".", ModuleManager.computeModulePath(rcConfig, dep.getDefinition()));

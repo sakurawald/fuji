@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.works;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -18,11 +18,11 @@ import org.quartz.JobDataMap;
 
 public class WorksInitializer extends ModuleInitializer {
 
-    public static final ConfigurationHandler<WorksModel> worksHandler = new ObjectConfigurationHandler<>("works.json", WorksModel.class);
+    public static final BaseConfigurationHandler<WorksModel> worksHandler = new ObjectConfigurationHandler<>("works.json", WorksModel.class);
 
     @Override
     public void onInitialize() {
-        ConfigurationHandler.registerTypeAdapter(Work.class, new Work.WorkTypeAdapter());
+        BaseConfigurationHandler.registerTypeAdapter(Work.class, new Work.WorkTypeAdapter());
         worksHandler.readDisk();
         worksHandler.setAutoSaveJob(ScheduleManager.CRON_EVERY_MINUTE);
 

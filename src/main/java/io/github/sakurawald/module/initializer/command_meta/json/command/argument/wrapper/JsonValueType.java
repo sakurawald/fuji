@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
-import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 
 public enum JsonValueType {
 
@@ -24,7 +24,7 @@ public enum JsonValueType {
     }
 
     public Object parse(String jsonValue) {
-        Gson gson = ConfigurationHandler.getGson();
+        Gson gson = BaseConfigurationHandler.getGson();
         return gson.fromJson(jsonValue, valueTransformer);
     }
 

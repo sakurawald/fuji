@@ -11,7 +11,7 @@ import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.job.impl.MentionPlayersJob;
 import io.github.sakurawald.core.structure.RegexRewriteEntry;
@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 
 public class ChatInitializer extends ModuleInitializer {
 
-    private static final ConfigurationHandler<ChatModel> chatHandler = new ObjectConfigurationHandler<>("chat.json", ChatModel.class);
+    private static final BaseConfigurationHandler<ChatModel> chatHandler = new ObjectConfigurationHandler<>("chat.json", ChatModel.class);
 
     private final MiniMessage miniMessage = MiniMessage.builder().build();
 

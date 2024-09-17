@@ -5,7 +5,7 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
-import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_toolbox.nickname.config.model.NicknameModel;
@@ -16,7 +16,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class NicknameInitializer extends ModuleInitializer {
 
     @Getter
-    private static final ConfigurationHandler<NicknameModel> nicknameHandler = new ObjectConfigurationHandler<>("nickname.json", NicknameModel.class);
+    private static final BaseConfigurationHandler<NicknameModel> nicknameHandler = new ObjectConfigurationHandler<>("nickname.json", NicknameModel.class);
 
     @Override
     public void onInitialize() {
