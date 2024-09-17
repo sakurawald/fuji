@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class ClassDependencyChecker extends DependencyChecker {
+public class FileDependencyChecker extends BaseDependencyChecker {
 
     private static final Pattern importPattern = Pattern.compile("import\\s+(\\S+);");
     private static final Pattern staticImportPattern = Pattern.compile("import\\s+static\\s+(\\S+)\\.\\S+;");
@@ -33,7 +33,6 @@ public class ClassDependencyChecker extends DependencyChecker {
             .replace(".java", "");
         List<String> classNames = analyzeImportStatements(file.toString());
 
-        // filter only project class ref
         return new Dependency(className, classNames);
     }
 
