@@ -16,7 +16,6 @@ import io.github.sakurawald.core.manager.Managers;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.quartz.JobDataMap;
 
 import java.lang.reflect.Type;
@@ -32,7 +31,7 @@ import java.util.regex.Pattern;
  * 1. Only use static inner class in config model java object, this is because a historical design problem in java.
  * 2. The new gson type adapter should be registered before the call to loadFromDisk()
  */
-public abstract class ConfigurationHandler<T> {
+public abstract class BaseConfigurationHandler<T> {
 
     private static final Pattern MAP_TYPE_MATCHER = Pattern.compile(".+2.+");
 
@@ -50,7 +49,7 @@ public abstract class ConfigurationHandler<T> {
 
     protected @NotNull Path path;
     @Getter
-    protected @Nullable T model;
+    protected T model;
     protected boolean alreadyBackup;
 
     private static ParseContext jsonPathParser = null;
@@ -88,7 +87,7 @@ public abstract class ConfigurationHandler<T> {
         gson = gson.newBuilder().registerTypeAdapter(type, typeAdapter).create();
     }
 
-    public ConfigurationHandler(@NotNull Path path) {
+    public BaseConfigurationHandler(@NotNull Path path) {
         this.path = path;
     }
 
@@ -111,7 +110,7 @@ public abstract class ConfigurationHandler<T> {
         String jobName = this.path.getFileName().toString();
         new SaveConfigurationHandlerJob(jobName, new JobDataMap() {
             {
-                this.put(ConfigurationHandler.class.getName(), ConfigurationHandler.this);
+                this.put(BaseConfigurationHandler.class.getName(), BaseConfigurationHandler.this);
             }
         }, () -> cron).schedule();
     }

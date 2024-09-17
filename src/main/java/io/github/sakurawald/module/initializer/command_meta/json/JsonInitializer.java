@@ -8,7 +8,7 @@ import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
-import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_meta.json.command.argument.wrapper.JsonValueType;
 import lombok.SneakyThrows;
@@ -28,11 +28,11 @@ public class JsonInitializer extends ModuleInitializer {
     @SneakyThrows
     void operateJson(String filePath, BiFunction<DocumentContext, Path, Boolean> function) {
         Path path = Path.of(filePath);
-        DocumentContext documentContext = ConfigurationHandler.getJsonPathParser().parse(path.toFile());
+        DocumentContext documentContext = BaseConfigurationHandler.getJsonPathParser().parse(path.toFile());
         Boolean destructiveFlag = function.apply(documentContext, path);
 
         if (destructiveFlag) {
-            String json = ConfigurationHandler.getGson().toJson(documentContext.json());
+            String json = BaseConfigurationHandler.getGson().toJson(documentContext.json());
             try {
                 FileUtils.write(path.toFile(), json, Charset.defaultCharset());
             } catch (IOException e) {

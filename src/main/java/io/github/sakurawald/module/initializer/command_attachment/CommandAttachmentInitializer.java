@@ -7,7 +7,7 @@ import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
-import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -37,10 +37,10 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         CommandAttachmentModel model;
         try {
             String attachment = Managers.getAttachmentManager().getAttachment(COMMAND_ATTACHMENT_SUBJECT_NAME, uuid);
-            model = ConfigurationHandler.getGson().fromJson(attachment, CommandAttachmentModel.class);
+            model = BaseConfigurationHandler.getGson().fromJson(attachment, CommandAttachmentModel.class);
         } catch (IOException e) {
             model = new CommandAttachmentModel();
-            String json = ConfigurationHandler.getGson().toJson(model);
+            String json = BaseConfigurationHandler.getGson().toJson(model);
             Managers.getAttachmentManager().setAttachment(COMMAND_ATTACHMENT_SUBJECT_NAME, uuid, json);
         }
 
@@ -49,7 +49,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
     @SneakyThrows
     private void setModel(String uuid, CommandAttachmentModel model) {
-        String json = ConfigurationHandler.getGson().toJson(model);
+        String json = BaseConfigurationHandler.getGson().toJson(model);
         Managers.getAttachmentManager().setAttachment(COMMAND_ATTACHMENT_SUBJECT_NAME, uuid, json);
     }
 

@@ -5,7 +5,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonWriter;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -15,7 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 
-public class ResourceConfigurationHandler extends ConfigurationHandler<JsonElement> {
+public class ResourceConfigurationHandler extends BaseConfigurationHandler<JsonElement> {
 
     final String resourcePath;
 
@@ -70,13 +70,14 @@ public class ResourceConfigurationHandler extends ConfigurationHandler<JsonEleme
 
     public void writeDisk() {
         try {
+            // set default data tree
             if (this.model == null) {
                 LogUtil.info("write default configuration: {}", this.path.toFile().getAbsolutePath());
-                Files.createDirectories(this.path.toFile().getParentFile().toPath());
                 this.model = readJsonTreeFromResource(this.resourcePath);
             }
 
-            // Save.
+            // write data tree to disk
+            Files.createDirectories(this.path.getParent());
             JsonWriter jsonWriter = gson.newJsonWriter(new BufferedWriter(new FileWriter(this.path.toFile())));
             gson.toJson(this.model, jsonWriter);
             jsonWriter.close();

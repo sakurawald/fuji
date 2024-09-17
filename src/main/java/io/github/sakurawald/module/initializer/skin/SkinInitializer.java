@@ -5,7 +5,7 @@ import com.mojang.authlib.properties.Property;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.skin.config.model.SkinModel;
@@ -30,7 +30,7 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 public class SkinInitializer extends ModuleInitializer {
 
-    public final ConfigurationHandler<SkinModel> data = new ObjectConfigurationHandler<>("skin.json", SkinModel.class);
+    public final BaseConfigurationHandler<SkinModel> data = new ObjectConfigurationHandler<>("skin.json", SkinModel.class);
 
     @Override
     public void onInitialize() {
