@@ -116,11 +116,11 @@ public abstract class ConfigurationHandler<T> {
         }, () -> cron).schedule();
     }
 
-    protected void mergeJsonTree(@NotNull JsonElement oldTree, @NotNull JsonElement newTree) {
-        if (!oldTree.isJsonObject() || !newTree.isJsonObject()) {
+    protected void mergeJsonTree(@NotNull JsonElement dataTree, @NotNull JsonElement schemaTree) {
+        if (!dataTree.isJsonObject() || !schemaTree.isJsonObject()) {
             throw new IllegalArgumentException("Both trees must be the type of JsonObject.");
         }
-        mergeFields("", oldTree.getAsJsonObject(), newTree.getAsJsonObject());
+        mergeFields("", dataTree.getAsJsonObject(), schemaTree.getAsJsonObject());
     }
 
     private void mergeFields(String parentPath, @NotNull JsonObject currentJson, @NotNull JsonObject defaultJson) {

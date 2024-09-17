@@ -33,21 +33,21 @@ public class ObjectConfigurationHandler<T> extends ConfigurationHandler<T> {
             } else {
                 // read older json from disk
                 @Cleanup Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this.path.toFile())));
-                JsonElement currentJsonElement = JsonParser.parseReader(reader);
+                JsonElement dataTree = JsonParser.parseReader(reader);
 
                 // merge older json with newer json
                 T defaultJsonInstance = typeOfModel.getDeclaredConstructor().newInstance();
-                JsonElement defaultJsonElement = gson.toJsonTree(defaultJsonInstance, typeOfModel);
-                mergeJsonTree(currentJsonElement, defaultJsonElement);
+                JsonElement schemaTree = gson.toJsonTree(defaultJsonInstance, typeOfModel);
+                mergeJsonTree(dataTree, schemaTree);
 
                 // read merged json
-                model = gson.fromJson(currentJsonElement, typeOfModel);
+                model = gson.fromJson(dataTree, typeOfModel);
 
                 this.writeDisk();
             }
 
         } catch (Exception e) {
-            LogUtil.error("load config failed: ", e);
+            LogUtil.error("failed to read configuration file {} from disk.", this.path, e);
         }
     }
 
@@ -67,7 +67,7 @@ public class ObjectConfigurationHandler<T> extends ConfigurationHandler<T> {
             gson.toJson(this.model, typeOfModel, jsonWriter);
             jsonWriter.close();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            LogUtil.error("failed to write configuration file {} to disk.", this.path, e);
         }
     }
 
