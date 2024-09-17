@@ -10,6 +10,7 @@ import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 
@@ -28,22 +29,20 @@ public class ObjectConfigurationHandler<T> extends ConfigurationHandler<T> {
 
     public void readDisk() {
         try {
-            if (!path.toFile().exists()) {
+            if (Files.notExists(this.path)) {
                 writeDisk();
             } else {
-                // read older json from disk
+                // read data tree from disk
                 @Cleanup Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this.path.toFile())));
                 JsonElement dataTree = JsonParser.parseReader(reader);
 
-                // merge older json with newer json
+                // merge data tree with schema tree
                 T defaultJsonInstance = typeOfModel.getDeclaredConstructor().newInstance();
                 JsonElement schemaTree = gson.toJsonTree(defaultJsonInstance, typeOfModel);
                 mergeJsonTree(dataTree, schemaTree);
 
-                // read merged json
+                // use merged tree
                 model = gson.fromJson(dataTree, typeOfModel);
-
-                this.writeDisk();
             }
 
         } catch (Exception e) {
@@ -55,7 +54,7 @@ public class ObjectConfigurationHandler<T> extends ConfigurationHandler<T> {
     public void writeDisk() {
         try {
             // Should we generate a default config instance ?
-            if (!this.path.toFile().exists()) {
+            if (Files.notExists(this.path)) {
                 LogUtil.info("write default configuration: {}", this.path.toFile().getAbsolutePath());
                 //noinspection ResultOfMethodCallIgnored
                 this.path.toFile().getParentFile().mkdirs();
