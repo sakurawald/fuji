@@ -16,7 +16,7 @@ public class GlobalMixinConfigPlugin implements IMixinConfigPlugin {
 
     static {
         // this is the first time to load configHandler
-        Configs.configHandler.loadFromDisk();
+        Configs.configHandler.readFromDisk();
     }
 
     @Override

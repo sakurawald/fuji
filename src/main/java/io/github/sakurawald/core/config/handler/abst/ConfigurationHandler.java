@@ -92,9 +92,9 @@ public abstract class ConfigurationHandler<T> {
         this.path = path;
     }
 
-    public abstract void loadFromDisk();
+    public abstract void readFromDisk();
 
-    public abstract void saveToDisk();
+    public abstract void writeToDisk();
 
     public JsonElement toJsonElement() {
         if (this.model == null) {

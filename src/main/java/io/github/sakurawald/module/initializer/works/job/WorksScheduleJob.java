@@ -27,7 +27,7 @@ public class WorksScheduleJob extends CronJob {
         // save current works data
         MinecraftServer server = (MinecraftServer) context.getJobDetail().getJobDataMap().get(MinecraftServer.class.getName());
         if (server.isRunning()) {
-            WorksInitializer.worksHandler.saveToDisk();
+            WorksInitializer.worksHandler.writeToDisk();
         }
 
         // run schedule method
