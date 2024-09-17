@@ -27,7 +27,6 @@ public class ObjectConfigurationHandler<T> extends ConfigurationHandler<T> {
     }
 
     public void readFromDisk() {
-        // Does the file exist?
         try {
             if (!path.toFile().exists()) {
                 writeToDisk();
@@ -39,7 +38,7 @@ public class ObjectConfigurationHandler<T> extends ConfigurationHandler<T> {
                 // merge older json with newer json
                 T defaultJsonInstance = typeOfModel.getDeclaredConstructor().newInstance();
                 JsonElement defaultJsonElement = gson.toJsonTree(defaultJsonInstance, typeOfModel);
-                mergeJson(currentJsonElement, defaultJsonElement);
+                mergeJsonTree(currentJsonElement, defaultJsonElement);
 
                 // read merged json
                 model = gson.fromJson(currentJsonElement, typeOfModel);

@@ -96,9 +96,9 @@ public abstract class ConfigurationHandler<T> {
 
     public abstract void writeToDisk();
 
-    public JsonElement toJsonElement() {
+    public JsonElement convertModelToJsonTree() {
         if (this.model == null) {
-            throw new IllegalStateException("The model is null now, maybe it's too early to call this function ?");
+            throw new IllegalStateException("The model instance is null now, maybe it's too early to call this function ?");
         }
 
         return gson.toJsonTree(this.model);
@@ -108,7 +108,7 @@ public abstract class ConfigurationHandler<T> {
      * This method exists for performance purpose.
      */
     public void setAutoSaveJob(@NotNull String cron) {
-        String jobName = this.path.toFile().getName();
+        String jobName = this.path.getFileName().toString();
         new SaveConfigurationHandlerJob(jobName, new JobDataMap() {
             {
                 this.put(ConfigurationHandler.class.getName(), ConfigurationHandler.this);
@@ -116,11 +116,11 @@ public abstract class ConfigurationHandler<T> {
         }, () -> cron).schedule();
     }
 
-    protected void mergeJson(@NotNull JsonElement oldJson, @NotNull JsonElement newJson) {
-        if (!oldJson.isJsonObject() || !newJson.isJsonObject()) {
-            throw new IllegalArgumentException("Both elements must be JSON objects.");
+    protected void mergeJsonTree(@NotNull JsonElement oldTree, @NotNull JsonElement newTree) {
+        if (!oldTree.isJsonObject() || !newTree.isJsonObject()) {
+            throw new IllegalArgumentException("Both trees must be the type of JsonObject.");
         }
-        mergeFields("", oldJson.getAsJsonObject(), newJson.getAsJsonObject());
+        mergeFields("", oldTree.getAsJsonObject(), newTree.getAsJsonObject());
     }
 
     private void mergeFields(String parentPath, @NotNull JsonObject currentJson, @NotNull JsonObject defaultJson) {
@@ -146,7 +146,7 @@ public abstract class ConfigurationHandler<T> {
                         mergeFields(currentPath, currentJson.getAsJsonObject(key), value.getAsJsonObject());
                     }
                 } else {
-                    if (rescueMode(currentJson, currentPath, key, value)) break;
+                    if (rescueLoop(currentJson, currentPath, key, value)) break;
                 }
 
             } else {
@@ -159,7 +159,7 @@ public abstract class ConfigurationHandler<T> {
         }
     }
 
-    private boolean rescueMode(@NotNull JsonObject currentJson, String currentPath, String key, JsonElement value) {
+    private boolean rescueLoop(@NotNull JsonObject currentJson, String currentPath, String key, JsonElement value) {
         LogUtil.warn("""
 
             # What happened ?
