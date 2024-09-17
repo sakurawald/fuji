@@ -92,6 +92,8 @@ tasks.withType(JavaCompile).configureEach {
     configure(options) {
         // include the 'parameter name' in compiled .class file, for command annotation processor reflection
         options.compilerArgs << '-parameters'
+        // yeah, the code of fuji is more dynamic.
+        options.compilerArgs << '-Xlint:-unchecked'
     }
 }
 

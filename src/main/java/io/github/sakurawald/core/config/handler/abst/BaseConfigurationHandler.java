@@ -13,12 +13,18 @@ import io.github.sakurawald.core.auxiliary.JsonUtil;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.config.job.SaveConfigurationHandlerJob;
 import io.github.sakurawald.core.manager.Managers;
+import lombok.Cleanup;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.quartz.JobDataMap;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.EnumSet;
 import java.util.Map;
@@ -91,9 +97,47 @@ public abstract class BaseConfigurationHandler<T> {
         this.path = path;
     }
 
-    public abstract void readDisk();
+    public abstract T getDefaultModel();
 
-    public abstract void writeDisk();
+    @SuppressWarnings("unchecked")
+    public void readDisk() {
+        try {
+            if (Files.notExists(this.path)) {
+                writeDisk();
+            } else {
+                // read data tree from disk
+                @Cleanup Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this.path.toFile())));
+                JsonElement dataTree = JsonParser.parseReader(reader);
+
+                // merge data tree with schema tree
+                T defaultModel = getDefaultModel();
+                JsonElement schemaTree = gson.toJsonTree(defaultModel);
+                mergeJsonTree(dataTree, schemaTree);
+
+                // use merged tree
+                this.model = (T) gson.fromJson(dataTree, defaultModel.getClass());
+            }
+
+        } catch (Exception e) {
+            LogUtil.error("failed to read configuration file {} from disk.", this.path, e);
+        }
+    }
+
+    public void writeDisk() {
+        try {
+            // set default data tree
+            if (this.model == null) {
+                LogUtil.info("write default configuration: {}", this.path.toFile().getAbsolutePath());
+                this.model = this.getDefaultModel();
+            }
+
+            // write data tree to disk
+            Files.createDirectories(this.path.getParent());
+            Files.writeString(this.path, gson.toJson(this.model));
+        } catch (Exception e) {
+            LogUtil.error("failed to write configuration file {} to disk.", this.path, e);
+        }
+    }
 
     public JsonElement convertModelToJsonTree() {
         if (this.model == null) {
