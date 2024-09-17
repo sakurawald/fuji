@@ -53,7 +53,7 @@ public abstract class Work {
 
     @SuppressWarnings("unused")
     public Work() {
-        // for gson
+        // for gson instance creator
     }
 
     public Work(@NotNull ServerPlayerEntity player, String name) {

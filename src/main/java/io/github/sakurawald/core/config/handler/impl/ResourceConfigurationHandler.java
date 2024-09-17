@@ -17,7 +17,7 @@ public class ResourceConfigurationHandler extends ConfigurationHandler<JsonEleme
 
     final String resourcePath;
 
-    public ResourceConfigurationHandler(File file, String resourcePath) {
+    private ResourceConfigurationHandler(File file, String resourcePath) {
         super(file);
         this.resourcePath = resourcePath;
     }
@@ -47,7 +47,7 @@ public class ResourceConfigurationHandler extends ConfigurationHandler<JsonEleme
                 this.saveToDisk();
             }
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             LogUtil.error("load config failed", e);
         }
     }
@@ -66,7 +66,7 @@ public class ResourceConfigurationHandler extends ConfigurationHandler<JsonEleme
             JsonWriter jsonWriter = gson.newJsonWriter(new BufferedWriter(new FileWriter(this.file)));
             gson.toJson(this.model, jsonWriter);
             jsonWriter.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

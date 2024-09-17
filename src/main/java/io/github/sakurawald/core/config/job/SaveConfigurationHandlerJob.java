@@ -11,15 +11,16 @@ import org.quartz.JobExecutionContext;
 import java.util.function.Supplier;
 
 @NoArgsConstructor
-public class SaveConfigHandlerJob extends CronJob {
+public class SaveConfigurationHandlerJob extends CronJob {
 
-    public SaveConfigHandlerJob(String jobName, JobDataMap jobDataMap, Supplier<String> cronSupplier) {
+    public SaveConfigurationHandlerJob(String jobName, JobDataMap jobDataMap, Supplier<String> cronSupplier) {
         super(null, jobName, jobDataMap, cronSupplier);
     }
 
     @Override
     public void execute(@NotNull JobExecutionContext context) {
         LogUtil.debug("save configuration file {}", context.getJobDetail().getKey().getName());
+
         ConfigurationHandler<?> configHandler = (ConfigurationHandler<?>) context.getJobDetail().getJobDataMap().get(ConfigurationHandler.class.getName());
         configHandler.saveToDisk();
     }
