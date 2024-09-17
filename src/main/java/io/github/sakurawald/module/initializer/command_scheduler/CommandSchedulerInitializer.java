@@ -40,14 +40,14 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        schedulerHandler.readFromDisk();
+        schedulerHandler.readDisk();
         schedulerHandler.setAutoSaveJob(ScheduleManager.CRON_EVERY_MINUTE);
         updateJobs();
     }
 
     @Override
     public void onReload() {
-        schedulerHandler.readFromDisk();
+        schedulerHandler.readDisk();
         updateJobs();
     }
 

@@ -41,11 +41,11 @@ public class ResourceConfigurationHandler extends ConfigurationHandler<JsonEleme
         return null;
     }
 
-    public void readFromDisk() {
+    public void readDisk() {
         // Does the file exist?
         try {
             if (Files.notExists(this.path)) {
-                writeToDisk();
+                writeDisk();
             } else {
                 // read older json from disk
                 @Cleanup Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this.path.toFile())));
@@ -59,7 +59,7 @@ public class ResourceConfigurationHandler extends ConfigurationHandler<JsonEleme
 
                 // read merged json
                 model = olderJsonElement;
-                this.writeToDisk();
+                this.writeDisk();
             }
 
         } catch (Exception e) {
@@ -68,7 +68,7 @@ public class ResourceConfigurationHandler extends ConfigurationHandler<JsonEleme
     }
 
 
-    public void writeToDisk() {
+    public void writeDisk() {
         try {
             // Should we generate a default config instance ?
             if (!this.path.toFile().exists()) {

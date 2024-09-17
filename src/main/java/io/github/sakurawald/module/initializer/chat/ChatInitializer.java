@@ -38,7 +38,7 @@ public class ChatInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        chatHandler.readFromDisk();
+        chatHandler.readDisk();
 
         compilePatterns();
 
@@ -49,7 +49,7 @@ public class ChatInitializer extends ModuleInitializer {
 
     @Override
     public void onReload() {
-        chatHandler.readFromDisk();
+        chatHandler.readDisk();
 
         compilePatterns();
     }
@@ -129,7 +129,7 @@ public class ChatInitializer extends ModuleInitializer {
         String name = player.getGameProfile().getName();
         String $format = format.getValue();
         chatHandler.getModel().format.player2format.put(name, $format);
-        chatHandler.writeToDisk();
+        chatHandler.writeDisk();
 
         /* feedback */
         $format = LocaleHelper.getValue(player, "chat.format.set").replace("%s", $format);
@@ -144,7 +144,7 @@ public class ChatInitializer extends ModuleInitializer {
     private int $reset(@CommandSource ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
         chatHandler.getModel().format.player2format.remove(name);
-        chatHandler.writeToDisk();
+        chatHandler.writeDisk();
         LocaleHelper.sendMessageByKey(player, "chat.format.reset");
         return CommandHelper.Return.SUCCESS;
     }

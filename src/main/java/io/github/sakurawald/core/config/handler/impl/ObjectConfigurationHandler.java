@@ -26,10 +26,10 @@ public class ObjectConfigurationHandler<T> extends ConfigurationHandler<T> {
         this(Fuji.CONFIG_PATH.resolve(other), typeOfModel);
     }
 
-    public void readFromDisk() {
+    public void readDisk() {
         try {
             if (!path.toFile().exists()) {
-                writeToDisk();
+                writeDisk();
             } else {
                 // read older json from disk
                 @Cleanup Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this.path.toFile())));
@@ -43,7 +43,7 @@ public class ObjectConfigurationHandler<T> extends ConfigurationHandler<T> {
                 // read merged json
                 model = gson.fromJson(currentJsonElement, typeOfModel);
 
-                this.writeToDisk();
+                this.writeDisk();
             }
 
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class ObjectConfigurationHandler<T> extends ConfigurationHandler<T> {
     }
 
 
-    public void writeToDisk() {
+    public void writeDisk() {
         try {
             // Should we generate a default config instance ?
             if (!this.path.toFile().exists()) {
