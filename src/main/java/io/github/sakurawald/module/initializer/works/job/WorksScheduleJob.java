@@ -24,12 +24,6 @@ public class WorksScheduleJob extends CronJob {
 
     @Override
     public void execute(@NotNull JobExecutionContext context) {
-        // save current works data
-        MinecraftServer server = (MinecraftServer) context.getJobDetail().getJobDataMap().get(MinecraftServer.class.getName());
-        if (server.isRunning()) {
-            WorksInitializer.worksHandler.writeDisk();
-        }
-
         // run schedule method
         Set<Work> works = new HashSet<>();
         WorksCache.getBlockpos2works().values().forEach(works::addAll);

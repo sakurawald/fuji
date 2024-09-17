@@ -24,6 +24,8 @@ public class WorksInitializer extends ModuleInitializer {
     public void onInitialize() {
         ConfigurationHandler.registerTypeAdapter(Work.class, new Work.WorkTypeAdapter());
         worksHandler.readDisk();
+        worksHandler.setAutoSaveJob(ScheduleManager.CRON_EVERY_MINUTE);
+
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new WorksScheduleJob(new JobDataMap() {
             {
                 this.put(MinecraftServer.class.getName(), server);
