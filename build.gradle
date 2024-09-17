@@ -223,5 +223,5 @@ tasks.register('copyTranslationFiles', Copy) {
     include "**/*.json"
 
 }
-tasks.runServer.dependsOn(copyTranslationFiles)
+tasks.processResources.dependsOn(copyTranslationFiles)
 
