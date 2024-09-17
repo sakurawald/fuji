@@ -5,7 +5,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonWriter;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
+import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
 import lombok.Cleanup;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,17 +13,17 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 
 
-public class ObjectConfigHandler<T> extends ConfigHandler<T> {
+public class ObjectConfigurationHandler<T> extends ConfigurationHandler<T> {
 
     final Class<T> configClass;
 
-    public ObjectConfigHandler(File file, Class<T> configClass) {
+    public ObjectConfigurationHandler(File file, Class<T> configClass) {
         super(file);
         this.file = file;
         this.configClass = configClass;
     }
 
-    public ObjectConfigHandler(@NotNull String child, Class<T> configClass) {
+    public ObjectConfigurationHandler(@NotNull String child, Class<T> configClass) {
         this(new File(Fuji.CONFIG_PATH.toString(), child), configClass);
     }
 

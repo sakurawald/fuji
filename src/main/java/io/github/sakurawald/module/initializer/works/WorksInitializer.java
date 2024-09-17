@@ -3,8 +3,8 @@ package io.github.sakurawald.module.initializer.works;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
-import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
+import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.works.config.model.WorksModel;
@@ -17,7 +17,7 @@ import org.quartz.JobDataMap;
 
 public class WorksInitializer extends ModuleInitializer {
 
-    public static final ConfigHandler<WorksModel> worksHandler = new ObjectConfigHandler<>("works.json", WorksModel.class);
+    public static final ConfigurationHandler<WorksModel> worksHandler = new ObjectConfigurationHandler<>("works.json", WorksModel.class);
 
     @Override
     public void onInitialize() {

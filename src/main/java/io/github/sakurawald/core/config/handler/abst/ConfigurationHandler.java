@@ -14,7 +14,6 @@ import io.github.sakurawald.core.auxiliary.JsonUtil;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.config.job.SaveConfigHandlerJob;
 import io.github.sakurawald.core.manager.Managers;
-import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import lombok.Cleanup;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import org.quartz.JobDataMap;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.EnumSet;
@@ -31,16 +31,21 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public abstract class ConfigHandler<T> {
+/**
+ * I write some rules here to avoid forgetting.
+ * 1. Only use static inner class in config model java object, this is because a historical design problem in java.
+ * 2. Only register gson type adapter inside the static initialization block of a pojo entity.
+ *
+ */
+public abstract class ConfigurationHandler<T> {
 
     private static final Pattern MAP_TYPE_MATCHER = Pattern.compile(".+2.+");
 
     @Getter
-    protected static final Gson gson = new GsonBuilder()
+    protected static Gson gson = new GsonBuilder()
         .setPrettyPrinting()
         .disableHtmlEscaping()
         .serializeNulls()
-        .registerTypeAdapter(Work.class, new Work.WorkTypeAdapter())
         .create();
 
     protected File file;
@@ -49,7 +54,12 @@ public abstract class ConfigHandler<T> {
 
     protected static ParseContext jsonPathParser = null;
 
+    public static void registerTypeAdapter(Type type, Object typeAdapter) {
+        gson = gson.newBuilder().registerTypeAdapter(type, typeAdapter).create();
+    }
+
     static {
+
         // configure json path library
         Configuration.setDefaults(new com.jayway.jsonpath.Configuration.Defaults() {
             private final JsonProvider jsonProvider = new GsonJsonProvider();
@@ -80,7 +90,7 @@ public abstract class ConfigHandler<T> {
         return jsonPathParser;
     }
 
-    public ConfigHandler(File file) {
+    public ConfigurationHandler(File file) {
         this.file = file;
     }
 
@@ -132,7 +142,7 @@ public abstract class ConfigHandler<T> {
         String jobName = this.file.getName();
         new SaveConfigHandlerJob(jobName, new JobDataMap() {
             {
-                this.put(ConfigHandler.class.getName(), ConfigHandler.this);
+                this.put(ConfigurationHandler.class.getName(), ConfigurationHandler.this);
             }
         }, () -> cron).schedule();
     }
@@ -174,7 +184,7 @@ public abstract class ConfigHandler<T> {
                 // note: for JsonArray, we will not directly set array elements, but we will add new properties for every array element (language default empty-value). e.g. For List<ExamplePojo>, we will never change the size of this list, but we will add missing properties for every ExamplePojo with the language default empty-value.
                 if (!currentJson.has(key)) {
                     currentJson.add(key, value);
-                    LogUtil.warn("add missing json property: file = {}, key = {}, value = {}", this.file.getName(), key, value);
+                    LogUtil.warn("add missing json key-value pair: file = {}, key = {}, value = {}", this.file.getName(), key, value);
                 }
             }
         }

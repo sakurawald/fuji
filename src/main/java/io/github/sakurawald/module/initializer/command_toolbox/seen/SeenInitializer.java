@@ -8,8 +8,8 @@ import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.OfflinePlayerName;
-import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
-import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
+import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_toolbox.seen.config.model.SeenModel;
 import lombok.Getter;
@@ -19,7 +19,7 @@ import net.minecraft.server.command.ServerCommandSource;
 public class SeenInitializer extends ModuleInitializer {
 
     @Getter
-    private final ConfigHandler<SeenModel> data = new ObjectConfigHandler<>("seen.json", SeenModel.class);
+    private final ConfigurationHandler<SeenModel> data = new ObjectConfigurationHandler<>("seen.json", SeenModel.class);
 
     @Override
     public void onInitialize() {

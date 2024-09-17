@@ -47,7 +47,7 @@ public class ProductionWork extends Work implements Schedulable {
 
     @Override
     protected @NotNull String getType() {
-        return WorkTypeAdapter.WorkType.ProductionWork.name();
+        return Work.WorkType.ProductionWork.name();
     }
 
     private @NotNull List<Text> formatSampleCounter(ServerPlayerEntity player) {

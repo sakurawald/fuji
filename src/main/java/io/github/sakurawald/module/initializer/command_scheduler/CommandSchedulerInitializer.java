@@ -4,8 +4,8 @@ import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
-import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
-import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
+import io.github.sakurawald.core.config.handler.abst.ConfigurationHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -21,7 +21,7 @@ import org.quartz.JobDataMap;
 public class CommandSchedulerInitializer extends ModuleInitializer {
 
     @Getter
-    private static final ConfigHandler<SchedulerModel> schedulerHandler = new ObjectConfigHandler<>("scheduler.json", SchedulerModel.class);
+    private static final ConfigurationHandler<SchedulerModel> schedulerHandler = new ObjectConfigurationHandler<>("scheduler.json", SchedulerModel.class);
 
     private void updateJobs() {
         Managers.getScheduleManager().deleteJobs(CommandScheduleJob.class);
