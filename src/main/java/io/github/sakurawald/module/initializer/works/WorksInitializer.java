@@ -23,7 +23,7 @@ public class WorksInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {
         ConfigurationHandler.registerTypeAdapter(Work.class, new Work.WorkTypeAdapter());
-        worksHandler.readFromDisk();
+        worksHandler.readDisk();
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new WorksScheduleJob(new JobDataMap() {
             {
                 this.put(MinecraftServer.class.getName(), server);
@@ -33,7 +33,7 @@ public class WorksInitializer extends ModuleInitializer {
 
     @Override
     public void onReload() {
-        worksHandler.readFromDisk();
+        worksHandler.readDisk();
     }
 
     @CommandNode("works")

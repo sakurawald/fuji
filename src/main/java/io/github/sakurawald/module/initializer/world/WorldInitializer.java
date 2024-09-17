@@ -51,7 +51,7 @@ public class WorldInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        storage.readFromDisk();
+        storage.readDisk();
         ServerLifecycleEvents.SERVER_STARTED.register(this::loadWorlds);
     }
 
@@ -93,7 +93,7 @@ public class WorldInitializer extends ModuleInitializer {
         WorldManager.requestToCreateWorld(ServerHelper.getDefaultServer(), dimensionIdentifier, dimensionTypeIdentifier, $seed);
 
         storage.getModel().dimension_list.add(new DimensionEntry(true, dimensionIdentifier.toString(), dimensionTypeIdentifier.toString(), $seed));
-        storage.writeToDisk();
+        storage.writeDisk();
 
         LocaleHelper.sendBroadcastByKey("world.dimension.created", dimensionIdentifier);
         return CommandHelper.Return.SUCCESS;
@@ -116,7 +116,7 @@ public class WorldInitializer extends ModuleInitializer {
             return CommandHelper.Return.FAIL;
         }
         storage.getModel().dimension_list.remove(first.get());
-        storage.writeToDisk();
+        storage.writeDisk();
 
         LocaleHelper.sendBroadcastByKey("world.dimension.deleted", identifier);
         return CommandHelper.Return.SUCCESS;
@@ -152,7 +152,7 @@ public class WorldInitializer extends ModuleInitializer {
 
         // save the new seed
         first.get().setSeed(newSeed);
-        storage.writeToDisk();
+        storage.writeDisk();
 
         LocaleHelper.sendBroadcastByKey("world.dimension.reset", identifier);
         return CommandHelper.Return.SUCCESS;

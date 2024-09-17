@@ -21,12 +21,12 @@ public class HeadInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        headHandler.readFromDisk();
+        headHandler.readDisk();
     }
 
     @Override
     public void onReload() {
-        headHandler.readFromDisk();
+        headHandler.readDisk();
     }
 
     @CommandNode("head sync")
