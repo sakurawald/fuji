@@ -35,12 +35,6 @@ public class SkinInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {
         CommandRegistrationCallback.EVENT.register(this::registerCommand);
-        data.readStorage();
-    }
-
-    @Override
-    public void onReload() {
-        data.readStorage();
     }
 
     public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess commandBuildContext, CommandManager.RegistrationEnvironment commandSelection) {

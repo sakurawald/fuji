@@ -20,16 +20,6 @@ public class MultiObsidianPlatformInitializer extends ModuleInitializer {
 
     public final ObjectConfigurationHandler<MultiObsidianPlatformConfigModel> config = new ObjectConfigurationHandler<>("config.multi_obsidian_platform.json", MultiObsidianPlatformConfigModel.class);
 
-    @Override
-    public void onInitialize() {
-        config.readStorage();
-    }
-
-    @Override
-    public void onReload() {
-        config.readStorage();
-    }
-
     /* this method is used to fix Entity#position() async */
     private BlockPos findNearbyEndPortalBlock(@NotNull BlockPos bp) {
         ServerWorld overworld = ServerHelper.getDefaultServer().getOverworld();

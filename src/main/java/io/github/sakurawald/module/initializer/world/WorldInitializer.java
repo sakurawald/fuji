@@ -52,14 +52,7 @@ public class WorldInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        config.readStorage();
-        storage.readStorage();
         ServerLifecycleEvents.SERVER_STARTED.register(this::loadWorlds);
-    }
-
-    @Override
-    public void onReload() {
-        config.readStorage();
     }
 
     public void loadWorlds(@NotNull MinecraftServer server) {

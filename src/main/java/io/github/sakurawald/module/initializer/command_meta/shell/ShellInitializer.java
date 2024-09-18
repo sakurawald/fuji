@@ -26,16 +26,6 @@ public class ShellInitializer extends ModuleInitializer {
 
     public final ObjectConfigurationHandler<ShellConfigModel> config = new ObjectConfigurationHandler<>("config.shell.json", ShellConfigModel.class);
 
-    @Override
-    public void onInitialize() {
-        config.readStorage();
-    }
-
-    @Override
-    public void onReload() {
-        config.readStorage();
-    }
-
     private void checkSecurity(CommandContext<ServerCommandSource> ctx) {
         var config = this.config.getModel();
 

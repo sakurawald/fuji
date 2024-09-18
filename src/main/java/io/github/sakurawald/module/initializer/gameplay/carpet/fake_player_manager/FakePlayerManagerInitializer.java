@@ -37,13 +37,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        config.readStorage();
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new ManageFakePlayersJob().schedule());
-    }
-
-    @Override
-    public void onReload() {
-        config.readStorage();
     }
 
     @CommandNode("player renew")

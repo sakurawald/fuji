@@ -19,16 +19,6 @@ public class PvpInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<PvPModel> pvpHandler = new ObjectConfigurationHandler<>("pvp.json", PvPModel.class);
 
-    @Override
-    public void onInitialize() {
-        pvpHandler.readStorage();
-    }
-
-    @Override
-    public void onReload() {
-        pvpHandler.readStorage();
-    }
-
     @CommandNode("pvp on")
     private int $on(@CommandSource ServerPlayerEntity player) {
         Set<String> whitelist = pvpHandler.getModel().whitelist;

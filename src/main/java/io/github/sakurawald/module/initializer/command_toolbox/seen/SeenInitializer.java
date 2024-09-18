@@ -21,16 +21,6 @@ public class SeenInitializer extends ModuleInitializer {
     @Getter
     private final BaseConfigurationHandler<SeenModel> data = new ObjectConfigurationHandler<>("seen.json", SeenModel.class);
 
-    @Override
-    public void onInitialize() {
-        data.readStorage();
-    }
-
-    @Override
-    public void onReload() {
-        data.readStorage();
-    }
-
     @CommandNode("seen")
     @CommandRequirement(level = 4)
     private int $seen(@CommandSource CommandContext<ServerCommandSource> ctx, OfflinePlayerName playerName) {

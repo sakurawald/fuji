@@ -40,14 +40,12 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        schedulerHandler.readStorage();
         schedulerHandler.scheduleSaveConfigurationHandlerJob(ScheduleManager.CRON_EVERY_MINUTE);
         updateJobs();
     }
 
     @Override
     public void onReload() {
-        schedulerHandler.readStorage();
         updateJobs();
     }
 

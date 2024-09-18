@@ -43,8 +43,6 @@ public class ChatInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        chatHandler.readStorage();
-
         compilePatterns();
 
         registerPosPlaceholder();
@@ -54,8 +52,6 @@ public class ChatInitializer extends ModuleInitializer {
 
     @Override
     public void onReload() {
-        chatHandler.readStorage();
-
         compilePatterns();
     }
 
