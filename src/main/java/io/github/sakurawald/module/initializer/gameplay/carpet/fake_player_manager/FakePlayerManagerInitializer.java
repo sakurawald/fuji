@@ -8,8 +8,9 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager.config.model.FakePlayerManagerConfigModel;
 import io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager.job.ManageFakePlayersJob;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.command.ServerCommandSource;
@@ -28,13 +29,21 @@ import java.util.Map;
 import java.util.UUID;
 
 public class FakePlayerManagerInitializer extends ModuleInitializer {
+    public final ObjectConfigurationHandler<FakePlayerManagerConfigModel> config = new ObjectConfigurationHandler<>("config.gameplay.carpet.fake_player_manager.json", FakePlayerManagerConfigModel.class);
+
     public final List<String> CONSTANT_EMPTY_LIST = new ArrayList<>();
     public final Map<String, List<String>> player2fakePlayers = new HashMap<>();
     public final Map<String, Long> player2expiration = new HashMap<>();
 
     @Override
     public void onInitialize() {
+        config.readStorage();
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new ManageFakePlayersJob().schedule());
+    }
+
+    @Override
+    public void onReload() {
+        config.readStorage();
     }
 
     @CommandNode("player renew")
@@ -67,7 +76,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
 
     public void renewFakePlayers(@NotNull ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
-        int duration = Configs.configHandler.getModel().modules.gameplay.carpet.fake_player_manager.renew_duration_ms;
+        int duration = config.getModel().renew_duration_ms;
         long newTime = System.currentTimeMillis() + duration;
         player2expiration.put(name, newTime);
         LocaleHelper.sendMessageByKey(player, "fake_player_manager.renew.success", DateUtil.toStandardDateFormat(newTime));
@@ -122,7 +131,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
     }
 
     public int getCurrentAmountLimit() {
-        List<List<Integer>> rules = Configs.configHandler.getModel().modules.gameplay.carpet.fake_player_manager.caps_limit_rule;
+        List<List<Integer>> rules = config.getModel().caps_limit_rule;
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
         int currentDays = currentDate.getDayOfWeek().getValue();

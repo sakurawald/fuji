@@ -42,12 +42,12 @@ public class FlattenTransformer extends ConfigurationTransformer {
         submodule.forEach(copy::remove);
 
         // ignore the transformation if the tree only has 1 node named "enable"
-        if (copy.keySet().isEmpty()) return;
-
-        this.applied = true;
-        logConsole("flatten tree `{}` into `{}`", level, outPath);
-        String json = BaseConfigurationHandler.getGson().toJson(copy);
-        Files.writeString(outPath, json);
+        if (!copy.keySet().isEmpty()) {
+            this.applied = true;
+            logConsole("flatten tree `{}` into `{}`", level, outPath);
+            String json = BaseConfigurationHandler.getGson().toJson(copy);
+            Files.writeString(outPath, json);
+        }
 
         /* walk */
         submodule.forEach(key -> flatten(parent.getAsJsonObject(key), level + "." + key));

@@ -757,17 +757,6 @@ public class ConfigModel {
                 public static class FakePlayerManager {
                     public boolean enable = false;
 
-                    public List<List<Integer>> caps_limit_rule = new ArrayList<>() {
-                        {
-                            this.add(List.of(1, 0, 2));
-                        }
-                    };
-
-                    public int renew_duration_ms = 1000 * 60 * 60 * 12;
-
-                    public String transform_name = "_fake_%name%";
-
-                    public boolean use_local_random_skins_for_fake_player = true;
                 }
 
                 public static class BetterInfo {

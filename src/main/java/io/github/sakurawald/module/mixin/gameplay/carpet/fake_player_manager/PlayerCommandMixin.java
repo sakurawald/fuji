@@ -27,7 +27,7 @@ public abstract class PlayerCommandMixin {
 
     @Unique
     private static @NotNull String transformFakePlayerName(@NotNull String fakePlayerName) {
-        return Configs.configHandler.getModel().modules.gameplay.carpet.fake_player_manager.transform_name.replace("%name%", fakePlayerName);
+        return module.config.getModel().transform_name.replace("%name%", fakePlayerName);
     }
 
     @Redirect(method = "cantSpawn", at = @At(
@@ -54,13 +54,6 @@ public abstract class PlayerCommandMixin {
         if (!module.canSpawnFakePlayer(player)) {
             LocaleHelper.sendMessageByKey(player, "fake_player_manager.spawn.limit_exceed");
             cir.setReturnValue(0);
-        }
-
-        /* fix: fake-player auth network lagged */
-        if (Configs.configHandler.getModel().modules.gameplay.carpet.fake_player_manager.use_local_random_skins_for_fake_player) {
-            String fakePlayerName = StringArgumentType.getString(context, "player");
-            fakePlayerName = transformFakePlayerName(fakePlayerName);
-            ServerHelper.getDefaultServer().getUserCache().add(module.createOfflineGameProfile(fakePlayerName));
         }
     }
 
