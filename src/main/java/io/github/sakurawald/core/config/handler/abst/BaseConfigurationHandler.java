@@ -65,9 +65,10 @@ public abstract class BaseConfigurationHandler<T> {
     protected T model;
 
     /* flags */
-    protected boolean alreadyBackupFlag;
-    protected boolean writeStorageWithDataTreeFlag;
-    protected boolean exitJvmFlag;
+    private boolean alreadyBackupFlag;
+    private boolean writeStorageWithDataTreeFlag;
+    private boolean exitJvmFlag;
+    protected boolean detectUnknownKeysFlag;
 
     private static ParseContext jsonPathParser = null;
 
@@ -136,9 +137,12 @@ public abstract class BaseConfigurationHandler<T> {
                     System.exit(-1);
                 }
 
+                if (this.detectUnknownKeysFlag) {
+                    this.detectUnknownKeys("", dataTree.getAsJsonObject(), schemaTree.getAsJsonObject());
+                }
+
                 // use merged tree
                 this.model = (T) gson.fromJson(dataTree, defaultModel.getClass());
-
             }
 
         } catch (Exception e) {
@@ -226,6 +230,29 @@ public abstract class BaseConfigurationHandler<T> {
             }
         }
     }
+
+    private void detectUnknownKeys(String parentPath, @NotNull JsonObject dataTree, @NotNull JsonObject schemaTree) {
+        // navigating using data tree
+        Set<Map.Entry<String, JsonElement>> entrySet = dataTree.entrySet();
+        for (Map.Entry<String, JsonElement> entry : entrySet) {
+            String key = entry.getKey();
+            JsonElement value = entry.getValue();
+
+            String currentPath = StringUtils.strip(parentPath + "." + key, ".");
+
+            if (!schemaTree.has(key)) {
+                LogUtil.warn("Unknown configuration key `{}` in configuration file `{}`", currentPath, this.path);
+                continue;
+            }
+
+            // the verification of type equality is done by mergeJsonTree()
+            if (dataTree.get(key).isJsonObject()) {
+                detectUnknownKeys(currentPath, dataTree.getAsJsonObject(key), value.getAsJsonObject());
+            }
+        }
+
+    }
+
 
     @SneakyThrows
     private void handleTreeMismatch(@NotNull JsonObject dataTree, String currentPath, String key, JsonElement value) {
