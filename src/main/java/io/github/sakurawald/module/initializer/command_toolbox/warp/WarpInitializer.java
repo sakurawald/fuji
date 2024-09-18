@@ -28,7 +28,7 @@ public class WarpInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {
         data.readStorage();
-        data.setAutoSaveJob(ScheduleManager.CRON_EVERY_MINUTE);
+        data.scheduleSaveConfigurationHandlerJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 
     @Override
