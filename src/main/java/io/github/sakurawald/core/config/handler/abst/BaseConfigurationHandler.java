@@ -173,7 +173,7 @@ public abstract class BaseConfigurationHandler<T> {
     /**
      * This method exists for performance purpose.
      */
-    public void setAutoSaveJob(@NotNull String cron) {
+    public void scheduleSaveConfigurationHandlerJob(@NotNull String cron) {
         String jobName = this.path.getFileName().toString();
         new SaveConfigurationHandlerJob(jobName, new JobDataMap() {
             {

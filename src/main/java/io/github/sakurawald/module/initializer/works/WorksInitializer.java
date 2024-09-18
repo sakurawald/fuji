@@ -24,7 +24,7 @@ public class WorksInitializer extends ModuleInitializer {
     public void onInitialize() {
         BaseConfigurationHandler.registerTypeAdapter(Work.class, new Work.WorkTypeAdapter());
         worksHandler.readStorage();
-        worksHandler.setAutoSaveJob(ScheduleManager.CRON_EVERY_MINUTE);
+        worksHandler.scheduleSaveConfigurationHandlerJob(ScheduleManager.CRON_EVERY_MINUTE);
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new WorksScheduleJob(new JobDataMap() {
             {
