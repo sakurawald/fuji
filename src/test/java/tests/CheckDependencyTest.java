@@ -22,7 +22,7 @@ public class CheckDependencyTest {
     private static final Path COMPILE_TIME_SOURCE_PATH = Path.of("src", "main", "java");
 
     private static final String PROJECT_PACKAGE = "io.github.sakurawald";
-    private static final String PROJECT_MODULE_PACKAGE = "io.github.sakurawald.module";
+    private static final String PROJECT_MODULE_PACKAGE = PROJECT_PACKAGE + ".module";
 
     private static final Path COMPILE_TIME_MAIN_PACKAGE_PATH = COMPILE_TIME_SOURCE_PATH.resolve(PROJECT_PACKAGE.replace(".", "/"));
 
