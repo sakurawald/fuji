@@ -10,7 +10,9 @@ import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.command.exception.AbortOperationException;
 import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.command_meta.shell.config.ShellConfigModel;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
@@ -22,8 +24,20 @@ import java.util.concurrent.CompletableFuture;
 
 public class ShellInitializer extends ModuleInitializer {
 
+    public final ObjectConfigurationHandler<ShellConfigModel> config = new ObjectConfigurationHandler<>("config.shell.json", ShellConfigModel.class);
+
+    @Override
+    public void onInitialize() {
+        config.readStorage();
+    }
+
+    @Override
+    public void onReload() {
+        config.readStorage();
+    }
+
     private void checkSecurity(CommandContext<ServerCommandSource> ctx) {
-        var config = Configs.configHandler.getModel().modules.command_meta.shell;
+        var config = this.config.getModel();
 
         if (!config.enable_warning.equals("CONFIRM")) {
             throw new AbortOperationException("Refuse to execute shell command: please read the official wiki.");
