@@ -1,7 +1,11 @@
 package io.github.sakurawald.module.initializer.chat.display.helper;
 
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.module.initializer.chat.display.gui.*;
+import io.github.sakurawald.module.initializer.chat.display.gui.DisplayGuiBuilder;
+import io.github.sakurawald.module.initializer.chat.display.gui.EnderChestDisplayGui;
+import io.github.sakurawald.module.initializer.chat.display.gui.InventoryDisplayGui;
+import io.github.sakurawald.module.initializer.chat.display.gui.ItemDisplayGui;
+import io.github.sakurawald.module.initializer.chat.display.gui.ShulkerBoxDisplayGui;
 import io.github.sakurawald.module.initializer.chat.display.structure.SoftReferenceMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;

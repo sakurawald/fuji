@@ -6,7 +6,11 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.*;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
@@ -60,7 +64,7 @@ public class RegistryHelper {
         return Registries.ITEM.get(Identifier.tryParse(identifier));
     }
 
-    public static RegistryWrapper.WrapperLookup getDefaultWrapperLookup(){
+    public static RegistryWrapper.WrapperLookup getDefaultWrapperLookup() {
         return ServerHelper.getDefaultServer().getRegistryManager();
     }
 }
