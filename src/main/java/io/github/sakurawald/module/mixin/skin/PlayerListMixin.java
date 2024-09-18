@@ -1,11 +1,8 @@
 package io.github.sakurawald.module.mixin.skin;
 
-import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.skin.SkinRestorer;
-import net.minecraft.network.ClientConnection;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
-import net.minecraft.server.network.ConnectedClientData;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
@@ -15,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Collections;
 import java.util.List;
 
 @Mixin(PlayerManager.class)
@@ -37,14 +33,5 @@ public abstract class PlayerListMixin {
     @Inject(method = "disconnectAllPlayers", at = @At("HEAD"))
     private void disconnectAllPlayers(CallbackInfo ci) {
         getPlayerList().forEach(player -> SkinRestorer.getSkinStorage().removeSkin(player.getUuid()));
-    }
-
-    @Inject(method = "onPlayerConnect", at = @At("HEAD"))
-    private void onPlayerConnected(ClientConnection connection, @NotNull ServerPlayerEntity serverPlayer, ConnectedClientData commonListenerCookie, CallbackInfo ci) {
-        // if the player isn't a server player entity, it must be someone's fake player
-        if (serverPlayer.getClass() != ServerPlayerEntity.class
-                && Configs.configHandler.getModel().modules.gameplay.carpet.fake_player_manager.use_local_random_skins_for_fake_player) {
-            SkinRestorer.setSkinAsync(server, Collections.singleton(serverPlayer.getGameProfile()), () -> SkinRestorer.getSkinStorage().getRandomSkin(serverPlayer.getUuid()));
-        }
     }
 }
