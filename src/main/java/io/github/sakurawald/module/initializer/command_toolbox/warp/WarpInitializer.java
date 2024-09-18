@@ -27,13 +27,13 @@ public class WarpInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        data.readDisk();
+        data.readStorage();
         data.setAutoSaveJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 
     @Override
     public void onReload() {
-        data.readDisk();
+        data.readStorage();
     }
 
     @CommandNode("tp")

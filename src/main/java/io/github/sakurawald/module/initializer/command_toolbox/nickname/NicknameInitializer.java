@@ -20,14 +20,14 @@ public class NicknameInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        nicknameHandler.readDisk();
+        nicknameHandler.readStorage();
     }
 
     @CommandNode("set")
     private int $set(@CommandSource ServerPlayerEntity player, GreedyString format) {
             String name = player.getGameProfile().getName();
             nicknameHandler.getModel().format.player2format.put(name, format.getValue());
-            nicknameHandler.writeDisk();
+            nicknameHandler.writeStorage();
 
             LocaleHelper.sendMessageByKey(player, "nickname.set");
             return CommandHelper.Return.SUCCESS;
@@ -37,7 +37,7 @@ public class NicknameInitializer extends ModuleInitializer {
     private int $reset(@CommandSource ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
         nicknameHandler.getModel().format.player2format.remove(name);
-        nicknameHandler.writeDisk();
+        nicknameHandler.writeStorage();
 
         LocaleHelper.sendMessageByKey(player, "nickname.unset");
         return CommandHelper.Return.SUCCESS;

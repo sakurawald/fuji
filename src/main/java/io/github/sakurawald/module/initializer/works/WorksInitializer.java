@@ -23,7 +23,7 @@ public class WorksInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {
         BaseConfigurationHandler.registerTypeAdapter(Work.class, new Work.WorkTypeAdapter());
-        worksHandler.readDisk();
+        worksHandler.readStorage();
         worksHandler.setAutoSaveJob(ScheduleManager.CRON_EVERY_MINUTE);
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new WorksScheduleJob(new JobDataMap() {
@@ -35,7 +35,7 @@ public class WorksInitializer extends ModuleInitializer {
 
     @Override
     public void onReload() {
-        worksHandler.readDisk();
+        worksHandler.readStorage();
     }
 
     @CommandNode("works")

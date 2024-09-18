@@ -27,13 +27,13 @@ public class HomeInitializer extends ModuleInitializer {
     private final BaseConfigurationHandler<HomeModel> data = new ObjectConfigurationHandler<>("home.json", HomeModel.class);
 
     public void onInitialize() {
-        data.readDisk();
+        data.readStorage();
         data.setAutoSaveJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 
     @Override
     public void onReload() {
-        data.readDisk();
+        data.readStorage();
     }
 
     public Map<String, SpatialPose> ofHomes(@NotNull ServerPlayerEntity player) {

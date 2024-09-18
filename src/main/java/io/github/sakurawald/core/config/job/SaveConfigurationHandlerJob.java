@@ -23,6 +23,6 @@ public class SaveConfigurationHandlerJob extends CronJob {
         LogUtil.debug("save configuration file {}", context.getJobDetail().getKey().getName());
 
         BaseConfigurationHandler<?> configHandler = (BaseConfigurationHandler<?>) context.getJobDetail().getJobDataMap().get(BaseConfigurationHandler.class.getName());
-        configHandler.writeDisk();
+        configHandler.writeStorage();
     }
 }

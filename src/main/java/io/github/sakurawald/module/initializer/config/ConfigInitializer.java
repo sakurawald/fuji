@@ -20,7 +20,7 @@ public class ConfigInitializer extends ModuleInitializer {
     @CommandNode("reload")
     private int $reload(@CommandSource CommandContext<ServerCommandSource> ctx) {
         // reload configs
-        Configs.configHandler.readDisk();
+        Configs.configHandler.readStorage();
 
         // reload modules
         Managers.getModuleManager().reloadModules();

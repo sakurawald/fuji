@@ -71,7 +71,7 @@ public class LocaleHelper {
 
     private static void writeDefaultLanguageFiles() {
         for (String languageFile : ReflectionUtil.getGraph(ReflectionUtil.LANGUAGE_GRAPH_FILE_NAME)) {
-            new ResourceConfigurationHandler("lang/" + languageFile).readDisk();
+            new ResourceConfigurationHandler("lang/" + languageFile).readStorage();
         }
     }
 
