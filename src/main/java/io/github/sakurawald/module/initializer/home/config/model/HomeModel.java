@@ -8,5 +8,5 @@ import java.util.Map;
 
 public class HomeModel {
 
-    public @NotNull Map<String, Map<String, SpatialPose>> homes = new HashMap<>();
+    public @NotNull Map<String, Map<String, SpatialPose>> name2home = new HashMap<>();
 }

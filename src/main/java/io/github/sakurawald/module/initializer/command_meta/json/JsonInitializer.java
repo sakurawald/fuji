@@ -14,10 +14,9 @@ import io.github.sakurawald.module.initializer.command_meta.json.command.argumen
 import lombok.SneakyThrows;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
-import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.BiFunction;
 
@@ -34,7 +33,7 @@ public class JsonInitializer extends ModuleInitializer {
         if (destructiveFlag) {
             String json = BaseConfigurationHandler.getGson().toJson(documentContext.json());
             try {
-                FileUtils.write(path.toFile(), json, Charset.defaultCharset());
+                Files.writeString(path, json);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

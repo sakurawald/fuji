@@ -12,6 +12,7 @@ import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.home.command.argument.wrapper.HomeName;
 import io.github.sakurawald.module.initializer.home.config.model.HomeModel;
+import io.github.sakurawald.module.initializer.home.config.transformer.FixMapNameTransformer;
 import lombok.Getter;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
@@ -24,21 +25,22 @@ import java.util.Optional;
 public class HomeInitializer extends ModuleInitializer {
 
     @Getter
-    private final BaseConfigurationHandler<HomeModel> data = new ObjectConfigurationHandler<>("home.json", HomeModel.class);
+    private final BaseConfigurationHandler<HomeModel> storage = new ObjectConfigurationHandler<>("home.json", HomeModel.class)
+        .addTransformer(new FixMapNameTransformer());
 
     public void onInitialize() {
-        data.readStorage();
-        data.scheduleSaveConfigurationHandlerJob(ScheduleManager.CRON_EVERY_MINUTE);
+        storage.readStorage();
+        storage.scheduleSaveConfigurationHandlerJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 
     @Override
     public void onReload() {
-        data.readStorage();
+        storage.readStorage();
     }
 
     public Map<String, SpatialPose> ofHomes(@NotNull ServerPlayerEntity player) {
         String playerName = player.getGameProfile().getName();
-        Map<String, Map<String, SpatialPose>> homes = data.getModel().homes;
+        Map<String, Map<String, SpatialPose>> homes = storage.getModel().name2home;
         homes.computeIfAbsent(playerName, k -> new HashMap<>());
         return homes.get(playerName);
     }

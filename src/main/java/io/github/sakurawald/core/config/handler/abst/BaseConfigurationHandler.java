@@ -17,6 +17,7 @@ import com.jayway.jsonpath.spi.mapper.MappingProvider;
 import io.github.sakurawald.core.auxiliary.JsonUtil;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.config.job.SaveConfigurationHandlerJob;
+import io.github.sakurawald.core.config.transformer.abst.ConfigurationTransformer;
 import io.github.sakurawald.core.manager.Managers;
 import lombok.Cleanup;
 import lombok.Getter;
@@ -33,7 +34,9 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -71,6 +74,15 @@ public abstract class BaseConfigurationHandler<T> {
     private boolean exitJvmFlag = false;
     protected boolean detectUnknownKeysFlag = false;
 
+    /* transformer */
+    private final List<ConfigurationTransformer> transformers = new ArrayList<>();
+
+    public BaseConfigurationHandler<T> addTransformer(ConfigurationTransformer transformer) {
+        this.transformers.add(transformer);
+        return this;
+    }
+
+    /* json path */
     private static ParseContext jsonPathParser = null;
 
     public static ParseContext getJsonPathParser() {
@@ -118,6 +130,12 @@ public abstract class BaseConfigurationHandler<T> {
             if (Files.notExists(this.path)) {
                 writeStorage();
             } else {
+                // apply transformers
+                this.transformers.forEach(it -> {
+                    it.configure(this.path);
+                    it.apply();
+                });
+
                 // read data tree from disk
                 @Cleanup Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this.path.toFile())));
                 JsonElement dataTree = JsonParser.parseReader(reader);
@@ -225,6 +243,8 @@ public abstract class BaseConfigurationHandler<T> {
                 /* for JsonArray type, we will not directly set array elements, but we will add new properties for every array element (the field initialization-value defined by Java field).
 
                  e.g. For List<ExamplePojo>, we will never change the size of this list, but we will add missing properties for every ExamplePojo with the field initialization-value.
+
+                 To store user-generated data, the array and map is needed.
                  */
                 LogUtil.warn("add missing json key-value pair: file = {}, key = {}, value = {}", this.path.toFile().getName(), key, value);
                 dataTree.add(key, value);
@@ -242,8 +262,12 @@ public abstract class BaseConfigurationHandler<T> {
 
             String currentPath = StringUtils.strip(parentPath + "." + key, ".");
 
+            if (MAP_TYPE_MATCHER.matcher(key).matches()) {
+                continue;
+            }
+
             if (!schemaTree.has(key)) {
-                LogUtil.warn("Unknown configuration key `{}` in configuration file `{}`", currentPath, this.path);
+                LogUtil.warn("unknown configuration key `{}` in configuration file `{}`", currentPath, this.path);
                 continue;
             }
 
