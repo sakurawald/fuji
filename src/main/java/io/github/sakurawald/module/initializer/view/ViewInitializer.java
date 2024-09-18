@@ -14,7 +14,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 @CommandNode("view")
 @CommandRequirement(level = 4)
-public class InvViewInitializer extends ModuleInitializer {
+public class ViewInitializer extends ModuleInitializer {
 
     void checkSelfView(ServerPlayerEntity source, OfflinePlayerName target) {
         if (source.getGameProfile().getName().equals(target.getValue())) {

@@ -80,7 +80,7 @@ io.github.sakurawald.module.initializer.temp_ban.TempBanInitializer
 io.github.sakurawald.module.initializer.tester.TesterInitializer
 io.github.sakurawald.module.initializer.top_chunks.TopChunksInitializer
 io.github.sakurawald.module.initializer.tpa.TpaInitializer
-io.github.sakurawald.module.initializer.view.InvViewInitializer
+io.github.sakurawald.module.initializer.view.ViewInitializer
 io.github.sakurawald.module.initializer.works.WorksInitializer
 io.github.sakurawald.module.initializer.world.WorldInitializer
 io.github.sakurawald.module.initializer.world_downloader.WorldDownloaderInitializer

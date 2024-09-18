@@ -1,29 +1,20 @@
 package io.github.sakurawald.module.initializer.view.gui;
 
-import com.mojang.authlib.GameProfile;
+import io.github.sakurawald.core.auxiliary.minecraft.EntityHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.packet.c2s.common.SyncedClientOptions;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 public abstract class RedirectScreenHandlerFactory {
 
-    private static final String DIMENSION = "Dimension";
 
     private final String targetPlayerName;
     private final Text title;
@@ -43,36 +34,13 @@ public abstract class RedirectScreenHandlerFactory {
         this.loadTargetPlayer();
     }
 
-    private void setDimension(ServerPlayerEntity player, @Nullable NbtCompound root) {
-        if (root == null) return;
-        if (root.contains(DIMENSION)) {
-            String dimensionId = root.getString(DIMENSION);
-            ServerWorld world = RegistryHelper.ofServerWorld(Identifier.of(dimensionId));
-            if (world != null) {
-                player.setServerWorld(world);
-            }
-        }
-    }
-
     private void loadTargetPlayer() {
         ServerPlayerEntity player = ServerHelper.getDefaultServer().getPlayerManager().getPlayer(targetPlayerName);
         if (player != null) {
             onlineEditMode = true;
             targetPlayer = player;
         } else {
-            Optional<GameProfile> gameProfile = ServerHelper.getGameProfileByName(targetPlayerName);
-            if (gameProfile.isEmpty()) {
-                throw new IllegalArgumentException("Can't find player %s in usercache.json".formatted(targetPlayerName));
-            }
-
-            targetPlayer = ServerHelper.getPlayerManager().createPlayer(gameProfile.get(), SyncedClientOptions.createDefault());
-
-            /*
-             the default dimension for ServerPlayerEntity instance if minecraft:overworld.
-             in order to keep original dimension after modify inv, here we should set dimension for the loaded player entity.
-             */
-            Optional<NbtCompound> playerDataOpt = ServerHelper.getPlayerManager().loadPlayerData(targetPlayer);
-            setDimension(targetPlayer, playerDataOpt.orElse(null));
+            targetPlayer = EntityHelper.loadOfflinePlayer(targetPlayerName);
         }
     }
 
