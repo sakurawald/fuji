@@ -20,9 +20,6 @@ public class ResourceConfigurationHandler extends BaseConfigurationHandler<JsonE
     private ResourceConfigurationHandler(Path path, String resourcePath) {
         super(path);
         this.resourcePath = resourcePath;
-
-        // set flags
-        super.detectUnknownKeysFlag = false;
     }
 
     public ResourceConfigurationHandler(@NotNull String resourcePath) {

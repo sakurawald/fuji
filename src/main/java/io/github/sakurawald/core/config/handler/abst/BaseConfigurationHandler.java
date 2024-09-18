@@ -65,10 +65,10 @@ public abstract class BaseConfigurationHandler<T> {
     protected T model;
 
     /* flags */
-    private boolean alreadyBackupFlag;
-    private boolean writeStorageWithDataTreeFlag;
-    private boolean exitJvmFlag;
-    protected boolean detectUnknownKeysFlag;
+    private boolean alreadyBackupFlag = false;
+    private boolean writeStorageWithDataTreeFlag = false;
+    private boolean exitJvmFlag = false;
+    protected boolean detectUnknownKeysFlag = false;
 
     private static ParseContext jsonPathParser = null;
 
@@ -246,8 +246,8 @@ public abstract class BaseConfigurationHandler<T> {
             }
 
             // the verification of type equality is done by mergeJsonTree()
-            if (dataTree.get(key).isJsonObject()) {
-                detectUnknownKeys(currentPath, dataTree.getAsJsonObject(key), value.getAsJsonObject());
+            if (value.isJsonObject()) {
+                detectUnknownKeys(currentPath, value.getAsJsonObject(), schemaTree.get(key).getAsJsonObject());
             }
         }
 

@@ -7,6 +7,11 @@ import io.github.sakurawald.core.config.model.ConfigModel;
 
 public class Configs {
 
-    public static final BaseConfigurationHandler<ConfigModel> configHandler = new ObjectConfigurationHandler<>("config.json", ConfigModel.class);
+    public static final BaseConfigurationHandler<ConfigModel> configHandler = new ObjectConfigurationHandler<>("config.json", ConfigModel.class) {
+        {
+            // enable detection for main-control file.
+            this.detectUnknownKeysFlag = true;
+        }
+    };
 
 }
