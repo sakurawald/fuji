@@ -2,8 +2,9 @@ package io.github.sakurawald.module.initializer.gameplay.multi_obsidian_platform
 
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
-import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.gameplay.multi_obsidian_platform.config.model.MultiObsidianPlatformConfigModel;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -16,6 +17,18 @@ import java.util.Map;
 public class MultiObsidianPlatformInitializer extends ModuleInitializer {
 
     private final Map<BlockPos, BlockPos> TRANSFORM_CACHE = new HashMap<>();
+
+    public final ObjectConfigurationHandler<MultiObsidianPlatformConfigModel> config = new ObjectConfigurationHandler<>("config.multi_obsidian_platform.json", MultiObsidianPlatformConfigModel.class);
+
+    @Override
+    public void onInitialize() {
+        config.readStorage();
+    }
+
+    @Override
+    public void onReload() {
+        config.readStorage();
+    }
 
     /* this method is used to fix Entity#position() async */
     private BlockPos findNearbyEndPortalBlock(@NotNull BlockPos bp) {
@@ -74,7 +87,7 @@ public class MultiObsidianPlatformInitializer extends ModuleInitializer {
         // fix: for sand-dupe, the blockpos (x, ?, z) of sand may differ +1 or -1
         bp = findNearbyEndPortalBlock(bp);
         bp = findCenterEndPortalBlock(bp);
-        double factor = Configs.configHandler.getModel().modules.gameplay.multi_obsidian_platform.factor;
+        double factor = config.getModel().factor;
         int x = (int) (bp.getX() / factor);
         int y = 50;
         int z = (int) (bp.getZ() / factor);
