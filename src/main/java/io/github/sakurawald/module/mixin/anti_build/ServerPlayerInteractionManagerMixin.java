@@ -4,6 +4,8 @@ import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.manager.Managers;
+import io.github.sakurawald.module.initializer.anti_build.AntiBuildInitializer;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -37,7 +39,7 @@ public class ServerPlayerInteractionManagerMixin {
         BlockState blockState = this.world.getBlockState(blockPos);
 
         String id = RegistryHelper.ofString(blockState);
-        if (Configs.configHandler.getModel().modules.anti_build.anti.break_block.id.contains(id)
+        if (Managers.getModuleManager().getInitializer(AntiBuildInitializer.class).config.getModel().anti.break_block.id.contains(id)
                 && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("break_block", id))
         ) {
             LocaleHelper.sendMessageByKey(player, "anti_build.disallow");
@@ -50,7 +52,7 @@ public class ServerPlayerInteractionManagerMixin {
     void $interactItem(ServerPlayerEntity serverPlayerEntity, World world, @NotNull ItemStack itemStack, Hand hand, @NotNull CallbackInfoReturnable<ActionResult> cir) {
         String id = RegistryHelper.ofString(itemStack);
 
-        if (Configs.configHandler.getModel().modules.anti_build.anti.interact_item.id.contains(id)
+        if (Managers.getModuleManager().getInitializer(AntiBuildInitializer.class).config.getModel().anti.interact_item.id.contains(id)
                 && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_item", id))
         ) {
             LocaleHelper.sendMessageByKey(player, "anti_build.disallow");
@@ -64,7 +66,7 @@ public class ServerPlayerInteractionManagerMixin {
         BlockState blockState = world.getBlockState(blockPos);
         String id = RegistryHelper.ofString(blockState);
 
-        if (Configs.configHandler.getModel().modules.anti_build.anti.interact_block.id.contains(id)
+        if (Managers.getModuleManager().getInitializer(AntiBuildInitializer.class).config.getModel().anti.interact_block.id.contains(id)
                 && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_block", id))
         ) {
             LocaleHelper.sendMessageByKey(player, "anti_build.disallow");
