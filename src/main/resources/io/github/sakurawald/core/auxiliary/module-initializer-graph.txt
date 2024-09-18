@@ -75,6 +75,7 @@ io.github.sakurawald.module.initializer.pvp.PvpInitializer
 io.github.sakurawald.module.initializer.rtp.RtpInitializer
 io.github.sakurawald.module.initializer.skin.SkinInitializer
 io.github.sakurawald.module.initializer.tab_list.TabListInitializer
+io.github.sakurawald.module.initializer.tab_list.faker.TabListFakerInitializer
 io.github.sakurawald.module.initializer.tab_list.sort.TabListSortInitializer
 io.github.sakurawald.module.initializer.temp_ban.TempBanInitializer
 io.github.sakurawald.module.initializer.tester.TesterInitializer

@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import io.github.sakurawald.core.auxiliary.RandomUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
-import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.module.initializer.tab_list.TabListInitializer;
 import io.github.sakurawald.module.initializer.tab_list.sort.structure.TabListEntry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -56,7 +56,7 @@ public abstract class OverrideTabListNameMixin {
             Text realPlayerGetDisplayName = realPlayerGetDisplayNameSave.get(name);
             // if nobody sets the display name, then we can set it.
             // someone else set teh display name, we should respect it.
-            return Objects.requireNonNullElseGet(realPlayerGetDisplayName, () -> LocaleHelper.getTextByValue(entry.getRealPlayer(), RandomUtil.drawList(Configs.configHandler.getModel().modules.tab_list.style.body)));
+            return Objects.requireNonNullElseGet(realPlayerGetDisplayName, () -> LocaleHelper.getTextByValue(entry.getRealPlayer(), RandomUtil.drawList(TabListInitializer.config.getModel().style.body)));
 
         } else {
             /* listen to real player's get display name invoke, and sync it to the dummy-player */
