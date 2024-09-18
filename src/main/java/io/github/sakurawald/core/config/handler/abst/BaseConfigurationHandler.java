@@ -155,8 +155,9 @@ public abstract class BaseConfigurationHandler<T> {
         try {
             // set default data tree
             if (this.model == null) {
-                LogUtil.info("write default configuration: {}", this.path.toFile().getAbsolutePath());
+                // getDefaultModel() is allowed to throw exception.
                 this.model = this.getDefaultModel();
+                LogUtil.info("write default configuration: {}", this.path.toFile().getAbsolutePath());
             }
 
             // write data tree to disk

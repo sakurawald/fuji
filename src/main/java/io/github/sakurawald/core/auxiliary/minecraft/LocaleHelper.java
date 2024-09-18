@@ -85,6 +85,7 @@ public class LocaleHelper {
         try {
         String languageFile = languageCode + ".json";
         ResourceConfigurationHandler resourceConfigurationHandler = new ResourceConfigurationHandler("lang/" + languageFile);
+
         //read it
         resourceConfigurationHandler.readStorage();
 
