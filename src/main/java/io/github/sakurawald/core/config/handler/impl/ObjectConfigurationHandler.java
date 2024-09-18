@@ -15,6 +15,9 @@ public class ObjectConfigurationHandler<T> extends BaseConfigurationHandler<T> {
     private ObjectConfigurationHandler(Path path, Class<T> typeOfModel) {
         super(path);
         this.typeOfModel = typeOfModel;
+
+        // set flags
+        super.detectUnknownKeysFlag = true;
     }
 
     public ObjectConfigurationHandler(@NotNull String other, Class<T> typeOfModel) {
