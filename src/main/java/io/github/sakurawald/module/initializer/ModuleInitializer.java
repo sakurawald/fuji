@@ -39,12 +39,11 @@ public class ModuleInitializer {
     @SneakyThrows
     public void loadConfigurationFiles() {
         Field[] declaredFields = this.getClass().getDeclaredFields();
-
         for (Field declaredField : declaredFields) {
             declaredField.setAccessible(true);
             if (declaredField.getType().isAssignableFrom(ObjectConfigurationHandler.class)) {
                 ObjectConfigurationHandler configHandler = (ObjectConfigurationHandler) declaredField.get(this);
-                LogUtil.debug("invoke readStorage() for field {} in class {}", declaredField.getName(), this.getClass().getName());
+                LogUtil.debug("invoke readStorage() for field `{}` in class `{}`", declaredField.getName(), this.getClass().getName());
                 configHandler.readStorage();
             }
         }

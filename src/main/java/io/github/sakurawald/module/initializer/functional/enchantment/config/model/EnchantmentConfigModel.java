@@ -1,6 +1,6 @@
-package io.github.sakurawald.module.initializer.functional.config.model;
+package io.github.sakurawald.module.initializer.functional.enchantment.config.model;
 
-public class FunctionalConfigModel {
+public class EnchantmentConfigModel {
 
     public Enchantment enchantment = new Enchantment();
 
