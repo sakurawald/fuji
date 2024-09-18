@@ -11,7 +11,7 @@ public class CleanerJob extends CronJob {
     public static final CleanerInitializer INITIALIZER = Managers.getModuleManager().getInitializer(CleanerInitializer.class);
 
     public CleanerJob() {
-        super(() -> Configs.configHandler.getModel().modules.cleaner.cron);
+        super(() -> INITIALIZER.storage.getModel().cron);
     }
 
     @Override

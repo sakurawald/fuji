@@ -6,9 +6,10 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
-import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.structure.TypeFormatter;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.cleaner.config.model.CleanerModel;
 import io.github.sakurawald.module.initializer.cleaner.job.CleanerJob;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.kyori.adventure.text.Component;
@@ -33,9 +34,17 @@ import java.util.concurrent.CompletableFuture;
 @CommandRequirement(level = 4)
 public class CleanerInitializer extends ModuleInitializer {
 
+    public ObjectConfigurationHandler<CleanerModel> storage = new ObjectConfigurationHandler<>("config.cleaner.json", CleanerModel.class);
+
     @Override
     public void onInitialize() {
+        storage.readStorage();
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new CleanerJob().schedule());
+    }
+
+    @Override
+    public void onReload() {
+        storage.readStorage();
     }
 
     @SuppressWarnings("RedundantIfStatement")
@@ -44,7 +53,7 @@ public class CleanerInitializer extends ModuleInitializer {
         if (entity instanceof BlockAttachedEntity) return true;
         if (entity instanceof VehicleEntity) return true;
 
-        var config = Configs.configHandler.getModel().modules.cleaner.ignore;
+        var config = storage.getModel().ignore;
 
         if (config.ignore_item_entity && entity instanceof ItemEntity) return true;
         if (config.ignore_living_entity && entity.isLiving()) return true;
@@ -62,7 +71,7 @@ public class CleanerInitializer extends ModuleInitializer {
     }
 
     private boolean shouldRemove(String key, int age) {
-        Map<String, Integer> regex2age = Configs.configHandler.getModel().modules.cleaner.key2age;
+        Map<String, Integer> regex2age = storage.getModel().key2age;
         return regex2age.containsKey(key) && age >= regex2age.get(key);
     }
 

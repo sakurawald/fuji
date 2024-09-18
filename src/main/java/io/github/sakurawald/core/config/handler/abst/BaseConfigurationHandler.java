@@ -123,7 +123,7 @@ public abstract class BaseConfigurationHandler<T> {
         this.path = path;
     }
 
-    public abstract T getDefaultModel();
+    protected abstract T getDefaultModel();
 
     @SuppressWarnings("unchecked")
     public void readStorage() {
