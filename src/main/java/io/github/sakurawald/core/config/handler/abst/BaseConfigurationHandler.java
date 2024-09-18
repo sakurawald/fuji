@@ -17,8 +17,10 @@ import com.jayway.jsonpath.spi.mapper.MappingProvider;
 import io.github.sakurawald.core.auxiliary.JsonUtil;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.config.job.SaveConfigurationHandlerJob;
+import io.github.sakurawald.core.manager.Managers;
 import lombok.Cleanup;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.quartz.JobDataMap;
@@ -61,8 +63,11 @@ public abstract class BaseConfigurationHandler<T> {
     protected @NotNull Path path;
     @Getter
     protected T model;
-    protected boolean alreadyBackup;
 
+    /* flags */
+    protected boolean alreadyBackupFlag;
+    protected boolean writeStorageWithDataTreeFlag;
+    protected boolean exitJvmFlag;
 
     private static ParseContext jsonPathParser = null;
 
@@ -120,8 +125,20 @@ public abstract class BaseConfigurationHandler<T> {
                 JsonElement schemaTree = gson.toJsonTree(defaultModel);
                 mergeJsonTree("", dataTree.getAsJsonObject(), schemaTree.getAsJsonObject());
 
+                // handle flags
+                if (this.writeStorageWithDataTreeFlag) {
+                    this.writeStorageWithDataTreeFlag = false;
+                    Files.writeString(this.path, gson.toJson(dataTree));
+                }
+
+                if (this.exitJvmFlag) {
+                    LogUtil.info("sorry, i have to shutdown the server because there is an error existing in the configuration file `{}`", this.path);
+                    System.exit(-1);
+                }
+
                 // use merged tree
                 this.model = (T) gson.fromJson(dataTree, defaultModel.getClass());
+
             }
 
         } catch (Exception e) {
@@ -188,63 +205,67 @@ public abstract class BaseConfigurationHandler<T> {
                         mergeJsonTree(currentPath, dataTree.getAsJsonObject(key), value.getAsJsonObject());
                     }
                 } else {
-                    // enter rescue loop if the kv-pair is not the same type
-                    rescueLoop(dataTree, currentPath, key, value);
+                    handleTreeMismatch(dataTree, currentPath, key, value);
                 }
 
             } else {
                 /* note: for JsonArray, we will not directly set array elements, but we will add new properties for every array element (language default empty-value).
                  e.g. For List<ExamplePojo>, we will never change the size of this list, but we will add missing properties for every ExamplePojo with the language default empty-value.
                  */
-                LogUtil.info("add missing json key-value pair: file = {}, key = {}, value = {}", this.path.toFile().getName(), key, value);
+                LogUtil.warn("add missing json key-value pair: file = {}, key = {}, value = {}", this.path.toFile().getName(), key, value);
                 dataTree.add(key, value);
+                this.writeStorageWithDataTreeFlag = true;
             }
         }
     }
 
-    private void rescueLoop(@NotNull JsonObject dataTree, String currentPath, String key, JsonElement value) {
-        LogUtil.warn("""
+    @SneakyThrows
+    private void handleTreeMismatch(@NotNull JsonObject dataTree, String currentPath, String key, JsonElement value) {
+        while (true) {
+            LogUtil.error("""
 
-            # What happened ?
-            There is an incompatibility issue in the configuration file `{}`.
-              - Actual value of key `{}` does not match the expected type.
+                # What happened ?
+                There is an incompatibility issue in the configuration file `{}`.
+                  - Actual type of key `{}` does not match the expected type.
 
-            Possible reason:
-              1. In the new version of fuji, the key has changed its type.
-              2. The configuration file was been accidentally modified.
+                # Possible reasons:
+                  1. In the new version of fuji, the value of the key has changed its type.
+                  2. The configuration file was been modified incorrectly.
 
-            How can I solve this ?
+                # What can I do ?
+                  - Press "y" and enter: backup the `config/fuji/` directory and `override the key with default value`.
+                  - Press "n" and enter: ignore this issue.
+                  - Press "q" and enter: abort the server start-up process.
 
-              - Manually:
-                1. Backup the folder `<your-server-root>/config/fuji`
-                2. Use your `text-editor` to open the file `{}`
-                3. Find the `key` in path `{}`
-                4. Make sure again you have backup your folder in `step 1`
-                5. Delete the `key`, and re-start the server. Fuji will re-generate the missing keys.
+                """, this.path.toFile().getAbsoluteFile(), currentPath, this.path.toFile().getAbsoluteFile(), currentPath);
 
-              - Automatically:
-                If you want to `back up the folder` and `delete the key`, press "y" and enter. (y/n)
+            /* ynop query */
+            Scanner scanner = new Scanner(System.in);
+            String input = scanner.next().trim();
+            if (input.equalsIgnoreCase("y")) {
+                if (!this.alreadyBackupFlag) {
+                    Managers.getRescueBackupManager().backup();
+                    LogUtil.info("backup the `config/fuji` directory into `config/fuji/backup_rescue` directory successfully.");
+                    this.alreadyBackupFlag = true;
+                }
 
-            """, this.path.toFile().getAbsoluteFile(), currentPath, this.path.toFile().getAbsoluteFile(), currentPath);
+                // override it with default value
+                LogUtil.warn("override the key `{}` with default value: {}", key, value);
+                dataTree.remove(key);
+                dataTree.add(key, value);
 
-        /* ynop query */
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.next().trim();
-        if (input.equalsIgnoreCase("y")) {
-            LogUtil.info("override the key {} with default value!", key);
+                // data tree is modified in the memory, also we should sync the modification into the storage.
+                writeStorageWithDataTreeFlag = true;
+                break;
+            } else if (input.equalsIgnoreCase("n")) {
+                this.exitJvmFlag = true;
+                break;
+            } else if (input.equalsIgnoreCase("q")) {
+                System.exit(-1);
+                break;
+            }
 
-//            if (!this.alreadyBackup) {
-//                Managers.getRescueBackupManager().backup();
-//                LogUtil.warn("backup the `config/fuji` folder into `config/fuji/backup_rescue` folder successfully.");
-//                this.alreadyBackup = true;
-//            }
-
-            dataTree.remove(key);
-            dataTree.add(key, value);
-
-        } else {
-            // exit the JVM with error code
-            System.exit(-1);
+            LogUtil.error("Invalid input.");
         }
     }
 }
