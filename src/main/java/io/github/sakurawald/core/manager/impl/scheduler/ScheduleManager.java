@@ -12,7 +12,12 @@ import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.jetbrains.annotations.NotNull;
-import org.quartz.*;
+import org.quartz.JobDetail;
+import org.quartz.JobKey;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.Trigger;
+import org.quartz.TriggerKey;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.GroupMatcher;
 
@@ -47,11 +52,11 @@ public class ScheduleManager extends BaseManager {
     }
 
     public void scheduleJob(JobDetail jobDetail, Trigger trigger) throws SchedulerException {
-        this.scheduler.scheduleJob(jobDetail,trigger);
+        this.scheduler.scheduleJob(jobDetail, trigger);
     }
 
     public void rescheduleJob(TriggerKey triggerKey, Trigger newTrigger) throws SchedulerException {
-        this.scheduler.rescheduleJob(triggerKey,newTrigger);
+        this.scheduler.rescheduleJob(triggerKey, newTrigger);
     }
 
     public void deleteJobs(Class<?> clazz) {

@@ -20,7 +20,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class FakePlayerManagerInitializer extends ModuleInitializer {
     public final List<String> CONSTANT_EMPTY_LIST = new ArrayList<>();

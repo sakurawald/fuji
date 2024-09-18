@@ -1,19 +1,23 @@
 package tests;
 
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import io.github.sakurawald.module.mixin.GlobalMixinConfigPlugin;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.junit.jupiter.api.Test;
-import structure.dependency_checker.FileDependencyChecker;
 import structure.dependency_checker.Dependency;
+import structure.dependency_checker.FileDependencyChecker;
 import structure.dependency_checker.ModuleDependencyChecker;
 
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * You may ask why we are so strict with the symbol reference, it's mainly because the loading mechanism of jvm.
+ * Each time you `import` a file, the jvm will trigger the static initialization process, which also introduce the possibility to crash the server.
+ * The import of symbols, trigger the loading of mixins, possibly registered by other mods.
+ */
 public class CheckDependencyTest {
     private static final Path COMPILE_TIME_SOURCE_PATH = Path.of("src", "main", "java");
 
@@ -119,6 +123,25 @@ public class CheckDependencyTest {
         dependencies.forEach(dep -> {
             System.out.println(dep);
             throw new RuntimeException("the `core.job` package references mojang classes.");
+        });
+    }
+
+    /**
+     * disable wildcard import in idea: <a href="https://stackoverflow.com/questions/3348816/intellij-never-use-wildcard-imports">...</a>
+     */
+    @Test
+    void testWildcardImportStatement() {
+        Stream<Dependency> dependencies = new FileDependencyChecker().makeDependencies(
+                COMPILE_TIME_MAIN_PACKAGE_PATH)
+            .stream()
+            .filter(dep -> {
+                dep.filterReference(ref -> ref.matches(".*\\*.*"));
+                return !dep.getReference().isEmpty();
+            });
+
+        dependencies.forEach(dep -> {
+            System.out.println(dep);
+            throw new RuntimeException("this package uses wildcard import.");
         });
     }
 }

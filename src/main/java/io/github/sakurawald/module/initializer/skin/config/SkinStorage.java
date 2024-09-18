@@ -6,7 +6,12 @@ import io.github.sakurawald.module.initializer.skin.SkinInitializer;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+
 
 public class SkinStorage {
 

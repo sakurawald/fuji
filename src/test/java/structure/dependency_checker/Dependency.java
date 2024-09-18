@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 @Data
 @AllArgsConstructor
@@ -20,6 +21,10 @@ public class Dependency {
             }
             return false;
         }).toList();
+    }
+
+    public void filterReference(Predicate<String> predicate) {
+        this.reference = this.reference.stream().filter(predicate).toList();
     }
 
     public void excludeReference(String... prefixes) {
