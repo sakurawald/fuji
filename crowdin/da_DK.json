@@ -2,7 +2,6 @@
     "accept": "<green>Accept",
     "add": "<#FFA1F5>Add",
     "afk.kick": "<red>You have been kicked for being afk.",
-    "afk.off.broadcast": "<gold>Player %s is no longer afk",
     "afk.on": "<gold>Afk mode: on",
     "afk.on.broadcast": "<gold>Player %s is now afk",
     "afk.on.failed": "<red>You can't enter afk state now!",
