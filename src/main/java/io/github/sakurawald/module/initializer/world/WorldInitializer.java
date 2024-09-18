@@ -2,8 +2,8 @@ package io.github.sakurawald.module.initializer.world;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -11,11 +11,11 @@ import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
 import io.github.sakurawald.core.command.argument.wrapper.impl.DimensionType;
 import io.github.sakurawald.core.command.exception.AbortOperationException;
-import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.world.config.model.WorldModel;
+import io.github.sakurawald.module.initializer.world.config.model.WorldConfigModel;
+import io.github.sakurawald.module.initializer.world.config.model.WorldStorageModel;
 import io.github.sakurawald.module.initializer.world.structure.DimensionEntry;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -47,12 +47,19 @@ import java.util.Optional;
 @CommandRequirement(level = 4)
 public class WorldInitializer extends ModuleInitializer {
 
-    private final BaseConfigurationHandler<WorldModel> storage = new ObjectConfigurationHandler<>("world.json", WorldModel.class);
+    public final ObjectConfigurationHandler<WorldConfigModel> config = new ObjectConfigurationHandler<>("config.world.json", WorldConfigModel.class);
+    private final BaseConfigurationHandler<WorldStorageModel> storage = new ObjectConfigurationHandler<>("world.json", WorldStorageModel.class);
 
     @Override
     public void onInitialize() {
+        config.readStorage();
         storage.readStorage();
         ServerLifecycleEvents.SERVER_STARTED.register(this::loadWorlds);
+    }
+
+    @Override
+    public void onReload() {
+        config.readStorage();
     }
 
     public void loadWorlds(@NotNull MinecraftServer server) {
@@ -123,7 +130,7 @@ public class WorldInitializer extends ModuleInitializer {
     }
 
     private void checkBlacklist(CommandContext<ServerCommandSource> ctx, String identifier) {
-        if (Configs.configHandler.getModel().modules.world.blacklist.dimension_list.contains(identifier)) {
+        if (config.getModel().blacklist.dimension_list.contains(identifier)) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.blacklist", identifier);
             throw new AbortOperationException();
         }
