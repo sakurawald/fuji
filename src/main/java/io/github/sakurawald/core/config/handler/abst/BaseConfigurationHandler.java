@@ -189,28 +189,36 @@ public abstract class BaseConfigurationHandler<T> {
             String key = entry.getKey();
             JsonElement value = entry.getValue();
 
-            // test -> missing keys
+            // is the key missing form the data tree ?
             if (dataTree.has(key)) {
                 String currentPath = StringUtils.strip(parentPath + "." + key, ".");
 
-                // test -> same type
+                // is the type of value equals ?
                 if (JsonUtil.sameType(dataTree.get(key), value)) {
-                    // test -> both are JsonObject
+
+                    // are they not atoms ?
                     if (dataTree.get(key).isJsonObject() && value.isJsonObject()) {
-                        // skip the missing keys if its type is Map
+
+                        /*
+                        Gson will store the Map type as JsonObject, we can't tell if the type is a Map or a Java Object by the value.
+                        We have to tell them by the name of the key: if its name matches the MAP_TYPE_MATCHER, then we indicate it is a Map, and skip it.
+                         */
                         if (MAP_TYPE_MATCHER.matcher(key).matches()) {
                             continue;
                         }
 
+                        // flatten the tree
                         mergeJsonTree(currentPath, dataTree.getAsJsonObject(key), value.getAsJsonObject());
                     }
+
                 } else {
                     handleTreeMismatch(dataTree, currentPath, key, value);
                 }
 
             } else {
-                /* note: for JsonArray, we will not directly set array elements, but we will add new properties for every array element (language default empty-value).
-                 e.g. For List<ExamplePojo>, we will never change the size of this list, but we will add missing properties for every ExamplePojo with the language default empty-value.
+                /* for JsonArray type, we will not directly set array elements, but we will add new properties for every array element (the field initialization-value defined by Java field).
+
+                 e.g. For List<ExamplePojo>, we will never change the size of this list, but we will add missing properties for every ExamplePojo with the field initialization-value.
                  */
                 LogUtil.warn("add missing json key-value pair: file = {}, key = {}, value = {}", this.path.toFile().getName(), key, value);
                 dataTree.add(key, value);
