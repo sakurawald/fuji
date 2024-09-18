@@ -247,11 +247,10 @@ public abstract class BaseConfigurationHandler<T> {
                 }
 
             } else {
-                /* for JsonArray type, we will not directly set array elements, but we will add new properties for every array element (the field initialization-value defined by Java field).
+                /* for JsonArray type, we will not walk into it, which means that the size of JsonArray will not be changed.
+                However, each time the gson serialize the java object with its type specifier, gson will add the missing keys in the json using the field initialization-form defined in java.
 
-                 e.g. For List<ExamplePojo>, we will never change the size of this list, but we will add missing properties for every ExamplePojo with the field initialization-value.
-
-                 To store user-generated data, the array and map is needed.
+                Consider the fact that, we only store user-generated-data using array and map.
                  */
                 LogUtil.warn("add missing json key-value pair: file = {}, key = {}, value = {}", this.path.toFile().getName(), key, value);
                 dataTree.add(key, value);
