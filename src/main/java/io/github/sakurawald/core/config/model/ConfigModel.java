@@ -698,16 +698,7 @@ public class ConfigModel {
             }
 
             public static class Enchantment {
-
                 public boolean enable = false;
-
-                public OverridePower override_power = new OverridePower();
-
-                public static class OverridePower {
-
-                    public boolean enable = false;
-                    public int power_provider_amount = 15;
-                }
             }
 
             public static class GrindStone {
@@ -756,7 +747,6 @@ public class ConfigModel {
 
                 public static class FakePlayerManager {
                     public boolean enable = false;
-
                 }
 
                 public static class BetterInfo {
