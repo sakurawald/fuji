@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -26,9 +27,11 @@ public class ResourceConfigurationHandler extends BaseConfigurationHandler<JsonE
         this(Fuji.CONFIG_PATH.resolve(resourcePath), resourcePath);
     }
 
-    private static @NotNull JsonElement readJsonTreeFromResource(@NotNull String resourcePath) {
+    private static @Nullable JsonElement readJsonTreeFromResource(@NotNull String resourcePath) {
         InputStream inputStream = Fuji.class.getResourceAsStream(resourcePath);
-        assert inputStream != null;
+        if (inputStream == null) {
+            throw new IllegalArgumentException("Resource not found: " + resourcePath);
+        }
         Reader reader = new BufferedReader(new InputStreamReader(inputStream));
         return JsonParser.parseReader(reader);
     }

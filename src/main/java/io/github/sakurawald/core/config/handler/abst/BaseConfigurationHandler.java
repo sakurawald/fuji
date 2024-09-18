@@ -27,6 +27,7 @@ import org.quartz.JobDataMap;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
@@ -145,7 +146,7 @@ public abstract class BaseConfigurationHandler<T> {
                 this.model = (T) gson.fromJson(dataTree, defaultModel.getClass());
             }
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             LogUtil.error("failed to read configuration file {} from disk.", this.path, e);
         }
     }
@@ -161,7 +162,7 @@ public abstract class BaseConfigurationHandler<T> {
             // write data tree to disk
             Files.createDirectories(this.path.getParent());
             Files.writeString(this.path, gson.toJson(this.model));
-        } catch (Exception e) {
+        } catch (IOException e) {
             LogUtil.error("failed to write configuration file {} to disk.", this.path, e);
         }
     }
