@@ -12,7 +12,7 @@ import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.home.command.argument.wrapper.HomeName;
 import io.github.sakurawald.module.initializer.home.config.model.HomeModel;
-import io.github.sakurawald.module.initializer.home.config.transformer.FixMapNameTransformer;
+import io.github.sakurawald.module.initializer.home.config.transformer.FixHomesMapNameTransformer;
 import lombok.Getter;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +26,7 @@ public class HomeInitializer extends ModuleInitializer {
 
     @Getter
     private final BaseConfigurationHandler<HomeModel> storage = new ObjectConfigurationHandler<>("home.json", HomeModel.class)
-        .addTransformer(new FixMapNameTransformer());
+        .addTransformer(new FixHomesMapNameTransformer());
 
     public void onInitialize() {
         storage.readStorage();

@@ -21,7 +21,6 @@ public abstract class ConfigurationTransformer {
 
     public abstract void apply();
 
-
     public boolean exists(String jsonPath) {
         try {
             this.context.read(jsonPath);
