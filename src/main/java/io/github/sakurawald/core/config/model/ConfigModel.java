@@ -538,27 +538,7 @@ public class ConfigModel {
         }
 
         public static class Rtp {
-
             public boolean enable = false;
-
-            public Setup setup = new Setup();
-
-            public static class Setup {
-                public List<TeleportSetup> dimension = new ArrayList<>() {
-
-                    {
-                        this.add(new TeleportSetup("minecraft:overworld", 0, 0, false, 1000, 5000, -64, 320, 16));
-                        this.add(new TeleportSetup("minecraft:the_nether", 0, 0, false, 1000, 5000, 0, 128, 16));
-                        this.add(new TeleportSetup("minecraft:the_end", 0, 0, false, 1000, 5000, 0, 256, 16));
-                        this.add(new TeleportSetup("fuji:overworld", 0, 0, false, 1000, 5000, -64, 320, 16));
-                        this.add(new TeleportSetup("fuji:the_nether", 0, 0, false, 1000, 5000, 0, 128, 16));
-                        this.add(new TeleportSetup("fuji:the_end", 0, 0, false, 0, 48, 0, 256, 16));
-                    }
-
-                };
-            }
-
-
         }
 
         public static class CommandInteractive {
@@ -571,24 +551,10 @@ public class ConfigModel {
 
         public static class SystemMessage {
             public boolean enable = false;
-
-            public Map<String, String> key2value = new HashMap<>() {
-                {
-                    this.put("commands.seed.success", "<rainbow> Seeeeeeeeeeed: %s");
-                }
-            };
-
         }
 
         public static class CommandAlias {
             public boolean enable = false;
-            public List<CommandPathMappingEntry> alias = new ArrayList<>() {
-                {
-                    this.add(new CommandPathMappingEntry(List.of("r"), List.of("reply")));
-                    this.add(new CommandPathMappingEntry(List.of("sudo"), List.of("run", "as", "fake-op")));
-                    this.add(new CommandPathMappingEntry(List.of("i", "want", "to", "modify", "chat"), List.of("chat", "format")));
-                }
-            };
         }
 
         public static class CommandAttachment {
@@ -597,12 +563,6 @@ public class ConfigModel {
 
         public static class CommandRewrite {
             public boolean enable = false;
-            public List<RegexRewriteEntry> regex = new ArrayList<>() {
-                {
-                    this.add(new RegexRewriteEntry("home", "home tp default"));
-                }
-            };
-
         }
 
         public static class Multiplier {

@@ -6,9 +6,10 @@ import com.mojang.brigadier.tree.CommandNode;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
-import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.core.structure.CommandPathMappingEntry;
+import io.github.sakurawald.module.initializer.command_alias.config.model.CommandAliasConfigModel;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -16,11 +17,13 @@ import org.jetbrains.annotations.NotNull;
 
 public class CommandAliasInitializer extends ModuleInitializer {
 
+    public final ObjectConfigurationHandler<CommandAliasConfigModel> config = new ObjectConfigurationHandler<>(getModuleConfigFileName(), CommandAliasConfigModel.class);
+
     @Override
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register((server -> {
             CommandDispatcher<ServerCommandSource> dispatcher = ServerHelper.getDefaultServer().getCommandManager().getDispatcher();
-            for (CommandPathMappingEntry entry : Configs.configHandler.getModel().modules.command_alias.alias) {
+            for (CommandPathMappingEntry entry : config.getModel().alias) {
                 registerCommandAliasEntry(dispatcher, entry);
             }
         }));
