@@ -1,6 +1,7 @@
 package io.github.sakurawald.core.auxiliary;
 
 import io.github.sakurawald.Fuji;
+import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class LogUtil {
 
+    @Getter
     private static final @NotNull Logger LOGGER = createLogger(StringUtils.capitalize(Fuji.MOD_ID));
 
     public static void debug(String message, Object... args) {
