@@ -40,7 +40,7 @@ public class ResourceConfigurationHandler extends BaseConfigurationHandler<JsonE
      * for resource configuration handler, the type of model is JsonElement, which equals to the type of data tree.
      */
     @Override
-    public JsonElement getDefaultModel() {
+    protected JsonElement getDefaultModel() {
         return readJsonTreeFromResource(this.resourcePath);
     }
 
