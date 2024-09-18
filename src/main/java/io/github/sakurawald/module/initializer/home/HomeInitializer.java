@@ -7,12 +7,12 @@ import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
+import io.github.sakurawald.core.config.transformer.impl.RenameKeyTransformer;
 import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.home.command.argument.wrapper.HomeName;
 import io.github.sakurawald.module.initializer.home.config.model.HomeModel;
-import io.github.sakurawald.module.initializer.home.config.transformer.FixHomesMapNameTransformer;
 import lombok.Getter;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +26,7 @@ public class HomeInitializer extends ModuleInitializer {
 
     @Getter
     private final BaseConfigurationHandler<HomeModel> storage = new ObjectConfigurationHandler<>("home.json", HomeModel.class)
-        .addTransformer(new FixHomesMapNameTransformer());
+        .addTransformer(new RenameKeyTransformer("$","homes","name2home"));
 
     public void onInitialize() {
         storage.readStorage();

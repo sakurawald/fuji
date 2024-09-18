@@ -7,12 +7,12 @@ import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
+import io.github.sakurawald.core.config.transformer.impl.RenameKeyTransformer;
 import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_toolbox.warp.command.argument.wrapper.WarpName;
 import io.github.sakurawald.module.initializer.command_toolbox.warp.config.model.WarpModel;
-import io.github.sakurawald.module.initializer.command_toolbox.warp.config.transformer.FixWarpsMapNameTransformer;
 import io.github.sakurawald.module.initializer.command_toolbox.warp.structure.WarpEntry;
 import lombok.Getter;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -25,7 +25,7 @@ public class WarpInitializer extends ModuleInitializer {
 
     @Getter
     private final BaseConfigurationHandler<WarpModel> data = new ObjectConfigurationHandler<>("warp.json", WarpModel.class)
-        .addTransformer(new FixWarpsMapNameTransformer());
+        .addTransformer(new RenameKeyTransformer("$", "warps", "name2warp"));
 
     @Override
     public void onInitialize() {
