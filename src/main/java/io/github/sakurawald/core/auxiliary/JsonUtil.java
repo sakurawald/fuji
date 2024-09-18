@@ -15,12 +15,12 @@ public class JsonUtil {
         if (a.isJsonArray() && b.isJsonArray()) return true;
         if (a.isJsonNull() && b.isJsonNull()) return true;
         if (a.isJsonPrimitive() && b.isJsonPrimitive()) {
-            JsonPrimitive aa = a.getAsJsonPrimitive();
-            JsonPrimitive bb = b.getAsJsonPrimitive();
+            JsonPrimitive ap = a.getAsJsonPrimitive();
+            JsonPrimitive bp = b.getAsJsonPrimitive();
 
-            if (aa.isString() && bb.isString()) return true;
-            if (aa.isBoolean() && bb.isBoolean()) return true;
-            if (aa.isNumber() && bb.isNumber()) return true;
+            if (ap.isString() && bp.isString()) return true;
+            if (ap.isBoolean() && bp.isBoolean()) return true;
+            if (ap.isNumber() && bp.isNumber()) return true;
         }
 
         return false;
