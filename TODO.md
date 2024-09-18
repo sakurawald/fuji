@@ -10,6 +10,7 @@
   to change the order of argument.
 - add: a sleep module. (controls the sleep behaviour)
 - add: a command-suit/command-sequence/command-bundle module, to execute commands. (/rules, /vote)
-- feature: /tppos --offlinePos
 - add: a lisp-like DSL, including a parse, transformer, analyzer, code-walker, with some built-in functions: predicate,
   equal...
+
+- functional module

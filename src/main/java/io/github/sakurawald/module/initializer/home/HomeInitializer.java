@@ -29,13 +29,7 @@ public class HomeInitializer extends ModuleInitializer {
         .addTransformer(new RenameKeyTransformer("$","homes","name2home"));
 
     public void onInitialize() {
-        storage.readStorage();
         storage.scheduleSaveConfigurationHandlerJob(ScheduleManager.CRON_EVERY_MINUTE);
-    }
-
-    @Override
-    public void onReload() {
-        storage.readStorage();
     }
 
     public Map<String, SpatialPose> ofHomes(@NotNull ServerPlayerEntity player) {

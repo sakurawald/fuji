@@ -18,12 +18,15 @@ import org.quartz.JobDataMap;
 
 public class WorksInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<WorksModel> worksHandler = new ObjectConfigurationHandler<>("works.json", WorksModel.class);
+    public static final ObjectConfigurationHandler<WorksModel> worksHandler = new ObjectConfigurationHandler<>("works.json", WorksModel.class);
+
+    @Override
+    public void registerGsonTypeAdapter() {
+        BaseConfigurationHandler.registerTypeAdapter(Work.class, new Work.WorkTypeAdapter());
+    }
 
     @Override
     public void onInitialize() {
-        BaseConfigurationHandler.registerTypeAdapter(Work.class, new Work.WorkTypeAdapter());
-        worksHandler.readStorage();
         worksHandler.scheduleSaveConfigurationHandlerJob(ScheduleManager.CRON_EVERY_MINUTE);
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new WorksScheduleJob(new JobDataMap() {
@@ -31,11 +34,6 @@ public class WorksInitializer extends ModuleInitializer {
                 this.put(MinecraftServer.class.getName(), server);
             }
         }, () -> ScheduleManager.CRON_EVERY_MINUTE).schedule());
-    }
-
-    @Override
-    public void onReload() {
-        worksHandler.readStorage();
     }
 
     @CommandNode("works")

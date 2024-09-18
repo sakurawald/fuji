@@ -52,7 +52,7 @@ public class ModuleManager extends BaseManager {
     public void reloadModules() {
         moduleRegistry.values().forEach(initializer -> {
                 try {
-                    initializer.onReload();
+                    initializer.doReload();
                 } catch (Exception e) {
                     LogUtil.error("failed to reload module.", e);
                 }

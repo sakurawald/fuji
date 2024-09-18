@@ -38,13 +38,7 @@ public class CleanerInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        config.readStorage();
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new CleanerJob().schedule());
-    }
-
-    @Override
-    public void onReload() {
-        config.readStorage();
     }
 
     @SuppressWarnings("RedundantIfStatement")

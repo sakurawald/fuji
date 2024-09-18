@@ -37,15 +37,9 @@ public class SitInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        config.readStorage();
         ServerLifecycleEvents.SERVER_STOPPING.register((server) -> CHAIR_ENTITY_LIST.forEach(e -> {
             if (e.isAlive()) e.kill();
         }));
-    }
-
-    @Override
-    public void onReload() {
-        config.readStorage();
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")

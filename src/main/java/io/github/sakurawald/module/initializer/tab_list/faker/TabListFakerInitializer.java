@@ -8,13 +8,4 @@ public class TabListFakerInitializer extends ModuleInitializer {
 
     public final ObjectConfigurationHandler<TabListFakerConfigModel> config = new ObjectConfigurationHandler<>("config.tab_list.faker.json", TabListFakerConfigModel.class);
 
-    @Override
-    public void onInitialize() {
-        config.readStorage();
-    }
-
-    @Override
-    public void onReload() {
-        config.readStorage();
-    }
 }

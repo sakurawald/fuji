@@ -18,11 +18,6 @@ public class NicknameInitializer extends ModuleInitializer {
     @Getter
     private static final BaseConfigurationHandler<NicknameModel> nicknameHandler = new ObjectConfigurationHandler<>("nickname.json", NicknameModel.class);
 
-    @Override
-    public void onInitialize() {
-        nicknameHandler.readStorage();
-    }
-
     @CommandNode("set")
     private int $set(@CommandSource ServerPlayerEntity player, GreedyString format) {
             String name = player.getGameProfile().getName();

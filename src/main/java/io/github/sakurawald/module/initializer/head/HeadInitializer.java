@@ -19,16 +19,6 @@ public class HeadInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<HeadModel> headHandler = new ObjectConfigurationHandler<>("head.json", HeadModel.class);
 
-    @Override
-    public void onInitialize() {
-        headHandler.readStorage();
-    }
-
-    @Override
-    public void onReload() {
-        headHandler.readStorage();
-    }
-
     @CommandNode("head sync")
     @CommandRequirement(level = 4)
     private int $sync(@CommandSource CommandContext<ServerCommandSource> ctx) {
