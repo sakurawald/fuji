@@ -34,17 +34,17 @@ import java.util.concurrent.CompletableFuture;
 @CommandRequirement(level = 4)
 public class CleanerInitializer extends ModuleInitializer {
 
-    public ObjectConfigurationHandler<CleanerModel> storage = new ObjectConfigurationHandler<>("config.cleaner.json", CleanerModel.class);
+    public ObjectConfigurationHandler<CleanerModel> config = new ObjectConfigurationHandler<>("config.cleaner.json", CleanerModel.class);
 
     @Override
     public void onInitialize() {
-        storage.readStorage();
+        config.readStorage();
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new CleanerJob().schedule());
     }
 
     @Override
     public void onReload() {
-        storage.readStorage();
+        config.readStorage();
     }
 
     @SuppressWarnings("RedundantIfStatement")
@@ -53,7 +53,7 @@ public class CleanerInitializer extends ModuleInitializer {
         if (entity instanceof BlockAttachedEntity) return true;
         if (entity instanceof VehicleEntity) return true;
 
-        var config = storage.getModel().ignore;
+        var config = this.config.getModel().ignore;
 
         if (config.ignore_item_entity && entity instanceof ItemEntity) return true;
         if (config.ignore_living_entity && entity.isLiving()) return true;
@@ -71,7 +71,7 @@ public class CleanerInitializer extends ModuleInitializer {
     }
 
     private boolean shouldRemove(String key, int age) {
-        Map<String, Integer> regex2age = storage.getModel().key2age;
+        Map<String, Integer> regex2age = config.getModel().key2age;
         return regex2age.containsKey(key) && age >= regex2age.get(key);
     }
 

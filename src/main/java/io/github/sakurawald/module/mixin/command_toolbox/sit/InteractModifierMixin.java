@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.mixin.command_toolbox.sit;
 
-import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.command_toolbox.sit.SitInitializer;
 import net.minecraft.block.Block;
@@ -59,7 +58,7 @@ public class InteractModifierMixin {
     public void rightClickToSit(@NotNull ServerPlayerEntity player, @NotNull World world, ItemStack stack, Hand hand, @NotNull BlockHitResult hitResult, @NotNull CallbackInfoReturnable<ActionResult> callbackInfoReturnable) {
 
         /* conditioner */
-        var config = Configs.configHandler.getModel().modules.command_toolbox.sit;
+        var config = module.config.getModel();
 
         if (!config.allow_right_click_sit) return;
         if (!config.allow_sneaking_to_sit && player.isSneaking()) return;

@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.mixin.command_event;
 
-import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.command_event.CommandEventInitializer;
@@ -21,7 +20,7 @@ public class ServerPlayerEntityMixin {
     @Inject(method = "onDeath", at = @At("HEAD"))
     public void onPlayerDeath(DamageSource damageSource, CallbackInfo ci) {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-        CommandExecutor.executeSpecializedCommand(player, initializer.storage.getModel().event.on_player_death.command_list);
+        CommandExecutor.executeSpecializedCommand(player, initializer.config.getModel().event.on_player_death.command_list);
     }
 
 }
