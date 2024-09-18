@@ -4,6 +4,9 @@ import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.manager.Managers;
+import io.github.sakurawald.core.manager.impl.module.ModuleManager;
+import io.github.sakurawald.module.initializer.anti_build.AntiBuildInitializer;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
@@ -24,7 +27,7 @@ public class BlockItemMixin {
         if (!(player instanceof ServerPlayerEntity)) return;
 
         String id = RegistryHelper.ofString(itemPlacementContext.getStack());
-        if (Configs.configHandler.getModel().modules.anti_build.anti.place_block.id.contains(id)
+        if (Managers.getModuleManager().getInitializer(AntiBuildInitializer.class).config.getModel().anti.place_block.id.contains(id)
             && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("place_block", id))
         ) {
             player.sendMessage(LocaleHelper.getTextByKey(player, "anti_build.disallow"));
