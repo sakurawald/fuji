@@ -1,6 +1,11 @@
 package io.github.sakurawald.core.config.handler.abst;
 
-import com.google.gson.*;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Option;
@@ -12,7 +17,6 @@ import com.jayway.jsonpath.spi.mapper.MappingProvider;
 import io.github.sakurawald.core.auxiliary.JsonUtil;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.config.job.SaveConfigurationHandlerJob;
-import io.github.sakurawald.core.manager.Managers;
 import lombok.Cleanup;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +40,7 @@ import java.util.regex.Pattern;
  * I write some rules here to avoid forgetting.
  * 1. Only use static inner class in config model java object, this is because a historical design problem in java.
  * 2. The new gson type adapter should be registered before the call to loadFromDisk()
+ * 3. The type system of java is static, given an object instance, you can use instance.getClass() to get the type of the instance, which means that you don't need to specify the typeOfT for gson library.
  */
 public abstract class BaseConfigurationHandler<T> {
 
@@ -57,6 +62,7 @@ public abstract class BaseConfigurationHandler<T> {
     @Getter
     protected T model;
     protected boolean alreadyBackup;
+
 
     private static ParseContext jsonPathParser = null;
 
@@ -100,10 +106,10 @@ public abstract class BaseConfigurationHandler<T> {
     public abstract T getDefaultModel();
 
     @SuppressWarnings("unchecked")
-    public void readDisk() {
+    public void readStorage() {
         try {
             if (Files.notExists(this.path)) {
-                writeDisk();
+                writeStorage();
             } else {
                 // read data tree from disk
                 @Cleanup Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this.path.toFile())));
@@ -112,7 +118,7 @@ public abstract class BaseConfigurationHandler<T> {
                 // merge data tree with schema tree
                 T defaultModel = getDefaultModel();
                 JsonElement schemaTree = gson.toJsonTree(defaultModel);
-                mergeJsonTree(dataTree, schemaTree);
+                mergeJsonTree("", dataTree.getAsJsonObject(), schemaTree.getAsJsonObject());
 
                 // use merged tree
                 this.model = (T) gson.fromJson(dataTree, defaultModel.getClass());
@@ -123,7 +129,7 @@ public abstract class BaseConfigurationHandler<T> {
         }
     }
 
-    public void writeDisk() {
+    public void writeStorage() {
         try {
             // set default data tree
             if (this.model == null) {
@@ -159,50 +165,44 @@ public abstract class BaseConfigurationHandler<T> {
         }, () -> cron).schedule();
     }
 
-    protected void mergeJsonTree(@NotNull JsonElement dataTree, @NotNull JsonElement schemaTree) {
-        if (!dataTree.isJsonObject() || !schemaTree.isJsonObject()) {
-            throw new IllegalArgumentException("Both trees must be the type of JsonObject.");
-        }
-        mergeFields("", dataTree.getAsJsonObject(), schemaTree.getAsJsonObject());
-    }
-
-    private void mergeFields(String parentPath, @NotNull JsonObject currentJson, @NotNull JsonObject defaultJson) {
-        Set<Map.Entry<String, JsonElement>> entrySet = defaultJson.entrySet();
+    protected void mergeJsonTree(String parentPath, @NotNull JsonObject dataTree, @NotNull JsonObject schemaTree) {
+        /* navigating using schema tree */
+        Set<Map.Entry<String, JsonElement>> entrySet = schemaTree.entrySet();
         for (Map.Entry<String, JsonElement> entry : entrySet) {
             String key = entry.getKey();
             JsonElement value = entry.getValue();
 
             // test -> missing keys
-            if (currentJson.has(key)) {
-
+            if (dataTree.has(key)) {
                 String currentPath = StringUtils.strip(parentPath + "." + key, ".");
 
                 // test -> same type
-                if (JsonUtil.sameType(currentJson.get(key), value)) {
+                if (JsonUtil.sameType(dataTree.get(key), value)) {
                     // test -> both are JsonObject
-                    if (currentJson.get(key).isJsonObject() && value.isJsonObject()) {
+                    if (dataTree.get(key).isJsonObject() && value.isJsonObject()) {
                         // skip the missing keys if its type is Map
                         if (MAP_TYPE_MATCHER.matcher(key).matches()) {
                             continue;
                         }
 
-                        mergeFields(currentPath, currentJson.getAsJsonObject(key), value.getAsJsonObject());
+                        mergeJsonTree(currentPath, dataTree.getAsJsonObject(key), value.getAsJsonObject());
                     }
                 } else {
-                    if (rescueLoop(currentJson, currentPath, key, value)) break;
+                    // enter rescue loop if the kv-pair is not the same type
+                    rescueLoop(dataTree, currentPath, key, value);
                 }
 
             } else {
-                // note: for JsonArray, we will not directly set array elements, but we will add new properties for every array element (language default empty-value). e.g. For List<ExamplePojo>, we will never change the size of this list, but we will add missing properties for every ExamplePojo with the language default empty-value.
-                if (!currentJson.has(key)) {
-                    currentJson.add(key, value);
-                    LogUtil.warn("add missing json key-value pair: file = {}, key = {}, value = {}", this.path.toFile().getName(), key, value);
-                }
+                /* note: for JsonArray, we will not directly set array elements, but we will add new properties for every array element (language default empty-value).
+                 e.g. For List<ExamplePojo>, we will never change the size of this list, but we will add missing properties for every ExamplePojo with the language default empty-value.
+                 */
+                LogUtil.info("add missing json key-value pair: file = {}, key = {}, value = {}", this.path.toFile().getName(), key, value);
+                dataTree.add(key, value);
             }
         }
     }
 
-    private boolean rescueLoop(@NotNull JsonObject currentJson, String currentPath, String key, JsonElement value) {
+    private void rescueLoop(@NotNull JsonObject dataTree, String currentPath, String key, JsonElement value) {
         LogUtil.warn("""
 
             # What happened ?
@@ -231,20 +231,20 @@ public abstract class BaseConfigurationHandler<T> {
         Scanner scanner = new Scanner(System.in);
         String input = scanner.next().trim();
         if (input.equalsIgnoreCase("y")) {
-            if (!this.alreadyBackup) {
-                Managers.getRescueBackupManager().backup();
-                LogUtil.warn("backup the `config/fuji` folder into `config/fuji/backup_rescue` folder successfully.");
-                this.alreadyBackup = true;
-            }
+            LogUtil.info("override the key {} with default value!", key);
 
-            currentJson.remove(key);
-            currentJson.add(key, value);
-            return true;
+//            if (!this.alreadyBackup) {
+//                Managers.getRescueBackupManager().backup();
+//                LogUtil.warn("backup the `config/fuji` folder into `config/fuji/backup_rescue` folder successfully.");
+//                this.alreadyBackup = true;
+//            }
+
+            dataTree.remove(key);
+            dataTree.add(key, value);
+
         } else {
             // exit the JVM with error code
             System.exit(-1);
         }
-        return false;
     }
-
 }

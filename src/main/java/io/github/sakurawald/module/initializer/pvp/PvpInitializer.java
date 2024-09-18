@@ -21,12 +21,12 @@ public class PvpInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        pvpHandler.readDisk();
+        pvpHandler.readStorage();
     }
 
     @Override
     public void onReload() {
-        pvpHandler.readDisk();
+        pvpHandler.readStorage();
     }
 
     @CommandNode("pvp on")
@@ -35,7 +35,7 @@ public class PvpInitializer extends ModuleInitializer {
         String name = player.getGameProfile().getName();
         if (!whitelist.contains(name)) {
             whitelist.add(name);
-            pvpHandler.writeDisk();
+            pvpHandler.writeStorage();
 
             LocaleHelper.sendMessageByKey(player, "pvp.on");
 
@@ -52,7 +52,7 @@ public class PvpInitializer extends ModuleInitializer {
             String name = player.getGameProfile().getName();
             if (whitelist.contains(name)) {
                 whitelist.remove(name);
-                pvpHandler.writeDisk();
+                pvpHandler.writeStorage();
 
                 LocaleHelper.sendMessageByKey(player, "pvp.off");
                 return CommandHelper.Return.SUCCESS;
