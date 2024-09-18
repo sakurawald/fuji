@@ -2,7 +2,7 @@ package io.github.sakurawald.module.mixin.functional.enchantment;
 
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.manager.Managers;
-import io.github.sakurawald.module.initializer.functional.FunctionalInitializer;
+import io.github.sakurawald.module.initializer.functional.enchantment.EnchantmentInitializer;
 import io.github.sakurawald.module.initializer.functional.enchantment.gui.MyEnchantmentScreenHandler;
 import net.minecraft.screen.EnchantmentScreenHandler;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 public class EnchantmentScreenHandlerMixin {
 
     @Unique
-    private static final FunctionalInitializer INITIALIZER = Managers.getModuleManager().getInitializer(FunctionalInitializer.class);
+    private static final EnchantmentInitializer INITIALIZER = Managers.getModuleManager().getInitializer(EnchantmentInitializer.class);
 
     @ModifyArg(method = "method_17411(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;calculateRequiredExperienceLevel(Lnet/minecraft/util/math/random/Random;IILnet/minecraft/item/ItemStack;)I"), index = 2)
     int modifyTheNumberOfPowerOfProviders(int i) {
