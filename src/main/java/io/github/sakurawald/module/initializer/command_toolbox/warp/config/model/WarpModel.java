@@ -7,5 +7,5 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class WarpModel {
-    public @NotNull Map<String, WarpEntry> warps = new HashMap<>();
+    public @NotNull Map<String, WarpEntry> name2warp = new HashMap<>();
 }

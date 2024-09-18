@@ -12,6 +12,7 @@ import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_toolbox.warp.command.argument.wrapper.WarpName;
 import io.github.sakurawald.module.initializer.command_toolbox.warp.config.model.WarpModel;
+import io.github.sakurawald.module.initializer.command_toolbox.warp.config.transformer.FixWarpsMapNameTransformer;
 import io.github.sakurawald.module.initializer.command_toolbox.warp.structure.WarpEntry;
 import lombok.Getter;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -23,7 +24,8 @@ import java.util.Optional;
 public class WarpInitializer extends ModuleInitializer {
 
     @Getter
-    private final BaseConfigurationHandler<WarpModel> data = new ObjectConfigurationHandler<>("warp.json", WarpModel.class);
+    private final BaseConfigurationHandler<WarpModel> data = new ObjectConfigurationHandler<>("warp.json", WarpModel.class)
+        .addTransformer(new FixWarpsMapNameTransformer());
 
     @Override
     public void onInitialize() {
@@ -40,12 +42,12 @@ public class WarpInitializer extends ModuleInitializer {
     private int $tp(@CommandSource ServerPlayerEntity player, WarpName warpName) {
         String name = warpName.getValue();
 
-        if (!data.getModel().warps.containsKey(name)) {
+        if (!data.getModel().name2warp.containsKey(name)) {
             LocaleHelper.sendMessageByKey(player, "warp.not_found", name);
             return 0;
         }
 
-        WarpEntry entry = data.getModel().warps.get(name);
+        WarpEntry entry = data.getModel().name2warp.get(name);
         entry.getPosition().teleport(player);
         return CommandHelper.Return.SUCCESS;
     }
@@ -55,12 +57,12 @@ public class WarpInitializer extends ModuleInitializer {
     private int $unset(@CommandSource ServerPlayerEntity player, WarpName warpName) {
         String name = warpName.getValue();
 
-        if (!data.getModel().warps.containsKey(name)) {
+        if (!data.getModel().name2warp.containsKey(name)) {
             LocaleHelper.sendMessageByKey(player, "warp.not_found", name);
             return 0;
         }
 
-        data.getModel().warps.remove(name);
+        data.getModel().name2warp.remove(name);
         LocaleHelper.sendMessageByKey(player, "warp.unset.success", name);
         return CommandHelper.Return.SUCCESS;
     }
@@ -70,21 +72,21 @@ public class WarpInitializer extends ModuleInitializer {
     private int $set(@CommandSource ServerPlayerEntity player, WarpName warpName, Optional<Boolean> override) {
         String name = warpName.getValue();
 
-        if (data.getModel().warps.containsKey(name)) {
+        if (data.getModel().name2warp.containsKey(name)) {
             if (!override.orElse(false)) {
                 LocaleHelper.sendMessageByKey(player, "warp.set.fail.need_override", name);
                 return CommandHelper.Return.FAIL;
             }
         }
 
-        data.getModel().warps.put(name, new WarpEntry(SpatialPose.of(player)));
+        data.getModel().name2warp.put(name, new WarpEntry(SpatialPose.of(player)));
         LocaleHelper.sendMessageByKey(player, "warp.set.success", name);
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("list")
     private int $list(@CommandSource ServerPlayerEntity player) {
-        LocaleHelper.sendMessageByKey(player, "warp.list", data.getModel().warps.keySet());
+        LocaleHelper.sendMessageByKey(player, "warp.list", data.getModel().name2warp.keySet());
         return CommandHelper.Return.SUCCESS;
     }
 }
