@@ -22,6 +22,7 @@ import io.github.sakurawald.core.manager.Managers;
 import lombok.Cleanup;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.quartz.JobDataMap;
@@ -204,6 +205,12 @@ public abstract class BaseConfigurationHandler<T> {
                 this.put(BaseConfigurationHandler.class.getName(), BaseConfigurationHandler.this);
             }
         }, () -> cron).schedule();
+
+        // write storage on server stopping.
+        ServerLifecycleEvents.SERVER_STOPPING.register((server) -> {
+            LogUtil.debug("write storage on server stopping: {}", this.path);
+            this.writeStorage();
+        });
     }
 
     protected void mergeJsonTree(String parentPath, @NotNull JsonObject dataTree, @NotNull JsonObject schemaTree) {

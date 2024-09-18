@@ -13,7 +13,3 @@
 - feature: /tppos --offlinePos
 - add: a lisp-like DSL, including a parse, transformer, analyzer, code-walker, with some built-in functions: predicate,
   equal...
-- remove: unused language keys in language files.
-- fix: the auto save configuration job is not guaranteed to be trigger while shutdown the server.
-
-- feature: add a json transformer layer for config read function, to provides some version migration help. (warnings for unused fields.)

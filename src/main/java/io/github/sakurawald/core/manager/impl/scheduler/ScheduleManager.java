@@ -44,11 +44,7 @@ public class ScheduleManager extends BaseManager {
     @Override
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> Managers.getScheduleManager().startScheduler());
-        ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
-            LogUtil.info("trigger configuration file saving jobs.");
-            Managers.getScheduleManager().triggerJobs(SaveConfigurationHandlerJob.class.getName());
-            Managers.getScheduleManager().shutdownScheduler();
-        });
+        ServerLifecycleEvents.SERVER_STOPPING.register(server -> Managers.getScheduleManager().shutdownScheduler());
     }
 
     public void scheduleJob(JobDetail jobDetail, Trigger trigger) throws SchedulerException {
@@ -114,7 +110,7 @@ public class ScheduleManager extends BaseManager {
 
     private void shutdownScheduler() {
         try {
-            scheduler.shutdown();
+            scheduler.shutdown(false);
 
             // note: reset scheduler right now to fix client-side NPE
             if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
