@@ -1,6 +1,8 @@
 package io.github.sakurawald.module.initializer;
 
 
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
+
 /**
  * Tips:
  * 1. Don't catch and handle the command exception, just use @SneakThrow and CommandSyntaxException.
@@ -10,7 +12,9 @@ package io.github.sakurawald.module.initializer;
  */
 public class ModuleInitializer {
 
-    /** The template-method */
+    /**
+     * The template-method
+     */
     public final void doInitialize() {
         this.onInitialize();
     }
@@ -23,4 +27,7 @@ public class ModuleInitializer {
         // no-op
     }
 
+    public String getModuleConfigFileName() {
+        return "config." + ReflectionUtil.getModulePath(this) + ".json";
+    }
 }
