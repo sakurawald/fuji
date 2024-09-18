@@ -775,10 +775,8 @@ public class ConfigModel {
                 }
             }
 
-
             public static class MultiObsidianPlatform {
                 public boolean enable = false;
-                public double factor = 4;
             }
         }
 
@@ -967,8 +965,8 @@ public class ConfigModel {
 
             public static class Sort {
                 public boolean enable = false;
-                public SyncGameProfile sync_game_profile = new SyncGameProfile();
 
+                public SyncGameProfile sync_game_profile = new SyncGameProfile();
                 public static class SyncGameProfile {
                     public boolean enable = true;
                 }
