@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.cleaner.config.model;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CleanerModel {
+public class CleanerConfigModel {
 
     public String cron = "0 * * ? * * *";
 

@@ -9,7 +9,7 @@ import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.structure.TypeFormatter;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.cleaner.config.model.CleanerModel;
+import io.github.sakurawald.module.initializer.cleaner.config.model.CleanerConfigModel;
 import io.github.sakurawald.module.initializer.cleaner.job.CleanerJob;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.kyori.adventure.text.Component;
@@ -34,7 +34,7 @@ import java.util.concurrent.CompletableFuture;
 @CommandRequirement(level = 4)
 public class CleanerInitializer extends ModuleInitializer {
 
-    public ObjectConfigurationHandler<CleanerModel> config = new ObjectConfigurationHandler<>("config.cleaner.json", CleanerModel.class);
+    public ObjectConfigurationHandler<CleanerConfigModel> config = new ObjectConfigurationHandler<>("config.cleaner.json", CleanerConfigModel.class);
 
     @Override
     public void onInitialize() {
