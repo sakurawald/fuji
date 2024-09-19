@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 public class BackInitializer extends ModuleInitializer {
 
-    public final BaseConfigurationHandler<BackConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), BackConfigModel.class);
+    public static final BaseConfigurationHandler<BackConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(BackConfigModel.class), BackConfigModel.class);
 
     @Getter
     private final HashMap<String, SpatialPose> player2lastPos = new HashMap<>();

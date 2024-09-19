@@ -22,7 +22,7 @@ import java.util.Optional;
 
 public class RtpInitializer extends ModuleInitializer {
 
-    public final BaseConfigurationHandler<RtpConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), RtpConfigModel.class);
+    public static final BaseConfigurationHandler<RtpConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(RtpConfigModel.class), RtpConfigModel.class);
 
     private @NotNull Optional<TeleportSetup> getTeleportSetup(@NotNull ServerWorld world) {
         List<TeleportSetup> list = this.config.getModel().setup.dimension;

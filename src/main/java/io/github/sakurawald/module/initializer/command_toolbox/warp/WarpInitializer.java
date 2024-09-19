@@ -24,7 +24,7 @@ import java.util.Optional;
 public class WarpInitializer extends ModuleInitializer {
 
     @Getter
-    private final BaseConfigurationHandler<WarpModel> data = new ObjectConfigurationHandler<>("warp.json", WarpModel.class)
+    private static final BaseConfigurationHandler<WarpModel> data = new ObjectConfigurationHandler<>("warp.json", WarpModel.class)
         .addTransformer(new RenameKeyTransformer("$", "warps", "name2warp"));
 
     @Override

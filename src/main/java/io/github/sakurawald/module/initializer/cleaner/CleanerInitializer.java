@@ -36,7 +36,7 @@ import java.util.concurrent.CompletableFuture;
 @CommandRequirement(level = 4)
 public class CleanerInitializer extends ModuleInitializer {
 
-    public BaseConfigurationHandler<CleanerConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), CleanerConfigModel.class);
+    public BaseConfigurationHandler<CleanerConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(CleanerConfigModel.class), CleanerConfigModel.class);
 
     @Override
     public void onInitialize() {

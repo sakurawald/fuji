@@ -31,7 +31,7 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 public class SkinInitializer extends ModuleInitializer {
 
-    public final BaseConfigurationHandler<SkinModel> data = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), SkinModel.class);
+    public static final BaseConfigurationHandler<SkinModel> data = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(SkinModel.class), SkinModel.class);
 
     @Override
     public void onInitialize() {

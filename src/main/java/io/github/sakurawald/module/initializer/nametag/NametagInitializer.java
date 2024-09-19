@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class NametagInitializer extends ModuleInitializer {
 
-    public final BaseConfigurationHandler<NametagConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), NametagConfigModel.class);
+    public static final BaseConfigurationHandler<NametagConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(NametagConfigModel.class), NametagConfigModel.class);
 
     private Map<ServerPlayerEntity, DisplayEntity.TextDisplayEntity> player2nametag;
 

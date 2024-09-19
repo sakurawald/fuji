@@ -13,7 +13,7 @@ import java.util.Queue;
 
 public class ChatHistoryInitializer extends ModuleInitializer {
 
-    public final BaseConfigurationHandler<ChatHistoryConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), ChatHistoryConfigModel.class);
+    public static final BaseConfigurationHandler<ChatHistoryConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(ChatHistoryConfigModel.class), ChatHistoryConfigModel.class);
 
     @Getter
     private Queue<Text> chatHistory;

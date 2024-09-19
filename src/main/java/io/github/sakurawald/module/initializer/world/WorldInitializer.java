@@ -48,8 +48,8 @@ import java.util.Optional;
 @CommandRequirement(level = 4)
 public class WorldInitializer extends ModuleInitializer {
 
-    public final BaseConfigurationHandler<WorldConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), WorldConfigModel.class);
-    private final BaseConfigurationHandler<WorldStorageModel> storage = new ObjectConfigurationHandler<>("world.json", WorldStorageModel.class);
+    public static final BaseConfigurationHandler<WorldConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(WorldConfigModel.class), WorldConfigModel.class);
+    private static final BaseConfigurationHandler<WorldStorageModel> storage = new ObjectConfigurationHandler<>("world.json", WorldStorageModel.class);
 
     @Override
     public void onInitialize() {
