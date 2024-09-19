@@ -11,6 +11,7 @@ import net.minecraft.text.Text;
 
 import java.util.Queue;
 
+@SuppressWarnings("LombokGetterMayBeUsed")
 public class ChatHistoryInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<ChatHistoryConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(ChatHistoryConfigModel.class), ChatHistoryConfigModel.class);
