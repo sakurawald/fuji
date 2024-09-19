@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.initializer.kit;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
@@ -33,7 +33,8 @@ import java.util.List;
 public class KitInitializer extends ModuleInitializer {
 
     public static final String INVENTORY = "inventory";
-    private final Path STORAGE_PATH = Fuji.CONFIG_PATH.resolve("kit");
+
+    private final Path STORAGE_PATH = ReflectionUtil.getModuleConfigPath(KitInitializer.class).resolve("kit-data");
 
     public void writeKit(@NotNull Kit kit) {
         Path path = STORAGE_PATH.resolve(kit.getName());

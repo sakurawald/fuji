@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CommandCooldownInitializer extends ModuleInitializer {
-    public final ObjectConfigurationHandler<CommandCooldownConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), CommandCooldownConfigModel.class);
+    public final ObjectConfigurationHandler<CommandCooldownConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), CommandCooldownConfigModel.class);
 
     private final HashMap<ServerPlayerEntity, HashMap<String, Long>> map = new HashMap<>();
 

@@ -7,5 +7,5 @@ import io.github.sakurawald.module.initializer.afk.effect.config.model.AfkEffect
 
 public class AfkEffectInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<AfkEffectConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), AfkEffectConfigModel.class);
+    public final ObjectConfigurationHandler<AfkEffectConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), AfkEffectConfigModel.class);
 }

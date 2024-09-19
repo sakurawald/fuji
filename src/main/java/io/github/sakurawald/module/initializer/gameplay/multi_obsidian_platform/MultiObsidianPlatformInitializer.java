@@ -19,7 +19,7 @@ public class MultiObsidianPlatformInitializer extends ModuleInitializer {
 
     private final Map<BlockPos, BlockPos> TRANSFORM_CACHE = new HashMap<>();
 
-    public final ObjectConfigurationHandler<MultiObsidianPlatformConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), MultiObsidianPlatformConfigModel.class);
+    public final ObjectConfigurationHandler<MultiObsidianPlatformConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), MultiObsidianPlatformConfigModel.class);
 
     /* this method is used to fix Entity#position() async */
     private BlockPos findNearbyEndPortalBlock(@NotNull BlockPos bp) {

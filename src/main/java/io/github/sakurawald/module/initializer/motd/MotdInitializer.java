@@ -26,9 +26,9 @@ import java.util.Random;
 
 public class MotdInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<MotdConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), MotdConfigModel.class);
+    public final ObjectConfigurationHandler<MotdConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), MotdConfigModel.class);
 
-    private final File ICON_FOLDER = Fuji.CONFIG_PATH.resolve("motd").resolve("icon").toFile();
+    private final File ICON_FOLDER = ReflectionUtil.getModuleConfigPath(this).resolve("motd").resolve("icon").toFile();
 
     @Setter
     private @NotNull List<String> motd = new ArrayList<>();

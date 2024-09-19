@@ -6,5 +6,5 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_rewrite.config.model.CommandRewriteConfigModel;
 
 public class CommandRewriteInitializer extends ModuleInitializer {
-    public final ObjectConfigurationHandler<CommandRewriteConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), CommandRewriteConfigModel.class);
+    public final ObjectConfigurationHandler<CommandRewriteConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), CommandRewriteConfigModel.class);
 }

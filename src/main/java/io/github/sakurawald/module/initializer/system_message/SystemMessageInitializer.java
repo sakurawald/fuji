@@ -7,6 +7,6 @@ import io.github.sakurawald.module.initializer.system_message.config.model.Syste
 
 public class SystemMessageInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<SystemMessageConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), SystemMessageConfigModel.class);
+    public final ObjectConfigurationHandler<SystemMessageConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), SystemMessageConfigModel.class);
 
 }

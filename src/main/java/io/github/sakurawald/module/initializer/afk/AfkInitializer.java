@@ -20,7 +20,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class AfkInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<AfkConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), AfkConfigModel.class);
+    public final ObjectConfigurationHandler<AfkConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), AfkConfigModel.class);
 
     @Override
     public void onInitialize() {

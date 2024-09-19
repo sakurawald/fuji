@@ -1,6 +1,7 @@
 package io.github.sakurawald.core.config.transformer.impl;
 
 import com.google.gson.JsonObject;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.transformer.abst.ConfigurationTransformer;
 
 
@@ -12,8 +13,11 @@ public class FlattenModulesTransformer extends ConfigurationTransformer {
         JsonObject modules = (JsonObject) read(modulesPath);
 
         for (String topLevelModule : modules.keySet()) {
-            String topLevel = "config." + topLevelModule;
-            FlattenTreeTransformer flattenTreeTransformer = new FlattenTreeTransformer(modulesPath + "." + topLevelModule, topLevel, "enable");
+            FlattenTreeTransformer flattenTreeTransformer = new FlattenTreeTransformer(
+                modulesPath + "." + topLevelModule
+                , "enable"
+                , topLevelModule, (level) -> ReflectionUtil.getModuleConfigPath(level).resolve("config." + level + ".json"));
+
             flattenTreeTransformer.configure(this.getPath());
             flattenTreeTransformer.apply();
         }

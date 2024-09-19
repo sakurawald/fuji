@@ -1,37 +1,41 @@
 package io.github.sakurawald.core.config.transformer.impl;
 
 import com.google.gson.JsonObject;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.abst.ConfigurationTransformer;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.function.Function;
 
 public class FlattenTreeTransformer extends ConfigurationTransformer {
 
     private final String subtreeIdentifier;
     private final String jsonPath;
     private final String topLevel;
+    private final Function<String, Path> level2outPath;
 
     private boolean overrideTheOriginalFileWithSkeletonTree;
 
-    public FlattenTreeTransformer(String jsonPath, String topLevel, String subtreeIdentifier) {
+    public FlattenTreeTransformer(String jsonPath, String subtreeIdentifier, String topLevel,Function<String, Path> level2outPath) {
         this.subtreeIdentifier = subtreeIdentifier;
         this.jsonPath = jsonPath;
         this.topLevel = topLevel;
+        this.level2outPath = level2outPath;
     }
 
     @SneakyThrows
     private void flatten(JsonObject parent, String level) {
-        Path currentTreeOutPath = Fuji.CONFIG_PATH.resolve(level + ".json");
-
         /* find and walk submodule */
         parent.keySet().stream()
             .filter(key -> parent.get(key).isJsonObject() && parent.getAsJsonObject(key).has(subtreeIdentifier))
-            .forEach(key -> flatten(parent.getAsJsonObject(key), level + "." + key));
+            .forEach(key -> {
+                String nextLevel = StringUtils.strip(level + "." + key, ".");
+                flatten(parent.getAsJsonObject(key), nextLevel);
+            });
 
         /* create top-level file to store the tree */
         parent.remove(subtreeIdentifier);
@@ -42,8 +46,10 @@ public class FlattenTreeTransformer extends ConfigurationTransformer {
             .forEach(parent::remove);
 
         // if the tree is not empty, migrate it to a standalone file
+        Path currentTreeOutPath = level2outPath.apply(level);
         if (!parent.isEmpty() && Files.notExists(currentTreeOutPath)) {
             logConsole("flatten tree `{}` into `{}`", level, currentTreeOutPath);
+            Files.createDirectories(currentTreeOutPath.getParent());
             String json = BaseConfigurationHandler.getGson().toJson(parent);
             Files.writeString(currentTreeOutPath, json);
 
@@ -55,9 +61,9 @@ public class FlattenTreeTransformer extends ConfigurationTransformer {
             .forEach(parent::remove);
     }
 
-    private JsonObject makeSkeletonTree(JsonObject parent)  {
+    private JsonObject makeSkeletonTree(JsonObject parent) {
         parent.keySet().stream().toList().stream()
-            .filter(key-> !key.equals(subtreeIdentifier))
+            .filter(key -> !key.equals(subtreeIdentifier))
             .forEach(key -> {
                 if (parent.get(key).isJsonObject()) {
                     makeSkeletonTree(parent.getAsJsonObject(key));

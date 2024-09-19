@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class FakePlayerManagerInitializer extends ModuleInitializer {
-    public final ObjectConfigurationHandler<FakePlayerManagerConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), FakePlayerManagerConfigModel.class);
+    public final ObjectConfigurationHandler<FakePlayerManagerConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), FakePlayerManagerConfigModel.class);
 
     public final List<String> CONSTANT_EMPTY_LIST = new ArrayList<>();
     public final Map<String, List<String>> player2fakePlayers = new HashMap<>();
