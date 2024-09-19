@@ -26,6 +26,8 @@ public class ModuleManager extends BaseManager {
     public static final String CORE_MODULE_ROOT = "core";
     private static JsonElement RC_JSON_TREE = null;
     private final Map<Class<? extends ModuleInitializer>, ModuleInitializer> moduleRegistry = new HashMap<>();
+
+
     private final Map<List<String>, Boolean> module2enable = new HashMap<>();
 
     @Override

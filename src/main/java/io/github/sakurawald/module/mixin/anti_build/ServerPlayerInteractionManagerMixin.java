@@ -38,7 +38,7 @@ public class ServerPlayerInteractionManagerMixin {
         BlockState blockState = this.world.getBlockState(blockPos);
 
         String id = RegistryHelper.ofString(blockState);
-        if (Managers.getModuleManager().getInitializer(AntiBuildInitializer.class).config.getModel().anti.break_block.id.contains(id)
+        if (AntiBuildInitializer.config.getModel().anti.break_block.id.contains(id)
                 && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("break_block", id))
         ) {
             LocaleHelper.sendMessageByKey(player, "anti_build.disallow");
@@ -51,7 +51,7 @@ public class ServerPlayerInteractionManagerMixin {
     void $interactItem(ServerPlayerEntity serverPlayerEntity, World world, @NotNull ItemStack itemStack, Hand hand, @NotNull CallbackInfoReturnable<ActionResult> cir) {
         String id = RegistryHelper.ofString(itemStack);
 
-        if (Managers.getModuleManager().getInitializer(AntiBuildInitializer.class).config.getModel().anti.interact_item.id.contains(id)
+        if (AntiBuildInitializer.config.getModel().anti.interact_item.id.contains(id)
                 && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_item", id))
         ) {
             LocaleHelper.sendMessageByKey(player, "anti_build.disallow");
@@ -65,7 +65,7 @@ public class ServerPlayerInteractionManagerMixin {
         BlockState blockState = world.getBlockState(blockPos);
         String id = RegistryHelper.ofString(blockState);
 
-        if (Managers.getModuleManager().getInitializer(AntiBuildInitializer.class).config.getModel().anti.interact_block.id.contains(id)
+        if (AntiBuildInitializer.config.getModel().anti.interact_block.id.contains(id)
                 && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_block", id))
         ) {
             LocaleHelper.sendMessageByKey(player, "anti_build.disallow");

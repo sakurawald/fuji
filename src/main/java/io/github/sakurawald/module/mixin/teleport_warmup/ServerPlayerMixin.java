@@ -37,7 +37,7 @@ public abstract class ServerPlayerMixin {
 
     @Inject(method = "teleport(Lnet/minecraft/server/world/ServerWorld;DDDFF)V", at = @At("HEAD"), cancellable = true)
     public void interceptTeleportAndAddTicket(@NotNull ServerWorld targetWorld, double x, double y, double z, float yaw, float pitch, @NotNull CallbackInfo ci) {
-        if (!Managers.getModuleManager().getInitializer(TeleportWarmupInitializer.class).config.getModel().dimension.list.contains(RegistryHelper.ofString(targetWorld))) {
+        if (!TeleportWarmupInitializer.config.getModel().dimension.list.contains(RegistryHelper.ofString(targetWorld))) {
             return;
         }
 
@@ -53,8 +53,8 @@ public abstract class ServerPlayerMixin {
                 player
                 , SpatialPose.of(player)
                 , new SpatialPose(targetWorld, x, y, z, yaw, pitch)
-                , Managers.getModuleManager().getInitializer(TeleportWarmupInitializer.class).config.getModel().warmup_second * 1000
-                , Managers.getModuleManager().getInitializer(TeleportWarmupInitializer.class).config.getModel().interrupt_distance
+                , TeleportWarmupInitializer.config.getModel().warmup_second * 1000
+                , TeleportWarmupInitializer.config.getModel().interrupt_distance
             );
             Managers.getBossBarManager().addTicket(ticket);
             ci.cancel();

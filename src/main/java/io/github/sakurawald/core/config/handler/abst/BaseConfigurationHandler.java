@@ -70,8 +70,9 @@ public abstract class BaseConfigurationHandler<T> {
         .create();
 
     protected @NotNull Path path;
-    @Getter
+
     protected T model;
+
 
     /* flags */
     private boolean alreadyBackupFlag = false;
@@ -81,6 +82,7 @@ public abstract class BaseConfigurationHandler<T> {
 
     /* transformer */
     private final List<ConfigurationTransformer> transformers = new ArrayList<>();
+
 
     public BaseConfigurationHandler<T> addTransformer(ConfigurationTransformer transformer) {
         this.transformers.add(transformer);
@@ -338,5 +340,14 @@ public abstract class BaseConfigurationHandler<T> {
 
             LogUtil.error("Invalid input.");
         }
+    }
+
+    public T getModel() {
+        // load storage if necessary.
+        if (this.model == null) {
+            this.readStorage();
+        }
+
+        return this.model;
     }
 }

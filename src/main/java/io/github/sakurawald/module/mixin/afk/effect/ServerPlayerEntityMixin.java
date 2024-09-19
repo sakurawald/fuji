@@ -32,7 +32,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     public void invulnerableEffect(DamageSource damageSource, float f, CallbackInfoReturnable<Boolean> cir) {
         AfkStateAccessor afkStateAccessor = (AfkStateAccessor) player;
         if (afkStateAccessor.fuji$isAfk()
-            && Managers.getModuleManager().getInitializer(AfkEffectInitializer.class).config.getModel().invulnerable
+            && AfkEffectInitializer.config.getModel().invulnerable
         ) {
             cir.setReturnValue(false);
         }
@@ -43,7 +43,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     public void move(MovementType movementType, Vec3d vec3d) {
 
         AfkStateAccessor afkStateAccessor = (AfkStateAccessor) player;
-        if (!Managers.getModuleManager().getInitializer(AfkEffectInitializer.class).config.getModel().moveable && afkStateAccessor.fuji$isAfk()) {
+        if (!AfkEffectInitializer.config.getModel().moveable && afkStateAccessor.fuji$isAfk()) {
             double originalX = player.getX();
             double originalY = player.getY();
             double originalZ = player.getZ();
