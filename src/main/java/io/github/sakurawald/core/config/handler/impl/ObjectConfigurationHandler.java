@@ -1,6 +1,5 @@
 package io.github.sakurawald.core.config.handler.impl;
 
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import lombok.SneakyThrows;

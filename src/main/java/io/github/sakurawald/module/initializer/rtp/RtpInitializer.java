@@ -7,6 +7,7 @@ import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.service.random_teleport.RandomTeleport;
 import io.github.sakurawald.core.structure.TeleportSetup;
@@ -21,7 +22,7 @@ import java.util.Optional;
 
 public class RtpInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<RtpConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), RtpConfigModel.class);
+    public final BaseConfigurationHandler<RtpConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), RtpConfigModel.class);
 
     private @NotNull Optional<TeleportSetup> getTeleportSetup(@NotNull ServerWorld world) {
         List<TeleportSetup> list = this.config.getModel().setup.dimension;

@@ -5,6 +5,7 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.motd.config.model.MotdConfigModel;
@@ -26,7 +27,7 @@ import java.util.Random;
 
 public class MotdInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<MotdConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), MotdConfigModel.class);
+    public final BaseConfigurationHandler<MotdConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), MotdConfigModel.class);
 
     private final File ICON_FOLDER = ReflectionUtil.getModuleConfigPath(this).resolve("motd").resolve("icon").toFile();
 

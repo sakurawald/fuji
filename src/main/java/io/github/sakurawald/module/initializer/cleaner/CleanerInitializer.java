@@ -7,6 +7,7 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.structure.TypeFormatter;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -35,7 +36,7 @@ import java.util.concurrent.CompletableFuture;
 @CommandRequirement(level = 4)
 public class CleanerInitializer extends ModuleInitializer {
 
-    public ObjectConfigurationHandler<CleanerConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), CleanerConfigModel.class);
+    public BaseConfigurationHandler<CleanerConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), CleanerConfigModel.class);
 
     @Override
     public void onInitialize() {

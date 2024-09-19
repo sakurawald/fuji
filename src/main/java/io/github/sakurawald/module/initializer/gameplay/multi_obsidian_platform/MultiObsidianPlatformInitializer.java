@@ -3,6 +3,7 @@ package io.github.sakurawald.module.initializer.gameplay.multi_obsidian_platform
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.gameplay.multi_obsidian_platform.config.model.MultiObsidianPlatformConfigModel;
@@ -19,7 +20,7 @@ public class MultiObsidianPlatformInitializer extends ModuleInitializer {
 
     private final Map<BlockPos, BlockPos> TRANSFORM_CACHE = new HashMap<>();
 
-    public final ObjectConfigurationHandler<MultiObsidianPlatformConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), MultiObsidianPlatformConfigModel.class);
+    public final BaseConfigurationHandler<MultiObsidianPlatformConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), MultiObsidianPlatformConfigModel.class);
 
     /* this method is used to fix Entity#position() async */
     private BlockPos findNearbyEndPortalBlock(@NotNull BlockPos bp) {

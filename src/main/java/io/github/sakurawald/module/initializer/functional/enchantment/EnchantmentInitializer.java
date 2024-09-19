@@ -4,6 +4,7 @@ import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.functional.enchantment.config.model.EnchantmentConfigModel;
@@ -15,7 +16,7 @@ import net.minecraft.text.Text;
 
 public class EnchantmentInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<EnchantmentConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), EnchantmentConfigModel.class);
+    public final BaseConfigurationHandler<EnchantmentConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), EnchantmentConfigModel.class);
 
     @CommandNode("enchantment")
     private int $enchantment(@CommandSource ServerPlayerEntity player) {

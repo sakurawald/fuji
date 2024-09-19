@@ -20,9 +20,9 @@ import org.quartz.JobDataMap;
 
 public class WorksInitializer extends ModuleInitializer {
 
-    public static final ObjectConfigurationHandler<WorksDataModel> worksHandler = new ObjectConfigurationHandler<>("works.json", WorksDataModel.class);
+    public static final BaseConfigurationHandler<WorksDataModel> worksHandler = new ObjectConfigurationHandler<>("works.json", WorksDataModel.class);
 
-    public final ObjectConfigurationHandler<WorksConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), WorksConfigModel.class);
+    public final BaseConfigurationHandler<WorksConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), WorksConfigModel.class);
 
     @Override
     public void registerGsonTypeAdapter() {
