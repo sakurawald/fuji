@@ -163,7 +163,7 @@ public class NametagInitializer extends ModuleInitializer {
         // update
         ServerHelper.getPlayers().forEach(player -> {
             // make if not exists
-            if (!player2nametag.containsKey(player)) {
+            if (!player2nametag.containsKey(player) && !player.isDead()) {
                 player2nametag.put(player, makeNametag(player));
             }
 
