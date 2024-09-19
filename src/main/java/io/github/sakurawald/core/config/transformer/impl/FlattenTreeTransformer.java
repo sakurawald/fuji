@@ -2,6 +2,7 @@ package io.github.sakurawald.core.config.transformer.impl;
 
 import com.google.gson.JsonObject;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.abst.ConfigurationTransformer;
 import lombok.SneakyThrows;
@@ -25,8 +26,8 @@ public class FlattenTreeTransformer extends ConfigurationTransformer {
 
     @SneakyThrows
     private void flatten(JsonObject parent, String level) {
-        Path outPath = Fuji.CONFIG_PATH.resolve(level + ".json");
-        if (Files.exists(outPath)) return;
+        Path currentTreeOutPath = Fuji.CONFIG_PATH.resolve(level + ".json");
+        if (Files.exists(currentTreeOutPath)) return;
 
         /* find and walk submodule */
         parent.keySet().stream()
@@ -43,9 +44,11 @@ public class FlattenTreeTransformer extends ConfigurationTransformer {
 
         // if the tree is not empty, migrate it to a standalone file
         if (!parent.isEmpty()) {
-            logConsole("flatten tree `{}` into `{}`", level, outPath);
+            LogUtil.debug("parent.members = {}",parent.entrySet());
+
+            logConsole("flatten tree `{}` into `{}`", level, currentTreeOutPath);
             String json = BaseConfigurationHandler.getGson().toJson(parent);
-            Files.writeString(outPath, json);
+            Files.writeString(currentTreeOutPath, json);
 
             this.overrideTheOriginalFileWithSkeletonTree = true;
         }

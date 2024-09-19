@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.cleaner;
 
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
@@ -34,7 +35,7 @@ import java.util.concurrent.CompletableFuture;
 @CommandRequirement(level = 4)
 public class CleanerInitializer extends ModuleInitializer {
 
-    public ObjectConfigurationHandler<CleanerConfigModel> config = new ObjectConfigurationHandler<>("config.cleaner.json", CleanerConfigModel.class);
+    public ObjectConfigurationHandler<CleanerConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), CleanerConfigModel.class);
 
     @Override
     public void onInitialize() {

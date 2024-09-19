@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.world;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
@@ -47,7 +48,7 @@ import java.util.Optional;
 @CommandRequirement(level = 4)
 public class WorldInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<WorldConfigModel> config = new ObjectConfigurationHandler<>("config.world.json", WorldConfigModel.class);
+    public final ObjectConfigurationHandler<WorldConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), WorldConfigModel.class);
     private final BaseConfigurationHandler<WorldStorageModel> storage = new ObjectConfigurationHandler<>("world.json", WorldStorageModel.class);
 
     @Override

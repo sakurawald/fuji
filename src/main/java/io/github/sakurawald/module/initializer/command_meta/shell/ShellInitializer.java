@@ -2,6 +2,7 @@ package io.github.sakurawald.module.initializer.command_meta.shell;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -23,7 +24,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class ShellInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<ShellConfigModel> config = new ObjectConfigurationHandler<>("config.shell.json", ShellConfigModel.class);
+    public final ObjectConfigurationHandler<ShellConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), ShellConfigModel.class);
 
     private void checkSecurity(CommandContext<ServerCommandSource> ctx) {
         var config = this.config.getModel();

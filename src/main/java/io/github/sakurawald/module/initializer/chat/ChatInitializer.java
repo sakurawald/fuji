@@ -3,6 +3,7 @@ package io.github.sakurawald.module.initializer.chat;
 import eu.pb4.placeholders.api.PlaceholderResult;
 import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
@@ -37,7 +38,7 @@ public class ChatInitializer extends ModuleInitializer {
 
     private static final BaseConfigurationHandler<ChatFormatModel> chatFormatHandler = new ObjectConfigurationHandler<>("chat.json", ChatFormatModel.class);
 
-    public  final ObjectConfigurationHandler<ChatConfigModel>  config = new ObjectConfigurationHandler<ChatConfigModel>(getModuleConfigFileName(), ChatConfigModel.class);
+    public  final ObjectConfigurationHandler<ChatConfigModel>  config = new ObjectConfigurationHandler<ChatConfigModel>(ReflectionUtil.getModuleConfigFileName(this), ChatConfigModel.class);
 
 
     private final MiniMessage miniMessage = MiniMessage.builder().build();

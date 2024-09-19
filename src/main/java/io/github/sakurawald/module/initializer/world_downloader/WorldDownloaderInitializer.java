@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
 import io.github.sakurawald.core.auxiliary.IOUtil;
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -33,7 +34,7 @@ import java.util.UUID;
 
 public class WorldDownloaderInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<WorldDownloaderConfigModel> config = new ObjectConfigurationHandler<>(getModuleConfigFileName(), WorldDownloaderConfigModel.class);
+    public final ObjectConfigurationHandler<WorldDownloaderConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), WorldDownloaderConfigModel.class);
 
     private EvictingQueue<String> contextQueue;
     private HttpServer server;

@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.works;
 
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -21,7 +22,7 @@ public class WorksInitializer extends ModuleInitializer {
 
     public static final ObjectConfigurationHandler<WorksDataModel> worksHandler = new ObjectConfigurationHandler<>("works.json", WorksDataModel.class);
 
-    public final ObjectConfigurationHandler<WorksConfigModel> config = new ObjectConfigurationHandler<>(getModuleConfigFileName(), WorksConfigModel.class);
+    public final ObjectConfigurationHandler<WorksConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), WorksConfigModel.class);
 
     @Override
     public void registerGsonTypeAdapter() {

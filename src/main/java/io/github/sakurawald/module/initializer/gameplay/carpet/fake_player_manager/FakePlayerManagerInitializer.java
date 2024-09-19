@@ -3,6 +3,7 @@ package io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_mana
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.DateUtil;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
@@ -29,7 +30,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class FakePlayerManagerInitializer extends ModuleInitializer {
-    public final ObjectConfigurationHandler<FakePlayerManagerConfigModel> config = new ObjectConfigurationHandler<>("config.gameplay.carpet.fake_player_manager.json", FakePlayerManagerConfigModel.class);
+    public final ObjectConfigurationHandler<FakePlayerManagerConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), FakePlayerManagerConfigModel.class);
 
     public final List<String> CONSTANT_EMPTY_LIST = new ArrayList<>();
     public final Map<String, List<String>> player2fakePlayers = new HashMap<>();

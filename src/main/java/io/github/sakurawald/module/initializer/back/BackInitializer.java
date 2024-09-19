@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.back;
 
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 
 public class BackInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<BackConfigModel> config = new ObjectConfigurationHandler<>(getModuleConfigFileName(), BackConfigModel.class);
+    public final ObjectConfigurationHandler<BackConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), BackConfigModel.class);
 
     @Getter
     private final HashMap<String, SpatialPose> player2lastPos = new HashMap<>();
