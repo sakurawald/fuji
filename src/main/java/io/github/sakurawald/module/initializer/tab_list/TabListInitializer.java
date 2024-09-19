@@ -4,6 +4,7 @@ import io.github.sakurawald.core.auxiliary.RandomUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.tab_list.config.model.TabListConfigModel;
@@ -18,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class TabListInitializer extends ModuleInitializer {
 
-    public static final ObjectConfigurationHandler<TabListConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(TabListInitializer.class), TabListConfigModel.class);
+    public static final BaseConfigurationHandler<TabListConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(TabListInitializer.class), TabListConfigModel.class);
 
     @Override
     public void onInitialize() {

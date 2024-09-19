@@ -5,6 +5,7 @@ import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.chat.display.config.model.ChatDisplayConfigModel;
@@ -22,7 +23,7 @@ import java.time.temporal.ChronoUnit;
 
 public class ChatDisplayInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<ChatDisplayConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), ChatDisplayConfigModel.class);
+    public final BaseConfigurationHandler<ChatDisplayConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), ChatDisplayConfigModel.class);
 
     private void registerEnderPlaceholder() {
         Placeholders.register(

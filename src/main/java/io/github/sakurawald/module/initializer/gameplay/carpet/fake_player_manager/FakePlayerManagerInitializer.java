@@ -9,6 +9,7 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager.config.model.FakePlayerManagerConfigModel;
@@ -30,7 +31,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class FakePlayerManagerInitializer extends ModuleInitializer {
-    public final ObjectConfigurationHandler<FakePlayerManagerConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), FakePlayerManagerConfigModel.class);
+    public final BaseConfigurationHandler<FakePlayerManagerConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), FakePlayerManagerConfigModel.class);
 
     public final List<String> CONSTANT_EMPTY_LIST = new ArrayList<>();
     public final Map<String, List<String>> player2fakePlayers = new HashMap<>();

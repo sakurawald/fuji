@@ -6,6 +6,7 @@ import com.mojang.brigadier.tree.CommandNode;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.structure.CommandPathMappingEntry;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -17,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CommandAliasInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<CommandAliasConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), CommandAliasConfigModel.class);
+    public final BaseConfigurationHandler<CommandAliasConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), CommandAliasConfigModel.class);
 
     @Override
     public void onInitialize() {

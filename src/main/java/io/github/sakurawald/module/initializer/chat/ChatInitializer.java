@@ -38,7 +38,7 @@ public class ChatInitializer extends ModuleInitializer {
 
     private static final BaseConfigurationHandler<ChatFormatModel> chatFormatHandler = new ObjectConfigurationHandler<>("chat.json", ChatFormatModel.class);
 
-    public  final ObjectConfigurationHandler<ChatConfigModel>  config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), ChatConfigModel.class);
+    public  final BaseConfigurationHandler<ChatConfigModel>  config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), ChatConfigModel.class);
 
 
     private final MiniMessage miniMessage = MiniMessage.builder().build();

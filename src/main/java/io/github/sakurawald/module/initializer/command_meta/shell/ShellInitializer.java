@@ -10,6 +10,7 @@ import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.command.exception.AbortOperationException;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_meta.shell.config.ShellConfigModel;
@@ -24,7 +25,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class ShellInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<ShellConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), ShellConfigModel.class);
+    public final BaseConfigurationHandler<ShellConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), ShellConfigModel.class);
 
     private void checkSecurity(CommandContext<ServerCommandSource> ctx) {
         var config = this.config.getModel();

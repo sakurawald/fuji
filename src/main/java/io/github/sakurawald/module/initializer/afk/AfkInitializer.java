@@ -6,6 +6,7 @@ import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.afk.accessor.AfkStateAccessor;
@@ -20,7 +21,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class AfkInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<AfkConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), AfkConfigModel.class);
+    public final BaseConfigurationHandler<AfkConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), AfkConfigModel.class);
 
     @Override
     public void onInitialize() {
