@@ -21,7 +21,7 @@ import java.util.Optional;
 
 public class TpaInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<TpaConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(TpaConfigModel.class), TpaConfigModel.class);
+    public final BaseConfigurationHandler<TpaConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(TpaConfigModel.class), TpaConfigModel.class);
 
     @Getter
     private final List<TpaRequest> requests = new ArrayList<>();
