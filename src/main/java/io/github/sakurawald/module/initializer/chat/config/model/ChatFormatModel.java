@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-public class ChatModel {
+public class ChatFormatModel {
 
     public @NotNull Format format = new Format();
 

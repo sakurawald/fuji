@@ -5,7 +5,9 @@ import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.chat.display.config.model.ChatDisplayConfigModel;
 import io.github.sakurawald.module.initializer.chat.display.helper.DisplayHelper;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickCallback;
@@ -19,6 +21,8 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
 public class ChatDisplayInitializer extends ModuleInitializer {
+
+    public final ObjectConfigurationHandler<ChatDisplayConfigModel> config = new ObjectConfigurationHandler<>(getModuleConfigFileName(), ChatDisplayConfigModel.class);
 
     private void registerEnderPlaceholder() {
         Placeholders.register(
@@ -80,7 +84,7 @@ public class ChatDisplayInitializer extends ModuleInitializer {
             if (audience instanceof ServerCommandSource css && css.getPlayer() != null) {
                 DisplayHelper.viewDisplay(css.getPlayer(), displayUUID);
             }
-        }, ClickCallback.Options.builder().lifetime(Duration.of(Configs.configHandler.getModel().modules.chat.display.expiration_duration_s, ChronoUnit.SECONDS))
+        }, ClickCallback.Options.builder().lifetime(Duration.of(config.getModel().expiration_duration_s, ChronoUnit.SECONDS))
             .uses(Integer.MAX_VALUE).build());
     }
 
