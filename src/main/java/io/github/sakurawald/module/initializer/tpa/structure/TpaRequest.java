@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.initializer.tpa.structure;
 
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.tpa.TpaInitializer;
 import lombok.Getter;
@@ -67,7 +66,7 @@ public class TpaRequest {
                         module.getRequests().remove(that);
                     }
                 },
-                Configs.configHandler.getModel().modules.tpa.timeout * 1000L
+            Managers.getModuleManager().getInitializer(TpaInitializer.class).config.getModel().timeout * 1000L
         );
     }
 

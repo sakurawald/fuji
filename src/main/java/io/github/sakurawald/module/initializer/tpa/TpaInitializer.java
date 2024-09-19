@@ -5,8 +5,10 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.job.impl.MentionPlayersJob;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.tpa.config.model.TpaConfigModel;
 import io.github.sakurawald.module.initializer.tpa.structure.TpaRequest;
 import lombok.Getter;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -16,8 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@SuppressWarnings("LombokGetterMayBeUsed")
 public class TpaInitializer extends ModuleInitializer {
+
+    public final ObjectConfigurationHandler<TpaConfigModel> config = new ObjectConfigurationHandler<>(getModuleConfigFileName(), TpaConfigModel.class);
 
     @Getter
     private final List<TpaRequest> requests = new ArrayList<>();
@@ -67,7 +70,7 @@ public class TpaInitializer extends ModuleInitializer {
 
             ServerPlayerEntity who = request.getTeleportWho();
             ServerPlayerEntity to = request.getTeleportTo();
-            MentionPlayersJob.requestJob(Configs.configHandler.getModel().modules.tpa.mention_player, request.isTpahere() ? to : who);
+            MentionPlayersJob.requestJob(config.getModel().mention_player, request.isTpahere() ? to : who);
             who.teleport((ServerWorld) to.getWorld(), to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
         } else if (status == ResponseStatus.DENY) {
             request.getSender().sendActionBar(request.asSenderComponent$Denied());
@@ -103,7 +106,7 @@ public class TpaInitializer extends ModuleInitializer {
 
         /* feedback */
         request.getReceiver().sendMessage(request.asReceiverComponent$Sent());
-        MentionPlayersJob.requestJob(Configs.configHandler.getModel().modules.tpa.mention_player, request.getReceiver());
+        MentionPlayersJob.requestJob(config.getModel().mention_player, request.getReceiver());
         request.getSender().sendMessage(request.asSenderComponent$Sent());
         return CommandHelper.Return.SUCCESS;
     }

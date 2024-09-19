@@ -7,7 +7,8 @@ import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.works.config.model.WorksModel;
+import io.github.sakurawald.module.initializer.works.config.model.WorksConfigModel;
+import io.github.sakurawald.module.initializer.works.config.model.WorksDataModel;
 import io.github.sakurawald.module.initializer.works.gui.WorksGui;
 import io.github.sakurawald.module.initializer.works.job.WorksScheduleJob;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
@@ -18,7 +19,9 @@ import org.quartz.JobDataMap;
 
 public class WorksInitializer extends ModuleInitializer {
 
-    public static final ObjectConfigurationHandler<WorksModel> worksHandler = new ObjectConfigurationHandler<>("works.json", WorksModel.class);
+    public static final ObjectConfigurationHandler<WorksDataModel> worksHandler = new ObjectConfigurationHandler<>("works.json", WorksDataModel.class);
+
+    public final ObjectConfigurationHandler<WorksConfigModel> config = new ObjectConfigurationHandler<>(getModuleConfigFileName(), WorksConfigModel.class);
 
     @Override
     public void registerGsonTypeAdapter() {

@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class WorksModel {
+public class WorksDataModel {
 
     public @NotNull List<Work> works = new CopyOnWriteArrayList<>();
 
