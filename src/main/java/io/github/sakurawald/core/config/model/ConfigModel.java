@@ -1,15 +1,12 @@
 package io.github.sakurawald.core.config.model;
 
 import io.github.sakurawald.core.job.impl.MentionPlayersJob;
-import io.github.sakurawald.core.structure.CommandPathMappingEntry;
 import io.github.sakurawald.core.structure.RegexRewriteEntry;
-import io.github.sakurawald.core.structure.TeleportSetup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 
@@ -497,42 +494,11 @@ public class ConfigModel {
         public static class Afk {
             public boolean enable = false;
 
-            public String format = "<gray>[AFK] %player:displayname_visual%";
-
-            public AfkChecker afk_checker = new AfkChecker();
-
-            public static class AfkChecker {
-                public String cron = "0 0/5 * ? * *";
-            }
-
-            public AfkEvent afk_event = new AfkEvent();
-
-            public static class AfkEvent {
-                public List<String> on_enter_afk = new ArrayList<>() {
-                    {
-                        this.add("send-broadcast <gold>Player %player:name% is now afk");
-
-                    }
-                };
-
-                public List<String> on_leave_afk = new ArrayList<>() {
-                    {
-                        this.add("send-broadcast <gold>Player %player:name% is no longer afk");
-                        this.add("effect give %player:name% minecraft:absorption 5 4");
-                    }
-                };
-            }
-
             public AfkEffect effect = new AfkEffect();
 
             public static class AfkEffect {
                 public boolean enable = true;
 
-                public boolean invulnerable = true;
-
-                public boolean targetable = false;
-
-                public boolean moveable = false;
             }
 
         }

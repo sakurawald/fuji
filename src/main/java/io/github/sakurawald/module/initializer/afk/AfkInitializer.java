@@ -5,8 +5,10 @@ import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.afk.accessor.AfkStateAccessor;
+import io.github.sakurawald.module.initializer.afk.config.model.AfkConfigModel;
 import io.github.sakurawald.module.initializer.afk.job.AfkMarkerJob;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.entity.Entity;
@@ -16,6 +18,8 @@ import net.minecraft.util.math.Vec3d;
 
 
 public class AfkInitializer extends ModuleInitializer {
+
+    public final ObjectConfigurationHandler<AfkConfigModel> config = new ObjectConfigurationHandler<>(getModuleConfigFileName(), AfkConfigModel.class);
 
     @Override
     public void onInitialize() {
