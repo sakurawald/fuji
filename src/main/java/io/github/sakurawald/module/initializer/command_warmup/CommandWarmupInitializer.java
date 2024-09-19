@@ -6,5 +6,5 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_warmup.config.model.CommandWarmupConfigModel;
 
 public class CommandWarmupInitializer extends ModuleInitializer {
-    public final ObjectConfigurationHandler<CommandWarmupConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), CommandWarmupConfigModel.class);
+    public final ObjectConfigurationHandler<CommandWarmupConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), CommandWarmupConfigModel.class);
 }

@@ -5,6 +5,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.module.initializer.skin.config.SkinIO;
 import io.github.sakurawald.module.initializer.skin.config.SkinStorage;
@@ -40,7 +41,7 @@ import java.util.function.Supplier;
 public class SkinRestorer {
 
     @Getter
-    private static final SkinStorage skinStorage = new SkinStorage(new SkinIO(Fuji.CONFIG_PATH.resolve("skin")));
+    private static final SkinStorage skinStorage = new SkinStorage(new SkinIO(ReflectionUtil.getModuleConfigPath(SkinInitializer.class).resolve("player-data")));
 
     public static CompletableFuture<Pair<Collection<ServerPlayerEntity>, Collection<GameProfile>>> setSkinAsync(@NotNull MinecraftServer server, @NotNull Collection<GameProfile> targets, @NotNull Supplier<Property> skinSupplier) {
         return CompletableFuture.<Pair<Property, Collection<GameProfile>>>supplyAsync(() -> {

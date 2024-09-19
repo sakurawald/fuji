@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CommandAliasInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<CommandAliasConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), CommandAliasConfigModel.class);
+    public final ObjectConfigurationHandler<CommandAliasConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), CommandAliasConfigModel.class);
 
     @Override
     public void onInitialize() {

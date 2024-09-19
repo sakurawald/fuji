@@ -2,6 +2,7 @@ package io.github.sakurawald.module.initializer.deathlog;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -34,7 +35,7 @@ import java.util.List;
 @CommandNode("deathlog")
 @CommandRequirement(level = 4)
 public class DeathLogInitializer extends ModuleInitializer {
-    private final Path STORAGE_PATH = Fuji.CONFIG_PATH.resolve("deathlog");
+    private final Path STORAGE_PATH = ReflectionUtil.getModuleConfigPath(DeathLogInitializer.class).resolve("deathlog");
 
     private final String DEATHS = "Deaths";
     private final String TIME = "time";

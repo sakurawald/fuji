@@ -34,7 +34,7 @@ public class SitInitializer extends ModuleInitializer {
     public static final Vec3d CHAIR_ENTITY_OFFSET = new Vec3d(0, -1.375, 0);
     private static final Set<Entity> CHAIR_ENTITY_LIST = new HashSet<>();
 
-    public final ObjectConfigurationHandler<SitModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), SitModel.class);
+    public final ObjectConfigurationHandler<SitModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), SitModel.class);
 
     @Override
     public void onInitialize() {

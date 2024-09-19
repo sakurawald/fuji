@@ -10,7 +10,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 
 public class CommandEventInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<CommandEventModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), CommandEventModel.class);
+    public final ObjectConfigurationHandler<CommandEventModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), CommandEventModel.class);
 
     @Override
     public void onInitialize() {

@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class TabListInitializer extends ModuleInitializer {
 
-    public static final ObjectConfigurationHandler<TabListConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(TabListInitializer.class), TabListConfigModel.class);
+    public static final ObjectConfigurationHandler<TabListConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(TabListInitializer.class), TabListConfigModel.class);
 
     @Override
     public void onInitialize() {

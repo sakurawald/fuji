@@ -1,5 +1,6 @@
 package io.github.sakurawald.core.auxiliary;
 
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
@@ -10,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -56,11 +58,25 @@ public class ReflectionUtil {
         return getModulePath(clazz.getName());
     }
 
-    public static String getModuleConfigFileName(Class<?> clazz) {
+    public static String getModuleControlFileName(Class<?> clazz) {
         return "config." + getModulePath(clazz.getName()) + ".json";
     }
 
-    public static String getModuleConfigFileName(Object object) {
-        return getModuleConfigFileName(object.getClass());
+    public static String getModuleControlFileName(Object object) {
+        return getModuleControlFileName(object.getClass());
+    }
+
+    public static Path getModuleConfigPath(Class<?> clazz) {
+        String others = getModulePath(clazz).replace(".", "/");
+        return Fuji.CONFIG_PATH.resolve("modules").resolve(others);
+    }
+
+    public static Path getModuleConfigPath(Object object) {
+        return getModuleConfigPath(object.getClass());
+    }
+
+    public static Path getModuleConfigPath(String modulePath) {
+        String others = modulePath.replace(".", "/");
+        return Fuji.CONFIG_PATH.resolve("modules").resolve(others);
     }
 }
