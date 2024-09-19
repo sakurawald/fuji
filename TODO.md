@@ -12,5 +12,3 @@
 - add: a command-suit/command-sequence/command-bundle module, to execute commands. (/rules, /vote)
 - add: a lisp-like DSL, including a parse, transformer, analyzer, code-walker, with some built-in functions: predicate,
   equal...
-
-- functional module
