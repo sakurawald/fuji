@@ -8,7 +8,7 @@ import org.quartz.JobExecutionContext;
 public class UpdateNametagJob extends CronJob {
 
     public UpdateNametagJob() {
-        super(() -> Managers.getModuleManager().getInitializer(NametagInitializer.class).config.getModel().update_cron);
+        super(() -> NametagInitializer.config.getModel().update_cron);
     }
 
     @Override
