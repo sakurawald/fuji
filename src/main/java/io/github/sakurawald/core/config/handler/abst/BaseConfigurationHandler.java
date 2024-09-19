@@ -48,6 +48,10 @@ import java.util.regex.Pattern;
  * 1. Only use static inner class in config model java object, this is because a historical design problem in java.
  * 2. The new gson type adapter should be registered before the call to loadFromDisk()
  * 3. The type system of java is static, given an object instance, you can use instance.getClass() to get the type of the instance, which means that you don't need to specify the typeOfT for gson library.
+ *
+ * The configuration handler in module initializer should be static:
+ * 1. The major point to make configuration handler a member of class, is that it's easier to control the lifecycle of objects, however, considering the fact that the configuration handler is a mapping between file system and memory, it should be static and unique.
+ * 2. Create the instance of configuration handler should have no side effect, until the call to readStorage() and writeStorage()
  */
 public abstract class BaseConfigurationHandler<T> {
 
