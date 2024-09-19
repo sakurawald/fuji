@@ -86,7 +86,8 @@ public class WorldManager {
             SpatialPose from = SpatialPose.of(player);
             SpatialPose to = new SpatialPose(overworld, spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5, 0, 0);
 
-            TeleportTicket teleportTicket = TeleportTicket.ofInstantTicket(player, from, to);
+            // totalMs = 1000, the value is unused
+            TeleportTicket teleportTicket = TeleportTicket.ofInstantTicket(player, from, to, 1000, 1000);
             Managers.getBossBarManager().addTicket(teleportTicket);
         }
     }

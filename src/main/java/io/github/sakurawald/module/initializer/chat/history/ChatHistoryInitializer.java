@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.initializer.chat.history;
 
 import com.google.common.collect.EvictingQueue;
-import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.chat.history.config.model.ChatHistoryConfigModel;

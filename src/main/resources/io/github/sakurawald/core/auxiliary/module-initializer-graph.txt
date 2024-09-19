@@ -46,6 +46,7 @@ io.github.sakurawald.module.initializer.command_toolbox.top.TopInitializer
 io.github.sakurawald.module.initializer.command_toolbox.tppos.TpposInitializer
 io.github.sakurawald.module.initializer.command_toolbox.trashcan.TrashCanInitializer
 io.github.sakurawald.module.initializer.command_toolbox.warp.WarpInitializer
+io.github.sakurawald.module.initializer.command_warmup.CommandWarmupInitializer
 io.github.sakurawald.module.initializer.config.ConfigInitializer
 io.github.sakurawald.module.initializer.deathlog.DeathLogInitializer
 io.github.sakurawald.module.initializer.echo.send_actionbar.SendActionbar
@@ -81,6 +82,7 @@ io.github.sakurawald.module.initializer.system_message.SystemMessageInitializer
 io.github.sakurawald.module.initializer.tab_list.TabListInitializer
 io.github.sakurawald.module.initializer.tab_list.faker.TabListFakerInitializer
 io.github.sakurawald.module.initializer.tab_list.sort.TabListSortInitializer
+io.github.sakurawald.module.initializer.teleport_warmup.TeleportWarmupInitializer
 io.github.sakurawald.module.initializer.temp_ban.TempBanInitializer
 io.github.sakurawald.module.initializer.tester.TesterInitializer
 io.github.sakurawald.module.initializer.top_chunks.TopChunksInitializer

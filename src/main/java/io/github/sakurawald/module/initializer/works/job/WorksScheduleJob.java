@@ -1,12 +1,10 @@
 package io.github.sakurawald.module.initializer.works.job;
 
 import io.github.sakurawald.core.job.abst.CronJob;
-import io.github.sakurawald.module.initializer.works.WorksInitializer;
 import io.github.sakurawald.module.initializer.works.abst.Schedulable;
 import io.github.sakurawald.module.initializer.works.structure.WorksCache;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import lombok.NoArgsConstructor;
-import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;

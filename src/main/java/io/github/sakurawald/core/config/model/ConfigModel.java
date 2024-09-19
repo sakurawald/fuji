@@ -600,6 +600,7 @@ public class ConfigModel {
                 public boolean enable = false;
 
                 public SyncGameProfile sync_game_profile = new SyncGameProfile();
+
                 public static class SyncGameProfile {
                     public boolean enable = true;
                 }
