@@ -48,7 +48,19 @@ public class ReflectionUtil {
         return lines;
     }
 
-    public static String getModulePath(Object object) {
-        return String.join(".", ModuleManager.computeModulePath(object.getClass().getName()));
+    public static String getModulePath(String className) {
+        return String.join(".", ModuleManager.computeModulePath(className));
+    }
+
+    public static String getModulePath(Class<?> clazz) {
+        return getModulePath(clazz.getName());
+    }
+
+    public static String getModuleConfigFileName(Class<?> clazz) {
+        return "config." + getModulePath(clazz.getName()) + ".json";
+    }
+
+    public static String getModuleConfigFileName(Object object) {
+        return getModuleConfigFileName(object.getClass());
     }
 }

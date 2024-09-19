@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CommandAliasInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<CommandAliasConfigModel> config = new ObjectConfigurationHandler<>(getModuleConfigFileName(), CommandAliasConfigModel.class);
+    public final ObjectConfigurationHandler<CommandAliasConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), CommandAliasConfigModel.class);
 
     @Override
     public void onInitialize() {
@@ -39,7 +39,7 @@ public class CommandAliasInitializer extends ModuleInitializer {
                 CommandNode<ServerCommandSource> target = dispatcher.findNode(entry.to);
 
                 if (target == null) {
-                    LogUtil.warn("[{}] can't find the target command node for alias entry: {}", ReflectionUtil.getModulePath(this), entry);
+                    LogUtil.warn("[{}] can't find the target command node for alias entry: {}", ReflectionUtil.getModulePath(this.getClass()), entry);
                     return;
                 }
 

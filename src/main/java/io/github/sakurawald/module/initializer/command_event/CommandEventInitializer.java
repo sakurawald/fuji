@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.command_event;
 
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -9,7 +10,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 
 public class CommandEventInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<CommandEventModel> config = new ObjectConfigurationHandler<>("config.command_event.json", CommandEventModel.class);
+    public final ObjectConfigurationHandler<CommandEventModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), CommandEventModel.class);
 
     @Override
     public void onInitialize() {

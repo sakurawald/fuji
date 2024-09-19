@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.top_chunks;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -31,7 +32,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class TopChunksInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<TopChunksConfigModel> config = new ObjectConfigurationHandler<>(getModuleConfigFileName(), TopChunksConfigModel.class);
+    public final ObjectConfigurationHandler<TopChunksConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), TopChunksConfigModel.class);
 
     @CommandNode("chunks")
     private int $chunks(@CommandSource CommandContext<ServerCommandSource> ctx) {

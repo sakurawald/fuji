@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.nametag;
 
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
@@ -27,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class NametagInitializer extends ModuleInitializer {
 
-    public final ObjectConfigurationHandler<NametagConfigModel> config = new ObjectConfigurationHandler<>(getModuleConfigFileName(), NametagConfigModel.class);
+    public final ObjectConfigurationHandler<NametagConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), NametagConfigModel.class);
 
     private Map<ServerPlayerEntity, DisplayEntity.TextDisplayEntity> player2nametag;
 

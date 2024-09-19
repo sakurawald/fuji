@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.command_cooldown;
 
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_cooldown.config.model.CommandCooldownConfigModel;
@@ -10,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CommandCooldownInitializer extends ModuleInitializer {
-    public final ObjectConfigurationHandler<CommandCooldownConfigModel> config = new ObjectConfigurationHandler<>(getModuleConfigFileName(), CommandCooldownConfigModel.class);
+    public final ObjectConfigurationHandler<CommandCooldownConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), CommandCooldownConfigModel.class);
 
     private final HashMap<ServerPlayerEntity, HashMap<String, Long>> map = new HashMap<>();
 

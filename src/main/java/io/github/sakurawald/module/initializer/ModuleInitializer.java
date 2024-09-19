@@ -2,7 +2,6 @@ package io.github.sakurawald.module.initializer;
 
 
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import lombok.SneakyThrows;
 
@@ -57,7 +56,4 @@ public class ModuleInitializer {
         // no-op
     }
 
-    public String getModuleConfigFileName() {
-        return "config." + ReflectionUtil.getModulePath(this) + ".json";
-    }
 }

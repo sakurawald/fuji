@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.sit;
 
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -33,7 +34,7 @@ public class SitInitializer extends ModuleInitializer {
     public static final Vec3d CHAIR_ENTITY_OFFSET = new Vec3d(0, -1.375, 0);
     private static final Set<Entity> CHAIR_ENTITY_LIST = new HashSet<>();
 
-    public final ObjectConfigurationHandler<SitModel> config = new ObjectConfigurationHandler<>("config.sit.json", SitModel.class);
+    public final ObjectConfigurationHandler<SitModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleConfigFileName(this), SitModel.class);
 
     @Override
     public void onInitialize() {
