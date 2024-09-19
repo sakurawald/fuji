@@ -27,7 +27,6 @@ public class FlattenTreeTransformer extends ConfigurationTransformer {
     @SneakyThrows
     private void flatten(JsonObject parent, String level) {
         Path currentTreeOutPath = Fuji.CONFIG_PATH.resolve(level + ".json");
-        if (Files.exists(currentTreeOutPath)) return;
 
         /* find and walk submodule */
         parent.keySet().stream()
@@ -43,9 +42,7 @@ public class FlattenTreeTransformer extends ConfigurationTransformer {
             .forEach(parent::remove);
 
         // if the tree is not empty, migrate it to a standalone file
-        if (!parent.isEmpty()) {
-            LogUtil.debug("parent.members = {}",parent.entrySet());
-
+        if (!parent.isEmpty() && Files.notExists(currentTreeOutPath)) {
             logConsole("flatten tree `{}` into `{}`", level, currentTreeOutPath);
             String json = BaseConfigurationHandler.getGson().toJson(parent);
             Files.writeString(currentTreeOutPath, json);
@@ -58,24 +55,18 @@ public class FlattenTreeTransformer extends ConfigurationTransformer {
             .forEach(parent::remove);
     }
 
-    private void deleteKeys(JsonObject parent)  {
+    private JsonObject makeSkeletonTree(JsonObject parent)  {
         parent.keySet().stream().toList().stream()
             .filter(key-> !key.equals(subtreeIdentifier))
             .forEach(key -> {
                 if (parent.get(key).isJsonObject()) {
-                    deleteKeys(parent.getAsJsonObject(key));
+                    makeSkeletonTree(parent.getAsJsonObject(key));
 
                     // remove the subtree if empty. (the subtree will not be empty, if it is a sub-module
                     if (parent.getAsJsonObject(key).isEmpty()) parent.remove(key);
                 } else parent.remove(key);
             });
-
-    }
-
-    private JsonObject makeSkeletonTree()  {
-        JsonObject root = (JsonObject) read(this.jsonPath);
-        deleteKeys(root);
-        return root;
+        return parent;
     }
 
     @Override
@@ -84,7 +75,8 @@ public class FlattenTreeTransformer extends ConfigurationTransformer {
         this.flatten(root, this.topLevel);
 
         if (overrideTheOriginalFileWithSkeletonTree) {
-            set(this.jsonPath, makeSkeletonTree());
+            JsonObject skeletonTree = (JsonObject) read(this.jsonPath);
+            set(this.jsonPath, makeSkeletonTree(skeletonTree));
             writeStorage();
         }
     }
