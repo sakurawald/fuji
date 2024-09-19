@@ -3,6 +3,7 @@ package io.github.sakurawald.core.manager.impl.backup;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.IOUtil;
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.config.Configs;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
@@ -78,7 +79,7 @@ public class StandardBackupManager extends BaseBackupManager {
 
     @Override
     protected void makeBackup() {
-        IOUtil.compressFiles(getInputFiles(), getOutputFile());
+        IOUtil.compressFiles(Fuji.CONFIG_PATH.toFile(),getInputFiles(), getOutputFile());
     }
 
     @SneakyThrows

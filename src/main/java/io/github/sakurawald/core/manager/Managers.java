@@ -1,7 +1,7 @@
 package io.github.sakurawald.core.manager;
 
 import io.github.sakurawald.core.manager.impl.attachment.AttachmentManager;
-import io.github.sakurawald.core.manager.impl.backup.BackupRescueManager;
+import io.github.sakurawald.core.manager.impl.backup.RescueBackupManager;
 import io.github.sakurawald.core.manager.impl.backup.BaseBackupManager;
 import io.github.sakurawald.core.manager.impl.backup.StandardBackupManager;
 import io.github.sakurawald.core.manager.impl.bossbar.BossBarManager;
@@ -28,7 +28,7 @@ public class Managers {
     private static final BaseBackupManager standardBackupManager = new StandardBackupManager();
 
     @Getter(lazy = true)
-    private static final BaseBackupManager rescueBackupManager = new BackupRescueManager();
+    private static final BaseBackupManager rescueBackupManager = new RescueBackupManager();
 
     @Getter(lazy = true)
     private static final AttachmentManager attachmentManager = new AttachmentManager();

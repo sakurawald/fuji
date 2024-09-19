@@ -132,7 +132,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         File output;
         try {
             output = Files.createTempFile(regionName + "#", ".zip").toFile();
-            IOUtil.compressFiles(input, output);
+            IOUtil.compressFiles(worldDirectory, input, output);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
