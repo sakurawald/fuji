@@ -26,7 +26,7 @@ import java.util.zip.ZipOutputStream;
 public class IOUtil {
 
     @SneakyThrows
-    public static void compressFiles(@NotNull List<File> input, @NotNull File output) {
+    public static void compressFiles(@NotNull File base, @NotNull List<File> input, @NotNull File output) {
         final int BUFFER_SIZE = 4096;
 
         try (FileOutputStream fos = new FileOutputStream(output);
@@ -35,7 +35,8 @@ public class IOUtil {
             for (File file : input) {
                 if (file.isFile()) {
                     try (FileInputStream fis = new FileInputStream(file)) {
-                        ZipEntry zipEntry = new ZipEntry(getEntryName(file));
+
+                        ZipEntry zipEntry = new ZipEntry(getEntryName(base,file));
                         zos.putNextEntry(zipEntry);
 
                         byte[] buffer = new byte[BUFFER_SIZE];
@@ -52,24 +53,28 @@ public class IOUtil {
         }
     }
 
-    private static @NotNull String getEntryName(@NotNull File file) {
-        return file.getParentFile().getName() + File.separator + file.getName();
+    @SneakyThrows
+    private static @NotNull String getEntryName(@NotNull File base, @NotNull File file) {
+        String baseStr = base.getCanonicalPath();
+        String fileStr = file.getCanonicalPath();
+
+        return fileStr.replace(baseStr, "");
     }
 
     public static @NotNull List<Path> getLatestFiles(@NotNull Path path) {
         try (Stream<Path> files = Files.list(path)) {
             return files
-                    .filter(Files::isRegularFile)
-                    .sorted((o1, o2) -> {
-                        try {
-                            FileTime t1 = Files.readAttributes(o1, BasicFileAttributes.class).creationTime();
-                            FileTime t2 = Files.readAttributes(o2, BasicFileAttributes.class).creationTime();
-                            return t1.compareTo(t2);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    })
-                    .collect(Collectors.toList());
+                .filter(Files::isRegularFile)
+                .sorted((o1, o2) -> {
+                    try {
+                        FileTime t1 = Files.readAttributes(o1, BasicFileAttributes.class).creationTime();
+                        FileTime t2 = Files.readAttributes(o2, BasicFileAttributes.class).creationTime();
+                        return t1.compareTo(t2);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .collect(Collectors.toList());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

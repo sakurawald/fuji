@@ -15,9 +15,9 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BackupRescueManager extends BaseBackupManager {
+public class RescueBackupManager extends BaseBackupManager {
 
-    public BackupRescueManager() {
+    public RescueBackupManager() {
         super(Fuji.CONFIG_PATH.resolve("backup_rescue"));
     }
 
@@ -52,7 +52,7 @@ public class BackupRescueManager extends BaseBackupManager {
     }
 
     protected void makeBackup() {
-        IOUtil.compressFiles(this.getInputFiles(), this.getOutputFile());
+        IOUtil.compressFiles(Fuji.CONFIG_PATH.toFile(),this.getInputFiles(), this.getOutputFile());
     }
 
     public void backup() {
