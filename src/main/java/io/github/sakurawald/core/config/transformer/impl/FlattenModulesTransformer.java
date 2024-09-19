@@ -13,9 +13,9 @@ public class FlattenModulesTransformer extends ConfigurationTransformer {
 
         for (String topLevelModule : modules.keySet()) {
             String topLevel = "config." + topLevelModule;
-            FlattenTransformer flattenTransformer = new FlattenTransformer(modulesPath + "." + topLevelModule, topLevel);
-            flattenTransformer.configure(this.getPath());
-            flattenTransformer.apply();
+            FlattenTreeTransformer flattenTreeTransformer = new FlattenTreeTransformer(modulesPath + "." + topLevelModule, topLevel, "enable");
+            flattenTreeTransformer.configure(this.getPath());
+            flattenTreeTransformer.apply();
         }
     }
 }

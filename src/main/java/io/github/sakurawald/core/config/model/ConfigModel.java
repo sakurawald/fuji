@@ -353,6 +353,13 @@ public class ConfigModel {
 
             public static class Enchantment {
                 public boolean enable = false;
+
+                public OverridePower override_power = new OverridePower();
+
+                public static class OverridePower {
+                    public boolean enable = true;
+                }
+
             }
 
             public static class GrindStone {
