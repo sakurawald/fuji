@@ -4,11 +4,7 @@ import io.github.sakurawald.core.job.impl.MentionPlayersJob;
 import io.github.sakurawald.core.structure.RegexRewriteEntry;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 
 public class ConfigModel {
 
@@ -111,117 +107,20 @@ public class ConfigModel {
         public static class TeleportWarmup {
             public boolean enable = false;
 
-            public int warmup_second = 3;
-
-            public double interrupt_distance = 1d;
-
-            public Dimension dimension = new Dimension();
-
-            public static class Dimension {
-                public Set<String> list = new HashSet<>() {
-                    {
-                        this.add("minecraft:overworld");
-                        this.add("minecraft:the_nether");
-                        this.add("minecraft:the_end");
-                    }
-                };
-            }
         }
 
         public static class CommandCooldown {
             public boolean enable = false;
 
-            public HashMap<String, Long> regex2ms = new HashMap<>() {
-                {
-                    this.put("rw tp (overworld|the_nether|the_end)", 120 * 1000L);
-                    this.put("chunks\\s*", 60 * 1000L);
-                    this.put("download\\s*", 120 * 1000L);
-                }
-            };
         }
 
         public static class CommandWarmup {
             public boolean enable = false;
 
-            public HashMap<String, Integer> regex2ms = new HashMap<>() {
-                {
-                    this.put("back", 3 * 1000);
-                }
-            };
         }
 
         public static class TopChunks {
             public boolean enable = false;
-
-
-            public Top top = new Top();
-            public int nearest_distance = 128;
-            public boolean hide_location = true;
-            public HashMap<String, Integer> type2score = new HashMap<>() {
-                {
-                    this.put("default", 1);
-                    this.put("block.minecraft.chest", 1);
-                    this.put("block.minecraft.trapped_chest", 2);
-                    this.put("block.minecraft.barrel", 1);
-                    this.put("block.minecraft.furnace", 3);
-                    this.put("block.minecraft.blast_furnace", 4);
-                    this.put("block.minecraft.smoker", 3);
-                    this.put("block.minecraft.jukebox", 35);
-                    this.put("block.minecraft.beacon", 35);
-                    this.put("block.minecraft.conduit", 40);
-                    this.put("block.minecraft.hopper", 8);
-                    this.put("block.minecraft.piston", 10);
-                    this.put("block.minecraft.dispenser", 10);
-                    this.put("block.minecraft.dropper", 10);
-                    this.put("block.minecraft.comparator", 5);
-                    this.put("block.minecraft.daylight_detector", 25);
-                    this.put("block.minecraft.beehive", 15);
-                    this.put("block.minecraft.mob_spawner", 100);
-                    this.put("entity.minecraft.player", 15);
-                    this.put("entity.minecraft.falling_block", 10);
-                    this.put("entity.minecraft.zombie", 4);
-                    this.put("entity.minecraft.zombie_villager", 8);
-                    this.put("entity.minecraft.zombified_piglin", 5);
-                    this.put("entity.minecraft.zoglin", 8);
-                    this.put("entity.minecraft.ravager", 80);
-                    this.put("entity.minecraft.pillager", 20);
-                    this.put("entity.minecraft.evoker", 20);
-                    this.put("entity.minecraft.vindicator", 20);
-                    this.put("entity.minecraft.vex", 20);
-                    this.put("entity.minecraft.piglin", 2);
-                    this.put("entity.minecraft.drowned", 2);
-                    this.put("entity.minecraft.guardian", 6);
-                    this.put("entity.minecraft.spider", 2);
-                    this.put("entity.minecraft.skeleton", 2);
-                    this.put("entity.minecraft.creeper", 3);
-                    this.put("entity.minecraft.endermite", 5);
-                    this.put("entity.minecraft.enderman", 4);
-                    this.put("entity.minecraft.wither", 55);
-                    this.put("entity.minecraft.villager", 25);
-                    this.put("entity.minecraft.sheep", 5);
-                    this.put("entity.minecraft.cow", 3);
-                    this.put("entity.minecraft.mooshroom", 3);
-                    this.put("entity.minecraft.chicken", 3);
-                    this.put("entity.minecraft.panda", 5);
-                    this.put("entity.minecraft.wolf", 8);
-                    this.put("entity.minecraft.cat", 8);
-                    this.put("entity.minecraft.bee", 15);
-                    this.put("entity.minecraft.boat", 5);
-                    this.put("entity.minecraft.chest_boat", 5);
-                    this.put("entity.minecraft.item_frame", 3);
-                    this.put("entity.minecraft.glow_item_frame", 3);
-                    this.put("entity.minecraft.armor_stand", 10);
-                    this.put("entity.minecraft.item", 10);
-                    this.put("entity.minecraft.experience_orb", 3);
-                    this.put("entity.minecraft.tnt", 70);
-                    this.put("entity.minecraft.hopper_minecart", 20);
-                }
-            };
-
-            public static class Top {
-                public int rows = 10;
-                public int columns = 10;
-            }
         }
 
         public static class Chat {
@@ -273,34 +172,18 @@ public class ConfigModel {
 
         public static class Back {
             public boolean enable = false;
-
-            public double ignore_distance = 32d;
         }
 
         public static class Tpa {
             public boolean enable = false;
-            public int timeout = 300;
-            public MentionPlayersJob.MentionPlayer mention_player = new MentionPlayersJob.MentionPlayer();
         }
 
         public static class Works {
             public boolean enable = false;
-
-            public int sample_time_ms = 60 * 1000 * 60;
-            public int sample_distance_limit = 512;
-            public int sample_counter_top_n = 20;
         }
 
         public static class WorldDownloader {
             public boolean enable = false;
-
-            public String url_format = "http://localhost:%port%%path%";
-
-            public int port = 22222;
-
-            public int bytes_per_second_limit = 128 * 1000;
-
-            public int context_cache_size = 5;
         }
 
         public static class Disabler {

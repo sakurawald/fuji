@@ -8,6 +8,8 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.gui.ConfirmGui;
 import io.github.sakurawald.core.gui.InputSignGui;
+import io.github.sakurawald.core.manager.Managers;
+import io.github.sakurawald.module.initializer.works.WorksInitializer;
 import io.github.sakurawald.module.initializer.works.abst.Schedulable;
 import io.github.sakurawald.module.initializer.works.structure.WorksCache;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
@@ -89,7 +91,7 @@ public class ProductionWork extends Work implements Schedulable {
         // check npe to avoid broken
         if (this.sample.sampleCounter != null) {
             // trim counter
-            if (this.sample.sampleCounter.size() > Configs.configHandler.getModel().modules.works.sample_counter_top_n) {
+            if (this.sample.sampleCounter.size() > Managers.getModuleManager().getInitializer(WorksInitializer.class).config.getModel().sample_counter_top_n) {
                 trimCounter();
             }
             ret.add(LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_counter"));
@@ -107,7 +109,7 @@ public class ProductionWork extends Work implements Schedulable {
         new InputSignGui(player,  "works.production_work.prompt.input.sample_distance") {
             @Override
             public void onClose() {
-                int limit = Configs.configHandler.getModel().modules.works.sample_distance_limit;
+                int limit = Managers.getModuleManager().getInitializer(WorksInitializer.class).config.getModel().sample_distance_limit;
                 int current;
                 try {
                     current = Integer.parseInt(this.getLine(0).getString());
@@ -227,7 +229,7 @@ public class ProductionWork extends Work implements Schedulable {
 
     public void startSample(@NotNull ServerPlayerEntity player) {
         this.sample.sampleStartTimeMS = System.currentTimeMillis();
-        this.sample.sampleEndTimeMS = this.sample.sampleStartTimeMS + Configs.configHandler.getModel().modules.works.sample_time_ms;
+        this.sample.sampleEndTimeMS = this.sample.sampleStartTimeMS + Managers.getModuleManager().getInitializer(WorksInitializer.class).config.getModel().sample_time_ms;
         this.sample.sampleDimension = player.getServerWorld().getRegistryKey().getValue().toString();
         this.sample.sampleX = player.getX();
         this.sample.sampleY = player.getY();
@@ -256,7 +258,7 @@ public class ProductionWork extends Work implements Schedulable {
                 .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
                 .toList();
 
-        int N = Configs.configHandler.getModel().modules.works.sample_counter_top_n;
+        int N = Managers.getModuleManager().getInitializer(WorksInitializer.class).config.getModel().sample_counter_top_n;
         this.sample.sampleCounter.clear();
         for (int i = 0; i < N && i < sortedEntries.size(); i++) {
             this.sample.sampleCounter.put(sortedEntries.get(i).getKey(), sortedEntries.get(i).getValue());

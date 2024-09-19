@@ -5,9 +5,9 @@ import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.core.config.model.ConfigModel;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.top_chunks.config.model.TopChunksConfigModel;
 import io.github.sakurawald.module.initializer.top_chunks.structure.ChunkScore;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -31,6 +31,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class TopChunksInitializer extends ModuleInitializer {
 
+    public final ObjectConfigurationHandler<TopChunksConfigModel> config = new ObjectConfigurationHandler<>(getModuleConfigFileName(), TopChunksConfigModel.class);
 
     @CommandNode("chunks")
     private int $chunks(@CommandSource CommandContext<ServerCommandSource> ctx) {
@@ -70,13 +71,13 @@ public class TopChunksInitializer extends ModuleInitializer {
             }
 
             /* send output */
-            ConfigModel.Modules.TopChunks topChunks = Configs.configHandler.getModel().modules.top_chunks;
-            calculateNearestPlayer(ctx.getSource(), PQ, topChunks.top.rows * topChunks.top.columns);
+            var config = this.config.getModel();
+            calculateNearestPlayer(ctx.getSource(), PQ, config.top.rows * config.top.columns);
 
             TextComponent.Builder textComponentBuilder = Component.text();
             outer:
-            for (int j = 0; j < topChunks.top.rows; j++) {
-                for (int i = 0; i < topChunks.top.columns; i++) {
+            for (int j = 0; j < config.top.rows; j++) {
+                for (int i = 0; i < config.top.columns; i++) {
                     if (PQ.isEmpty()) break outer;
                     textComponentBuilder.append(PQ.poll().asComponent(ctx.getSource())).appendSpace();
                 }
@@ -97,7 +98,7 @@ public class TopChunksInitializer extends ModuleInitializer {
             World world = chunkScore.getDimension();
             ChunkPos chunkPos = chunkScore.getChunkPos();
             BlockPos blockPos = chunkPos.getStartPos();
-            PlayerEntity nearestPlayer = world.getClosestPlayer(blockPos.getX(), blockPos.getY(), blockPos.getZ(), Configs.configHandler.getModel().modules.top_chunks.nearest_distance, false);
+            PlayerEntity nearestPlayer = world.getClosestPlayer(blockPos.getX(), blockPos.getY(), blockPos.getZ(), config.getModel().nearest_distance, false);
             if (nearestPlayer != null) {
                 chunkScore.getPlayers().add(LocaleHelper.getValue(source, "top_chunks.prop.players.nearest", nearestPlayer.getGameProfile().getName()));
             }
