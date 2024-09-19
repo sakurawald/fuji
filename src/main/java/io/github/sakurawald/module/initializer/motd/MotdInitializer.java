@@ -4,8 +4,9 @@ import com.google.common.base.Preconditions;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.motd.config.model.MotdConfigModel;
 import lombok.Setter;
 import net.minecraft.server.ServerMetadata;
 import net.minecraft.text.Text;
@@ -23,6 +24,9 @@ import java.util.Random;
 
 
 public class MotdInitializer extends ModuleInitializer {
+
+    public final ObjectConfigurationHandler<MotdConfigModel> config = new ObjectConfigurationHandler<>(getModuleConfigFileName(), MotdConfigModel.class);
+
     private final File ICON_FOLDER = Fuji.CONFIG_PATH.resolve("motd").resolve("icon").toFile();
 
     @Setter
@@ -30,20 +34,16 @@ public class MotdInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        setMotd(Configs.configHandler.getModel().modules.motd.list);
+        setMotd(config.getModel().list);
     }
 
     @Override
     public void onReload() {
-        setMotd(Configs.configHandler.getModel().modules.motd.list);
+        setMotd(config.getModel().list);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public @NotNull Optional<ServerMetadata.Favicon> getRandomIcon() {
-        if (!Configs.configHandler.getModel().modules.motd.icon.enable) {
-            return Optional.empty();
-        }
-
         ICON_FOLDER.mkdirs();
         File[] icons = ICON_FOLDER.listFiles();
         if (icons == null || icons.length == 0) {

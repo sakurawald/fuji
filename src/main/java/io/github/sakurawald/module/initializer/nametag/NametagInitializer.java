@@ -4,7 +4,9 @@ import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.nametag.config.model.NametagConfigModel;
 import io.github.sakurawald.module.initializer.nametag.job.UpdateNametagJob;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.entity.EntityType;
@@ -25,6 +27,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 public class NametagInitializer extends ModuleInitializer {
+
+    public final ObjectConfigurationHandler<NametagConfigModel> config = new ObjectConfigurationHandler<>(getModuleConfigFileName(), NametagConfigModel.class);
 
     private Map<ServerPlayerEntity, DisplayEntity.TextDisplayEntity> player2nametag;
 
@@ -105,7 +109,7 @@ public class NametagInitializer extends ModuleInitializer {
 
     private void updateNametag(DisplayEntity.TextDisplayEntity nametag, ServerPlayerEntity player) {
         /* update props of nametag entity */
-        var config = Configs.configHandler.getModel().modules.nametag;
+        var config = this.config.getModel();
 
         nametag.setBillboardMode(DisplayEntity.BillboardMode.CENTER);
 
