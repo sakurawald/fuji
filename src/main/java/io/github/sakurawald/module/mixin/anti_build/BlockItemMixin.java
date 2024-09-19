@@ -1,11 +1,9 @@
 package io.github.sakurawald.module.mixin.anti_build;
 
-import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
-import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.manager.Managers;
-import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import io.github.sakurawald.module.initializer.anti_build.AntiBuildInitializer;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;

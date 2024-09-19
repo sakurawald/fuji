@@ -9,7 +9,6 @@ import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.command.exception.AbortOperationException;
-import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_meta.shell.config.ShellConfigModel;

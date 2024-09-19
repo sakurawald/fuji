@@ -2,8 +2,8 @@ package io.github.sakurawald.core.service.random_teleport;
 
 import com.google.common.base.Stopwatch;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.core.structure.TeleportSetup;

@@ -3,7 +3,6 @@ package io.github.sakurawald.module.initializer.nametag;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
-import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.nametag.config.model.NametagConfigModel;
