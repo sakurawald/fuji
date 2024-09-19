@@ -10,7 +10,6 @@ public class EnchantmentConfigModel {
 
         public static class OverridePower {
 
-            public boolean enable = false;
             public int power_provider_amount = 15;
         }
     }
