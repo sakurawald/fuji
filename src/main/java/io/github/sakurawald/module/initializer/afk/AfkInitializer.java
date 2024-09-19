@@ -21,7 +21,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class AfkInitializer extends ModuleInitializer {
 
-    public final BaseConfigurationHandler<AfkConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), AfkConfigModel.class);
+    public static final BaseConfigurationHandler<AfkConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(AfkConfigModel.class), AfkConfigModel.class);
 
     @Override
     public void onInitialize() {

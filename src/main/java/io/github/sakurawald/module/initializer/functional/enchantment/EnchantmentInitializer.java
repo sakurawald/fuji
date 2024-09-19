@@ -16,7 +16,7 @@ import net.minecraft.text.Text;
 
 public class EnchantmentInitializer extends ModuleInitializer {
 
-    public final BaseConfigurationHandler<EnchantmentConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), EnchantmentConfigModel.class);
+    public static final BaseConfigurationHandler<EnchantmentConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(EnchantmentConfigModel.class), EnchantmentConfigModel.class);
 
     @CommandNode("enchantment")
     private int $enchantment(@CommandSource ServerPlayerEntity player) {

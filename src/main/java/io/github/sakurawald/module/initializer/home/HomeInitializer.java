@@ -25,7 +25,7 @@ import java.util.Optional;
 public class HomeInitializer extends ModuleInitializer {
 
     @Getter
-    private final BaseConfigurationHandler<HomeModel> storage = new ObjectConfigurationHandler<>("home.json", HomeModel.class)
+    private static final BaseConfigurationHandler<HomeModel> storage = new ObjectConfigurationHandler<>("home.json", HomeModel.class)
         .addTransformer(new RenameKeyTransformer("$","homes","name2home"));
 
     public void onInitialize() {

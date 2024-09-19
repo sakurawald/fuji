@@ -19,7 +19,7 @@ import net.minecraft.server.command.ServerCommandSource;
 public class SeenInitializer extends ModuleInitializer {
 
     @Getter
-    private final BaseConfigurationHandler<SeenModel> data = new ObjectConfigurationHandler<>("seen.json", SeenModel.class);
+    private static final BaseConfigurationHandler<SeenModel> data = new ObjectConfigurationHandler<>("seen.json", SeenModel.class);
 
     @CommandNode("seen")
     @CommandRequirement(level = 4)

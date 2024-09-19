@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CommandCooldownInitializer extends ModuleInitializer {
-    public final BaseConfigurationHandler<CommandCooldownConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(this), CommandCooldownConfigModel.class);
+    public static final BaseConfigurationHandler<CommandCooldownConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(CommandCooldownConfigModel.class), CommandCooldownConfigModel.class);
 
     private final HashMap<ServerPlayerEntity, HashMap<String, Long>> map = new HashMap<>();
 
