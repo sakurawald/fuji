@@ -1,8 +1,8 @@
 {
-    "accept": "<green>Accept",
-    "add": "<#FFA1F5>Add",
-    "afk.kick": "<red>You have been kicked for being afk.",
-    "afk.on": "<gold>Afk mode: on",
+    "accept": "<green>Прийняти",
+    "add": "<#FFA1F5>Додати",
+    "afk.kick": "<red>Вас кікнули через перебування в AFK.",
+    "afk.on": "<gold>режим AFK: увімкнено",
     "afk.on.failed": "<red>You can't enter afk state now!",
     "anti_build.disallow": "<red>This action is disallowed by anti build.",
     "back": "<#FFA1F5>Back",
