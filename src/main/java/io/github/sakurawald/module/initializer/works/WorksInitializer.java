@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.works;
 
-import io.github.sakurawald.core.auxiliary.ReflectionUtil;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -24,7 +24,7 @@ import java.nio.file.Path;
 public class WorksInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<WorksDataModel> worksHandler = new ObjectConfigurationHandler<>("works.json", WorksDataModel.class)
-        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Path.of("works.json"),WorksInitializer.class));
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("works.json"), WorksInitializer.class));
 
     public static final BaseConfigurationHandler<WorksConfigModel> config = new ObjectConfigurationHandler<>("config.json", WorksConfigModel.class);
 
