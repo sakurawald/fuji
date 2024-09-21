@@ -45,7 +45,7 @@ public abstract class ConfigurationTransformer {
         fullArgs[0] = this.path;
         System.arraycopy(args, 0, fullArgs, 1, args.length);
 
-        LogUtil.warn("transform configuration file `{}`: " + message, fullArgs);
+        LogUtil.warn("apply the transformer associated with the file `{}`: " + message, fullArgs);
     }
 
     @SneakyThrows

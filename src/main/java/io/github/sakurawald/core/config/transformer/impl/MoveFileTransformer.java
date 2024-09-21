@@ -1,6 +1,5 @@
 package io.github.sakurawald.core.config.transformer.impl;
 
-import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.config.transformer.abst.ConfigurationTransformer;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -11,19 +10,19 @@ import java.nio.file.Path;
 @AllArgsConstructor
 public class MoveFileTransformer extends ConfigurationTransformer {
 
-    Path source;
-    Path destination;
+    Path sourceFile;
+    Path destinationDirectory;
 
     @SneakyThrows
     @Override
     public void apply() {
-        destination = destination.resolve(this.getPath().toFile().getName());
+        destinationDirectory = destinationDirectory.resolve(this.getPath().toFile().getName());
 
-        if (Files.notExists(this.source) || Files.exists(destination)) return;
+        if (Files.notExists(this.sourceFile) || Files.exists(destinationDirectory)) return;
 
-        Files.createDirectories(this.destination.getParent());
-        logConsole("move to {}", destination);
-        Files.move(source, destination);
+        Files.createDirectories(this.destinationDirectory.getParent());
+        logConsole("move the file to {}", destinationDirectory);
+        Files.move(sourceFile, destinationDirectory);
     }
 
 }
