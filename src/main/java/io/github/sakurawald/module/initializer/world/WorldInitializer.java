@@ -121,7 +121,7 @@ public class WorldInitializer extends ModuleInitializer {
 
         Optional<DimensionEntry> first = storage.getModel().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
         if (first.isEmpty()) {
-            LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found");
+            LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found", identifier);
             return CommandHelper.Return.FAIL;
         }
         storage.getModel().dimension_list.remove(first.get());
