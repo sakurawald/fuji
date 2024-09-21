@@ -4,9 +4,11 @@ import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.job.impl.MentionPlayersJob;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.tpa.config.model.TpaConfigModel;
 import io.github.sakurawald.module.initializer.tpa.structure.TpaRequest;
 import lombok.Getter;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -16,38 +18,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@SuppressWarnings("LombokGetterMayBeUsed")
 public class TpaInitializer extends ModuleInitializer {
 
+    public static final BaseConfigurationHandler<TpaConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, TpaConfigModel.class);
+
     @Getter
-    private final List<TpaRequest> requests = new ArrayList<>();
+    private static final List<TpaRequest> requests = new ArrayList<>();
 
     @CommandNode("tpa")
-    private int $tpa(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
+    private static int $tpa(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
         return doRequest(player, target, false);
     }
 
     @CommandNode("tpahere")
-    private int $tpahere(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
+    private static int $tpahere(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
         return doRequest(player, target, true);
     }
 
     @CommandNode("tpaaccept")
-    private int $tpaaccept(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
+    private static int $tpaaccept(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
         return doResponse(player, target, ResponseStatus.ACCEPT);
     }
 
     @CommandNode("tpadeny")
-    private int $tpadeny(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
+    private static int $tpadeny(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
         return doResponse(player, target, ResponseStatus.DENY);
     }
 
     @CommandNode("tpacancel")
-    private int $tpacancel(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
+    private static int $tpacancel(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
         return doResponse(player, target, ResponseStatus.CANCEL);
     }
 
-    private int doResponse(ServerPlayerEntity source, ServerPlayerEntity target, ResponseStatus status) {
+    private static int doResponse(ServerPlayerEntity source, ServerPlayerEntity target, ResponseStatus status) {
         /* resolve relative request */
         Optional<TpaRequest> requestOptional = requests.stream()
                 .filter(request ->
@@ -67,7 +70,7 @@ public class TpaInitializer extends ModuleInitializer {
 
             ServerPlayerEntity who = request.getTeleportWho();
             ServerPlayerEntity to = request.getTeleportTo();
-            MentionPlayersJob.requestJob(Configs.configHandler.model().modules.tpa.mention_player, request.isTpahere() ? to : who);
+            MentionPlayersJob.requestJob(config.getModel().mention_player, request.isTpahere() ? to : who);
             who.teleport((ServerWorld) to.getWorld(), to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
         } else if (status == ResponseStatus.DENY) {
             request.getSender().sendActionBar(request.asSenderComponent$Denied());
@@ -82,7 +85,7 @@ public class TpaInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    private int doRequest(ServerPlayerEntity source, ServerPlayerEntity target, boolean tpahere) {
+    private static int doRequest(ServerPlayerEntity source, ServerPlayerEntity target, boolean tpahere) {
         /* add request */
         TpaRequest request = new TpaRequest(source, target, tpahere);
 
@@ -103,7 +106,7 @@ public class TpaInitializer extends ModuleInitializer {
 
         /* feedback */
         request.getReceiver().sendMessage(request.asReceiverComponent$Sent());
-        MentionPlayersJob.requestJob(Configs.configHandler.model().modules.tpa.mention_player, request.getReceiver());
+        MentionPlayersJob.requestJob(config.getModel().mention_player, request.getReceiver());
         request.getSender().sendMessage(request.asSenderComponent$Sent());
         return CommandHelper.Return.SUCCESS;
     }

@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.initializer.top_chunks.structure;
 
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.structure.TypeFormatter;
+import io.github.sakurawald.module.initializer.top_chunks.TopChunksInitializer;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -66,7 +66,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
     public void sumUpScore() {
         this.score = 0;
         for (String type : this.type2amount.keySet()) {
-            HashMap<String, Integer> type2score = Configs.configHandler.model().modules.top_chunks.type2score;
+            HashMap<String, Integer> type2score = TopChunksInitializer.config.getModel().type2score;
             this.score += type2score.getOrDefault(type, type2score.get("default")) * type2amount.get(type);
         }
     }
@@ -84,7 +84,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
     public @NotNull Component asComponent(@NotNull ServerCommandSource source) {
 
         String chunkLocation;
-        if (Configs.configHandler.model().modules.top_chunks.hide_location) {
+        if (TopChunksInitializer.config.getModel().hide_location) {
             chunkLocation = LocaleHelper.getValue(source, "top_chunks.prop.hidden");
             if (source.hasPermissionLevel(4)) {
                 chunkLocation = LocaleHelper.getValue(source, "top_chunks.prop.hidden.bypass", this.getChunkPos().toString());

@@ -2,7 +2,6 @@ package io.github.sakurawald.module.mixin.pvp;
 
 import com.mojang.authlib.GameProfile;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.pvp.PvpInitializer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -10,15 +9,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class PvpToggleMixin extends PlayerEntity {
-    @Unique
-    private static final PvpInitializer module = Managers.getModuleManager().getInitializer(PvpInitializer.class);
 
     public PvpToggleMixin(@NotNull World world, @NotNull BlockPos pos, float yaw, @NotNull GameProfile gameProfile) {
         super(world, pos, yaw, gameProfile);
@@ -31,13 +27,13 @@ public abstract class PvpToggleMixin extends PlayerEntity {
         ServerPlayerEntity player = sourcePlayer.getCommandSource().getPlayer();
         if (player == null) return;
 
-        if (!module.contains(sourcePlayer.getGameProfile().getName())) {
+        if (!PvpInitializer.contains(sourcePlayer.getGameProfile().getName())) {
             LocaleHelper.sendMessageByKey(player, "pvp.check.off.me");
             cir.setReturnValue(false);
             return;
         }
 
-        if (!module.contains(this.getGameProfile().getName())) {
+        if (!PvpInitializer.contains(this.getGameProfile().getName())) {
             LocaleHelper.sendMessageByKey(player, "pvp.check.off.others", this.getGameProfile().getName());
             cir.setReturnValue(false);
         }

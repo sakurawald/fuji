@@ -1,8 +1,9 @@
 package io.github.sakurawald.module.initializer.deathlog;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -34,23 +35,23 @@ import java.util.List;
 @CommandNode("deathlog")
 @CommandRequirement(level = 4)
 public class DeathLogInitializer extends ModuleInitializer {
-    private final Path STORAGE_PATH = Fuji.CONFIG_PATH.resolve("deathlog");
+    private static final Path STORAGE_PATH = ReflectionUtil.getModuleConfigPath(DeathLogInitializer.class).resolve("death-data");
 
-    private final String DEATHS = "Deaths";
-    private final String TIME = "time";
-    private final String REASON = "reason";
-    private final String DIMENSION = "dimension";
-    private final String X = "x";
-    private final String Y = "y";
-    private final String Z = "z";
-    private final String REMARK = "remark";
-    private final String ARMOR = "armor";
-    private final String OFFHAND = "offhand";
-    private final String ITEM = "item";
-    private final String SCORE = "score";
-    private final String XP_LEVEL = "xp_level";
-    private final String XP_PROGRESS = "xp_progress";
-    private final String INVENTORY = "inventory";
+    private static final String DEATHS = "Deaths";
+    private static final String TIME = "time";
+    private static final String REASON = "reason";
+    private static final String DIMENSION = "dimension";
+    private static final String X = "x";
+    private static final String Y = "y";
+    private static final String Z = "z";
+    private static final String REMARK = "remark";
+    private static final String ARMOR = "armor";
+    private static final String OFFHAND = "offhand";
+    private static final String ITEM = "item";
+    private static final String SCORE = "score";
+    private static final String XP_LEVEL = "xp_level";
+    private static final String XP_PROGRESS = "xp_progress";
+    private static final String INVENTORY = "inventory";
 
     @SneakyThrows
     @Override
@@ -60,26 +61,26 @@ public class DeathLogInitializer extends ModuleInitializer {
 
     @SneakyThrows
     @CommandNode("restore")
-    private int $restore(@CommandSource CommandContext<ServerCommandSource> ctx, String from, int index, ServerPlayerEntity to) {
+    private static int $restore(@CommandSource CommandContext<ServerCommandSource> ctx, String from, int index, ServerPlayerEntity to) {
         /* read from file */
         ServerCommandSource source = ctx.getSource();
 
         Path path = STORAGE_PATH.resolve(getFileName(from));
-        NbtCompound root = NbtHelper.read(path);
+        NbtCompound root = NbtHelper.readOrDefault(path);
         if (root == null || root.isEmpty()) {
-            source.sendMessage(Component.text("No deathlog found."));
+            LocaleHelper.sendMessageByKey(ctx.getSource(), "deathlog.empty");
             return CommandHelper.Return.FAIL;
         }
 
         NbtList deathsNode = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
         if (index >= deathsNode.size()) {
-            source.sendMessage(Component.text("Index out of bound."));
+            LocaleHelper.sendMessageByKey(source,"deathlog.index.not_found",index);
             return CommandHelper.Return.FAIL;
         }
 
         // check the player's inventory for safety
         if (!to.getInventory().isEmpty()) {
-            source.sendMessage(Component.text("To player's inventory is not empty!"));
+            LocaleHelper.sendMessageByKey(source, "deathlog.restore.target_player.inventory_not_empty", to.getGameProfile().getName());
             return CommandHelper.Return.FAIL;
         }
 
@@ -101,20 +102,20 @@ public class DeathLogInitializer extends ModuleInitializer {
         to.experienceLevel = inventoryNode.getInt(XP_LEVEL);
         to.experienceProgress = inventoryNode.getFloat(XP_PROGRESS);
 
-        source.sendMessage(Component.text("Restore %s's death log %d for %s".formatted(from, index, to.getGameProfile().getName())));
+        LocaleHelper.sendMessageByKey(source, "deathlog.restore.success", from, index, to.getGameProfile().getName());
         return CommandHelper.Return.SUCCESS;
     }
 
-    private @NotNull String getFileName(String playerName) {
+    private static @NotNull String getFileName(String playerName) {
         return Uuids.getOfflinePlayerUuid(playerName) + ".dat";
     }
 
     @CommandNode("view")
-    private int $view(@CommandSource ServerPlayerEntity player, OfflinePlayerName from) {
+    private static int $view(@CommandSource ServerPlayerEntity player, OfflinePlayerName from) {
         String $from = from.getValue();
-        NbtCompound root = NbtHelper.read(STORAGE_PATH.resolve(getFileName($from)));
-        if (root == null || root.isEmpty()) {
-            player.sendMessage(Component.text("No deathlog found."));
+        NbtCompound root = NbtHelper.readOrDefault(STORAGE_PATH.resolve(getFileName($from)));
+        if (root.isEmpty()) {
+            LocaleHelper.sendMessageByKey(player, "deathlog.empty");
             return CommandHelper.Return.FAIL;
         }
 
@@ -129,45 +130,45 @@ public class DeathLogInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    private @NotNull Component asViewComponent(@NotNull NbtCompound node, String from, int index, String to) {
+    private static @NotNull Component asViewComponent(@NotNull NbtCompound node, String from, int index, String to) {
         NbtCompound remarkTag = node.getCompound(REMARK);
         Component hover = Component.empty().color(NamedTextColor.DARK_GREEN)
-                .append(Component.text("Time: " + remarkTag.getString(TIME)))
-                .appendNewline()
-                .append(Component.text("Reason: " + remarkTag.getString(REASON)))
-                .appendNewline()
-                .append(Component.text("Dimension: " + remarkTag.getString(DIMENSION)))
-                .appendNewline()
-                .append(Component.text("Coordinate: %f %f %f".formatted(
-                        remarkTag.getDouble(X),
-                        remarkTag.getDouble(Y),
-                        remarkTag.getDouble(Z)
-                )));
+            .append(Component.text("Time: " + remarkTag.getString(TIME)))
+            .appendNewline()
+            .append(Component.text("Reason: " + remarkTag.getString(REASON)))
+            .appendNewline()
+            .append(Component.text("Dimension: " + remarkTag.getString(DIMENSION)))
+            .appendNewline()
+            .append(Component.text("Coordinate: %f %f %f".formatted(
+                remarkTag.getDouble(X),
+                remarkTag.getDouble(Y),
+                remarkTag.getDouble(Z)
+            )));
         return Component.empty()
-                .color(NamedTextColor.RED)
-                .append(Component.text(index))
-                .appendSpace()
-                .clickEvent(ClickEvent.runCommand("/deathlog restore %s %d %s".formatted(from, index, to)))
-                .hoverEvent(HoverEvent.showText(hover));
+            .color(NamedTextColor.RED)
+            .append(Component.text(index))
+            .appendSpace()
+            .clickEvent(ClickEvent.runCommand("/deathlog restore %s %d %s".formatted(from, index, to)))
+            .hoverEvent(HoverEvent.showText(hover));
     }
 
-    public void store(@NotNull ServerPlayerEntity player) {
+    public static void store(@NotNull ServerPlayerEntity player) {
         Path path = STORAGE_PATH.resolve(getFileName(player.getGameProfile().getName()));
 
-        NbtCompound root = NbtHelper.read(path);
+        NbtCompound root = NbtHelper.readOrDefault(path);
         NbtList deathsNode = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
         deathsNode.add(makeDeathNode(player));
         NbtHelper.write(root, path);
     }
 
-    private @NotNull NbtCompound makeDeathNode(@NotNull ServerPlayerEntity player) {
+    private static @NotNull NbtCompound makeDeathNode(@NotNull ServerPlayerEntity player) {
         NbtCompound node = new NbtCompound();
         writeInventoryNode(node, player);
         writeRemarkNode(node, player);
         return node;
     }
 
-    private void writeRemarkNode(@NotNull NbtCompound node, @NotNull ServerPlayerEntity player) {
+    private static void writeRemarkNode(@NotNull NbtCompound node, @NotNull ServerPlayerEntity player) {
         String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String reason = player.getDamageTracker().getDeathMessage().getString();
         String dimension = player.getWorld().getRegistryKey().getValue().toString();
@@ -183,7 +184,7 @@ public class DeathLogInitializer extends ModuleInitializer {
         node.put(REMARK, remarkTag);
     }
 
-    private void writeInventoryNode(@NotNull NbtCompound node, @NotNull ServerPlayerEntity player) {
+    private static void writeInventoryNode(@NotNull NbtCompound node, @NotNull ServerPlayerEntity player) {
         NbtCompound inventoryTag = new NbtCompound();
         PlayerInventory inventory = player.getInventory();
         inventoryTag.put(ARMOR, NbtHelper.writeSlotsNode(new NbtList(), inventory.armor));

@@ -3,11 +3,10 @@ package io.github.sakurawald.module.mixin.afk;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.authlib.GameProfile;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.core.config.model.ConfigModel;
 import io.github.sakurawald.core.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.afk.AfkInitializer;
 import io.github.sakurawald.module.initializer.afk.accessor.AfkStateAccessor;
+import io.github.sakurawald.module.initializer.afk.config.model.AfkConfigModel;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
@@ -55,7 +54,7 @@ public abstract class ServerPlayerMixin extends PlayerEntity implements AfkState
     public Text $getPlayerListName(Text original) {
         AfkStateAccessor accessor = (AfkStateAccessor) player;
         if (accessor.fuji$isAfk()) {
-            return LocaleHelper.getTextByValue(player, Configs.configHandler.model().modules.afk.format);
+            return LocaleHelper.getTextByValue(player, AfkInitializer.config.getModel().format);
         }
 
         return original;
@@ -74,7 +73,7 @@ public abstract class ServerPlayerMixin extends PlayerEntity implements AfkState
         this.server.getPlayerManager().sendToAll(new PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME, (ServerPlayerEntity) (Object) this));
 
         // trigger event
-        ConfigModel.Modules.Afk.AfkEvent afkEvent = Configs.configHandler.model().modules.afk.afk_event;
+        AfkConfigModel.AfkEvent afkEvent = AfkInitializer.config.getModel().afk_event;
         List<String> commandList = this.afk ? afkEvent.on_enter_afk : afkEvent.on_leave_afk;
         CommandExecutor.executeSpecializedCommand(player, commandList);
     }

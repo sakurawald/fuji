@@ -11,7 +11,7 @@ public class SuicideInitializer extends ModuleInitializer {
 
 
     @CommandNode("suicide")
-    private int $suicide(@CommandSource ServerPlayerEntity player) {
+    private static int $suicide(@CommandSource ServerPlayerEntity player) {
         player.kill();
         return CommandHelper.Return.SUCCESS;
     }

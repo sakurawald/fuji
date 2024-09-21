@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.mixin.command_event;
 
 
-import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.service.command_executor.CommandExecutor;
+import io.github.sakurawald.module.initializer.command_event.CommandEventInitializer;
 import net.minecraft.network.DisconnectionInfo;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -20,6 +20,6 @@ public class ServerPlayNetworkHandlerMixin {
 
     @Inject(at = @At("HEAD"), method = "onDisconnected")
     private void onPlayerLeft(DisconnectionInfo disconnectionInfo, CallbackInfo ci) {
-        CommandExecutor.executeSpecializedCommand(player, Configs.configHandler.model().modules.command_event.event.on_player_left.command_list);
+        CommandExecutor.executeSpecializedCommand(player, CommandEventInitializer.config.getModel().event.on_player_left.command_list);
     }
 }

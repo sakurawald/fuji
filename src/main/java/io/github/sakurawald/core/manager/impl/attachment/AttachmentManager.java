@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +21,6 @@ public class AttachmentManager extends BaseManager {
     public void onInitialize() {
 
     }
-
 
     @SuppressWarnings("DataFlowIssue")
     public List<String> listSubjectName() {
@@ -49,7 +49,7 @@ public class AttachmentManager extends BaseManager {
 
     public void setAttachment(String subject, String uuid, String data) throws IOException {
         File file = this.getAttachmentFile(subject, uuid);
-        FileUtils.writeStringToFile(file, data, Charset.defaultCharset());
+        Files.writeString(file.toPath(), data);
     }
 
     public String getAttachment(String subject, String uuid) throws IOException {

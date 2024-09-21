@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 public class BedInitializer extends ModuleInitializer {
 
     @CommandNode("bed")
-    private int $bed(@CommandSource ServerPlayerEntity player) {
+    private static int $bed(@CommandSource ServerPlayerEntity player) {
         BlockPos respawnPosition = player.getSpawnPointPosition();
         RegistryKey<World> respawnDimension = player.getSpawnPointDimension();
 

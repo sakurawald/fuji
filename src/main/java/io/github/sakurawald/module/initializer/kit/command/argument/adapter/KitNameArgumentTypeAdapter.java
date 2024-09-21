@@ -5,7 +5,6 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.kit.KitInitializer;
 import io.github.sakurawald.module.initializer.kit.command.argument.wrapper.KitName;
 import net.minecraft.server.command.ServerCommandSource;
@@ -14,8 +13,6 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
 public class KitNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
-
-    private static final KitInitializer initializer = Managers.getModuleManager().getInitializer(KitInitializer.class);
 
     @Override
     public boolean match(Type type) {
@@ -35,7 +32,7 @@ public class KitNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(Parameter parameter) {
         return super.makeRequiredArgumentBuilder(parameter).suggests((context, builder) -> {
-            initializer.getKitNameList().forEach(builder::suggest);
+            KitInitializer.getKitNameList().forEach(builder::suggest);
             return builder.buildFuture();
         });
     }

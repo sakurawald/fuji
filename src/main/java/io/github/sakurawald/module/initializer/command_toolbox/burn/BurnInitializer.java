@@ -14,7 +14,7 @@ public class BurnInitializer extends ModuleInitializer {
 
     @CommandNode("burn")
     @CommandRequirement(level = 4)
-    int burn(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player, int ticks) {
+    private static int burn(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player, int ticks) {
         player.setFireTicks(ticks);
 
         LocaleHelper.sendMessageByKey(ctx.getSource(), "operation.success");

@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.mixin.command_warmup;
 
-import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.structure.CommandWarmupTicket;
+import io.github.sakurawald.module.initializer.command_warmup.CommandWarmupInitializer;
 import net.minecraft.network.packet.c2s.play.CommandExecutionC2SPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +23,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
 
     @Unique
     public int getMs(@NotNull String commandLine) {
-        for (Map.Entry<String, Integer> entry : Configs.configHandler.model().modules.command_warmup.regex2ms.entrySet()) {
+        for (Map.Entry<String, Integer> entry : CommandWarmupInitializer.config.getModel().regex2ms.entrySet()) {
             if (!commandLine.matches(entry.getKey())) continue;
             return entry.getValue();
         }

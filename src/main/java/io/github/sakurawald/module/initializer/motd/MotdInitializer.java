@@ -1,11 +1,13 @@
 package io.github.sakurawald.module.initializer.motd;
 
 import com.google.common.base.Preconditions;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.motd.config.model.MotdConfigModel;
 import lombok.Setter;
 import net.minecraft.server.ServerMetadata;
 import net.minecraft.text.Text;
@@ -23,27 +25,26 @@ import java.util.Random;
 
 
 public class MotdInitializer extends ModuleInitializer {
-    private final File ICON_FOLDER = Fuji.CONFIG_PATH.resolve("motd").resolve("icon").toFile();
+
+    public static final BaseConfigurationHandler<MotdConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, MotdConfigModel.class);
+
+    private static final File ICON_FOLDER = ReflectionUtil.getModuleConfigPath(MotdInitializer.class).resolve("motd").resolve("icon").toFile();
 
     @Setter
-    private @NotNull List<String> motd = new ArrayList<>();
+    private static @NotNull List<String> motd = new ArrayList<>();
 
     @Override
     public void onInitialize() {
-        setMotd(Configs.configHandler.model().modules.motd.list);
+        setMotd(config.getModel().list);
     }
 
     @Override
     public void onReload() {
-        setMotd(Configs.configHandler.model().modules.motd.list);
+        setMotd(config.getModel().list);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public @NotNull Optional<ServerMetadata.Favicon> getRandomIcon() {
-        if (!Configs.configHandler.model().modules.motd.icon.enable) {
-            return Optional.empty();
-        }
-
+    public static @NotNull Optional<ServerMetadata.Favicon> getRandomIcon() {
         ICON_FOLDER.mkdirs();
         File[] icons = ICON_FOLDER.listFiles();
         if (icons == null || icons.length == 0) {
@@ -66,7 +67,7 @@ public class MotdInitializer extends ModuleInitializer {
         return Optional.of(new ServerMetadata.Favicon(byteArrayOutputStream.toByteArray()));
     }
 
-    public @NotNull Text getRandomDescription() {
+    public static @NotNull Text getRandomDescription() {
         return LocaleHelper.getTextByValue(null,motd.get(new Random().nextInt(motd.size())));
     }
 

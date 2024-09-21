@@ -8,16 +8,15 @@ import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
-import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_meta.json.command.argument.wrapper.JsonValueType;
 import lombok.SneakyThrows;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
-import org.apache.commons.io.FileUtils;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.BiFunction;
 
@@ -26,15 +25,15 @@ import java.util.function.BiFunction;
 public class JsonInitializer extends ModuleInitializer {
 
     @SneakyThrows
-    void operateJson(String filePath, BiFunction<DocumentContext, Path, Boolean> function) {
+    private static void operateJson(String filePath, BiFunction<DocumentContext, Path, Boolean> function) {
         Path path = Path.of(filePath);
-        DocumentContext documentContext = ConfigHandler.getJsonPathParser().parse(path.toFile());
+        DocumentContext documentContext = BaseConfigurationHandler.getJsonPathParser().parse(path.toFile());
         Boolean destructiveFlag = function.apply(documentContext, path);
 
         if (destructiveFlag) {
-            String json = ConfigHandler.getGson().toJson(documentContext.json());
+            String json = BaseConfigurationHandler.getGson().toJson(documentContext.json());
             try {
-                FileUtils.write(path.toFile(), json, Charset.defaultCharset());
+                Files.writeString(path, json);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -43,7 +42,7 @@ public class JsonInitializer extends ModuleInitializer {
     }
 
     @CommandNode("read")
-    int read(@CommandSource CommandContext<ServerCommandSource> ctx, String filePath, String jsonPath) {
+    private static int read(@CommandSource CommandContext<ServerCommandSource> ctx, String filePath, String jsonPath) {
         operateJson(filePath, (documentContext, path) -> {
             Object read = documentContext.read(jsonPath);
             ctx.getSource().sendMessage(Text.literal(read.toString()));
@@ -53,7 +52,7 @@ public class JsonInitializer extends ModuleInitializer {
     }
 
     @CommandNode("write")
-    int write(@CommandSource CommandContext<ServerCommandSource> ctx, String filePath, String jsonPath, JsonValueType valueType, GreedyString value) {
+    private static int write(@CommandSource CommandContext<ServerCommandSource> ctx, String filePath, String jsonPath, JsonValueType valueType, GreedyString value) {
         operateJson(filePath, (documentContext, path) -> {
             Object obj = valueType.parse(value.getValue());
             documentContext.set(jsonPath, obj);
@@ -65,7 +64,7 @@ public class JsonInitializer extends ModuleInitializer {
     }
 
     @CommandNode("delete")
-    int delete(@CommandSource CommandContext<ServerCommandSource> ctx, String filePath, String jsonPath) {
+    private static int delete(@CommandSource CommandContext<ServerCommandSource> ctx, String filePath, String jsonPath) {
         operateJson(filePath, (documentContext, path) -> {
             documentContext.delete(jsonPath);
             return true;
@@ -76,7 +75,7 @@ public class JsonInitializer extends ModuleInitializer {
     }
 
     @CommandNode("put")
-    int put(@CommandSource CommandContext<ServerCommandSource> ctx, String filePath, String jsonPath, String jsonKey, JsonValueType valueType, GreedyString value) {
+    private static int put(@CommandSource CommandContext<ServerCommandSource> ctx, String filePath, String jsonPath, String jsonKey, JsonValueType valueType, GreedyString value) {
         operateJson(filePath, (documentContext, path) -> {
             Object obj = valueType.parse(value.getValue());
             documentContext.put(jsonPath, jsonKey, obj);
@@ -88,7 +87,7 @@ public class JsonInitializer extends ModuleInitializer {
     }
 
     @CommandNode("renameKey")
-    int renameKey(@CommandSource CommandContext<ServerCommandSource> ctx, String filePath, String jsonPath, String oldJsonKey, String newJsonKey) {
+    private static int renameKey(@CommandSource CommandContext<ServerCommandSource> ctx, String filePath, String jsonPath, String oldJsonKey, String newJsonKey) {
         operateJson(filePath, (documentContext, path) -> {
             documentContext.renameKey(jsonPath, oldJsonKey, newJsonKey);
             return true;

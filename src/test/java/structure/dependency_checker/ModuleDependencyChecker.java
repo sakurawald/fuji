@@ -2,7 +2,7 @@ package structure.dependency_checker;
 
 import com.google.gson.JsonElement;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.model.ConfigModel;
 import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import org.jetbrains.annotations.Nullable;
@@ -11,16 +11,16 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModuleDependencyChecker extends ClassDependencyChecker {
+public class ModuleDependencyChecker extends FileDependencyChecker {
 
-    public static final JsonElement rcConfig = ConfigHandler.getGson().toJsonTree(new ConfigModel());
+    public static final JsonElement rcConfig = BaseConfigurationHandler.getGson().toJsonTree(new ConfigModel());
 
-    private Dependency groupSymbol(Dependency classRef) {
-        String definition = String.join(".", ModuleManager.computeModulePath(rcConfig, classRef.getDefinition()));
+    private @Nullable Dependency groupSymbol(Dependency dep) {
+        String definition = String.join(".", ModuleManager.computeModulePath(dep.getDefinition()));
         List<String> referenceList = new ArrayList<>();
 
-        for (String ref : classRef.getReference()) {
-            String reference = String.join(".", ModuleManager.computeModulePath(rcConfig, ref));
+        for (String ref : dep.getReference()) {
+            String reference = String.join(".", ModuleManager.computeModulePath(ref));
             // skip -> common reference
             if (reference.equals(ModuleManager.CORE_MODULE_ROOT)) continue;
             // skip -> self reference

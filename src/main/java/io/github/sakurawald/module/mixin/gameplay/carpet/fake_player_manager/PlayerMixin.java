@@ -2,7 +2,6 @@ package io.github.sakurawald.module.mixin.gameplay.carpet.fake_player_manager;
 
 import carpet.patches.EntityPlayerMPFake;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager.FakePlayerManagerInitializer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -14,7 +13,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -25,9 +23,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 public abstract class PlayerMixin extends LivingEntity {
 
-    @Unique
-    private static final FakePlayerManagerInitializer FAKE_PLAYER_MANAGER_MODULE = Managers.getModuleManager().getInitializer(FakePlayerManagerInitializer.class);
-
     protected PlayerMixin(@NotNull EntityType<? extends LivingEntity> entityType, World level) {
         super(entityType, level);
     }
@@ -37,7 +32,7 @@ public abstract class PlayerMixin extends LivingEntity {
     private void canManipulateTheFakePlayer(Entity target, Hand hand, @NotNull CallbackInfoReturnable<ActionResult> cir) {
         if (target instanceof EntityPlayerMPFake fakePlayer) {
             ServerPlayerEntity source = (ServerPlayerEntity) (Object) this;
-            if (!FAKE_PLAYER_MANAGER_MODULE.isMyFakePlayer(source, fakePlayer)) {
+            if (!FakePlayerManagerInitializer.isMyFakePlayer(source, fakePlayer)) {
                 // cancel this event
                 cir.setReturnValue(ActionResult.FAIL);
 

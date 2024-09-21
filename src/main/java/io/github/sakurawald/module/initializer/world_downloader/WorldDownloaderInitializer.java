@@ -9,8 +9,10 @@ import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.world_downloader.config.model.WorldDownloaderConfigModel;
 import io.github.sakurawald.module.initializer.world_downloader.structure.FileDownloadHandler;
 import lombok.SneakyThrows;
 import net.minecraft.registry.RegistryKey;
@@ -32,48 +34,50 @@ import java.util.UUID;
 
 public class WorldDownloaderInitializer extends ModuleInitializer {
 
-    private EvictingQueue<String> contextQueue;
-    private HttpServer server;
+    public static final BaseConfigurationHandler<WorldDownloaderConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, WorldDownloaderConfigModel.class);
+
+    private static EvictingQueue<String> contextQueue;
+    private static HttpServer server;
 
 
     @Override
     public void onInitialize() {
-        contextQueue = EvictingQueue.create(Configs.configHandler.model().modules.world_downloader.context_cache_size);
+        contextQueue = EvictingQueue.create(config.getModel().context_cache_size);
     }
 
     @Override
     public void onReload() {
-        this.initServer();
+        initServer();
     }
 
-    public void initServer() {
+    public static void initServer() {
         if (server != null) {
             server.stop(0);
         }
 
         try {
-            server = HttpServer.create(new InetSocketAddress(Configs.configHandler.model().modules.world_downloader.port), 0);
+            server = HttpServer.create(new InetSocketAddress(config.getModel().port), 0);
             server.start();
         } catch (IOException e) {
             LogUtil.error("failed to start http server: {}", e.getMessage());
         }
     }
 
-    public void safelyRemoveContext(String path) {
+    public static void safelyRemoveContext(String path) {
         try {
-            this.server.removeContext(path);
+            server.removeContext(path);
         } catch (IllegalArgumentException e) {
             // do nothing
         }
     }
 
-    public void safelyRemoveContext(@NotNull HttpContext httpContext) {
+    public static void safelyRemoveContext(@NotNull HttpContext httpContext) {
         safelyRemoveContext(httpContext.getPath());
     }
 
     @SneakyThrows
     @CommandNode("download")
-    private int $download(@CommandSource ServerPlayerEntity player) {
+    private static int $download(@CommandSource ServerPlayerEntity player) {
         /* init server */
         if (server == null) {
             initServer();
@@ -86,9 +90,9 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         }
 
         /* create context */
-        String url = Configs.configHandler.model().modules.world_downloader.url_format;
+        String url = config.getModel().url_format;
 
-        int port = Configs.configHandler.model().modules.world_downloader.port;
+        int port = config.getModel().port;
         url = url.replace("%port%", String.valueOf(port));
 
         String path = "/download/" + UUID.randomUUID();
@@ -98,12 +102,12 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         File file = compressRegionFile(player);
         double BYTE_TO_MEGABYTE = 1.0 * 1024 * 1024;
         LocaleHelper.sendBroadcastByKey("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
-        server.createContext(path, new FileDownloadHandler(this, file, Configs.configHandler.model().modules.world_downloader.bytes_per_second_limit));
+        server.createContext(path, new FileDownloadHandler(file, config.getModel().bytes_per_second_limit));
         LocaleHelper.sendMessageByKey(player, "world_downloader.response", url);
         return CommandHelper.Return.SUCCESS;
     }
 
-    public @NotNull File compressRegionFile(@NotNull ServerPlayerEntity player) {
+    public static @NotNull File compressRegionFile(@NotNull ServerPlayerEntity player) {
         /* get region location */
         ChunkPos chunkPos = player.getChunkPos();
         int regionX = chunkPos.getRegionX();
@@ -128,7 +132,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         File output;
         try {
             output = Files.createTempFile(regionName + "#", ".zip").toFile();
-            IOUtil.compressFiles(input, output);
+            IOUtil.compressFiles(worldDirectory, input, output);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

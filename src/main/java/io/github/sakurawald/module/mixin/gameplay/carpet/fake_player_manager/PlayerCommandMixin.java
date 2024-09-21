@@ -4,9 +4,6 @@ import carpet.commands.PlayerCommand;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
-import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager.FakePlayerManagerInitializer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -23,11 +20,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class PlayerCommandMixin {
 
     @Unique
-    private static final FakePlayerManagerInitializer module = Managers.getModuleManager().getInitializer(FakePlayerManagerInitializer.class);
-
-    @Unique
     private static @NotNull String transformFakePlayerName(@NotNull String fakePlayerName) {
-        return Configs.configHandler.model().modules.gameplay.carpet.fake_player_manager.transform_name.replace("%name%", fakePlayerName);
+        return FakePlayerManagerInitializer.config.getModel().transform_name.replace("%name%", fakePlayerName);
     }
 
     @Redirect(method = "cantSpawn", at = @At(
@@ -51,16 +45,9 @@ public abstract class PlayerCommandMixin {
         ServerPlayerEntity player = context.getSource().getPlayer();
         if (player == null) return;
 
-        if (!module.canSpawnFakePlayer(player)) {
+        if (!FakePlayerManagerInitializer.canSpawnFakePlayer(player)) {
             LocaleHelper.sendMessageByKey(player, "fake_player_manager.spawn.limit_exceed");
             cir.setReturnValue(0);
-        }
-
-        /* fix: fake-player auth network lagged */
-        if (Configs.configHandler.model().modules.gameplay.carpet.fake_player_manager.use_local_random_skins_for_fake_player) {
-            String fakePlayerName = StringArgumentType.getString(context, "player");
-            fakePlayerName = transformFakePlayerName(fakePlayerName);
-            ServerHelper.getDefaultServer().getUserCache().add(module.createOfflineGameProfile(fakePlayerName));
         }
     }
 
@@ -69,14 +56,14 @@ public abstract class PlayerCommandMixin {
         ServerPlayerEntity player = context.getSource().getPlayer();
         String fakePlayerName = StringArgumentType.getString(context, "player");
         fakePlayerName = transformFakePlayerName(fakePlayerName);
-        module.addFakePlayer(player, fakePlayerName);
-        module.renewFakePlayers(player);
+        FakePlayerManagerInitializer.addFakePlayer(player, fakePlayerName);
+        FakePlayerManagerInitializer.renewFakePlayers(player);
     }
 
     @Inject(method = "cantManipulate", at = @At("HEAD"), remap = false, cancellable = true)
     private static void $cantManipulate(@NotNull CommandContext<ServerCommandSource> context, @NotNull CallbackInfoReturnable<Boolean> cir) {
         String fakePlayerName = StringArgumentType.getString(context, "player");
-        if (!module.canManipulateFakePlayer(context, fakePlayerName)) {
+        if (!FakePlayerManagerInitializer.canManipulateFakePlayer(context, fakePlayerName)) {
             LocaleHelper.sendMessageByKey(context.getSource(), "fake_player_manager.manipulate.forbidden");
             cir.setReturnValue(true);
         }

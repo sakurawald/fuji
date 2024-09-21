@@ -9,8 +9,10 @@ import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.command.exception.AbortOperationException;
-import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.command_meta.shell.config.ShellConfigModel;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
@@ -22,8 +24,10 @@ import java.util.concurrent.CompletableFuture;
 
 public class ShellInitializer extends ModuleInitializer {
 
-    private void checkSecurity(CommandContext<ServerCommandSource> ctx) {
-        var config = Configs.configHandler.model().modules.command_meta.shell;
+    public static final BaseConfigurationHandler<ShellConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ShellConfigModel.class);
+
+    private static void checkSecurity(CommandContext<ServerCommandSource> ctx) {
+        var config = ShellInitializer.config.getModel();
 
         if (!config.enable_warning.equals("CONFIRM")) {
             throw new AbortOperationException("Refuse to execute shell command: please read the official wiki.");
@@ -43,7 +47,7 @@ public class ShellInitializer extends ModuleInitializer {
     @SuppressWarnings("deprecation")
     @CommandNode("shell")
     @CommandRequirement(level = 4)
-    private int shell(@CommandSource CommandContext<ServerCommandSource> ctx, GreedyString rest) {
+    private static int shell(@CommandSource CommandContext<ServerCommandSource> ctx, GreedyString rest) {
         checkSecurity(ctx);
 
         String $rest = rest.getValue();

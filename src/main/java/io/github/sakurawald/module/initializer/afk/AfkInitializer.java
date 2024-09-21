@@ -5,8 +5,11 @@ import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.afk.accessor.AfkStateAccessor;
+import io.github.sakurawald.module.initializer.afk.config.model.AfkConfigModel;
 import io.github.sakurawald.module.initializer.afk.job.AfkMarkerJob;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.entity.Entity;
@@ -17,6 +20,8 @@ import net.minecraft.util.math.Vec3d;
 
 public class AfkInitializer extends ModuleInitializer {
 
+    public static final BaseConfigurationHandler<AfkConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, AfkConfigModel.class);
+
     @Override
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new AfkMarkerJob().schedule());
@@ -25,7 +30,7 @@ public class AfkInitializer extends ModuleInitializer {
 
     // note: issue command will update lastLastActionTime, so it's impossible to use /afk to disable afk
     @CommandNode("afk")
-    private int $afk(@CommandSource ServerPlayerEntity player) {
+    private static int $afk(@CommandSource ServerPlayerEntity player) {
         if (!player.isOnGround()
                 || player.isOnFire()
                 || player.inPowderSnow

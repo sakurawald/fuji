@@ -1,9 +1,9 @@
 package io.github.sakurawald.module.mixin.anti_build;
 
-import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
-import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
+import io.github.sakurawald.module.initializer.anti_build.AntiBuildInitializer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ActionResult;
@@ -23,7 +23,7 @@ public abstract class EntityMixin {
         Entity entity = (Entity) (Object) this;
         String id = RegistryHelper.ofString(entity);
 
-        if (Configs.configHandler.model().modules.anti_build.anti.interact_entity.id.contains(id)
+        if (AntiBuildInitializer.config.getModel().anti.interact_entity.id.contains(id)
             && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_entity", id))
         ) {
 

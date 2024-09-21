@@ -5,10 +5,11 @@ import com.google.common.collect.Multimap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.structure.Downloader;
+import io.github.sakurawald.module.initializer.head.HeadInitializer;
 import io.github.sakurawald.module.initializer.head.structure.Category;
 import io.github.sakurawald.module.initializer.head.structure.Head;
 import lombok.Getter;
@@ -24,7 +25,7 @@ import java.nio.file.Path;
 @UtilityClass
 public class HeadProvider {
 
-    private static final Path STORAGE_PATH = Fuji.CONFIG_PATH.resolve("head").toAbsolutePath();
+    private static final Path STORAGE_PATH = ReflectionUtil.getModuleConfigPath(HeadInitializer.class).resolve("head-data").toAbsolutePath();
 
     private static final String API = "https://minecraft-heads.com/scripts/api.php?cat=%s&tags=true";
 
@@ -68,7 +69,7 @@ public class HeadProvider {
             JsonArray headsJson = JsonParser.parseReader(new InputStreamReader(stream)).getAsJsonArray();
             for (JsonElement headJson : headsJson) {
                 try {
-                    Head head = ConfigHandler.getGson().fromJson(headJson, Head.class);
+                    Head head = BaseConfigurationHandler.getGson().fromJson(headJson, Head.class);
                     result.put(category, head);
                 } catch (Exception e) {
                     LogUtil.warn("invalid head: " + headJson);

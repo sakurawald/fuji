@@ -1,9 +1,11 @@
 package io.github.sakurawald.module.mixin.command_toolbox.sit;
 
-import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.command_toolbox.sit.SitInitializer;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.SideShapeType;
+import net.minecraft.block.SlabBlock;
+import net.minecraft.block.StairsBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -20,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -44,9 +45,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ServerPlayerInteractionManager.class)
 public class InteractModifierMixin {
 
-    @Unique
-    private static final SitInitializer module = Managers.getModuleManager().getInitializer(SitInitializer.class);
-
     @Final
     @Shadow
     protected ServerPlayerEntity player;
@@ -55,11 +53,11 @@ public class InteractModifierMixin {
     public void rightClickToSit(@NotNull ServerPlayerEntity player, @NotNull World world, ItemStack stack, Hand hand, @NotNull BlockHitResult hitResult, @NotNull CallbackInfoReturnable<ActionResult> callbackInfoReturnable) {
 
         /* conditioner */
-        var config = Configs.configHandler.model().modules.command_toolbox.sit;
+        var config = SitInitializer.config.getModel();
 
         if (!config.allow_right_click_sit) return;
         if (!config.allow_sneaking_to_sit && player.isSneaking()) return;
-        if (!module.canSit(player)) return;
+        if (!SitInitializer.canSit(player)) return;
         if (config.require_empty_hand_to_sit && !player.getInventory().getMainHandStack().isEmpty()) return;
 
         BlockPos hitBlockPos = hitResult.getBlockPos();
@@ -78,7 +76,7 @@ public class InteractModifierMixin {
 
         /* calc offset */
         Vec3d lookTarget = player.getPos().add(0.5, 0, 0.5);
-        Entity chair = module.makeChairEntity(world, hitBlockPos, lookTarget);
+        Entity chair = SitInitializer.makeChairEntity(world, hitBlockPos, lookTarget);
 
         Entity v = player.getVehicle();
         if (v != null) {

@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.afk.effect;
 
-import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.module.initializer.afk.AfkInitializer;
+import io.github.sakurawald.module.initializer.afk.effect.AfkEffectInitializer;
 import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,7 +13,7 @@ public abstract class LivingEntityMixin {
 
     @Inject(method = "canTarget(Lnet/minecraft/entity/LivingEntity;)Z", at = @At("HEAD"), cancellable = true)
     void targetableEffect(LivingEntity livingEntity, CallbackInfoReturnable<Boolean> cir) {
-        if (!Configs.configHandler.model().modules.afk.effect.targetable && AfkInitializer.isAfk(livingEntity)) {
+        if (!AfkEffectInitializer.config.getModel().targetable && AfkInitializer.isAfk(livingEntity)) {
             cir.setReturnValue(false);
         }
     }

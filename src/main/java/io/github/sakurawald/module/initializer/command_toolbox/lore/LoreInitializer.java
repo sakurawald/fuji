@@ -17,7 +17,7 @@ import java.util.List;
 public class LoreInitializer extends ModuleInitializer {
 
     @CommandNode("lore unset")
-    private int $unset(@CommandSource CommandContext<ServerCommandSource> ctx) {
+    private static int $unset(@CommandSource CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.itemInHandCommand(ctx, (player, item) -> {
             LoreComponent loreComponent = new LoreComponent(List.of());
             item.set(DataComponentTypes.LORE, loreComponent);
@@ -26,7 +26,7 @@ public class LoreInitializer extends ModuleInitializer {
     }
 
     @CommandNode("lore set")
-    private int $set(@CommandSource CommandContext<ServerCommandSource> ctx, GreedyString lore) {
+    private static int $set(@CommandSource CommandContext<ServerCommandSource> ctx, GreedyString lore) {
         return CommandHelper.Pattern.itemInHandCommand(ctx, (player, item) -> {
             List<Text> texts = LocaleHelper.getTextListByValue(player, lore.getValue());
             LoreComponent loreComponent = new LoreComponent(texts);

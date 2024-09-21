@@ -3,22 +3,35 @@ package io.github.sakurawald.module.initializer.skin;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.module.initializer.skin.config.SkinIO;
 import io.github.sakurawald.module.initializer.skin.config.SkinStorage;
 import it.unimi.dsi.fastutil.Pair;
 import lombok.Getter;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.packet.s2c.play.*;
+import net.minecraft.network.packet.s2c.play.EntitiesDestroyS2CPacket;
+import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
+import net.minecraft.network.packet.s2c.play.EntityStatusEffectS2CPacket;
+import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket;
+import net.minecraft.network.packet.s2c.play.ExperienceBarUpdateS2CPacket;
+import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
+import net.minecraft.network.packet.s2c.play.PlayerRemoveS2CPacket;
+import net.minecraft.network.packet.s2c.play.PlayerRespawnS2CPacket;
+import net.minecraft.network.packet.s2c.play.UpdateSelectedSlotS2CPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Base64;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
@@ -27,7 +40,7 @@ import java.util.function.Supplier;
 public class SkinRestorer {
 
     @Getter
-    private static final SkinStorage skinStorage = new SkinStorage(new SkinIO(Fuji.CONFIG_PATH.resolve("skin")));
+    private static final SkinStorage skinStorage = new SkinStorage(new SkinIO(ReflectionUtil.getModuleConfigPath(SkinInitializer.class).resolve("skin-data")));
 
     public static CompletableFuture<Pair<Collection<ServerPlayerEntity>, Collection<GameProfile>>> setSkinAsync(@NotNull MinecraftServer server, @NotNull Collection<GameProfile> targets, @NotNull Supplier<Property> skinSupplier) {
         return CompletableFuture.<Pair<Property, Collection<GameProfile>>>supplyAsync(() -> {
@@ -53,7 +66,7 @@ public class SkinRestorer {
 
             Collection<GameProfile> acceptedProfiles = pair.right();
             Set<ServerPlayerEntity> acceptedPlayers = new HashSet<>();
-            JsonObject newSkinJson = ConfigHandler.getGson().fromJson(new String(Base64.getDecoder().decode(skin.value()), StandardCharsets.UTF_8), JsonObject.class);
+            JsonObject newSkinJson = BaseConfigurationHandler.getGson().fromJson(new String(Base64.getDecoder().decode(skin.value()), StandardCharsets.UTF_8), JsonObject.class);
             newSkinJson.remove("timestamp");
             for (GameProfile profile : acceptedProfiles) {
                 ServerPlayerEntity player = server.getPlayerManager().getPlayer(profile.getId());
@@ -102,7 +115,7 @@ public class SkinRestorer {
             return false;
 
         try {
-            JsonObject jy = ConfigHandler.getGson().fromJson(new String(Base64.getDecoder().decode(py.value()), StandardCharsets.UTF_8), JsonObject.class);
+            JsonObject jy = BaseConfigurationHandler.getGson().fromJson(new String(Base64.getDecoder().decode(py.value()), StandardCharsets.UTF_8), JsonObject.class);
             jy.remove("timestamp");
             return x.equals(jy);
         } catch (Exception ex) {

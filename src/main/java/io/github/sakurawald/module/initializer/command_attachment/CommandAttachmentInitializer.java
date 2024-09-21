@@ -7,7 +7,7 @@ import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
-import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -32,15 +32,15 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     private static final String COMMAND_ATTACHMENT_SUBJECT_NAME = "command-attachment";
 
     @SneakyThrows
-    private CommandAttachmentModel getModel(String uuid) {
+    private static CommandAttachmentModel getModel(String uuid) {
 
         CommandAttachmentModel model;
         try {
             String attachment = Managers.getAttachmentManager().getAttachment(COMMAND_ATTACHMENT_SUBJECT_NAME, uuid);
-            model = ConfigHandler.getGson().fromJson(attachment, CommandAttachmentModel.class);
+            model = BaseConfigurationHandler.getGson().fromJson(attachment, CommandAttachmentModel.class);
         } catch (IOException e) {
             model = new CommandAttachmentModel();
-            String json = ConfigHandler.getGson().toJson(model);
+            String json = BaseConfigurationHandler.getGson().toJson(model);
             Managers.getAttachmentManager().setAttachment(COMMAND_ATTACHMENT_SUBJECT_NAME, uuid, json);
         }
 
@@ -48,14 +48,14 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     }
 
     @SneakyThrows
-    private void setModel(String uuid, CommandAttachmentModel model) {
-        String json = ConfigHandler.getGson().toJson(model);
+    private static void setModel(String uuid, CommandAttachmentModel model) {
+        String json = BaseConfigurationHandler.getGson().toJson(model);
         Managers.getAttachmentManager().setAttachment(COMMAND_ATTACHMENT_SUBJECT_NAME, uuid, json);
     }
 
-    public void trigger(String uuid, ServerPlayerEntity player, List<InteractType> receivedInteractTypes) {
+    public static void trigger(String uuid, ServerPlayerEntity player, List<InteractType> receivedInteractTypes) {
         // get
-        CommandAttachmentModel model = this.getModel(uuid);
+        CommandAttachmentModel model = getModel(uuid);
 
         // process
         for (CommandAttachmentEntry e : model.getEntries()) {
@@ -77,13 +77,13 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         }
 
         // save
-        this.setModel(uuid, model);
+        setModel(uuid, model);
     }
 
 
     // cooldown
     @CommandNode("attach-one")
-    int attachOne(@CommandSource ServerPlayerEntity player
+    private static int attachOne(@CommandSource ServerPlayerEntity player
             , Optional<InteractType> interactType
             , Optional<Integer> maxUseTimes
             , Optional<ExecuteAsType> executeAsType
@@ -99,7 +99,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         }
 
         String uuid = NbtHelper.getOrMakeUUIDNbt(mainHandStack);
-        CommandAttachmentModel model = this.getModel(uuid);
+        CommandAttachmentModel model = getModel(uuid);
 
         // new entry
         String $command = command.getValue();
@@ -111,14 +111,14 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         model.getEntries().add(new CommandAttachmentEntry($command, $interactType, $executeAsType, $maxUseTimes, $destroyItem, 0));
 
         // save model
-        this.setModel(uuid, model);
+        setModel(uuid, model);
 
         LocaleHelper.sendMessageByKey(player, "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("detach-all")
-    int detachAll(@CommandSource ServerPlayerEntity player) {
+    private static int detachAll(@CommandSource ServerPlayerEntity player) {
         ItemStack mainHandStack = player.getMainHandStack();
         if (mainHandStack.isEmpty()) {
             LocaleHelper.sendMessageByKey(player, "operation.fail");
@@ -134,7 +134,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
     @SneakyThrows
     @CommandNode("query")
-    int query(@CommandSource ServerPlayerEntity player) {
+    private static int query(@CommandSource ServerPlayerEntity player) {
         ItemStack mainHandStack = player.getMainHandStack();
         if (mainHandStack.isEmpty()) {
             LocaleHelper.sendMessageByKey(player, "operation.fail");

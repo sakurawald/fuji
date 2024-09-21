@@ -1,11 +1,13 @@
 package io.github.sakurawald.module.initializer.command_toolbox.sit;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.EntityHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.command_toolbox.sit.config.model.SitConfigModel;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -32,6 +34,8 @@ public class SitInitializer extends ModuleInitializer {
     public static final Vec3d CHAIR_ENTITY_OFFSET = new Vec3d(0, -1.375, 0);
     private static final Set<Entity> CHAIR_ENTITY_LIST = new HashSet<>();
 
+    public static final BaseConfigurationHandler<SitConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, SitConfigModel.class);
+
     @Override
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STOPPING.register((server) -> CHAIR_ENTITY_LIST.forEach(e -> {
@@ -40,13 +44,13 @@ public class SitInitializer extends ModuleInitializer {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public boolean canSit(ServerPlayerEntity player) {
+    public static boolean canSit(ServerPlayerEntity player) {
         return !player.hasVehicle() && !player.isFallFlying() && !player.isSleeping() && !player.isSwimming() && !player.isSpectator();
     }
 
     @SuppressWarnings("deprecation")
     @CommandNode("sit")
-    private int $sit(@CommandSource ServerPlayerEntity player) {
+    private static int $sit(@CommandSource ServerPlayerEntity player) {
         // fix: if the player stand in the slab/stair block
         BlockPos steppingBlockPos = player.getSteppingPos();
         BlockState steppingBlockState = player.getWorld().getBlockState(steppingBlockPos);
@@ -63,7 +67,7 @@ public class SitInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    public @NotNull Entity makeChairEntity(@NotNull World world, @NotNull BlockPos targetBlockPos, @Nullable Vec3d target) {
+    public static @NotNull Entity makeChairEntity(@NotNull World world, @NotNull BlockPos targetBlockPos, @Nullable Vec3d target) {
 
         Vec3d chairEntityPosition = targetBlockPos.toBottomCenterPos().add(0, 0.5, 0).add(SitInitializer.CHAIR_ENTITY_OFFSET);
         BlockState targetBlockStage = world.getBlockState(targetBlockPos);

@@ -19,7 +19,7 @@ public class SendTitleInitializer extends ModuleInitializer {
 
     @CommandNode("send-title")
     @CommandRequirement(level = 4)
-    int sendTitle(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player
+    private static int sendTitle(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player
             , Optional<String> mainTitle
             , Optional<String> subTitle
             , Optional<Integer> fadeInTicks

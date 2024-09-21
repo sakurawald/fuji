@@ -16,7 +16,11 @@ import lombok.SneakyThrows;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.entity.boss.dragon.EnderDragonFight;
-import net.minecraft.registry.*;
+import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.registry.entry.RegistryEntryInfo;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -82,7 +86,8 @@ public class WorldManager {
             SpatialPose from = SpatialPose.of(player);
             SpatialPose to = new SpatialPose(overworld, spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5, 0, 0);
 
-            TeleportTicket teleportTicket = TeleportTicket.ofInstantTicket(player, from, to);
+            // totalMs = 1000, the value is unused
+            TeleportTicket teleportTicket = TeleportTicket.ofInstantTicket(player, from, to, 1000, 1000);
             Managers.getBossBarManager().addTicket(teleportTicket);
         }
     }

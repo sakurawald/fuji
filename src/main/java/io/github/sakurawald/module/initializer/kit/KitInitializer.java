@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.initializer.kit;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
@@ -33,12 +33,13 @@ import java.util.List;
 public class KitInitializer extends ModuleInitializer {
 
     public static final String INVENTORY = "inventory";
-    private final Path STORAGE_PATH = Fuji.CONFIG_PATH.resolve("kit");
 
-    public void writeKit(@NotNull Kit kit) {
+    private static final Path STORAGE_PATH = ReflectionUtil.getModuleConfigPath(KitInitializer.class).resolve("kit-data");
+
+    public static void writeKit(@NotNull Kit kit) {
         Path path = STORAGE_PATH.resolve(kit.getName());
 
-        NbtCompound root = NbtHelper.read(path);
+        NbtCompound root = NbtHelper.readOrDefault(path);
         if (root == null) {
             LogUtil.warn("failed to write kit {}", kit);
             return;
@@ -51,7 +52,7 @@ public class KitInitializer extends ModuleInitializer {
         NbtHelper.write(root, path);
     }
 
-    public @NotNull List<String> getKitNameList() {
+    public static @NotNull List<String> getKitNameList() {
         List<String> ret = new ArrayList<>();
         try {
             Files.list(STORAGE_PATH).forEach(p -> ret.add(p.toFile().getName()));
@@ -61,7 +62,7 @@ public class KitInitializer extends ModuleInitializer {
         return ret;
     }
 
-    public @NotNull List<Kit> readKits() {
+    public static @NotNull List<Kit> readKits() {
         List<Kit> ret = new ArrayList<>();
         for (String name : getKitNameList()) {
             ret.add(readKit(name));
@@ -70,14 +71,14 @@ public class KitInitializer extends ModuleInitializer {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void deleteKit(@NotNull String name) {
+    public static void deleteKit(@NotNull String name) {
         Path path = STORAGE_PATH.resolve(name);
         path.toFile().delete();
     }
 
-    public @NotNull Kit readKit(@NotNull String name) {
+    public static @NotNull Kit readKit(@NotNull String name) {
         Path p = STORAGE_PATH.resolve(name);
-        NbtCompound root = NbtHelper.read(p);
+        NbtCompound root = NbtHelper.readOrDefault(p);
 
         if (root == null) {
             return new Kit(p.toFile().getName(), new ArrayList<>());
@@ -95,7 +96,7 @@ public class KitInitializer extends ModuleInitializer {
     }
 
     @CommandNode("editor")
-    private int $editor(@CommandSource ServerPlayerEntity player) {
+    private static int $editor(@CommandSource ServerPlayerEntity player) {
         List<Kit> kits = readKits();
         new KitEditorGui(player, kits, 0).open();
         return CommandHelper.Return.SUCCESS;
@@ -110,7 +111,7 @@ public class KitInitializer extends ModuleInitializer {
      * */
     @SneakyThrows
     @CommandNode("give")
-    private int $give(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player, KitName kit) {
+    private static int $give(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player, KitName kit) {
 
         Kit $kit = readKit(kit.getValue());
         if ($kit.getStackList().isEmpty()) {

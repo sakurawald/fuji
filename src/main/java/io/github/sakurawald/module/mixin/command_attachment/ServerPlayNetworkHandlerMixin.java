@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.mixin.command_attachment;
 
 import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.command_attachment.CommandAttachmentInitializer;
 import io.github.sakurawald.module.initializer.command_attachment.command.argument.wrapper.InteractType;
 import net.minecraft.component.DataComponentTypes;
@@ -21,9 +20,6 @@ public abstract class ServerPlayNetworkHandlerMixin {
     @Unique
     final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
-    @Unique
-    private static final CommandAttachmentInitializer module = Managers.getModuleManager().getInitializer(CommandAttachmentInitializer.class);
-
     @Inject(method = "swingHand", at = @At("HEAD"))
     void onPlayerLeftClick(Hand hand, CallbackInfo ci) {
         if (hand.equals(Hand.MAIN_HAND)) {
@@ -31,7 +27,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
             if (uuid == null) return;
 
             ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-            module.trigger(uuid, player, List.of(InteractType.LEFT, InteractType.BOTH));
+            CommandAttachmentInitializer.trigger(uuid, player, List.of(InteractType.LEFT, InteractType.BOTH));
         }
 
     }

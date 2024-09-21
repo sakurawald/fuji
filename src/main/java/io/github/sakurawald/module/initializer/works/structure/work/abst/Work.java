@@ -34,7 +34,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Data
-
 public abstract class Work {
 
     public String type;
@@ -53,7 +52,7 @@ public abstract class Work {
 
     @SuppressWarnings("unused")
     public Work() {
-        // for gson
+        // for gson instance creator
     }
 
     public Work(@NotNull ServerPlayerEntity player, String name) {
@@ -73,7 +72,7 @@ public abstract class Work {
     }
 
     private static @Nullable Work getWorkByID(String uuid) {
-        List<Work> works = WorksInitializer.worksHandler.model().works;
+        List<Work> works = WorksInitializer.worksHandler.getModel().works;
         for (Work work : works) {
             if (work.getId().equals(uuid)) {
                 return work;
@@ -168,7 +167,7 @@ public abstract class Work {
             .setCallback(() -> new ConfirmGui(player) {
                 @Override
                 public void onConfirm() {
-                    WorksInitializer.worksHandler.model().works.remove(work);
+                    WorksInitializer.worksHandler.getModel().works.remove(work);
                     LocaleHelper.sendActionBarByKey(player, "works.work.delete.done");
                 }
             }.open())
@@ -219,18 +218,22 @@ public abstract class Work {
         return ret;
     }
 
+    public enum WorkType {NonProductionWork, ProductionWork}
+
     public static class WorkTypeAdapter implements JsonDeserializer<Work> {
 
         @Override
         public @Nullable Work deserialize(@NotNull JsonElement json, Type typeOfT, @NotNull JsonDeserializationContext context) throws JsonParseException {
             String type = json.getAsJsonObject().get("type").getAsString();
+
             if (type.equals(WorkType.NonProductionWork.name()))
                 return context.deserialize(json, NonProductionWork.class);
-            if (type.equals(WorkType.ProductionWork.name())) return context.deserialize(json, ProductionWork.class);
+            if (type.equals(WorkType.ProductionWork.name()))
+                return context.deserialize(json, ProductionWork.class);
+
             return null;
         }
 
-        public enum WorkType {NonProductionWork, ProductionWork}
     }
 }
 

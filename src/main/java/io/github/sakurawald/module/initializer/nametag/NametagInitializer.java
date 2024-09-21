@@ -3,8 +3,10 @@ package io.github.sakurawald.module.initializer.nametag;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
-import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.nametag.config.model.NametagConfigModel;
 import io.github.sakurawald.module.initializer.nametag.job.UpdateNametagJob;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.entity.EntityType;
@@ -26,7 +28,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class NametagInitializer extends ModuleInitializer {
 
-    private Map<ServerPlayerEntity, DisplayEntity.TextDisplayEntity> player2nametag;
+    public static final BaseConfigurationHandler<NametagConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, NametagConfigModel.class);
+
+    private static Map<ServerPlayerEntity, DisplayEntity.TextDisplayEntity> player2nametag;
 
     @Override
     public void onInitialize() {
@@ -40,7 +44,7 @@ public class NametagInitializer extends ModuleInitializer {
         player2nametag.forEach((key, value) -> value.stopRiding());
     }
 
-    private DisplayEntity.TextDisplayEntity makeNametag(ServerPlayerEntity player) {
+    private static DisplayEntity.TextDisplayEntity makeNametag(ServerPlayerEntity player) {
         LogUtil.debug("make nametag for player: {}", player.getGameProfile().getName());
 
         DisplayEntity.TextDisplayEntity nametag = new DisplayEntity.TextDisplayEntity(EntityType.TEXT_DISPLAY, player.getWorld()) {
@@ -65,12 +69,12 @@ public class NametagInitializer extends ModuleInitializer {
         return nametag;
     }
 
-    private BlockPos computeNametagSpawnBlockPos(ServerPlayerEntity bindingPlayer) {
+    private static BlockPos computeNametagSpawnBlockPos(ServerPlayerEntity bindingPlayer) {
         // spawn the nametag over the player's head, so that the player won't see the nametag ride animation.
         return bindingPlayer.getBlockPos().add(0, 3, 0);
     }
 
-    private void sendExistingNametagsToTheNewJoinedPlayer(ServerPlayerEntity player) {
+    private static void sendExistingNametagsToTheNewJoinedPlayer(ServerPlayerEntity player) {
         player2nametag.forEach((key, value) -> {
             BlockPos blockPos = computeNametagSpawnBlockPos(key);
             EntitySpawnS2CPacket entitySpawnS2CPacket = new EntitySpawnS2CPacket(value, 0, blockPos);
@@ -83,7 +87,7 @@ public class NametagInitializer extends ModuleInitializer {
         });
     }
 
-    private void broadcastTheNewNametagToAllPlayers(ServerPlayerEntity player, DisplayEntity.TextDisplayEntity textDisplayEntity) {
+    private static void broadcastTheNewNametagToAllPlayers(ServerPlayerEntity player, DisplayEntity.TextDisplayEntity textDisplayEntity) {
         // spawn entity packet
         BlockPos blockPos = computeNametagSpawnBlockPos(player);
         EntitySpawnS2CPacket entitySpawnS2CPacket = new EntitySpawnS2CPacket(textDisplayEntity, 0, blockPos);
@@ -94,18 +98,18 @@ public class NametagInitializer extends ModuleInitializer {
         ServerHelper.sendPacketToAll(entityPassengersSetS2CPacket);
     }
 
-    private byte setTextDisplayFlags(int base, int flag, boolean value) {
+    private static byte setTextDisplayFlags(int base, int flag, boolean value) {
         return (byte) (value ? base | flag : base & ~flag);
     }
 
-    private void setDisplayFlag(DataTracker dataTracker, byte flag, boolean value) {
+    private static void setDisplayFlag(DataTracker dataTracker, byte flag, boolean value) {
         Byte original = dataTracker.get(DisplayEntity.TextDisplayEntity.TEXT_DISPLAY_FLAGS);
         dataTracker.set(DisplayEntity.TextDisplayEntity.TEXT_DISPLAY_FLAGS, setTextDisplayFlags(original, flag, value));
     }
 
-    private void updateNametag(DisplayEntity.TextDisplayEntity nametag, ServerPlayerEntity player) {
+    private static void updateNametag(DisplayEntity.TextDisplayEntity nametag, ServerPlayerEntity player) {
         /* update props of nametag entity */
-        var config = Configs.configHandler.model().modules.nametag;
+        var config = NametagInitializer.config.getModel();
 
         nametag.setBillboardMode(DisplayEntity.BillboardMode.CENTER);
 
@@ -149,7 +153,7 @@ public class NametagInitializer extends ModuleInitializer {
         }
     }
 
-    public void updateNametags() {
+    public static void updateNametags() {
         // since the virtual entity is not added into the server, so we should tick() it ourselves.
         player2nametag.values().forEach(DisplayEntity::tick);
 
@@ -158,6 +162,8 @@ public class NametagInitializer extends ModuleInitializer {
 
         // update
         ServerHelper.getPlayers().forEach(player -> {
+            if (player.isDead()) return;
+
             // make if not exists
             if (!player2nametag.containsKey(player)) {
                 player2nametag.put(player, makeNametag(player));

@@ -1,10 +1,8 @@
 {
-    "accept": "<green>Accept",
-    "add": "<#FFA1F5>Add",
-    "afk.kick": "<red>You have been kicked for being afk.",
-    "afk.off.broadcast": "<gold>Player %s is no longer afk",
-    "afk.on": "<gold>Afk mode: on",
-    "afk.on.broadcast": "<gold>Player %s is now afk",
+    "accept": "<green>Прийняти",
+    "add": "<#FFA1F5>Додати",
+    "afk.kick": "<red>Вас кікнули через перебування в AFK.",
+    "afk.on": "<gold>режим AFK: увімкнено",
     "afk.on.failed": "<red>You can't enter afk state now!",
     "anti_build.disallow": "<red>This action is disallowed by anti build.",
     "back": "<#FFA1F5>Back",
@@ -213,5 +211,9 @@
     "world.dimension.not_found": "<red>The dimension %s not exists.",
     "world.dimension.reset": "<gold>Start to reset resource dimension %s",
     "world_downloader.request": "<#8DDFCB>Player %s just requested to download world file (Size: %.2f MB)",
-    "world_downloader.response": "<#8DDFCB>Download link generated: <hover:show_text:'<green>Open this link'><click:open_url:'%s'><green>[OPEN]</click></hover>"
+    "world_downloader.response": "<#8DDFCB>Download link generated: <hover:show_text:'<green>Open this link'><click:open_url:'%s'><green>[OPEN]</click></hover>",
+    "deathlog.empty": "<red>No death log found for this player.",
+    "deathlog.index.not_found": "<red>Can't found the death log specified by the index %d.",
+    "deathlog.restore.target_player.inventory_not_empty": "<red>The inventory of target player `%s` is not empty, we can't restore the death log into its inventory.",
+    "deathlog.restore.success": "<orange>Restore %s's death log %d into player %s's inventory."
 }

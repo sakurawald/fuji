@@ -13,18 +13,18 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class RunInitializer extends ModuleInitializer {
 
     @CommandNode("as console")
-    private int runAsConsole(GreedyString rest) {
+    private static int runAsConsole(GreedyString rest) {
         CommandExecutor.executeCommandAsConsole(null, rest.getValue());
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("as player")
-    private int runAsPlayer(ServerPlayerEntity player, GreedyString rest) {
+    private static int runAsPlayer(ServerPlayerEntity player, GreedyString rest) {
         return CommandExecutor.executeCommandAsPlayer(player, rest.getValue());
     }
 
     @CommandNode("as fake-op")
-    private int runAsFakeOp(ServerPlayerEntity player, GreedyString rest) {
+    private static int runAsFakeOp(ServerPlayerEntity player, GreedyString rest) {
         return CommandExecutor.executeCommandAsFakeOp(player, rest.getValue());
     }
 }

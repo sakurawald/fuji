@@ -10,13 +10,14 @@ import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
-import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
-import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
+import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
 import io.github.sakurawald.core.job.impl.MentionPlayersJob;
 import io.github.sakurawald.core.structure.RegexRewriteEntry;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.chat.config.model.ChatModel;
+import io.github.sakurawald.module.initializer.chat.config.model.ChatConfigModel;
+import io.github.sakurawald.module.initializer.chat.config.model.ChatFormatModel;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -25,21 +26,28 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class ChatInitializer extends ModuleInitializer {
 
-    private static final ConfigHandler<ChatModel> chatHandler = new ObjectConfigHandler<>("chat.json", ChatModel.class);
+    private static final BaseConfigurationHandler<ChatFormatModel> chatFormatHandler = new ObjectConfigurationHandler<>("chat.json", ChatFormatModel.class)
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("chat.json"), ChatInitializer.class));
 
-    private final MiniMessage miniMessage = MiniMessage.builder().build();
+    public static final BaseConfigurationHandler<ChatConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatConfigModel.class);
 
-    private Map<Pattern, String> patterns;
+
+    private static final MiniMessage miniMessage = MiniMessage.builder().build();
+
+    private static Map<Pattern, String> patterns;
 
     @Override
     public void onInitialize() {
-        chatHandler.loadFromDisk();
-
         compilePatterns();
 
         registerPosPlaceholder();
@@ -49,14 +57,12 @@ public class ChatInitializer extends ModuleInitializer {
 
     @Override
     public void onReload() {
-        chatHandler.loadFromDisk();
-
         compilePatterns();
     }
 
     private void compilePatterns() {
         patterns = new HashMap<>();
-        for (RegexRewriteEntry regexRewriteEntry : Configs.configHandler.model().modules.chat.rewrite.regex) {
+        for (RegexRewriteEntry regexRewriteEntry : config.getModel().rewrite.regex) {
             patterns.put(java.util.regex.Pattern.compile(regexRewriteEntry.regex), regexRewriteEntry.replacement);
         }
     }
@@ -119,17 +125,17 @@ public class ChatInitializer extends ModuleInitializer {
 
                 ServerPlayerEntity player = ctx.player();
                 String prefix = PermissionHelper.getSuffix(player.getUuid());
-                return PlaceholderResult.value(LocaleHelper.getTextByValue(player,prefix));
+                return PlaceholderResult.value(LocaleHelper.getTextByValue(player, prefix));
             });
     }
 
     @CommandNode("chat format set")
-    private int $format(@CommandSource ServerPlayerEntity player, GreedyString format) {
+    private static int $format(@CommandSource ServerPlayerEntity player, GreedyString format) {
         /* save the format*/
         String name = player.getGameProfile().getName();
         String $format = format.getValue();
-        chatHandler.model().format.player2format.put(name, $format);
-        chatHandler.saveToDisk();
+        chatFormatHandler.getModel().format.player2format.put(name, $format);
+        chatFormatHandler.writeStorage();
 
         /* feedback */
         $format = LocaleHelper.getValue(player, "chat.format.set").replace("%s", $format);
@@ -141,16 +147,16 @@ public class ChatInitializer extends ModuleInitializer {
     }
 
     @CommandNode("chat format reset")
-    private int $reset(@CommandSource ServerPlayerEntity player) {
+    private static int $reset(@CommandSource ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
-        chatHandler.model().format.player2format.remove(name);
-        chatHandler.saveToDisk();
+        chatFormatHandler.getModel().format.player2format.remove(name);
+        chatFormatHandler.writeStorage();
         LocaleHelper.sendMessageByKey(player, "chat.format.reset");
         return CommandHelper.Return.SUCCESS;
     }
 
 
-    private String resolveMentionTag(@NotNull String string) {
+    private static String resolveMentionTag(@NotNull String string) {
         /* resolve player tag */
         List<ServerPlayerEntity> mentionedPlayers = new ArrayList<>();
 
@@ -167,28 +173,28 @@ public class ChatInitializer extends ModuleInitializer {
 
         /* run mention player task */
         if (!mentionedPlayers.isEmpty()) {
-            MentionPlayersJob.requestJob(Configs.configHandler.model().modules.chat.mention_player, mentionedPlayers);
+            MentionPlayersJob.requestJob(config.getModel().mention_player, mentionedPlayers);
         }
 
         return string;
     }
 
-    private String resolvePatterns(String string) {
+    private static String resolvePatterns(String string) {
         for (Map.Entry<Pattern, String> entry : patterns.entrySet()) {
             string = entry.getKey().matcher(string).replaceAll(entry.getValue());
         }
         return string;
     }
 
-    public @NotNull Text parseText(@NotNull ServerPlayerEntity player, String message) {
+    public static @NotNull Text parseText(@NotNull ServerPlayerEntity player, String message) {
         /* parse message */
         message = resolvePatterns(message);
         message = resolveMentionTag(message);
-        message = chatHandler.model().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
+        message = chatFormatHandler.getModel().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
             .replace("%message%", message);
 
         /* parse format */
-        String format = Configs.configHandler.model().modules.chat.format;
+        String format = config.getModel().format;
 
         /* combine */
         String string = format.replace("%message%", message);

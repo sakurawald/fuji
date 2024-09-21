@@ -1,16 +1,17 @@
 package io.github.sakurawald.module.initializer.skin.config;
 
 import com.mojang.authlib.properties.Property;
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.skin.SkinInitializer;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 
 public class SkinStorage {
 
-    private final SkinInitializer initializer = Managers.getModuleManager().getInitializer(SkinInitializer.class);
     private final Map<UUID, Property> skinMap = new HashMap<>();
 
     @Getter
@@ -20,18 +21,8 @@ public class SkinStorage {
         this.skinIO = skinIO;
     }
 
-    public Property getRandomSkin(UUID uuid) {
-        if (!skinMap.containsKey(uuid)) {
-            List<Property> defaultSkins = initializer.data.model().random_skins;
-            Property skin = defaultSkins.get(new Random().nextInt(defaultSkins.size()));
-            setSkin(uuid, skin);
-        }
-
-        return skinMap.get(uuid);
-    }
-
     public Property getDefaultSkin() {
-        return initializer.data.model().default_skin;
+        return SkinInitializer.config.getModel().default_skin;
     }
 
     public Property getSkin(UUID uuid) {

@@ -40,7 +40,7 @@ public class WorksGui extends PagedGui<Work> {
             .setSkullOwner(GuiHelper.Icon.QUESTION_MARK_ICON)
             .setLore(LocaleHelper.getTextListByKey(player, "works.list.help.lore")));
 
-        if (entities == WorksInitializer.worksHandler.model().works) {
+        if (entities == WorksInitializer.worksHandler.getModel().works) {
             controlLayer.addSlot(GuiHelper.makeHelpButton(player)
                 .setName(LocaleHelper.getTextByKey(player, "works.list.my_works"))
                 .setCallback(() -> search(player.getGameProfile().getName()).open())
@@ -50,7 +50,7 @@ public class WorksGui extends PagedGui<Work> {
                 .setItem(Items.PLAYER_HEAD)
                 .setName(LocaleHelper.getTextByKey(player, "works.list.all_works"))
                 .setSkullOwner(GuiHelper.Icon.A_ICON)
-                .setCallback(() -> new WorksGui(player, WorksInitializer.worksHandler.model().works, 0).open())
+                .setCallback(() -> new WorksGui(player, WorksInitializer.worksHandler.getModel().works, 0).open())
             );
         }
 

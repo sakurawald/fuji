@@ -15,7 +15,7 @@ import net.minecraft.stat.Stats;
 public class TrashCanInitializer extends ModuleInitializer {
 
     @CommandNode("trashcan")
-    private int $trashcan(@CommandSource ServerPlayerEntity player) {
+    private static int $trashcan(@CommandSource ServerPlayerEntity player) {
         int rows = 3;
         SimpleInventory simpleInventory = new SimpleInventory(rows * 9);
 

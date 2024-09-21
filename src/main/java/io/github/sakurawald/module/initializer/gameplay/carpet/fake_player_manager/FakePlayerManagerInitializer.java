@@ -8,8 +8,10 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager.config.model.FakePlayerManagerConfigModel;
 import io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager.job.ManageFakePlayersJob;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.command.ServerCommandSource;
@@ -20,12 +22,19 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class FakePlayerManagerInitializer extends ModuleInitializer {
-    public final List<String> CONSTANT_EMPTY_LIST = new ArrayList<>();
-    public final Map<String, List<String>> player2fakePlayers = new HashMap<>();
-    public final Map<String, Long> player2expiration = new HashMap<>();
+    public static final BaseConfigurationHandler<FakePlayerManagerConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, FakePlayerManagerConfigModel.class);
+
+    public static final List<String> CONSTANT_EMPTY_LIST = new ArrayList<>();
+    public static final Map<String, List<String>> player2fakePlayers = new HashMap<>();
+    public static final Map<String, Long> player2expiration = new HashMap<>();
 
     @Override
     public void onInitialize() {
@@ -33,14 +42,14 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
     }
 
     @CommandNode("player renew")
-    private int $renew(@CommandSource ServerPlayerEntity player) {
+    private static int $renew(@CommandSource ServerPlayerEntity player) {
         renewFakePlayers(player);
         return CommandHelper.Return.SUCCESS;
     }
 
 
     @CommandNode("player who")
-    private int $who(@CommandSource CommandContext<ServerCommandSource> context) {
+    private static int $who(@CommandSource CommandContext<ServerCommandSource> context) {
         /* validate */
         validateFakePlayers();
 
@@ -60,15 +69,15 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    public void renewFakePlayers(@NotNull ServerPlayerEntity player) {
+    public static void renewFakePlayers(@NotNull ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
-        int duration = Configs.configHandler.model().modules.gameplay.carpet.fake_player_manager.renew_duration_ms;
+        int duration = config.getModel().renew_duration_ms;
         long newTime = System.currentTimeMillis() + duration;
         player2expiration.put(name, newTime);
         LocaleHelper.sendMessageByKey(player, "fake_player_manager.renew.success", DateUtil.toStandardDateFormat(newTime));
     }
 
-    public void validateFakePlayers() {
+    public static void validateFakePlayers() {
         /* remove invalid fake-player */
         Iterator<Map.Entry<String, List<String>>> it = player2fakePlayers.entrySet().iterator();
         while (it.hasNext()) {
@@ -87,21 +96,21 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         }
     }
 
-    public boolean canSpawnFakePlayer(@NotNull ServerPlayerEntity player) {
+    public static boolean canSpawnFakePlayer(@NotNull ServerPlayerEntity player) {
         /* validate */
         validateFakePlayers();
 
         /* check */
-        int limit = this.getCurrentAmountLimit();
-        int current = this.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), CONSTANT_EMPTY_LIST).size();
+        int limit = getCurrentAmountLimit();
+        int current = player2fakePlayers.getOrDefault(player.getGameProfile().getName(), CONSTANT_EMPTY_LIST).size();
         return current < limit;
     }
 
-    public void addFakePlayer(@NotNull ServerPlayerEntity player, String fakePlayer) {
-        this.player2fakePlayers.computeIfAbsent(player.getGameProfile().getName(), k -> new ArrayList<>()).add(fakePlayer);
+    public static void addFakePlayer(@NotNull ServerPlayerEntity player, String fakePlayer) {
+        player2fakePlayers.computeIfAbsent(player.getGameProfile().getName(), k -> new ArrayList<>()).add(fakePlayer);
     }
 
-    public boolean canManipulateFakePlayer(@NotNull CommandContext<ServerCommandSource> ctx, String fakePlayer) {
+    public static boolean canManipulateFakePlayer(@NotNull CommandContext<ServerCommandSource> ctx, String fakePlayer) {
         // IMPORTANT: disable /player ... shadow command for online-player
         if (ctx.getNodes().get(2).getNode().getName().equals("shadow")) return false;
 
@@ -112,12 +121,12 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         // bypass: op
         if (ServerHelper.getDefaultServer().getPlayerManager().isOperator(player.getGameProfile())) return true;
 
-        List<String> myFakePlayers = this.player2fakePlayers.getOrDefault(player.getGameProfile().getName(), CONSTANT_EMPTY_LIST);
+        List<String> myFakePlayers = player2fakePlayers.getOrDefault(player.getGameProfile().getName(), CONSTANT_EMPTY_LIST);
         return myFakePlayers.contains(fakePlayer);
     }
 
-    public int getCurrentAmountLimit() {
-        List<List<Integer>> rules = Configs.configHandler.model().modules.gameplay.carpet.fake_player_manager.caps_limit_rule;
+    public static int getCurrentAmountLimit() {
+        List<List<Integer>> rules = config.getModel().caps_limit_rule;
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
         int currentDays = currentDate.getDayOfWeek().getValue();
@@ -128,7 +137,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         return -1;
     }
 
-    public boolean isMyFakePlayer(@NotNull ServerPlayerEntity player, @NotNull ServerPlayerEntity fakePlayer) {
+    public static boolean isMyFakePlayer(@NotNull ServerPlayerEntity player, @NotNull ServerPlayerEntity fakePlayer) {
         return player2fakePlayers.getOrDefault(player.getGameProfile().getName(), CONSTANT_EMPTY_LIST).contains(fakePlayer.getGameProfile().getName());
     }
 

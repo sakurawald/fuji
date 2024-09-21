@@ -3,7 +3,6 @@ package io.github.sakurawald.core.manager.impl.scheduler;
 
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.core.config.job.SaveConfigHandlerJob;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.manager.abst.BaseManager;
 import net.fabricmc.api.EnvType;
@@ -12,7 +11,12 @@ import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.jetbrains.annotations.NotNull;
-import org.quartz.*;
+import org.quartz.JobDetail;
+import org.quartz.JobKey;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.Trigger;
+import org.quartz.TriggerKey;
 import org.quartz.impl.StdSchedulerFactory;
 import org.quartz.impl.matchers.GroupMatcher;
 
@@ -29,7 +33,7 @@ public class ScheduleManager extends BaseManager {
 
     {
         /* set logger level for quartz */
-        Level level = Level.getLevel(Configs.configHandler.model().core.quartz.logger_level);
+        Level level = Level.getLevel(Configs.configHandler.getModel().core.quartz.logger_level);
         Configurator.setAllLevels("org.quartz", level);
 
         // note: for some early initialize, here will cause NPE
@@ -39,18 +43,15 @@ public class ScheduleManager extends BaseManager {
     @Override
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> Managers.getScheduleManager().startScheduler());
-        ServerLifecycleEvents.SERVER_STOPPING.register(server -> {
-            Managers.getScheduleManager().triggerJobs(SaveConfigHandlerJob.class.getName());
-            Managers.getScheduleManager().shutdownScheduler();
-        });
+        ServerLifecycleEvents.SERVER_STOPPING.register(server -> Managers.getScheduleManager().shutdownScheduler());
     }
 
     public void scheduleJob(JobDetail jobDetail, Trigger trigger) throws SchedulerException {
-        this.scheduler.scheduleJob(jobDetail,trigger);
+        this.scheduler.scheduleJob(jobDetail, trigger);
     }
 
     public void rescheduleJob(TriggerKey triggerKey, Trigger newTrigger) throws SchedulerException {
-        this.scheduler.rescheduleJob(triggerKey,newTrigger);
+        this.scheduler.rescheduleJob(triggerKey, newTrigger);
     }
 
     public void deleteJobs(Class<?> clazz) {
@@ -108,7 +109,7 @@ public class ScheduleManager extends BaseManager {
 
     private void shutdownScheduler() {
         try {
-            scheduler.shutdown();
+            scheduler.shutdown(false);
 
             // note: reset scheduler right now to fix client-side NPE
             if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {

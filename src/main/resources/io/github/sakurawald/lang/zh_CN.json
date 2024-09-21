@@ -2,9 +2,7 @@
     "accept": "<green>接受",
     "add": "<#FFA1F5>添加",
     "afk.kick": "<red>您已因长时间离开而被踢出",
-    "afk.off.broadcast": "<gold>玩家 %s 回来了",
     "afk.on": "<gold>闲置模式: 启用",
-    "afk.on.broadcast": "<gold>玩家 %s 暂时离开了",
     "afk.on.failed": "<red>您现在无法进入闲置状态.",
     "anti_build.disallow": "<red>该操作被禁止",
     "back": "<#FFA1F5>返回",
@@ -213,5 +211,9 @@
     "world.dimension.not_found": "<red>维度 %s 不存在",
     "world.dimension.reset": "<gold>开始重置维度 %s",
     "world_downloader.request": "<#8DDFCB>玩家 %s 刚刚向世界下载器递交下载请求 (总大小: %.2f MB)",
-    "world_downloader.response": "<#8DDFCB>已生成下载链接: <hover:show_text:'<green>打开该链接'><click:open_url:'%s'><green>[打开]</click></hover>"
+    "world_downloader.response": "<#8DDFCB>已生成下载链接: <hover:show_text:'<green>打开该链接'><click:open_url:'%s'><green>[打开]</click></hover>",
+    "deathlog.empty": "<red>No death log found for this player.",
+    "deathlog.index.not_found": "<red>Can't found the death log specified by the index %d.",
+    "deathlog.restore.target_player.inventory_not_empty": "<red>The inventory of target player `%s` is not empty, we can't restore the death log into its inventory.",
+    "deathlog.restore.success": "<orange>Restore %s's death log %d into player %s's inventory."
 }

@@ -1,7 +1,7 @@
 package io.github.sakurawald.core.structure;
 
-import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import lombok.Data;
 import lombok.With;

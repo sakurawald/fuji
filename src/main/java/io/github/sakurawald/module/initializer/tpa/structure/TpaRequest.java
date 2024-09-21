@@ -1,8 +1,6 @@
 package io.github.sakurawald.module.initializer.tpa.structure;
 
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.tpa.TpaInitializer;
 import lombok.Getter;
 import lombok.ToString;
@@ -24,8 +22,6 @@ public class TpaRequest {
     private static final String CIRCLE = "●";
     private static final String TICK = "[✔]";
     private static final String CROSS = "[❌]";
-
-    private static final TpaInitializer module = Managers.getModuleManager().getInitializer(TpaInitializer.class);
 
     @Getter
     private final ServerPlayerEntity sender;
@@ -64,10 +60,10 @@ public class TpaRequest {
                         getSender().sendMessage(asSenderComponent$Cancelled());
                         getReceiver().sendMessage(asReceiverComponent$Cancelled());
                         // don't forget to remove this request
-                        module.getRequests().remove(that);
+                        TpaInitializer.getRequests().remove(that);
                     }
                 },
-                Configs.configHandler.model().modules.tpa.timeout * 1000L
+            TpaInitializer.config.getModel().timeout * 1000L
         );
     }
 

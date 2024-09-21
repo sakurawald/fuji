@@ -1,14 +1,16 @@
 package io.github.sakurawald.module.initializer.pvp;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
-import io.github.sakurawald.core.config.handler.abst.ConfigHandler;
-import io.github.sakurawald.core.config.handler.impl.ObjectConfigHandler;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
+import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.pvp.config.model.PvPModel;
+import io.github.sakurawald.module.initializer.pvp.config.model.PvPDataModel;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -17,25 +19,15 @@ import java.util.Set;
 
 public class PvpInitializer extends ModuleInitializer {
 
-    public static final ConfigHandler<PvPModel> pvpHandler = new ObjectConfigHandler<>("pvp.json", PvPModel.class);
-
-    @Override
-    public void onInitialize() {
-        pvpHandler.loadFromDisk();
-    }
-
-    @Override
-    public void onReload() {
-        pvpHandler.loadFromDisk();
-    }
+    public static final BaseConfigurationHandler<PvPDataModel> pvpHandler = new ObjectConfigurationHandler<>("pvp.json", PvPDataModel.class).addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("pvp.json"),PvpInitializer.class));
 
     @CommandNode("pvp on")
-    private int $on(@CommandSource ServerPlayerEntity player) {
-        Set<String> whitelist = pvpHandler.model().whitelist;
+    private static int $on(@CommandSource ServerPlayerEntity player) {
+        Set<String> whitelist = pvpHandler.getModel().whitelist;
         String name = player.getGameProfile().getName();
         if (!whitelist.contains(name)) {
             whitelist.add(name);
-            pvpHandler.saveToDisk();
+            pvpHandler.writeStorage();
 
             LocaleHelper.sendMessageByKey(player, "pvp.on");
 
@@ -47,12 +39,12 @@ public class PvpInitializer extends ModuleInitializer {
     }
 
     @CommandNode("pvp off")
-    private int $off(@CommandSource ServerPlayerEntity player) {
-            Set<String> whitelist = pvpHandler.model().whitelist;
+    private static int $off(@CommandSource ServerPlayerEntity player) {
+            Set<String> whitelist = pvpHandler.getModel().whitelist;
             String name = player.getGameProfile().getName();
             if (whitelist.contains(name)) {
                 whitelist.remove(name);
-                pvpHandler.saveToDisk();
+                pvpHandler.writeStorage();
 
                 LocaleHelper.sendMessageByKey(player, "pvp.off");
                 return CommandHelper.Return.SUCCESS;
@@ -63,8 +55,8 @@ public class PvpInitializer extends ModuleInitializer {
     }
 
     @CommandNode("pvp status")
-    private int $status(@CommandSource ServerPlayerEntity player) {
-            Set<String> whitelist = pvpHandler.model().whitelist;
+    private static int $status(@CommandSource ServerPlayerEntity player) {
+            Set<String> whitelist = pvpHandler.getModel().whitelist;
             player.sendMessage(LocaleHelper.getTextByKey(player, "pvp.status")
                     .asComponent()
                     .append(whitelist.contains(player.getGameProfile().getName()) ? LocaleHelper.getTextByKey(player, "on") : LocaleHelper.getTextByKey(player, "off")));
@@ -72,14 +64,14 @@ public class PvpInitializer extends ModuleInitializer {
     }
 
     @CommandNode("pvp list")
-    private int $list(@CommandSource CommandContext<ServerCommandSource> ctx) {
-        Set<String> whitelist = pvpHandler.model().whitelist;
+    private static int $list(@CommandSource CommandContext<ServerCommandSource> ctx) {
+        Set<String> whitelist = pvpHandler.getModel().whitelist;
         LocaleHelper.sendMessageByKey(ctx.getSource(), "pvp.list", whitelist);
         return CommandHelper.Return.SUCCESS;
     }
 
-    public boolean contains(String name) {
-        return pvpHandler.model().whitelist.contains(name);
+    public static boolean contains(String name) {
+        return pvpHandler.getModel().whitelist.contains(name);
     }
 
 }

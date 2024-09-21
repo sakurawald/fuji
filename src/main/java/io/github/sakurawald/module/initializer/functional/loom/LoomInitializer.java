@@ -15,7 +15,7 @@ import net.minecraft.text.Text;
 public class LoomInitializer extends ModuleInitializer {
 
     @CommandNode("loom")
-    private int $loom(@CommandSource ServerPlayerEntity player) {
+    private static int $loom(@CommandSource ServerPlayerEntity player) {
         player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> new LoomScreenHandler(i, inventory, ScreenHandlerContext.create(p.getWorld(), p.getBlockPos())) {
             @Override
             public boolean canUse(PlayerEntity player) {

@@ -1,11 +1,13 @@
 package io.github.sakurawald.module.initializer.command_toolbox.tppos;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.EntityHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
+import io.github.sakurawald.core.command.argument.wrapper.impl.OfflinePlayerName;
 import io.github.sakurawald.core.service.random_teleport.RandomTeleport;
 import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.core.structure.TeleportSetup;
@@ -19,21 +21,21 @@ public class TpposInitializer extends ModuleInitializer {
 
     @CommandNode("tppos")
     @CommandRequirement(level = 4)
-    int tppos(@CommandSource ServerPlayerEntity player
-            , Optional<Dimension> dimension
-            , Optional<Double> x
-            , Optional<Double> y
-            , Optional<Double> z
-            , Optional<Float> yaw
-            , Optional<Float> pitch
-            , Optional<Integer> centerX
-            , Optional<Integer> centerZ
-            , Optional<Boolean> circle
-            , Optional<Integer> minRange
-            , Optional<Integer> maxRange
-            , Optional<Integer> minY
-            , Optional<Integer> maxY
-            , Optional<Integer> maxTryTimes
+    private static int tppos(@CommandSource ServerPlayerEntity player
+        , Optional<Dimension> dimension
+        , Optional<Double> x
+        , Optional<Double> y
+        , Optional<Double> z
+        , Optional<Float> yaw
+        , Optional<Float> pitch
+        , Optional<Integer> centerX
+        , Optional<Integer> centerZ
+        , Optional<Boolean> circle
+        , Optional<Integer> minRange
+        , Optional<Integer> maxRange
+        , Optional<Integer> minY
+        , Optional<Integer> maxY
+        , Optional<Integer> maxTryTimes
     ) {
 
         ServerWorld world = dimension.isPresent() ? dimension.get().getValue() : player.getServerWorld();
@@ -59,10 +61,18 @@ public class TpposInitializer extends ModuleInitializer {
         int $maxTryTimes = maxTryTimes.orElse(8);
 
         TeleportSetup teleportSetup = new TeleportSetup(RegistryHelper.ofString(world), $centerX, $centerZ, $circle, $minRange, $maxRange, $minY
-                , $maxY, $maxTryTimes);
+            , $maxY, $maxTryTimes);
 
-        RandomTeleport.request(player, teleportSetup,null);
+        RandomTeleport.request(player, teleportSetup, null);
 
+        return CommandHelper.Return.SUCCESS;
+    }
+
+    @CommandNode("tppos offline")
+    @CommandRequirement(level = 4)
+    private static int tppos(@CommandSource ServerPlayerEntity source, OfflinePlayerName player) {
+        ServerPlayerEntity dummy = EntityHelper.loadOfflinePlayer(player.getValue());
+        source.teleport(dummy.getServerWorld(),dummy.getX(),dummy.getY(),dummy.getZ(),dummy.getYaw(),dummy.getPitch());
         return CommandHelper.Return.SUCCESS;
     }
 

@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @UtilityClass
@@ -68,12 +69,12 @@ public class NbtHelper {
         return root.get(key);
     }
 
-    public static @Nullable NbtCompound read(@NotNull Path path) {
+    public static @Nullable NbtCompound readOrDefault(@NotNull Path path) {
         try {
             if (!path.toFile().exists()) {
                 NbtIo.write(new NbtCompound(), path);
             }
-            return NbtIo.read(path);
+            return Objects.requireNonNull(NbtIo.read(path));
         } catch (IOException e) {
             LogUtil.error("failed to create nbt file in {}", path);
         }

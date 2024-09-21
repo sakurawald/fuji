@@ -1,7 +1,6 @@
 package io.github.sakurawald.core.auxiliary.minecraft;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import eu.pb4.placeholders.api.ParserContext;
 import eu.pb4.placeholders.api.PlaceholderContext;
 import eu.pb4.placeholders.api.node.LiteralNode;
@@ -9,11 +8,10 @@ import eu.pb4.placeholders.api.node.TextNode;
 import eu.pb4.placeholders.api.parsers.NodeParser;
 import eu.pb4.placeholders.api.parsers.tag.TagRegistry;
 import eu.pb4.placeholders.api.parsers.tag.TextTag;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.core.config.handler.impl.ResourceConfigHandler;
+import io.github.sakurawald.core.config.handler.impl.ResourceConfigurationHandler;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.audience.Audience;
@@ -24,13 +22,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +50,7 @@ public class LocaleHelper {
     private static final JsonObject UNSUPPORTED_LANGUAGE_MARKER = new JsonObject();
 
     static {
-        writeDefaultLanguageFiles();
+        writeDefaultLanguageFilesIfAbsent();
 
         TagRegistry.registerDefault(
             TextTag.self(
@@ -69,9 +63,9 @@ public class LocaleHelper {
 
     }
 
-    private static void writeDefaultLanguageFiles() {
+    private static void writeDefaultLanguageFilesIfAbsent() {
         for (String languageFile : ReflectionUtil.getGraph(ReflectionUtil.LANGUAGE_GRAPH_FILE_NAME)) {
-            new ResourceConfigHandler("lang/" + languageFile).loadFromDisk();
+            new ResourceConfigurationHandler("lang/" + languageFile).readStorage();
         }
     }
 
@@ -88,13 +82,16 @@ public class LocaleHelper {
     private static void loadLanguageJsonIfAbsent(String languageCode) {
         if (code2json.containsKey(languageCode)) return;
 
-        InputStream is;
         try {
-            is = FileUtils.openInputStream(Fuji.CONFIG_PATH.resolve("lang").resolve(languageCode + ".json").toFile());
+        String languageFile = languageCode + ".json";
+        ResourceConfigurationHandler resourceConfigurationHandler = new ResourceConfigurationHandler("lang/" + languageFile);
 
-            code2json.put(languageCode, JsonParser.parseReader(new InputStreamReader(is)).getAsJsonObject());
-            LogUtil.info("language {} loaded.", languageCode);
-        } catch (IOException e) {
+        //read it
+        resourceConfigurationHandler.readStorage();
+
+        code2json.put(languageCode, resourceConfigurationHandler.getModel().getAsJsonObject());
+        LogUtil.info("language {} loaded.", languageCode);
+        } catch (Exception e) {
             code2json.put(languageCode, UNSUPPORTED_LANGUAGE_MARKER);
             LogUtil.warn("failed to load language `{}`", languageCode);
         }
@@ -150,7 +147,7 @@ public class LocaleHelper {
 
     private static String getDefaultLanguageCode() {
         // allow user to write `en_us` in `config.json`.
-        return convertToLanguageCode(Configs.configHandler.model().core.language.default_language);
+        return convertToLanguageCode(Configs.configHandler.getModel().core.language.default_language);
     }
 
     private static boolean isDefaultLanguageCode(String languageCode) {
@@ -194,7 +191,7 @@ public class LocaleHelper {
 
     public static @NotNull String resolvePlaceholder(@Nullable Object audience, String value) {
         Component component = LocaleHelper.getText(PLACEHOLDER_PARSER, audience, false, value).asComponent();
-        return PlainTextComponentSerializer.plainText().serialize(component);
+        return flatten(component);
     }
 
     /* This is the core method to map `String` into `Component`.

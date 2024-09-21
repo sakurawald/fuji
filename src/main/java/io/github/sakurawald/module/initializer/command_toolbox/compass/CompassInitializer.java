@@ -21,7 +21,7 @@ import java.util.function.Function;
 @CommandNode("compass")
 public class CompassInitializer extends ModuleInitializer {
 
-    int acceptCompassItem(ServerPlayerEntity source, Function<ItemStack, Integer> function) {
+    private static int acceptCompassItem(ServerPlayerEntity source, Function<ItemStack, Integer> function) {
         ItemStack itemStack = source.getMainHandStack();
         if (!itemStack.getItem().equals(Items.COMPASS)) {
             LocaleHelper.sendMessageByKey(source, "compass.no_compass");
@@ -31,29 +31,29 @@ public class CompassInitializer extends ModuleInitializer {
         return function.apply(itemStack);
     }
 
-    void setTrackedTarget(ItemStack itemStack, ServerWorld world, BlockPos blockPos) {
+    private static void setTrackedTarget(ItemStack itemStack, ServerWorld world, BlockPos blockPos) {
         LodestoneTrackerComponent component = new LodestoneTrackerComponent(Optional.of(GlobalPos.create(world.getRegistryKey(), blockPos)), false);
         itemStack.set(DataComponentTypes.LODESTONE_TRACKER, component);
     }
 
     @CommandNode("track pos")
-    int track(@CommandSource ServerPlayerEntity player, Dimension dimension, BlockPos blockPos) {
+    private static int track(@CommandSource ServerPlayerEntity player, Dimension dimension, BlockPos blockPos) {
         return acceptCompassItem(player,(itemStack) -> {
-           this.setTrackedTarget(itemStack, dimension.getValue(), blockPos);
+           setTrackedTarget(itemStack, dimension.getValue(), blockPos);
            return CommandHelper.Return.SUCCESS;
         });
     }
 
     @CommandNode("track player")
-    int track(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
+    private static int track(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
         return acceptCompassItem(player,(itemStack) -> {
-            this.setTrackedTarget(itemStack,target.getServerWorld(),target.getBlockPos());
+            setTrackedTarget(itemStack,target.getServerWorld(),target.getBlockPos());
             return CommandHelper.Return.SUCCESS;
         });
     }
 
     @CommandNode("reset")
-    int reset(@CommandSource ServerPlayerEntity player) {
+    private static int reset(@CommandSource ServerPlayerEntity player) {
         return acceptCompassItem(player,(itemStack) -> {
             itemStack.set(DataComponentTypes.LODESTONE_TRACKER, null);
             return CommandHelper.Return.SUCCESS;

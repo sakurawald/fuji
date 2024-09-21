@@ -9,7 +9,14 @@ import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.command.exception.AbortOperationException;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import net.minecraft.advancement.*;
+import net.minecraft.advancement.Advancement;
+import net.minecraft.advancement.AdvancementCriterion;
+import net.minecraft.advancement.AdvancementDisplay;
+import net.minecraft.advancement.AdvancementEntry;
+import net.minecraft.advancement.AdvancementFrame;
+import net.minecraft.advancement.AdvancementProgress;
+import net.minecraft.advancement.AdvancementRequirements;
+import net.minecraft.advancement.AdvancementRewards;
 import net.minecraft.advancement.criterion.CriterionProgress;
 import net.minecraft.advancement.criterion.ImpossibleCriterion;
 import net.minecraft.item.Item;
@@ -21,12 +28,17 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
 
 public class SendToastInitializer extends ModuleInitializer {
     private static final String IMPOSSIBLE = "impossible";
 
-    private void sendToast(ServerPlayerEntity player, AdvancementFrame advancementFrame, Item icon, Text title) {
+    private static void sendToast(ServerPlayerEntity player, AdvancementFrame advancementFrame, Item icon, Text title) {
         AdvancementDisplay advancementDisplay = new AdvancementDisplay(
             icon.getDefaultStack()
             , title
@@ -53,7 +65,7 @@ public class SendToastInitializer extends ModuleInitializer {
         player.networkHandler.sendPacket(makeRevokePacket(identifier));
     }
 
-    private @NotNull AdvancementUpdateS2CPacket makeGrantPacket(AdvancementEntry advancementEntry, Identifier identifier) {
+    private static @NotNull AdvancementUpdateS2CPacket makeGrantPacket(AdvancementEntry advancementEntry, Identifier identifier) {
         AdvancementProgress advancementProgress = new AdvancementProgress();
         AdvancementRequirements advancementRequirements = new AdvancementRequirements(List.of(List.of(IMPOSSIBLE)));
         advancementProgress.init(advancementRequirements);
@@ -71,7 +83,7 @@ public class SendToastInitializer extends ModuleInitializer {
         return new AdvancementUpdateS2CPacket(false, toEarn, toRemove, toSetProgress);
     }
 
-    private @NotNull AdvancementUpdateS2CPacket makeRevokePacket(Identifier identifier) {
+    private static @NotNull AdvancementUpdateS2CPacket makeRevokePacket(Identifier identifier) {
         Collection<AdvancementEntry> toEarn = List.of();
         Set<Identifier> toRemove = Set.of(identifier);
         Map<Identifier, AdvancementProgress> toSetProgress = Map.of();
@@ -80,7 +92,7 @@ public class SendToastInitializer extends ModuleInitializer {
 
     @CommandNode("send-toast")
     @CommandRequirement(level = 4)
-    int sendToast(@CommandSource CommandContext<ServerCommandSource> ctx
+    private static int sendToast(@CommandSource CommandContext<ServerCommandSource> ctx
         , ServerPlayerEntity player
         , Optional<AdvancementFrame> toastType
         , Optional<Item> icon
@@ -90,7 +102,7 @@ public class SendToastInitializer extends ModuleInitializer {
         Item $icon = icon.orElse(Items.SLIME_BALL);
         AdvancementFrame $toastType = toastType.orElse(AdvancementFrame.CHALLENGE);
         Text title = LocaleHelper.getTextByValue(player, message.getValue());
-        this.sendToast(player, $toastType, $icon, title);
+        sendToast(player, $toastType, $icon, title);
 
         LocaleHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
