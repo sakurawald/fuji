@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 
@@ -22,9 +23,11 @@ public class SkinIO {
     }
 
     public @Nullable Property loadSkin(UUID uuid) {
-        File file = savePath.resolve(uuid + FILE_EXTENSION).toFile();
+        Path playerData = savePath.resolve(uuid + FILE_EXTENSION);
+        if (Files.notExists(playerData)) return null;
+
         try {
-            String string = org.apache.commons.io.FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+            String string = Files.readString(playerData);
             return BaseConfigurationHandler.getGson().fromJson(string, Property.class);
         } catch (IOException e) {
             LogUtil.error("load skin failed: " + e.getMessage());
