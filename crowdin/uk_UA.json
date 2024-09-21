@@ -211,5 +211,6 @@
     "world.dimension.not_found": "<red>The dimension %s not exists.",
     "world.dimension.reset": "<gold>Start to reset resource dimension %s",
     "world_downloader.request": "<#8DDFCB>Player %s just requested to download world file (Size: %.2f MB)",
-    "world_downloader.response": "<#8DDFCB>Download link generated: <hover:show_text:'<green>Open this link'><click:open_url:'%s'><green>[OPEN]</click></hover>"
+    "world_downloader.response": "<#8DDFCB>Download link generated: <hover:show_text:'<green>Open this link'><click:open_url:'%s'><green>[OPEN]</click></hover>",
+    "deathlog.empty": "<red>No death log found for this player."
 }

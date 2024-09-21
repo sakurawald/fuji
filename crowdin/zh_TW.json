@@ -211,5 +211,6 @@
     "world.dimension.not_found": "<red>維度 %s 不存在",
     "world.dimension.reset": "<gold>開始重設維度 %s",
     "world_downloader.request": "<#8DDFCB>玩家 %s 剛剛向世界下載器遞交下載請求 (總大小：%.2f MB)",
-    "world_downloader.response": "<#8DDFCB>已產生下載連結：<hover:show_text:'<green>開啟此連結'><click:open_url:'%s'><green>[開啟]</click></hover>"
+    "world_downloader.response": "<#8DDFCB>已產生下載連結：<hover:show_text:'<green>開啟此連結'><click:open_url:'%s'><green>[開啟]</click></hover>",
+    "deathlog.empty": "<red>No death log found for this player."
 }
