@@ -94,7 +94,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         // get model
         ItemStack mainHandStack = player.getMainHandStack();
         if (mainHandStack.isEmpty()) {
-            LocaleHelper.sendMessageByKey(player,"operation.fail");
+            LocaleHelper.sendMessageByKey(player,"item.empty.not_allow");
             return CommandHelper.Return.FAIL;
         }
 
@@ -121,7 +121,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     private static int detachAll(@CommandSource ServerPlayerEntity player) {
         ItemStack mainHandStack = player.getMainHandStack();
         if (mainHandStack.isEmpty()) {
-            LocaleHelper.sendMessageByKey(player, "operation.fail");
+            LocaleHelper.sendMessageByKey(player, "item.empty.not_allow");
             return CommandHelper.Return.FAIL;
         }
 
@@ -137,7 +137,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     private static int query(@CommandSource ServerPlayerEntity player) {
         ItemStack mainHandStack = player.getMainHandStack();
         if (mainHandStack.isEmpty()) {
-            LocaleHelper.sendMessageByKey(player, "operation.fail");
+            LocaleHelper.sendMessageByKey(player, "item.empty.not_allow");
             return CommandHelper.Return.FAIL;
         }
 
