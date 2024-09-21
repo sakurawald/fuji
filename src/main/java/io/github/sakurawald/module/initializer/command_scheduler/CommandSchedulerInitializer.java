@@ -6,6 +6,7 @@ import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
+import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -21,7 +22,8 @@ import org.quartz.JobDataMap;
 public class CommandSchedulerInitializer extends ModuleInitializer {
 
     @Getter
-    private static final BaseConfigurationHandler<SchedulerModel> schedulerHandler = new ObjectConfigurationHandler<>("scheduler.json", SchedulerModel.class);
+    private static final BaseConfigurationHandler<SchedulerModel> schedulerHandler = new ObjectConfigurationHandler<>("scheduler.json", SchedulerModel.class)
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(CommandSchedulerInitializer.class));
 
     private void updateJobs() {
         Managers.getScheduleManager().deleteJobs(CommandScheduleJob.class);

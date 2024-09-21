@@ -8,6 +8,7 @@ import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
+import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.skin.config.model.SkinModel;
 import io.github.sakurawald.module.initializer.skin.enums.SkinVariant;
@@ -31,7 +32,8 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 public class SkinInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<SkinModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(SkinModel.class), SkinModel.class);
+    public static final BaseConfigurationHandler<SkinModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(SkinModel.class), SkinModel.class)
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(SkinInitializer.class));
 
     @Override
     public void onInitialize() {

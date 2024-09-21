@@ -10,6 +10,7 @@ import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.OfflinePlayerName;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
+import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_toolbox.seen.config.model.SeenModel;
 import lombok.Getter;
@@ -19,7 +20,8 @@ import net.minecraft.server.command.ServerCommandSource;
 public class SeenInitializer extends ModuleInitializer {
 
     @Getter
-    private static final BaseConfigurationHandler<SeenModel> data = new ObjectConfigurationHandler<>("seen.json", SeenModel.class);
+    private static final BaseConfigurationHandler<SeenModel> data = new ObjectConfigurationHandler<>("seen.json", SeenModel.class)
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(SeenInitializer.class));
 
     @CommandNode("seen")
     @CommandRequirement(level = 4)

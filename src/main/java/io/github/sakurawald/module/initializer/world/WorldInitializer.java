@@ -14,6 +14,7 @@ import io.github.sakurawald.core.command.argument.wrapper.impl.DimensionType;
 import io.github.sakurawald.core.command.exception.AbortOperationException;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
+import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.world.config.model.WorldConfigModel;
 import io.github.sakurawald.module.initializer.world.config.model.WorldStorageModel;
@@ -49,7 +50,9 @@ import java.util.Optional;
 public class WorldInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<WorldConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(WorldConfigModel.class), WorldConfigModel.class);
-    private static final BaseConfigurationHandler<WorldStorageModel> storage = new ObjectConfigurationHandler<>("world.json", WorldStorageModel.class);
+
+    private static final BaseConfigurationHandler<WorldStorageModel> storage = new ObjectConfigurationHandler<>("world.json", WorldStorageModel.class)
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(WorldInitializer.class));
 
     @Override
     public void onInitialize() {

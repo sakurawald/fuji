@@ -13,6 +13,7 @@ import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
+import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
 import io.github.sakurawald.core.job.impl.MentionPlayersJob;
 import io.github.sakurawald.core.structure.RegexRewriteEntry;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -36,7 +37,8 @@ import java.util.regex.Pattern;
 
 public class ChatInitializer extends ModuleInitializer {
 
-    private static final BaseConfigurationHandler<ChatFormatModel> chatFormatHandler = new ObjectConfigurationHandler<>("chat.json", ChatFormatModel.class);
+    private static final BaseConfigurationHandler<ChatFormatModel> chatFormatHandler = new ObjectConfigurationHandler<>("chat.json", ChatFormatModel.class)
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(ChatInitializer.class));
 
     public  static final BaseConfigurationHandler<ChatConfigModel>  config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(ChatConfigModel.class), ChatConfigModel.class);
 

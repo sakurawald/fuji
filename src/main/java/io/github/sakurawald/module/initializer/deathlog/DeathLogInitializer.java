@@ -35,7 +35,7 @@ import java.util.List;
 @CommandNode("deathlog")
 @CommandRequirement(level = 4)
 public class DeathLogInitializer extends ModuleInitializer {
-    private final Path STORAGE_PATH = ReflectionUtil.getModuleConfigPath(DeathLogInitializer.class).resolve("deathlog");
+    private final Path STORAGE_PATH = ReflectionUtil.getModuleConfigPath(DeathLogInitializer.class).resolve("death-data");
 
     private final String DEATHS = "Deaths";
     private final String TIME = "time";

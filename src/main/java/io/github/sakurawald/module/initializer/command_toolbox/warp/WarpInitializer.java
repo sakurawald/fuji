@@ -7,6 +7,7 @@ import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
+import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
 import io.github.sakurawald.core.config.transformer.impl.RenameKeyTransformer;
 import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.core.structure.SpatialPose;
@@ -25,6 +26,7 @@ public class WarpInitializer extends ModuleInitializer {
 
     @Getter
     private static final BaseConfigurationHandler<WarpModel> data = new ObjectConfigurationHandler<>("warp.json", WarpModel.class)
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(WarpInitializer.class))
         .addTransformer(new RenameKeyTransformer("$", "warps", "name2warp"));
 
     @Override

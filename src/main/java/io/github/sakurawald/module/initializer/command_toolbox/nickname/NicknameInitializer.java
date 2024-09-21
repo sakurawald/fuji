@@ -7,6 +7,7 @@ import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
+import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_toolbox.nickname.config.model.NicknameModel;
 import lombok.Getter;
@@ -16,7 +17,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class NicknameInitializer extends ModuleInitializer {
 
     @Getter
-    private static final BaseConfigurationHandler<NicknameModel> nicknameHandler = new ObjectConfigurationHandler<>("nickname.json", NicknameModel.class);
+    private static final BaseConfigurationHandler<NicknameModel> nicknameHandler = new ObjectConfigurationHandler<>("nickname.json", NicknameModel.class)
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(NicknameInitializer.class));
 
     @CommandNode("set")
     private int $set(@CommandSource ServerPlayerEntity player, GreedyString format) {

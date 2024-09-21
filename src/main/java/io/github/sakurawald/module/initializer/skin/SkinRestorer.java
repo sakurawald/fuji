@@ -41,7 +41,7 @@ import java.util.function.Supplier;
 public class SkinRestorer {
 
     @Getter
-    private static final SkinStorage skinStorage = new SkinStorage(new SkinIO(ReflectionUtil.getModuleConfigPath(SkinInitializer.class).resolve("player-data")));
+    private static final SkinStorage skinStorage = new SkinStorage(new SkinIO(ReflectionUtil.getModuleConfigPath(SkinInitializer.class).resolve("skin-data")));
 
     public static CompletableFuture<Pair<Collection<ServerPlayerEntity>, Collection<GameProfile>>> setSkinAsync(@NotNull MinecraftServer server, @NotNull Collection<GameProfile> targets, @NotNull Supplier<Property> skinSupplier) {
         return CompletableFuture.<Pair<Property, Collection<GameProfile>>>supplyAsync(() -> {
