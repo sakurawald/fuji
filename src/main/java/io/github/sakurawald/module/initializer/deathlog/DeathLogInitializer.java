@@ -67,7 +67,7 @@ public class DeathLogInitializer extends ModuleInitializer {
 
         Path path = STORAGE_PATH.resolve(getFileName(from));
         NbtCompound root = NbtHelper.readOrDefault(path);
-        if (root.isEmpty()) {
+        if (root == null || root.isEmpty()) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "deathlog.empty");
             return CommandHelper.Return.FAIL;
         }
