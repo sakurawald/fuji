@@ -38,6 +38,10 @@ public class RegistryHelper {
         return Registries.ENTITY_TYPE.getId(entity.getType()).toString();
     }
 
+    public static @NotNull String ofString(@NotNull World world) {
+        return world.getRegistryKey().getValue().toString();
+    }
+
     public static @NotNull String ofString(@NotNull ServerWorld serverWorld) {
         return serverWorld.getRegistryKey().getValue().toString();
     }

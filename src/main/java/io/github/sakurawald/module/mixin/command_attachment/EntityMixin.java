@@ -19,7 +19,7 @@ import java.util.List;
 public abstract class EntityMixin {
 
     @Inject(method = "interact", at = @At("HEAD"))
-    void $interact(@NotNull PlayerEntity player, Hand hand, @NotNull CallbackInfoReturnable<ActionResult> cir) {
+    void onPlayerRightClickEntity(@NotNull PlayerEntity player, Hand hand, @NotNull CallbackInfoReturnable<ActionResult> cir) {
         Entity entity = (Entity) (Object) this;
 
         if (hand == Hand.MAIN_HAND) {
