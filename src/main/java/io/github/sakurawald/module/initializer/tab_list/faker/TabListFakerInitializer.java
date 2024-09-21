@@ -8,6 +8,6 @@ import io.github.sakurawald.module.initializer.tab_list.faker.config.model.TabLi
 
 public class TabListFakerInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<TabListFakerConfigModel> config = new ObjectConfigurationHandler<>("config.json", TabListFakerConfigModel.class);
+    public static final BaseConfigurationHandler<TabListFakerConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, TabListFakerConfigModel.class);
 
 }

@@ -36,7 +36,7 @@ import java.util.concurrent.CompletableFuture;
 @CommandRequirement(level = 4)
 public class CleanerInitializer extends ModuleInitializer {
 
-    public BaseConfigurationHandler<CleanerConfigModel> config = new ObjectConfigurationHandler<>("config.json", CleanerConfigModel.class);
+    public BaseConfigurationHandler<CleanerConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, CleanerConfigModel.class);
 
     @Override
     public void onInitialize() {

@@ -7,5 +7,5 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_rewrite.config.model.CommandRewriteConfigModel;
 
 public class CommandRewriteInitializer extends ModuleInitializer {
-    public static final BaseConfigurationHandler<CommandRewriteConfigModel> config = new ObjectConfigurationHandler<>("config.json", CommandRewriteConfigModel.class);
+    public static final BaseConfigurationHandler<CommandRewriteConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, CommandRewriteConfigModel.class);
 }

@@ -6,5 +6,5 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.anti_build.config.model.AntiBuildConfigModel;
 
 public class AntiBuildInitializer extends ModuleInitializer {
-    public static final BaseConfigurationHandler<AntiBuildConfigModel> config = new ObjectConfigurationHandler<>("config.json", AntiBuildConfigModel.class);
+    public static final BaseConfigurationHandler<AntiBuildConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, AntiBuildConfigModel.class);
 }
