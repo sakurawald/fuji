@@ -4,8 +4,6 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Option;
@@ -15,7 +13,6 @@ import com.jayway.jsonpath.spi.json.JsonProvider;
 import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
 import com.jayway.jsonpath.spi.mapper.MappingProvider;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.job.SaveConfigurationHandlerJob;
 import io.github.sakurawald.core.config.transformer.abst.ConfigurationTransformer;
 import lombok.Cleanup;
@@ -36,7 +33,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * I write some rules here to avoid forgetting.
@@ -51,8 +47,6 @@ import java.util.regex.Pattern;
  * 2. Create the instance of configuration handler should have no side effect, until the call to readStorage() and writeStorage()
  */
 public abstract class BaseConfigurationHandler<T> {
-
-    private static final Pattern MAP_TYPE_MATCHER = Pattern.compile(".+2.+");
 
     @Getter
     protected static Gson gson = new GsonBuilder()
@@ -120,35 +114,6 @@ public abstract class BaseConfigurationHandler<T> {
 
     protected abstract T getDefaultModel();
 
-    private void renameKeysToLowerUnderscoreStyle(JsonObject dataTree) {
-        for (String key : dataTree.keySet().stream().toList()) {
-
-            if (MAP_TYPE_MATCHER.matcher(key).matches()) {
-                continue;
-            }
-
-            /* go down */
-            if (dataTree.get(key).isJsonObject()) {
-                renameKeysToLowerUnderscoreStyle(dataTree.get(key).getAsJsonObject());
-            }
-
-            if (dataTree.get(key).isJsonArray()) {
-                dataTree.getAsJsonArray(key).forEach(e -> {
-                    if (e.isJsonObject()) renameKeysToLowerUnderscoreStyle(e.getAsJsonObject());
-                });
-            }
-
-            /* go up */
-            String underscoreName = ReflectionUtil.translateToLowerCaseWithUnderscore(key);
-            if (!key.equals(underscoreName)) {
-                JsonElement value = dataTree.get(key);
-                LogUtil.debug("read lower-camel key `{}` as lower-underscore key `{}`", key, underscoreName);
-                dataTree.remove(key);
-                dataTree.add(underscoreName, value);
-            }
-        }
-    }
-
     @SuppressWarnings("unchecked")
     public void readStorage() {
         try {
@@ -161,16 +126,10 @@ public abstract class BaseConfigurationHandler<T> {
             if (Files.notExists(this.path)) {
                 writeStorage();
             } else {
-                // read data tree from disk
-                @Cleanup Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this.path.toFile())));
-                JsonElement dataTree = JsonParser.parseReader(reader);
-
-                // treat all keys as lower-underscore format
-                renameKeysToLowerUnderscoreStyle(dataTree.getAsJsonObject());
-
                 // merge data tree with schema tree: the gson.fromJson() will use defaultModel as the schema tree to generate missing default kv-pairs for data tree.
+                @Cleanup Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this.path.toFile())));
                 T defaultModel = getDefaultModel();
-                this.model = (T) gson.fromJson(dataTree, defaultModel.getClass());
+                this.model = (T) gson.fromJson(reader, defaultModel.getClass());
 
                 /* write storage back, to:
                  * 1. keep the sync between memory and disk.

@@ -9,6 +9,7 @@ import java.util.List;
 
 public class CommandSchedulerModel {
 
+    @SerializedName(value = "jobs", alternate = "scheduleJobs")
     public @NotNull List<ScheduleJob> jobs = new ArrayList<>() {
         {
             this.add(new ScheduleJob("example_job", false, 3, List.of("0 0 * ? * *"),
