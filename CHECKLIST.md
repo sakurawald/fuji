@@ -22,3 +22,15 @@ It's good to have a checklist, to avoid forgetting something.
 - test the jar file in a real environment.
 - publish the pdf file in "dev" branch.
 - merge changes from "dev" branch into "release" branch.
+
+## Some interesting tests
+- Summon a fake player using `/player 1 spawn` and throw exp bottle to it. 
+- See if a pickaxe gets the max power level in `/emchantment`.
+- See an inventory display contains a shulker box.
+- Try to move an afk player.
+- See chunks using `/chunks` .
+- Buy a new head in `/head`.
+- Get a kit from `/kit`.
+- Start a sample for a production work.
+- Teleport to an offline player's location using `/tppos offline`.
+- Enter afk using `/afk` and watch the player list.
