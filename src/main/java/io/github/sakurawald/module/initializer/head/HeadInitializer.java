@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.head;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -18,7 +19,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 // Special thanks to: https://github.com/PotatoPresident/HeadIndex
 public class HeadInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<HeadModel> headHandler = new ObjectConfigurationHandler<>("head.json", HeadModel.class).addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(HeadInitializer.class));
+    public static final BaseConfigurationHandler<HeadModel> headHandler = new ObjectConfigurationHandler<>("head.json", HeadModel.class).addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("head.json"),HeadInitializer.class));
 
     @CommandNode("head sync")
     @CommandRequirement(level = 4)

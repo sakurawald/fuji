@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.command_scheduler;
 
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -23,7 +24,7 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
 
     @Getter
     private static final BaseConfigurationHandler<SchedulerModel> schedulerHandler = new ObjectConfigurationHandler<>("scheduler.json", SchedulerModel.class)
-        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(CommandSchedulerInitializer.class));
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("scheduler.json"),CommandSchedulerInitializer.class));
 
     private void updateJobs() {
         Managers.getScheduleManager().deleteJobs(CommandScheduleJob.class);

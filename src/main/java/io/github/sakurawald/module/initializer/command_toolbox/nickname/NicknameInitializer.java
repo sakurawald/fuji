@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.nickname;
 
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -18,7 +19,7 @@ public class NicknameInitializer extends ModuleInitializer {
 
     @Getter
     private static final BaseConfigurationHandler<NicknameModel> nicknameHandler = new ObjectConfigurationHandler<>("nickname.json", NicknameModel.class)
-        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(NicknameInitializer.class));
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("nickname.json"),NicknameInitializer.class));
 
     @CommandNode("set")
     private int $set(@CommandSource ServerPlayerEntity player, GreedyString format) {

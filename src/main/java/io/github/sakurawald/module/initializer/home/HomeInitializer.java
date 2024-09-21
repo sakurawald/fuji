@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.home;
 
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
@@ -26,7 +27,7 @@ public class HomeInitializer extends ModuleInitializer {
 
     @Getter
     private static final BaseConfigurationHandler<HomeModel> storage = new ObjectConfigurationHandler<>("home.json", HomeModel.class)
-        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(HomeInitializer.class))
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("home.json"),HomeInitializer.class))
         .addTransformer(new RenameKeyTransformer("$","homes","name2home"));
 
     public void onInitialize() {
