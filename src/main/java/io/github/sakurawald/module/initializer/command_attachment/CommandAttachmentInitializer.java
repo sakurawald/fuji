@@ -7,6 +7,7 @@ import com.google.gson.JsonParseException;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -19,12 +20,14 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_attachment.command.argument.wrapper.ExecuteAsType;
 import io.github.sakurawald.module.initializer.command_attachment.command.argument.wrapper.InteractType;
 import io.github.sakurawald.module.initializer.command_attachment.config.model.CommandAttachmentModel;
+import io.github.sakurawald.module.initializer.command_attachment.job.TestSteppingOnBlockJob;
 import io.github.sakurawald.module.initializer.command_attachment.structure.BlockCommandAttachmentEntry;
 import io.github.sakurawald.module.initializer.command_attachment.structure.CommandAttachmentEntry;
 import io.github.sakurawald.module.initializer.command_attachment.structure.CommandAttackmentType;
 import io.github.sakurawald.module.initializer.command_attachment.structure.EntityCommandAttachmentEntry;
 import io.github.sakurawald.module.initializer.command_attachment.structure.ItemStackCommandAttachmentEntry;
 import lombok.SneakyThrows;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -37,7 +40,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @CommandNode("command-attachment")
@@ -46,11 +51,30 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
     private static final String COMMAND_ATTACHMENT_SUBJECT_NAME = "command-attachment";
 
+    private static final Map<String, String> player2uuid = new HashMap<>();
+
+    private static void testSteppingBlockForPlayer(ServerPlayerEntity player) {
+        String playerName = player.getGameProfile().getName();
+        String originalUuid = player2uuid.get(playerName);
+        String uuid = NbtHelper.getUuid(player.getServerWorld(), player.getSteppingPos());
+
+        if (uuid.equals(originalUuid)) return;
+        // update value
+        player2uuid.put(playerName, uuid);
+
+        // test stepping block
+        if (!existsAttachmentModel(uuid)) return;
+        ServerHelper.getDefaultServer().executeSync(() -> triggerAttachmentModel(uuid, player, List.of(InteractType.STEP_ON)));
+
+    }
+
+    public static void testSteppingBlockForPlayers() {
+        ServerHelper.getPlayerManager().getPlayerList().forEach(CommandAttachmentInitializer::testSteppingBlockForPlayer);
+    }
+
     @Override
     public void onInitialize() {
-//        ServerTickEvents.END_SERVER_TICK.register(server -> {
-//            server.getPlayerManager().getPlayer().
-//        });
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> new TestSteppingOnBlockJob().schedule());
     }
 
     @Override

@@ -139,11 +139,14 @@ public class NbtHelper {
         return root.getString(FUJI_UUID);
     }
 
-    public static String getUuid(World world, BlockPos blockPos) {
+    public static String formatString(World world, BlockPos blockPos) {
         String dimension = RegistryHelper.ofString(world);
         String pos = blockPos.getX() + "#" + blockPos.getY() + "#" + blockPos.getZ();
-        String str = dimension + "#" + pos;
-        return UUID.nameUUIDFromBytes(str.getBytes()).toString();
+        return dimension + "#" + pos;
+    }
+
+    public static String getUuid(World world, BlockPos blockPos) {
+        return UUID.nameUUIDFromBytes(formatString(world, blockPos).getBytes()).toString();
     }
 
     public static @NotNull String getOrMakeUUIDNbt(ItemStack itemStack) {

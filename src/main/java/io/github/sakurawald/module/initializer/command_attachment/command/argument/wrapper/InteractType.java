@@ -3,6 +3,7 @@ package io.github.sakurawald.module.initializer.command_attachment.command.argum
 public enum InteractType {
     LEFT,
     RIGHT,
-    BOTH
+    BOTH,
+    STEP_ON
 
 }
