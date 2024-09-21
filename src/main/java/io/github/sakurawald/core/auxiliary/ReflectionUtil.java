@@ -52,17 +52,16 @@ public class ReflectionUtil {
         return lines;
     }
 
-    public static String getModulePath(String className) {
+    public static String computeModulePath(String className) {
         return String.join(".", ModuleManager.computeModulePath(className));
     }
 
-    public static String getModulePath(Class<?> clazz) {
-        return getModulePath(clazz.getName());
+    public static String computeModulePath(Class<?> clazz) {
+        return computeModulePath(clazz.getName());
     }
 
     public static Path getModuleConfigPath(Class<?> clazz) {
-        String others = getModulePath(clazz).replace(".", "/");
-        return Fuji.CONFIG_PATH.resolve("modules").resolve(others);
+        return getModuleConfigPath(computeModulePath(clazz));
     }
 
     public static Path getModuleConfigPath(String modulePath) {

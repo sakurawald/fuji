@@ -40,7 +40,7 @@ public class CommandAliasInitializer extends ModuleInitializer {
                 CommandNode<ServerCommandSource> target = dispatcher.findNode(entry.to);
 
                 if (target == null) {
-                    LogUtil.warn("[{}] can't find the target command node for alias entry: {}", ReflectionUtil.getModulePath(this.getClass()), entry);
+                    LogUtil.warn("[command alias] can't find the target command node for alias entry: {}", entry);
                     return;
                 }
 
