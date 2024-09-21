@@ -1,11 +1,9 @@
 package io.github.sakurawald.module.mixin.deathlog;
 
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.deathlog.DeathLogInitializer;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
