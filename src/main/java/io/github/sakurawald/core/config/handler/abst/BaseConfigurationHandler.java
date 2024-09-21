@@ -62,7 +62,7 @@ public abstract class BaseConfigurationHandler<T> {
         .serializeNulls()
         .create();
 
-    protected @NotNull Path path;
+    protected final @NotNull Path path;
 
     protected T model;
 

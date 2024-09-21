@@ -13,7 +13,7 @@ import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.home.command.argument.wrapper.HomeName;
-import io.github.sakurawald.module.initializer.home.config.model.HomeModel;
+import io.github.sakurawald.module.initializer.home.config.model.HomeDataModel;
 import lombok.Getter;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +25,7 @@ import java.util.Optional;
 public class HomeInitializer extends ModuleInitializer {
 
     @Getter
-    private static final BaseConfigurationHandler<HomeModel> storage = new ObjectConfigurationHandler<>("home.json", HomeModel.class)
+    private static final BaseConfigurationHandler<HomeDataModel> storage = new ObjectConfigurationHandler<>("home.json", HomeDataModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("home.json"),HomeInitializer.class));
 
     public void onInitialize() {

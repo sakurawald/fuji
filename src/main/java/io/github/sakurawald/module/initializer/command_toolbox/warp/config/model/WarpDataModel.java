@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WarpModel {
+public class WarpDataModel {
     @SerializedName(value = "name2warp", alternate = "warps")
     public @NotNull Map<String, WarpEntry> name2warp = new HashMap<>();
 }

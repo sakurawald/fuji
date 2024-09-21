@@ -10,7 +10,7 @@ import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.command_toolbox.nickname.config.model.NicknameModel;
+import io.github.sakurawald.module.initializer.command_toolbox.nickname.config.model.NicknameDataModel;
 import lombok.Getter;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -18,7 +18,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class NicknameInitializer extends ModuleInitializer {
 
     @Getter
-    private static final BaseConfigurationHandler<NicknameModel> nicknameHandler = new ObjectConfigurationHandler<>("nickname.json", NicknameModel.class)
+    private static final BaseConfigurationHandler<NicknameDataModel> nicknameHandler = new ObjectConfigurationHandler<>("nickname.json", NicknameDataModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("nickname.json"),NicknameInitializer.class));
 
     @CommandNode("set")

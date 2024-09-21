@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-public class PvPModel {
+public class PvPDataModel {
 
     public @NotNull Set<String> whitelist = new HashSet<>();
 

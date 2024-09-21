@@ -7,7 +7,7 @@ import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.command_toolbox.sit.config.model.SitModel;
+import io.github.sakurawald.module.initializer.command_toolbox.sit.config.model.SitConfigModel;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -34,7 +34,7 @@ public class SitInitializer extends ModuleInitializer {
     public static final Vec3d CHAIR_ENTITY_OFFSET = new Vec3d(0, -1.375, 0);
     private static final Set<Entity> CHAIR_ENTITY_LIST = new HashSet<>();
 
-    public static final BaseConfigurationHandler<SitModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, SitModel.class);
+    public static final BaseConfigurationHandler<SitConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, SitConfigModel.class);
 
     @Override
     public void onInitialize() {

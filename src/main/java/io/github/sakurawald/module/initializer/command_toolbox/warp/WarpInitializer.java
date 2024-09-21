@@ -13,7 +13,7 @@ import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_toolbox.warp.command.argument.wrapper.WarpName;
-import io.github.sakurawald.module.initializer.command_toolbox.warp.config.model.WarpModel;
+import io.github.sakurawald.module.initializer.command_toolbox.warp.config.model.WarpDataModel;
 import io.github.sakurawald.module.initializer.command_toolbox.warp.structure.WarpEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -22,7 +22,7 @@ import java.util.Optional;
 @CommandNode("warp")
 public class WarpInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<WarpModel> data = new ObjectConfigurationHandler<>("warp.json", WarpModel.class)
+    public static final BaseConfigurationHandler<WarpDataModel> data = new ObjectConfigurationHandler<>("warp.json", WarpDataModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("warp.json"),WarpInitializer.class));
 
     @Override

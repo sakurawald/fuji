@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-public class NicknameModel {
+public class NicknameDataModel {
 
     public @NotNull Format format = new Format();
     public static class Format {

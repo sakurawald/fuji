@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.sit.config.model;
 
-public class SitModel {
+public class SitConfigModel {
     public boolean allow_right_click_sit = true;
     public boolean allow_sneaking_to_sit = false;
     public boolean require_empty_hand_to_sit = false;

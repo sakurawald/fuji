@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandSchedulerModel {
+public class CommandSchedulerConfigModel {
 
     @SerializedName(value = "jobs", alternate = "scheduleJobs")
     public @NotNull List<ScheduleJob> jobs = new ArrayList<>() {
