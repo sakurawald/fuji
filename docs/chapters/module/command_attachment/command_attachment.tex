@@ -13,20 +13,28 @@ This module allows you to attach commands into itemstack.
 \LevelTwo{Example}
 \begin{example}{Make a magic-stick which heals the player on clicked.}
     Hold a stick item in your main hand.\\
-    \ic{/command-attachment attach-one heal}
+    \ic{/command-attachment attach-item-one heal}
 \end{example}
 
 \begin{example}{Make a magic-stick which gives one dimaond on left clicked with use limit 3 and gives one gold\_ingot on right clicked with use limit 5.}
     Hold a stick item in your main hand.\\
-    \ic{/command-attachment attach-one --maxUseTimes 3 --interactType LEFT give \ph{player:name} minecraft:diamond 1}\\
-    \ic{/command-attachment attach-one --maxUseTimes 5 --interactType RIGHT give \ph{player:name} minecraft:gold\_ingot 1}
+    \ic{/command-attachment attach-item-one --maxUseTimes 3 --interactType LEFT give \ph{player:name} minecraft:diamond 1}\\
+    \ic{/command-attachment attach-item-one --maxUseTimes 5 --interactType RIGHT give \ph{player:name} minecraft:gold\_ingot 1}
 \end{example}
 
 \begin{example}{Make a magic-stick which gives one apple on clicked with use limit 3 without destroying the item.}
     Hold a stick item in your main hand.\\
-    \ic{/command-attachment attach-one --maxUseTimes 3 --destroyItem false give \ph{player:name} minecraft:apple 1}
+    \ic{/command-attachment attach-item-one --maxUseTimes 3 --destroyItem false give \ph{player:name} minecraft:apple 1}
 \end{example}
 
 \begin{example}{Query the attached commands in the mainhand item.}
-    \ic{/command-attachment query}
+    \ic{/command-attachment query-item}
+\end{example}
+
+\begin{example}{Let an entity says hello on right click}
+    \ic{/command-attachment attach-entity-one <entity-id> say hello \ph{player:name}}
+\end{example}
+
+\begin{example}{Say hello if you steppd on a specific block}
+    \ic{/command-attachment attach-block-one 0 0 0 --interactType STEP\_ON say hello \ph{player:name}}
 \end{example}
