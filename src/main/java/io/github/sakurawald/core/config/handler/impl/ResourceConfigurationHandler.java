@@ -1,8 +1,10 @@
 package io.github.sakurawald.core.config.handler.impl;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,12 +38,33 @@ public class ResourceConfigurationHandler extends BaseConfigurationHandler<JsonE
         return JsonParser.parseReader(reader);
     }
 
+    private void mergeTree(JsonObject dataTree, JsonObject schemaTree) {
+        schemaTree.keySet().stream()
+            .filter(key -> !dataTree.has(key))
+            .forEach(key -> {
+                LogUtil.info("add missing language key `{}` for file `{}`", key, this.path);
+                dataTree.add(key, schemaTree.get(key));
+            });
+    }
+
     /**
      * for resource configuration handler, the type of model is JsonElement, which equals to the type of data tree.
      */
     @Override
     protected JsonElement getDefaultModel() {
         return readJsonTreeFromResource(this.resourcePath);
+    }
+
+    @Override
+    public void readStorage() {
+        super.readStorage();
+
+        // add missing language keys
+        if (this.model != null) {
+            mergeTree(this.model.getAsJsonObject(), this.getDefaultModel().getAsJsonObject());
+            this.writeStorage();
+        }
+
     }
 
 }
