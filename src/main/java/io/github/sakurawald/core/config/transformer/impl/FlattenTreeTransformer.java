@@ -1,7 +1,7 @@
 package io.github.sakurawald.core.config.transformer.impl;
 
 import com.google.gson.JsonObject;
-import io.github.sakurawald.core.auxiliary.LogUtil;
+import com.jayway.jsonpath.DocumentContext;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.abst.ConfigurationTransformer;
 import lombok.SneakyThrows;
@@ -77,13 +77,15 @@ public class FlattenTreeTransformer extends ConfigurationTransformer {
 
     @Override
     public void apply() {
-        JsonObject root = (JsonObject) read(this.jsonPath);
+        DocumentContext context = this.makeDocumentContext();
+
+        JsonObject root = (JsonObject) read(context,this.jsonPath);
         this.flatten(root, this.topLevel);
 
         if (overrideTheOriginalFileWithSkeletonTree) {
-            JsonObject skeletonTree = (JsonObject) read(this.jsonPath);
-            set(this.jsonPath, makeSkeletonTree(skeletonTree));
-            writeStorage();
+            JsonObject skeletonTree = (JsonObject) read(context,this.jsonPath);
+            set(context,this.jsonPath, makeSkeletonTree(skeletonTree));
+            writeStorage(context);
         }
     }
 

@@ -9,31 +9,35 @@ import lombok.SneakyThrows;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+@SuppressWarnings("LombokGetterMayBeUsed")
 public abstract class ConfigurationTransformer {
 
     @Getter
     private Path path;
-    private DocumentContext context;
 
     @SneakyThrows
     public void configure(Path path) {
         this.path = path;
-        this.context = BaseConfigurationHandler.getJsonPathParser().parse(path.toFile());
+    }
+
+    @SneakyThrows
+    public DocumentContext makeDocumentContext() {
+        return BaseConfigurationHandler.getJsonPathParser().parse(this.path.toFile());
     }
 
     public abstract void apply();
 
-    public boolean exists(String jsonPath) {
+    public boolean exists(DocumentContext context, String jsonPath) {
         try {
-            this.context.read(jsonPath);
+            context.read(jsonPath);
         } catch (Exception e) {
             return false;
         }
         return true;
     }
 
-    public boolean notExists(String jsonPath) {
-        return !exists(jsonPath);
+    public boolean notExists(DocumentContext context, String jsonPath) {
+        return !exists(context, jsonPath);
     }
 
     public void logConsole(String message, Object... args) {
@@ -44,28 +48,28 @@ public abstract class ConfigurationTransformer {
         LogUtil.warn("transform configuration file `{}`: " + message, fullArgs);
     }
 
-    public void renameKey(String jsonPath, String oldKeyName, String newKeyName) {
+    public void renameKey(DocumentContext context, String jsonPath, String oldKeyName, String newKeyName) {
         this.logConsole("rename key from `{}` to `{}`", oldKeyName, newKeyName);
         context.renameKey(jsonPath, oldKeyName, newKeyName);
     }
 
     @SneakyThrows
-    public void writeStorage() {
+    public void writeStorage(DocumentContext context) {
         this.logConsole("write storage");
         String json = BaseConfigurationHandler.getGson().toJson(context.json());
         Files.writeString(this.path, json);
     }
 
-    public void deleteKey(String jsonPath) {
+    public void deleteKey(DocumentContext context, String jsonPath) {
         this.logConsole("delete key from `{}`", jsonPath);
         context.delete(jsonPath);
     }
 
-    public Object read(String jsonPath) {
+    public Object read(DocumentContext context, String jsonPath) {
         return context.read(jsonPath);
     }
 
-    public void set(String jsonPath, Object newValue) {
+    public void set(DocumentContext context, String jsonPath, Object newValue) {
         this.logConsole("set key `{}`: {}", jsonPath, newValue);
         context.set(jsonPath, newValue);
     }

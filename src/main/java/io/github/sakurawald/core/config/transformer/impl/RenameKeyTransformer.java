@@ -1,5 +1,6 @@
 package io.github.sakurawald.core.config.transformer.impl;
 
+import com.jayway.jsonpath.DocumentContext;
 import io.github.sakurawald.core.config.transformer.abst.ConfigurationTransformer;
 
 public class RenameKeyTransformer extends ConfigurationTransformer {
@@ -16,9 +17,10 @@ public class RenameKeyTransformer extends ConfigurationTransformer {
 
     @Override
     public void apply() {
-        if (notExists("%s.%s".formatted(jsonPath, newKeyName))) {
-            renameKey(jsonPath, oldKeyName, newKeyName);
-            writeStorage();
+        DocumentContext context = makeDocumentContext();
+        if (notExists(context, "%s.%s".formatted(jsonPath, newKeyName))) {
+            renameKey(context,jsonPath, oldKeyName, newKeyName);
+            writeStorage(context);
         }
     }
 }
