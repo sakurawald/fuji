@@ -14,13 +14,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ServerCommonNetworkHandler.class)
 public class FakePlayerPingMixin {
 
-    @Unique
-    private static final TabListFakerInitializer initializer = Managers.getModuleManager().getInitializer(TabListFakerInitializer.class);
-
     @Inject(method = "getLatency", at = @At("HEAD"), cancellable = true)
     void fakePing(@NotNull CallbackInfoReturnable<Integer> cir) {
-        int min = initializer.config.getModel().ping.min_ping;
-        int max = initializer.config.getModel().ping.max_ping;
+        int min = TabListFakerInitializer.config.getModel().ping.min_ping;
+        int max = TabListFakerInitializer.config.getModel().ping.max_ping;
         int ping = RandomUtil.getRandom().nextInt(min, max);
         cir.setReturnValue(ping);
     }

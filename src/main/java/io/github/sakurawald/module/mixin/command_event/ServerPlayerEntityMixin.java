@@ -14,13 +14,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerPlayerEntity.class)
 public class ServerPlayerEntityMixin {
 
-    @Unique
-    private static final CommandEventInitializer initializer = Managers.getModuleManager().getInitializer(CommandEventInitializer.class);
-
     @Inject(method = "onDeath", at = @At("HEAD"))
     public void onPlayerDeath(DamageSource damageSource, CallbackInfo ci) {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-        CommandExecutor.executeSpecializedCommand(player, initializer.config.getModel().event.on_player_death.command_list);
+        CommandExecutor.executeSpecializedCommand(player, CommandEventInitializer.config.getModel().event.on_player_death.command_list);
     }
 
 }

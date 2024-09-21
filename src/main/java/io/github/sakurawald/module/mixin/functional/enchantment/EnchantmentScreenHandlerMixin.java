@@ -13,16 +13,13 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 @Mixin(EnchantmentScreenHandler.class)
 public class EnchantmentScreenHandlerMixin {
 
-    @Unique
-    private static final EnchantmentInitializer INITIALIZER = Managers.getModuleManager().getInitializer(EnchantmentInitializer.class);
-
     @ModifyArg(method = "method_17411(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;calculateRequiredExperienceLevel(Lnet/minecraft/util/math/random/Random;IILnet/minecraft/item/ItemStack;)I"), index = 2)
     int modifyTheNumberOfPowerOfProviders(int i) {
         var enchantment = Configs.configHandler.getModel().modules.functional.enchantment;
         if (enchantment.enable) {
             EnchantmentScreenHandler instance = ((EnchantmentScreenHandler) (Object) this);
             if (instance instanceof MyEnchantmentScreenHandler) {
-                return INITIALIZER.config.getModel().enchantment.override_power.power_provider_amount;
+                return EnchantmentInitializer.config.getModel().enchantment.override_power.power_provider_amount;
             }
         }
         return i;

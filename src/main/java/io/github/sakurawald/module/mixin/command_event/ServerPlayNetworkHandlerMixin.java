@@ -17,14 +17,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerPlayNetworkHandler.class)
 public class ServerPlayNetworkHandlerMixin {
 
-    @Unique
-    private static final CommandEventInitializer initializer = Managers.getModuleManager().getInitializer(CommandEventInitializer.class);
-
     @Shadow
     public ServerPlayerEntity player;
 
     @Inject(at = @At("HEAD"), method = "onDisconnected")
     private void onPlayerLeft(DisconnectionInfo disconnectionInfo, CallbackInfo ci) {
-        CommandExecutor.executeSpecializedCommand(player, initializer.config.getModel().event.on_player_left.command_list);
+        CommandExecutor.executeSpecializedCommand(player, CommandEventInitializer.config.getModel().event.on_player_left.command_list);
     }
 }
