@@ -15,7 +15,7 @@ public class ChainInitializer extends ModuleInitializer {
 
     @CommandNode("chain")
     @CommandRequirement(level = 4)
-    private int chain(GreedyString rest) {
+    private static int chain(GreedyString rest) {
 
         String $rest = rest.getValue();
 

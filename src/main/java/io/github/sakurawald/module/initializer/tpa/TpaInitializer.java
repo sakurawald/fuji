@@ -26,31 +26,31 @@ public class TpaInitializer extends ModuleInitializer {
     private static final List<TpaRequest> requests = new ArrayList<>();
 
     @CommandNode("tpa")
-    private int $tpa(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
+    private static int $tpa(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
         return doRequest(player, target, false);
     }
 
     @CommandNode("tpahere")
-    private int $tpahere(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
+    private static int $tpahere(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
         return doRequest(player, target, true);
     }
 
     @CommandNode("tpaaccept")
-    private int $tpaaccept(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
+    private static int $tpaaccept(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
         return doResponse(player, target, ResponseStatus.ACCEPT);
     }
 
     @CommandNode("tpadeny")
-    private int $tpadeny(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
+    private static int $tpadeny(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
         return doResponse(player, target, ResponseStatus.DENY);
     }
 
     @CommandNode("tpacancel")
-    private int $tpacancel(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
+    private static int $tpacancel(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
         return doResponse(player, target, ResponseStatus.CANCEL);
     }
 
-    private int doResponse(ServerPlayerEntity source, ServerPlayerEntity target, ResponseStatus status) {
+    private static int doResponse(ServerPlayerEntity source, ServerPlayerEntity target, ResponseStatus status) {
         /* resolve relative request */
         Optional<TpaRequest> requestOptional = requests.stream()
                 .filter(request ->
@@ -85,7 +85,7 @@ public class TpaInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    private int doRequest(ServerPlayerEntity source, ServerPlayerEntity target, boolean tpahere) {
+    private static int doRequest(ServerPlayerEntity source, ServerPlayerEntity target, boolean tpahere) {
         /* add request */
         TpaRequest request = new TpaRequest(source, target, tpahere);
 

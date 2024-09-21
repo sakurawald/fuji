@@ -23,19 +23,19 @@ public class HeadInitializer extends ModuleInitializer {
 
     @CommandNode("head sync")
     @CommandRequirement(level = 4)
-    private int $sync(@CommandSource CommandContext<ServerCommandSource> ctx) {
+    private static int $sync(@CommandSource CommandContext<ServerCommandSource> ctx) {
         HeadProvider.fetchData();
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("head")
-    public int $head(@CommandSource ServerPlayerEntity player) {
+    private static int $head(@CommandSource ServerPlayerEntity player) {
         new HeadGui(player).open();
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("head gui")
-    public int $gui(@CommandSource ServerPlayerEntity player) {
+    private static int $gui(@CommandSource ServerPlayerEntity player) {
         return $head(player);
     }
 }

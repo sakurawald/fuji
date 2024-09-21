@@ -23,7 +23,7 @@ public class ReplyInitializer extends ModuleInitializer {
 
 
     @CommandNode("reply")
-    private int $reply(@CommandSource ServerPlayerEntity player, GreedyString message) {
+    private static int $reply(@CommandSource ServerPlayerEntity player, GreedyString message) {
         String target = player2target.get(player.getGameProfile().getName());
 
         try {

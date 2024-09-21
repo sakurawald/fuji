@@ -23,14 +23,14 @@ public class RtpInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<RtpConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, RtpConfigModel.class);
 
-    private @NotNull Optional<TeleportSetup> getTeleportSetup(@NotNull ServerWorld world) {
+    private static @NotNull Optional<TeleportSetup> getTeleportSetup(@NotNull ServerWorld world) {
         List<TeleportSetup> list = config.getModel().setup.dimension;
         String dimension = RegistryHelper.ofString(world);
         return list.stream().filter(o -> o.getDimension().equals(dimension)).findFirst();
     }
 
     @CommandNode("rtp")
-    private int $rtp(@CommandSource ServerPlayerEntity player, Optional<Dimension> dimension) {
+    private static int $rtp(@CommandSource ServerPlayerEntity player, Optional<Dimension> dimension) {
 
         ServerWorld serverWorld = dimension.isPresent() ? dimension.get().getValue() : player.getServerWorld();
 

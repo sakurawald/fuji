@@ -30,7 +30,7 @@ public class AfkInitializer extends ModuleInitializer {
 
     // note: issue command will update lastLastActionTime, so it's impossible to use /afk to disable afk
     @CommandNode("afk")
-    private int $afk(@CommandSource ServerPlayerEntity player) {
+    private static int $afk(@CommandSource ServerPlayerEntity player) {
         if (!player.isOnGround()
                 || player.isOnFire()
                 || player.inPowderSnow

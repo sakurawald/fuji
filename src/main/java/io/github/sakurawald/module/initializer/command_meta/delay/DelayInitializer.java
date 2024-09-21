@@ -23,7 +23,7 @@ public class DelayInitializer extends ModuleInitializer {
 
     @CommandNode("delay")
     @CommandRequirement(level = 4)
-    private int delay(int time, GreedyString rest) {
+    private static int delay(int time, GreedyString rest) {
 
         String $rest = rest.getValue();
 

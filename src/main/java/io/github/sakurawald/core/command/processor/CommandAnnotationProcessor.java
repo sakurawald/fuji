@@ -31,6 +31,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,15 +81,19 @@ public class CommandAnnotationProcessor {
     }
 
     private static void processMethod(Class<?> clazz, Object instance, Method method) {
-        if (!method.getReturnType().equals(Integer.class)
-            && !method.getReturnType().equals(int.class)) {
-            throw new RuntimeException("The method `%s` in class `%s` must return Integer.".formatted(method.getName(), clazz.getName()));
+        /* verity */
+        if (!method.getReturnType().equals(int.class)) {
+            throw new RuntimeException("The method `%s` in class `%s` must return the primitive int data type.".formatted(method.getName(), clazz.getName()));
+        }
+
+        if (!Modifier.isStatic(method.getModifiers())) {
+            throw new RuntimeException("The method `%s` in class `%s` must be static.".formatted(method.getName(), clazz.getName()));
         }
 
         // ignore visibility
         method.setAccessible(true);
 
-        // make argument list
+        /* make argument list */
         List<Argument> pattern = makeArgumentList(clazz, method);
         if (pattern.isEmpty()) {
             throw new RuntimeException("The @CommandNode annotation of method `%s` in class `%s` must have at least one argument.".formatted(method.getName(), clazz.getName()));
@@ -128,7 +133,6 @@ public class CommandAnnotationProcessor {
 
         builder.requires(predicate);
     }
-
 
     private static List<Argument> makeArgumentList(Class<?> clazz, Method method) {
         List<Argument> ret = new ArrayList<>();

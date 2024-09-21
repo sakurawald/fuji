@@ -15,7 +15,7 @@ import net.minecraft.text.Text;
 public class SmithInitializer extends ModuleInitializer {
 
     @CommandNode("smithing")
-    private int $smithing(@CommandSource ServerPlayerEntity player) {
+    private static int $smithing(@CommandSource ServerPlayerEntity player) {
         player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> new SmithingScreenHandler(i, inventory, ScreenHandlerContext.create(p.getWorld(), p.getBlockPos())) {
             @Override
             public boolean canUse(PlayerEntity player) {

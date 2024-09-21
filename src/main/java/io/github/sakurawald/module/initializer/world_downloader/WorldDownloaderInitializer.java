@@ -36,8 +36,8 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<WorldDownloaderConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, WorldDownloaderConfigModel.class);
 
-    private EvictingQueue<String> contextQueue;
-    private HttpServer server;
+    private static EvictingQueue<String> contextQueue;
+    private static HttpServer server;
 
 
     @Override
@@ -47,10 +47,10 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
 
     @Override
     public void onReload() {
-        this.initServer();
+        initServer();
     }
 
-    public void initServer() {
+    public static void initServer() {
         if (server != null) {
             server.stop(0);
         }
@@ -63,21 +63,21 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         }
     }
 
-    public void safelyRemoveContext(String path) {
+    public static void safelyRemoveContext(String path) {
         try {
-            this.server.removeContext(path);
+            server.removeContext(path);
         } catch (IllegalArgumentException e) {
             // do nothing
         }
     }
 
-    public void safelyRemoveContext(@NotNull HttpContext httpContext) {
+    public static void safelyRemoveContext(@NotNull HttpContext httpContext) {
         safelyRemoveContext(httpContext.getPath());
     }
 
     @SneakyThrows
     @CommandNode("download")
-    private int $download(@CommandSource ServerPlayerEntity player) {
+    private static int $download(@CommandSource ServerPlayerEntity player) {
         /* init server */
         if (server == null) {
             initServer();
@@ -102,12 +102,12 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         File file = compressRegionFile(player);
         double BYTE_TO_MEGABYTE = 1.0 * 1024 * 1024;
         LocaleHelper.sendBroadcastByKey("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
-        server.createContext(path, new FileDownloadHandler(this, file, config.getModel().bytes_per_second_limit));
+        server.createContext(path, new FileDownloadHandler(file, config.getModel().bytes_per_second_limit));
         LocaleHelper.sendMessageByKey(player, "world_downloader.response", url);
         return CommandHelper.Return.SUCCESS;
     }
 
-    public @NotNull File compressRegionFile(@NotNull ServerPlayerEntity player) {
+    public static @NotNull File compressRegionFile(@NotNull ServerPlayerEntity player) {
         /* get region location */
         ChunkPos chunkPos = player.getChunkPos();
         int regionX = chunkPos.getRegionX();

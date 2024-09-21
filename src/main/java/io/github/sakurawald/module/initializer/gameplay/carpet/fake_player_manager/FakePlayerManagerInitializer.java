@@ -42,14 +42,14 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
     }
 
     @CommandNode("player renew")
-    private int $renew(@CommandSource ServerPlayerEntity player) {
+    private static int $renew(@CommandSource ServerPlayerEntity player) {
         renewFakePlayers(player);
         return CommandHelper.Return.SUCCESS;
     }
 
 
     @CommandNode("player who")
-    private int $who(@CommandSource CommandContext<ServerCommandSource> context) {
+    private static int $who(@CommandSource CommandContext<ServerCommandSource> context) {
         /* validate */
         validateFakePlayers();
 

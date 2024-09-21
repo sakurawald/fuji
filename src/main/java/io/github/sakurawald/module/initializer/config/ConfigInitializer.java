@@ -18,7 +18,7 @@ import net.minecraft.server.command.ServerCommandSource;
 public class ConfigInitializer extends ModuleInitializer {
 
     @CommandNode("reload")
-    private int $reload(@CommandSource CommandContext<ServerCommandSource> ctx) {
+    private static int $reload(@CommandSource CommandContext<ServerCommandSource> ctx) {
         // reload configs
         Configs.configHandler.readStorage();
 

@@ -50,7 +50,7 @@ public class SitInitializer extends ModuleInitializer {
 
     @SuppressWarnings("deprecation")
     @CommandNode("sit")
-    private int $sit(@CommandSource ServerPlayerEntity player) {
+    private static int $sit(@CommandSource ServerPlayerEntity player) {
         // fix: if the player stand in the slab/stair block
         BlockPos steppingBlockPos = player.getSteppingPos();
         BlockState steppingBlockState = player.getWorld().getBlockState(steppingBlockPos);

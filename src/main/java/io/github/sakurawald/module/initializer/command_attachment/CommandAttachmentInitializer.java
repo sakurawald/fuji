@@ -83,7 +83,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
     // cooldown
     @CommandNode("attach-one")
-    int attachOne(@CommandSource ServerPlayerEntity player
+    private static int attachOne(@CommandSource ServerPlayerEntity player
             , Optional<InteractType> interactType
             , Optional<Integer> maxUseTimes
             , Optional<ExecuteAsType> executeAsType
@@ -118,7 +118,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     }
 
     @CommandNode("detach-all")
-    int detachAll(@CommandSource ServerPlayerEntity player) {
+    private static int detachAll(@CommandSource ServerPlayerEntity player) {
         ItemStack mainHandStack = player.getMainHandStack();
         if (mainHandStack.isEmpty()) {
             LocaleHelper.sendMessageByKey(player, "operation.fail");
@@ -134,7 +134,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
     @SneakyThrows
     @CommandNode("query")
-    int query(@CommandSource ServerPlayerEntity player) {
+    private static int query(@CommandSource ServerPlayerEntity player) {
         ItemStack mainHandStack = player.getMainHandStack();
         if (mainHandStack.isEmpty()) {
             LocaleHelper.sendMessageByKey(player, "operation.fail");

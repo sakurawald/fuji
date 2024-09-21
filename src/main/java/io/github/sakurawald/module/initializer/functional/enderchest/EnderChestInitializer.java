@@ -15,7 +15,7 @@ import net.minecraft.text.Text;
 public class EnderChestInitializer extends ModuleInitializer {
 
     @CommandNode("enderchest")
-    private int $enderchest(@CommandSource ServerPlayerEntity player) {
+    private static int $enderchest(@CommandSource ServerPlayerEntity player) {
         EnderChestInventory enderChestInventory = player.getEnderChestInventory();
         player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> GenericContainerScreenHandler.createGeneric9x3(i, inventory, enderChestInventory), Text.translatable("container.enderchest")));
         player.incrementStat(Stats.OPEN_ENDERCHEST);

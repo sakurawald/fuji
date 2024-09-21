@@ -60,7 +60,7 @@ public class DeathLogInitializer extends ModuleInitializer {
 
     @SneakyThrows
     @CommandNode("restore")
-    private int $restore(@CommandSource CommandContext<ServerCommandSource> ctx, String from, int index, ServerPlayerEntity to) {
+    private static int $restore(@CommandSource CommandContext<ServerCommandSource> ctx, String from, int index, ServerPlayerEntity to) {
         /* read from file */
         ServerCommandSource source = ctx.getSource();
 
@@ -110,7 +110,7 @@ public class DeathLogInitializer extends ModuleInitializer {
     }
 
     @CommandNode("view")
-    private int $view(@CommandSource ServerPlayerEntity player, OfflinePlayerName from) {
+    private static int $view(@CommandSource ServerPlayerEntity player, OfflinePlayerName from) {
         String $from = from.getValue();
         NbtCompound root = NbtHelper.read(STORAGE_PATH.resolve(getFileName($from)));
         if (root == null || root.isEmpty()) {
@@ -129,26 +129,26 @@ public class DeathLogInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    private @NotNull Component asViewComponent(@NotNull NbtCompound node, String from, int index, String to) {
+    private static @NotNull Component asViewComponent(@NotNull NbtCompound node, String from, int index, String to) {
         NbtCompound remarkTag = node.getCompound(REMARK);
         Component hover = Component.empty().color(NamedTextColor.DARK_GREEN)
-                .append(Component.text("Time: " + remarkTag.getString(TIME)))
-                .appendNewline()
-                .append(Component.text("Reason: " + remarkTag.getString(REASON)))
-                .appendNewline()
-                .append(Component.text("Dimension: " + remarkTag.getString(DIMENSION)))
-                .appendNewline()
-                .append(Component.text("Coordinate: %f %f %f".formatted(
-                        remarkTag.getDouble(X),
-                        remarkTag.getDouble(Y),
-                        remarkTag.getDouble(Z)
-                )));
+            .append(Component.text("Time: " + remarkTag.getString(TIME)))
+            .appendNewline()
+            .append(Component.text("Reason: " + remarkTag.getString(REASON)))
+            .appendNewline()
+            .append(Component.text("Dimension: " + remarkTag.getString(DIMENSION)))
+            .appendNewline()
+            .append(Component.text("Coordinate: %f %f %f".formatted(
+                remarkTag.getDouble(X),
+                remarkTag.getDouble(Y),
+                remarkTag.getDouble(Z)
+            )));
         return Component.empty()
-                .color(NamedTextColor.RED)
-                .append(Component.text(index))
-                .appendSpace()
-                .clickEvent(ClickEvent.runCommand("/deathlog restore %s %d %s".formatted(from, index, to)))
-                .hoverEvent(HoverEvent.showText(hover));
+            .color(NamedTextColor.RED)
+            .append(Component.text(index))
+            .appendSpace()
+            .clickEvent(ClickEvent.runCommand("/deathlog restore %s %d %s".formatted(from, index, to)))
+            .hoverEvent(HoverEvent.showText(hover));
     }
 
     public static void store(@NotNull ServerPlayerEntity player) {

@@ -32,7 +32,7 @@ public class WarpInitializer extends ModuleInitializer {
     }
 
     @CommandNode("tp")
-    private int $tp(@CommandSource ServerPlayerEntity player, WarpName warpName) {
+    private static int $tp(@CommandSource ServerPlayerEntity player, WarpName warpName) {
         String name = warpName.getValue();
 
         if (!data.getModel().name2warp.containsKey(name)) {
@@ -47,7 +47,7 @@ public class WarpInitializer extends ModuleInitializer {
 
     @CommandNode("unset")
     @CommandRequirement(level = 4)
-    private int $unset(@CommandSource ServerPlayerEntity player, WarpName warpName) {
+    private static int $unset(@CommandSource ServerPlayerEntity player, WarpName warpName) {
         String name = warpName.getValue();
 
         if (!data.getModel().name2warp.containsKey(name)) {
@@ -62,7 +62,7 @@ public class WarpInitializer extends ModuleInitializer {
 
     @CommandNode("set")
     @CommandRequirement(level = 4)
-    private int $set(@CommandSource ServerPlayerEntity player, WarpName warpName, Optional<Boolean> override) {
+    private static int $set(@CommandSource ServerPlayerEntity player, WarpName warpName, Optional<Boolean> override) {
         String name = warpName.getValue();
 
         if (data.getModel().name2warp.containsKey(name)) {
@@ -78,7 +78,7 @@ public class WarpInitializer extends ModuleInitializer {
     }
 
     @CommandNode("list")
-    private int $list(@CommandSource ServerPlayerEntity player) {
+    private static int $list(@CommandSource ServerPlayerEntity player) {
         LocaleHelper.sendMessageByKey(player, "warp.list", data.getModel().name2warp.keySet());
         return CommandHelper.Return.SUCCESS;
     }

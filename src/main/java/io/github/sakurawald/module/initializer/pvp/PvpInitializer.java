@@ -22,7 +22,7 @@ public class PvpInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<PvPModel> pvpHandler = new ObjectConfigurationHandler<>("pvp.json", PvPModel.class).addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("pvp.json"),PvpInitializer.class));
 
     @CommandNode("pvp on")
-    private int $on(@CommandSource ServerPlayerEntity player) {
+    private static int $on(@CommandSource ServerPlayerEntity player) {
         Set<String> whitelist = pvpHandler.getModel().whitelist;
         String name = player.getGameProfile().getName();
         if (!whitelist.contains(name)) {
@@ -39,7 +39,7 @@ public class PvpInitializer extends ModuleInitializer {
     }
 
     @CommandNode("pvp off")
-    private int $off(@CommandSource ServerPlayerEntity player) {
+    private static int $off(@CommandSource ServerPlayerEntity player) {
             Set<String> whitelist = pvpHandler.getModel().whitelist;
             String name = player.getGameProfile().getName();
             if (whitelist.contains(name)) {
@@ -55,7 +55,7 @@ public class PvpInitializer extends ModuleInitializer {
     }
 
     @CommandNode("pvp status")
-    private int $status(@CommandSource ServerPlayerEntity player) {
+    private static int $status(@CommandSource ServerPlayerEntity player) {
             Set<String> whitelist = pvpHandler.getModel().whitelist;
             player.sendMessage(LocaleHelper.getTextByKey(player, "pvp.status")
                     .asComponent()
@@ -64,7 +64,7 @@ public class PvpInitializer extends ModuleInitializer {
     }
 
     @CommandNode("pvp list")
-    private int $list(@CommandSource CommandContext<ServerCommandSource> ctx) {
+    private static int $list(@CommandSource CommandContext<ServerCommandSource> ctx) {
         Set<String> whitelist = pvpHandler.getModel().whitelist;
         LocaleHelper.sendMessageByKey(ctx.getSource(), "pvp.list", whitelist);
         return CommandHelper.Return.SUCCESS;

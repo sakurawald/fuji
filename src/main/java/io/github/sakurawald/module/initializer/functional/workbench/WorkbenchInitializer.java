@@ -15,7 +15,7 @@ import net.minecraft.text.Text;
 public class WorkbenchInitializer extends ModuleInitializer {
 
     @CommandNode("workbench")
-    private int $workbench(@CommandSource ServerPlayerEntity player) {
+    private static int $workbench(@CommandSource ServerPlayerEntity player) {
             player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> new CraftingScreenHandler(i, inventory, ScreenHandlerContext.create(p.getWorld(), p.getBlockPos())) {
                 @Override
                 public boolean canUse(PlayerEntity player) {

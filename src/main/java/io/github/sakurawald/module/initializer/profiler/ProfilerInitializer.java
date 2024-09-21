@@ -28,7 +28,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class ProfilerInitializer extends ModuleInitializer {
 
-    private @NotNull String formatBytes(long bytes) {
+    private static @NotNull String formatBytes(long bytes) {
         if (bytes == -1) return "N/A";
         if (bytes < 1024) {
             return bytes + "B";
@@ -42,7 +42,7 @@ public class ProfilerInitializer extends ModuleInitializer {
     }
 
     @CommandNode("profiler")
-    private int $profiler(@CommandSource CommandContext<ServerCommandSource> ctx) {
+    private static int $profiler(@CommandSource CommandContext<ServerCommandSource> ctx) {
         ServerCommandSource source = ctx.getSource();
         CompletableFuture.runAsync(() -> {
             /* get instance */
