@@ -8,12 +8,7 @@ import io.github.sakurawald.core.config.transformer.impl.FlattenModulesTransform
 
 public class Configs {
 
-    public static final BaseConfigurationHandler<ConfigModel> configHandler = new ObjectConfigurationHandler<>(Fuji.CONFIG_PATH.resolve("config.json"), ConfigModel.class) {
-        {
-            // enable detection for main-control file.
-            this.detectUnknownKeysFlag = true;
-        }
-    }
+    public static final BaseConfigurationHandler<ConfigModel> configHandler = new ObjectConfigurationHandler<>(Fuji.CONFIG_PATH.resolve("config.json"), ConfigModel.class)
         .addTransformer(new FlattenModulesTransformer());
 
 }

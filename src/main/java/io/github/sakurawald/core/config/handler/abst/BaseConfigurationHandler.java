@@ -79,7 +79,6 @@ public abstract class BaseConfigurationHandler<T> {
     private boolean alreadyBackupFlag = false;
     private boolean writeStorageWithDataTreeFlag = false;
     private boolean exitJvmFlag = false;
-    protected boolean detectUnknownKeysFlag = false;
 
     /* transformer */
     private final List<ConfigurationTransformer> transformers = new ArrayList<>();
@@ -196,10 +195,6 @@ public abstract class BaseConfigurationHandler<T> {
                     System.exit(-1);
                 }
 
-                if (this.detectUnknownKeysFlag) {
-                    this.detectUnknownKeys("", dataTree.getAsJsonObject(), schemaTree.getAsJsonObject());
-                }
-
                 // use merged tree
                 this.model = (T) gson.fromJson(dataTree, defaultModel.getClass());
 
@@ -304,33 +299,6 @@ public abstract class BaseConfigurationHandler<T> {
             }
         }
     }
-
-    private void detectUnknownKeys(String parentPath, @NotNull JsonObject dataTree, @NotNull JsonObject schemaTree) {
-        // navigating using data tree
-        Set<Map.Entry<String, JsonElement>> entrySet = dataTree.entrySet();
-        for (Map.Entry<String, JsonElement> entry : entrySet) {
-            String key = entry.getKey();
-            JsonElement value = entry.getValue();
-
-            String currentPath = StringUtils.strip(parentPath + "." + key, ".");
-
-            if (MAP_TYPE_MATCHER.matcher(key).matches()) {
-                continue;
-            }
-
-            if (!schemaTree.has(key)) {
-                LogUtil.warn("unknown configuration key `{}` in configuration file `{}`", currentPath, this.path);
-                continue;
-            }
-
-            // the verification of type equality is done by mergeJsonTree()
-            if (value.isJsonObject()) {
-                detectUnknownKeys(currentPath, value.getAsJsonObject(), schemaTree.get(key).getAsJsonObject());
-            }
-        }
-
-    }
-
 
     @SneakyThrows
     private void handleTreeMismatch(@NotNull JsonObject dataTree, String currentPath, String key, JsonElement value) {
