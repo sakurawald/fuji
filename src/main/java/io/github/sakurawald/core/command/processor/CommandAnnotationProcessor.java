@@ -66,7 +66,7 @@ public class CommandAnnotationProcessor {
     }
 
     private static void processClasses() {
-        Managers.getModuleManager().getRegisteredInitializers()
+        Managers.getModuleManager().getModuleRegistry().values()
             .stream()
             .filter(Objects::nonNull)
             .forEach(initializer -> processClass(initializer.getClass(), initializer));

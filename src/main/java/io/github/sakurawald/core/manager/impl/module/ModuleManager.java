@@ -8,13 +8,12 @@ import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.manager.abst.BaseManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.mixin.GlobalMixinConfigPlugin;
+import lombok.Getter;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -27,6 +26,7 @@ public class ModuleManager extends BaseManager {
     public static final String CORE_MODULE_ROOT = "core";
     private static final Set<String> MODULES = new HashSet<>(ReflectionUtil.getGraph(ReflectionUtil.MODULE_GRAPH_FILE_NAME));
 
+    @Getter
     private final Map<Class<? extends ModuleInitializer>, ModuleInitializer> moduleRegistry = new HashMap<>();
     private final Map<List<String>, Boolean> module2enable = new HashMap<>();
 
@@ -72,12 +72,6 @@ public class ModuleManager extends BaseManager {
         LogUtil.info("enabled {}/{} modules -> {}", enabledModuleList.size(), module2enable.size(), enabledModuleList);
     }
 
-    @SuppressWarnings("unused")
-    @ApiStatus.AvailableSince("1.1.5")
-    public boolean isModuleEnabled(List<String> modulePath) {
-        return module2enable.get(modulePath);
-    }
-
     /**
      * @return if a module is disabled, then this method will return null.
      * (If a module is enabled, but the module doesn't extend AbstractModule, then this me*
@@ -96,16 +90,6 @@ public class ModuleManager extends BaseManager {
             }
         }
         return clazz.cast(moduleRegistry.get(clazz));
-    }
-
-    /**
-     * It's possible that there is no `initializer` for a `module` (That module only required `mixin`.).
-     * If you want to check whether a module is enabled or disabled, use the method `isModuleEnabled`
-     *
-     * @return all initializers of `enabled module`.
-     */
-    public Collection<ModuleInitializer> getRegisteredInitializers() {
-        return this.moduleRegistry.values();
     }
 
     public boolean shouldWeEnableThis(String className) {
