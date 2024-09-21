@@ -48,21 +48,11 @@ public abstract class ConfigurationTransformer {
         LogUtil.warn("transform configuration file `{}`: " + message, fullArgs);
     }
 
-    public void renameKey(DocumentContext context, String jsonPath, String oldKeyName, String newKeyName) {
-        this.logConsole("rename key from `{}` to `{}`", oldKeyName, newKeyName);
-        context.renameKey(jsonPath, oldKeyName, newKeyName);
-    }
-
     @SneakyThrows
     public void writeStorage(DocumentContext context) {
         this.logConsole("write storage");
         String json = BaseConfigurationHandler.getGson().toJson(context.json());
         Files.writeString(this.path, json);
-    }
-
-    public void deleteKey(DocumentContext context, String jsonPath) {
-        this.logConsole("delete key from `{}`", jsonPath);
-        context.delete(jsonPath);
     }
 
     public Object read(DocumentContext context, String jsonPath) {
