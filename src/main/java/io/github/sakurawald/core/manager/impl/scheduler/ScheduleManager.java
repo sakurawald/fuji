@@ -27,6 +27,7 @@ import java.util.Set;
 
 public class ScheduleManager extends BaseManager {
 
+    public static final String CRON_EVERY_SECOND = "* * * ? * *";
     public static final String CRON_EVERY_MINUTE = "0 * * ? * * *";
 
     private Scheduler scheduler;
