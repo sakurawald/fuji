@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.initializer.nametag.job;
 
 import io.github.sakurawald.core.job.abst.CronJob;
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.nametag.NametagInitializer;
 import org.quartz.JobExecutionContext;
 

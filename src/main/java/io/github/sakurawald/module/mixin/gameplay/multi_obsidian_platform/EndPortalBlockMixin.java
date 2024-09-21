@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.mixin.gameplay.multi_obsidian_platform;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.gameplay.multi_obsidian_platform.MultiObsidianPlatformInitializer;
 import net.minecraft.block.EndPortalBlock;
 import net.minecraft.entity.Entity;
