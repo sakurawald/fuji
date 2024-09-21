@@ -8,11 +8,12 @@ import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
+import io.github.sakurawald.core.config.transformer.impl.RenameKeyTransformer;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_scheduler.command.argument.wrapper.ScheduleJobName;
-import io.github.sakurawald.module.initializer.command_scheduler.config.model.SchedulerModel;
+import io.github.sakurawald.module.initializer.command_scheduler.config.model.CommandSchedulerModel;
 import io.github.sakurawald.module.initializer.command_scheduler.job.CommandScheduleJob;
 import lombok.Getter;
 import org.quartz.JobDataMap;
@@ -23,12 +24,13 @@ import org.quartz.JobDataMap;
 public class CommandSchedulerInitializer extends ModuleInitializer {
 
     @Getter
-    private static final BaseConfigurationHandler<SchedulerModel> schedulerHandler = new ObjectConfigurationHandler<>("scheduler.json", SchedulerModel.class)
-        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("scheduler.json"),CommandSchedulerInitializer.class));
+    private static final BaseConfigurationHandler<CommandSchedulerModel> schedulerHandler = new ObjectConfigurationHandler<>("scheduler.json", CommandSchedulerModel.class)
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("scheduler.json"),CommandSchedulerInitializer.class))
+        .addTransformer(new RenameKeyTransformer("$","scheduleJobs", "jobs"));
 
     private void updateJobs() {
         Managers.getScheduleManager().deleteJobs(CommandScheduleJob.class);
-        schedulerHandler.getModel().scheduleJobs.forEach(scheduleJob -> {
+        schedulerHandler.getModel().jobs.forEach(scheduleJob -> {
             if (scheduleJob.isEnable()) {
                 scheduleJob.getCrons().forEach(cron -> new CommandScheduleJob(new JobDataMap() {
                     {
@@ -54,7 +56,7 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
 
     @CommandNode("trigger")
     private int $trigger(ScheduleJobName jobName) {
-        schedulerHandler.getModel().scheduleJobs.forEach(job -> {
+        schedulerHandler.getModel().jobs.forEach(job -> {
             if (job.getName().equals(jobName.getValue())) {
                 job.trigger();
             }
