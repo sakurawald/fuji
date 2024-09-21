@@ -47,13 +47,14 @@ public class ServerPlayerInteractionManagerMixin {
         }
     }
 
-    @Inject(method = "interactBlock", at = @At("HEAD"))
+    @Inject(method = "interactBlock", at = @At("HEAD"), cancellable = true)
     void onPlayerRightClickBlock(ServerPlayerEntity serverPlayerEntity, @NotNull World world, ItemStack itemStack, Hand hand, @NotNull BlockHitResult blockHitResult, @NotNull CallbackInfoReturnable<ActionResult> cir) {
 
         if (hand == Hand.MAIN_HAND) {
             String uuid = NbtHelper.getUuid(world, blockHitResult.getBlockPos());
             if (!CommandAttachmentInitializer.existsAttachmentModel(uuid)) return;
             CommandAttachmentInitializer.triggerAttachmentModel(uuid, player, List.of(InteractType.RIGHT, InteractType.BOTH));
+            cir.setReturnValue(ActionResult.FAIL);
         }
     }
 
