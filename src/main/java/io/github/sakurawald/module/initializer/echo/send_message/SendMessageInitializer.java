@@ -12,7 +12,7 @@ public class SendMessageInitializer extends ModuleInitializer {
 
     @CommandNode("send-message")
     @CommandRequirement(level = 4)
-    int sendMessage(ServerPlayerEntity player, GreedyString rest) {
+    private static int sendMessage(ServerPlayerEntity player, GreedyString rest) {
         player.sendMessage(LocaleHelper.getTextByValue(player, rest.getValue()));
         return CommandHelper.Return.SUCCESS;
     }

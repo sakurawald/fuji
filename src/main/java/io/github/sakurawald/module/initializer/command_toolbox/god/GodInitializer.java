@@ -12,7 +12,7 @@ public class GodInitializer extends ModuleInitializer {
 
 
     @CommandNode("god")
-    private int $god(@CommandSource ServerPlayerEntity player) {
+    private static int $god(@CommandSource ServerPlayerEntity player) {
         boolean flag = !player.getAbilities().invulnerable;
         player.getAbilities().invulnerable = flag;
         player.sendAbilitiesUpdate();

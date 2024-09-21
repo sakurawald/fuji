@@ -13,7 +13,7 @@ import java.util.Optional;
 public class JumpInitializer extends ModuleInitializer {
 
     @CommandNode("jump")
-    int jump(@CommandSource ServerPlayerEntity player, Optional<Integer> distance) {
+    private static int jump(@CommandSource ServerPlayerEntity player, Optional<Integer> distance) {
         int $distance = distance.orElse(128);
         HitResult raycast = player.raycast($distance,0,false);
         Vec3d hitPos = raycast.getPos();

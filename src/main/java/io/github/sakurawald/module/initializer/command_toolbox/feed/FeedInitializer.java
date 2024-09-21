@@ -12,7 +12,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class FeedInitializer extends ModuleInitializer {
 
     @CommandNode("feed")
-    private int $feed(@CommandSource ServerPlayerEntity player) {
+    private static int $feed(@CommandSource ServerPlayerEntity player) {
         HungerManager foodData = player.getHungerManager();
         foodData.setFoodLevel(20);
         foodData.setSaturationLevel(5);

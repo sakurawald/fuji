@@ -26,8 +26,8 @@ public class ShellInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<ShellConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ShellConfigModel.class);
 
-    private void checkSecurity(CommandContext<ServerCommandSource> ctx) {
-        var config = this.config.getModel();
+    private static void checkSecurity(CommandContext<ServerCommandSource> ctx) {
+        var config = ShellInitializer.config.getModel();
 
         if (!config.enable_warning.equals("CONFIRM")) {
             throw new AbortOperationException("Refuse to execute shell command: please read the official wiki.");
@@ -47,7 +47,7 @@ public class ShellInitializer extends ModuleInitializer {
     @SuppressWarnings("deprecation")
     @CommandNode("shell")
     @CommandRequirement(level = 4)
-    private int shell(@CommandSource CommandContext<ServerCommandSource> ctx, GreedyString rest) {
+    private static int shell(@CommandSource CommandContext<ServerCommandSource> ctx, GreedyString rest) {
         checkSecurity(ctx);
 
         String $rest = rest.getValue();

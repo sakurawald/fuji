@@ -16,7 +16,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 @CommandRequirement(level = 4)
 public class ViewInitializer extends ModuleInitializer {
 
-    void checkSelfView(ServerPlayerEntity source, OfflinePlayerName target) {
+    private static void checkSelfView(ServerPlayerEntity source, OfflinePlayerName target) {
         if (source.getGameProfile().getName().equals(target.getValue())) {
             LocaleHelper.sendMessageByKey(source, "view.failed.self_view");
             throw new AbortOperationException();
@@ -24,7 +24,7 @@ public class ViewInitializer extends ModuleInitializer {
     }
 
     @CommandNode("inv")
-    int inv(@CommandSource ServerPlayerEntity source, OfflinePlayerName target) {
+    private static int inv(@CommandSource ServerPlayerEntity source, OfflinePlayerName target) {
         checkSelfView(source, target);
 
         source.openHandledScreen(new InventoryRedirectScreen(source, target.getValue()).makeFactory());
@@ -32,7 +32,7 @@ public class ViewInitializer extends ModuleInitializer {
     }
 
     @CommandNode("ender")
-    int ender(@CommandSource ServerPlayerEntity source, OfflinePlayerName target) {
+    private static int ender(@CommandSource ServerPlayerEntity source, OfflinePlayerName target) {
         checkSelfView(source, target);
 
         source.openHandledScreen(new EnderChestRedirectScreen(source, target.getValue()).makeFactory());

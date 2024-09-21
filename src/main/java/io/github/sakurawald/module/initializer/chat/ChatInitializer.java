@@ -37,12 +37,12 @@ import java.util.regex.Pattern;
 public class ChatInitializer extends ModuleInitializer {
 
     private static final BaseConfigurationHandler<ChatFormatModel> chatFormatHandler = new ObjectConfigurationHandler<>("chat.json", ChatFormatModel.class)
-        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("chat.json"),ChatInitializer.class));
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("chat.json"), ChatInitializer.class));
 
-    public  static final BaseConfigurationHandler<ChatConfigModel>  config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatConfigModel.class);
+    public static final BaseConfigurationHandler<ChatConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatConfigModel.class);
 
 
-    private final MiniMessage miniMessage = MiniMessage.builder().build();
+    private static final MiniMessage miniMessage = MiniMessage.builder().build();
 
     private static Map<Pattern, String> patterns;
 
@@ -125,12 +125,12 @@ public class ChatInitializer extends ModuleInitializer {
 
                 ServerPlayerEntity player = ctx.player();
                 String prefix = PermissionHelper.getSuffix(player.getUuid());
-                return PlaceholderResult.value(LocaleHelper.getTextByValue(player,prefix));
+                return PlaceholderResult.value(LocaleHelper.getTextByValue(player, prefix));
             });
     }
 
     @CommandNode("chat format set")
-    private int $format(@CommandSource ServerPlayerEntity player, GreedyString format) {
+    private static int $format(@CommandSource ServerPlayerEntity player, GreedyString format) {
         /* save the format*/
         String name = player.getGameProfile().getName();
         String $format = format.getValue();
@@ -147,7 +147,7 @@ public class ChatInitializer extends ModuleInitializer {
     }
 
     @CommandNode("chat format reset")
-    private int $reset(@CommandSource ServerPlayerEntity player) {
+    private static int $reset(@CommandSource ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
         chatFormatHandler.getModel().format.player2format.remove(name);
         chatFormatHandler.writeStorage();

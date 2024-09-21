@@ -14,7 +14,7 @@ import net.minecraft.text.Text;
 
 public class CartographyInitializer extends ModuleInitializer {
     @CommandNode("cartography")
-    private int $cartography(@CommandSource ServerPlayerEntity player) {
+    private static int $cartography(@CommandSource ServerPlayerEntity player) {
         player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> new CartographyTableScreenHandler(i, inventory, ScreenHandlerContext.create(p.getWorld(), p.getBlockPos())) {
             @Override
             public boolean canUse(PlayerEntity player) {

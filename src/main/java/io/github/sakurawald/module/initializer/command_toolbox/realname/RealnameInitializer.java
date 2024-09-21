@@ -17,7 +17,7 @@ public class RealnameInitializer extends ModuleInitializer {
 
     @SuppressWarnings("UnnecessaryLocalVariable")
     @CommandNode("realname")
-    private int $realname(@CommandSource CommandContext<ServerCommandSource> ctx) {
+    private static int $realname(@CommandSource CommandContext<ServerCommandSource> ctx) {
         MutableText builder = Text.empty();
 
         for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {

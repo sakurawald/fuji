@@ -14,7 +14,7 @@ import net.minecraft.text.Text;
 public class StoneCutterInitializer extends ModuleInitializer {
 
     @CommandNode("stonecutter")
-    private int $stonecutter(@CommandSource ServerPlayerEntity player) {
+    private static int $stonecutter(@CommandSource ServerPlayerEntity player) {
         player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> new StonecutterScreenHandler(i, inventory, ScreenHandlerContext.create(p.getWorld(), p.getBlockPos())) {
             @Override
             public boolean canUse(PlayerEntity player) {

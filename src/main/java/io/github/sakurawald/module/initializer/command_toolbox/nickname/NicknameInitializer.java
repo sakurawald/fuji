@@ -22,7 +22,7 @@ public class NicknameInitializer extends ModuleInitializer {
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("nickname.json"),NicknameInitializer.class));
 
     @CommandNode("set")
-    private int $set(@CommandSource ServerPlayerEntity player, GreedyString format) {
+    private static int $set(@CommandSource ServerPlayerEntity player, GreedyString format) {
             String name = player.getGameProfile().getName();
             nicknameHandler.getModel().format.player2format.put(name, format.getValue());
             nicknameHandler.writeStorage();
@@ -32,7 +32,7 @@ public class NicknameInitializer extends ModuleInitializer {
     }
 
     @CommandNode("reset")
-    private int $reset(@CommandSource ServerPlayerEntity player) {
+    private static int $reset(@CommandSource ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
         nicknameHandler.getModel().format.player2format.remove(name);
         nicknameHandler.writeStorage();

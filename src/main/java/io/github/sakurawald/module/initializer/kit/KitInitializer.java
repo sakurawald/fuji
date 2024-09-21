@@ -62,7 +62,7 @@ public class KitInitializer extends ModuleInitializer {
         return ret;
     }
 
-    public @NotNull List<Kit> readKits() {
+    public static @NotNull List<Kit> readKits() {
         List<Kit> ret = new ArrayList<>();
         for (String name : getKitNameList()) {
             ret.add(readKit(name));
@@ -96,7 +96,7 @@ public class KitInitializer extends ModuleInitializer {
     }
 
     @CommandNode("editor")
-    private int $editor(@CommandSource ServerPlayerEntity player) {
+    private static int $editor(@CommandSource ServerPlayerEntity player) {
         List<Kit> kits = readKits();
         new KitEditorGui(player, kits, 0).open();
         return CommandHelper.Return.SUCCESS;
@@ -111,7 +111,7 @@ public class KitInitializer extends ModuleInitializer {
      * */
     @SneakyThrows
     @CommandNode("give")
-    private int $give(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player, KitName kit) {
+    private static int $give(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player, KitName kit) {
 
         Kit $kit = readKit(kit.getValue());
         if ($kit.getStackList().isEmpty()) {

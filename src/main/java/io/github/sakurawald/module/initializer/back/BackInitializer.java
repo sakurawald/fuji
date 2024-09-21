@@ -23,7 +23,7 @@ public class BackInitializer extends ModuleInitializer {
     private static final HashMap<String, SpatialPose> player2lastPos = new HashMap<>();
 
     @CommandNode("back")
-    private int $back(@CommandSource ServerPlayerEntity player) {
+    private static int $back(@CommandSource ServerPlayerEntity player) {
         SpatialPose lastPos = player2lastPos.get(player.getName().getString());
         if (lastPos == null) {
             LocaleHelper.sendActionBarByKey(player, "back.no_previous_position");

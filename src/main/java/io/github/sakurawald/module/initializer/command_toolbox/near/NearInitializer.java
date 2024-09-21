@@ -14,13 +14,13 @@ import java.util.Optional;
 
 public class NearInitializer extends ModuleInitializer {
 
-    private int distance(ServerPlayerEntity a, ServerPlayerEntity b) {
+    private static int distance(ServerPlayerEntity a, ServerPlayerEntity b) {
         if (a.getServerWorld() != b.getServerWorld()) return Integer.MAX_VALUE;
         return (int) a.getBlockPos().getSquaredDistance(b.getBlockPos().toCenterPos());
     }
 
     @CommandNode("near")
-    int near(@CommandSource ServerPlayerEntity player, Optional<Integer> distance) {
+    private static int near(@CommandSource ServerPlayerEntity player, Optional<Integer> distance) {
         MinecraftServer server = ServerHelper.getDefaultServer();
 
         int $distance = distance.orElse(128);

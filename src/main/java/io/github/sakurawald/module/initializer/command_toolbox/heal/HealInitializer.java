@@ -12,7 +12,7 @@ public class HealInitializer extends ModuleInitializer {
 
 
     @CommandNode("heal")
-    private int $heal(@CommandSource ServerPlayerEntity player) {
+    private static int $heal(@CommandSource ServerPlayerEntity player) {
         player.setHealth(player.getMaxHealth());
         LocaleHelper.sendMessageByKey(player, "heal");
         return CommandHelper.Return.SUCCESS;

@@ -13,7 +13,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class PingInitializer extends ModuleInitializer {
 
     @CommandNode("ping")
-    private int $ping(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity target) {
+    private static int $ping(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity target) {
         String name = target.getGameProfile().getName();
 
         int latency = target.networkHandler.getLatency();

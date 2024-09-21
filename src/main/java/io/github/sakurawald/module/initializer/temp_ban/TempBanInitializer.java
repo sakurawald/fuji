@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 public class TempBanInitializer extends ModuleInitializer {
 
     @CommandNode("ip")
-    int ip(@CommandSource CommandContext<ServerCommandSource> ctx, String ip, String expiry, GreedyString reason) throws CommandSyntaxException {
+    private static int ip(@CommandSource CommandContext<ServerCommandSource> ctx, String ip, String expiry, GreedyString reason) throws CommandSyntaxException {
 
         if (!InetAddresses.isInetAddress(ip)) {
             throw new SimpleCommandExceptionType(Text.translatable("commands.banip.invalid")).create();
@@ -60,7 +60,7 @@ public class TempBanInitializer extends ModuleInitializer {
 
     @SneakyThrows
     @CommandNode("player")
-    int player(@CommandSource CommandContext<ServerCommandSource> ctx, GameProfileCollection collection, String expiry, GreedyString reason) {
+    private static int player(@CommandSource CommandContext<ServerCommandSource> ctx, GameProfileCollection collection, String expiry, GreedyString reason) {
         MinecraftServer server = ctx.getSource().getServer();
         PlayerManager playerManager = server.getPlayerManager();
         Date expire = parseDate(expiry);

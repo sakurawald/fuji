@@ -18,7 +18,6 @@ import java.util.concurrent.TimeUnit;
 public class FileDownloadHandler implements HttpHandler {
 
     private static final long NANO_TO_S = 1000000000L;
-    private final @NotNull WorldDownloaderInitializer module;
     private final @NotNull File file;
     private final int bytesPerSecond;
 
@@ -29,7 +28,7 @@ public class FileDownloadHandler implements HttpHandler {
         LogUtil.info("download file: {}", file.getAbsolutePath());
 
         /* consume this context */
-        module.safelyRemoveContext(exchange.getHttpContext());
+        WorldDownloaderInitializer.safelyRemoveContext(exchange.getHttpContext());
 
         /* transfer */
         if ("GET".equals(exchange.getRequestMethod())) {

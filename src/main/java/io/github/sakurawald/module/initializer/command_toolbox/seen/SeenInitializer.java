@@ -17,7 +17,6 @@ import io.github.sakurawald.module.initializer.command_toolbox.seen.config.model
 import lombok.Getter;
 import net.minecraft.server.command.ServerCommandSource;
 
-@SuppressWarnings("LombokGetterMayBeUsed")
 public class SeenInitializer extends ModuleInitializer {
 
     @Getter
@@ -26,7 +25,7 @@ public class SeenInitializer extends ModuleInitializer {
 
     @CommandNode("seen")
     @CommandRequirement(level = 4)
-    private int $seen(@CommandSource CommandContext<ServerCommandSource> ctx, OfflinePlayerName playerName) {
+    private static int $seen(@CommandSource CommandContext<ServerCommandSource> ctx, OfflinePlayerName playerName) {
         String target = playerName.getValue();
 
         if (data.getModel().player2seen.containsKey(target)) {

@@ -11,7 +11,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class FlyInitializer extends ModuleInitializer {
 
     @CommandNode("fly")
-    private int $fly(@CommandSource ServerPlayerEntity player) {
+    private static int $fly(@CommandSource ServerPlayerEntity player) {
         boolean flag = !player.getAbilities().allowFlying;
         player.getAbilities().allowFlying = flag;
 

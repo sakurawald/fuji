@@ -18,7 +18,7 @@ public class EnchantmentInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<EnchantmentConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, EnchantmentConfigModel.class);
 
     @CommandNode("enchantment")
-    private int $enchantment(@CommandSource ServerPlayerEntity player) {
+    private static int $enchantment(@CommandSource ServerPlayerEntity player) {
         player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> new MyEnchantmentScreenHandler(i, inventory, ScreenHandlerContext.create(p.getWorld(), p.getBlockPos())) {
         }, Text.translatable("container.enchant")));
         return CommandHelper.Return.SUCCESS;

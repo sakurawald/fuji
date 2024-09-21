@@ -76,7 +76,7 @@ public class WorldInitializer extends ModuleInitializer {
     }
 
     @CommandNode("world tp")
-    private int $tp(@CommandSource ServerPlayerEntity player, Dimension dimension) {
+    private static int $tp(@CommandSource ServerPlayerEntity player, Dimension dimension) {
         ServerWorld world = dimension.getValue();
 
         BlockPos spawnPos = world.getSpawnPos();
@@ -87,7 +87,7 @@ public class WorldInitializer extends ModuleInitializer {
 
     @SneakyThrows
     @CommandNode("world create")
-    private int $create(@CommandSource CommandContext<ServerCommandSource> ctx, String name,
+    private static int $create(@CommandSource CommandContext<ServerCommandSource> ctx, String name,
                         Optional<Long> seed, DimensionType dimensionType) {
         Identifier dimensionTypeIdentifier = Identifier.of(dimensionType.getValue());
         String FUJI_DIMENSION_NAMESPACE = "fuji";
@@ -111,7 +111,7 @@ public class WorldInitializer extends ModuleInitializer {
 
     @SneakyThrows
     @CommandNode("world delete")
-    private int $delete(@CommandSource CommandContext<ServerCommandSource> ctx, Dimension dimension) {
+    private static int $delete(@CommandSource CommandContext<ServerCommandSource> ctx, Dimension dimension) {
         ServerWorld world = dimension.getValue();
 
         String identifier = RegistryHelper.ofString(world);
@@ -131,7 +131,7 @@ public class WorldInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    private void checkBlacklist(CommandContext<ServerCommandSource> ctx, String identifier) {
+    private static void checkBlacklist(CommandContext<ServerCommandSource> ctx, String identifier) {
         if (config.getModel().blacklist.dimension_list.contains(identifier)) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.blacklist", identifier);
             throw new AbortOperationException();
@@ -140,7 +140,7 @@ public class WorldInitializer extends ModuleInitializer {
 
     @SneakyThrows
     @CommandNode("world reset")
-    private int $reset(@CommandSource CommandContext<ServerCommandSource> ctx, Optional<Boolean> useTheSameSeed, Dimension dimension) {
+    private static int $reset(@CommandSource CommandContext<ServerCommandSource> ctx, Optional<Boolean> useTheSameSeed, Dimension dimension) {
         // draw seed and save
         ServerWorld world = dimension.getValue();
         String identifier = RegistryHelper.ofString(world);

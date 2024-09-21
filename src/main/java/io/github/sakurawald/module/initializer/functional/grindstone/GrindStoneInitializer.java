@@ -14,7 +14,7 @@ import net.minecraft.text.Text;
 public class GrindStoneInitializer extends ModuleInitializer {
 
     @CommandNode("grindstone")
-    private int $grindstone(@CommandSource ServerPlayerEntity player) {
+    private static int $grindstone(@CommandSource ServerPlayerEntity player) {
         player.openHandledScreen(new SimpleNamedScreenHandlerFactory((i, inventory, p) -> new GrindstoneScreenHandler(i, inventory, ScreenHandlerContext.create(p.getWorld(), p.getBlockPos())) {
             @Override
             public boolean canUse(PlayerEntity player) {

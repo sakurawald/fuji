@@ -35,7 +35,7 @@ public class TopChunksInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<TopChunksConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, TopChunksConfigModel.class);
 
     @CommandNode("chunks")
-    private int $chunks(@CommandSource CommandContext<ServerCommandSource> ctx) {
+    private static int $chunks(@CommandSource CommandContext<ServerCommandSource> ctx) {
         CompletableFuture.runAsync(() -> {
             PriorityQueue<ChunkScore> PQ = new PriorityQueue<>();
             /* iter worlds */
@@ -72,7 +72,7 @@ public class TopChunksInitializer extends ModuleInitializer {
             }
 
             /* send output */
-            var config = this.config.getModel();
+            var config = TopChunksInitializer.config.getModel();
             calculateNearestPlayer(ctx.getSource(), PQ, config.top.rows * config.top.columns);
 
             TextComponent.Builder textComponentBuilder = Component.text();
@@ -91,7 +91,7 @@ public class TopChunksInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    private void calculateNearestPlayer(ServerCommandSource source, @NotNull PriorityQueue<ChunkScore> PQ, int limit) {
+    private static void calculateNearestPlayer(ServerCommandSource source, @NotNull PriorityQueue<ChunkScore> PQ, int limit) {
         int count = 0;
         for (ChunkScore chunkScore : PQ) {
             if (count++ >= limit) break;

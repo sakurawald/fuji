@@ -11,7 +11,7 @@ public class ExtinguishInitializer extends ModuleInitializer {
 
 
     @CommandNode("extinguish")
-    private int $extinguish(@CommandSource ServerPlayerEntity player) {
+    private static int $extinguish(@CommandSource ServerPlayerEntity player) {
         player.setFireTicks(0);
         return CommandHelper.Return.SUCCESS;
     }

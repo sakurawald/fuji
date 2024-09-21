@@ -40,7 +40,7 @@ public class HomeInitializer extends ModuleInitializer {
     }
 
     @CommandNode("home tp")
-    private int $tp(@CommandSource ServerPlayerEntity player, HomeName home) {
+    private static int $tp(@CommandSource ServerPlayerEntity player, HomeName home) {
         Map<String, SpatialPose> name2position = ofHomes(player);
         String homeName = home.getValue();
         if (!name2position.containsKey(homeName)) {
@@ -54,7 +54,7 @@ public class HomeInitializer extends ModuleInitializer {
     }
 
     @CommandNode("home unset")
-    private int $unset(@CommandSource ServerPlayerEntity player, HomeName home) {
+    private static int $unset(@CommandSource ServerPlayerEntity player, HomeName home) {
         Map<String, SpatialPose> name2position = ofHomes(player);
         String homeName = home.getValue();
         if (!name2position.containsKey(homeName)) {
@@ -68,7 +68,7 @@ public class HomeInitializer extends ModuleInitializer {
     }
 
     @CommandNode("home set")
-    private int $set(@CommandSource ServerPlayerEntity player, HomeName home, Optional<Boolean> override) {
+    private static int $set(@CommandSource ServerPlayerEntity player, HomeName home, Optional<Boolean> override) {
         Map<String, SpatialPose> name2position = ofHomes(player);
         String homeName = home.getValue();
 
@@ -92,7 +92,7 @@ public class HomeInitializer extends ModuleInitializer {
 
 
     @CommandNode("home list")
-    private int $list(@CommandSource ServerPlayerEntity player) {
+    private static int $list(@CommandSource ServerPlayerEntity player) {
         LocaleHelper.sendMessageByKey(player, "home.list", ofHomes(player).keySet());
         return CommandHelper.Return.SUCCESS;
     }

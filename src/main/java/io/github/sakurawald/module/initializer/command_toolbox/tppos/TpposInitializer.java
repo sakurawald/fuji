@@ -21,7 +21,7 @@ public class TpposInitializer extends ModuleInitializer {
 
     @CommandNode("tppos")
     @CommandRequirement(level = 4)
-    int tppos(@CommandSource ServerPlayerEntity player
+    private static int tppos(@CommandSource ServerPlayerEntity player
         , Optional<Dimension> dimension
         , Optional<Double> x
         , Optional<Double> y
@@ -70,7 +70,7 @@ public class TpposInitializer extends ModuleInitializer {
 
     @CommandNode("tppos offline")
     @CommandRequirement(level = 4)
-    int tppos(@CommandSource ServerPlayerEntity source, OfflinePlayerName player) {
+    private static int tppos(@CommandSource ServerPlayerEntity source, OfflinePlayerName player) {
         ServerPlayerEntity dummy = EntityHelper.loadOfflinePlayer(player.getValue());
         source.teleport(dummy.getServerWorld(),dummy.getX(),dummy.getY(),dummy.getZ(),dummy.getYaw(),dummy.getPitch());
         return CommandHelper.Return.SUCCESS;
