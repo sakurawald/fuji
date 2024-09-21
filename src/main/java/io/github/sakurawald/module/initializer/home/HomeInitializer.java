@@ -7,6 +7,7 @@ import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
+import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
 import io.github.sakurawald.core.config.transformer.impl.RenameKeyTransformer;
 import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.core.structure.SpatialPose;
@@ -21,11 +22,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@SuppressWarnings("LombokGetterMayBeUsed")
 public class HomeInitializer extends ModuleInitializer {
 
     @Getter
     private static final BaseConfigurationHandler<HomeModel> storage = new ObjectConfigurationHandler<>("home.json", HomeModel.class)
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(HomeInitializer.class))
         .addTransformer(new RenameKeyTransformer("$","homes","name2home"));
 
     public void onInitialize() {
