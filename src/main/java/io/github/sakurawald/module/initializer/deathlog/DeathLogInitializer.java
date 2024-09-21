@@ -3,6 +3,7 @@ package io.github.sakurawald.module.initializer.deathlog;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -65,21 +66,21 @@ public class DeathLogInitializer extends ModuleInitializer {
         ServerCommandSource source = ctx.getSource();
 
         Path path = STORAGE_PATH.resolve(getFileName(from));
-        NbtCompound root = NbtHelper.read(path);
-        if (root == null || root.isEmpty()) {
-            source.sendMessage(Component.text("No deathlog found."));
+        NbtCompound root = NbtHelper.readOrDefault(path);
+        if (root.isEmpty()) {
+            LocaleHelper.sendMessageByKey(ctx.getSource(), "deathlog.empty");
             return CommandHelper.Return.FAIL;
         }
 
         NbtList deathsNode = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
         if (index >= deathsNode.size()) {
-            source.sendMessage(Component.text("Index out of bound."));
+            LocaleHelper.sendMessageByKey(source,"deathlog.index.not_found",index);
             return CommandHelper.Return.FAIL;
         }
 
         // check the player's inventory for safety
         if (!to.getInventory().isEmpty()) {
-            source.sendMessage(Component.text("To player's inventory is not empty!"));
+            LocaleHelper.sendMessageByKey(source, "deathlog.restore.target_player.inventory_not_empty", to.getGameProfile().getName());
             return CommandHelper.Return.FAIL;
         }
 
@@ -101,7 +102,7 @@ public class DeathLogInitializer extends ModuleInitializer {
         to.experienceLevel = inventoryNode.getInt(XP_LEVEL);
         to.experienceProgress = inventoryNode.getFloat(XP_PROGRESS);
 
-        source.sendMessage(Component.text("Restore %s's death log %d for %s".formatted(from, index, to.getGameProfile().getName())));
+        LocaleHelper.sendMessageByKey(source, "deathlog.restore.success", from, index, to.getGameProfile().getName());
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -112,9 +113,9 @@ public class DeathLogInitializer extends ModuleInitializer {
     @CommandNode("view")
     private static int $view(@CommandSource ServerPlayerEntity player, OfflinePlayerName from) {
         String $from = from.getValue();
-        NbtCompound root = NbtHelper.read(STORAGE_PATH.resolve(getFileName($from)));
-        if (root == null || root.isEmpty()) {
-            player.sendMessage(Component.text("No deathlog found."));
+        NbtCompound root = NbtHelper.readOrDefault(STORAGE_PATH.resolve(getFileName($from)));
+        if (root.isEmpty()) {
+            LocaleHelper.sendMessageByKey(player, "deathlog.empty");
             return CommandHelper.Return.FAIL;
         }
 
@@ -154,7 +155,7 @@ public class DeathLogInitializer extends ModuleInitializer {
     public static void store(@NotNull ServerPlayerEntity player) {
         Path path = STORAGE_PATH.resolve(getFileName(player.getGameProfile().getName()));
 
-        NbtCompound root = NbtHelper.read(path);
+        NbtCompound root = NbtHelper.readOrDefault(path);
         NbtList deathsNode = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
         deathsNode.add(makeDeathNode(player));
         NbtHelper.write(root, path);
