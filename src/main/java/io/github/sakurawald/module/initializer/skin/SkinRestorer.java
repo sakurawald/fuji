@@ -3,7 +3,6 @@ package io.github.sakurawald.module.initializer.skin;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;

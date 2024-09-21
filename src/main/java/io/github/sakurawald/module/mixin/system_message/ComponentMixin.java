@@ -3,7 +3,6 @@ package io.github.sakurawald.module.mixin.system_message;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.system_message.SystemMessageInitializer;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;

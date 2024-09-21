@@ -5,7 +5,6 @@ import com.google.common.collect.Multimap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;

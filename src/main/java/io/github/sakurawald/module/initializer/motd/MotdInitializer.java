@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.initializer.motd;
 
 import com.google.common.base.Preconditions;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;

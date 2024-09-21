@@ -1,8 +1,8 @@
 package io.github.sakurawald.core.manager;
 
 import io.github.sakurawald.core.manager.impl.attachment.AttachmentManager;
-import io.github.sakurawald.core.manager.impl.backup.RescueBackupManager;
 import io.github.sakurawald.core.manager.impl.backup.BaseBackupManager;
+import io.github.sakurawald.core.manager.impl.backup.RescueBackupManager;
 import io.github.sakurawald.core.manager.impl.backup.StandardBackupManager;
 import io.github.sakurawald.core.manager.impl.bossbar.BossBarManager;
 import io.github.sakurawald.core.manager.impl.command.CommandManager;

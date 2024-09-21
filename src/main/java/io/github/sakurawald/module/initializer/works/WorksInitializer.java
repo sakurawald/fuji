@@ -19,8 +19,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.quartz.JobDataMap;
 
-import java.nio.file.Path;
-
 public class WorksInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<WorksDataModel> worksHandler = new ObjectConfigurationHandler<>("works.json", WorksDataModel.class)

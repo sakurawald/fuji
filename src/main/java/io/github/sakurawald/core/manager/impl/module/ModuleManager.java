@@ -1,6 +1,5 @@
 package io.github.sakurawald.core.manager.impl.module;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
@@ -9,13 +8,11 @@ import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.manager.abst.BaseManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.mixin.GlobalMixinConfigPlugin;
-import lombok.Getter;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -27,11 +24,9 @@ import java.util.Set;
 public class ModuleManager extends BaseManager {
 
     public static final String CORE_MODULE_ROOT = "core";
-
-    private final Map<Class<? extends ModuleInitializer>, ModuleInitializer> moduleRegistry = new HashMap<>();
-
     private static final Set<String> MODULES = new HashSet<>(ReflectionUtil.getGraph(ReflectionUtil.MODULE_GRAPH_FILE_NAME));
 
+    private final Map<Class<? extends ModuleInitializer>, ModuleInitializer> moduleRegistry = new HashMap<>();
     private final Map<List<String>, Boolean> module2enable = new HashMap<>();
 
     @Override

@@ -3,7 +3,6 @@ package io.github.sakurawald.module.mixin.afk;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.authlib.GameProfile;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.afk.AfkInitializer;
 import io.github.sakurawald.module.initializer.afk.accessor.AfkStateAccessor;

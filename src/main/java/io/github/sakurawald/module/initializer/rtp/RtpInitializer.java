@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.rtp;
 
-import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
@@ -25,7 +24,7 @@ public class RtpInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<RtpConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, RtpConfigModel.class);
 
     private @NotNull Optional<TeleportSetup> getTeleportSetup(@NotNull ServerWorld world) {
-        List<TeleportSetup> list = this.config.getModel().setup.dimension;
+        List<TeleportSetup> list = config.getModel().setup.dimension;
         String dimension = RegistryHelper.ofString(world);
         return list.stream().filter(o -> o.getDimension().equals(dimension)).findFirst();
     }
