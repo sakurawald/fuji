@@ -134,15 +134,16 @@ public abstract class BaseConfigurationHandler<T> {
     @SuppressWarnings("unchecked")
     public void readStorage() {
         try {
+            /* apply transformers first*/
+            this.transformers.forEach(it -> {
+                it.configure(this.path);
+                it.apply();
+            });
+
+
             if (Files.notExists(this.path)) {
                 writeStorage();
             } else {
-                // apply transformers
-                this.transformers.forEach(it -> {
-                    it.configure(this.path);
-                    it.apply();
-                });
-
                 // read data tree from disk
                 @Cleanup Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this.path.toFile())));
                 JsonElement dataTree = JsonParser.parseReader(reader);
