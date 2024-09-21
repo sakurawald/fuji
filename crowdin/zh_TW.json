@@ -212,5 +212,8 @@
     "world.dimension.reset": "<gold>開始重設維度 %s",
     "world_downloader.request": "<#8DDFCB>玩家 %s 剛剛向世界下載器遞交下載請求 (總大小：%.2f MB)",
     "world_downloader.response": "<#8DDFCB>已產生下載連結：<hover:show_text:'<green>開啟此連結'><click:open_url:'%s'><green>[開啟]</click></hover>",
-    "deathlog.empty": "<red>No death log found for this player."
+    "deathlog.empty": "<red>No death log found for this player.",
+    "deathlog.index.not_found": "<red>Can't found the death log specified by the index %d.",
+    "deathlog.restore.target_player.inventory_not_empty": "<red>The inventory of target player `%s` is not empty, we can't restore the death log into its inventory.",
+    "deathlog.restore.success": "<orange>Restore %s's death log %d into player %s's inventory."
 }
