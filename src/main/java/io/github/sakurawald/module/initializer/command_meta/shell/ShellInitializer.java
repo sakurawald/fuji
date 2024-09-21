@@ -25,7 +25,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class ShellInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<ShellConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(ShellConfigModel.class), ShellConfigModel.class);
+    public static final BaseConfigurationHandler<ShellConfigModel> config = new ObjectConfigurationHandler<>("config.json", ShellConfigModel.class);
 
     private void checkSecurity(CommandContext<ServerCommandSource> ctx) {
         var config = this.config.getModel();

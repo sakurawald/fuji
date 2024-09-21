@@ -22,7 +22,7 @@ public class WorksInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<WorksDataModel> worksHandler = new ObjectConfigurationHandler<>("works.json", WorksDataModel.class);
 
-    public static final BaseConfigurationHandler<WorksConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(WorksConfigModel.class), WorksConfigModel.class);
+    public static final BaseConfigurationHandler<WorksConfigModel> config = new ObjectConfigurationHandler<>("config.json", WorksConfigModel.class);
 
     @Override
     public void registerGsonTypeAdapter() {

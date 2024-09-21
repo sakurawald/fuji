@@ -35,7 +35,7 @@ import java.util.UUID;
 
 public class WorldDownloaderInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<WorldDownloaderConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(WorldDownloaderConfigModel.class), WorldDownloaderConfigModel.class);
+    public static final BaseConfigurationHandler<WorldDownloaderConfigModel> config = new ObjectConfigurationHandler<>("config.json", WorldDownloaderConfigModel.class);
 
     private EvictingQueue<String> contextQueue;
     private HttpServer server;

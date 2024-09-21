@@ -7,6 +7,6 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.teleport_warmup.config.model.TeleportWarmupConfigModel;
 
 public class TeleportWarmupInitializer extends ModuleInitializer {
-    public static final BaseConfigurationHandler<TeleportWarmupConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(TeleportWarmupConfigModel.class), TeleportWarmupConfigModel.class);
+    public static final BaseConfigurationHandler<TeleportWarmupConfigModel> config = new ObjectConfigurationHandler<>("config.json", TeleportWarmupConfigModel.class);
 
 }

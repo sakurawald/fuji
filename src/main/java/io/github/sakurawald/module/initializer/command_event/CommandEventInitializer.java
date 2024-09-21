@@ -11,7 +11,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 
 public class CommandEventInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<CommandEventModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(CommandEventModel.class), CommandEventModel.class);
+    public static final BaseConfigurationHandler<CommandEventModel> config = new ObjectConfigurationHandler<>("config.json", CommandEventModel.class);
 
     @Override
     public void onInitialize() {
