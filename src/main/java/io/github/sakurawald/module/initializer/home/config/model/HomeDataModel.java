@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HomeModel {
+public class HomeDataModel {
 
     @SerializedName(value = "name2home", alternate = "homes")
     public @NotNull Map<String, Map<String, SpatialPose>> name2home = new HashMap<>();

@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.command_event.config.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandEventModel {
+public class CommandEventConfigModel {
 
     public Event event = new Event();
 

@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorldStorageModel {
+public class WorldDataModel {
 
     public @NotNull List<DimensionEntry> dimension_list = new ArrayList<>();
 

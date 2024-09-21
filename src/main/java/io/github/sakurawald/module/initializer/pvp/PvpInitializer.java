@@ -10,7 +10,7 @@ import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.pvp.config.model.PvPModel;
+import io.github.sakurawald.module.initializer.pvp.config.model.PvPDataModel;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -19,7 +19,7 @@ import java.util.Set;
 
 public class PvpInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<PvPModel> pvpHandler = new ObjectConfigurationHandler<>("pvp.json", PvPModel.class).addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("pvp.json"),PvpInitializer.class));
+    public static final BaseConfigurationHandler<PvPDataModel> pvpHandler = new ObjectConfigurationHandler<>("pvp.json", PvPDataModel.class).addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("pvp.json"),PvpInitializer.class));
 
     @CommandNode("pvp on")
     private static int $on(@CommandSource ServerPlayerEntity player) {

@@ -12,7 +12,7 @@ import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_scheduler.command.argument.wrapper.ScheduleJobName;
-import io.github.sakurawald.module.initializer.command_scheduler.config.model.CommandSchedulerModel;
+import io.github.sakurawald.module.initializer.command_scheduler.config.model.CommandSchedulerConfigModel;
 import io.github.sakurawald.module.initializer.command_scheduler.job.CommandScheduleJob;
 import lombok.Getter;
 import org.quartz.JobDataMap;
@@ -23,7 +23,7 @@ import org.quartz.JobDataMap;
 public class CommandSchedulerInitializer extends ModuleInitializer {
 
     @Getter
-    private static final BaseConfigurationHandler<CommandSchedulerModel> schedulerHandler = new ObjectConfigurationHandler<>("scheduler.json", CommandSchedulerModel.class)
+    private static final BaseConfigurationHandler<CommandSchedulerConfigModel> schedulerHandler = new ObjectConfigurationHandler<>("scheduler.json", CommandSchedulerConfigModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("scheduler.json"),CommandSchedulerInitializer.class));
 
     private void updateJobs() {

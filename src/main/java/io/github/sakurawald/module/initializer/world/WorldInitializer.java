@@ -18,7 +18,7 @@ import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.world.config.model.WorldConfigModel;
-import io.github.sakurawald.module.initializer.world.config.model.WorldStorageModel;
+import io.github.sakurawald.module.initializer.world.config.model.WorldDataModel;
 import io.github.sakurawald.module.initializer.world.structure.DimensionEntry;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -52,7 +52,7 @@ public class WorldInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<WorldConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, WorldConfigModel.class);
 
-    private static final BaseConfigurationHandler<WorldStorageModel> storage = new ObjectConfigurationHandler<>("world.json", WorldStorageModel.class)
+    private static final BaseConfigurationHandler<WorldDataModel> storage = new ObjectConfigurationHandler<>("world.json", WorldDataModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("world.json"), WorldInitializer.class));
 
     @Override
