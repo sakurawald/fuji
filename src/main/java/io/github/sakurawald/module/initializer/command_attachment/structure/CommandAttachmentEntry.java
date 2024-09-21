@@ -5,13 +5,14 @@ import io.github.sakurawald.module.initializer.command_attachment.command.argume
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+@SuppressWarnings({"UnusedAssignment", "unused"})
 @Data
 @AllArgsConstructor
 public class CommandAttachmentEntry {
-    String command;
-    InteractType interactType;
-    ExecuteAsType executeAsType;
-    int maxUseTimes;
-    boolean destroyItem;
-    int useTimes;
+    public CommandAttackmentType type = CommandAttackmentType.ITEMSTACK;
+    public String command;
+    public InteractType interactType;
+    public ExecuteAsType executeAsType;
+    public int maxUseTimes;
+    public int useTimes;
 }
