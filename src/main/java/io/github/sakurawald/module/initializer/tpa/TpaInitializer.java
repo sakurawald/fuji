@@ -20,10 +20,10 @@ import java.util.Optional;
 
 public class TpaInitializer extends ModuleInitializer {
 
-    public final BaseConfigurationHandler<TpaConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, TpaConfigModel.class);
+    public static final BaseConfigurationHandler<TpaConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, TpaConfigModel.class);
 
     @Getter
-    private final List<TpaRequest> requests = new ArrayList<>();
+    private static final List<TpaRequest> requests = new ArrayList<>();
 
     @CommandNode("tpa")
     private int $tpa(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {

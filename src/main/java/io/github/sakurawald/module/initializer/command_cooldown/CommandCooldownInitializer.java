@@ -13,9 +13,9 @@ import java.util.Map;
 public class CommandCooldownInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<CommandCooldownConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, CommandCooldownConfigModel.class);
 
-    private final HashMap<ServerPlayerEntity, HashMap<String, Long>> map = new HashMap<>();
+    private static final HashMap<ServerPlayerEntity, HashMap<String, Long>> map = new HashMap<>();
 
-    public long calculateCommandCooldown(ServerPlayerEntity player, @NotNull String commandLine) {
+    public static long calculateCommandCooldown(ServerPlayerEntity player, @NotNull String commandLine) {
 
         // find the matched cooldown-entry
         HashMap<String, Long> commandRegex2LastExecutedTimeMS = map.computeIfAbsent(player, k -> new HashMap<>());

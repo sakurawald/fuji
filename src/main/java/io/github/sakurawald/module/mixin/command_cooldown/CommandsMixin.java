@@ -18,16 +18,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 public class CommandsMixin {
 
-    @Unique
-    private static final CommandCooldownInitializer module = Managers.getModuleManager().getInitializer(CommandCooldownInitializer.class);
-
     // If you issue "///abcdefg", then commandLine = "//abcdefg"
     @Inject(method = "execute", at = @At("HEAD"), cancellable = true)
     public void watchCommandExecution(@NotNull ParseResults<ServerCommandSource> parseResults, String string, @NotNull CallbackInfo ci) {
         ServerPlayerEntity player = parseResults.getContext().getSource().getPlayer();
         if (player == null) return;
 
-        long cooldown = module.calculateCommandCooldown(player, string);
+        long cooldown = CommandCooldownInitializer.calculateCommandCooldown(player, string);
         if (cooldown > 0) {
             LocaleHelper.sendActionBarByKey(player, "command_cooldown.cooldown", cooldown / 1000);
             ci.cancel();

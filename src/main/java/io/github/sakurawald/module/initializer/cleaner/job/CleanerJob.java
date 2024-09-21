@@ -7,14 +7,12 @@ import org.quartz.JobExecutionContext;
 
 public class CleanerJob extends CronJob {
 
-    public static final CleanerInitializer INITIALIZER = Managers.getModuleManager().getInitializer(CleanerInitializer.class);
-
     public CleanerJob() {
-        super(() -> INITIALIZER.config.getModel().cron);
+        super(() -> CleanerInitializer.config.getModel().cron);
     }
 
     @Override
     public void execute(JobExecutionContext context) {
-        INITIALIZER.clean();
+        CleanerInitializer.clean();
     }
 }

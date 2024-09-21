@@ -17,8 +17,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayerEntity.class)
 public abstract class PvpToggleMixin extends PlayerEntity {
-    @Unique
-    private static final PvpInitializer module = Managers.getModuleManager().getInitializer(PvpInitializer.class);
 
     public PvpToggleMixin(@NotNull World world, @NotNull BlockPos pos, float yaw, @NotNull GameProfile gameProfile) {
         super(world, pos, yaw, gameProfile);
@@ -31,13 +29,13 @@ public abstract class PvpToggleMixin extends PlayerEntity {
         ServerPlayerEntity player = sourcePlayer.getCommandSource().getPlayer();
         if (player == null) return;
 
-        if (!module.contains(sourcePlayer.getGameProfile().getName())) {
+        if (!PvpInitializer.contains(sourcePlayer.getGameProfile().getName())) {
             LocaleHelper.sendMessageByKey(player, "pvp.check.off.me");
             cir.setReturnValue(false);
             return;
         }
 
-        if (!module.contains(this.getGameProfile().getName())) {
+        if (!PvpInitializer.contains(this.getGameProfile().getName())) {
             LocaleHelper.sendMessageByKey(player, "pvp.check.off.others", this.getGameProfile().getName());
             cir.setReturnValue(false);
         }

@@ -14,7 +14,6 @@ import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
 public class WarpNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
-    private static final WarpInitializer initializer = Managers.getModuleManager().getInitializer(WarpInitializer.class);
 
     @Override
     public boolean match(Type type) {
@@ -34,7 +33,7 @@ public class WarpNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(Parameter parameter) {
         return super.makeRequiredArgumentBuilder(parameter).suggests((ctx, builder) -> {
-            initializer.getData().getModel().name2warp.keySet().forEach(builder::suggest);
+            WarpInitializer.data.getModel().name2warp.keySet().forEach(builder::suggest);
             return builder.buildFuture();
         });
     }

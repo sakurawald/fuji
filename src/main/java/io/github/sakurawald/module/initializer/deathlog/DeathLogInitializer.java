@@ -34,23 +34,23 @@ import java.util.List;
 @CommandNode("deathlog")
 @CommandRequirement(level = 4)
 public class DeathLogInitializer extends ModuleInitializer {
-    private final Path STORAGE_PATH = ReflectionUtil.getModuleConfigPath(DeathLogInitializer.class).resolve("death-data");
+    private static final Path STORAGE_PATH = ReflectionUtil.getModuleConfigPath(DeathLogInitializer.class).resolve("death-data");
 
-    private final String DEATHS = "Deaths";
-    private final String TIME = "time";
-    private final String REASON = "reason";
-    private final String DIMENSION = "dimension";
-    private final String X = "x";
-    private final String Y = "y";
-    private final String Z = "z";
-    private final String REMARK = "remark";
-    private final String ARMOR = "armor";
-    private final String OFFHAND = "offhand";
-    private final String ITEM = "item";
-    private final String SCORE = "score";
-    private final String XP_LEVEL = "xp_level";
-    private final String XP_PROGRESS = "xp_progress";
-    private final String INVENTORY = "inventory";
+    private static final String DEATHS = "Deaths";
+    private static final String TIME = "time";
+    private static final String REASON = "reason";
+    private static final String DIMENSION = "dimension";
+    private static final String X = "x";
+    private static final String Y = "y";
+    private static final String Z = "z";
+    private static final String REMARK = "remark";
+    private static final String ARMOR = "armor";
+    private static final String OFFHAND = "offhand";
+    private static final String ITEM = "item";
+    private static final String SCORE = "score";
+    private static final String XP_LEVEL = "xp_level";
+    private static final String XP_PROGRESS = "xp_progress";
+    private static final String INVENTORY = "inventory";
 
     @SneakyThrows
     @Override
@@ -105,7 +105,7 @@ public class DeathLogInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    private @NotNull String getFileName(String playerName) {
+    private static @NotNull String getFileName(String playerName) {
         return Uuids.getOfflinePlayerUuid(playerName) + ".dat";
     }
 
@@ -151,7 +151,7 @@ public class DeathLogInitializer extends ModuleInitializer {
                 .hoverEvent(HoverEvent.showText(hover));
     }
 
-    public void store(@NotNull ServerPlayerEntity player) {
+    public static void store(@NotNull ServerPlayerEntity player) {
         Path path = STORAGE_PATH.resolve(getFileName(player.getGameProfile().getName()));
 
         NbtCompound root = NbtHelper.read(path);
@@ -160,14 +160,14 @@ public class DeathLogInitializer extends ModuleInitializer {
         NbtHelper.write(root, path);
     }
 
-    private @NotNull NbtCompound makeDeathNode(@NotNull ServerPlayerEntity player) {
+    private static @NotNull NbtCompound makeDeathNode(@NotNull ServerPlayerEntity player) {
         NbtCompound node = new NbtCompound();
         writeInventoryNode(node, player);
         writeRemarkNode(node, player);
         return node;
     }
 
-    private void writeRemarkNode(@NotNull NbtCompound node, @NotNull ServerPlayerEntity player) {
+    private static void writeRemarkNode(@NotNull NbtCompound node, @NotNull ServerPlayerEntity player) {
         String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String reason = player.getDamageTracker().getDeathMessage().getString();
         String dimension = player.getWorld().getRegistryKey().getValue().toString();
@@ -183,7 +183,7 @@ public class DeathLogInitializer extends ModuleInitializer {
         node.put(REMARK, remarkTag);
     }
 
-    private void writeInventoryNode(@NotNull NbtCompound node, @NotNull ServerPlayerEntity player) {
+    private static void writeInventoryNode(@NotNull NbtCompound node, @NotNull ServerPlayerEntity player) {
         NbtCompound inventoryTag = new NbtCompound();
         PlayerInventory inventory = player.getInventory();
         inventoryTag.put(ARMOR, NbtHelper.writeSlotsNode(new NbtList(), inventory.armor));

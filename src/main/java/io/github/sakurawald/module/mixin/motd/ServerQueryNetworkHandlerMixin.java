@@ -40,17 +40,14 @@ import java.util.Optional;
 @Mixin(ServerQueryNetworkHandler.class)
 public abstract class ServerQueryNetworkHandlerMixin {
 
-    @Unique
-    private static final MotdInitializer module = Managers.getModuleManager().getInitializer(MotdInitializer.class);
-
     @Redirect(method = "onRequest", at = @At(value = "FIELD", target = "Lnet/minecraft/server/network/ServerQueryNetworkHandler;metadata:Lnet/minecraft/server/ServerMetadata;"))
     public @NotNull ServerMetadata handleStatusRequest(final net.minecraft.server.network.ServerQueryNetworkHandler instance) {
         ServerMetadata vanillaStatus = ServerHelper.getDefaultServer().getServerMetadata();
         if (vanillaStatus == null) {
             LogUtil.warn("can't inject into the vanilla server status. (reason: the vanilla one is null)");
-            return new ServerMetadata(module.getRandomDescription(), Optional.empty(), Optional.empty(), module.getRandomIcon(), false);
+            return new ServerMetadata(MotdInitializer.getRandomDescription(), Optional.empty(), Optional.empty(), MotdInitializer.getRandomIcon(), false);
         }
 
-        return new ServerMetadata(module.getRandomDescription(), vanillaStatus.comp_1274(), vanillaStatus.comp_1275(), module.getRandomIcon(), vanillaStatus.secureChatEnforced());
+        return new ServerMetadata(MotdInitializer.getRandomDescription(), vanillaStatus.comp_1274(), vanillaStatus.comp_1275(), MotdInitializer.getRandomIcon(), vanillaStatus.secureChatEnforced());
     }
 }

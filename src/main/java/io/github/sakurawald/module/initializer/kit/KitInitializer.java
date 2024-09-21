@@ -34,9 +34,9 @@ public class KitInitializer extends ModuleInitializer {
 
     public static final String INVENTORY = "inventory";
 
-    private final Path STORAGE_PATH = ReflectionUtil.getModuleConfigPath(KitInitializer.class).resolve("kit-data");
+    private static final Path STORAGE_PATH = ReflectionUtil.getModuleConfigPath(KitInitializer.class).resolve("kit-data");
 
-    public void writeKit(@NotNull Kit kit) {
+    public static void writeKit(@NotNull Kit kit) {
         Path path = STORAGE_PATH.resolve(kit.getName());
 
         NbtCompound root = NbtHelper.read(path);
@@ -52,7 +52,7 @@ public class KitInitializer extends ModuleInitializer {
         NbtHelper.write(root, path);
     }
 
-    public @NotNull List<String> getKitNameList() {
+    public static @NotNull List<String> getKitNameList() {
         List<String> ret = new ArrayList<>();
         try {
             Files.list(STORAGE_PATH).forEach(p -> ret.add(p.toFile().getName()));
@@ -71,12 +71,12 @@ public class KitInitializer extends ModuleInitializer {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void deleteKit(@NotNull String name) {
+    public static void deleteKit(@NotNull String name) {
         Path path = STORAGE_PATH.resolve(name);
         path.toFile().delete();
     }
 
-    public @NotNull Kit readKit(@NotNull String name) {
+    public static @NotNull Kit readKit(@NotNull String name) {
         Path p = STORAGE_PATH.resolve(name);
         NbtCompound root = NbtHelper.read(p);
 

@@ -20,7 +20,7 @@ public class BackInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<BackConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, BackConfigModel.class);
 
     @Getter
-    private final HashMap<String, SpatialPose> player2lastPos = new HashMap<>();
+    private static final HashMap<String, SpatialPose> player2lastPos = new HashMap<>();
 
     @CommandNode("back")
     private int $back(@CommandSource ServerPlayerEntity player) {
@@ -34,7 +34,7 @@ public class BackInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    public void saveCurrentPosition(@NotNull ServerPlayerEntity player) {
+    public static void saveCurrentPosition(@NotNull ServerPlayerEntity player) {
         SpatialPose lastPos = player2lastPos.get(player.getGameProfile().getName());
         double ignoreDistance = config.getModel().ignore_distance;
         if (lastPos == null

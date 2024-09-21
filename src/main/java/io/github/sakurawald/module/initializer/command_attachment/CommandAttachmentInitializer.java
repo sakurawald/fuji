@@ -32,7 +32,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     private static final String COMMAND_ATTACHMENT_SUBJECT_NAME = "command-attachment";
 
     @SneakyThrows
-    private CommandAttachmentModel getModel(String uuid) {
+    private static CommandAttachmentModel getModel(String uuid) {
 
         CommandAttachmentModel model;
         try {
@@ -48,14 +48,14 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     }
 
     @SneakyThrows
-    private void setModel(String uuid, CommandAttachmentModel model) {
+    private static void setModel(String uuid, CommandAttachmentModel model) {
         String json = BaseConfigurationHandler.getGson().toJson(model);
         Managers.getAttachmentManager().setAttachment(COMMAND_ATTACHMENT_SUBJECT_NAME, uuid, json);
     }
 
-    public void trigger(String uuid, ServerPlayerEntity player, List<InteractType> receivedInteractTypes) {
+    public static void trigger(String uuid, ServerPlayerEntity player, List<InteractType> receivedInteractTypes) {
         // get
-        CommandAttachmentModel model = this.getModel(uuid);
+        CommandAttachmentModel model = getModel(uuid);
 
         // process
         for (CommandAttachmentEntry e : model.getEntries()) {
@@ -77,7 +77,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         }
 
         // save
-        this.setModel(uuid, model);
+        setModel(uuid, model);
     }
 
 
@@ -99,7 +99,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         }
 
         String uuid = NbtHelper.getOrMakeUUIDNbt(mainHandStack);
-        CommandAttachmentModel model = this.getModel(uuid);
+        CommandAttachmentModel model = getModel(uuid);
 
         // new entry
         String $command = command.getValue();
@@ -111,7 +111,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         model.getEntries().add(new CommandAttachmentEntry($command, $interactType, $executeAsType, $maxUseTimes, $destroyItem, 0));
 
         // save model
-        this.setModel(uuid, model);
+        setModel(uuid, model);
 
         LocaleHelper.sendMessageByKey(player, "operation.success");
         return CommandHelper.Return.SUCCESS;

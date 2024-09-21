@@ -70,7 +70,7 @@ public class PvpInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    public boolean contains(String name) {
+    public static boolean contains(String name) {
         return pvpHandler.getModel().whitelist.contains(name);
     }
 

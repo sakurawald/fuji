@@ -13,6 +13,6 @@ public class UpdateNametagJob extends CronJob {
 
     @Override
     public void execute(JobExecutionContext context) {
-        Managers.getModuleManager().getInitializer(NametagInitializer.class).updateNametags();
+        NametagInitializer.updateNametags();
     }
 }

@@ -17,12 +17,12 @@ import java.util.Map;
 
 public class MultiObsidianPlatformInitializer extends ModuleInitializer {
 
-    private final Map<BlockPos, BlockPos> TRANSFORM_CACHE = new HashMap<>();
+    private static final Map<BlockPos, BlockPos> TRANSFORM_CACHE = new HashMap<>();
 
     public static final BaseConfigurationHandler<MultiObsidianPlatformConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, MultiObsidianPlatformConfigModel.class);
 
     /* this method is used to fix Entity#position() async */
-    private BlockPos findNearbyEndPortalBlock(@NotNull BlockPos bp) {
+    private static BlockPos findNearbyEndPortalBlock(@NotNull BlockPos bp) {
         ServerWorld overworld = ServerHelper.getDefaultServer().getOverworld();
 
         // should we find nearby END_PORTAL block ?
@@ -43,7 +43,7 @@ public class MultiObsidianPlatformInitializer extends ModuleInitializer {
         return bp;
     }
 
-    private BlockPos findCenterEndPortalBlock(@NotNull BlockPos bp) {
+    private static BlockPos findCenterEndPortalBlock(@NotNull BlockPos bp) {
         ServerWorld overworld = ServerHelper.getDefaultServer().getOverworld();
         if (overworld.getBlockState(bp.north()) != Blocks.END_PORTAL.getDefaultState()) {
             if (overworld.getBlockState(bp.west()) != Blocks.END_PORTAL.getDefaultState()) {
@@ -71,7 +71,7 @@ public class MultiObsidianPlatformInitializer extends ModuleInitializer {
         return bp;
     }
 
-    public BlockPos transform(BlockPos bp) {
+    public static BlockPos transform(BlockPos bp) {
         if (TRANSFORM_CACHE.containsKey(bp)) {
             return TRANSFORM_CACHE.get(bp);
         }

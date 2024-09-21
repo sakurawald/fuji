@@ -65,10 +65,6 @@ public class ReflectionUtil {
         return Fuji.CONFIG_PATH.resolve("modules").resolve(others);
     }
 
-    public static Path getModuleConfigPath(Object object) {
-        return getModuleConfigPath(object.getClass());
-    }
-
     public static Path getModuleConfigPath(String modulePath) {
         String others = modulePath.replace(".", "/");
         return Fuji.CONFIG_PATH.resolve("modules").resolve(others);

@@ -15,8 +15,6 @@ import java.lang.reflect.Type;
 
 public class KitNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
-    private static final KitInitializer initializer = Managers.getModuleManager().getInitializer(KitInitializer.class);
-
     @Override
     public boolean match(Type type) {
         return KitName.class.equals(type);
@@ -35,7 +33,7 @@ public class KitNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(Parameter parameter) {
         return super.makeRequiredArgumentBuilder(parameter).suggests((context, builder) -> {
-            initializer.getKitNameList().forEach(builder::suggest);
+            KitInitializer.getKitNameList().forEach(builder::suggest);
             return builder.buildFuture();
         });
     }

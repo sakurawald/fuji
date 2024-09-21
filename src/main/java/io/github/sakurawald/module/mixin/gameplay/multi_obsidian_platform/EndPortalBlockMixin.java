@@ -18,11 +18,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class EndPortalBlockMixin {
 
     @Unique
-    private static final MultiObsidianPlatformInitializer module = Managers.getModuleManager().getInitializer(MultiObsidianPlatformInitializer.class);
-
-    @Unique
     BlockPos getTransformedEndSpawnPoint(@NotNull Entity entity) {
-        return module.transform(entity.getBlockPos());
+        return MultiObsidianPlatformInitializer.transform(entity.getBlockPos());
     }
 
     @Unique
