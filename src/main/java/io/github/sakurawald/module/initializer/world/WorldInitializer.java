@@ -65,7 +65,7 @@ public class WorldInitializer extends ModuleInitializer {
             if (!dimensionEntry.isEnable()) continue;
 
             try {
-                Identifier dimensionType = Identifier.of(dimensionEntry.getDimensionType());
+                Identifier dimensionType = Identifier.of(dimensionEntry.dimension_type);
                 Identifier dimension = Identifier.of(dimensionEntry.getDimension());
                 long seed = dimensionEntry.getSeed();
                 WorldManager.requestToCreateWorld(server, dimension, dimensionType, seed);
@@ -157,7 +157,7 @@ public class WorldInitializer extends ModuleInitializer {
         Boolean $useTheSameSeed = useTheSameSeed.orElse(false);
 
         long newSeed = $useTheSameSeed ? first.get().getSeed() : RandomSeed.getSeed();
-        WorldManager.requestToCreateWorld(ServerHelper.getDefaultServer(), Identifier.of(identifier), Identifier.of(first.get().getDimensionType()), newSeed);
+        WorldManager.requestToCreateWorld(ServerHelper.getDefaultServer(), Identifier.of(identifier), Identifier.of(first.get().getDimension_type()), newSeed);
 
         // save the new seed
         first.get().setSeed(newSeed);
