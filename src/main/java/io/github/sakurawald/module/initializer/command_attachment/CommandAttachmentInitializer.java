@@ -195,7 +195,8 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         ExecuteAsType $executeAsType = executeAsType.orElse(ExecuteAsType.FAKE_OP);
         Integer $maxUseTimes = maxUseTimes.orElse(Integer.MAX_VALUE);
 
-        model.getEntries().add(new BlockCommandAttachmentEntry($command, $interactType, $executeAsType, $maxUseTimes, 0));
+        String createdIn = NbtHelper.formatString(player.getWorld(), blockPos);
+        model.getEntries().add(new BlockCommandAttachmentEntry(createdIn, $command, $interactType, $executeAsType, $maxUseTimes, 0));
 
         // save model
         setAttachmentModel(uuid, model);
