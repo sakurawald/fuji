@@ -2,7 +2,6 @@ package io.github.sakurawald.core.manager.impl.module;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import io.github.sakurawald.core.auxiliary.JsonUtil;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.Configs;
@@ -10,23 +9,28 @@ import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.manager.abst.BaseManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.mixin.GlobalMixinConfigPlugin;
+import lombok.Getter;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ModuleManager extends BaseManager {
 
     public static final String CORE_MODULE_ROOT = "core";
-    private static JsonElement RC_JSON_TREE = null;
+
     private final Map<Class<? extends ModuleInitializer>, ModuleInitializer> moduleRegistry = new HashMap<>();
 
+    private static final Set<String> MODULES = new HashSet<>(ReflectionUtil.getGraph(ReflectionUtil.MODULE_GRAPH_FILE_NAME));
 
     private final Map<List<String>, Boolean> module2enable = new HashMap<>();
 
@@ -133,7 +137,7 @@ public class ModuleManager extends BaseManager {
 
         // check enable-supplier
         boolean enable = true;
-        JsonObject parent = RC_JSON_TREE.getAsJsonObject().get("modules").getAsJsonObject();
+        JsonObject parent = Configs.configHandler.convertModelToJsonTree().getAsJsonObject().get("modules").getAsJsonObject();
         for (String node : modulePath) {
             parent = parent.getAsJsonObject(node);
 
@@ -153,18 +157,10 @@ public class ModuleManager extends BaseManager {
         return enable;
     }
 
-    public static @NotNull List<String> computeModulePath(@NotNull String className) {
-        if (RC_JSON_TREE == null) {
-            RC_JSON_TREE = Configs.configHandler.convertModelToJsonTree();
-        }
-
-        return computeModulePath(RC_JSON_TREE, className);
-    }
-
     /**
      * @return the module path for given class name, if the class is not inside a module, then a special module path List.of("core") will be returned.
      */
-    public static @NotNull List<String> computeModulePath(@NotNull JsonElement rcConfig, @NotNull String className) {
+    public static @NotNull List<String> computeModulePath(@NotNull String className) {
 
         /* remove leading directories */
         int left = -1;
@@ -197,24 +193,18 @@ public class ModuleManager extends BaseManager {
             return List.of(CORE_MODULE_ROOT);
         }
 
-        boolean flag;
-        do {
-            flag = false;
-
-            String modulePathString = String.join(".", modulePath);
-            String moduleEnableSupplierJsonPath = "modules.%s.enable".formatted(modulePathString);
-
-            // remove the trailing directories if there is no enable-supplier for this directory.
-            if (!JsonUtil.existsNode((JsonObject) rcConfig, moduleEnableSupplierJsonPath)) {
-                if (modulePath.isEmpty()) {
-                    throw new RuntimeException("Can't find the module enable-supplier in `config.json` for class name %s. Did you forget to add the enable-supplier key in ConfigModel ?".formatted(className));
-                }
-
-                modulePath.removeLast();
-                flag = true;
+        /* remove the trailing directories until the string is a module path string */
+        String modulePathString = String.join(".", modulePath);
+        while (!MODULES.contains(modulePathString)) {
+            // remove last!
+            if (modulePath.isEmpty()) {
+                throw new RuntimeException("Can't find the module enable-supplier in `config.json` for class name %s. Did you forget to add the enable-supplier key in ConfigModel ?".formatted(className));
             }
+            modulePath.removeLast();
 
-        } while (flag);
+            // compute it
+            modulePathString = String.join(".", modulePath);
+        }
 
         return modulePath;
     }
