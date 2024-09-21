@@ -2,7 +2,6 @@ package io.github.sakurawald.core.config.transformer.impl;
 
 import com.google.gson.JsonObject;
 import com.jayway.jsonpath.DocumentContext;
-import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.abst.ConfigurationTransformer;

@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.initializer.deathlog;
 
 import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;

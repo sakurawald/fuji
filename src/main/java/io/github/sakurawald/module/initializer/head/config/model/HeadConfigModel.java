@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.head.config.model;
 
-import com.google.gson.annotations.SerializedName;
 import io.github.sakurawald.module.initializer.head.structure.EconomyType;
 import org.jetbrains.annotations.NotNull;
 

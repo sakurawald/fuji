@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.initializer.tab_list;
 
 import io.github.sakurawald.core.auxiliary.RandomUtil;
-import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;

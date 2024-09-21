@@ -1,12 +1,10 @@
 package io.github.sakurawald.module.mixin.functional.enchantment;
 
 import io.github.sakurawald.core.config.Configs;
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.functional.enchantment.EnchantmentInitializer;
 import io.github.sakurawald.module.initializer.functional.enchantment.gui.MyEnchantmentScreenHandler;
 import net.minecraft.screen.EnchantmentScreenHandler;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 

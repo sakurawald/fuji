@@ -7,7 +7,6 @@ import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.gui.ConfirmGui;
 import io.github.sakurawald.core.gui.InputSignGui;
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;
 import io.github.sakurawald.module.initializer.works.abst.Schedulable;
 import io.github.sakurawald.module.initializer.works.structure.WorksCache;

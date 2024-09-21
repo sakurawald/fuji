@@ -1,12 +1,10 @@
 package io.github.sakurawald.module.mixin.tab_list.faker;
 
 import io.github.sakurawald.core.auxiliary.RandomUtil;
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.tab_list.faker.TabListFakerInitializer;
 import net.minecraft.server.network.ServerCommonNetworkHandler;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;

@@ -3,7 +3,6 @@ package io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_mana
 import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.DateUtil;
-import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;

@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.mixin.afk.effect;
 
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.afk.AfkInitializer;
 import io.github.sakurawald.module.initializer.afk.effect.AfkEffectInitializer;
 import net.minecraft.entity.LivingEntity;
