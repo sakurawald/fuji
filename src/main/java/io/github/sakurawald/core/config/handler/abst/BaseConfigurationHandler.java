@@ -45,6 +45,9 @@ import java.util.Set;
  * The configuration handler in module initializer should be static:
  * 1. The major point to make configuration handler a member of class, is that it's easier to control the lifecycle of objects, however, considering the fact that the configuration handler is a mapping between file system and memory, it should be static and unique.
  * 2. Create the instance of configuration handler should have no side effect, until the call to readStorage() and writeStorage()
+ *
+ * Some other solutions:
+ * 1. <a href="https://stackoverflow.com/questions/42503935/how-to-serialize-a-json-object-child-into-a-field">...</a>
  */
 public abstract class BaseConfigurationHandler<T> {
 

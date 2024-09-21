@@ -4,7 +4,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.tree.CommandNode;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
@@ -40,7 +39,7 @@ public class CommandAliasInitializer extends ModuleInitializer {
                 CommandNode<ServerCommandSource> target = dispatcher.findNode(entry.to);
 
                 if (target == null) {
-                    LogUtil.warn("[{}] can't find the target command node for alias entry: {}", ReflectionUtil.getModulePath(this.getClass()), entry);
+                    LogUtil.warn("[command alias] can't find the target command node for alias entry: {}", entry);
                     return;
                 }
 

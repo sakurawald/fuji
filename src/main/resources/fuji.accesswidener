@@ -52,3 +52,6 @@ accessible method net/minecraft/entity/decoration/DisplayEntity setShadowStrengt
 
 accessible method net/minecraft/entity/decoration/DisplayEntity setViewRange (F)V
 accessible method net/minecraft/entity/decoration/DisplayEntity setBrightness (Lnet/minecraft/entity/decoration/Brightness;)V
+
+# command attachment module
+accessible class net/minecraft/server/network/ServerPlayNetworkHandler$Interaction
