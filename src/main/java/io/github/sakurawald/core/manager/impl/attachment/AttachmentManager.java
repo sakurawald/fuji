@@ -40,6 +40,10 @@ public class AttachmentManager extends BaseManager {
         }
     }
 
+    public boolean existsAttachmentFile(String subject, String uuid) {
+        return Files.exists(ATTACHMENT_STORAGE_PATH.resolve(subject).resolve(uuid));
+    }
+
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public File getAttachmentFile(String subject, String uuid) {
         File file = ATTACHMENT_STORAGE_PATH.resolve(subject).resolve(uuid).toFile();

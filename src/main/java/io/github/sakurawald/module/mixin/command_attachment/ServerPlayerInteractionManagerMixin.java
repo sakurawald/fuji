@@ -32,7 +32,7 @@ public class ServerPlayerInteractionManagerMixin {
         String uuid = NbtHelper.getUuid(itemStack.get(DataComponentTypes.CUSTOM_DATA));
         if (uuid == null) return;
 
-        CommandAttachmentInitializer.trigger(uuid, player, List.of(InteractType.RIGHT, InteractType.BOTH));
+        CommandAttachmentInitializer.triggerAttachmentModel(uuid, player, List.of(InteractType.RIGHT, InteractType.BOTH));
     }
 
 }
