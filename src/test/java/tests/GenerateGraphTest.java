@@ -8,6 +8,7 @@ import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.model.ConfigModel;
+import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
@@ -65,7 +66,7 @@ public class GenerateGraphTest {
             });
 
         // go up
-        if (parent.has("enable")) {
+        if (parent.has(ModuleManager.ENABLE_SUPPLIER_KEY)) {
             out.add(level);
         }
     }

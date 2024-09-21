@@ -23,6 +23,7 @@ import java.util.Set;
 
 public class ModuleManager extends BaseManager {
 
+    public static final String ENABLE_SUPPLIER_KEY = "enable";
     public static final String CORE_MODULE_ROOT = "core";
     private static final Set<String> MODULES = new HashSet<>(ReflectionUtil.getGraph(ReflectionUtil.MODULE_GRAPH_FILE_NAME));
 
@@ -112,10 +113,7 @@ public class ModuleManager extends BaseManager {
     }
 
     private boolean shouldWeEnableThis(@NotNull List<String> modulePath) {
-        // special case 1
         if (Configs.configHandler.getModel().core.debug.disable_all_modules) return false;
-
-        // special case 2
         if (modulePath.getFirst().equals(CORE_MODULE_ROOT)) return true;
 
         // cache
@@ -136,12 +134,12 @@ public class ModuleManager extends BaseManager {
         for (String node : modulePath) {
             parent = parent.getAsJsonObject(node);
 
-            if (parent == null || !parent.has("enable")) {
+            if (parent == null || !parent.has(ModuleManager.ENABLE_SUPPLIER_KEY)) {
                 throw new RuntimeException("Missing `enable supplier` key for dir name list `%s`".formatted(modulePath));
             }
 
             // only enable a sub-module if the parent module is enabled.
-            if (!parent.getAsJsonPrimitive("enable").getAsBoolean()) {
+            if (!parent.getAsJsonPrimitive(ModuleManager.ENABLE_SUPPLIER_KEY).getAsBoolean()) {
                 enable = false;
                 break;
             }

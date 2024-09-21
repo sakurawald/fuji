@@ -5,6 +5,7 @@ import com.jayway.jsonpath.DocumentContext;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.abst.ConfigurationTransformer;
+import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 
 import java.nio.file.Files;
 
@@ -22,7 +23,7 @@ public class FlattenModulesTransformer extends ConfigurationTransformer {
         for (String topLevelModule : modules.keySet()) {
             FlattenTreeTransformer flattenTreeTransformer = new FlattenTreeTransformer(
                 modulesPath + "." + topLevelModule
-                , "enable"
+                , ModuleManager.ENABLE_SUPPLIER_KEY
                 , topLevelModule, (level) -> ReflectionUtil.getModuleConfigPath(level).resolve(BaseConfigurationHandler.CONFIG_JSON));
 
             flattenTreeTransformer.configure(this.getPath());
