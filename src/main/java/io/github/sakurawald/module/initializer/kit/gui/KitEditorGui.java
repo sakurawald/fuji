@@ -8,7 +8,6 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.gui.InputSignGui;
 import io.github.sakurawald.core.gui.PagedGui;
 import io.github.sakurawald.core.gui.layer.SingleLineLayer;
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.kit.KitInitializer;
 import io.github.sakurawald.module.initializer.kit.structure.Kit;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,8 +28,6 @@ import java.util.List;
 
 public class KitEditorGui extends PagedGui<Kit> {
 
-    private static final KitInitializer module = Managers.getModuleManager().getInitializer(KitInitializer.class);
-
     public KitEditorGui(ServerPlayerEntity player, @NotNull List<Kit> entities, int pageIndex) {
         super(null, player, LocaleHelper.getTextByKey(player, "kit.gui.editor.title"), entities, pageIndex);
 
@@ -46,7 +43,7 @@ public class KitEditorGui extends PagedGui<Kit> {
                     return;
                 }
 
-                openEditKitGui(getPlayer(), module.readKit(name));
+                openEditKitGui(getPlayer(), KitInitializer.readKit(name));
             }
         }.open()));
         this.addLayer(singleLineLayer, 0, this.getHeight() - 1);
@@ -80,7 +77,7 @@ public class KitEditorGui extends PagedGui<Kit> {
                         for (int j = 0; j < simpleInventory.size(); j++) {
                             itemStacks.add(simpleInventory.getStack(j));
                         }
-                        module.writeKit(kit.withStackList(itemStacks));
+                        KitInitializer.writeKit(kit.withStackList(itemStacks));
                     }
 
                 }, LocaleHelper.getTextByKey(player, "kit.gui.editor.kit.title", kit.getName()));
@@ -104,7 +101,7 @@ public class KitEditorGui extends PagedGui<Kit> {
                     }
 
                     if (event.shift && event.isRight) {
-                        module.deleteKit(entity.getName());
+                        KitInitializer.deleteKit(entity.getName());
                         LocaleHelper.sendActionBarByKey(getPlayer(), "deleted");
 
                         deleteEntity(entity);

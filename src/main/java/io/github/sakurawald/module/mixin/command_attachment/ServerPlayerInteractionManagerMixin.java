@@ -25,9 +25,6 @@ import java.util.List;
 @Mixin(ServerPlayerInteractionManager.class)
 public class ServerPlayerInteractionManagerMixin {
 
-    @Unique
-    private static final CommandAttachmentInitializer module = Managers.getModuleManager().getInitializer(CommandAttachmentInitializer.class);
-
     @Shadow
     @Final
     protected ServerPlayerEntity player;
@@ -37,7 +34,7 @@ public class ServerPlayerInteractionManagerMixin {
         String uuid = NbtHelper.getUuid(itemStack.get(DataComponentTypes.CUSTOM_DATA));
         if (uuid == null) return;
 
-        module.trigger(uuid, player, List.of(InteractType.RIGHT, InteractType.BOTH));
+        CommandAttachmentInitializer.trigger(uuid, player, List.of(InteractType.RIGHT, InteractType.BOTH));
     }
 
 }

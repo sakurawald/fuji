@@ -25,9 +25,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 public abstract class PlayerMixin extends LivingEntity {
 
-    @Unique
-    private static final FakePlayerManagerInitializer FAKE_PLAYER_MANAGER_MODULE = Managers.getModuleManager().getInitializer(FakePlayerManagerInitializer.class);
-
     protected PlayerMixin(@NotNull EntityType<? extends LivingEntity> entityType, World level) {
         super(entityType, level);
     }
@@ -37,7 +34,7 @@ public abstract class PlayerMixin extends LivingEntity {
     private void canManipulateTheFakePlayer(Entity target, Hand hand, @NotNull CallbackInfoReturnable<ActionResult> cir) {
         if (target instanceof EntityPlayerMPFake fakePlayer) {
             ServerPlayerEntity source = (ServerPlayerEntity) (Object) this;
-            if (!FAKE_PLAYER_MANAGER_MODULE.isMyFakePlayer(source, fakePlayer)) {
+            if (!FakePlayerManagerInitializer.isMyFakePlayer(source, fakePlayer)) {
                 // cancel this event
                 cir.setReturnValue(ActionResult.FAIL);
 

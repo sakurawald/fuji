@@ -15,14 +15,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = ServerPlayNetworkHandler.class, priority = 1000 + 125)
 public abstract class ServerGamePacketListenerImplMixin {
 
-    @Unique
-    private static final ChatHistoryInitializer module = Managers.getModuleManager().getInitializer(ChatHistoryInitializer.class);
-
     @Shadow
     public ServerPlayerEntity player;
 
     @Inject(method = "handleDecoratedMessage", at = @At(value = "HEAD"))
     public void listenChatMessageSentEvent(SignedMessage signedMessage, CallbackInfo ci) {
-        module.getChatHistory().add(signedMessage.getContent());
+        ChatHistoryInitializer.getChatHistory().add(signedMessage.getContent());
     }
 }

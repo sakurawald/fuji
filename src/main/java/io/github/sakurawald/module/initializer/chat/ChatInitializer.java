@@ -44,7 +44,7 @@ public class ChatInitializer extends ModuleInitializer {
 
     private final MiniMessage miniMessage = MiniMessage.builder().build();
 
-    private Map<Pattern, String> patterns;
+    private static Map<Pattern, String> patterns;
 
     @Override
     public void onInitialize() {
@@ -156,7 +156,7 @@ public class ChatInitializer extends ModuleInitializer {
     }
 
 
-    private String resolveMentionTag(@NotNull String string) {
+    private static String resolveMentionTag(@NotNull String string) {
         /* resolve player tag */
         List<ServerPlayerEntity> mentionedPlayers = new ArrayList<>();
 
@@ -179,14 +179,14 @@ public class ChatInitializer extends ModuleInitializer {
         return string;
     }
 
-    private String resolvePatterns(String string) {
+    private static String resolvePatterns(String string) {
         for (Map.Entry<Pattern, String> entry : patterns.entrySet()) {
             string = entry.getKey().matcher(string).replaceAll(entry.getValue());
         }
         return string;
     }
 
-    public @NotNull Text parseText(@NotNull ServerPlayerEntity player, String message) {
+    public static @NotNull Text parseText(@NotNull ServerPlayerEntity player, String message) {
         /* parse message */
         message = resolvePatterns(message);
         message = resolveMentionTag(message);

@@ -18,14 +18,11 @@ import java.util.Collection;
 @Mixin(MessageCommand.class)
 public class MsgCommandMixin {
 
-    @Unique
-    private static final ReplyInitializer module = Managers.getModuleManager().getInitializer(ReplyInitializer.class);
-
     @Inject(method = "execute", at = @At("HEAD"))
     private static void rememberRecentlyMessagedPlayer(@NotNull ServerCommandSource commandSourceStack, @NotNull Collection<ServerPlayerEntity> collection, SignedMessage playerChatMessage, CallbackInfo ci) {
         ServerPlayerEntity source = commandSourceStack.getPlayer();
         if (source == null) return;
 
-        collection.forEach(target -> module.updateReplyTarget(target.getGameProfile().getName(), source.getGameProfile().getName()));
+        collection.forEach(target -> ReplyInitializer.updateReplyTarget(target.getGameProfile().getName(), source.getGameProfile().getName()));
     }
 }

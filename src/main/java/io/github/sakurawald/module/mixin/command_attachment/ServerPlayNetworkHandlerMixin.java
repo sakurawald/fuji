@@ -21,9 +21,6 @@ public abstract class ServerPlayNetworkHandlerMixin {
     @Unique
     final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
-    @Unique
-    private static final CommandAttachmentInitializer module = Managers.getModuleManager().getInitializer(CommandAttachmentInitializer.class);
-
     @Inject(method = "swingHand", at = @At("HEAD"))
     void onPlayerLeftClick(Hand hand, CallbackInfo ci) {
         if (hand.equals(Hand.MAIN_HAND)) {
@@ -31,7 +28,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
             if (uuid == null) return;
 
             ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-            module.trigger(uuid, player, List.of(InteractType.LEFT, InteractType.BOTH));
+            CommandAttachmentInitializer.trigger(uuid, player, List.of(InteractType.LEFT, InteractType.BOTH));
         }
 
     }

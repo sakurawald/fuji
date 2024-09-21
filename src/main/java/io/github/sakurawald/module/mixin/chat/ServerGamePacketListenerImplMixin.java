@@ -17,9 +17,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(value = ServerPlayNetworkHandler.class, priority = 1000 + 1)
 public abstract class ServerGamePacketListenerImplMixin {
 
-    @Unique
-    private static final ChatInitializer module = Managers.getModuleManager().getInitializer(ChatInitializer.class);
-
     @Shadow
     public ServerPlayerEntity player;
 
@@ -31,7 +28,7 @@ public abstract class ServerGamePacketListenerImplMixin {
             LogUtil.info("[chat spy] <{}> {}", player.getGameProfile().getName(), string);
         }
 
-        Text text = module.parseText(player, string);
+        Text text = ChatInitializer.parseText(player, string);
         return original.withUnsignedContent(text);
     }
 }

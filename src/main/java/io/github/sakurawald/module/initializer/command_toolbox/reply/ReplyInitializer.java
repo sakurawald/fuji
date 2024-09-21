@@ -15,16 +15,16 @@ import java.util.HashMap;
 
 public class ReplyInitializer extends ModuleInitializer {
 
-    private final HashMap<String, String> player2target = new HashMap<>();
+    private static final HashMap<String, String> player2target = new HashMap<>();
 
-    public void updateReplyTarget(String player, String target) {
-        this.player2target.put(player, target);
+    public static void updateReplyTarget(String player, String target) {
+        player2target.put(player, target);
     }
 
 
     @CommandNode("reply")
     private int $reply(@CommandSource ServerPlayerEntity player, GreedyString message) {
-        String target = this.player2target.get(player.getGameProfile().getName());
+        String target = player2target.get(player.getGameProfile().getName());
 
         try {
             ServerHelper.getDefaultServer().getCommandManager().getDispatcher().execute("msg %s %s".formatted(target, message.getValue()), player.getCommandSource());

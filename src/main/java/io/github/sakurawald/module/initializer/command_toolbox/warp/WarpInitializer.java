@@ -20,12 +20,10 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.Optional;
 
-@SuppressWarnings("LombokGetterMayBeUsed")
 @CommandNode("warp")
 public class WarpInitializer extends ModuleInitializer {
 
-    @Getter
-    private static final BaseConfigurationHandler<WarpModel> data = new ObjectConfigurationHandler<>("warp.json", WarpModel.class)
+    public static final BaseConfigurationHandler<WarpModel> data = new ObjectConfigurationHandler<>("warp.json", WarpModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("warp.json"),WarpInitializer.class));
 
     @Override

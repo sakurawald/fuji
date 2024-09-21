@@ -21,9 +21,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class PlayerCommandMixin {
 
     @Unique
-    private static final FakePlayerManagerInitializer module = Managers.getModuleManager().getInitializer(FakePlayerManagerInitializer.class);
-
-    @Unique
     private static @NotNull String transformFakePlayerName(@NotNull String fakePlayerName) {
         return FakePlayerManagerInitializer.config.getModel().transform_name.replace("%name%", fakePlayerName);
     }
@@ -49,7 +46,7 @@ public abstract class PlayerCommandMixin {
         ServerPlayerEntity player = context.getSource().getPlayer();
         if (player == null) return;
 
-        if (!module.canSpawnFakePlayer(player)) {
+        if (!FakePlayerManagerInitializer.canSpawnFakePlayer(player)) {
             LocaleHelper.sendMessageByKey(player, "fake_player_manager.spawn.limit_exceed");
             cir.setReturnValue(0);
         }
@@ -60,14 +57,14 @@ public abstract class PlayerCommandMixin {
         ServerPlayerEntity player = context.getSource().getPlayer();
         String fakePlayerName = StringArgumentType.getString(context, "player");
         fakePlayerName = transformFakePlayerName(fakePlayerName);
-        module.addFakePlayer(player, fakePlayerName);
-        module.renewFakePlayers(player);
+        FakePlayerManagerInitializer.addFakePlayer(player, fakePlayerName);
+        FakePlayerManagerInitializer.renewFakePlayers(player);
     }
 
     @Inject(method = "cantManipulate", at = @At("HEAD"), remap = false, cancellable = true)
     private static void $cantManipulate(@NotNull CommandContext<ServerCommandSource> context, @NotNull CallbackInfoReturnable<Boolean> cir) {
         String fakePlayerName = StringArgumentType.getString(context, "player");
-        if (!module.canManipulateFakePlayer(context, fakePlayerName)) {
+        if (!FakePlayerManagerInitializer.canManipulateFakePlayer(context, fakePlayerName)) {
             LocaleHelper.sendMessageByKey(context.getSource(), "fake_player_manager.manipulate.forbidden");
             cir.setReturnValue(true);
         }

@@ -3,7 +3,6 @@ package io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_mana
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.job.abst.CronJob;
-import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager.FakePlayerManagerInitializer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -22,21 +21,19 @@ public class ManageFakePlayersJob extends CronJob {
     @Override
     public void execute(@NotNull JobExecutionContext context) {
         /* validate */
-        FakePlayerManagerInitializer module = Managers.getModuleManager().getInitializer(FakePlayerManagerInitializer.class);
+        FakePlayerManagerInitializer.validateFakePlayers();
 
-        module.validateFakePlayers();
-
-        int limit = module.getCurrentAmountLimit();
+        int limit = FakePlayerManagerInitializer.getCurrentAmountLimit();
         long currentTimeMS = System.currentTimeMillis();
-        for (String playerName : module.player2fakePlayers.keySet()) {
+        for (String playerName : FakePlayerManagerInitializer.player2fakePlayers.keySet()) {
             /* check for renew limits */
-            long expiration = module.player2expiration.getOrDefault(playerName, 0L);
-            List<String> fakePlayers = module.player2fakePlayers.getOrDefault(playerName, module.CONSTANT_EMPTY_LIST);
+            long expiration = FakePlayerManagerInitializer.player2expiration.getOrDefault(playerName, 0L);
+            List<String> fakePlayers = FakePlayerManagerInitializer.player2fakePlayers.getOrDefault(playerName, FakePlayerManagerInitializer.CONSTANT_EMPTY_LIST);
             if (expiration <= currentTimeMS) {
                 /* auto-renew for online-playerName */
                 ServerPlayerEntity playerByName = ServerHelper.getDefaultServer().getPlayerManager().getPlayer(playerName);
                 if (playerByName != null) {
-                    module.renewFakePlayers(playerByName);
+                    FakePlayerManagerInitializer.renewFakePlayers(playerByName);
                     continue;
                 }
 
@@ -47,7 +44,7 @@ public class ManageFakePlayersJob extends CronJob {
                     LocaleHelper.sendBroadcastByKey("fake_player_manager.kick_for_expiration", fakePlayer.getGameProfile().getName(), playerName);
                 }
                 // remove entry
-                module.player2expiration.remove(playerName);
+                FakePlayerManagerInitializer.player2expiration.remove(playerName);
 
                 // we'll kick all fake players, so we don't need to check for amount limits
                 continue;

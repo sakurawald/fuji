@@ -32,7 +32,7 @@ public class HomeInitializer extends ModuleInitializer {
         storage.scheduleSaveConfigurationHandlerJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 
-    public Map<String, SpatialPose> ofHomes(@NotNull ServerPlayerEntity player) {
+    public static Map<String, SpatialPose> ofHomes(@NotNull ServerPlayerEntity player) {
         String playerName = player.getGameProfile().getName();
         Map<String, Map<String, SpatialPose>> homes = storage.getModel().name2home;
         homes.computeIfAbsent(playerName, k -> new HashMap<>());

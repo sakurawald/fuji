@@ -23,7 +23,7 @@ public class ConfigInitializer extends ModuleInitializer {
         Configs.configHandler.readStorage();
 
         // reload modules
-        Managers.getModuleManager().reloadModules();
+        Managers.getModuleManager().reloadModuleInitializers();
 
         // reload jobs
         BaseJob.rescheduleAll();

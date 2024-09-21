@@ -35,7 +35,7 @@ import java.util.concurrent.CompletableFuture;
 @CommandRequirement(level = 4)
 public class CleanerInitializer extends ModuleInitializer {
 
-    public BaseConfigurationHandler<CleanerConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, CleanerConfigModel.class);
+    public static BaseConfigurationHandler<CleanerConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, CleanerConfigModel.class);
 
     @Override
     public void onInitialize() {
@@ -43,12 +43,12 @@ public class CleanerInitializer extends ModuleInitializer {
     }
 
     @SuppressWarnings("RedundantIfStatement")
-    private boolean ignoreEntity(Entity entity) {
+    private static boolean ignoreEntity(Entity entity) {
         if (entity.getType().equals(EntityType.PLAYER)) return true;
         if (entity instanceof BlockAttachedEntity) return true;
         if (entity instanceof VehicleEntity) return true;
 
-        var config = this.config.getModel().ignore;
+        var config = CleanerInitializer.config.getModel().ignore;
 
         if (config.ignore_item_entity && entity instanceof ItemEntity) return true;
         if (config.ignore_living_entity && entity.isLiving()) return true;
@@ -65,13 +65,13 @@ public class CleanerInitializer extends ModuleInitializer {
         return false;
     }
 
-    private boolean shouldRemove(String key, int age) {
+    private static boolean shouldRemove(String key, int age) {
         Map<String, Integer> regex2age = config.getModel().key2age;
         return regex2age.containsKey(key) && age >= regex2age.get(key);
     }
 
     @CommandNode("clean")
-    public int clean() {
+    public static int clean() {
         CompletableFuture.runAsync(() -> {
             Map<String, Integer> counter = new HashMap<>();
 
@@ -100,7 +100,7 @@ public class CleanerInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    private void sendCleanerBroadcast(Map<String, Integer> counter) {
+    private static void sendCleanerBroadcast(Map<String, Integer> counter) {
         // avoid spam
         if (counter.isEmpty()) return;
 

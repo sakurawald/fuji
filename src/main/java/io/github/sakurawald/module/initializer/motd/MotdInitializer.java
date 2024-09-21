@@ -28,10 +28,10 @@ public class MotdInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<MotdConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, MotdConfigModel.class);
 
-    private final File ICON_FOLDER = ReflectionUtil.getModuleConfigPath(this).resolve("motd").resolve("icon").toFile();
+    private static final File ICON_FOLDER = ReflectionUtil.getModuleConfigPath(MotdInitializer.class).resolve("motd").resolve("icon").toFile();
 
     @Setter
-    private @NotNull List<String> motd = new ArrayList<>();
+    private static @NotNull List<String> motd = new ArrayList<>();
 
     @Override
     public void onInitialize() {
@@ -44,7 +44,7 @@ public class MotdInitializer extends ModuleInitializer {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public @NotNull Optional<ServerMetadata.Favicon> getRandomIcon() {
+    public static @NotNull Optional<ServerMetadata.Favicon> getRandomIcon() {
         ICON_FOLDER.mkdirs();
         File[] icons = ICON_FOLDER.listFiles();
         if (icons == null || icons.length == 0) {
@@ -67,7 +67,7 @@ public class MotdInitializer extends ModuleInitializer {
         return Optional.of(new ServerMetadata.Favicon(byteArrayOutputStream.toByteArray()));
     }
 
-    public @NotNull Text getRandomDescription() {
+    public static @NotNull Text getRandomDescription() {
         return LocaleHelper.getTextByValue(null,motd.get(new Random().nextInt(motd.size())));
     }
 

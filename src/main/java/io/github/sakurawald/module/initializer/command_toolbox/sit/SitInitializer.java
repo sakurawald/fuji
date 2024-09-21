@@ -44,7 +44,7 @@ public class SitInitializer extends ModuleInitializer {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public boolean canSit(ServerPlayerEntity player) {
+    public static boolean canSit(ServerPlayerEntity player) {
         return !player.hasVehicle() && !player.isFallFlying() && !player.isSleeping() && !player.isSwimming() && !player.isSpectator();
     }
 
@@ -67,7 +67,7 @@ public class SitInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    public @NotNull Entity makeChairEntity(@NotNull World world, @NotNull BlockPos targetBlockPos, @Nullable Vec3d target) {
+    public static @NotNull Entity makeChairEntity(@NotNull World world, @NotNull BlockPos targetBlockPos, @Nullable Vec3d target) {
 
         Vec3d chairEntityPosition = targetBlockPos.toBottomCenterPos().add(0, 0.5, 0).add(SitInitializer.CHAIR_ENTITY_OFFSET);
         BlockState targetBlockStage = world.getBlockState(targetBlockPos);
