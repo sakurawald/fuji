@@ -70,10 +70,12 @@ public class ReflectionUtil {
         return Fuji.CONFIG_PATH.resolve("modules").resolve(others);
     }
 
+    @SuppressWarnings("unused")
     public static String translateToLowerCaseWithUnderscore(String name) {
         return separateCamelCase(name, '_').toLowerCase(Locale.ENGLISH);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private static String separateCamelCase(String name, char separator) {
         StringBuilder translation = new StringBuilder();
         for (int i = 0, length = name.length(); i < length; i++) {

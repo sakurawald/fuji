@@ -39,7 +39,7 @@ public class KitInitializer extends ModuleInitializer {
     public static void writeKit(@NotNull Kit kit) {
         Path path = STORAGE_PATH.resolve(kit.getName());
 
-        NbtCompound root = NbtHelper.read(path);
+        NbtCompound root = NbtHelper.readOrDefault(path);
         if (root == null) {
             LogUtil.warn("failed to write kit {}", kit);
             return;
@@ -78,7 +78,7 @@ public class KitInitializer extends ModuleInitializer {
 
     public static @NotNull Kit readKit(@NotNull String name) {
         Path p = STORAGE_PATH.resolve(name);
-        NbtCompound root = NbtHelper.read(p);
+        NbtCompound root = NbtHelper.readOrDefault(p);
 
         if (root == null) {
             return new Kit(p.toFile().getName(), new ArrayList<>());

@@ -18,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(InfoCommand.class)
 public class InfoCommandMixin {
 
+    @SuppressWarnings("DataFlowIssue")
     @Inject(method = "infoBlock", at = @At(value = "INVOKE", target = "Lcarpet/commands/InfoCommand;printBlock(Ljava/util/List;Lnet/minecraft/server/command/ServerCommandSource;Ljava/lang/String;)V", shift = At.Shift.AFTER))
     private static void addNbtQueryForInfoBlockCommand(@NotNull ServerCommandSource source, @NotNull BlockPos pos, String grep, CallbackInfoReturnable<Integer> cir) {
         // is player ?

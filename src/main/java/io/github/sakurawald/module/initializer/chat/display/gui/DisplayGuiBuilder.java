@@ -5,6 +5,7 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import eu.pb4.sgui.api.gui.SlotGuiInterface;
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.item.BlockItem;
@@ -34,7 +35,13 @@ public abstract class DisplayGuiBuilder {
                                                        ServerPlayerEntity player) implements GuiElementInterface.ClickCallback {
         @Override
         public void click(int i, ClickType clickType, net.minecraft.screen.slot.SlotActionType clickType1, @NotNull SlotGuiInterface slotGuiInterface) {
-            ItemStack itemStack = slotGuiInterface.getSlot(i).getItemStack();
+            GuiElementInterface slot = slotGuiInterface.getSlot(i);
+            if (slot == null) {
+                LogUtil.error("a slot in display gui is null.");
+                return;
+            }
+
+            ItemStack itemStack = slot.getItemStack();
             if (isShulkerBox(itemStack)) {
                 ShulkerBoxDisplayGui shulkerBoxDisplayGui = new ShulkerBoxDisplayGui(LocaleHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName()), itemStack, parentGui);
                 shulkerBoxDisplayGui.build(player).open();
