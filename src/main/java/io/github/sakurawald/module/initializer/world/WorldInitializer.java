@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.world;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
-import io.github.sakurawald.core.auxiliary.ReflectionUtil;
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
@@ -64,10 +64,14 @@ public class WorldInitializer extends ModuleInitializer {
         for (DimensionEntry dimensionEntry : storage.getModel().dimension_list) {
             if (!dimensionEntry.isEnable()) continue;
 
-            Identifier dimensionType = Identifier.of(dimensionEntry.getDimensionType());
-            Identifier dimension = Identifier.of(dimensionEntry.getDimension());
-            long seed = dimensionEntry.getSeed();
-            WorldManager.requestToCreateWorld(server, dimension, dimensionType, seed);
+            try {
+                Identifier dimensionType = Identifier.of(dimensionEntry.getDimensionType());
+                Identifier dimension = Identifier.of(dimensionEntry.getDimension());
+                long seed = dimensionEntry.getSeed();
+                WorldManager.requestToCreateWorld(server, dimension, dimensionType, seed);
+            } catch (Exception e) {
+                LogUtil.error("failed to load dimension `{}`", dimensionEntry, e);
+            }
         }
     }
 
