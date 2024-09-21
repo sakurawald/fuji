@@ -48,7 +48,7 @@ public class FlattenTreeTransformer extends ConfigurationTransformer {
         // if the tree is not empty, migrate it to a standalone file
         Path currentTreeOutPath = level2outPath.apply(level);
         if (!parent.isEmpty() && Files.notExists(currentTreeOutPath)) {
-            logConsole("flatten tree `{}` into `{}`", level, currentTreeOutPath);
+            logConsole("flatten tree `{}` into the file `{}`", level, currentTreeOutPath);
             Files.createDirectories(currentTreeOutPath.getParent());
             String json = BaseConfigurationHandler.getGson().toJson(parent);
             Files.writeString(currentTreeOutPath, json);
