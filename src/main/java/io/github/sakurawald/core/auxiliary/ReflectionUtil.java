@@ -23,6 +23,7 @@ public class ReflectionUtil {
     public static final String MODULE_INITIALIZER_GRAPH_FILE_NAME = "module-initializer-graph.txt";
     public static final String ARGUMENT_TYPE_ADAPTER_GRAPH_FILE_NAME = "argument-type-adapter-graph.txt";
     public static final String LANGUAGE_GRAPH_FILE_NAME = "language-graph.txt";
+    public static final String MODULE_GRAPH_FILE_NAME = "module-graph.txt";
 
     public static Set<Method> getMethodsWithAnnotation(Class<?> clazz, Class<? extends Annotation> annotation) {
         Set<Method> methods = new HashSet<>();
@@ -56,14 +57,6 @@ public class ReflectionUtil {
 
     public static String getModulePath(Class<?> clazz) {
         return getModulePath(clazz.getName());
-    }
-
-    public static String getModuleControlFileName(Class<?> clazz) {
-        return "config." + getModulePath(clazz.getName()) + ".json";
-    }
-
-    public static String getModuleControlFileName(Object object) {
-        return getModuleControlFileName(object.getClass());
     }
 
     public static Path getModuleConfigPath(Class<?> clazz) {
