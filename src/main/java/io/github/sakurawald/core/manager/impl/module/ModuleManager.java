@@ -32,26 +32,44 @@ public class ModuleManager extends BaseManager {
 
     @Override
     public void onInitialize() {
-        invokeModuleInitializers();
+        initializeModuleInitializers();
         ServerLifecycleEvents.SERVER_STARTED.register(server -> this.serverStartupReport());
     }
 
     @SuppressWarnings("unchecked")
-    private void invokeModuleInitializers() {
+    private void initializeModuleInitializers() {
         ReflectionUtil.getGraph(ReflectionUtil.MODULE_INITIALIZER_GRAPH_FILE_NAME)
             .stream()
             .filter(className -> Managers.getModuleManager().shouldWeEnableThis(className))
             .forEach(className -> {
                 try {
                     Class<? extends ModuleInitializer> clazz = (Class<? extends ModuleInitializer>) Class.forName(className);
-                    this.getInitializer(clazz);
+                    this.initializeModuleInitializer(clazz);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             });
     }
 
-    public void reloadModules() {
+    /**
+     * (If a module is enabled, but the module doesn't extend AbstractModule, then this me*
+     * hod will also return null, but the module doesn't extend AbstractModule, then this method will also return null.)
+     */
+    public <T extends ModuleInitializer> void initializeModuleInitializer(@NotNull Class<T> clazz) {
+        if (!moduleRegistry.containsKey(clazz)) {
+            if (shouldWeEnableThis(clazz.getName())) {
+                try {
+                    ModuleInitializer moduleInitializer = clazz.getDeclaredConstructor().newInstance();
+                    moduleInitializer.doInitialize();
+                    moduleRegistry.put(clazz, moduleInitializer);
+                } catch (Exception e) {
+                    LogUtil.error("failed to initialize module %s.".formatted(clazz.getSimpleName()), e);
+                }
+            }
+        }
+    }
+
+    public void reloadModuleInitializers() {
         moduleRegistry.values().forEach(initializer -> {
                 try {
                     initializer.doReload();
@@ -70,26 +88,6 @@ public class ModuleManager extends BaseManager {
 
         enabledModuleList.sort(String::compareTo);
         LogUtil.info("enabled {}/{} modules -> {}", enabledModuleList.size(), module2enable.size(), enabledModuleList);
-    }
-
-    /**
-     * @return if a module is disabled, then this method will return null.
-     * (If a module is enabled, but the module doesn't extend AbstractModule, then this me*
-     * hod will also return null, but the module doesn't extend AbstractModule, then this method will also return null.)
-     */
-    public <T extends ModuleInitializer> T getInitializer(@NotNull Class<T> clazz) {
-        if (!moduleRegistry.containsKey(clazz)) {
-            if (shouldWeEnableThis(clazz.getName())) {
-                try {
-                    ModuleInitializer moduleInitializer = clazz.getDeclaredConstructor().newInstance();
-                    moduleInitializer.doInitialize();
-                    moduleRegistry.put(clazz, moduleInitializer);
-                } catch (Exception e) {
-                    LogUtil.error("failed to initialize module %s.".formatted(clazz.getSimpleName()), e);
-                }
-            }
-        }
-        return clazz.cast(moduleRegistry.get(clazz));
     }
 
     public boolean shouldWeEnableThis(String className) {
