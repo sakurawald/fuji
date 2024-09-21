@@ -1,14 +1,15 @@
 package io.github.sakurawald.module.initializer.command_scheduler.config.model;
 
+import com.google.gson.annotations.SerializedName;
 import io.github.sakurawald.module.initializer.command_scheduler.structure.ScheduleJob;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SchedulerModel {
+public class CommandSchedulerModel {
 
-    public @NotNull List<ScheduleJob> scheduleJobs = new ArrayList<>() {
+    public @NotNull List<ScheduleJob> jobs = new ArrayList<>() {
         {
             this.add(new ScheduleJob("example_job", false, 3, List.of("0 0 * ? * *"),
                     List.of(
