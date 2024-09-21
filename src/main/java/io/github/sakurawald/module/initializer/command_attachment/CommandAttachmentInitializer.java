@@ -19,6 +19,7 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_attachment.command.argument.wrapper.ExecuteAsType;
 import io.github.sakurawald.module.initializer.command_attachment.command.argument.wrapper.InteractType;
 import io.github.sakurawald.module.initializer.command_attachment.config.model.CommandAttachmentModel;
+import io.github.sakurawald.module.initializer.command_attachment.structure.BlockCommandAttachmentEntry;
 import io.github.sakurawald.module.initializer.command_attachment.structure.CommandAttachmentEntry;
 import io.github.sakurawald.module.initializer.command_attachment.structure.CommandAttackmentType;
 import io.github.sakurawald.module.initializer.command_attachment.structure.EntityCommandAttachmentEntry;
@@ -30,6 +31,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,11 +47,18 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     private static final String COMMAND_ATTACHMENT_SUBJECT_NAME = "command-attachment";
 
     @Override
-    public void registerGsonTypeAdapter() {
-        BaseConfigurationHandler.registerTypeAdapter(CommandAttachmentEntry.class, new CommandAttachmentEntryAdapter());
-
+    public void onInitialize() {
+//        ServerTickEvents.END_SERVER_TICK.register(server -> {
+//            server.getPlayerManager().getPlayer().
+//        });
     }
 
+    @Override
+    public void registerGsonTypeAdapter() {
+        BaseConfigurationHandler.registerTypeAdapter(CommandAttachmentEntry.class, new CommandAttachmentEntryAdapter());
+    }
+
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     @SneakyThrows
     public static boolean existsAttachmentModel(String uuid) {
         return Managers.getAttachmentManager().existsAttachmentFile(COMMAND_ATTACHMENT_SUBJECT_NAME, uuid);
@@ -142,7 +151,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     }
 
     @CommandNode("attach-entity-one")
-    private static int attachEntity(@CommandSource ServerPlayerEntity player
+    private static int attachEntityOne(@CommandSource ServerPlayerEntity player
         , Entity entity
         , Optional<InteractType> interactType
         , Optional<Integer> maxUseTimes
@@ -168,6 +177,32 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
+    @CommandNode("attach-block-one")
+    private static int attachBlockOne(@CommandSource ServerPlayerEntity player
+        , BlockPos blockPos
+        , Optional<InteractType> interactType
+        , Optional<Integer> maxUseTimes
+        , Optional<ExecuteAsType> executeAsType
+        , GreedyString command
+    ) {
+        // get entity id
+        String uuid = NbtHelper.getUuid(player.getServerWorld(), blockPos);
+        CommandAttachmentModel model = getAttachmentModel(uuid);
+
+        // new entry
+        String $command = command.getValue();
+        InteractType $interactType = interactType.orElse(InteractType.BOTH);
+        ExecuteAsType $executeAsType = executeAsType.orElse(ExecuteAsType.FAKE_OP);
+        Integer $maxUseTimes = maxUseTimes.orElse(Integer.MAX_VALUE);
+
+        model.getEntries().add(new BlockCommandAttachmentEntry($command, $interactType, $executeAsType, $maxUseTimes, 0));
+
+        // save model
+        setAttachmentModel(uuid, model);
+
+        LocaleHelper.sendMessageByKey(player, "operation.success");
+        return CommandHelper.Return.SUCCESS;
+    }
 
     private static void checkItemStackInHand(ServerPlayerEntity player, ItemStack mainHandStack) {
         if (mainHandStack.isEmpty()) {
@@ -194,12 +229,19 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
+    @CommandNode("detach-block-all")
+    private static int detachBlockAll(@CommandSource ServerPlayerEntity player, BlockPos blockPos) {
+        String uuid = NbtHelper.getUuid(player.getServerWorld(), blockPos);
+
+        doDetachAttachment(player, uuid);
+        return CommandHelper.Return.SUCCESS;
+    }
+
     private static void doDetachAttachment(ServerPlayerEntity player, String uuid) {
         Managers.getAttachmentManager().unsetAttachment(COMMAND_ATTACHMENT_SUBJECT_NAME, uuid);
         LocaleHelper.sendMessageByKey(player, "operation.success");
     }
 
-    @SneakyThrows
     @CommandNode("query-item")
     private static int queryItem(@CommandSource ServerPlayerEntity player) {
         ItemStack mainHandStack = player.getMainHandStack();
@@ -210,18 +252,23 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @SneakyThrows
     @CommandNode("query-entity")
     private static int queryEntity(@CommandSource ServerPlayerEntity player, Entity entity) {
         String uuid = entity.getUuidAsString();
-
         doQueryAttachment(player, uuid);
         return CommandHelper.Return.SUCCESS;
     }
 
+    @CommandNode("query-block")
+    private static int queryBlock(@CommandSource ServerPlayerEntity player, BlockPos blockPos) {
+        String uuid = NbtHelper.getUuid(player.getServerWorld(), blockPos);
+        doQueryAttachment(player, uuid);
+        return CommandHelper.Return.SUCCESS;
+    }
 
-    private static void doQueryAttachment(ServerPlayerEntity player, String uuid) throws IOException {
-        if (uuid == null) {
+    @SneakyThrows
+    private static void doQueryAttachment(ServerPlayerEntity player, String uuid) {
+        if (!Managers.getAttachmentManager().existsAttachmentFile(COMMAND_ATTACHMENT_SUBJECT_NAME, uuid)) {
             LocaleHelper.sendMessageByKey(player, "command_attachment.query.no_attachment");
             throw new AbortOperationException();
         }
@@ -246,6 +293,8 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
                 return context.deserialize(json, ItemStackCommandAttachmentEntry.class);
             if (type.equals(CommandAttackmentType.ENTITY.name()))
                 return context.deserialize(json, EntityCommandAttachmentEntry.class);
+            if (type.equals(CommandAttackmentType.BLOCK.name()))
+                return context.deserialize(json, BlockCommandAttachmentEntry.class);
 
             throw new IllegalArgumentException("The type of command attachment entry is not supported");
         }

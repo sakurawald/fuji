@@ -41,6 +41,7 @@ public class AttachmentManager extends BaseManager {
     }
 
     public boolean existsAttachmentFile(String subject, String uuid) {
+        if (uuid == null) return false;
         return Files.exists(ATTACHMENT_STORAGE_PATH.resolve(subject).resolve(uuid));
     }
 

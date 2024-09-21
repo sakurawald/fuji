@@ -10,6 +10,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -137,6 +139,12 @@ public class NbtHelper {
         return root.getString(FUJI_UUID);
     }
 
+    public static String getUuid(World world, BlockPos blockPos) {
+        String dimension = RegistryHelper.ofString(world);
+        String pos = blockPos.getX() + "#" + blockPos.getY() + "#" + blockPos.getZ();
+        String str = dimension + "#" + pos;
+        return UUID.nameUUIDFromBytes(str.getBytes()).toString();
+    }
 
     public static @NotNull String getOrMakeUUIDNbt(ItemStack itemStack) {
         NbtComponent nbtComponent = itemStack.get(DataComponentTypes.CUSTOM_DATA);
