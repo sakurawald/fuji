@@ -6,6 +6,7 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Data
 public class CommandAttachmentModel {
     List<CommandAttachmentEntry> entries = new ArrayList<>();

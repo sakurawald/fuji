@@ -7,6 +7,7 @@ import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -20,7 +21,7 @@ import java.util.function.Function;
 
 public class CommandExecutor {
 
-    public static void executeSpecializedCommand(@Nullable ServerPlayerEntity contextPlayer, @NotNull List<String> commands) {
+    public static void executeSpecializedCommand(@Nullable PlayerEntity contextPlayer, @NotNull List<String> commands) {
         /* context
          *
          * !as_console
@@ -37,7 +38,7 @@ public class CommandExecutor {
         }
     }
 
-    public static int executeCommandAsConsole(@Nullable ServerPlayerEntity contextPlayer, String command) {
+    public static int executeCommandAsConsole(@Nullable PlayerEntity contextPlayer, String command) {
         MinecraftServer server = ServerHelper.getDefaultServer();
         try {
             // parse placeholders
@@ -55,7 +56,7 @@ public class CommandExecutor {
     }
 
 
-    public static int executeCommandAsPlayer(@NotNull ServerPlayerEntity player, String command, Function<ServerCommandSource, ServerCommandSource> source) {
+    public static int executeCommandAsPlayer(@NotNull PlayerEntity player, String command, Function<ServerCommandSource, ServerCommandSource> source) {
         command = LocaleHelper.resolvePlaceholder(player, command);
 
         CommandManager commandManager = ServerHelper.getDefaultServer().getCommandManager();
@@ -74,11 +75,11 @@ public class CommandExecutor {
         return CommandHelper.Return.FAIL;
     }
 
-    public static int executeCommandAsPlayer(@NotNull ServerPlayerEntity player, String command) {
+    public static int executeCommandAsPlayer(@NotNull PlayerEntity player, String command) {
        return executeCommandAsPlayer(player, command, (source) -> source);
     }
 
-    public static int executeCommandAsFakeOp(@NotNull ServerPlayerEntity player, String command) {
+    public static int executeCommandAsFakeOp(@NotNull PlayerEntity player, String command) {
         return executeCommandAsPlayer(player, command, (source) -> source.withLevel(4));
     }
 }

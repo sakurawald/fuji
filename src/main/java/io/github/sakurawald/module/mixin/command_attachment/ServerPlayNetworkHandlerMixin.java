@@ -27,7 +27,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
             if (uuid == null) return;
 
             ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-            CommandAttachmentInitializer.trigger(uuid, player, List.of(InteractType.LEFT, InteractType.BOTH));
+            CommandAttachmentInitializer.triggerAttachmentModel(uuid, player, List.of(InteractType.LEFT, InteractType.BOTH));
         }
 
     }

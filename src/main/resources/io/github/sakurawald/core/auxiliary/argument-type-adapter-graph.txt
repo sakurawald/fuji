@@ -4,6 +4,7 @@ io.github.sakurawald.core.command.argument.adapter.impl.CommandContextArgumentTy
 io.github.sakurawald.core.command.argument.adapter.impl.DimensionArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.DimensionTypeArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.DoubleArgumentTypeAdapter
+io.github.sakurawald.core.command.argument.adapter.impl.EntityArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.FloatArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.GameProfileArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.GreedyArgumentTypeAdapter
