@@ -26,7 +26,7 @@ public class WorksInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<WorksDataModel> worksHandler = new ObjectConfigurationHandler<>("works.json", WorksDataModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("works.json"), WorksInitializer.class));
 
-    public static final BaseConfigurationHandler<WorksConfigModel> config = new ObjectConfigurationHandler<>("config.json", WorksConfigModel.class);
+    public static final BaseConfigurationHandler<WorksConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, WorksConfigModel.class);
 
     @Override
     public void registerGsonTypeAdapter() {

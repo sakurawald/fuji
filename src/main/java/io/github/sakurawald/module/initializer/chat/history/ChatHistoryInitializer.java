@@ -14,7 +14,7 @@ import java.util.Queue;
 @SuppressWarnings("LombokGetterMayBeUsed")
 public class ChatHistoryInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<ChatHistoryConfigModel> config = new ObjectConfigurationHandler<>("config.json", ChatHistoryConfigModel.class);
+    public static final BaseConfigurationHandler<ChatHistoryConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatHistoryConfigModel.class);
 
     @Getter
     private Queue<Text> chatHistory;

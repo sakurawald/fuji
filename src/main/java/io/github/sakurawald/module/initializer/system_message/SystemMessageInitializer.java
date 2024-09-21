@@ -7,6 +7,6 @@ import io.github.sakurawald.module.initializer.system_message.config.model.Syste
 
 public class SystemMessageInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<SystemMessageConfigModel> config = new ObjectConfigurationHandler<>("config.json", SystemMessageConfigModel.class);
+    public static final BaseConfigurationHandler<SystemMessageConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, SystemMessageConfigModel.class);
 
 }

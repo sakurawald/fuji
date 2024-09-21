@@ -33,7 +33,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class TopChunksInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<TopChunksConfigModel> config = new ObjectConfigurationHandler<>("config.json", TopChunksConfigModel.class);
+    public static final BaseConfigurationHandler<TopChunksConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, TopChunksConfigModel.class);
 
     @CommandNode("chunks")
     private int $chunks(@CommandSource CommandContext<ServerCommandSource> ctx) {

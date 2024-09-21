@@ -21,7 +21,7 @@ import java.util.Optional;
 
 public class TpaInitializer extends ModuleInitializer {
 
-    public final BaseConfigurationHandler<TpaConfigModel> config = new ObjectConfigurationHandler<>("config.json", TpaConfigModel.class);
+    public final BaseConfigurationHandler<TpaConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, TpaConfigModel.class);
 
     @Getter
     private final List<TpaRequest> requests = new ArrayList<>();

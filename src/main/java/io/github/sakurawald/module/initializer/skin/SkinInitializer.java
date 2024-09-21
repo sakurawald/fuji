@@ -33,7 +33,7 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 public class SkinInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<SkinModel> config = new ObjectConfigurationHandler<>("config.json", SkinModel.class);
+    public static final BaseConfigurationHandler<SkinModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, SkinModel.class);
 
     @Override
     public void onInitialize() {

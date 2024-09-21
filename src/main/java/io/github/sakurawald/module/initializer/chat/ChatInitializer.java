@@ -40,7 +40,7 @@ public class ChatInitializer extends ModuleInitializer {
     private static final BaseConfigurationHandler<ChatFormatModel> chatFormatHandler = new ObjectConfigurationHandler<>("chat.json", ChatFormatModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("chat.json"),ChatInitializer.class));
 
-    public  static final BaseConfigurationHandler<ChatConfigModel>  config = new ObjectConfigurationHandler<>("config.json", ChatConfigModel.class);
+    public  static final BaseConfigurationHandler<ChatConfigModel>  config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatConfigModel.class);
 
 
     private final MiniMessage miniMessage = MiniMessage.builder().build();

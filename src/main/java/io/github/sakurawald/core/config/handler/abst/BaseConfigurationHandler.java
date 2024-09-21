@@ -48,6 +48,8 @@ import java.util.Set;
  */
 public abstract class BaseConfigurationHandler<T> {
 
+    public static final String CONFIG_JSON = "config.json";
+
     @Getter
     protected static Gson gson = new GsonBuilder()
         // the default naming policy is IDENTIFY, we ensure that the naming style is consistency, whatever the internal name is.
