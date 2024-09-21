@@ -12,4 +12,21 @@
 >    4. move `config/fuji/skin.json` file into `config/fuji/modules/skin/config.json`
 
 ChangeLog
+- feature: add the configuration migrator layer, to help our user migrate version more easily. (it's less painful now.)
+- feature: split the big file `confug/fuji/config.json` into small pieces locates in `config/fuji/modules`. (see the migration guide above.)
+- feature: unify the `json key` naming policy, now all json keys use the `lower case underscore style`. (The old keys are migrated automatically.)
+- feature: add `/tppos offline <player>` command to teleport to the offline position of a player.
+- feature: use lazy loading way to initialize all managers.
+- feature: now will skip the un-necessary nametag making for a dead player. (nametag module)
+- feature: now `backup` service will keep the original `file structure` in file system.
+- feature: soft fail if failed to load an extra dimension. (world module)
+- feature: add locales for `deathlog module`
+- fix: ensure that all jobs used to save configuration on server stopping phase will be triggered anyway.
+- fix: the `invulnerable` is always treated as `true`. (afk.effect module)
+- fix: suppress the `console error logging` on a new player joined the server. (skin module)
+- refactor: use compile time 
+- refactor: use compile-time module graph, to boost the process of computing module path.
+- refactor: rewrite the configuration system, now it's much more clear.
+- refactor: remove the `functional.enchantment.override_power` module, now it's the part of `functional.enchantment` module.
+- build: add more tests to test symbol reference. (the reference relation between modules are stricter now, and the compatibility with other mods are enhanced.)
 
