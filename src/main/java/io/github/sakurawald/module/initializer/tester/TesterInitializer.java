@@ -14,6 +14,8 @@ public class TesterInitializer extends ModuleInitializer {
     @CommandNode("run")
     private static int $run(@CommandSource ServerPlayerEntity player) {
         player.sendMessage(Text.of("run"));
+
+
         return 1;
     }
 

@@ -24,7 +24,6 @@ ChangeLog
 - fix: ensure that all jobs used to save configuration on server stopping phase will be triggered anyway.
 - fix: the `invulnerable` is always treated as `true`. (afk.effect module)
 - fix: suppress the `console error logging` on a new player joined the server. (skin module)
-- refactor: use compile time 
 - refactor: use compile-time module graph, to boost the process of computing module path.
 - refactor: rewrite the configuration system, now it's much more clear.
 - refactor: remove the `functional.enchantment.override_power` module, now it's the part of `functional.enchantment` module.
