@@ -27,7 +27,7 @@ import java.util.Random;
 
 public class MotdInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<MotdConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(MotdConfigModel.class), MotdConfigModel.class);
+    public static final BaseConfigurationHandler<MotdConfigModel> config = new ObjectConfigurationHandler<>("config.json", MotdConfigModel.class);
 
     private final File ICON_FOLDER = ReflectionUtil.getModuleConfigPath(this).resolve("motd").resolve("icon").toFile();
 

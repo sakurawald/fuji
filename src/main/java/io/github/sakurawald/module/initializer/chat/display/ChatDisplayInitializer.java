@@ -23,7 +23,7 @@ import java.time.temporal.ChronoUnit;
 
 public class ChatDisplayInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<ChatDisplayConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(ChatDisplayConfigModel.class), ChatDisplayConfigModel.class);
+    public static final BaseConfigurationHandler<ChatDisplayConfigModel> config = new ObjectConfigurationHandler<>("config.json", ChatDisplayConfigModel.class);
 
     private void registerEnderPlaceholder() {
         Placeholders.register(

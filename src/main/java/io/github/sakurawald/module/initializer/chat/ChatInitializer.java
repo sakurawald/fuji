@@ -38,9 +38,9 @@ import java.util.regex.Pattern;
 public class ChatInitializer extends ModuleInitializer {
 
     private static final BaseConfigurationHandler<ChatFormatModel> chatFormatHandler = new ObjectConfigurationHandler<>("chat.json", ChatFormatModel.class)
-        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(ChatInitializer.class));
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("chat.json"),ChatInitializer.class));
 
-    public  static final BaseConfigurationHandler<ChatConfigModel>  config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(ChatConfigModel.class), ChatConfigModel.class);
+    public  static final BaseConfigurationHandler<ChatConfigModel>  config = new ObjectConfigurationHandler<>("config.json", ChatConfigModel.class);
 
 
     private final MiniMessage miniMessage = MiniMessage.builder().build();

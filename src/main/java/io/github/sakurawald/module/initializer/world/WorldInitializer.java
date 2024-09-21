@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.world;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
@@ -49,10 +50,10 @@ import java.util.Optional;
 @CommandRequirement(level = 4)
 public class WorldInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<WorldConfigModel> config = new ObjectConfigurationHandler<>(ReflectionUtil.getModuleControlFileName(WorldConfigModel.class), WorldConfigModel.class);
+    public static final BaseConfigurationHandler<WorldConfigModel> config = new ObjectConfigurationHandler<>("config.json", WorldConfigModel.class);
 
     private static final BaseConfigurationHandler<WorldStorageModel> storage = new ObjectConfigurationHandler<>("world.json", WorldStorageModel.class)
-        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(WorldInitializer.class));
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("world.json"), WorldInitializer.class));
 
     @Override
     public void onInitialize() {
