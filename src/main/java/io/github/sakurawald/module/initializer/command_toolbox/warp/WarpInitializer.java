@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.warp;
 
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -26,7 +27,7 @@ public class WarpInitializer extends ModuleInitializer {
 
     @Getter
     private static final BaseConfigurationHandler<WarpModel> data = new ObjectConfigurationHandler<>("warp.json", WarpModel.class)
-        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(WarpInitializer.class))
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("warp.json"),WarpInitializer.class))
         .addTransformer(new RenameKeyTransformer("$", "warps", "name2warp"));
 
     @Override

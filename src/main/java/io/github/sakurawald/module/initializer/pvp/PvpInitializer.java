@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.pvp;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -18,7 +19,7 @@ import java.util.Set;
 
 public class PvpInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<PvPModel> pvpHandler = new ObjectConfigurationHandler<>("pvp.json", PvPModel.class).addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(PvpInitializer.class));
+    public static final BaseConfigurationHandler<PvPModel> pvpHandler = new ObjectConfigurationHandler<>("pvp.json", PvPModel.class).addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("pvp.json"),PvpInitializer.class));
 
     @CommandNode("pvp on")
     private int $on(@CommandSource ServerPlayerEntity player) {

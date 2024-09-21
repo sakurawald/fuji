@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.seen;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
@@ -21,7 +22,7 @@ public class SeenInitializer extends ModuleInitializer {
 
     @Getter
     private static final BaseConfigurationHandler<SeenModel> data = new ObjectConfigurationHandler<>("seen.json", SeenModel.class)
-        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(SeenInitializer.class));
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("seen.json"),SeenInitializer.class));
 
     @CommandNode("seen")
     @CommandRequirement(level = 4)
