@@ -16,6 +16,7 @@ import com.jayway.jsonpath.spi.mapper.GsonMappingProvider;
 import com.jayway.jsonpath.spi.mapper.MappingProvider;
 import io.github.sakurawald.core.auxiliary.JsonUtil;
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.job.SaveConfigurationHandlerJob;
 import io.github.sakurawald.core.config.transformer.abst.ConfigurationTransformer;
 import io.github.sakurawald.core.manager.Managers;
@@ -48,7 +49,7 @@ import java.util.regex.Pattern;
  * 1. Only use static inner class in config model java object, this is because a historical design problem in java.
  * 2. The new gson type adapter should be registered before the call to loadFromDisk()
  * 3. The type system of java is static, given an object instance, you can use instance.getClass() to get the type of the instance, which means that you don't need to specify the typeOfT for gson library.
-
+ * <p>
  * The configuration handler in module initializer should be static:
  * 1. The major point to make configuration handler a member of class, is that it's easier to control the lifecycle of objects, however, considering the fact that the configuration handler is a mapping between file system and memory, it should be static and unique.
  * 2. Create the instance of configuration handler should have no side effect, until the call to readStorage() and writeStorage()
@@ -106,12 +107,12 @@ public abstract class BaseConfigurationHandler<T> {
 
             @Override
             public JsonProvider jsonProvider() {
-                return new GsonJsonProvider();
+                return new GsonJsonProvider(gson);
             }
 
             @Override
             public MappingProvider mappingProvider() {
-                return new GsonMappingProvider();
+                return new GsonMappingProvider(gson);
             }
 
             @Override
@@ -131,6 +132,35 @@ public abstract class BaseConfigurationHandler<T> {
 
     protected abstract T getDefaultModel();
 
+    private void renameKeysToLowerUnderscoreStyle(JsonObject dataTree) {
+        for (String key : dataTree.keySet().stream().toList()) {
+
+            if (MAP_TYPE_MATCHER.matcher(key).matches()) {
+                continue;
+            }
+
+            /* go down */
+            if (dataTree.get(key).isJsonObject()) {
+                renameKeysToLowerUnderscoreStyle(dataTree.get(key).getAsJsonObject());
+            }
+
+            if (dataTree.get(key).isJsonArray()) {
+                dataTree.getAsJsonArray(key).forEach(e -> {
+                    if (e.isJsonObject()) renameKeysToLowerUnderscoreStyle(e.getAsJsonObject());
+                });
+            }
+
+            /* go up */
+            String underscoreName = ReflectionUtil.translateToLowerCaseWithUnderscore(key);
+            if (!key.equals(underscoreName)) {
+                JsonElement value = dataTree.get(key);
+                LogUtil.debug("read lower-camel key `{}` as lower-underscore key `{}`", key, underscoreName);
+                dataTree.remove(key);
+                dataTree.add(underscoreName, value);
+            }
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public void readStorage() {
         try {
@@ -140,13 +170,15 @@ public abstract class BaseConfigurationHandler<T> {
                 it.apply();
             });
 
-
             if (Files.notExists(this.path)) {
                 writeStorage();
             } else {
                 // read data tree from disk
                 @Cleanup Reader reader = new BufferedReader(new InputStreamReader(new FileInputStream(this.path.toFile())));
                 JsonElement dataTree = JsonParser.parseReader(reader);
+
+                // treat all keys as lower-underscore format
+                renameKeysToLowerUnderscoreStyle(dataTree.getAsJsonObject());
 
                 // merge data tree with schema tree
                 T defaultModel = getDefaultModel();
@@ -170,6 +202,13 @@ public abstract class BaseConfigurationHandler<T> {
 
                 // use merged tree
                 this.model = (T) gson.fromJson(dataTree, defaultModel.getClass());
+
+                /* write storage back, to:
+                 * 1. keep the sync between memory and disk.
+                 * 2. trigger the field naming conversion in gson.
+                 * */
+
+                this.writeStorage();
             }
 
         } catch (IOException e) {
@@ -227,7 +266,7 @@ public abstract class BaseConfigurationHandler<T> {
             String key = entry.getKey();
             JsonElement value = entry.getValue();
 
-            // is the key missing form the data tree ?
+            /* is the key missing form the data tree ? */
             if (dataTree.has(key)) {
                 String currentPath = StringUtils.strip(parentPath + "." + key, ".");
 
@@ -351,4 +390,5 @@ public abstract class BaseConfigurationHandler<T> {
 
         return this.model;
     }
+
 }
