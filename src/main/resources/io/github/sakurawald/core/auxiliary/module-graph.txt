@@ -72,7 +72,6 @@ functional
 functional.anvil
 functional.cartography
 functional.enchantment
-functional.enchantment.override_power
 functional.enderchest
 functional.grindstone
 functional.loom
