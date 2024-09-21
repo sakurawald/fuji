@@ -10,7 +10,7 @@ import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.head.config.model.HeadModel;
+import io.github.sakurawald.module.initializer.head.config.model.HeadConfigModel;
 import io.github.sakurawald.module.initializer.head.gui.HeadGui;
 import io.github.sakurawald.module.initializer.head.privoder.HeadProvider;
 import net.minecraft.server.command.ServerCommandSource;
@@ -19,7 +19,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 // Special thanks to: https://github.com/PotatoPresident/HeadIndex
 public class HeadInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<HeadModel> headHandler = new ObjectConfigurationHandler<>("head.json", HeadModel.class).addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("head.json"),HeadInitializer.class));
+    public static final BaseConfigurationHandler<HeadConfigModel> headHandler = new ObjectConfigurationHandler<>("head.json", HeadConfigModel.class).addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("head.json"),HeadInitializer.class));
 
     @CommandNode("head sync")
     @CommandRequirement(level = 4)

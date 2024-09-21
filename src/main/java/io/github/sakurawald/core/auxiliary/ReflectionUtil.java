@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 @UtilityClass
@@ -71,5 +72,21 @@ public class ReflectionUtil {
     public static Path getModuleConfigPath(String modulePath) {
         String others = modulePath.replace(".", "/");
         return Fuji.CONFIG_PATH.resolve("modules").resolve(others);
+    }
+
+    public static String translateToLowerCaseWithUnderscore(String name) {
+        return separateCamelCase(name, '_').toLowerCase(Locale.ENGLISH);
+    }
+
+    private static String separateCamelCase(String name, char separator) {
+        StringBuilder translation = new StringBuilder();
+        for (int i = 0, length = name.length(); i < length; i++) {
+            char character = name.charAt(i);
+            if (Character.isUpperCase(character) && !translation.isEmpty()) {
+                translation.append(separator);
+            }
+            translation.append(character);
+        }
+        return translation.toString();
     }
 }
