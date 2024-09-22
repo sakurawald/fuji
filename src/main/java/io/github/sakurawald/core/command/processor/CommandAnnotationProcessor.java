@@ -20,14 +20,15 @@ import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import lombok.Getter;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.format.TextColor;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -243,11 +244,14 @@ public class CommandAnnotationProcessor {
 
         // report to command source
         String stacktrace = String.join("\n", LogUtil.getStackTraceAsList(throwable));
-        Component report = LocaleHelper.getTextByValue(source, string)
-            .asComponent()
-            .color(TextColor.color(255, 95, 0))
-            .hoverEvent(HoverEvent.showText(Component.text("Click to copy the stacktrace.")))
-            .clickEvent(ClickEvent.copyToClipboard(stacktrace));
+
+        MutableText report = LocaleHelper.getTextByValue(source, string)
+            .copy()
+            .setStyle(Style.EMPTY
+                .withColor(16736000)
+                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of("Click to copy the stacktrace.")))
+                .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, stacktrace)));
+
         source.sendMessage(report);
     }
 
