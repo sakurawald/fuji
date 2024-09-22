@@ -6,23 +6,16 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import me.lucko.spark.api.Spark;
-import me.lucko.spark.api.SparkProvider;
-import me.lucko.spark.api.gc.GarbageCollector;
-import me.lucko.spark.api.statistic.StatisticWindow;
-import me.lucko.spark.api.statistic.misc.DoubleAverageInfo;
-import me.lucko.spark.api.statistic.types.DoubleStatistic;
-import me.lucko.spark.api.statistic.types.GenericStatistic;
 import net.kyori.adventure.text.Component;
 import net.minecraft.server.command.ServerCommandSource;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryPoolMXBean;
 import java.lang.management.MemoryType;
 import java.lang.management.MemoryUsage;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 
@@ -45,17 +38,6 @@ public class ProfilerInitializer extends ModuleInitializer {
     private static int $profiler(@CommandSource CommandContext<ServerCommandSource> ctx) {
         ServerCommandSource source = ctx.getSource();
         CompletableFuture.runAsync(() -> {
-            /* get instance */
-            Spark spark = null;
-            try {
-                spark = SparkProvider.get();
-            } catch (Exception ignored) {
-            }
-            if (spark == null) {
-                LocaleHelper.sendMessageByKey(source, "profiler.spark.no_instance");
-                return;
-            }
-
             /* format */
             String os_name = ManagementFactory.getOperatingSystemMXBean().getName();
             String os_version = ManagementFactory.getOperatingSystemMXBean().getVersion();
@@ -64,66 +46,25 @@ public class ProfilerInitializer extends ModuleInitializer {
             String vmName = ManagementFactory.getRuntimeMXBean().getVmName();
             String vmVersion = ManagementFactory.getRuntimeMXBean().getVmVersion();
 
-            double tps_5s = 0;
-            double tps_10s = 0;
-            double tps_1m = 0;
-            double tps_5m = 0;
-            double tps_15m = 0;
-            DoubleStatistic<StatisticWindow.TicksPerSecond> tps = spark.tps();
-            if (tps != null) {
-                tps_5s = tps.poll(StatisticWindow.TicksPerSecond.SECONDS_5);
-                tps_10s = tps.poll(StatisticWindow.TicksPerSecond.SECONDS_10);
-                tps_1m = tps.poll(StatisticWindow.TicksPerSecond.MINUTES_1);
-                tps_5m = tps.poll(StatisticWindow.TicksPerSecond.MINUTES_5);
-                tps_15m = tps.poll(StatisticWindow.TicksPerSecond.MINUTES_15);
-            }
-
-            GenericStatistic<DoubleAverageInfo, StatisticWindow.MillisPerTick> mspt = spark.mspt();
-
-            double mspt_10s_min = 0;
-            double mspt_10s_median = 0;
-            double mspt_10s_95percentile = 0;
-            double mspt_10s_max = 0;
-            double mspt_1m_min = 0;
-            double mspt_1m_median = 0;
-            double mspt_1m_95percentile = 0;
-            double mspt_1m_max = 0;
-            if (mspt != null) {
-                DoubleAverageInfo mspt_10s = mspt.poll(StatisticWindow.MillisPerTick.SECONDS_10);
-                DoubleAverageInfo mspt_1m = mspt.poll(StatisticWindow.MillisPerTick.MINUTES_1);
-                mspt_10s_min = mspt_10s.min();
-                mspt_10s_median = mspt_10s.median();
-                mspt_10s_95percentile = mspt_10s.percentile(0.95);
-                mspt_10s_max = mspt_10s.max();
-                mspt_1m_min = mspt_1m.min();
-                mspt_1m_median = mspt_1m.median();
-                mspt_1m_95percentile = mspt_1m.percentile(0.95);
-                mspt_1m_max = mspt_1m.max();
-            }
-
-
-            DoubleStatistic<StatisticWindow.CpuUsage> cpuProcess = spark.cpuProcess();
-            DoubleStatistic<StatisticWindow.CpuUsage> cpuSystem = spark.cpuSystem();
-            double cpu_process_10s = cpuProcess.poll(StatisticWindow.CpuUsage.SECONDS_10) * 100;
-            double cpu_process_1m = cpuProcess.poll(StatisticWindow.CpuUsage.MINUTES_1) * 100;
-            double cpu_process_15m = cpuProcess.poll(StatisticWindow.CpuUsage.MINUTES_15) * 100;
-            double cpu_system_10s = cpuSystem.poll(StatisticWindow.CpuUsage.SECONDS_10) * 100;
-            double cpu_system_1m = cpuSystem.poll(StatisticWindow.CpuUsage.MINUTES_1) * 100;
-            double cpu_system_15m = cpuSystem.poll(StatisticWindow.CpuUsage.MINUTES_15) * 100;
-
-            Map<String, GarbageCollector> gc = spark.gc();
+            /* gc */
             Component gcComponent = LocaleHelper.getTextByKey(source, "profiler.format.gc.head").asComponent();
+            List<GarbageCollectorMXBean> gcMXBeans = ManagementFactory.getGarbageCollectorMXBeans();
+
+            long uptime = ManagementFactory.getRuntimeMXBean().getUptime();
+
             int i = 0;
-            for (GarbageCollector garbageCollector : gc.values()) {
-                String name = garbageCollector.name();
-                double avgFrequency = (double) garbageCollector.avgFrequency() / 1000;
-                double avgTime = garbageCollector.avgTime();
-                long totalCollections = garbageCollector.totalCollections();
-                long totalTime = garbageCollector.totalTime();
-                gcComponent = gcComponent.append(LocaleHelper.getTextByKey(source, i == gc.values().size() - 1 ? "profiler.format.gc.last" : "profiler.format.gc.no_last", name, avgFrequency, avgTime, totalCollections, totalTime));
+            for (GarbageCollectorMXBean gcMXBean : gcMXBeans) {
+                String name = gcMXBean.getName();
+                long totalGcTime = gcMXBean.getCollectionTime();
+                long totalGcCount = gcMXBean.getCollectionCount();
+                double avgFrequency = (double) uptime / totalGcCount / 1000;
+                double avgTime = (double) totalGcTime / totalGcCount;
+
+                gcComponent = gcComponent.append(LocaleHelper.getTextByKey(source, i == gcMXBeans.size() - 1 ? "profiler.format.gc.last" : "profiler.format.gc.no_last", name, avgFrequency, avgTime, totalGcCount, totalGcTime));
                 i++;
             }
 
+            /* mem */
             Component memComponent = LocaleHelper.getTextByKey(source, "profiler.format.mem.head").asComponent();
             List<MemoryPoolMXBean> memoryPoolMXBeans = ManagementFactory.getMemoryPoolMXBeans();
             i = 0;
@@ -141,12 +82,12 @@ public class ProfilerInitializer extends ModuleInitializer {
 
             /* output */
             Component formatComponent = LocaleHelper.getTextByKey(source, "profiler.format"
-                    , os_name, os_version, os_arch
-                    , vmName, vmVersion
-                    , tps_5s, tps_10s, tps_1m, tps_5m, tps_15m
-                    , mspt_10s_min, mspt_10s_median, mspt_10s_95percentile, mspt_10s_max, mspt_1m_min, mspt_1m_median, mspt_1m_95percentile, mspt_1m_max
-                    , cpu_system_10s, cpu_system_1m, cpu_system_15m, cpu_process_10s, cpu_process_1m, cpu_process_15m).asComponent();
-            source.sendMessage(formatComponent.appendNewline().append(memComponent).appendNewline().append(gcComponent));
+                , os_name, os_version, os_arch
+                , vmName, vmVersion).asComponent();
+            source.sendMessage(
+                formatComponent
+                    .appendNewline().append(memComponent)
+                    .appendNewline().append(gcComponent));
         });
 
         return CommandHelper.Return.SUCCESS;
