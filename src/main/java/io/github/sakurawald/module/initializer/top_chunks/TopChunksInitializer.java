@@ -80,7 +80,7 @@ public class TopChunksInitializer extends ModuleInitializer {
             for (int j = 0; j < config.top.rows; j++) {
                 for (int i = 0; i < config.top.columns; i++) {
                     if (PQ.isEmpty()) break outer;
-                    textComponentBuilder.append(PQ.poll().asComponent(ctx.getSource())).appendSpace();
+                    textComponentBuilder.append(PQ.poll().asText(ctx.getSource())).appendSpace();
                 }
                 textComponentBuilder.append(Component.newline());
             }
