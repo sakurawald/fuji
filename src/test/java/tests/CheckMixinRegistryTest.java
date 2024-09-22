@@ -1,5 +1,6 @@
 package tests;
 
+import auxiliary.TestUtility;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -11,9 +12,12 @@ import lombok.Cleanup;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.spongepowered.asm.mixin.Mixin;
-import auxiliary.TestUtility;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
