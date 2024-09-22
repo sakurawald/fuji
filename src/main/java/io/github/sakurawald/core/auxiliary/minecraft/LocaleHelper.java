@@ -83,14 +83,14 @@ public class LocaleHelper {
         if (code2json.containsKey(languageCode)) return;
 
         try {
-        String languageFile = languageCode + ".json";
-        ResourceConfigurationHandler resourceConfigurationHandler = new ResourceConfigurationHandler("lang/" + languageFile);
+            String languageFile = languageCode + ".json";
+            ResourceConfigurationHandler resourceConfigurationHandler = new ResourceConfigurationHandler("lang/" + languageFile);
 
-        //read it
-        resourceConfigurationHandler.readStorage();
+            //read it
+            resourceConfigurationHandler.readStorage();
 
-        code2json.put(languageCode, resourceConfigurationHandler.getModel().getAsJsonObject());
-        LogUtil.info("language {} loaded.", languageCode);
+            code2json.put(languageCode, resourceConfigurationHandler.getModel().getAsJsonObject());
+            LogUtil.info("language {} loaded.", languageCode);
         } catch (Exception e) {
             code2json.put(languageCode, UNSUPPORTED_LANGUAGE_MARKER);
             LogUtil.warn("failed to load language `{}`", languageCode);
@@ -184,7 +184,15 @@ public class LocaleHelper {
 
     private static @NotNull String resolveArgs(@NotNull String string, Object @NotNull ... args) {
         if (args.length > 0) {
-            return String.format(string, args);
+            try {
+                return String.format(string, args);
+            } catch (Exception e) {
+                LogUtil.error("""
+                    Failed to resolve args for language value `{}` with args `{}`
+
+                    It's like a syntax mistake in the language file.
+                    """, string, args);
+            }
         }
         return string;
     }
