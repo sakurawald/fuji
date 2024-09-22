@@ -4,14 +4,16 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.structure.TypeFormatter;
 import io.github.sakurawald.module.initializer.top_chunks.TopChunksInitializer;
 import lombok.Getter;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -81,8 +83,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
         return Integer.compare(that.score, this.score);
     }
 
-    public @NotNull Component asComponent(@NotNull ServerCommandSource source) {
-
+    public @NotNull Text asText(@NotNull ServerCommandSource source) {
         String chunkLocation;
         if (TopChunksInitializer.config.getModel().hide_location) {
             chunkLocation = LocaleHelper.getValue(source, "top_chunks.prop.hidden");
@@ -93,19 +94,24 @@ public class ChunkScore implements Comparable<ChunkScore> {
             chunkLocation = this.getChunkPos().toString();
         }
 
-        Component hoverTextComponent = Component.text().color(NamedTextColor.GOLD)
-                .append(LocaleHelper.getTextByKey(source, "top_chunks.prop.dimension", this.dimension.getRegistryKey().getValue()))
-                .append(Component.newline())
-                .append(LocaleHelper.getTextByKey(source, "top_chunks.prop.chunk", chunkLocation))
-                .append(Component.newline())
-                .append(LocaleHelper.getTextByKey(source, "top_chunks.prop.score", this.score))
-                .append(Component.newline())
-                .append(LocaleHelper.getTextByKey(source, "top_chunks.prop.players", this.players))
-                .append(Component.newline())
-                .append(LocaleHelper.getTextByKey(source, "top_chunks.prop.types"))
-                .append(TypeFormatter.formatTypes(source, this.type2amount)).build();
-        return Component.text()
-                .color(this.players.isEmpty() ? NamedTextColor.GRAY : NamedTextColor.DARK_GREEN)
-                .append(Component.text(this.toString())).hoverEvent(HoverEvent.showText(hoverTextComponent)).build();
+        MutableText hoverText = Text.empty()
+            .formatted(Formatting.GOLD)
+            .append(LocaleHelper.getTextByKey(source, "top_chunks.prop.dimension", this.dimension.getRegistryKey().getValue()))
+            .append(LocaleHelper.TEXT_NEWLINE)
+            .append(LocaleHelper.getTextByKey(source, "top_chunks.prop.chunk", chunkLocation))
+            .append(LocaleHelper.TEXT_NEWLINE)
+            .append(LocaleHelper.getTextByKey(source, "top_chunks.prop.score", this.score))
+            .append(LocaleHelper.TEXT_NEWLINE)
+            .append(LocaleHelper.getTextByKey(source, "top_chunks.prop.players", this.players))
+            .append(LocaleHelper.TEXT_NEWLINE)
+            .append(LocaleHelper.getTextByKey(source, "top_chunks.prop.types"))
+            .append(LocaleHelper.toText(TypeFormatter.formatTypes(source, this.type2amount)));
+
+        return Text.empty()
+            .append(Text.of(this.toString()))
+            .setStyle(Style.EMPTY
+                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText))
+                .withFormatting(this.players.isEmpty() ? Formatting.GRAY : Formatting.DARK_GREEN)
+            );
     }
 }

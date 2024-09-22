@@ -33,6 +33,8 @@ import java.util.Map;
 @UtilityClass
 public class LocaleHelper {
 
+    public static final Text TEXT_NEWLINE = Text.of("\n");
+
     private static final NodeParser POWERFUL_PARSER = NodeParser.builder()
         .quickText()
         .simplifiedTextFormat()
