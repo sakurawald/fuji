@@ -11,17 +11,18 @@ import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.OfflinePlayerName;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import lombok.SneakyThrows;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Uuids;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
@@ -74,7 +75,7 @@ public class DeathLogInitializer extends ModuleInitializer {
 
         NbtList deathsNode = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
         if (index >= deathsNode.size()) {
-            LocaleHelper.sendMessageByKey(source,"deathlog.index.not_found",index);
+            LocaleHelper.sendMessageByKey(source, "deathlog.index.not_found", index);
             return CommandHelper.Return.FAIL;
         }
 
@@ -114,42 +115,42 @@ public class DeathLogInitializer extends ModuleInitializer {
     private static int $view(@CommandSource ServerPlayerEntity player, OfflinePlayerName from) {
         String $from = from.getValue();
         NbtCompound root = NbtHelper.readOrDefault(STORAGE_PATH.resolve(getFileName($from)));
-        if (root.isEmpty()) {
+        if (root == null || root.isEmpty()) {
             LocaleHelper.sendMessageByKey(player, "deathlog.empty");
             return CommandHelper.Return.FAIL;
         }
 
         NbtList deaths = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
-        TextComponent.Builder builder = Component.text();
+
+        MutableText deathlogViewText = Text.empty();
         String to = player.getGameProfile().getName();
         for (int i = 0; i < deaths.size(); i++) {
-            builder.append(asViewComponent(deaths.getCompound(i), $from, i, to));
+            deathlogViewText.append(asViewText(player, deaths.getCompound(i), $from, i, to));
         }
 
-        player.sendMessage(builder.asComponent());
+        player.sendMessage(deathlogViewText);
         return CommandHelper.Return.SUCCESS;
     }
 
-    private static @NotNull Component asViewComponent(@NotNull NbtCompound node, String from, int index, String to) {
+    private static @NotNull Text asViewText(Object audience, @NotNull NbtCompound node, String from, int index, String to) {
         NbtCompound remarkTag = node.getCompound(REMARK);
-        Component hover = Component.empty().color(NamedTextColor.DARK_GREEN)
-            .append(Component.text("Time: " + remarkTag.getString(TIME)))
-            .appendNewline()
-            .append(Component.text("Reason: " + remarkTag.getString(REASON)))
-            .appendNewline()
-            .append(Component.text("Dimension: " + remarkTag.getString(DIMENSION)))
-            .appendNewline()
-            .append(Component.text("Coordinate: %f %f %f".formatted(
-                remarkTag.getDouble(X),
-                remarkTag.getDouble(Y),
-                remarkTag.getDouble(Z)
-            )));
-        return Component.empty()
-            .color(NamedTextColor.RED)
-            .append(Component.text(index))
-            .appendSpace()
-            .clickEvent(ClickEvent.runCommand("/deathlog restore %s %d %s".formatted(from, index, to)))
-            .hoverEvent(HoverEvent.showText(hover));
+
+        MutableText hoverText = Text.empty()
+            .append(LocaleHelper.getTextByKey(audience, "deathlog.view.time", remarkTag.getString(TIME)))
+            .append(LocaleHelper.TEXT_NEWLINE)
+            .append(LocaleHelper.getTextByKey(audience, "deathlog.view.reason", remarkTag.getString(REASON)))
+            .append(LocaleHelper.TEXT_NEWLINE)
+            .append(LocaleHelper.getTextByKey(audience, "deathlog.view.dimension", remarkTag.getString(DIMENSION)))
+            .append(LocaleHelper.TEXT_NEWLINE)
+            .append(LocaleHelper.getTextByKey(audience, "deathlog.view.coordinate", remarkTag.getDouble(X), remarkTag.getDouble(Y), remarkTag.getDouble(Z)));
+
+        return Text
+            .literal(String.valueOf(index)).setStyle(Style.EMPTY
+                .withFormatting(Formatting.RED)
+                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,hoverText))
+                .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/deathlog restore %s %d %s".formatted(from, index, to)))
+            )
+            .append(LocaleHelper.TEXT_SPACE);
     }
 
     public static void store(@NotNull ServerPlayerEntity player) {
