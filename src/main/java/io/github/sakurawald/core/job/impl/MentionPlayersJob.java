@@ -2,9 +2,10 @@ package io.github.sakurawald.core.job.impl;
 
 import io.github.sakurawald.core.job.abst.FixedIntervalJob;
 import lombok.NoArgsConstructor;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.sound.Sound;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -23,12 +24,11 @@ public class MentionPlayersJob extends FixedIntervalJob {
     public static void requestJob(MentionPlayer setup, List<ServerPlayerEntity> players) {
         int intervalMs = setup.interval_ms;
         int repeatCount = setup.repeat_count;
-        Sound sound = Sound.sound(Key.key(setup.sound), Sound.Source.MUSIC, setup.volume, setup.pitch);
 
         new MentionPlayersJob(new JobDataMap() {
             {
                 this.put(ArrayList.class.getName(), players);
-                this.put(Sound.class.getName(), sound);
+                this.put(MentionPlayer.class.getName(), setup);
             }
         }, intervalMs, repeatCount).schedule();
     }
@@ -41,10 +41,14 @@ public class MentionPlayersJob extends FixedIntervalJob {
     @Override
     public void execute(@NotNull JobExecutionContext context) {
         List<ServerPlayerEntity> players = (ArrayList<ServerPlayerEntity>) context.getJobDetail().getJobDataMap().get(ArrayList.class.getName());
-        Sound sound = (Sound) context.getJobDetail().getJobDataMap().get(Sound.class.getName());
+        MentionPlayer setup = (MentionPlayer) context.getJobDetail().getJobDataMap().get(MentionPlayer.class.getName());
+
         for (ServerPlayerEntity player : players) {
             if (player == null) continue;
-            player.playSound(sound);
+
+            SoundEvent soundEvent = SoundEvent.of(Identifier.of(setup.sound));
+            SoundCategory soundCategory = SoundCategory.MUSIC;
+            player.playSoundToPlayer(soundEvent, soundCategory, setup.volume, setup.pitch);
         }
     }
 

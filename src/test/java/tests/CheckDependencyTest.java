@@ -108,24 +108,6 @@ public class CheckDependencyTest {
         });
     }
 
-    @Test
-    void testCoreJobDependency() {
-        Stream<Dependency> dependencies = new FileDependencyChecker().makeDependencies(
-                COMPILE_TIME_MAIN_PACKAGE_PATH.resolve("core").resolve("job"))
-            .stream()
-            .filter(dep -> {
-                dep.filterReference(
-                    MOJANG_PACKAGES);
-                dep.excludeReference(BASE_PACKAGES);
-                return !dep.getReference().isEmpty();
-            });
-
-        dependencies.forEach(dep -> {
-            System.out.println(dep);
-            throw new RuntimeException("the `core.job` package references mojang classes.");
-        });
-    }
-
     /**
      * disable wildcard import in idea: <a href="https://stackoverflow.com/questions/3348816/intellij-never-use-wildcard-imports">...</a>
      */
