@@ -190,7 +190,7 @@ public class LocaleHelper {
             try {
                 return String.format(string, args);
             } catch (Exception e) {
-                LogUtil.error("""
+                LogUtil.warn("""
                     Failed to resolve args for language value `{}` with args `{}`
 
                     It's like a syntax mistake in the language file.
