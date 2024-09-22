@@ -190,11 +190,6 @@ public class ModuleManager extends BaseManager {
             return FabricLoader.getInstance().isModLoaded("carpet");
         }
 
-        String root = modulePath.getFirst();
-        if (root.equals("profiler")) {
-            return FabricLoader.getInstance().isModLoaded("spark");
-        }
-
         return true;
     }
 }
