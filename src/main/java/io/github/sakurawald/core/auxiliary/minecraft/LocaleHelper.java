@@ -34,6 +34,7 @@ import java.util.Map;
 public class LocaleHelper {
 
     public static final Text TEXT_NEWLINE = Text.of("\n");
+    public static final Text TEXT_SPACE = Text.of(" ");
 
     private static final NodeParser POWERFUL_PARSER = NodeParser.builder()
         .quickText()

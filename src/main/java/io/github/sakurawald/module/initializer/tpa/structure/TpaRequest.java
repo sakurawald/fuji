@@ -4,13 +4,13 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.module.initializer.tpa.TpaInitializer;
 import lombok.Getter;
 import lombok.ToString;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Timer;
@@ -39,7 +39,7 @@ public class TpaRequest {
 
     public boolean similarTo(@NotNull TpaRequest other) {
         return (this.sender.equals(other.sender) && this.receiver.equals(other.receiver)) ||
-                (this.sender.equals(other.receiver) && this.receiver.equals(other.sender));
+            (this.sender.equals(other.receiver) && this.receiver.equals(other.sender));
     }
 
     public ServerPlayerEntity getTeleportWho() {
@@ -54,15 +54,15 @@ public class TpaRequest {
         var that = this;
         timer = new Timer();
         timer.schedule(
-                new TimerTask() {
-                    @Override
-                    public void run() {
-                        getSender().sendMessage(asSenderComponent$Cancelled());
-                        getReceiver().sendMessage(asReceiverComponent$Cancelled());
-                        // don't forget to remove this request
-                        TpaInitializer.getRequests().remove(that);
-                    }
-                },
+            new TimerTask() {
+                @Override
+                public void run() {
+                    getSender().sendMessage(asSenderText$Cancelled());
+                    getReceiver().sendMessage(asReceiverText$Cancelled());
+                    // don't forget to remove this request
+                    TpaInitializer.getRequests().remove(that);
+                }
+            },
             TpaInitializer.config.getModel().timeout * 1000L
         );
     }
@@ -71,62 +71,91 @@ public class TpaRequest {
         timer.cancel();
     }
 
-    public @NotNull Component asSenderComponent$Description() {
-        return tpahere ? LocaleHelper.getTextByKey(getSender(), "tpa.others_to_you", receiver.getGameProfile().getName()).asComponent()
-                : LocaleHelper.getTextByKey(getSender(), "tpa.you_to_others", receiver.getGameProfile().getName()).asComponent();
+    public @NotNull Text asSenderText$Description() {
+        return tpahere ? LocaleHelper.getTextByKey(getSender(), "tpa.others_to_you", receiver.getGameProfile().getName())
+            : LocaleHelper.getTextByKey(getSender(), "tpa.you_to_others", receiver.getGameProfile().getName());
     }
 
-    public @NotNull Component asSenderComponent$Sent() {
-        TextComponent cancelComponent = Component
-                .text(CROSS).color(NamedTextColor.RED)
-                .hoverEvent(HoverEvent.showText(LocaleHelper.getTextByKey(getSender(), "cancel")))
-                .clickEvent(ClickEvent.runCommand("/tpacancel %s".formatted(getReceiver().getGameProfile().getName())));
+    public MutableText asSenderText$Sent() {
+        Text cancelText =
+            Text.literal(CROSS)
+                .setStyle(Style.EMPTY
+                    .withFormatting(Formatting.RED)
+                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, LocaleHelper.getTextByKey(getSender(), "cancel")))
+                    .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpacancel %s".formatted(getReceiver().getGameProfile().getName())))
+                );
 
-        return asSenderComponent$Description()
-                .appendSpace()
-                .append(cancelComponent);
+        return asSenderText$Description()
+            .copy()
+            .append(LocaleHelper.TEXT_SPACE)
+            .append(cancelText);
     }
 
-    public @NotNull Component asReceiverComponent$Description() {
-        return tpahere ? LocaleHelper.getTextByKey(getReceiver(), "tpa.you_to_others", sender.getGameProfile().getName()).asComponent()
-                : LocaleHelper.getTextByKey(getReceiver(), "tpa.others_to_you", sender.getGameProfile().getName()).asComponent();
+    public @NotNull Text asReceiverText$Description() {
+        return tpahere ? LocaleHelper.getTextByKey(getReceiver(), "tpa.you_to_others", sender.getGameProfile().getName())
+            : LocaleHelper.getTextByKey(getReceiver(), "tpa.others_to_you", sender.getGameProfile().getName());
     }
 
-    public @NotNull Component asReceiverComponent$Sent() {
-        Component acceptComponent = Component.text(TICK).color(NamedTextColor.GREEN)
-                .hoverEvent(HoverEvent.showText(LocaleHelper.getTextByKey(getReceiver(), "accept")))
-                .clickEvent(ClickEvent.runCommand("/tpaaccept %s".formatted(sender.getGameProfile().getName())));
-        Component denyComponent = Component.text(CROSS).color(NamedTextColor.RED)
-                .hoverEvent(HoverEvent.showText(LocaleHelper.getTextByKey(getReceiver(), "deny")))
-                .clickEvent(ClickEvent.runCommand("/tpadeny %s".formatted(sender.getGameProfile().getName())));
-        return asReceiverComponent$Description()
-                .appendSpace()
-                .append(acceptComponent)
-                .appendSpace()
-                .append(denyComponent);
+    public @NotNull MutableText asReceiverText$Sent() {
+        Text acceptText = Text.literal(TICK)
+            .setStyle(Style.EMPTY
+                .withFormatting(Formatting.GREEN)
+                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, LocaleHelper.getTextByKey(getReceiver(), "accept")))
+                .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpaaccept %s".formatted(sender.getGameProfile().getName()))));
+
+        Text denyText =
+            Text.literal(CROSS)
+                .setStyle(Style.EMPTY
+                    .withFormatting(Formatting.RED)
+                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, LocaleHelper.getTextByKey(getReceiver(), "deny")))
+                    .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpadeny %s".formatted(sender.getGameProfile().getName())))
+                );
+
+        return asReceiverText$Description()
+            .copy()
+            .append(LocaleHelper.TEXT_SPACE)
+            .append(acceptText)
+            .append(LocaleHelper.TEXT_SPACE)
+            .append(denyText);
     }
 
-    public @NotNull Component asSenderComponent$Accepted() {
-        return asSenderComponent$Description().appendSpace().append(Component.text(CIRCLE, NamedTextColor.GREEN));
+    public MutableText asSenderText$Accepted() {
+        return asSenderText$Description()
+            .copy()
+            .append(LocaleHelper.TEXT_SPACE)
+            .append(Text.literal(CIRCLE).formatted(Formatting.GREEN));
     }
 
-    public @NotNull Component asReceiverComponent$Accepted() {
-        return asReceiverComponent$Description().appendSpace().append(Component.text(CIRCLE, NamedTextColor.GREEN));
+    public MutableText asReceiverText$Accepted() {
+        return asReceiverText$Description()
+            .copy()
+            .append(LocaleHelper.TEXT_SPACE)
+            .append(Text.literal(CIRCLE).formatted(Formatting.GREEN));
     }
 
-    public @NotNull Component asSenderComponent$Denied() {
-        return asSenderComponent$Description().appendSpace().append(Component.text(CIRCLE, NamedTextColor.RED));
+    public MutableText asSenderText$Denied() {
+        return asSenderText$Description()
+            .copy()
+            .append(LocaleHelper.TEXT_SPACE)
+            .append(Text.literal(CIRCLE).formatted(Formatting.RED));
     }
 
-    public @NotNull Component asReceiverComponent$Denied() {
-        return asReceiverComponent$Description().appendSpace().append(Component.text(CIRCLE, NamedTextColor.RED));
+    public MutableText asReceiverText$Denied() {
+        return asReceiverText$Description()
+            .copy()
+            .append(LocaleHelper.TEXT_SPACE)
+            .append(Text.literal(CIRCLE).formatted(Formatting.RED));
     }
 
-    public @NotNull Component asSenderComponent$Cancelled() {
-        return asSenderComponent$Description().decoration(TextDecoration.STRIKETHROUGH, true);
+    public MutableText asSenderText$Cancelled() {
+        return asSenderText$Description()
+            .copy()
+            .formatted(Formatting.STRIKETHROUGH);
     }
 
-    public @NotNull Component asReceiverComponent$Cancelled() {
-        return asReceiverComponent$Description().decoration(TextDecoration.STRIKETHROUGH, true);
+    public MutableText asReceiverText$Cancelled() {
+        return asReceiverText$Description()
+            .copy()
+            .formatted(Formatting.STRIKETHROUGH);
     }
 }

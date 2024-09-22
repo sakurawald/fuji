@@ -65,19 +65,19 @@ public class TpaInitializer extends ModuleInitializer {
 
         TpaRequest request = requestOptional.get();
         if (status == ResponseStatus.ACCEPT) {
-            request.getSender().sendActionBar(request.asSenderComponent$Accepted());
-            request.getReceiver().sendMessage(request.asReceiverComponent$Accepted());
+            request.getSender().sendActionBar(request.asSenderText$Accepted());
+            request.getReceiver().sendMessage(request.asReceiverText$Accepted());
 
             ServerPlayerEntity who = request.getTeleportWho();
             ServerPlayerEntity to = request.getTeleportTo();
             MentionPlayersJob.requestJob(config.getModel().mention_player, request.isTpahere() ? to : who);
             who.teleport((ServerWorld) to.getWorld(), to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
         } else if (status == ResponseStatus.DENY) {
-            request.getSender().sendActionBar(request.asSenderComponent$Denied());
-            request.getReceiver().sendMessage(request.asReceiverComponent$Denied());
+            request.getSender().sendActionBar(request.asSenderText$Denied());
+            request.getReceiver().sendMessage(request.asReceiverText$Denied());
         } else if (status == ResponseStatus.CANCEL) {
-            request.getSender().sendMessage(request.asSenderComponent$Cancelled());
-            request.getReceiver().sendMessage(request.asReceiverComponent$Cancelled());
+            request.getSender().sendMessage(request.asSenderText$Cancelled());
+            request.getReceiver().sendMessage(request.asReceiverText$Cancelled());
         }
 
         request.cancelTimeout();
@@ -105,9 +105,9 @@ public class TpaInitializer extends ModuleInitializer {
         request.startTimeout();
 
         /* feedback */
-        request.getReceiver().sendMessage(request.asReceiverComponent$Sent());
+        request.getReceiver().sendMessage(request.asReceiverText$Sent());
         MentionPlayersJob.requestJob(config.getModel().mention_player, request.getReceiver());
-        request.getSender().sendMessage(request.asSenderComponent$Sent());
+        request.getSender().sendMessage(request.asSenderText$Sent());
         return CommandHelper.Return.SUCCESS;
     }
 
