@@ -1,8 +1,6 @@
 package io.github.sakurawald.module.mixin.color.sign;
 
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.block.entity.SignText;
 import net.minecraft.text.Text;
@@ -20,13 +18,8 @@ public class SignBlockEntityMixin {
         Text[] messages = signText.getMessages(false);
         Text[] newMessages = new Text[messages.length];
         for (int i = 0; i < messages.length; i++) {
-            String string = LocaleHelper.flatten(messages[i].asComponent());
-
-//            Component formated = MiniMessage.miniMessage().deserialize(string);
-            Text formated = LocaleHelper.getTextByValue(null, string );
-            newMessages[i] = formated;
-
-
+            String string = messages[i].getString();
+            newMessages[i] = LocaleHelper.getTextByValue(null, string);
         }
 
         return new SignText(newMessages, newMessages, signText.getColor(), signText.isGlowing());
