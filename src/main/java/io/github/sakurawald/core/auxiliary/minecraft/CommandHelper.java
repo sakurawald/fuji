@@ -19,6 +19,8 @@ import java.util.function.Function;
 @UtilityClass
 public class CommandHelper {
 
+    public static final String UUID = "uuid";
+
     @SuppressWarnings("unused")
     public static class Return {
         public static final int FAIL = -1;
