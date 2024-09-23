@@ -2,10 +2,9 @@ package io.github.sakurawald.core.structure;
 
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import lombok.experimental.UtilityClass;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.TextReplacementConfig;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -25,15 +24,14 @@ public class TypeFormatter {
         }
     };
 
-    public static @NotNull Component formatTypes(ServerCommandSource source, Map<String, Integer> type2amount) {
-        TextComponent.Builder ret = Component.text();
+    public static @NotNull Text formatTypes(ServerCommandSource source, Map<String, Integer> type2amount) {
+        MutableText ret = Text.empty();
         type2amount.forEach((k, v) -> {
-            Component component = LocaleHelper.getTextByKey(source, "types.entry", v)
-                .asComponent()
-                .replaceText(TextReplacementConfig.builder().matchLiteral("[type]").replacement(Component.translatable(k)).build());
-            ret.append(component);
+            Text text = LocaleHelper.getTextByKey(source, "types.entry", v);
+            text = LocaleHelper.replaceText(text, "[type]",Text.translatable(k));
+            ret.append(text);
         });
-        return ret.asComponent();
+        return ret;
     }
 
 }
