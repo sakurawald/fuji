@@ -18,10 +18,10 @@ import io.github.sakurawald.core.structure.RegexRewriteEntry;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.chat.config.model.ChatConfigModel;
 import io.github.sakurawald.module.initializer.chat.config.model.ChatFormatModel;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
@@ -40,9 +40,6 @@ public class ChatInitializer extends ModuleInitializer {
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("chat.json"), ChatInitializer.class));
 
     public static final BaseConfigurationHandler<ChatConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatConfigModel.class);
-
-
-    private static final MiniMessage miniMessage = MiniMessage.builder().build();
 
     private static Map<Pattern, String> patterns;
 
@@ -72,7 +69,6 @@ public class ChatInitializer extends ModuleInitializer {
             Identifier.of(Fuji.MOD_ID, "pos"),
             (ctx, arg) -> {
                 if (ctx.player() == null) PlaceholderResult.invalid();
-
                 ServerPlayerEntity player = ctx.player();
 
                 int x = player.getBlockX();
@@ -80,9 +76,6 @@ public class ChatInitializer extends ModuleInitializer {
                 int z = player.getBlockZ();
                 String dim_name = player.getWorld().getRegistryKey().getValue().toString();
                 String dim_display_name = LocaleHelper.getValue(player, dim_name);
-
-                String clickCommand = LocaleHelper.getValue(player, "chat.xaero_waypoint_add.command");
-
                 String hoverString = LocaleHelper.getValue(player, "chat.current_pos");
                 switch (dim_name) {
                     case "minecraft:overworld":
@@ -95,12 +88,19 @@ public class ChatInitializer extends ModuleInitializer {
                         break;
                 }
 
-                Component component = LocaleHelper.getTextByKey(player, "placeholder.pos", x, y, z, dim_display_name)
-                    .asComponent()
-                    .clickEvent(ClickEvent.runCommand(clickCommand))
-                    .hoverEvent(Component.text(hoverString + "\n").append(LocaleHelper.getTextByKey(player, "chat.xaero_waypoint_add")));
+                String clickCommand = LocaleHelper.getValue(player, "chat.xaero_waypoint_add.command");
 
-                return PlaceholderResult.value(LocaleHelper.toText(component));
+                Text text = LocaleHelper.getTextByKey(player, "placeholder.pos", x, y, z, dim_display_name)
+                    .copy()
+                    .fillStyle(Style.EMPTY
+                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                            Text.literal(hoverString + "\n")
+                                .append(LocaleHelper.getTextByKey(player, "chat.xaero_waypoint_add"))
+                        ))
+                        .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand))
+                    );
+
+                return PlaceholderResult.value(text);
             });
 
     }
@@ -139,10 +139,10 @@ public class ChatInitializer extends ModuleInitializer {
 
         /* feedback */
         $format = LocaleHelper.getValue(player, "chat.format.set").replace("%s", $format);
-        Component component = miniMessage.deserialize($format).asComponent()
-            .replaceText(builder -> builder.match("%message%").replacement(LocaleHelper.getTextByKey(player, "chat.format.show")));
+        $format = $format.replace("%message%", LocaleHelper.getValue(player, "chat.format.show"));
+        Text text = LocaleHelper.getTextByValue(null, $format);
 
-        player.sendMessage(component);
+        player.sendMessage(text);
         return CommandHelper.Return.SUCCESS;
     }
 

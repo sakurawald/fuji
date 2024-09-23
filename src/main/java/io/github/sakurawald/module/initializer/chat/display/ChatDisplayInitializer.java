@@ -6,19 +6,20 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
+import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.chat.display.config.model.ChatDisplayConfigModel;
 import io.github.sakurawald.module.initializer.chat.display.helper.DisplayHelper;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickCallback;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
+import java.util.concurrent.TimeUnit;
 
 public class ChatDisplayInitializer extends ModuleInitializer {
 
@@ -32,12 +33,16 @@ public class ChatDisplayInitializer extends ModuleInitializer {
 
                 ServerPlayerEntity player = ctx.player();
                 String displayUUID = DisplayHelper.createEnderChestDisplay(player);
-                Component replacement =
-                    LocaleHelper.getTextByKey(player, "display.ender_chest.text")
-                        .asComponent()
-                        .hoverEvent(LocaleHelper.getTextByKey(player, "display.click.prompt").asComponent())
-                        .clickEvent(buildDisplayClickEvent(displayUUID));
-                return PlaceholderResult.value(LocaleHelper.toText(replacement));
+
+                Text text = LocaleHelper.getTextByKey(player, "display.ender_chest.text")
+                    .copy()
+                    .fillStyle(
+                        Style.EMPTY
+                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, LocaleHelper.getTextByKey(player, "display.click.prompt")))
+                            .withClickEvent(makeDisplayClickEvent(displayUUID))
+                    );
+
+                return PlaceholderResult.value(text);
             });
     }
 
@@ -49,13 +54,14 @@ public class ChatDisplayInitializer extends ModuleInitializer {
 
                 ServerPlayerEntity player = ctx.player();
                 String displayUUID = DisplayHelper.createInventoryDisplay(player);
-                Component replacement =
-                    LocaleHelper.getTextByKey(player, "display.inventory.text")
-                        .asComponent()
-                        .hoverEvent(LocaleHelper.getTextByKey(player, "display.click.prompt").asComponent())
-                        .clickEvent(buildDisplayClickEvent(displayUUID));
+                Text text = LocaleHelper.getTextByKey(player, "display.inventory.text")
+                    .copy()
+                    .fillStyle(Style.EMPTY
+                        .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, LocaleHelper.getTextByKey(player, "display.click.prompt")))
+                        .withClickEvent(makeDisplayClickEvent(displayUUID))
+                    );
 
-                return PlaceholderResult.value(LocaleHelper.toText(replacement));
+                return PlaceholderResult.value(text);
             });
     }
 
@@ -68,24 +74,22 @@ public class ChatDisplayInitializer extends ModuleInitializer {
                 ServerPlayerEntity player = ctx.player();
                 String displayUUID = DisplayHelper.createItemDisplay(player);
 
-                Component component =
-                    LocaleHelper.getTextByKey(player, "display.item.text")
-                        .asComponent()
-                        .replaceText(builder -> builder.matchLiteral("[item]").replacement(Component.translatable(player.getMainHandStack().getTranslationKey())))
-                        .hoverEvent(LocaleHelper.getTextByKey(player, "display.click.prompt").asComponent())
-                        .clickEvent(buildDisplayClickEvent(displayUUID));
-                return PlaceholderResult.value(LocaleHelper.toText(component));
+                MutableText text = LocaleHelper.getTextByKey(player, "display.item.text").copy();
+                text = LocaleHelper.replaceText(text, "[item]", Text.translatable(player.getMainHandStack().getTranslationKey()));
+                text.fillStyle(Style.EMPTY
+                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, LocaleHelper.getTextByKey(player, "display.click.prompt")))
+                    .withClickEvent(makeDisplayClickEvent(displayUUID))
+                );
+
+                return PlaceholderResult.value(text);
             });
     }
 
     @NotNull
-    private ClickEvent buildDisplayClickEvent(String displayUUID) {
-        return ClickEvent.callback(audience -> {
-            if (audience instanceof ServerCommandSource css && css.getPlayer() != null) {
-                DisplayHelper.viewDisplay(css.getPlayer(), displayUUID);
-            }
-        }, ClickCallback.Options.builder().lifetime(Duration.of(config.getModel().expiration_duration_s, ChronoUnit.SECONDS))
-            .uses(Integer.MAX_VALUE).build());
+    private ClickEvent makeDisplayClickEvent(String displayUUID) {
+        return Managers.getCallbackManager().makeCallback((player) -> {
+            DisplayHelper.viewDisplay(player, displayUUID);
+        }, config.getModel().expiration_duration_s, TimeUnit.SECONDS);
     }
 
     @Override

@@ -2,11 +2,9 @@ package io.github.sakurawald.core.manager.impl.bossbar;
 
 import io.github.sakurawald.core.manager.abst.BaseManager;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.kyori.adventure.audience.Audience;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
-import oshi.annotation.concurrent.Immutable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,7 +20,7 @@ public class BossBarManager extends BaseManager {
         ServerTickEvents.START_SERVER_TICK.register(this::onServerTick);
     }
 
-    public @Immutable Collection<BossBarTicket> getTickets() {
+    public Collection<BossBarTicket> getTickets() {
         return Collections.unmodifiableCollection(this.tickets);
     }
 
@@ -31,7 +29,7 @@ public class BossBarManager extends BaseManager {
     }
 
     private void abortTicket(@NotNull BossBarTicket ticket) {
-        ticket.clearAudiences();
+        ticket.clearPlayers();
         this.tickets.remove(ticket);
     }
 
@@ -58,12 +56,10 @@ public class BossBarManager extends BaseManager {
                 continue;
             }
 
-            for (Audience audience : ticket.getAudiences()) {
-                if (audience instanceof ServerPlayerEntity player) {
-                    if (player.isDisconnected()) {
-                        ticket.onAudienceDisconnected(audience);
-                        ticket.removeAudience(audience);
-                    }
+            for (ServerPlayerEntity player : ticket.getPlayers()) {
+                if (player.isDisconnected()) {
+                    ticket.onPlayerDisconnected(player);
+                    ticket.removePlayer(player);
                 }
             }
 

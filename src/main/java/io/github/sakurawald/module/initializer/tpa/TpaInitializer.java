@@ -50,34 +50,33 @@ public class TpaInitializer extends ModuleInitializer {
         return doResponse(player, target, ResponseStatus.CANCEL);
     }
 
-    private static int doResponse(ServerPlayerEntity source, ServerPlayerEntity target, ResponseStatus status) {
+    private static int doResponse(ServerPlayerEntity player, ServerPlayerEntity target, ResponseStatus status) {
         /* resolve relative request */
         Optional<TpaRequest> requestOptional = requests.stream()
                 .filter(request ->
                         status == ResponseStatus.CANCEL ?
-                                (request.getSender().equals(source) && request.getReceiver().equals(target))
-                                : (request.getSender().equals(target) && request.getReceiver().equals(source)))
+                                (request.getSender().equals(player) && request.getReceiver().equals(target))
+                                : (request.getSender().equals(target) && request.getReceiver().equals(player)))
                 .findFirst();
         if (requestOptional.isEmpty()) {
-            LocaleHelper.sendActionBarByKey(source, "tpa.no_relative_ticket");
+            LocaleHelper.sendActionBarByKey(player, "tpa.no_relative_ticket");
             return CommandHelper.Return.FAIL;
         }
 
         TpaRequest request = requestOptional.get();
         if (status == ResponseStatus.ACCEPT) {
-            request.getSender().sendActionBar(request.asSenderComponent$Accepted());
-            request.getReceiver().sendMessage(request.asReceiverComponent$Accepted());
+            request.getSender().sendMessage(request.asSenderText$Accepted(), true);
 
             ServerPlayerEntity who = request.getTeleportWho();
             ServerPlayerEntity to = request.getTeleportTo();
             MentionPlayersJob.requestJob(config.getModel().mention_player, request.isTpahere() ? to : who);
             who.teleport((ServerWorld) to.getWorld(), to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
         } else if (status == ResponseStatus.DENY) {
-            request.getSender().sendActionBar(request.asSenderComponent$Denied());
-            request.getReceiver().sendMessage(request.asReceiverComponent$Denied());
+            request.getSender().sendMessage(request.asSenderText$Denied(), true);
+            request.getReceiver().sendMessage(request.asReceiverText$Denied());
         } else if (status == ResponseStatus.CANCEL) {
-            request.getSender().sendMessage(request.asSenderComponent$Cancelled());
-            request.getReceiver().sendMessage(request.asReceiverComponent$Cancelled());
+            request.getSender().sendMessage(request.asSenderText$Cancelled());
+            request.getReceiver().sendMessage(request.asReceiverText$Cancelled());
         }
 
         request.cancelTimeout();
@@ -105,9 +104,9 @@ public class TpaInitializer extends ModuleInitializer {
         request.startTimeout();
 
         /* feedback */
-        request.getReceiver().sendMessage(request.asReceiverComponent$Sent());
+        request.getReceiver().sendMessage(request.asReceiverText$Sent());
         MentionPlayersJob.requestJob(config.getModel().mention_player, request.getReceiver());
-        request.getSender().sendMessage(request.asSenderComponent$Sent());
+        request.getSender().sendMessage(request.asSenderText$Sent());
         return CommandHelper.Return.SUCCESS;
     }
 

@@ -5,6 +5,7 @@ import io.github.sakurawald.core.manager.impl.backup.BaseBackupManager;
 import io.github.sakurawald.core.manager.impl.backup.RescueBackupManager;
 import io.github.sakurawald.core.manager.impl.backup.StandardBackupManager;
 import io.github.sakurawald.core.manager.impl.bossbar.BossBarManager;
+import io.github.sakurawald.core.manager.impl.callback.CallbackManager;
 import io.github.sakurawald.core.manager.impl.command.CommandManager;
 import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
@@ -35,4 +36,7 @@ public class Managers {
 
     @Getter(lazy = true)
     private static final CommandManager commandManager = new CommandManager();
+
+    @Getter(lazy = true)
+    private static final CallbackManager callbackManager = new CallbackManager();
 }

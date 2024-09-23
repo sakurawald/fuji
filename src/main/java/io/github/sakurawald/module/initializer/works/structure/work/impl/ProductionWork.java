@@ -12,7 +12,6 @@ import io.github.sakurawald.module.initializer.works.abst.Schedulable;
 import io.github.sakurawald.module.initializer.works.structure.WorksCache;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import lombok.NoArgsConstructor;
-import net.kyori.adventure.text.TextReplacementConfig;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.HopperBlockEntity;
 import net.minecraft.entity.Entity;
@@ -59,9 +58,10 @@ public class ProductionWork extends Work implements Schedulable {
         sortedStream.forEach(entry -> {
             String key = entry.getKey();
             double rate = entry.getValue() * ((double) (3600 * 1000) / ((Math.min(this.sample.sampleEndTimeMS, currentTimeMS)) - this.sample.sampleStartTimeMS));
-            net.kyori.adventure.text.Component component = LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_counter.entry", entry.getValue(), rate).asComponent()
-                    .replaceText(TextReplacementConfig.builder().matchLiteral("[item]").replacement(Text.translatable(key)).build());
-            ret.add(LocaleHelper.toText(component));
+
+            Text text = LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_counter.entry", entry.getValue(), rate);
+            text = LocaleHelper.replaceText(text, "[item]", Text.translatable(key));
+            ret.add(text);
         });
 
         if (ret.isEmpty()) {
@@ -104,7 +104,7 @@ public class ProductionWork extends Work implements Schedulable {
     }
 
     public void openInputSampleDistanceGui(@NotNull ServerPlayerEntity player) {
-        new InputSignGui(player,  "works.production_work.prompt.input.sample_distance") {
+        new InputSignGui(player, "works.production_work.prompt.input.sample_distance") {
             @Override
             public void onClose() {
                 int limit = WorksInitializer.config.getModel().sample_distance_limit;
@@ -139,16 +139,16 @@ public class ProductionWork extends Work implements Schedulable {
         gui.setTitle(LocaleHelper.getTextByKey(player, "works.work.set.specialized_settings.title"));
         gui.setLockPlayerInventory(true);
         gui.addSlot(new GuiElementBuilder()
-                .setItem(Items.CLOCK)
-                .setName(LocaleHelper.getTextByKey(player, "works.production_work.set.sample"))
-                .setLore(LocaleHelper.getTextListByKey(player, "works.production_work.set.sample.lore"))
-                .setCallback(() -> new ConfirmGui(player) {
-                            @Override
-                            public void onConfirm() {
-                                openInputSampleDistanceGui(player);
-                            }
-                        }.open()
-                )
+            .setItem(Items.CLOCK)
+            .setName(LocaleHelper.getTextByKey(player, "works.production_work.set.sample"))
+            .setLore(LocaleHelper.getTextListByKey(player, "works.production_work.set.sample.lore"))
+            .setCallback(() -> new ConfirmGui(player) {
+                    @Override
+                    public void onConfirm() {
+                        openInputSampleDistanceGui(player);
+                    }
+                }.open()
+            )
         );
         gui.setSlot(8, GuiHelper.makeBackButton(player).setCallback(parentGui::open)
         );
@@ -252,9 +252,9 @@ public class ProductionWork extends Work implements Schedulable {
 
     public void trimCounter() {
         List<Map.Entry<String, Long>> sortedEntries = this.sample.sampleCounter.entrySet()
-                .stream()
-                .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
-                .toList();
+            .stream()
+            .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))
+            .toList();
 
         int N = WorksInitializer.config.getModel().sample_counter_top_n;
         this.sample.sampleCounter.clear();

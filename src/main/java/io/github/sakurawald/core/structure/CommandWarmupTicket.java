@@ -3,7 +3,7 @@ package io.github.sakurawald.core.structure;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.manager.impl.bossbar.BossBarTicket;
 import lombok.Getter;
-import net.kyori.adventure.bossbar.BossBar;
+import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,8 +16,8 @@ public class CommandWarmupTicket extends BossBarTicket {
 
     private final String command;
 
-    public CommandWarmupTicket(BossBar bossbar, int totalMS, @NotNull ServerPlayerEntity player, String command) {
-        super(bossbar, totalMS, List.of(player));
+    public CommandWarmupTicket(ServerBossBar bossBar, int totalMS, @NotNull ServerPlayerEntity player, String command) {
+        super(bossBar, totalMS, List.of(player));
         this.player = player;
         this.command = command;
     }
@@ -28,7 +28,7 @@ public class CommandWarmupTicket extends BossBarTicket {
     }
 
     public static CommandWarmupTicket of(ServerPlayerEntity player, String command, int ms) {
-        BossBar bossbar = BossBar.bossBar(LocaleHelper.getTextByKey(player, "command_warmup.bossbar.name", command), 0f, BossBar.Color.GREEN, BossBar.Overlay.PROGRESS);
+        ServerBossBar bossbar = new ServerBossBar(LocaleHelper.getTextByKey(player, "command_warmup.bossbar.name", command), net.minecraft.entity.boss.BossBar.Color.GREEN, net.minecraft.entity.boss.BossBar.Style.PROGRESS);
         return new CommandWarmupTicket(bossbar, ms, player, command);
     }
 

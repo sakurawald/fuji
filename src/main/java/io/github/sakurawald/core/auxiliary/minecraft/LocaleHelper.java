@@ -14,14 +14,13 @@ import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.handler.impl.ResourceConfigurationHandler;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.fabric.FabricServerAudiences;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.PlainTextContent;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextContent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,9 +28,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @UtilityClass
 public class LocaleHelper {
+
+    public static final Text TEXT_NEWLINE = Text.of("\n");
+    public static final Text TEXT_SPACE = Text.of(" ");
 
     private static final NodeParser POWERFUL_PARSER = NodeParser.builder()
         .quickText()
@@ -42,8 +45,6 @@ public class LocaleHelper {
 
     private static final NodeParser PLACEHOLDER_PARSER = NodeParser.builder()
         .globalPlaceholders().build();
-
-    private static final FabricServerAudiences ADVENTURE_INSTANCE = FabricServerAudiences.of(ServerHelper.getDefaultServer());
 
     private static final Map<String, String> player2code = new HashMap<>();
     private static final Map<String, JsonObject> code2json = new HashMap<>();
@@ -83,14 +84,14 @@ public class LocaleHelper {
         if (code2json.containsKey(languageCode)) return;
 
         try {
-        String languageFile = languageCode + ".json";
-        ResourceConfigurationHandler resourceConfigurationHandler = new ResourceConfigurationHandler("lang/" + languageFile);
+            String languageFile = languageCode + ".json";
+            ResourceConfigurationHandler resourceConfigurationHandler = new ResourceConfigurationHandler("lang/" + languageFile);
 
-        //read it
-        resourceConfigurationHandler.readStorage();
+            //read it
+            resourceConfigurationHandler.readStorage();
 
-        code2json.put(languageCode, resourceConfigurationHandler.getModel().getAsJsonObject());
-        LogUtil.info("language {} loaded.", languageCode);
+            code2json.put(languageCode, resourceConfigurationHandler.getModel().getAsJsonObject());
+            LogUtil.info("language {} loaded.", languageCode);
         } catch (Exception e) {
             code2json.put(languageCode, UNSUPPORTED_LANGUAGE_MARKER);
             LogUtil.warn("failed to load language `{}`", languageCode);
@@ -184,17 +185,24 @@ public class LocaleHelper {
 
     private static @NotNull String resolveArgs(@NotNull String string, Object @NotNull ... args) {
         if (args.length > 0) {
-            return String.format(string, args);
+            try {
+                return String.format(string, args);
+            } catch (Exception e) {
+                LogUtil.warn("""
+                    Failed to resolve args for language value `{}` with args `{}`
+
+                    It's like a syntax mistake in the language file.
+                    """, string, args);
+            }
         }
         return string;
     }
 
     public static @NotNull String resolvePlaceholder(@Nullable Object audience, String value) {
-        Component component = LocaleHelper.getText(PLACEHOLDER_PARSER, audience, false, value).asComponent();
-        return flatten(component);
+        return LocaleHelper.getText(PLACEHOLDER_PARSER, audience, false, value).getString();
     }
 
-    /* This is the core method to map `String` into `Component`.
+    /* This is the core method to map `String` into `Text`.
      *  All methods that return `Vomponent` are converted from this method.
      * */
     private static @NotNull Text getText(@NonNull NodeParser parser, @Nullable Object audience, boolean isKey, String keyOrValue, Object... args) {
@@ -244,30 +252,108 @@ public class LocaleHelper {
         return getTextList(audience, false, value);
     }
 
-    public static @NotNull Text toText(@NotNull Component component) {
-        return ADVENTURE_INSTANCE.toNative(component);
+    public static void sendMessageByKey(@NotNull Object audience, String key, Object... args) {
+        Text text = getTextByKey(audience, key, args);
+
+        if (audience instanceof PlayerEntity playerEntity) {
+            playerEntity.sendMessage(text);
+            return;
+        }
+        if (audience instanceof ServerCommandSource serverCommandSource) {
+            serverCommandSource.sendMessage(text);
+            return;
+        }
+
+        LogUtil.error("""
+            Can't send message to unknown audience: {}
+            Key: {}
+            Args: {}
+            """, audience, key, args);
     }
 
-    public static String flatten(@NotNull Component component) {
-        return PlainTextComponentSerializer.plainText().serialize(component);
-    }
-
-    public static void sendMessageByKey(@NotNull Audience audience, String key, Object... args) {
-        audience.sendMessage(getTextByKey(audience, key, args));
-    }
-
-    public static void sendActionBarByKey(@NotNull Audience audience, String key, Object... args) {
-        audience.sendActionBar(getTextByKey(audience, key, args));
+    public static void sendActionBarByKey(@NotNull ServerPlayerEntity player, String key, Object... args) {
+        player.sendMessage(getTextByKey(player, key, args), true);
     }
 
     public static void sendBroadcastByKey(@NotNull String key, Object... args) {
         // fix: log broadcast for console
-        Component component = getTextByKey(null, key, args).asComponent();
-        LogUtil.info(flatten(component));
+        Text text = getTextByKey(null, key, args);
+        LogUtil.info(text.getString());
 
         for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
             LocaleHelper.sendMessageByKey(player, key, args);
         }
+    }
+
+    public static MutableText replaceText(Text text, String charSeq, Text replacement) {
+        return replaceText0(text, charSeq, replacement, Text.empty());
+    }
+
+    private static String visitString(TextContent textContent) {
+        StringBuilder stringBuilder = new StringBuilder();
+        textContent.visit(string -> {
+            stringBuilder.append(string);
+            return Optional.empty();
+        });
+        return stringBuilder.toString();
+    }
+
+    private static MutableText replaceText0(Text text, String marker, Text replacement, MutableText builder) {
+        /* process one */
+        // use `contains` to match the key
+        splitText(text, marker, replacement).forEach(builder::append);
+
+        /* iterate children */
+        text.getSiblings().forEach(it -> replaceText0(it, marker, replacement, builder));
+        return builder;
+    }
+
+    private static List<Text> splitText(Text text, String marker, Text replacement) {
+        // copy the style form text to replacement.
+        replacement = replacement.copy()
+            .setStyle(text.getStyle());
+
+        /* get the string */
+        String string = visitString(text.getContent());
+
+        /* get the split points */
+        List<Integer> splitPoints = new ArrayList<>();
+        int fromIndex = 0;
+        while (fromIndex < string.length()) {
+            int i = string.indexOf(marker, fromIndex);
+            // break if no found the marker
+            if (i == -1) break;
+
+            splitPoints.add(i);
+            fromIndex = i + marker.length();
+        }
+
+        /* construct result texts */
+        List<Text> ret = new ArrayList<>();
+        int beginIndex = 0;
+        for (Integer splitPoint : splitPoints) {
+            int endIndex = splitPoint;
+
+            String part = string.substring(beginIndex, endIndex);
+
+            // the part is empty, if the string starts with marker or ends with marker.
+            if (!part.isEmpty()) {
+                // add non-marker.
+                ret.add(MutableText.of(PlainTextContent.of(part)).setStyle(text.getStyle()));
+            }
+
+            // replace the marker with replacement
+            ret.add(replacement);
+            beginIndex = splitPoint + marker.length();
+        }
+
+        // handle the tail
+        if (beginIndex < string.length()) {
+            String part = string.substring(beginIndex);
+            ret.add(MutableText.of(PlainTextContent.of(part)).setStyle(text.getStyle()));
+        }
+
+        return ret;
     }
 
 }

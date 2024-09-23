@@ -20,6 +20,7 @@ public abstract class ServerGamePacketListenerImplMixin {
 
     @ModifyVariable(method = "handleDecoratedMessage", at = @At(value = "HEAD"), argsOnly = true)
     public @NotNull SignedMessage modifyChatMessageSentByPlayers(@NotNull SignedMessage original) {
+        // visit the node and build the string.
         String string = original.getContent().getString();
 
         if (ChatInitializer.config.getModel().spy.output_unparsed_message_into_console) {
