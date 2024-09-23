@@ -14,8 +14,6 @@ import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.handler.impl.ResourceConfigurationHandler;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -204,7 +202,7 @@ public class LocaleHelper {
         return LocaleHelper.getText(PLACEHOLDER_PARSER, audience, false, value).getString();
     }
 
-    /* This is the core method to map `String` into `Component`.
+    /* This is the core method to map `String` into `Text`.
      *  All methods that return `Vomponent` are converted from this method.
      * */
     private static @NotNull Text getText(@NonNull NodeParser parser, @Nullable Object audience, boolean isKey, String keyOrValue, Object... args) {
@@ -254,10 +252,6 @@ public class LocaleHelper {
         return getTextList(audience, false, value);
     }
 
-    public static String flatten(@NotNull Component component) {
-        return PlainTextComponentSerializer.plainText().serialize(component);
-    }
-
     public static void sendMessageByKey(@NotNull Object audience, String key, Object... args) {
         Text text = getTextByKey(audience, key, args);
 
@@ -283,8 +277,8 @@ public class LocaleHelper {
 
     public static void sendBroadcastByKey(@NotNull String key, Object... args) {
         // fix: log broadcast for console
-        Component component = getTextByKey(null, key, args).asComponent();
-        LogUtil.info(flatten(component));
+        Text text = getTextByKey(null, key, args);
+        LogUtil.info(text.getString());
 
         for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
             LocaleHelper.sendMessageByKey(player, key, args);
