@@ -50,16 +50,16 @@ public class TpaInitializer extends ModuleInitializer {
         return doResponse(player, target, ResponseStatus.CANCEL);
     }
 
-    private static int doResponse(ServerPlayerEntity source, ServerPlayerEntity target, ResponseStatus status) {
+    private static int doResponse(ServerPlayerEntity player, ServerPlayerEntity target, ResponseStatus status) {
         /* resolve relative request */
         Optional<TpaRequest> requestOptional = requests.stream()
                 .filter(request ->
                         status == ResponseStatus.CANCEL ?
-                                (request.getSender().equals(source) && request.getReceiver().equals(target))
-                                : (request.getSender().equals(target) && request.getReceiver().equals(source)))
+                                (request.getSender().equals(player) && request.getReceiver().equals(target))
+                                : (request.getSender().equals(target) && request.getReceiver().equals(player)))
                 .findFirst();
         if (requestOptional.isEmpty()) {
-            LocaleHelper.sendActionBarByKey(source, "tpa.no_relative_ticket");
+            LocaleHelper.sendActionBarByKey(player, "tpa.no_relative_ticket");
             return CommandHelper.Return.FAIL;
         }
 
