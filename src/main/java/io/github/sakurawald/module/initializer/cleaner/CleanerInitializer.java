@@ -13,9 +13,6 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.cleaner.config.model.CleanerConfigModel;
 import io.github.sakurawald.module.initializer.cleaner.job.CleanerJob;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -25,6 +22,10 @@ import net.minecraft.entity.decoration.BlockAttachedEntity;
 import net.minecraft.entity.vehicle.VehicleEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -104,16 +105,20 @@ public class CleanerInitializer extends ModuleInitializer {
         // avoid spam
         if (counter.isEmpty()) return;
 
-        LogUtil.info("[cleaner] remove entities: {}",counter);
+        LogUtil.info("[cleaner] remove entities: {}", counter);
 
-        Component hoverTextComponent = Component.text()
-                .color(NamedTextColor.GOLD)
-                .append(TypeFormatter.formatTypes(null, counter)).build();
+        Text hoverText =
+            Text.empty()
+                .formatted(Formatting.GOLD)
+                .append(TypeFormatter.formatTypes(null, counter));
 
         for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
-            Component component = LocaleHelper.getTextByKey(player, "cleaner.broadcast", counter.values().stream().mapToInt(Integer::intValue).sum()).asComponent();
-            component = component.hoverEvent(HoverEvent.showText(hoverTextComponent));
-            player.sendMessage(component);
+            MutableText text = Text.empty()
+                .append(LocaleHelper.getTextByKey(player, "cleaner.broadcast", counter.values().stream().mapToInt(Integer::intValue).sum()))
+                .fillStyle(
+                    Style.EMPTY
+                        .withHoverEvent(new net.minecraft.text.HoverEvent(net.minecraft.text.HoverEvent.Action.SHOW_TEXT, hoverText)));
+            player.sendMessage(text);
         }
     }
 
