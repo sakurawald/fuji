@@ -3,6 +3,10 @@
     "package": "io.github.sakurawald.module.mixin",
     "compatibilityLevel": "JAVA_21",
     "plugin": "io.github.sakurawald.module.mixin.GlobalMixinConfigPlugin",
+    "server": [
+        "color.anvil.AnvilScreenHandlerMixin",
+        "color.sign.SignBlockEntityMixin"
+    ],
     "mixins": [
         "afk.ServerPlayerMixin",
         "afk.effect.LivingEntityMixin",
@@ -71,9 +75,7 @@
         "world.IDimensionOptions",
         "world.MinecraftServerMixin",
         "world.ServerWorldMixin",
-        "world.WorldGenSettingsMixin",
-        "color.anvil.AnvilScreenHandlerMixin",
-        "color.sign.SignBlockEntityMixin"
+        "world.WorldGenSettingsMixin"
     ],
     "injectors": {
         "defaultRequire": 1
