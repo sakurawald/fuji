@@ -285,7 +285,7 @@ public class LocaleHelper {
         }
     }
 
-    public static Text replaceText(Text text, String marker, Text replacement) {
+    public static MutableText replaceText(Text text, String marker, Text replacement) {
         return replaceText0(text, marker, replacement, Text.empty());
     }
 
@@ -298,7 +298,7 @@ public class LocaleHelper {
         return stringBuilder.toString();
     }
 
-    private static Text replaceText0(Text text, String marker, Text replacement, MutableText builder) {
+    private static MutableText replaceText0(Text text, String marker, Text replacement, MutableText builder) {
         /* process one */
         // use `contains` to match the key
         splitText(text, marker, replacement).forEach(builder::append);
