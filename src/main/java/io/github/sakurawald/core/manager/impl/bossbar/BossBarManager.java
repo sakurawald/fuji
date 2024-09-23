@@ -5,7 +5,6 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
-import oshi.annotation.concurrent.Immutable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,7 +20,7 @@ public class BossBarManager extends BaseManager {
         ServerTickEvents.START_SERVER_TICK.register(this::onServerTick);
     }
 
-    public @Immutable Collection<BossBarTicket> getTickets() {
+    public Collection<BossBarTicket> getTickets() {
         return Collections.unmodifiableCollection(this.tickets);
     }
 

@@ -1,13 +1,13 @@
 package io.github.sakurawald.core.manager.impl.bossbar;
 
-import com.google.common.collect.ImmutableList;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
-import oshi.annotation.concurrent.Immutable;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class BossBarTicket {
@@ -39,8 +39,8 @@ public abstract class BossBarTicket {
         this.aborted = false;
     }
 
-    public @Immutable @NotNull List<ServerPlayerEntity> getPlayers() {
-        return ImmutableList.copyOf(this.bossBar.getPlayers());
+    public @NotNull Collection<ServerPlayerEntity> getPlayers() {
+        return Collections.unmodifiableCollection(this.bossBar.getPlayers());
     }
 
     public float progress() {
