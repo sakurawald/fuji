@@ -68,8 +68,6 @@ dependencies {
 
     include(implementation "net.luckperms:api:${project.luckperms_api_version}")
 
-    include(modImplementation("net.kyori:adventure-platform-fabric:${project.adventure_platform_fabric_version}"))
-
     include(modImplementation("eu.pb4:sgui:${project.sgui_version}"))
     include(modImplementation("eu.pb4:placeholder-api:${project.placeholder_api_version}"))
 
