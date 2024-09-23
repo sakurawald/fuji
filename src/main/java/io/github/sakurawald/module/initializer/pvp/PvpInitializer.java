@@ -58,7 +58,7 @@ public class PvpInitializer extends ModuleInitializer {
     private static int $status(@CommandSource ServerPlayerEntity player) {
             Set<String> whitelist = pvpHandler.getModel().whitelist;
             player.sendMessage(LocaleHelper.getTextByKey(player, "pvp.status")
-                    .asComponent()
+                    .copy()
                     .append(whitelist.contains(player.getGameProfile().getName()) ? LocaleHelper.getTextByKey(player, "on") : LocaleHelper.getTextByKey(player, "off")));
             return CommandHelper.Return.SUCCESS;
     }
