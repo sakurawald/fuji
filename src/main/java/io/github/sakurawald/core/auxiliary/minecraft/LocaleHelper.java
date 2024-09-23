@@ -258,7 +258,6 @@ public class LocaleHelper {
         return PlainTextComponentSerializer.plainText().serialize(component);
     }
 
-
     public static void sendMessageByKey(@NotNull Object audience, String key, Object... args) {
         Text text = getTextByKey(audience, key, args);
 
@@ -292,8 +291,8 @@ public class LocaleHelper {
         }
     }
 
-    public static MutableText replaceText(Text text, String marker, Text replacement) {
-        return replaceText0(text, marker, replacement, Text.empty());
+    public static MutableText replaceText(Text text, String charSeq, Text replacement) {
+        return replaceText0(text, charSeq, replacement, Text.empty());
     }
 
     private static String visitString(TextContent textContent) {

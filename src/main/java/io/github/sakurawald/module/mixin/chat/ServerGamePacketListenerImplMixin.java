@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.mixin.chat;
 
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.module.initializer.chat.ChatInitializer;
 import net.minecraft.network.message.SignedMessage;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -20,6 +21,7 @@ public abstract class ServerGamePacketListenerImplMixin {
 
     @ModifyVariable(method = "handleDecoratedMessage", at = @At(value = "HEAD"), argsOnly = true)
     public @NotNull SignedMessage modifyChatMessageSentByPlayers(@NotNull SignedMessage original) {
+        // visit the node and build the string.
         String string = original.getContent().getString();
 
         if (ChatInitializer.config.getModel().spy.output_unparsed_message_into_console) {
