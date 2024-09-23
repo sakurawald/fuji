@@ -65,15 +65,14 @@ public class TpaInitializer extends ModuleInitializer {
 
         TpaRequest request = requestOptional.get();
         if (status == ResponseStatus.ACCEPT) {
-            request.getSender().sendActionBar(request.asSenderText$Accepted());
-            request.getReceiver().sendMessage(request.asReceiverText$Accepted());
+            request.getSender().sendMessage(request.asSenderText$Accepted(), true);
 
             ServerPlayerEntity who = request.getTeleportWho();
             ServerPlayerEntity to = request.getTeleportTo();
             MentionPlayersJob.requestJob(config.getModel().mention_player, request.isTpahere() ? to : who);
             who.teleport((ServerWorld) to.getWorld(), to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
         } else if (status == ResponseStatus.DENY) {
-            request.getSender().sendActionBar(request.asSenderText$Denied());
+            request.getSender().sendMessage(request.asSenderText$Denied(), true);
             request.getReceiver().sendMessage(request.asReceiverText$Denied());
         } else if (status == ResponseStatus.CANCEL) {
             request.getSender().sendMessage(request.asSenderText$Cancelled());
