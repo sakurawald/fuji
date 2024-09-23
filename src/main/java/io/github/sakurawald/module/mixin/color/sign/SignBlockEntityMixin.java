@@ -22,8 +22,11 @@ public class SignBlockEntityMixin {
         for (int i = 0; i < messages.length; i++) {
             String string = LocaleHelper.flatten(messages[i].asComponent());
 
-            Component formated = MiniMessage.miniMessage().deserialize(string);
-            newMessages[i] = LocaleHelper.toText(formated);
+//            Component formated = MiniMessage.miniMessage().deserialize(string);
+            Text formated = LocaleHelper.getTextByValue(null, string );
+            newMessages[i] = formated;
+
+
         }
 
         return new SignText(newMessages, newMessages, signText.getColor(), signText.isGlowing());
