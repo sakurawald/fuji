@@ -28,7 +28,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
     private final Map<String, Map<String, String>> rotate = new HashMap<>();
 
     private static final String NO_PLAYER = "no player";
-    private static final Pattern ESCAPE_PARSER = Pattern.compile("\\s*(\\S+)\\s+(\\d+)\\s*");
+    private static final Pattern ESCAPE_PARSER = Pattern.compile("\\s*([\\s\\S]+)\\s+(\\d+)\\s*");
 
     @Override
     public void onInitialize() {
