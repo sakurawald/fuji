@@ -4,7 +4,8 @@ import io.github.sakurawald.core.accessor.PlayerCombatExtension;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.manager.impl.bossbar.BossBarTicket;
 import lombok.Getter;
-import net.kyori.adventure.bossbar.BossBar;
+import net.minecraft.entity.boss.BossBar;
+import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +21,7 @@ public class TeleportTicket extends BossBarTicket {
 
     private TeleportTicket(@NotNull ServerPlayerEntity player, SpatialPose source, SpatialPose destination, float progress, int totalMs, double interruptDistance) {
         super(
-            BossBar.bossBar(LocaleHelper.getTextByKey(player, "teleport_warmup.bossbar.name"), progress, BossBar.Color.BLUE, BossBar.Overlay.PROGRESS)
+            new ServerBossBar(LocaleHelper.getTextByKey(player, "teleport_warmup.bossbar.name"), BossBar.Color.BLUE, net.minecraft.entity.boss.BossBar.Style.PROGRESS)
             , totalMs
             , List.of(player)
         );

@@ -3,21 +3,19 @@ package io.github.sakurawald.core.manager.impl.bossbar;
 import com.google.common.collect.ImmutableList;
 import lombok.Getter;
 import lombok.Setter;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.bossbar.BossBar;
+import net.minecraft.entity.boss.ServerBossBar;
+import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 import oshi.annotation.concurrent.Immutable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BossBarTicket {
-    private final @NotNull List<Audience> audiences;
     @Getter
     private final float maxValue;
     @Getter
     private final float deltaValue;
-    private final BossBar bossbar;
+    private final ServerBossBar bossBar;
 
     @Getter
     @Setter
@@ -27,47 +25,47 @@ public abstract class BossBarTicket {
     @Setter
     private boolean aborted;
 
-    public BossBarTicket(BossBar bossbar, int totalMS, @NotNull List<Audience> audiences) {
-        this.bossbar = bossbar;
+    public BossBarTicket(ServerBossBar bossBar, int totalMS, @NotNull List<ServerPlayerEntity> players) {
+        this.bossBar = bossBar;
         this.maxValue = 20 * ((float) totalMS / 1000);
         this.deltaValue = 1F / this.maxValue;
-        this.audiences = new ArrayList<>();
-        for (Audience audience : audiences) {
-            this.addAudience(audience);
-        }
+
+        // the default percent is 1.0f
+        this.bossBar.setPercent(0);
+
+        // add players for this bossbar
+        players.forEach(this::addPlayer);
 
         this.aborted = false;
     }
 
-    public @Immutable @NotNull List<Audience> getAudiences() {
-        return ImmutableList.copyOf(this.audiences);
+    public @Immutable @NotNull List<ServerPlayerEntity> getPlayers() {
+        return ImmutableList.copyOf(this.bossBar.getPlayers());
     }
 
     public float progress() {
-        return this.bossbar.progress();
+        return this.bossBar.getPercent();
     }
 
     public void progress(float progress) {
-        this.bossbar.progress(progress);
+        this.bossBar.setPercent(progress);
     }
 
-    public void addAudience(@NotNull Audience audience) {
-        this.bossbar.addViewer(audience);
-        this.audiences.add(audience);
+    public void addPlayer(@NotNull ServerPlayerEntity player) {
+        this.bossBar.addPlayer(player);
     }
 
-    public void removeAudience(@NotNull Audience audience) {
-        this.bossbar.removeViewer(audience);
-        this.audiences.remove(audience);
+    public void removePlayer(@NotNull ServerPlayerEntity player) {
+        this.bossBar.removePlayer(player);
     }
 
-    public void clearAudiences() {
-        this.audiences.forEach(a -> a.hideBossBar(this.bossbar));
-        this.audiences.clear();
+    public void clearPlayers() {
+        this.bossBar.setVisible(false);
+        this.bossBar.clearPlayers();
     }
 
     @SuppressWarnings({"EmptyMethod", "unused"})
-    public void onAudienceDisconnected(Audience audience) {
+    public void onPlayerDisconnected(ServerPlayerEntity player) {
         // no-op
     }
 
