@@ -218,5 +218,6 @@
     "deathlog.view.time": "<dark_green>Time: %s",
     "deathlog.view.reason": "<dark_green>Reason: %s",
     "deathlog.view.dimension": "<dark_green>Dimension: %s",
-    "deathlog.view.coordinate": "<dark_green>Coordinate: %.2f %.2f %.2f"
+    "deathlog.view.coordinate": "<dark_green>Coordinate: %.2f %.2f %.2f",
+    "callback.invalid": "<red>This callback is invalid or outdated."
 }
