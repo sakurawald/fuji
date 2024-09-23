@@ -14,8 +14,6 @@ import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.config.handler.impl.ResourceConfigurationHandler;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.platform.fabric.FabricServerAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.minecraft.entity.player.PlayerEntity;
@@ -49,8 +47,6 @@ public class LocaleHelper {
 
     private static final NodeParser PLACEHOLDER_PARSER = NodeParser.builder()
         .globalPlaceholders().build();
-
-    private static final FabricServerAudiences ADVENTURE_INSTANCE = FabricServerAudiences.of(ServerHelper.getDefaultServer());
 
     private static final Map<String, String> player2code = new HashMap<>();
     private static final Map<String, JsonObject> code2json = new HashMap<>();
@@ -205,8 +201,7 @@ public class LocaleHelper {
     }
 
     public static @NotNull String resolvePlaceholder(@Nullable Object audience, String value) {
-        Component component = LocaleHelper.getText(PLACEHOLDER_PARSER, audience, false, value).asComponent();
-        return flatten(component);
+        return LocaleHelper.getText(PLACEHOLDER_PARSER, audience, false, value).getString();
     }
 
     /* This is the core method to map `String` into `Component`.
@@ -259,20 +254,32 @@ public class LocaleHelper {
         return getTextList(audience, false, value);
     }
 
-    public static @NotNull Text toText(@NotNull Component component) {
-        return ADVENTURE_INSTANCE.toNative(component);
-    }
-
     public static String flatten(@NotNull Component component) {
         return PlainTextComponentSerializer.plainText().serialize(component);
     }
 
-    public static void sendMessageByKey(@NotNull Audience audience, String key, Object... args) {
-        audience.sendMessage(getTextByKey(audience, key, args));
+
+    public static void sendMessageByKey(@NotNull Object audience, String key, Object... args) {
+        Text text = getTextByKey(audience, key, args);
+
+        if (audience instanceof PlayerEntity playerEntity) {
+            playerEntity.sendMessage(text);
+            return;
+        }
+        if (audience instanceof ServerCommandSource serverCommandSource) {
+            serverCommandSource.sendMessage(text);
+            return;
+        }
+
+        LogUtil.error("""
+            Can't send message to unknown audience: {}
+            Key: {}
+            Args: {}
+            """, audience, key, args);
     }
 
-    public static void sendActionBarByKey(@NotNull Audience audience, String key, Object... args) {
-        audience.sendActionBar(getTextByKey(audience, key, args));
+    public static void sendActionBarByKey(@NotNull ServerPlayerEntity player, String key, Object... args) {
+        player.sendMessage(getTextByKey(player, key, args), true);
     }
 
     public static void sendBroadcastByKey(@NotNull String key, Object... args) {
