@@ -105,7 +105,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
             .append(LocaleHelper.getTextByKey(source, "top_chunks.prop.players", this.players))
             .append(LocaleHelper.TEXT_NEWLINE)
             .append(LocaleHelper.getTextByKey(source, "top_chunks.prop.types"))
-            .append(LocaleHelper.toText(TypeFormatter.formatTypes(source, this.type2amount)));
+            .append(TypeFormatter.formatTypes(source, this.type2amount));
 
         return Text.empty()
             .append(Text.of(this.toString()))

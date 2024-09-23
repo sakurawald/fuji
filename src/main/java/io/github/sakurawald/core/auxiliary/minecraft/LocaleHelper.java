@@ -21,7 +21,10 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.PlainTextContent;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextContent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @UtilityClass
 public class LocaleHelper {
@@ -279,6 +283,81 @@ public class LocaleHelper {
         for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
             LocaleHelper.sendMessageByKey(player, key, args);
         }
+    }
+
+    public static Text replaceText(Text text, String marker, Text replacement) {
+        return replaceText0(text, marker, replacement, Text.empty());
+    }
+
+    private static String visitString(TextContent textContent) {
+        StringBuilder stringBuilder = new StringBuilder();
+        textContent.visit(string -> {
+            stringBuilder.append(string);
+            return Optional.empty();
+        });
+        return stringBuilder.toString();
+    }
+
+    private static Text replaceText0(Text text, String marker, Text replacement, MutableText builder) {
+
+        /* process one */
+        // use `contains` to match the key
+        String string = visitString(text.getContent());
+        if (string.contains(marker)) {
+            // append the split result
+            splitText(text, marker, replacement).forEach(builder::append);
+        } else {
+            MutableText copyWithoutSiblings = MutableText.of(text.getContent()).setStyle(text.getStyle());
+            builder.append(copyWithoutSiblings);
+        }
+
+        /* iterate children */
+        text.getSiblings().forEach(it -> replaceText0(it, marker, replacement, builder));
+        return builder;
+    }
+
+    private static List<Text> splitText(Text text, String marker, Text replacement) {
+        /* get the string */
+        String string = visitString(text.getContent());
+
+        /* get the split points */
+        List<Text> ret = new ArrayList<>();
+        List<Integer> splitPoints = new ArrayList<>();
+        int fromIndex = 0;
+        while (fromIndex < string.length()) {
+            int i = string.indexOf(marker, fromIndex);
+            // break if no found the marker
+            if (i == -1) break;
+
+            splitPoints.add(i);
+            fromIndex = i + marker.length();
+        }
+
+        /* construct string parts */
+        int beginIndex = 0;
+        for (Integer splitPoint : splitPoints) {
+            int endIndex = splitPoint;
+
+            String part = string.substring(beginIndex, endIndex);
+
+            // the part is empty, if the string starts with marker or ends with marker.
+            if (!part.isEmpty()) {
+                // add part
+                ret.add(MutableText.of(PlainTextContent.of(part)).setStyle(text.getStyle()));
+            }
+
+            // add marker
+            ret.add(replacement);
+            beginIndex = splitPoint + marker.length();
+        }
+
+        // handle the tail
+        if (beginIndex < string.length()) {
+            String part = string.substring(beginIndex);
+            ret.add(MutableText.of(PlainTextContent.of(part)).setStyle(text.getStyle()));
+        }
+
+        return ret;
     }
 
 }
