@@ -302,14 +302,7 @@ public class LocaleHelper {
 
         /* process one */
         // use `contains` to match the key
-        String string = visitString(text.getContent());
-        if (string.contains(marker)) {
-            // append the split result
-            splitText(text, marker, replacement).forEach(builder::append);
-        } else {
-            MutableText copyWithoutSiblings = MutableText.of(text.getContent()).setStyle(text.getStyle());
-            builder.append(copyWithoutSiblings);
-        }
+        splitText(text, marker, replacement).forEach(builder::append);
 
         /* iterate children */
         text.getSiblings().forEach(it -> replaceText0(it, marker, replacement, builder));
@@ -317,11 +310,11 @@ public class LocaleHelper {
     }
 
     private static List<Text> splitText(Text text, String marker, Text replacement) {
+
         /* get the string */
         String string = visitString(text.getContent());
 
         /* get the split points */
-        List<Text> ret = new ArrayList<>();
         List<Integer> splitPoints = new ArrayList<>();
         int fromIndex = 0;
         while (fromIndex < string.length()) {
@@ -333,7 +326,8 @@ public class LocaleHelper {
             fromIndex = i + marker.length();
         }
 
-        /* construct string parts */
+        /* construct result texts */
+        List<Text> ret = new ArrayList<>();
         int beginIndex = 0;
         for (Integer splitPoint : splitPoints) {
             int endIndex = splitPoint;
