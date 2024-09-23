@@ -299,7 +299,6 @@ public class LocaleHelper {
     }
 
     private static Text replaceText0(Text text, String marker, Text replacement, MutableText builder) {
-
         /* process one */
         // use `contains` to match the key
         splitText(text, marker, replacement).forEach(builder::append);
@@ -310,6 +309,9 @@ public class LocaleHelper {
     }
 
     private static List<Text> splitText(Text text, String marker, Text replacement) {
+        // copy the style form text to replacement.
+        replacement = replacement.copy()
+            .setStyle(text.getStyle());
 
         /* get the string */
         String string = visitString(text.getContent());
@@ -336,11 +338,11 @@ public class LocaleHelper {
 
             // the part is empty, if the string starts with marker or ends with marker.
             if (!part.isEmpty()) {
-                // add part
+                // add non-marker.
                 ret.add(MutableText.of(PlainTextContent.of(part)).setStyle(text.getStyle()));
             }
 
-            // add marker
+            // replace the marker with replacement
             ret.add(replacement);
             beginIndex = splitPoint + marker.length();
         }
