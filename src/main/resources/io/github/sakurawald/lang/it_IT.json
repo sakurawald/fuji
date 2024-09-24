@@ -106,7 +106,7 @@
     "profiler.format.mem.head": "<grey>Mem - Iniziale ≤ Usato / Impegnato ≤ Massimo<newline>",
     "profiler.format.mem.last": "<grey> ◆ %s (%s): <green>%s<grey> ≤ <green>(%s<grey>/<green>%s)<grey> ≤ <green>%s<grey>",
     "profiler.format.mem.no_last": "<grey> Ãš %s (%s): <green>%s<grey> ≤ <green>(%s<grey>/<green>%s)<grey> ≤ <green>%s<grey><newline>",
-    "prompt.input.confirm": "Conferma input",
+    "prompt.input.confirm": "Input 'confirm'",
     "prompt.input.name": "Input name",
     "pvp.check.off.me": "<dark_aqua>PvP per te è ora spento!",
     "pvp.check.off.others": "<dark_aqua>PvP per %s è ora disattivato!",
