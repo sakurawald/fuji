@@ -2,6 +2,7 @@ package io.github.sakurawald.core.command.argument.adapter.impl;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
@@ -25,7 +26,7 @@ public class PlayerArgumentTypeAdapter extends BaseArgumentTypeAdapter {
         return EntityArgumentType.player();
     }
 
-    @SneakyThrows
+    @SneakyThrows(CommandSyntaxException.class)
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Parameter parameter) {
         if (parameter.isAnnotationPresent(CommandSource.class)) {

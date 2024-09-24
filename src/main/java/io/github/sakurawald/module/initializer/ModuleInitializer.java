@@ -35,7 +35,7 @@ public class ModuleInitializer {
     }
 
     @SuppressWarnings("rawtypes")
-    @SneakyThrows
+    @SneakyThrows(IllegalAccessException.class)
     public void loadConfigurationFiles() {
         Field[] declaredFields = this.getClass().getDeclaredFields();
         for (Field declaredField : declaredFields) {

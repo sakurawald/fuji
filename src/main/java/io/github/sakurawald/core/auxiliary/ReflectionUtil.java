@@ -7,6 +7,7 @@ import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
@@ -38,7 +39,7 @@ public class ReflectionUtil {
         return methods;
     }
 
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     public static List<String> getGraph(String graphName) {
         InputStream inputStream = ReflectionUtil.class.getResourceAsStream(graphName);
 

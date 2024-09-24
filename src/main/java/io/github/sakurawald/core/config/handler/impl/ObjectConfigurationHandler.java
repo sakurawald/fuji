@@ -21,7 +21,7 @@ public class ObjectConfigurationHandler<T> extends BaseConfigurationHandler<T> {
         this(ReflectionUtil.getModuleConfigPath(typeOfModel).resolve(other), typeOfModel);
     }
 
-    @SneakyThrows
+    @SneakyThrows(Exception.class)
     @Override
     protected T getDefaultModel() {
         return typeOfModel.getDeclaredConstructor().newInstance();

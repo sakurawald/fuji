@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.concurrent.TimeUnit;
 
@@ -23,7 +24,7 @@ public class FileDownloadHandler implements HttpHandler {
 
     @SuppressWarnings("BusyWait")
     @Override
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     public void handle(@NotNull HttpExchange exchange) {
         LogUtil.info("download file: {}", file.getAbsolutePath());
 
