@@ -1,11 +1,10 @@
 package io.github.sakurawald.core.structure;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
-@AllArgsConstructor
+@SuppressWarnings("unused")
 @Data
 public class RegexRewriteEntry {
-    public String regex;
-    public String replacement;
+    final String regex;
+    final String replacement;
 }
