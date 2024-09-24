@@ -1,6 +1,7 @@
 package io.github.sakurawald.core.auxiliary.minecraft;
 
 import com.google.gson.JsonObject;
+import com.mojang.brigadier.context.CommandContext;
 import eu.pb4.placeholders.api.ParserContext;
 import eu.pb4.placeholders.api.PlaceholderContext;
 import eu.pb4.placeholders.api.node.LiteralNode;
@@ -255,20 +256,27 @@ public class LocaleHelper {
     public static void sendMessageByKey(@NotNull Object audience, String key, Object... args) {
         Text text = getTextByKey(audience, key, args);
 
+        /* extract the source */
+        if (audience instanceof CommandContext<?> ctx) {
+            audience = ctx.getSource();
+        }
+
+        /* dispatch by type */
         if (audience instanceof PlayerEntity playerEntity) {
             playerEntity.sendMessage(text);
             return;
         }
+
         if (audience instanceof ServerCommandSource serverCommandSource) {
             serverCommandSource.sendMessage(text);
             return;
         }
 
         LogUtil.error("""
-            Can't send message to unknown audience: {}
+            Can't send message to unknown audience type: {}
             Key: {}
             Args: {}
-            """, audience, key, args);
+            """, audience == null ? null : audience.getClass().getName(), key, args);
     }
 
     public static void sendActionBarByKey(@NotNull ServerPlayerEntity player, String key, Object... args) {
