@@ -30,7 +30,8 @@ public class ShellInitializer extends ModuleInitializer {
         var config = ShellInitializer.config.getModel();
 
         if (!config.enable_warning.equals("CONFIRM")) {
-            throw new AbortOperationException("Refuse to execute shell command: please read the official wiki.");
+            LocaleHelper.sendMessageByKey(ctx.getSource(), "shell.failed.rtfm");
+            throw new AbortOperationException();
         }
 
         if (config.security.only_allow_console && ctx.getSource().getPlayer() != null) {
@@ -39,7 +40,8 @@ public class ShellInitializer extends ModuleInitializer {
         }
 
         if (ctx.getSource().getName() != null && !config.security.allowed_player_names.contains(ctx.getSource().getName())) {
-            throw new AbortOperationException("You are not in the allowed player name list.");
+            LocaleHelper.sendMessageByKey(ctx.getSource(), "shell.failed.not_in_allowed_list");
+            throw new AbortOperationException();
         }
 
     }
