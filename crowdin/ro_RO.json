@@ -219,5 +219,7 @@
     "deathlog.view.reason": "<dark_green>Motiv: %s",
     "deathlog.view.dimension": "<dark_green>Dimensiune: %s",
     "deathlog.view.coordinate": "<dark_green>Coordonat: %.2f %.2f %.2f",
-    "callback.invalid": "<red>Această retroapelare este invalidă sau învechită."
+    "callback.invalid": "<red>Această retroapelare este invalidă sau învechită.",
+    "shell.failed.rtfm": "<red>Refuse to execute shell command: please read the official wiki.",
+    "shell.failed.not_in_allowed_list": "<red>You are not in the allowed player name list."
 }
