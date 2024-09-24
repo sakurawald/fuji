@@ -219,5 +219,7 @@
     "deathlog.view.reason": "<dark_green>Důvod: %s",
     "deathlog.view.dimension": "<dark_green>Rozměry: %s",
     "deathlog.view.coordinate": "<dark_green>souřadnice: %.2f %.2f %.2f",
-    "callback.invalid": "<red>Toto zpětné volání je neplatné nebo zastaralé."
+    "callback.invalid": "<red>Toto zpětné volání je neplatné nebo zastaralé.",
+    "shell.failed.rtfm": "<red>Refuse to execute shell command: please read the official wiki.",
+    "shell.failed.not_in_allowed_list": "<red>You are not in the allowed player name list."
 }

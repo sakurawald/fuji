@@ -219,5 +219,7 @@
     "deathlog.view.reason": "<dark_green>Årsak: %s",
     "deathlog.view.dimension": "<dark_green>Dimensjon: %s",
     "deathlog.view.coordinate": "<dark_green>Koordinater: %.2f %.2f %.2f",
-    "callback.invalid": "<red>Denne tilbakeringingen er ugyldig eller utdatert."
+    "callback.invalid": "<red>Denne tilbakeringingen er ugyldig eller utdatert.",
+    "shell.failed.rtfm": "<red>Refuse to execute shell command: please read the official wiki.",
+    "shell.failed.not_in_allowed_list": "<red>You are not in the allowed player name list."
 }

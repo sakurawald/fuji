@@ -219,5 +219,7 @@
     "deathlog.view.reason": "<dark_green>Αιτία: %s",
     "deathlog.view.dimension": "<dark_green>Διάσταση: %s",
     "deathlog.view.coordinate": "<dark_green>Συντεταγμένη: %.2f %.2f %.2f",
-    "callback.invalid": "<red>Αυτή η επιστροφή κλήσης δεν είναι έγκυρη ή ξεπερασμένη."
+    "callback.invalid": "<red>Αυτή η επιστροφή κλήσης δεν είναι έγκυρη ή ξεπερασμένη.",
+    "shell.failed.rtfm": "<red>Refuse to execute shell command: please read the official wiki.",
+    "shell.failed.not_in_allowed_list": "<red>You are not in the allowed player name list."
 }
