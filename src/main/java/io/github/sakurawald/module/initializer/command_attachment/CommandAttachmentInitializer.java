@@ -83,12 +83,11 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    @SneakyThrows
     public static boolean existsAttachmentModel(String uuid) {
         return Managers.getAttachmentManager().existsAttachmentFile(COMMAND_ATTACHMENT_SUBJECT_NAME, uuid);
     }
 
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     private static CommandAttachmentModel getAttachmentModel(String uuid) {
 
         CommandAttachmentModel model;
@@ -104,7 +103,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         return model;
     }
 
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     private static void setAttachmentModel(String uuid, CommandAttachmentModel model) {
         String json = BaseConfigurationHandler.getGson().toJson(model);
         Managers.getAttachmentManager().setAttachment(COMMAND_ATTACHMENT_SUBJECT_NAME, uuid, json);
@@ -291,7 +290,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     private static void doQueryAttachment(ServerPlayerEntity player, String uuid) {
         if (!Managers.getAttachmentManager().existsAttachmentFile(COMMAND_ATTACHMENT_SUBJECT_NAME, uuid)) {
             LocaleHelper.sendMessageByKey(player, "command_attachment.query.no_attachment");

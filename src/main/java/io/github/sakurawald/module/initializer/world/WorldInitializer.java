@@ -21,7 +21,6 @@ import io.github.sakurawald.module.initializer.world.config.model.WorldConfigMod
 import io.github.sakurawald.module.initializer.world.config.model.WorldDataModel;
 import io.github.sakurawald.module.initializer.world.structure.DimensionEntry;
 import lombok.Getter;
-import lombok.SneakyThrows;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
@@ -85,7 +84,6 @@ public class WorldInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @SneakyThrows
     @CommandNode("world create")
     private static int $create(@CommandSource CommandContext<ServerCommandSource> ctx, String name,
                         Optional<Long> seed, DimensionType dimensionType) {
@@ -108,8 +106,6 @@ public class WorldInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-
-    @SneakyThrows
     @CommandNode("world delete")
     private static int $delete(@CommandSource CommandContext<ServerCommandSource> ctx, Dimension dimension) {
         ServerWorld world = dimension.getValue();
@@ -138,7 +134,6 @@ public class WorldInitializer extends ModuleInitializer {
         }
     }
 
-    @SneakyThrows
     @CommandNode("world reset")
     private static int $reset(@CommandSource CommandContext<ServerCommandSource> ctx, Optional<Boolean> useTheSameSeed, Dimension dimension) {
         // draw seed and save

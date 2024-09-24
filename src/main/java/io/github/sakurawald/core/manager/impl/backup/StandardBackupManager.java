@@ -59,7 +59,7 @@ public class StandardBackupManager extends BaseBackupManager {
         return files;
     }
 
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     protected void trimBackup() {
         List<Path> latestFiles = IOUtil.getLatestFiles(BACKUP_PATH);
         Iterator<Path> iterator = latestFiles.iterator();
@@ -81,7 +81,7 @@ public class StandardBackupManager extends BaseBackupManager {
         IOUtil.compressFiles(Fuji.CONFIG_PATH.toFile(),getInputFiles(), getOutputFile());
     }
 
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     @Override
     public void backup() {
         Files.createDirectories(BACKUP_PATH);

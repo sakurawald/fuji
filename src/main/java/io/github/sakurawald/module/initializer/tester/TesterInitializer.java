@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.tester;
 
+import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -7,6 +8,7 @@ import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import lombok.SneakyThrows;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.MutableText;
@@ -18,7 +20,7 @@ import net.minecraft.util.Formatting;
 @CommandRequirement(level = 4)
 public class TesterInitializer extends ModuleInitializer {
 
-    @SneakyThrows
+    @SneakyThrows(Exception.class)
     @CommandNode("run")
     private static int $run(@CommandSource ServerPlayerEntity player) {
         player.sendMessage(Text.of("run"));
@@ -36,6 +38,7 @@ public class TesterInitializer extends ModuleInitializer {
                 .withFormatting(Formatting.GREEN)
                 .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("hello")))
             );
+
 //        Text after = LocaleHelper.replaceText(before, "b", text, "c", Text.literal("C"));
         Text after = LocaleHelper.replaceText(before, "b", text);
         LogUtil.debug("after = {}", after);
@@ -55,6 +58,12 @@ public class TesterInitializer extends ModuleInitializer {
     @CommandNode
     private static int root(@CommandSource ServerPlayerEntity player) {
         player.sendMessage(Text.of("root"));
+        return 1;
+    }
+
+    @CommandNode("console")
+    private static int console(@CommandSource CommandContext<ServerCommandSource> context) {
+        LogUtil.debug("you are {}", context.getSource().getServer().getClass().getName());
         return 1;
     }
 

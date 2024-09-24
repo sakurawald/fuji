@@ -13,7 +13,6 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.kit.command.argument.wrapper.KitName;
 import io.github.sakurawald.module.initializer.kit.gui.KitEditorGui;
 import io.github.sakurawald.module.initializer.kit.structure.Kit;
-import lombok.SneakyThrows;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -109,7 +108,6 @@ public class KitInitializer extends ModuleInitializer {
      *
      * counter for: times, cooldown
      * */
-    @SneakyThrows
     @CommandNode("give")
     private static int $give(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player, KitName kit) {
 
