@@ -106,7 +106,7 @@
     "profiler.format.mem.head": "<grey>Mem - المبدئي > المستخدم/ الملتزم > الحد الأقصى<newline>",
     "profiler.format.mem.last": "<grey> └─ %s (%s): <green>%s<grey> ≤ <green>(%s<grey>/<green>%s)<grey> ≤ <green>%s<grey>",
     "profiler.format.mem.no_last": "<grey> <unk> -- %s (%s: <green>%s<grey> 63- <green>(%s<grey>/<green>%s)<grey> ° <green>%s<grey><newline>",
-    "prompt.input.confirm": "تأكيد الإدخال",
+    "prompt.input.confirm": "Input 'confirm'",
     "prompt.input.name": "Input name",
     "pvp.check.off.me": "<dark_aqua>PvP لك الآن غير مفعل!",
     "pvp.check.off.others": "<dark_aqua>PvP لـ %s متوقفة الآن!",
