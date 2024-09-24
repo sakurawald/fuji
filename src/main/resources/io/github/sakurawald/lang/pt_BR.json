@@ -219,5 +219,7 @@
     "deathlog.view.reason": "<dark_green>Motivo: %s",
     "deathlog.view.dimension": "<dark_green>Dimensão: %s",
     "deathlog.view.coordinate": "<dark_green>Coordenada: %.2f %.2f %.2f",
-    "callback.invalid": "U<red>Este callback é inválido ou desatualizado."
+    "callback.invalid": "U<red>Este callback é inválido ou desatualizado.",
+    "shell.failed.rtfm": "<red>Refuse to execute shell command: please read the official wiki.",
+    "shell.failed.not_in_allowed_list": "<red>You are not in the allowed player name list."
 }
