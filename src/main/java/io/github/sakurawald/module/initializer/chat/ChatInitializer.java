@@ -60,7 +60,7 @@ public class ChatInitializer extends ModuleInitializer {
     private void compilePatterns() {
         patterns = new HashMap<>();
         for (RegexRewriteEntry regexRewriteEntry : config.getModel().rewrite.regex) {
-            patterns.put(java.util.regex.Pattern.compile(regexRewriteEntry.regex), regexRewriteEntry.replacement);
+            patterns.put(java.util.regex.Pattern.compile(regexRewriteEntry.getRegex()), regexRewriteEntry.getReplacement());
         }
     }
 
