@@ -68,7 +68,7 @@ public class TabListEntry {
     }
 
     public static Optional<TabListEntry> getEntryFromDummyPlayer(ServerPlayerEntity dummyPlayer) {
-        for (TabListEntry next : TabListEntry.getInstances()) {
+        for (TabListEntry next : instances) {
             if (next.getDummyPlayer().equals(dummyPlayer)) return Optional.of(next);
         }
 
@@ -78,7 +78,7 @@ public class TabListEntry {
     }
 
     public static @NotNull TabListEntry getEntryFromRealPlayer(ServerPlayerEntity realPlayer) {
-        Optional<TabListEntry> first = TabListEntry.getInstances().stream().filter(p -> p.getRealPlayer().equals(realPlayer)).findFirst();
+        Optional<TabListEntry> first = instances.stream().filter(p -> p.getRealPlayer().equals(realPlayer)).findFirst();
         if (first.isEmpty()) {
             // make player entity
             String dummyPlayerName = encodeName(realPlayer);
@@ -86,7 +86,7 @@ public class TabListEntry {
 
             // save
             TabListEntry tabListEntry = new TabListEntry(realPlayer, dummyPlayer);
-            TabListEntry.getInstances().add(tabListEntry);
+            instances.add(tabListEntry);
 
             return tabListEntry;
         }
