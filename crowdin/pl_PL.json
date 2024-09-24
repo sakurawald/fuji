@@ -219,5 +219,7 @@
     "deathlog.view.reason": "<dark_green>Powód: %s",
     "deathlog.view.dimension": "<dark_green>Wymiar: %s",
     "deathlog.view.coordinate": "Współrzędna <dark_green>: %.2f %.2f %.2f",
-    "callback.invalid": "<red>To wywołanie zwrotne jest nieprawidłowe lub przestarzałe."
+    "callback.invalid": "<red>To wywołanie zwrotne jest nieprawidłowe lub przestarzałe.",
+    "shell.failed.rtfm": "<red>Refuse to execute shell command: please read the official wiki.",
+    "shell.failed.not_in_allowed_list": "<red>You are not in the allowed player name list."
 }
