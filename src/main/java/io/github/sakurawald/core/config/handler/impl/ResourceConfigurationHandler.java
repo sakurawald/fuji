@@ -6,10 +6,13 @@ import com.google.gson.JsonParser;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
+import lombok.Cleanup;
+import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -29,12 +32,13 @@ public class ResourceConfigurationHandler extends BaseConfigurationHandler<JsonE
         this(Fuji.CONFIG_PATH.resolve(resourcePath), resourcePath);
     }
 
+    @SneakyThrows(IOException.class)
     private static @Nullable JsonElement readJsonTreeFromResource(@NotNull String resourcePath) {
         InputStream inputStream = Fuji.class.getResourceAsStream(resourcePath);
         if (inputStream == null) {
             throw new IllegalArgumentException("Resource not found: " + resourcePath);
         }
-        Reader reader = new BufferedReader(new InputStreamReader(inputStream));
+        @Cleanup Reader reader = new BufferedReader(new InputStreamReader(inputStream));
         return JsonParser.parseReader(reader);
     }
 
