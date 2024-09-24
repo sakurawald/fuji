@@ -294,6 +294,11 @@ public class LocaleHelper {
     }
 
     public static MutableText replaceText(Text text, String charSeq, Text replacement) {
+        // standard the placeholder of replaceText
+        if (!charSeq.startsWith("[") || !charSeq.endsWith("]")) {
+            throw new IllegalArgumentException("The `charSeq` parameter must starts with '[' and ends with ']'");
+        }
+
         return replaceText0(text, charSeq, replacement, Text.empty());
     }
 
