@@ -32,11 +32,11 @@ public class CommandAliasInitializer extends ModuleInitializer {
     private void registerCommandAliasEntry(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, @NotNull CommandPathMappingEntry entry) {
         LiteralArgumentBuilder<ServerCommandSource> builder = null;
 
-        for (int i = entry.from.size() - 1; i >= 0; i--) {
-            String name = entry.from.get(i);
+        for (int i = entry.getFrom().size() - 1; i >= 0; i--) {
+            String name = entry.getFrom().get(i);
 
             if (builder == null) {
-                CommandNode<ServerCommandSource> target = dispatcher.findNode(entry.to);
+                CommandNode<ServerCommandSource> target = dispatcher.findNode(entry.getTo());
 
                 if (target == null) {
                     LogUtil.warn("[command alias] can't find the target command node for alias entry: {}", entry);
