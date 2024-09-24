@@ -106,7 +106,7 @@
     "profiler.format.mem.head": "<grey>Mem - початковий ≤ Used / Committed ≤ Maximum<newline>",
     "profiler.format.mem.last": "<grey> └─ %s (%s): <green>%s<grey> ≤ <green>(%s<grey>/<green>%s)<grey> ≤ <green>%s<grey>",
     "profiler.format.mem.no_last": "<grey> ├─ %s (%s): <green>%s<grey> ≤ <green>(%s<grey>/<green>%s)<grey> ≤ <green>%s<grey><newline>",
-    "prompt.input.confirm": "Підтвердити введення",
+    "prompt.input.confirm": "Input 'confirm'",
     "prompt.input.name": "Input name",
     "pvp.check.off.me": "<dark_aqua>PvP для вас тепер вимкнено!",
     "pvp.check.off.others": "<dark_aqua>PvP для %s тепер вимкнено!",

@@ -106,7 +106,7 @@
     "profiler.format.mem.head": "<grey>Mem - Initial ≤ Used / Committed ≤ Maximum<newline>",
     "profiler.format.mem.last": "<grey>└─ %s (%s): <green>%s<grey> ≤ <green>(%s<grey>/<green>%s)<grey> ≤ <green>%s<grey>",
     "profiler.format.mem.no_last": "<grey>├─ %s (%s): <green>%s<grey> ≤ <green>(%s<grey>/<green>%s)<grey> ≤ <green>%s<grey><newline>",
-    "prompt.input.confirm": "输入confirm",
+    "prompt.input.confirm": "Input 'confirm'",
     "prompt.input.name": "输入名称",
     "pvp.check.off.me": "<dark_aqua>您已禁用PvP!",
     "pvp.check.off.others": "<dark_aqua>玩家 %s 已禁用PvP",

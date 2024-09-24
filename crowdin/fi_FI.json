@@ -106,7 +106,7 @@
     "profiler.format.mem.head": "<grey>Mem - Alkuperä ≤ Käytetty / Hyväksytty ≤ Enintään<newline>",
     "profiler.format.mem.last": "<grey> ¶ %s (%s): <green>%s<grey> ≤ <green>(%s<grey>/<green>%s)<grey> ≤ <green>%s<grey>",
     "profiler.format.mem.no_last": "<grey> · %s (%s): <green>%s<grey> ≤ <green>(%s<grey>/<green>%s)<grey> ≤ <green>%s<grey><newline>",
-    "prompt.input.confirm": "Syötteen vahvistus",
+    "prompt.input.confirm": "Input 'confirm'",
     "prompt.input.name": "Input name",
     "pvp.check.off.me": "<dark_aqua>PvP on nyt pois päältä!",
     "pvp.check.off.others": "<dark_aqua>PvP %s on nyt pois päältä!",
