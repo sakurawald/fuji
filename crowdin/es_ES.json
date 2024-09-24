@@ -106,7 +106,7 @@
     "profiler.format.mem.head": "<grey>Mem - Inicial Mem Usado / Compuesto máximo<newline>",
     "profiler.format.mem.last": "<grey> └─ %s (%s): <green>%s<grey> ≤ <green>(%s<grey>/<green>%s)<grey> ≤ <green>%s<grey>",
     "profiler.format.mem.no_last": "<grey> ├─ %s (%s): <green>%s<grey> ≤ <green>(%s<grey>/<green>%s)<grey> ≤ <green>%s<grey><newline>",
-    "prompt.input.confirm": "Confirmar entrada",
+    "prompt.input.confirm": "Input 'confirm'",
     "prompt.input.name": "Input name",
     "pvp.check.off.me": "¡<dark_aqua>JcJ para ti está desconectado!",
     "pvp.check.off.others": "¡<dark_aqua>JcJ para %s está desconectado!",
