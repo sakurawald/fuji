@@ -106,7 +106,7 @@
     "profiler.format.mem.head": "<grey>Mem - Initial ★ Utilisé / Committed ΩMaximum<newline>",
     "profiler.format.mem.last": "<grey> <unk> ─ %s (%s) : <green>%s<grey> 文 <green>(%s<grey>/<green>%s)<grey> Ω <green>%s<grey>",
     "profiler.format.mem.no_last": "<grey> ─ %s (%s) : <green>%s<grey> 文 <green>(%s<grey>/<green>%s)<grey> 文 <green>%s<grey><newline>",
-    "prompt.input.confirm": "Confirmer la saisie",
+    "prompt.input.confirm": "Input 'confirm'",
     "prompt.input.name": "Input name",
     "pvp.check.off.me": "<dark_aqua>Le JcJ pour vous est maintenant désactivé !",
     "pvp.check.off.others": "<dark_aqua>Le PvP pour %s est maintenant désactivé !",

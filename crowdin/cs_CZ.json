@@ -106,7 +106,7 @@
     "profiler.format.mem.head": "<grey>Mem - Počáteční ≤ Použité/schválené ≤ maximální<newline>",
     "profiler.format.mem.last": "<grey> <unk> ý- %s (%s): <green>%s<grey> ≤ <green>(%s<grey>/<green>%s)<grey> ≤ <green>%s<grey>",
     "profiler.format.mem.no_last": "<grey> <unk> ý- %s (%s): <green>%s<grey> ≤ <green>(%s<grey>/<green>%s)<grey> ≤ <green>%s<grey><newline>",
-    "prompt.input.confirm": "Potvrzení vstupu",
+    "prompt.input.confirm": "Input 'confirm'",
     "prompt.input.name": "Input name",
     "pvp.check.off.me": "<dark_aqua>PvP pro vás je vypnut!",
     "pvp.check.off.others": "<dark_aqua>PvP pro %s je nyní vypnut!",
