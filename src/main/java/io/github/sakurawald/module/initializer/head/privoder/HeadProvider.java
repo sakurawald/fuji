@@ -12,6 +12,7 @@ import io.github.sakurawald.core.structure.Downloader;
 import io.github.sakurawald.module.initializer.head.HeadInitializer;
 import io.github.sakurawald.module.initializer.head.structure.Category;
 import io.github.sakurawald.module.initializer.head.structure.Head;
+import lombok.Cleanup;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
 
@@ -65,8 +66,8 @@ public class HeadProvider {
     private static void loadCategory(HashMultimap<Category, Head> result, Category category) {
         try {
             LogUtil.info("load head category: {}", category.name);
-            var stream = Files.newInputStream(STORAGE_PATH.resolve(category.name + ".json"));
-            JsonArray headsJson = JsonParser.parseReader(new InputStreamReader(stream)).getAsJsonArray();
+            @Cleanup InputStreamReader reader = new InputStreamReader(Files.newInputStream(STORAGE_PATH.resolve(category.name + ".json")));
+            JsonArray headsJson = JsonParser.parseReader(reader).getAsJsonArray();
             for (JsonElement headJson : headsJson) {
                 try {
                     Head head = BaseConfigurationHandler.getGson().fromJson(headJson, Head.class);

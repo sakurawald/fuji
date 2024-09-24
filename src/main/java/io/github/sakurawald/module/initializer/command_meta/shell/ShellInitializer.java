@@ -13,6 +13,7 @@ import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_meta.shell.config.ShellConfigModel;
+import lombok.Cleanup;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
@@ -59,13 +60,12 @@ public class ShellInitializer extends ModuleInitializer {
 
                 Process process = Runtime.getRuntime().exec($rest, null, null);
                 InputStream inputStream = process.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                @Cleanup BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                 StringBuilder output = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
                     output.append(line).append("\n");
                 }
-                reader.close();
                 process.waitFor();
 
                 // output

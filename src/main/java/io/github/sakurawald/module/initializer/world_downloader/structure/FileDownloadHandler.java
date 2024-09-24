@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.module.initializer.world_downloader.WorldDownloaderInitializer;
 import lombok.AllArgsConstructor;
+import lombok.Cleanup;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,8 +39,8 @@ public class FileDownloadHandler implements HttpHandler {
                 exchange.getResponseHeaders().set("Content-Type", "application/octet-stream");
                 long fileLength = file.length();
                 exchange.sendResponseHeaders(200, fileLength);
-                OutputStream os = exchange.getResponseBody();
-                FileInputStream fis = new FileInputStream(file);
+                @Cleanup OutputStream os = exchange.getResponseBody();
+                @Cleanup FileInputStream fis = new FileInputStream(file);
                 byte[] buffer = new byte[1024];
                 int bytesRead;
 
@@ -63,14 +64,11 @@ public class FileDownloadHandler implements HttpHandler {
                     os.write(buffer, 0, bytesRead);
                     bytesReadCount += bytesRead;
                 }
-                fis.close();
-                os.close();
             } else {
                 String response = "File not found.";
                 exchange.sendResponseHeaders(404, response.length());
                 OutputStream os = exchange.getResponseBody();
                 os.write(response.getBytes());
-                os.close();
             }
         }
         LogUtil.info("delete file: {} -> {}", file.getAbsolutePath(), file.delete());
