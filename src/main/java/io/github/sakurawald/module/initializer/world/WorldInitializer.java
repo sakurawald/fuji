@@ -64,7 +64,7 @@ public class WorldInitializer extends ModuleInitializer {
             if (!dimensionEntry.isEnable()) continue;
 
             try {
-                Identifier dimensionType = Identifier.of(dimensionEntry.dimension_type);
+                Identifier dimensionType = Identifier.of(dimensionEntry.getDimension_type());
                 Identifier dimension = Identifier.of(dimensionEntry.getDimension());
                 long seed = dimensionEntry.getSeed();
                 WorldManager.requestToCreateWorld(server, dimension, dimensionType, seed);
