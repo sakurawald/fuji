@@ -145,7 +145,8 @@ public class DeathLogInitializer extends ModuleInitializer {
             .append(LocaleHelper.getTextByKey(audience, "deathlog.view.coordinate", remarkTag.getDouble(X), remarkTag.getDouble(Y), remarkTag.getDouble(Z)));
 
         return Text
-            .literal(String.valueOf(index)).setStyle(Style.EMPTY
+            .literal(String.valueOf(index))
+            .fillStyle(Style.EMPTY
                 .withFormatting(Formatting.RED)
                 .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,hoverText))
                 .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/deathlog restore %s %d %s".formatted(from, index, to)))
