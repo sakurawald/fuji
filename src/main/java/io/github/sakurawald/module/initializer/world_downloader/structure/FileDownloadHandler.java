@@ -16,7 +16,6 @@ import java.io.OutputStream;
 import java.util.concurrent.TimeUnit;
 
 @AllArgsConstructor
-
 public class FileDownloadHandler implements HttpHandler {
 
     private static final long NANO_TO_S = 1000000000L;
