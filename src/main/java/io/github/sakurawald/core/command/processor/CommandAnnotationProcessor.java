@@ -198,15 +198,15 @@ public class CommandAnnotationProcessor {
             }
 
             List<Object> args = makeCommandFunctionArgs(ctx, method);
-            Object invoke;
+            Object value;
             try {
-                invoke = method.invoke(instance, args.toArray());
+                value = method.invoke(instance, args.toArray());
             } catch (IllegalAccessException | InvocationTargetException e) {
-                // don't swallow the exception.
+                // get the real exception during reflection.
                 Throwable theRealException = e.getCause();
 
                 if (theRealException instanceof AbortOperationException) {
-                    // just swallow it.
+                    // the logging is done before throwing the AbortOperationException, here we just swallow this exception.
                     return CommandHelper.Return.FAIL;
                 }
 
@@ -214,7 +214,7 @@ public class CommandAnnotationProcessor {
                 return CommandHelper.Return.FAIL;
             }
 
-            return (int) invoke;
+            return (int) value;
         };
     }
 

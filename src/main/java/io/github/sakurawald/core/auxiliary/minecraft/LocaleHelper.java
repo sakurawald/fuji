@@ -294,7 +294,7 @@ public class LocaleHelper {
     }
 
     public static MutableText replaceText(Text text, String charSeq, Text replacement) {
-        // standard the placeholder of replaceText
+        // verify the placeholder of replaceText
         if (!charSeq.startsWith("[") || !charSeq.endsWith("]")) {
             throw new IllegalArgumentException("The `charSeq` parameter must starts with '[' and ends with ']'");
         }
@@ -313,7 +313,6 @@ public class LocaleHelper {
 
     private static MutableText replaceText0(Text text, String marker, Text replacement, MutableText builder) {
         /* process one */
-        // use `contains` to match the key
         splitText(text, marker, replacement).forEach(builder::append);
 
         /* iterate children */
