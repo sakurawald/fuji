@@ -103,7 +103,7 @@ public class CommandAnnotationProcessor {
 
         /* first pass -> make non-optional arguments (literal + required) */
         List<ArgumentBuilder<ServerCommandSource, ?>> builders = makeArgumentBuilders(pattern, method);
-        com.mojang.brigadier.Command<ServerCommandSource> function = makeCommandFunction(instance, method);
+        com.mojang.brigadier.Command<ServerCommandSource> function = makeCommandFunctionClosure(instance, method);
 
         /* set requirement (class) */
         if (clazz.isAnnotationPresent(CommandRequirement.class)) {
@@ -190,7 +190,7 @@ public class CommandAnnotationProcessor {
         return BaseArgumentTypeAdapter.getAdapter(expectedCommandSourceParameter).verifyCommandSource(ctx);
     }
 
-    private static com.mojang.brigadier.Command<ServerCommandSource> makeCommandFunction(Object instance, Method method) {
+    private static com.mojang.brigadier.Command<ServerCommandSource> makeCommandFunctionClosure(Object instance, Method method) {
         return (ctx) -> {
             // verify command source
             if (!verifyCommandSource(ctx, method)) {
@@ -205,13 +205,8 @@ public class CommandAnnotationProcessor {
                 // don't swallow the exception.
                 Throwable theRealException = e.getCause();
 
-                if (theRealException instanceof AbortOperationException snakeException) {
-                    // report it
-                    if (snakeException.getMessage() != null) {
-                        reportException(ctx.getSource(), instance, method, theRealException);
-                    }
-
-                    // swallow it
+                if (theRealException instanceof AbortOperationException) {
+                    // just swallow it.
                     return CommandHelper.Return.FAIL;
                 }
 
