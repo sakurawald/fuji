@@ -221,5 +221,18 @@
     "deathlog.view.coordinate": "<dark_green>Координаты: %.2f %.2f %.2f",
     "callback.invalid": "<red>Этот обратный вызов недействителен или устарел.",
     "shell.failed.rtfm": "<red>Refuse to execute shell command: please read the official wiki.",
-    "shell.failed.not_in_allowed_list": "<red>You are not in the allowed player name list."
+    "shell.failed.not_in_allowed_list": "<red>You are not in the allowed player name list.",
+    "fuji.about.gui.title": "<#6528F7>About",
+    "about": "<#6528F7>About",
+    "version": "<#6528F7>Version",
+    "version.format": "<#FFA1F5>Version %s",
+    "homepage.project": "<#FFA1F5>Project Homepage",
+    "homepage.project.visit": "<#FFA1F5>Visit project homepage: <hover:show_text:'<green>Open this link '><click:open_url:'%s'><green>[OPEN]</click></hover>",
+    "contact.name": "<dark_green>%s",
+    "contact.entry": "<orange>◉ %s -> %s",
+    "contact.click.prompt": "<blue>Click to visit",
+    "contact.visit.name": "<dark_green>%s",
+    "contact.visit.entry.is_url": "<orange>◉ %s -> %s <hover:show_text:'<green>Open this link'><click:open_url:'%s'><blue>[VISIT]</click></hover>",
+    "contact.visit.entry.is_not_url": "<orange>◉ %s -> %s <hover:show_text:'<green>Copy to clipboard'><click:copy_to_clipboard:'%s'><green>[COPY]</click></hover>",
+    "keyword.confirm": "confirm"
 }
