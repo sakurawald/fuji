@@ -209,9 +209,14 @@ tasks.register('copyTranslationFiles', Copy) {
 
     def langDir = file("$projectDir/src/main/resources/io/github/sakurawald/lang")
     def translationDir = file("$projectDir/crowdin")
+    def sourceLanguageFile = "en_US.json";
 
     // clean
     doFirst {
+        copy {
+            from("${translationDir}/${sourceLanguageFile}")
+            into("${langDir}")
+        }
         recreateDir(langDir)
     }
 
@@ -219,8 +224,6 @@ tasks.register('copyTranslationFiles', Copy) {
     from(translationDir)
     into("${langDir}")
     include "**/*.json"
-    exclude "**/en_US.json"
-
 }
 tasks.processResources.dependsOn(copyTranslationFiles)
 
