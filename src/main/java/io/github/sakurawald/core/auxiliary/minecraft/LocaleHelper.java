@@ -231,6 +231,15 @@ public class LocaleHelper {
         return getText(audience, true, key, args);
     }
 
+    public static String getKeywordValue(@Nullable Object audience, String keyword){
+        return getValue(audience, "keyword." + keyword);
+    }
+
+    public static MutableText getTextWithKeyword(@Nullable Object audience, String key, String keyword) {
+        String replacement = getKeywordValue(audience,keyword);
+        return Text.literal(getValue(audience, key, replacement));
+    }
+
     public static @NotNull Text getTextByValue(@Nullable Object audience, String value, Object... args) {
         return getText(audience, false, value, args);
     }

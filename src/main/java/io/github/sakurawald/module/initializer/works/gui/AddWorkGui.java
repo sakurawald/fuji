@@ -19,7 +19,7 @@ public class AddWorkGui extends InputSignGui {
 
 
     public AddWorkGui(@NotNull ServerPlayerEntity player) {
-        super(player, "works.work.add.prompt.input.name");
+        super(player,LocaleHelper.getTextByKey(player, "works.work.add.prompt.input.name"));
     }
 
     @Override

@@ -1,64 +1,68 @@
 {
-  "schemaVersion": 1,
-  "id": "fuji",
-  "version": "${version}",
-  "name": "Fuji",
-  "icon": "assets/fuji/icon.png",
-  "description": "A mod that ports EssentialsX / CMI from bukkit to fabric.",
-  "license": "GPL-3.0",
-  "contact": {
-    "homepage": "https://github.com/sakurawald",
-    "sources": "https://github.com/sakurawald/fuji/",
-    "issues": "https://github.com/sakurawald/fuji/issues"
-  },
-  "authors": [
-    {
-      "name": "sakurawald",
-      "contact": {
-        "email": "sakurawald@gmail.com"
-      }
-    }
-  ],
-  "contributors": [
-    {
-      "name": "mcjunshi",
-      "contact": {
-        "homepage": "https://github.com/mcjunshi"
-      }
+    "schemaVersion": 1,
+    "id": "fuji",
+    "version": "${version}",
+    "name": "Fuji",
+    "icon": "assets/fuji/icon.png",
+    "description": "A mod that ports EssentialsX / CMI from bukkit to fabric.",
+    "license": "GPL-3.0",
+    "contact": {
+        "homepage": "https://github.com/sakurawald",
+        "sources": "https://github.com/sakurawald/fuji/",
+        "issues": "https://github.com/sakurawald/fuji/issues"
     },
-    {
-      "name": "dirtTW",
-      "contact": {
-        "homepage": "https://github.com/yichifauzi"
-      }
+    "authors": [
+        {
+            "name": "sakurawald",
+            "contact": {
+                "role": "developer",
+                "bio": "yeah, this is just a bio.",
+                "email": "sakurawald@gmail.com"
+            }
+        }
+    ],
+    "contributors": [
+        {
+            "name": "mcjunshi",
+            "contact": {
+                "role": "contributor",
+                "homepage": "https://github.com/mcjunshi"
+            }
+        },
+        {
+            "name": "dirtTW",
+            "contact": {
+                "role": "translator",
+                "homepage": "https://github.com/yichifauzi"
+            }
+        }
+    ],
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "io.github.sakurawald.Fuji"
+        ]
+    },
+    "accessWidener": "fuji.accesswidener",
+    "mixins": [
+        "fuji.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=0.15.11",
+        "minecraft": "~1.21",
+        "java": ">=21",
+        "fabric-api": "*"
+    },
+    "suggests": {
+        "luckperms": "*",
+        "spark": "*",
+        "carpet": "*"
+    },
+    "custom": {
+        "mc-publish": {
+            "dependencies": [
+                "placeholder-api@2.4.1+1.21(embedded)"
+            ]
+        }
     }
-  ],
-  "environment": "*",
-  "entrypoints": {
-    "main": [
-      "io.github.sakurawald.Fuji"
-    ]
-  },
-  "accessWidener": "fuji.accesswidener",
-  "mixins": [
-    "fuji.mixins.json"
-  ],
-  "depends": {
-    "fabricloader": ">=0.15.11",
-    "minecraft": "~1.21",
-    "java": ">=21",
-    "fabric-api": "*"
-  },
-  "suggests": {
-    "luckperms": "*",
-    "spark": "*",
-    "carpet": "*"
-  },
-  "custom": {
-    "mc-publish": {
-      "dependencies": [
-        "placeholder-api@2.4.1+1.21(embedded)"
-      ]
-    }
-  }
 }
