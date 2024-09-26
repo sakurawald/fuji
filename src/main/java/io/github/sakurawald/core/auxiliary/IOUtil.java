@@ -25,7 +25,7 @@ import java.util.zip.ZipOutputStream;
 @UtilityClass
 public class IOUtil {
 
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     public static void compressFiles(@NotNull File base, @NotNull List<File> input, @NotNull File output) {
         final int BUFFER_SIZE = 4096;
 
@@ -53,7 +53,7 @@ public class IOUtil {
         }
     }
 
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     private static @NotNull String getEntryName(@NotNull File base, @NotNull File file) {
         String baseStr = base.getCanonicalPath();
         String fileStr = file.getCanonicalPath();
@@ -93,6 +93,10 @@ public class IOUtil {
 
         IOUtils.write(param.getBytes(StandardCharsets.UTF_8), connection.getOutputStream());
         return IOUtils.toString(connection.getInputStream(), StandardCharsets.UTF_8);
+    }
+
+    public static String get(@NotNull String uri) throws IOException {
+        return get(URI.create(uri));
     }
 
     public static String get(@NotNull URI uri) throws IOException {

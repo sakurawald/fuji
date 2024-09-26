@@ -27,6 +27,7 @@ import net.minecraft.util.Uuids;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -54,13 +55,12 @@ public class DeathLogInitializer extends ModuleInitializer {
     private static final String XP_PROGRESS = "xp_progress";
     private static final String INVENTORY = "inventory";
 
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     @Override
     public void onInitialize() {
         Files.createDirectories(STORAGE_PATH);
     }
 
-    @SneakyThrows
     @CommandNode("restore")
     private static int $restore(@CommandSource CommandContext<ServerCommandSource> ctx, String from, int index, ServerPlayerEntity to) {
         /* read from file */
@@ -145,7 +145,8 @@ public class DeathLogInitializer extends ModuleInitializer {
             .append(LocaleHelper.getTextByKey(audience, "deathlog.view.coordinate", remarkTag.getDouble(X), remarkTag.getDouble(Y), remarkTag.getDouble(Z)));
 
         return Text
-            .literal(String.valueOf(index)).setStyle(Style.EMPTY
+            .literal(String.valueOf(index))
+            .fillStyle(Style.EMPTY
                 .withFormatting(Formatting.RED)
                 .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,hoverText))
                 .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/deathlog restore %s %d %s".formatted(from, index, to)))

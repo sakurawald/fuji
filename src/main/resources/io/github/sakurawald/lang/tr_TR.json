@@ -106,7 +106,7 @@
     "profiler.format.mem.head": "<grey>Mem - Initial ≤ Used / Committed ≤ Maximum<newline>",
     "profiler.format.mem.last": "<grey> └─ %s (%s): <green>%s<grey> ≤ <green>(%s<grey>/<green>%s)<grey> ≤ <green>%s<grey>",
     "profiler.format.mem.no_last": "<grey> ├─ %s (%s): <green>%s<grey> ≤ <green>(%s<grey>/<green>%s)<grey> ≤ <green>%s<grey><newline>",
-    "prompt.input.confirm": "Input confirm",
+    "prompt.input.confirm": "Input 'confirm'",
     "prompt.input.name": "Input name",
     "pvp.check.off.me": "<dark_aqua>PvP for you is now off!",
     "pvp.check.off.others": "<dark_aqua>PvP for %s is now off!",
@@ -219,5 +219,7 @@
     "deathlog.view.reason": "<dark_green>Reason: %s",
     "deathlog.view.dimension": "<dark_green>Dimension: %s",
     "deathlog.view.coordinate": "<dark_green>Coordinate: %.2f %.2f %.2f",
-    "callback.invalid": "<red>This callback is invalid or outdated."
+    "callback.invalid": "<red>This callback is invalid or outdated.",
+    "shell.failed.rtfm": "<red>Refuse to execute shell command: please read the official wiki.",
+    "shell.failed.not_in_allowed_list": "<red>You are not in the allowed player name list."
 }

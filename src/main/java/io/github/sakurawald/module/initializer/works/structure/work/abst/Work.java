@@ -16,6 +16,7 @@ import io.github.sakurawald.module.initializer.works.WorksInitializer;
 import io.github.sakurawald.module.initializer.works.structure.work.impl.NonProductionWork;
 import io.github.sakurawald.module.initializer.works.structure.work.impl.ProductionWork;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@NoArgsConstructor // for gson instance creator
 @Data
 public abstract class Work {
 
@@ -49,11 +51,6 @@ public abstract class Work {
     public float yaw;
     public float pitch;
     public @Nullable String icon;
-
-    @SuppressWarnings("unused")
-    public Work() {
-        // for gson instance creator
-    }
 
     public Work(@NotNull ServerPlayerEntity player, String name) {
         this.type = getType();

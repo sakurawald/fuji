@@ -48,16 +48,27 @@ public class NametagInitializer extends ModuleInitializer {
         LogUtil.debug("make nametag for player: {}", player.getGameProfile().getName());
 
         DisplayEntity.TextDisplayEntity nametag = new DisplayEntity.TextDisplayEntity(EntityType.TEXT_DISPLAY, player.getWorld()) {
+            private void discardNametag() {
+                ServerHelper.sendPacketToAll(new EntitiesDestroyS2CPacket(this.getId()));
+                this.remove(RemovalReason.DISCARDED);
+            }
+
             @Override
             public void tick() {
                 super.tick();
 
+                /* discard nametag if the vehicle is empty */
                 if (this.getVehicle() == null) {
-                    ServerHelper.sendPacketToAll(new EntitiesDestroyS2CPacket(this.getId()));
-
                     LogUtil.debug("discard nametag entity {}: its vehicle is null", this);
-                    this.remove(RemovalReason.DISCARDED);
+                    this.discardNametag();
+                    return;
                 }
+
+                /* discard nametag if the vehicle is sneaking */
+                if (this.getVehicle().isSneaking()) {
+                    this.discardNametag();
+                }
+
             }
         };
         // let the nametag riding in internal server-side.
@@ -113,34 +124,28 @@ public class NametagInitializer extends ModuleInitializer {
 
         nametag.setBillboardMode(DisplayEntity.BillboardMode.CENTER);
 
-        if (nametag.getVehicle() != null && nametag.getVehicle().isSneaking()) {
-            // the nametag.setInvisible(true) doesn't work, so here is the workaround.
-            nametag.setText(Text.empty());
-            nametag.setBackground(-1);
-        } else {
-            Text text = LocaleHelper.getTextByValue(player, config.style.text);
-            nametag.setText(text);
+        Text text = LocaleHelper.getTextByValue(player, config.style.text);
+        nametag.setText(text);
 
-            nametag.getDataTracker().set(DisplayEntity.TRANSLATION, new Vector3f(config.style.offset.x, config.style.offset.y, config.style.offset.z));
+        nametag.getDataTracker().set(DisplayEntity.TRANSLATION, new Vector3f(config.style.offset.x, config.style.offset.y, config.style.offset.z));
 
-            nametag.setDisplayWidth(config.style.size.width);
-            nametag.setDisplayHeight(config.style.size.height);
+        nametag.setDisplayWidth(config.style.size.width);
+        nametag.setDisplayHeight(config.style.size.height);
 
-            nametag.setBackground(config.style.color.background);
-            nametag.setTextOpacity(config.style.color.text_opacity);
+        nametag.setBackground(config.style.color.background);
+        nametag.setTextOpacity(config.style.color.text_opacity);
 
-            nametag.getDataTracker().set(DisplayEntity.SCALE, new Vector3f(config.style.scale.x, config.style.scale.y, config.style.scale.z));
+        nametag.getDataTracker().set(DisplayEntity.SCALE, new Vector3f(config.style.scale.x, config.style.scale.y, config.style.scale.z));
 
-            setDisplayFlag(nametag.getDataTracker(), DisplayEntity.TextDisplayEntity.SHADOW_FLAG, config.style.shadow.shadow);
-            nametag.setShadowRadius(config.style.shadow.shadow_radius);
-            nametag.setShadowStrength(config.style.shadow.shadow_strength);
+        setDisplayFlag(nametag.getDataTracker(), DisplayEntity.TextDisplayEntity.SHADOW_FLAG, config.style.shadow.shadow);
+        nametag.setShadowRadius(config.style.shadow.shadow_radius);
+        nametag.setShadowStrength(config.style.shadow.shadow_strength);
 
-            setDisplayFlag(nametag.getDataTracker(), DisplayEntity.TextDisplayEntity.SEE_THROUGH_FLAG, config.render.see_through_blocks);
-            nametag.setViewRange(config.render.view_range);
+        setDisplayFlag(nametag.getDataTracker(), DisplayEntity.TextDisplayEntity.SEE_THROUGH_FLAG, config.render.see_through_blocks);
+        nametag.setViewRange(config.render.view_range);
 
-            if (config.style.brightness.override_brightness) {
-                nametag.setBrightness(new Brightness(config.style.brightness.block, config.style.brightness.sky));
-            }
+        if (config.style.brightness.override_brightness) {
+            nametag.setBrightness(new Brightness(config.style.brightness.block, config.style.brightness.sky));
         }
 
         /* send update props packet */
@@ -163,6 +168,7 @@ public class NametagInitializer extends ModuleInitializer {
         // update
         ServerHelper.getPlayers().forEach(player -> {
             if (player.isDead()) return;
+            if (player.isSneaking()) return;
 
             // make if not exists
             if (!player2nametag.containsKey(player)) {

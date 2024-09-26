@@ -2,7 +2,6 @@ package io.github.sakurawald.core.auxiliary.minecraft;
 
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
-import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registry;
@@ -61,7 +60,6 @@ public class CommandHelper {
 
     public static class Pattern {
 
-        @SneakyThrows
         public static int playerOnlyCommand(@NotNull CommandContext<ServerCommandSource> ctx, @NotNull Function<ServerPlayerEntity, Integer> function) {
             ServerPlayerEntity player = ctx.getSource().getPlayer();
             if (player == null) {
@@ -72,7 +70,6 @@ public class CommandHelper {
             return function.apply(player);
         }
 
-        @SneakyThrows
         public static int itemInHandCommand(@NotNull CommandContext<ServerCommandSource> ctx, @NotNull BiFunction<ServerPlayerEntity, ItemStack, Integer> consumer) {
             return playerOnlyCommand(ctx, player -> {
                 ItemStack mainHandStack = player.getMainHandStack();

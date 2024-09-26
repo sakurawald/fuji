@@ -14,6 +14,7 @@ import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,7 +29,7 @@ public class GenerateGraphTest {
     public static final Path COMPILE_TIME_GRAPH_PATH = COMPILE_TIME_SRC_MAIN_RESOURCES_PATH.resolve(ReflectionUtil.class.getPackageName().replace(".", "/"));
     public static final Path COMPILE_TIME_LANGUAGE_PATH = COMPILE_TIME_SRC_MAIN_RESOURCES_PATH.toAbsolutePath().resolve(Fuji.class.getPackageName().replace(".", "/")).resolve("lang");
 
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     @Test
     void generateFromSource() {
         // scan source
@@ -49,7 +50,7 @@ public class GenerateGraphTest {
         }
     }
 
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     @Test
     void generateFromResource() {
         try (PrintWriter writer = new PrintWriter(COMPILE_TIME_GRAPH_PATH.resolve(ReflectionUtil.LANGUAGE_GRAPH_FILE_NAME).toFile())) {
@@ -71,7 +72,7 @@ public class GenerateGraphTest {
         }
     }
 
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     @Test
     void generateFromJson() {
         JsonObject modules = BaseConfigurationHandler.getGson().toJsonTree(new ConfigModel())

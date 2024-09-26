@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.echo.send_toast;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -72,7 +73,8 @@ public class SendToastInitializer extends ModuleInitializer {
 
         CriterionProgress criterionProgress = advancementProgress.getCriterionProgress(IMPOSSIBLE);
         if (criterionProgress == null) {
-            throw new AbortOperationException("It's strange that the statement `advancementProgress.getCriterionProgress(IMPOSSIBLE) is null, abort this advancement packet making.`");
+            LogUtil.error("It's strange that the statement `advancementProgress.getCriterionProgress(IMPOSSIBLE) is null, abort this advancement packet making.`");
+            throw new AbortOperationException();
         }
 
         criterionProgress.obtain();

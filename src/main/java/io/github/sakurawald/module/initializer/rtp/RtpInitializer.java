@@ -8,7 +8,7 @@ import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
-import io.github.sakurawald.core.service.random_teleport.RandomTeleport;
+import io.github.sakurawald.core.service.random_teleport.RandomTeleporter;
 import io.github.sakurawald.core.structure.TeleportSetup;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.rtp.config.model.RtpConfigModel;
@@ -41,7 +41,7 @@ public class RtpInitializer extends ModuleInitializer {
         }
 
         LocaleHelper.sendActionBarByKey(player, "rtp.tip");
-        RandomTeleport.request(player, first.get(), (position -> LocaleHelper.sendMessageByKey(player, "rtp.success")));
+        RandomTeleporter.request(player, first.get(), (position -> LocaleHelper.sendMessageByKey(player, "rtp.success")));
         return CommandHelper.Return.SUCCESS;
     }
 }

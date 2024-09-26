@@ -4,6 +4,7 @@ import auxiliary.TestUtility;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class FileDependencyChecker extends BaseDependencyChecker {
     private static final Pattern importPattern = Pattern.compile("import\\s+(\\S+);");
     private static final Pattern staticImportPattern = Pattern.compile("import\\s+static\\s+(\\S+)\\.\\S+;");
 
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     private static List<String> analyzeImportStatements(String file) {
         String text = FileUtils.readFileToString(Path.of(file).toFile(), Charset.defaultCharset());
 

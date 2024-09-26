@@ -7,6 +7,7 @@ import io.github.sakurawald.core.config.transformer.abst.ConfigurationTransforme
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.Function;
@@ -27,7 +28,7 @@ public class FlattenTreeTransformer extends ConfigurationTransformer {
         this.level2outPath = level2outPath;
     }
 
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     private void flatten(JsonObject parent, String level) {
         /* find and walk submodule */
         parent.keySet().stream()

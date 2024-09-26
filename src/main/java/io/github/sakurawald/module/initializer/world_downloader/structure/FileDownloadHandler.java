@@ -5,16 +5,17 @@ import com.sun.net.httpserver.HttpHandler;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.module.initializer.world_downloader.WorldDownloaderInitializer;
 import lombok.AllArgsConstructor;
+import lombok.Cleanup;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.concurrent.TimeUnit;
 
 @AllArgsConstructor
-
 public class FileDownloadHandler implements HttpHandler {
 
     private static final long NANO_TO_S = 1000000000L;
@@ -23,7 +24,7 @@ public class FileDownloadHandler implements HttpHandler {
 
     @SuppressWarnings("BusyWait")
     @Override
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     public void handle(@NotNull HttpExchange exchange) {
         LogUtil.info("download file: {}", file.getAbsolutePath());
 
@@ -37,8 +38,8 @@ public class FileDownloadHandler implements HttpHandler {
                 exchange.getResponseHeaders().set("Content-Type", "application/octet-stream");
                 long fileLength = file.length();
                 exchange.sendResponseHeaders(200, fileLength);
-                OutputStream os = exchange.getResponseBody();
-                FileInputStream fis = new FileInputStream(file);
+                @Cleanup OutputStream os = exchange.getResponseBody();
+                @Cleanup FileInputStream fis = new FileInputStream(file);
                 byte[] buffer = new byte[1024];
                 int bytesRead;
 
@@ -62,14 +63,11 @@ public class FileDownloadHandler implements HttpHandler {
                     os.write(buffer, 0, bytesRead);
                     bytesReadCount += bytesRead;
                 }
-                fis.close();
-                os.close();
             } else {
                 String response = "File not found.";
                 exchange.sendResponseHeaders(404, response.length());
                 OutputStream os = exchange.getResponseBody();
                 os.write(response.getBytes());
-                os.close();
             }
         }
         LogUtil.info("delete file: {} -> {}", file.getAbsolutePath(), file.delete());
