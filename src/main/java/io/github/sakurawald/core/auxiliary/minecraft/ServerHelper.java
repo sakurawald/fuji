@@ -8,6 +8,7 @@ import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.UserCache;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,10 +21,6 @@ public class ServerHelper {
         return server;
     }
 
-    public static List<ServerPlayerEntity> getPlayers() {
-        return getDefaultServer().getPlayerManager().getPlayerList();
-    }
-
     public static Optional<GameProfile> getGameProfileByName(String playerName) {
         UserCache userCache = getDefaultServer().getUserCache();
         if (userCache == null) return Optional.empty();
@@ -33,6 +30,14 @@ public class ServerHelper {
 
     public static PlayerManager getPlayerManager() {
         return getDefaultServer().getPlayerManager();
+    }
+
+    public static List<ServerPlayerEntity> getThreadUnsafePlayerList() {
+        return getDefaultServer().getPlayerManager().getPlayerList();
+    }
+
+    public static List<ServerPlayerEntity> copyPlayerList() {
+        return new ArrayList<>(getThreadUnsafePlayerList());
     }
 
     public static boolean isPlayerOnline(String name) {

@@ -19,10 +19,6 @@ import java.util.List;
 public abstract class PlayerListMixin {
 
     @Shadow
-    @Final
-    private MinecraftServer server;
-
-    @Shadow
     public abstract List<ServerPlayerEntity> getPlayerList();
 
     @Inject(method = "remove", at = @At("TAIL"))

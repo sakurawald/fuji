@@ -13,6 +13,6 @@ public class RenderHeaderAndFooterJob extends CronJob {
 
     @Override
     public void execute(JobExecutionContext context) {
-        TabListInitializer.render(ServerHelper.getDefaultServer());
+        TabListInitializer.render();
     }
 }

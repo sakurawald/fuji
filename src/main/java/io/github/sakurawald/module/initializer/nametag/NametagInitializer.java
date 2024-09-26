@@ -166,7 +166,7 @@ public class NametagInitializer extends ModuleInitializer {
         player2nametag.entrySet().removeIf(entry -> entry.getKey().isRemoved() || entry.getValue().isRemoved());
 
         // update
-        ServerHelper.getPlayers().forEach(player -> {
+        ServerHelper.copyPlayerList().forEach(player -> {
             if (player.isDead()) return;
             if (player.isSneaking()) return;
 
