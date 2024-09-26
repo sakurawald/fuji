@@ -16,9 +16,8 @@ public class ForEachInitializer extends ModuleInitializer {
     @CommandRequirement(level = 4)
     private static int foreach(GreedyString rest) {
         String $rest = rest.getValue();
-        MinecraftServer server = ServerHelper.getDefaultServer();
 
-        for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
+        for (ServerPlayerEntity player : ServerHelper.getThreadUnsafePlayerList()) {
             CommandExecutor.executeCommandAsConsole(player, $rest);
         }
         return CommandHelper.Return.SUCCESS;

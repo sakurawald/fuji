@@ -16,7 +16,7 @@ public class AfkMarkerJob extends NPassMarkerJob<ServerPlayerEntity> {
 
     @Override
     public Collection<ServerPlayerEntity> getEntityList() {
-        return ServerHelper.getDefaultServer().getPlayerManager().getPlayerList();
+        return ServerHelper.copyPlayerList();
     }
 
     @Override

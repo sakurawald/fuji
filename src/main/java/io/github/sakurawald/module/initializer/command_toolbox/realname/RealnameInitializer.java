@@ -20,7 +20,7 @@ public class RealnameInitializer extends ModuleInitializer {
     private static int $realname(@CommandSource CommandContext<ServerCommandSource> ctx) {
         MutableText builder = Text.empty();
 
-        for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
+        for (ServerPlayerEntity player : ServerHelper.getThreadUnsafePlayerList()) {
             Text displayName = player.getDisplayName();
             if (displayName == null) continue;
 
