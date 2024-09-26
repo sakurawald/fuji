@@ -1,7 +1,4 @@
 {
-    "_translator.<insert-your-name>": "you can write a bio here. the name doesn't have to be lowercase.",
-    "_translator.<insert-your-name>.contact.homepage": "yeah write the homepage url",
-    "_translator.<insert-your-name>.contact.email": "yeah write the email",
     "accept": "<green>Hyväksy",
     "add": "<#FFA1F5>Lisää",
     "afk.kick": "<red>Sinut on potkittu sen takia, että olet.",
