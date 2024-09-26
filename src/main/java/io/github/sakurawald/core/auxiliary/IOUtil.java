@@ -95,6 +95,10 @@ public class IOUtil {
         return IOUtils.toString(connection.getInputStream(), StandardCharsets.UTF_8);
     }
 
+    public static String get(@NotNull String uri) throws IOException {
+        return get(URI.create(uri));
+    }
+
     public static String get(@NotNull URI uri) throws IOException {
         LogUtil.debug("get() -> uri = {}", uri);
 
