@@ -17,6 +17,7 @@ It's good to have a checklist, to avoid forgetting something.
 - test the integration with luckperms.
 
 ## Update to a new version
+- sync the language files.
 - update the version in "gradle.properties"
 - update change log in "CHANGELOG.md"
 - test the jar file in a real environment.
