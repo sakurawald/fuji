@@ -233,5 +233,6 @@
     "contact.click.prompt": "<blue>Click to visit",
     "contact.visit.name": "<dark_green>%s",
     "contact.visit.entry.is_url": "<orange>◉ %s -> %s <hover:show_text:'<green>Open this link'><click:open_url:'%s'><blue>[VISIT]</click></hover>",
-    "contact.visit.entry.is_not_url": "<orange>◉ %s -> %s <hover:show_text:'<green>Copy to clipboard'><click:copy_to_clipboard:'%s'><green>[COPY]</click></hover>"
+    "contact.visit.entry.is_not_url": "<orange>◉ %s -> %s <hover:show_text:'<green>Copy to clipboard'><click:copy_to_clipboard:'%s'><green>[COPY]</click></hover>",
+    "keyword.confirm": "confirm"
 }
