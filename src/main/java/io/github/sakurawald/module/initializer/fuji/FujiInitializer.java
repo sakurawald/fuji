@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.config;
+package io.github.sakurawald.module.initializer.fuji;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
@@ -15,7 +15,7 @@ import net.minecraft.server.command.ServerCommandSource;
 
 @CommandNode("fuji")
 @CommandRequirement(level = 4)
-public class ConfigInitializer extends ModuleInitializer {
+public class FujiInitializer extends ModuleInitializer {
 
     @CommandNode("reload")
     private static int $reload(@CommandSource CommandContext<ServerCommandSource> ctx) {
