@@ -1,5 +1,7 @@
 package io.github.sakurawald.core.config.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +42,8 @@ public class ConfigModel {
 
     @SuppressWarnings("unused")
     public static class Modules {
-        public Config config = new Config();
+        @SerializedName(value = "fuji", alternate = "config")
+        public Fuji fuji = new Fuji();
         public Language language = new Language();
         public Chat chat = new Chat();
         public Placeholder placeholder = new Placeholder();
@@ -258,8 +261,9 @@ public class ConfigModel {
             public boolean enable = false;
         }
 
-        public static class Config {
-            public boolean enable = false;
+        public static class Fuji {
+            // the only module to enable by default
+            public boolean enable = true;
         }
 
         public static class Tester {

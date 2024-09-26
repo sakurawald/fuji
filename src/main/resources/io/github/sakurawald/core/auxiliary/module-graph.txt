@@ -54,7 +54,6 @@ command_toolbox.tppos
 command_toolbox.trashcan
 command_toolbox.warp
 command_warmup
-config
 deathlog
 disabler
 disabler.chat_speed_disabler
@@ -68,6 +67,7 @@ echo.send_chat
 echo.send_message
 echo.send_title
 echo.send_toast
+fuji
 functional
 functional.anvil
 functional.cartography
