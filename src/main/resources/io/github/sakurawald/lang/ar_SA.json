@@ -1,7 +1,4 @@
 {
-    "_translator.<insert-your-name>": "you can write a bio here. the name doesn't have to be lowercase.",
-    "_translator.<insert-your-name>.contact.homepage": "yeah write the homepage url",
-    "_translator.<insert-your-name>.contact.email": "yeah write the email",
     "accept": "<green>Accept",
     "add": "<#FFA1F5>أضف",
     "afk.kick": "<red>You have been kicked for being afk.",

@@ -221,5 +221,8 @@
     "deathlog.view.coordinate": "<dark_green>Coordinate: %.2f %.2f %.2f",
     "callback.invalid": "<red>This callback is invalid or outdated.",
     "shell.failed.rtfm": "<red>Refuse to execute shell command: please read the official wiki.",
-    "shell.failed.not_in_allowed_list": "<red>You are not in the allowed player name list."
+    "shell.failed.not_in_allowed_list": "<red>You are not in the allowed player name list.",
+    "about": "<#6528F7>About",
+    "version.format": "<#6528F7>Version %s",
+    "homepage.project": "<#6528F7>Visit project homepage: <click:open_url:'%s'><green>[OPEN]</click></hover>"
 }
