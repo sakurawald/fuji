@@ -1,7 +1,6 @@
 package io.github.sakurawald.core.auxiliary.minecraft;
 
 import com.google.gson.JsonObject;
-import com.mojang.brigadier.context.CommandContext;
 import eu.pb4.placeholders.api.ParserContext;
 import eu.pb4.placeholders.api.PlaceholderContext;
 import eu.pb4.placeholders.api.node.LiteralNode;
@@ -231,15 +230,6 @@ public class LocaleHelper {
         return getText(audience, true, key, args);
     }
 
-    public static String getKeywordValue(@Nullable Object audience, String keyword){
-        return getValue(audience, "keyword." + keyword);
-    }
-
-    public static MutableText getTextWithKeyword(@Nullable Object audience, String key, String keyword) {
-        String replacement = getKeywordValue(audience,keyword);
-        return Text.literal(getValue(audience, key, replacement));
-    }
-
     public static @NotNull Text getTextByValue(@Nullable Object audience, String value, Object... args) {
         return getText(audience, false, value, args);
     }
@@ -265,27 +255,20 @@ public class LocaleHelper {
     public static void sendMessageByKey(@NotNull Object audience, String key, Object... args) {
         Text text = getTextByKey(audience, key, args);
 
-        /* extract the source */
-        if (audience instanceof CommandContext<?> ctx) {
-            audience = ctx.getSource();
-        }
-
-        /* dispatch by type */
         if (audience instanceof PlayerEntity playerEntity) {
             playerEntity.sendMessage(text);
             return;
         }
-
         if (audience instanceof ServerCommandSource serverCommandSource) {
             serverCommandSource.sendMessage(text);
             return;
         }
 
         LogUtil.error("""
-            Can't send message to unknown audience type: {}
+            Can't send message to unknown audience: {}
             Key: {}
             Args: {}
-            """, audience == null ? null : audience.getClass().getName(), key, args);
+            """, audience, key, args);
     }
 
     public static void sendActionBarByKey(@NotNull ServerPlayerEntity player, String key, Object... args) {
@@ -303,11 +286,6 @@ public class LocaleHelper {
     }
 
     public static MutableText replaceText(Text text, String charSeq, Text replacement) {
-        // verify the placeholder of replaceText
-        if (!charSeq.startsWith("[") || !charSeq.endsWith("]")) {
-            throw new IllegalArgumentException("The `charSeq` parameter must starts with '[' and ends with ']'");
-        }
-
         return replaceText0(text, charSeq, replacement, Text.empty());
     }
 
@@ -322,6 +300,7 @@ public class LocaleHelper {
 
     private static MutableText replaceText0(Text text, String marker, Text replacement, MutableText builder) {
         /* process one */
+        // use `contains` to match the key
         splitText(text, marker, replacement).forEach(builder::append);
 
         /* iterate children */

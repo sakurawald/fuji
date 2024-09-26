@@ -7,11 +7,11 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
-import io.github.sakurawald.core.service.gameprofile_fetcher.MojangProfileFetcher;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.skin.config.model.SkinConfigModel;
 import io.github.sakurawald.module.initializer.skin.enums.SkinVariant;
 import io.github.sakurawald.module.initializer.skin.provider.MineSkinSkinProvider;
+import io.github.sakurawald.module.initializer.skin.provider.MojangSkinProvider;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.GameProfileArgumentType;
@@ -44,11 +44,11 @@ public class SkinInitializer extends ModuleInitializer {
                                 .then(argument("skin_name", StringArgumentType.word())
                                         .executes(context ->
                                                 skinAction(context.getSource(),
-                                                        () -> MojangProfileFetcher.fetchOnlineSkin(StringArgumentType.getString(context, "skin_name"))))
+                                                        () -> MojangSkinProvider.getSkin(StringArgumentType.getString(context, "skin_name"))))
                                         .then(argument("targets", GameProfileArgumentType.gameProfile()).requires(source -> source.hasPermissionLevel(4))
                                                 .executes(context ->
                                                         skinAction(context.getSource(), GameProfileArgumentType.getProfileArgument(context, "targets"), true,
-                                                                () -> MojangProfileFetcher.fetchOnlineSkin(StringArgumentType.getString(context, "skin_name")))))))
+                                                                () -> MojangSkinProvider.getSkin(StringArgumentType.getString(context, "skin_name")))))))
                         .then(literal("web")
                                 .then(literal("classic")
                                         .then(argument("url", StringArgumentType.string())

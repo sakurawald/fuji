@@ -15,13 +15,13 @@ public class ServerPlayNetworkHandlerMixin {
     @ModifyVariable(method = "executeCommand", at = @At(value = "HEAD"), ordinal = 0, argsOnly = true)
     public String interceptPacketsOfIssuedCommand(@NotNull String string) {
         for (RegexRewriteEntry entry : CommandRewriteInitializer.config.getModel().regex) {
-            if (entry.getRegex() == null || entry.getReplacement() == null) {
+            if (entry.regex == null || entry.replacement == null) {
                 LogUtil.warn("there is an invalid `null` entry in `command_rewrite.regex`, you should remove it.");
                 continue;
             }
 
-            if (string.matches(entry.getRegex())) {
-                return string.replaceAll(entry.getRegex(), entry.getReplacement());
+            if (string.matches(entry.regex)) {
+                return string.replaceAll(entry.regex, entry.replacement);
             }
         }
 

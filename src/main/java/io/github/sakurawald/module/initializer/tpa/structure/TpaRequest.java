@@ -79,7 +79,7 @@ public class TpaRequest {
     public MutableText asSenderText$Sent() {
         Text cancelText =
             Text.literal(CROSS)
-                .fillStyle(Style.EMPTY
+                .setStyle(Style.EMPTY
                     .withFormatting(Formatting.RED)
                     .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, LocaleHelper.getTextByKey(getSender(), "cancel")))
                     .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpacancel %s".formatted(getReceiver().getGameProfile().getName())))
@@ -98,14 +98,14 @@ public class TpaRequest {
 
     public @NotNull MutableText asReceiverText$Sent() {
         Text acceptText = Text.literal(TICK)
-            .fillStyle(Style.EMPTY
+            .setStyle(Style.EMPTY
                 .withFormatting(Formatting.GREEN)
                 .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, LocaleHelper.getTextByKey(getReceiver(), "accept")))
                 .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpaaccept %s".formatted(sender.getGameProfile().getName()))));
 
         Text denyText =
             Text.literal(CROSS)
-                .fillStyle(Style.EMPTY
+                .setStyle(Style.EMPTY
                     .withFormatting(Formatting.RED)
                     .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, LocaleHelper.getTextByKey(getReceiver(), "deny")))
                     .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpadeny %s".formatted(sender.getGameProfile().getName())))

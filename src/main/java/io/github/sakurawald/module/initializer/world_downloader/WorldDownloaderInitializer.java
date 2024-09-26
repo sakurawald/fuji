@@ -14,6 +14,7 @@ import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.world_downloader.config.model.WorldDownloaderConfigModel;
 import io.github.sakurawald.module.initializer.world_downloader.structure.FileDownloadHandler;
+import lombok.SneakyThrows;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -74,6 +75,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         safelyRemoveContext(httpContext.getPath());
     }
 
+    @SneakyThrows
     @CommandNode("download")
     private static int $download(@CommandSource ServerPlayerEntity player) {
         /* init server */

@@ -1,9 +1,11 @@
 package io.github.sakurawald.core.command.argument.wrapper.abst;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @SuppressWarnings("unused")
-@Data
+@Getter
+@AllArgsConstructor
 public class SingularValue<T> {
-    final T value;
+    T value;
 }

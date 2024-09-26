@@ -1,4 +1,4 @@
-package io.github.sakurawald.core.service.random_teleport.structure;
+package io.github.sakurawald.core.service.random_teleport;
 
 import net.minecraft.world.chunk.Chunk;
 

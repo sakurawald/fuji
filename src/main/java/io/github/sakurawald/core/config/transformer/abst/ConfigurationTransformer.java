@@ -6,7 +6,6 @@ import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -16,11 +15,12 @@ public abstract class ConfigurationTransformer {
     @Getter
     private Path path;
 
+    @SneakyThrows
     public void configure(Path path) {
         this.path = path;
     }
 
-    @SneakyThrows(IOException.class)
+    @SneakyThrows
     public DocumentContext makeDocumentContext() {
         return BaseConfigurationHandler.getJsonPathParser().parse(this.path.toFile());
     }
@@ -48,7 +48,7 @@ public abstract class ConfigurationTransformer {
         LogUtil.warn("apply the transformer associated with the file `{}`\n => " + message, fullArgs);
     }
 
-    @SneakyThrows(IOException.class)
+    @SneakyThrows
     public void writeStorage(DocumentContext context) {
         this.logConsole("write storage");
         String json = BaseConfigurationHandler.getGson().toJson(context.json());

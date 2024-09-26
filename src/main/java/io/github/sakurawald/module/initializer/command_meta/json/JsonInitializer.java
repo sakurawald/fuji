@@ -24,7 +24,7 @@ import java.util.function.BiFunction;
 @CommandRequirement(level = 4)
 public class JsonInitializer extends ModuleInitializer {
 
-    @SneakyThrows(IOException.class)
+    @SneakyThrows
     private static void operateJson(String filePath, BiFunction<DocumentContext, Path, Boolean> function) {
         Path path = Path.of(filePath);
         DocumentContext documentContext = BaseConfigurationHandler.getJsonPathParser().parse(path.toFile());

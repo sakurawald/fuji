@@ -1,7 +1,6 @@
 package io.github.sakurawald.module.initializer.world;
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import io.github.sakurawald.core.accessor.SimpleRegistryAccessor;
 import io.github.sakurawald.core.auxiliary.LogUtil;
@@ -135,7 +134,7 @@ public class WorldManager {
      * we must create new instance.
      *
      */
-    @SneakyThrows(CommandSyntaxException.class)
+    @SneakyThrows
     private static @NotNull DimensionOptions makeDimensionOptions(@NotNull Registry<DimensionOptions> registry, Identifier dimensionTypeIdentifier) {
         DimensionOptions template = registry.get(dimensionTypeIdentifier);
         if (template == null) {

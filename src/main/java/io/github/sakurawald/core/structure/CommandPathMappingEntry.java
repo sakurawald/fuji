@@ -1,12 +1,13 @@
 package io.github.sakurawald.core.structure;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
 
-@SuppressWarnings("unused")
 @Data
+@AllArgsConstructor
 public class CommandPathMappingEntry {
-    final List<String> from;
-    final List<String> to;
+    public List<String> from;
+    public List<String> to;
 }

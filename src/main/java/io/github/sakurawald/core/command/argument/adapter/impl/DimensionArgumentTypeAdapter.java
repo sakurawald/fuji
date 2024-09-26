@@ -3,7 +3,6 @@ package io.github.sakurawald.core.command.argument.adapter.impl;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
@@ -35,7 +34,7 @@ public class DimensionArgumentTypeAdapter extends BaseArgumentTypeAdapter {
         return super.makeRequiredArgumentBuilder(parameter).suggests(CommandHelper.Suggestion.identifiers(RegistryKeys.DIMENSION));
     }
 
-    @SneakyThrows(CommandSyntaxException.class)
+    @SneakyThrows
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Parameter parameter) {
         return new Dimension(DimensionArgumentType.getDimensionArgument(context, parameter.getName()));

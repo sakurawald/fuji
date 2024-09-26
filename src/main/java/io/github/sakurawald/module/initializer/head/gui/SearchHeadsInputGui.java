@@ -15,7 +15,7 @@ public class SearchHeadsInputGui extends InputSignGui {
     private final @NotNull HeadGui parentGui;
 
     public SearchHeadsInputGui(@NotNull HeadGui parentGui) {
-        super(parentGui.player, null);
+        super(parentGui.player);
         this.parentGui = parentGui;
     }
 

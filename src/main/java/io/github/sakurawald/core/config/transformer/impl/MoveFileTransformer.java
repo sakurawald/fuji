@@ -4,7 +4,6 @@ import io.github.sakurawald.core.config.transformer.abst.ConfigurationTransforme
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -14,7 +13,7 @@ public class MoveFileTransformer extends ConfigurationTransformer {
     Path sourceFile;
     Path destinationDirectory;
 
-    @SneakyThrows(IOException.class)
+    @SneakyThrows
     @Override
     public void apply() {
         destinationDirectory = destinationDirectory.resolve(this.getPath().toFile().getName());

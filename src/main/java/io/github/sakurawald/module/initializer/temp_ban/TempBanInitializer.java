@@ -12,6 +12,7 @@ import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GameProfileCollection;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import lombok.SneakyThrows;
 import net.minecraft.command.EntitySelector;
 import net.minecraft.server.BannedIpEntry;
 import net.minecraft.server.BannedPlayerEntry;
@@ -57,6 +58,7 @@ public class TempBanInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
+    @SneakyThrows
     @CommandNode("player")
     private static int player(@CommandSource CommandContext<ServerCommandSource> ctx, GameProfileCollection collection, String expiry, GreedyString reason) {
         MinecraftServer server = ctx.getSource().getServer();

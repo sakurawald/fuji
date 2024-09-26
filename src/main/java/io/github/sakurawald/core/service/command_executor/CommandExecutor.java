@@ -7,7 +7,6 @@ import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
-import lombok.experimental.UtilityClass;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.CommandManager;
@@ -19,7 +18,6 @@ import java.util.List;
 import java.util.function.Function;
 
 
-@UtilityClass
 public class CommandExecutor {
 
     public static void executeSpecializedCommand(@Nullable PlayerEntity contextPlayer, @NotNull List<String> commands) {

@@ -17,12 +17,12 @@ import org.jetbrains.annotations.NotNull;
 @Data
 @With
 public class SpatialPose {
-    final String level;
-    final double x;
-    final double y;
-    final double z;
-    final float yaw;
-    final float pitch;
+    private String level;
+    private double x;
+    private double y;
+    private double z;
+    private float yaw;
+    private float pitch;
 
     public SpatialPose(String level, double x, double y, double z, float yaw, float pitch) {
         this.level = level;

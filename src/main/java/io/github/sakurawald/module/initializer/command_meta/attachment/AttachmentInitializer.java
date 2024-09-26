@@ -15,14 +15,12 @@ import lombok.SneakyThrows;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
-import java.io.IOException;
-
 @CommandNode("attachment")
 @CommandRequirement(level = 4)
 public class AttachmentInitializer extends ModuleInitializer {
 
     @CommandNode("set")
-    @SneakyThrows(IOException.class)
+    @SneakyThrows
     private static int set(@CommandSource CommandContext<ServerCommandSource> ctx, SubjectName subject, SubjectId uuid, GreedyString data) {
         Managers.getAttachmentManager().setAttachment(subject.getValue(), uuid.getValue(), data.getValue());
 
@@ -38,7 +36,7 @@ public class AttachmentInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @SneakyThrows(IOException.class)
+    @SneakyThrows
     @CommandNode("get")
     private static int get(@CommandSource CommandContext<ServerCommandSource> ctx, SubjectName subject, SubjectId uuid) {
         String attachment = Managers.getAttachmentManager().getAttachment(subject.getValue(), uuid.getValue());

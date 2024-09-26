@@ -105,6 +105,7 @@ public abstract class PagedGui<T> extends LayeredGui {
 
     public abstract List<T> filter(String keyword);
 
+
     private void drawTitle() {
         MutableText formatted = this.prefixTitle.copy().append(LocaleHelper.getTextByKey(getPlayer(), "gui.page.title", this.getCurrentPageNumber(), this.getMaxPageNumber()));
         this.setTitle(formatted);

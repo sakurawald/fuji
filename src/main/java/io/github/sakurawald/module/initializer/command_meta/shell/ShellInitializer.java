@@ -13,7 +13,6 @@ import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_meta.shell.config.ShellConfigModel;
-import lombok.Cleanup;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
@@ -31,8 +30,7 @@ public class ShellInitializer extends ModuleInitializer {
         var config = ShellInitializer.config.getModel();
 
         if (!config.enable_warning.equals("CONFIRM")) {
-            LocaleHelper.sendMessageByKey(ctx.getSource(), "shell.failed.rtfm");
-            throw new AbortOperationException();
+            throw new AbortOperationException("Refuse to execute shell command: please read the official wiki.");
         }
 
         if (config.security.only_allow_console && ctx.getSource().getPlayer() != null) {
@@ -41,8 +39,7 @@ public class ShellInitializer extends ModuleInitializer {
         }
 
         if (ctx.getSource().getName() != null && !config.security.allowed_player_names.contains(ctx.getSource().getName())) {
-            LocaleHelper.sendMessageByKey(ctx.getSource(), "shell.failed.not_in_allowed_list");
-            throw new AbortOperationException();
+            throw new AbortOperationException("You are not in the allowed player name list.");
         }
 
     }
@@ -60,12 +57,13 @@ public class ShellInitializer extends ModuleInitializer {
 
                 Process process = Runtime.getRuntime().exec($rest, null, null);
                 InputStream inputStream = process.getInputStream();
-                @Cleanup BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                 StringBuilder output = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
                     output.append(line).append("\n");
                 }
+                reader.close();
                 process.waitFor();
 
                 // output

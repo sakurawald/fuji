@@ -2,7 +2,6 @@ package io.github.sakurawald.core.command.argument.adapter.impl;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GameProfileCollection;
 import lombok.SneakyThrows;
@@ -24,7 +23,7 @@ public class GameProfileArgumentTypeAdapter extends BaseArgumentTypeAdapter {
         return GameProfileArgumentType.gameProfile();
     }
 
-    @SneakyThrows(CommandSyntaxException.class)
+    @SneakyThrows
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Parameter parameter) {
         return new GameProfileCollection(GameProfileArgumentType.getProfileArgument(context,parameter.getName()));

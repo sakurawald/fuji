@@ -8,9 +8,9 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class DimensionEntry {
-    boolean enable;
-    String dimension;
+    public boolean enable;
+    public String dimension;
     @SerializedName(value = "dimension_type", alternate = "dimensionType")
-    String dimension_type;
-    long seed;
+    public String dimension_type;
+    public long seed;
 }

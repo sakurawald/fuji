@@ -3,7 +3,6 @@ package structure.dependency_checker;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,7 +37,7 @@ public abstract class BaseDependencyChecker {
 
     public abstract Dependency makeDependency(Path file);
 
-    @SneakyThrows(IOException.class)
+    @SneakyThrows
     public List<Dependency> makeDependencies(Path dir) {
         /* make */
         List<Dependency> dependencies = new ArrayList<>();

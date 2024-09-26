@@ -5,11 +5,8 @@ import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
-import io.github.sakurawald.core.service.random_teleport.structure.HeightFinder;
-import io.github.sakurawald.core.service.random_teleport.structure.HeightFindingStrategy;
 import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.core.structure.TeleportSetup;
-import lombok.experimental.UtilityClass;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -31,8 +28,7 @@ import java.util.function.Consumer;
 /**
  * We reference the rtp code from <a href="https://github.com/John-Paul-R/Essential-Commands">...</a> at the early stage of this project.
  */
-@UtilityClass
-public class RandomTeleporter {
+public class RandomTeleport {
 
     public static void request(@NotNull ServerPlayerEntity player, @NotNull TeleportSetup setup, @Nullable Consumer<SpatialPose> postConsumer) {
         CompletableFuture.runAsync(() -> {

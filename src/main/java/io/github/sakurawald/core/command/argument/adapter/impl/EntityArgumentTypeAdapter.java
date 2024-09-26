@@ -2,7 +2,6 @@ package io.github.sakurawald.core.command.argument.adapter.impl;
 
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import lombok.SneakyThrows;
 import net.minecraft.command.argument.EntityArgumentType;
@@ -23,7 +22,7 @@ public class EntityArgumentTypeAdapter extends BaseArgumentTypeAdapter {
         return EntityArgumentType.entity();
     }
 
-    @SneakyThrows(CommandSyntaxException.class)
+    @SneakyThrows
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Parameter parameter) {
         return EntityArgumentType.getEntity(context,parameter.getName());

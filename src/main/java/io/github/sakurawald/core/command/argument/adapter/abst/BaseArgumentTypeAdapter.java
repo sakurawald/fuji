@@ -5,6 +5,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.manager.Managers;
+import lombok.SneakyThrows;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 
@@ -21,6 +22,7 @@ public abstract class BaseArgumentTypeAdapter {
     private static final List<BaseArgumentTypeAdapter> adapters = new ArrayList<>();
 
     @SuppressWarnings("unchecked")
+    @SneakyThrows
     public static void registerAdapters() {
         ReflectionUtil.getGraph(ReflectionUtil.ARGUMENT_TYPE_ADAPTER_GRAPH_FILE_NAME)
             .stream()

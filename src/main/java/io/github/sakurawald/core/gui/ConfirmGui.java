@@ -4,15 +4,13 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public abstract class ConfirmGui extends InputSignGui {
-
     public ConfirmGui(ServerPlayerEntity player) {
-        super(player, LocaleHelper.getTextWithKeyword(player, "prompt.input.confirm", "confirm"));
+        super(player, "prompt.input.confirm");
     }
 
     @Override
     public void onClose() {
-        String string = LocaleHelper.getKeywordValue(getPlayer(), "confirm");
-        if (!this.getLine(0).getString().equals(string)) {
+        if (!this.getLine(0).getString().equals("confirm")) {
             LocaleHelper.sendActionBarByKey(player, "operation.cancelled");
             return;
         }

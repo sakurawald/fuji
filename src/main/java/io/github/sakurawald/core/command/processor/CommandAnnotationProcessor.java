@@ -103,7 +103,7 @@ public class CommandAnnotationProcessor {
 
         /* first pass -> make non-optional arguments (literal + required) */
         List<ArgumentBuilder<ServerCommandSource, ?>> builders = makeArgumentBuilders(pattern, method);
-        com.mojang.brigadier.Command<ServerCommandSource> function = makeCommandFunctionClosure(instance, method);
+        com.mojang.brigadier.Command<ServerCommandSource> function = makeCommandFunction(instance, method);
 
         /* set requirement (class) */
         if (clazz.isAnnotationPresent(CommandRequirement.class)) {
@@ -190,7 +190,7 @@ public class CommandAnnotationProcessor {
         return BaseArgumentTypeAdapter.getAdapter(expectedCommandSourceParameter).verifyCommandSource(ctx);
     }
 
-    private static com.mojang.brigadier.Command<ServerCommandSource> makeCommandFunctionClosure(Object instance, Method method) {
+    private static com.mojang.brigadier.Command<ServerCommandSource> makeCommandFunction(Object instance, Method method) {
         return (ctx) -> {
             // verify command source
             if (!verifyCommandSource(ctx, method)) {
@@ -198,15 +198,20 @@ public class CommandAnnotationProcessor {
             }
 
             List<Object> args = makeCommandFunctionArgs(ctx, method);
-            Object value;
+            Object invoke;
             try {
-                value = method.invoke(instance, args.toArray());
+                invoke = method.invoke(instance, args.toArray());
             } catch (IllegalAccessException | InvocationTargetException e) {
-                // get the real exception during reflection.
+                // don't swallow the exception.
                 Throwable theRealException = e.getCause();
 
-                if (theRealException instanceof AbortOperationException) {
-                    // the logging is done before throwing the AbortOperationException, here we just swallow this exception.
+                if (theRealException instanceof AbortOperationException snakeException) {
+                    // report it
+                    if (snakeException.getMessage() != null) {
+                        reportException(ctx.getSource(), instance, method, theRealException);
+                    }
+
+                    // swallow it
                     return CommandHelper.Return.FAIL;
                 }
 
@@ -214,7 +219,7 @@ public class CommandAnnotationProcessor {
                 return CommandHelper.Return.FAIL;
             }
 
-            return (int) value;
+            return (int) invoke;
         };
     }
 
