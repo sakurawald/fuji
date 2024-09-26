@@ -219,6 +219,7 @@ tasks.register('copyTranslationFiles', Copy) {
     from(translationDir)
     into("${langDir}")
     include "**/*.json"
+    exclude "**/en_US.json"
 
 }
 tasks.processResources.dependsOn(copyTranslationFiles)
