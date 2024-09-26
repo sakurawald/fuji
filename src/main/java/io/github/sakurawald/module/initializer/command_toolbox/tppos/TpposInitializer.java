@@ -8,7 +8,7 @@ import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
 import io.github.sakurawald.core.command.argument.wrapper.impl.OfflinePlayerName;
-import io.github.sakurawald.core.service.random_teleport.RandomTeleport;
+import io.github.sakurawald.core.service.random_teleport.RandomTeleporter;
 import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.core.structure.TeleportSetup;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -63,7 +63,7 @@ public class TpposInitializer extends ModuleInitializer {
         TeleportSetup teleportSetup = new TeleportSetup(RegistryHelper.ofString(world), $centerX, $centerZ, $circle, $minRange, $maxRange, $minY
             , $maxY, $maxTryTimes);
 
-        RandomTeleport.request(player, teleportSetup, null);
+        RandomTeleporter.request(player, teleportSetup, null);
 
         return CommandHelper.Return.SUCCESS;
     }

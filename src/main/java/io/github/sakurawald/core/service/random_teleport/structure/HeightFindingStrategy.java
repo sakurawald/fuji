@@ -1,4 +1,4 @@
-package io.github.sakurawald.core.service.random_teleport;
+package io.github.sakurawald.core.service.random_teleport.structure;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.registry.RegistryKey;
