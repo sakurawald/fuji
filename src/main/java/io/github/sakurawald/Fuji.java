@@ -1,11 +1,18 @@
 package io.github.sakurawald;
 
+import io.github.sakurawald.core.annotation.Cite;
 import io.github.sakurawald.core.manager.Managers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Path;
 
+@Cite({
+    "https://github.com/EssentialsX/Essentials/"
+    , "https://github.com/NucleusPowered/Nucleus"
+    , "https://github.com/Zrips/CMI-API"
+    , "https://github.com/ForgeEssentials/ForgeEssentials"
+})
 public class Fuji implements ModInitializer {
 
     public static final String MOD_ID = "fuji";

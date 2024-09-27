@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.sit;
 
+import io.github.sakurawald.core.annotation.Cite;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -29,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
+@Cite("https://github.com/BradBot1/FabricSit")
 public class SitInitializer extends ModuleInitializer {
 
     public static final Vec3d CHAIR_ENTITY_OFFSET = new Vec3d(0, -1.375, 0);

@@ -3,6 +3,7 @@ package io.github.sakurawald.module.initializer.skin;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import io.github.sakurawald.core.annotation.Cite;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
@@ -36,7 +37,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-// Special thanks to: https://github.com/Suiranoil/SkinRestorer
+@Cite("https://github.com/Suiranoil/SkinRestorer")
 public class SkinRestorer {
 
     @Getter

@@ -2,6 +2,7 @@ package io.github.sakurawald.module.mixin.chat;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import io.github.sakurawald.core.accessor.SimpleRegistryAccessor;
+import io.github.sakurawald.core.annotation.Cite;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.registry.DynamicRegistryManager;
@@ -25,15 +26,7 @@ import java.util.List;
 @Mixin(value = RegistryLoader.class)
 public class RegistryLoaderMixin {
 
-    /**
-     * This amazing mixin is written by Patbox.
-     * And the source is inside: <a href="https://github.dev/Patbox/StyledChat/blob/1.21/src/main/java/eu/pb4/styledchat/mixin/MessageArgumentTypeMixin.java">
-     * Thanks to his great work.
-     * <p>
-     * I modified the code to override the vanilla MessageType.CHAT format.
-     *
-     * @see net.minecraft.registry.SimpleRegistry#add(net.minecraft.registry.RegistryKey, java.lang.Object, net.minecraft.registry.entry.RegistryEntryInfo)
-     */
+    @Cite("https://github.com/Patbox/StyledChat")
     @Inject(method = "load(Lnet/minecraft/registry/RegistryLoader$RegistryLoadable;Lnet/minecraft/registry/DynamicRegistryManager;Ljava/util/List;)Lnet/minecraft/registry/DynamicRegistryManager$Immutable;"
         , at = @At(value = "INVOKE", target = "Ljava/util/List;forEach(Ljava/util/function/Consumer;)V", ordinal = 0, shift = At.Shift.AFTER))
     private static void modifyTheVanillaChatFormat(@Coerce Object registryLoadable, DynamicRegistryManager dynamicRegistryManager, List<RegistryLoader.Entry<?>> entries, CallbackInfoReturnable<DynamicRegistryManager.Immutable> cir,
