@@ -2,8 +2,11 @@ package tests;
 
 import auxiliary.TestUtility;
 import com.google.gson.JsonObject;
+import io.github.classgraph.AnnotationInfo;
+import io.github.classgraph.AnnotationParameterValueList;
 import io.github.classgraph.ScanResult;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.annotation.Cite;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
@@ -16,6 +19,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -47,6 +51,18 @@ public class GenerateGraphTest {
             try (PrintWriter writer = new PrintWriter(path.resolve(ReflectionUtil.ARGUMENT_TYPE_ADAPTER_GRAPH_FILE_NAME).toFile())) {
                 scanResult.getSubclasses(BaseArgumentTypeAdapter.class).getNames().stream().sorted().forEach(writer::println);
             }
+
+            try (PrintWriter writer = new PrintWriter(Path.of("CITE").toFile())) {
+                List<String> ret = new ArrayList<>();
+                scanResult.getClassesWithAnnotation(Cite.class).forEach(clazz -> {
+                    AnnotationInfo annotationInfo = clazz.getAnnotationInfo(Cite.class);
+                    AnnotationParameterValueList parameterValues = annotationInfo.getParameterValues();
+                    String[] value = (String[]) parameterValues.get("value").getValue();
+                    ret.addAll(Arrays.asList(value));
+                });
+                ret.sort(String::compareTo);
+                ret.forEach(writer::println);
+            }
         }
     }
 
@@ -62,9 +78,7 @@ public class GenerateGraphTest {
         // go down
         parent.keySet().stream()
             .filter(key -> parent.get(key).isJsonObject())
-            .forEach(key -> {
-                searchModule(parent.getAsJsonObject(key), StringUtils.strip(level + "." + key, "."), out);
-            });
+            .forEach(key -> searchModule(parent.getAsJsonObject(key), StringUtils.strip(level + "." + key, "."), out));
 
         // go up
         if (parent.has(ModuleManager.ENABLE_SUPPLIER_KEY)) {

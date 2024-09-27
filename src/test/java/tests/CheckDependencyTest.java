@@ -108,4 +108,5 @@ public class CheckDependencyTest {
             throw new RuntimeException("this package uses wildcard import.");
         });
     }
+
 }
