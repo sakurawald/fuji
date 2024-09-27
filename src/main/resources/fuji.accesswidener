@@ -55,3 +55,6 @@ accessible method net/minecraft/entity/decoration/DisplayEntity setBrightness (L
 
 # command attachment module
 accessible class net/minecraft/server/network/ServerPlayNetworkHandler$Interaction
+
+# head module
+accessible field net/minecraft/entity/player/PlayerInventory combinedInventory Ljava/util/List;
