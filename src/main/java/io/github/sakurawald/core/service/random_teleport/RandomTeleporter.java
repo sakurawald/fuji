@@ -1,6 +1,7 @@
 package io.github.sakurawald.core.service.random_teleport;
 
 import com.google.common.base.Stopwatch;
+import io.github.sakurawald.core.annotation.Cite;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
@@ -28,9 +29,7 @@ import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-/**
- * We reference the rtp code from <a href="https://github.com/John-Paul-R/Essential-Commands">...</a> at the early stage of this project.
- */
+@Cite("https://github.com/John-Paul-R/Essential-Commands")
 @UtilityClass
 public class RandomTeleporter {
 

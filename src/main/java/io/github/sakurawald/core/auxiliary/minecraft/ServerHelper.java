@@ -8,7 +8,6 @@ import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.UserCache;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
