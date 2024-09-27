@@ -7,5 +7,3 @@ preserve_hierarchy: true
 files:
   - source: src/main/resources/io/github/sakurawald/lang/en_US.json
     translation: crowdin/%locale_with_underscore%.json
-
-
