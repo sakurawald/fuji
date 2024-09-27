@@ -25,7 +25,7 @@ public class ServerWorldMixin {
     List<ServerPlayerEntity> players;
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void $init(CallbackInfo ci) {
+    private void patchCopyOnWriteArrayListForPlayersInServerWorld(CallbackInfo ci) {
         ServerWorld thiz = (ServerWorld) (Object) this;
         players = new CopyOnWriteArrayList<>() {
             {
