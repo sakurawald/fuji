@@ -16,7 +16,7 @@ public class SendBroadcastInitializer extends ModuleInitializer {
     private static int sendBroadcast(GreedyString rest){
         String message = rest.getValue();
 
-        for (ServerPlayerEntity player : ServerHelper.getThreadUnsafePlayerList()) {
+        for (ServerPlayerEntity player : ServerHelper.getPlayers()) {
             player.sendMessage(LocaleHelper.getTextByValue(player, message));
         }
         return CommandHelper.Return.SUCCESS;

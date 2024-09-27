@@ -32,7 +32,7 @@ public class TabListInitializer extends ModuleInitializer {
 
     private void updateDisplayName() {
         MinecraftServer server = ServerHelper.getDefaultServer();
-        for (ServerPlayerEntity player : ServerHelper.copyPlayerList()) {
+        for (ServerPlayerEntity player : ServerHelper.getPlayers()) {
             server.getPlayerManager().sendToAll(new PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME, player));
         }
     }
@@ -40,7 +40,7 @@ public class TabListInitializer extends ModuleInitializer {
     public static void render() {
         String headerControl = RandomUtil.drawList(config.getModel().style.header);
         String footerControl = RandomUtil.drawList(config.getModel().style.footer);
-        for (ServerPlayerEntity player : ServerHelper.copyPlayerList()) {
+        for (ServerPlayerEntity player : ServerHelper.getPlayers()) {
             @NotNull Text header = LocaleHelper.getTextByValue(player, headerControl);
             @NotNull Text footer = LocaleHelper.getTextByValue(player, footerControl);
             player.networkHandler.sendPacket(new PlayerListHeaderS2CPacket(header, footer));

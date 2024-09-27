@@ -69,7 +69,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     }
 
     public static void testSteppingBlockForPlayers() {
-        ServerHelper.copyPlayerList().forEach(CommandAttachmentInitializer::testSteppingBlockForPlayer);
+        ServerHelper.getPlayers().forEach(CommandAttachmentInitializer::testSteppingBlockForPlayer);
     }
 
     @Override
