@@ -26,7 +26,7 @@ public class ConfigModel {
             public int max_slots = 15;
             public List<String> skip = new ArrayList<>() {
                 {
-                    this.add("head");
+                    this.add("head-data");
                 }
             };
         }
