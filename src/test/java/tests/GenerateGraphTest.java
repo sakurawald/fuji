@@ -53,15 +53,15 @@ public class GenerateGraphTest {
             }
 
             try (PrintWriter writer = new PrintWriter(Path.of("CITE").toFile())) {
-                List<String> ret = new ArrayList<>();
+                List<String> cites = new ArrayList<>();
                 scanResult.getClassesWithAnnotation(Cite.class).forEach(clazz -> {
                     AnnotationInfo annotationInfo = clazz.getAnnotationInfo(Cite.class);
                     AnnotationParameterValueList parameterValues = annotationInfo.getParameterValues();
                     String[] value = (String[]) parameterValues.get("value").getValue();
-                    ret.addAll(Arrays.asList(value));
+                    cites.addAll(Arrays.asList(value));
                 });
-                ret.sort(String::compareTo);
-                ret.forEach(writer::println);
+                cites.sort(String::compareTo);
+                cites.forEach(writer::println);
             }
         }
     }
