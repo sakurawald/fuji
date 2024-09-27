@@ -41,6 +41,8 @@
         "core.command.CommandContextBuilderMixin",
         "core.command.CommandDispatcherMixin",
         "core.server.MinecraftServerMixin",
+        "core.server.PlayerManagerMixin",
+        "core.server.ServerWorldMixin",
         "deathlog.ServerPlayerMixin",
         "disabler.chat_speed_disabler.ServerGamePacketListenerImplMixin",
         "disabler.max_player_disabler.DedicatedPlayerManagerMixin",

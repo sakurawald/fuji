@@ -32,12 +32,8 @@ public class ServerHelper {
         return getDefaultServer().getPlayerManager();
     }
 
-    public static List<ServerPlayerEntity> getThreadUnsafePlayerList() {
+    public static List<ServerPlayerEntity> getPlayers() {
         return getDefaultServer().getPlayerManager().getPlayerList();
-    }
-
-    public static List<ServerPlayerEntity> copyPlayerList() {
-        return new ArrayList<>(getThreadUnsafePlayerList());
     }
 
     public static boolean isPlayerOnline(String name) {

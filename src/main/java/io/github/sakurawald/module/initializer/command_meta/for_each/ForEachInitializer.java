@@ -16,7 +16,7 @@ public class ForEachInitializer extends ModuleInitializer {
     private static int foreach(GreedyString rest) {
         String $rest = rest.getValue();
 
-        for (ServerPlayerEntity player : ServerHelper.getThreadUnsafePlayerList()) {
+        for (ServerPlayerEntity player : ServerHelper.getPlayers()) {
             CommandExecutor.executeCommandAsConsole(player, $rest);
         }
         return CommandHelper.Return.SUCCESS;

@@ -127,7 +127,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
 
     private void registerRandomPlayerPlaceholder() {
         Placeholders.register(Identifier.of(Fuji.MOD_ID, "random_player"), (ctx, args) -> {
-            List<ServerPlayerEntity> playerList = ServerHelper.copyPlayerList();
+            List<ServerPlayerEntity> playerList = ServerHelper.getPlayers();
             ServerPlayerEntity serverPlayerEntity = RandomUtil.drawList(playerList);
             return PlaceholderResult.value(Text.literal(serverPlayerEntity.getGameProfile().getName()));
         });

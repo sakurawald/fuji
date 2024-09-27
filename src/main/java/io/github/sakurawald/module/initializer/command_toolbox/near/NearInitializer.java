@@ -26,7 +26,7 @@ public class NearInitializer extends ModuleInitializer {
         int $distance = distance.orElse(128);
 
         int sd = $distance * $distance;
-        List<String> result = ServerHelper.getThreadUnsafePlayerList().stream().filter(p -> p != player && distance(player, p) <= sd).map(p -> p.getGameProfile().getName()).toList();
+        List<String> result = ServerHelper.getPlayers().stream().filter(p -> p != player && distance(player, p) <= sd).map(p -> p.getGameProfile().getName()).toList();
 
         LocaleHelper.sendMessageByKey(player, "near.format", result);
         return CommandHelper.Return.SUCCESS;
