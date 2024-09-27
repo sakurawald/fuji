@@ -25,7 +25,7 @@ https://github.com/sakurawald/fuji/raw/dev/docs/release/fuji.pdf)
 
 Help us translate this project, see: [crowdin-project](https://crowdin.com/project/fuji-fabric)
 
-## CITE
+## Cite
 
 This software cites the following open source
 projects: [cite](https://github.com/sakurawald/fuji/blob/dev/CITE)
