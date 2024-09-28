@@ -2,6 +2,7 @@ package io.github.sakurawald.module.initializer.world;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.annotation.Cite;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
@@ -45,6 +46,7 @@ import java.util.Optional;
  * public static final RegistryKey<Registry<DimensionOptions>> DIMENSION = RegistryKeys.of("dimension");
  */
 
+@Cite("https://github.com/NucleoidMC/fantasy")
 @Getter
 @CommandRequirement(level = 4)
 public class WorldInitializer extends ModuleInitializer {
@@ -68,6 +70,8 @@ public class WorldInitializer extends ModuleInitializer {
                 Identifier dimension = Identifier.of(dimensionEntry.getDimension());
                 long seed = dimensionEntry.getSeed();
                 WorldManager.requestToCreateWorld(server, dimension, dimensionType, seed);
+
+                LogUtil.info("load world {} done.", dimensionEntry);
             } catch (Exception e) {
                 LogUtil.error("failed to load dimension `{}`", dimensionEntry, e);
             }
@@ -86,7 +90,7 @@ public class WorldInitializer extends ModuleInitializer {
 
     @CommandNode("world create")
     private static int $create(@CommandSource CommandContext<ServerCommandSource> ctx, String name,
-                        Optional<Long> seed, DimensionType dimensionType) {
+                               Optional<Long> seed, DimensionType dimensionType) {
         Identifier dimensionTypeIdentifier = Identifier.of(dimensionType.getValue());
         String FUJI_DIMENSION_NAMESPACE = "fuji";
         Identifier dimensionIdentifier = Identifier.of(FUJI_DIMENSION_NAMESPACE, name);
