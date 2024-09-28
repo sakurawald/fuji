@@ -208,13 +208,13 @@ tasks.register('copyTranslationFiles', Copy) {
 
     def langDir = file("$projectDir/src/main/resources/io/github/sakurawald/lang")
     def translationDir = file("$projectDir/crowdin")
-    def sourceLanguageFile = "en_US.json";
+    def sourceLanguageFile = "en_US.json"
 
     // clean
     doFirst {
         copy {
-            from("${translationDir}/${sourceLanguageFile}")
-            into("${langDir}")
+            from("${langDir}/${sourceLanguageFile}")
+            into("${translationDir}")
         }
         recreateDir(langDir)
     }
