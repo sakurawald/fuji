@@ -27,7 +27,7 @@ import io.github.sakurawald.module.initializer.command_attachment.structure.Comm
 import io.github.sakurawald.module.initializer.command_attachment.structure.EntityCommandAttachmentEntry;
 import io.github.sakurawald.module.initializer.command_attachment.structure.ItemStackCommandAttachmentEntry;
 import lombok.SneakyThrows;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import io.github.sakurawald.core.event.impl.ServerLifecycleEvents;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;

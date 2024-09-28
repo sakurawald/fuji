@@ -8,7 +8,7 @@ import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.nametag.config.model.NametagConfigModel;
 import io.github.sakurawald.module.initializer.nametag.job.UpdateNametagJob;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import io.github.sakurawald.core.event.impl.ServerLifecycleEvents;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.decoration.Brightness;

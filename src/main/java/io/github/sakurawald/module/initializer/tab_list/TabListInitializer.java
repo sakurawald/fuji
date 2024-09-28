@@ -8,7 +8,7 @@ import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.tab_list.config.model.TabListConfigModel;
 import io.github.sakurawald.module.initializer.tab_list.job.RenderHeaderAndFooterJob;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import io.github.sakurawald.core.event.impl.ServerLifecycleEvents;
 import net.minecraft.network.packet.s2c.play.PlayerListHeaderS2CPacket;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.server.MinecraftServer;

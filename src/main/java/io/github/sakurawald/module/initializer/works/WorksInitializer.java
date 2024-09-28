@@ -14,7 +14,7 @@ import io.github.sakurawald.module.initializer.works.config.model.WorksDataModel
 import io.github.sakurawald.module.initializer.works.gui.WorksGui;
 import io.github.sakurawald.module.initializer.works.job.WorksScheduleJob;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import io.github.sakurawald.core.event.impl.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.quartz.JobDataMap;

@@ -10,7 +10,7 @@ import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.placeholder.job.UpdateSumUpPlaceholderJob;
 import io.github.sakurawald.module.initializer.placeholder.structure.SumUpPlaceholder;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import io.github.sakurawald.core.event.impl.ServerLifecycleEvents;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
