@@ -212,6 +212,7 @@ tasks.register('copyTranslationFiles', Copy) {
 
     // clean
     doFirst {
+        delete("${translationDir}/${sourceLanguageFile}")
         copy {
             from("${langDir}/${sourceLanguageFile}")
             into("${translationDir}")
