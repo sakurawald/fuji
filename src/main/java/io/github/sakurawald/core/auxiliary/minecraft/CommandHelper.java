@@ -33,7 +33,7 @@ public class CommandHelper {
 
     public static List<CommandNode<ServerCommandSource>> getCommandNodes() {
         List<CommandNode<ServerCommandSource>> ret = new ArrayList<>();
-        RootCommandNode<ServerCommandSource> root = ServerHelper.getDefaultServer().getCommandManager().getDispatcher().getRoot();
+        RootCommandNode<ServerCommandSource> root = ServerHelper.getCommandDispatcher().getRoot();
         getCommandNodes(ret,root);
         return ret;
     }

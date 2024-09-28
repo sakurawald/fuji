@@ -22,7 +22,7 @@ public class CommandAliasInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register((server -> {
-            CommandDispatcher<ServerCommandSource> dispatcher = ServerHelper.getDefaultServer().getCommandManager().getDispatcher();
+            CommandDispatcher<ServerCommandSource> dispatcher = ServerHelper.getCommandDispatcher();
             for (CommandPathMappingEntry entry : config.getModel().alias) {
                 registerCommandAliasEntry(dispatcher, entry);
             }
