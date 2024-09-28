@@ -37,8 +37,6 @@ public class CommandNodeMixin {
         CommandDispatcher<ServerCommandSource> dispatcher = ServerHelper.getDefaultServer().getCommandManager().getDispatcher();
         if (dispatcher != null && !(original instanceof WrappedPredicate<?>)) {
             String path = CommandHelper.computeCommandNodePath(node);
-            LogUtil.debug("wrap the predicate of command {}", path);
-
             requirement = CommandPermissionInitializer.makeWrappedPredicate(path, (Predicate<ServerCommandSource>) original);
             return requirement;
         }
