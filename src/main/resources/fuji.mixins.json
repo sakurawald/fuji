@@ -15,6 +15,7 @@
         "anti_build.EntityMixin",
         "anti_build.ServerPlayerInteractionManagerMixin",
         "back.ServerPlayerMixin",
+        "chat.MessageTypeMixin",
         "chat.RegistryLoaderMixin",
         "chat.ServerGamePacketListenerImplMixin",
         "chat.history.PlayerListMixin",
