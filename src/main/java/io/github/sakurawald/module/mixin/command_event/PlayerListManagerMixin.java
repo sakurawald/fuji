@@ -2,6 +2,7 @@ package io.github.sakurawald.module.mixin.command_event;
 
 import io.github.sakurawald.core.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.command_event.CommandEventInitializer;
+import net.minecraft.entity.Entity;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ConnectedClientData;
@@ -12,6 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerManager.class)
 public class PlayerListManagerMixin {
@@ -24,6 +26,12 @@ public class PlayerListManagerMixin {
         if (player.getStatHandler().getStat(Stats.CUSTOM.getOrCreateStat(Stats.LEAVE_GAME)) < 1) {
             CommandExecutor.executeSpecializedCommand(player, CommandEventInitializer.config.getModel().event.on_player_first_joined.command_list);
         }
+    }
+
+    @Inject(method = "respawnPlayer", at = @At("TAIL"))
+    private void afterRespawn(ServerPlayerEntity oldPlayer, boolean alive, Entity.RemovalReason removalReason, CallbackInfoReturnable<ServerPlayerEntity> cir) {
+        ServerPlayerEntity newPlayer = cir.getReturnValue();
+        CommandExecutor.executeSpecializedCommand(newPlayer, CommandEventInitializer.config.getModel().event.after_player_respawn.command_list);
     }
 
 }

@@ -14,6 +14,7 @@ import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.command.exception.AbortOperationException;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
+import io.github.sakurawald.core.event.impl.ServerLifecycleEvents;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.service.command_executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -27,7 +28,6 @@ import io.github.sakurawald.module.initializer.command_attachment.structure.Comm
 import io.github.sakurawald.module.initializer.command_attachment.structure.EntityCommandAttachmentEntry;
 import io.github.sakurawald.module.initializer.command_attachment.structure.ItemStackCommandAttachmentEntry;
 import lombok.SneakyThrows;
-import io.github.sakurawald.core.event.impl.ServerLifecycleEvents;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
