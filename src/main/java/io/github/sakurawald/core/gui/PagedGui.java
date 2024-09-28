@@ -76,14 +76,7 @@ public abstract class PagedGui<T> extends LayeredGui {
     }
 
     protected @NotNull PagedGui<T> search(String keywords) {
-        PagedGui<T> make = make(this.parent, getPlayer(), prefixTitle, filter(keywords), 0);
-
-        // override the title
-        Text page = LocaleHelper.getTextByKey(getPlayer(), "gui.page.title", this.getCurrentPageNumber(), this.getMaxPageNumber());
-        Text title = LocaleHelper.getTextByKey(getPlayer(), "gui.search.title", keywords)
-                .copy().append(page);
-        make.setTitle(title);
-        return make;
+        return make(this.parent, getPlayer(), LocaleHelper.getTextByKey(getPlayer(), "gui.search.title", keywords), filter(keywords), 0);
     }
 
     @SuppressWarnings("unused")
