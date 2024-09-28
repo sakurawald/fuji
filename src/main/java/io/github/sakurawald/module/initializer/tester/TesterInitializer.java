@@ -36,15 +36,13 @@ public class TesterInitializer extends ModuleInitializer {
 
     @CommandNode("register-event")
     private static int registerEvent(@CommandSource ServerPlayerEntity player) {
-        ServerLifecycleEvents.EXAMPLE_EVENT.register((a,b)-> {
-            player.sendMessage(Text.literal("a = %d, b = %d".formatted(a,b)));
-        });
+
         return 1;
     }
 
     @CommandNode("trigger-event")
     private static int triggerEvent(@CommandSource ServerPlayerEntity player) {
-        ServerLifecycleEvents.EXAMPLE_EVENT.invoker().interact(1,2);
+
         return 1;
     }
 

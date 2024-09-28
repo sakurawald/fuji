@@ -1,17 +1,37 @@
 package io.github.sakurawald.core.event.impl;
 
 import io.github.sakurawald.core.event.abst.Event;
+import net.minecraft.server.MinecraftServer;
 
 public class ServerLifecycleEvents {
 
-    public static Event<ExampleEventCallback> EXAMPLE_EVENT = new Event<>((listeners) -> (a, b) -> {
-        for (ExampleEventCallback listener : listeners) {
-            listener.interact(a, b);
+    public static Event<ServerStartedCallback> SERVER_STARTED = new Event<>((listeners) -> (server) -> {
+        for (ServerStartedCallback listener : listeners) {
+            listener.fire(server);
         }
     });
 
-    public interface ExampleEventCallback {
-        void interact(int a, int b);
+    public interface ServerStartedCallback {
+        void fire(MinecraftServer server);
     }
 
+    public static Event<ServerStoppedCallback> SERVER_STOPPED = new Event<>((listeners) -> (server) -> {
+        for (ServerStoppedCallback listener : listeners) {
+            listener.fire(server);
+        }
+    });
+
+    public interface ServerStoppedCallback {
+        void fire(MinecraftServer server);
+    }
+
+    public static Event<ServerStoppingCallback> SERVER_STOPPING = new Event<>((listeners) -> (server) -> {
+        for (ServerStoppingCallback listener : listeners) {
+            listener.fire(server);
+        }
+    });
+
+    public interface ServerStoppingCallback {
+        void fire(MinecraftServer server);
+    }
 }

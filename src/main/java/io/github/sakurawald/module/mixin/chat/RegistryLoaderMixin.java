@@ -3,7 +3,7 @@ package io.github.sakurawald.module.mixin.chat;
 import com.llamalad7.mixinextras.sugar.Local;
 import io.github.sakurawald.core.accessor.SimpleRegistryAccessor;
 import io.github.sakurawald.core.annotation.Cite;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import io.github.sakurawald.core.event.impl.ServerLifecycleEvents;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.MutableRegistry;

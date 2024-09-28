@@ -21,7 +21,7 @@ import io.github.sakurawald.module.initializer.world.config.model.WorldConfigMod
 import io.github.sakurawald.module.initializer.world.config.model.WorldDataModel;
 import io.github.sakurawald.module.initializer.world.structure.DimensionEntry;
 import lombok.Getter;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import io.github.sakurawald.core.event.impl.ServerLifecycleEvents;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;

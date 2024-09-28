@@ -17,7 +17,7 @@ import io.github.sakurawald.core.config.job.SaveConfigurationHandlerJob;
 import io.github.sakurawald.core.config.transformer.abst.ConfigurationTransformer;
 import lombok.Cleanup;
 import lombok.Getter;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import io.github.sakurawald.core.event.impl.ServerLifecycleEvents;
 import org.jetbrains.annotations.NotNull;
 import org.quartz.JobDataMap;
 
