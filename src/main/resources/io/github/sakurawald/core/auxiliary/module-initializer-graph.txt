@@ -20,6 +20,7 @@ io.github.sakurawald.module.initializer.command_meta.shell.ShellInitializer
 io.github.sakurawald.module.initializer.command_permission.CommandPermissionInitializer
 io.github.sakurawald.module.initializer.command_rewrite.CommandRewriteInitializer
 io.github.sakurawald.module.initializer.command_scheduler.CommandSchedulerInitializer
+io.github.sakurawald.module.initializer.command_spy.CommandSpyInitializer
 io.github.sakurawald.module.initializer.command_toolbox.bed.BedInitializer
 io.github.sakurawald.module.initializer.command_toolbox.burn.BurnInitializer
 io.github.sakurawald.module.initializer.command_toolbox.compass.CompassInitializer

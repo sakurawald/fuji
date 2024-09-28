@@ -1,27 +1,30 @@
 package io.github.sakurawald.module.mixin.command_spy;
 
+import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.ParseResults;
+import com.mojang.brigadier.StringReader;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import net.minecraft.server.command.CommandManager;
+import io.github.sakurawald.module.initializer.command_spy.CommandSpyInitializer;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(CommandManager.class)
-
+@Mixin(value = CommandDispatcher.class, remap = false)
 public class CommandsMixin {
 
-    // If you issue "///abcdefg", then commandLine = "//abcdefg"
-    @Inject(method = "execute", at = @At("HEAD"))
-    public void watchCommandExecution(@NotNull ParseResults<ServerCommandSource> parseResults, String string, CallbackInfo ci) {
-        ServerPlayerEntity player = parseResults.getContext().getSource().getPlayer();
-        if (player == null) return;
+    // Listen on the parse() instead of execute(), to ensure that we will not miss some commands. (it's possible that we spy on some commands that just parsed without execution)
+    @Inject(method = "parse(Lcom/mojang/brigadier/StringReader;Ljava/lang/Object;)Lcom/mojang/brigadier/ParseResults;", at = @At("HEAD"))
+    public void spyOnCommandParse(StringReader command, Object source, CallbackInfoReturnable<ParseResults<Object>> cir) {
+        // verify
+        if (!(source instanceof ServerCommandSource serverCommandSource)) return;
+        if (!CommandSpyInitializer.config.getModel().spy_on_console
+            && serverCommandSource.getPlayer() == null) return;
 
-        // fix: fabric console will not log the command issue
-        LogUtil.info("{} issued server command: /{}", player.getGameProfile().getName(), string);
+        // spy
+        String name = serverCommandSource.getName();
+        String string = command.getString();
+        LogUtil.info("{} issued server command: /{}", name, string);
     }
 }
