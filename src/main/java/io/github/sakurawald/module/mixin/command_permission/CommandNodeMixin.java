@@ -3,7 +3,6 @@ package io.github.sakurawald.module.mixin.command_permission;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.CommandNode;
-import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.module.initializer.command_permission.CommandPermissionInitializer;
