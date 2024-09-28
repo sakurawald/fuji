@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.chat.config.model;
+package io.github.sakurawald.module.initializer.chat.style.model;
 
 import org.jetbrains.annotations.NotNull;
 

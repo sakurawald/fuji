@@ -1,6 +1,6 @@
-package io.github.sakurawald.module.mixin.chat;
+package io.github.sakurawald.module.mixin.chat.style;
 
-import io.github.sakurawald.module.initializer.chat.ChatInitializer;
+import io.github.sakurawald.module.initializer.chat.style.ChatStyleInitializer;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.registry.Registerable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,6 +13,6 @@ public class MessageTypeMixin {
 
     @Inject(method = "bootstrap", at = @At("HEAD"))
     private static void registerNewMessageType(Registerable<MessageType> registerable, CallbackInfo ci) {
-        registerable.register(ChatInitializer.MESSAGE_TYPE_KEY, ChatInitializer.MESSAGE_TYPE_VALUE);
+        registerable.register(ChatStyleInitializer.MESSAGE_TYPE_KEY, ChatStyleInitializer.MESSAGE_TYPE_VALUE);
     }
 }

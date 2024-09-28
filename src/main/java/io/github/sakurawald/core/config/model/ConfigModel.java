@@ -124,14 +124,19 @@ public class ConfigModel {
         }
 
         public static class Chat {
+
             public boolean enable = false;
 
+            public Style style = new Style();
             public Display display = new Display();
             public History history = new History();
 
+            public static class Style {
+                public boolean enable = true;
+            }
+
             public static class History {
                 public boolean enable = true;
-
             }
 
             public static class Display {
