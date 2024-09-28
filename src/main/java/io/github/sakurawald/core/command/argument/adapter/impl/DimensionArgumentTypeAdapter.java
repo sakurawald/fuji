@@ -4,12 +4,12 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
 import lombok.SneakyThrows;
 import net.minecraft.command.argument.DimensionArgumentType;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.command.ServerCommandSource;
 
 import java.lang.reflect.Parameter;
@@ -32,7 +32,12 @@ public class DimensionArgumentTypeAdapter extends BaseArgumentTypeAdapter {
              The DimensionArgumentType.dimension() will not suggest the new registered dimension types.
              Each time the server started, the dimensions will be shared with client and server.
              */
-        return super.makeRequiredArgumentBuilder(parameter).suggests(CommandHelper.Suggestion.identifiers(RegistryKeys.DIMENSION));
+        return super.makeRequiredArgumentBuilder(parameter).suggests(
+            (ctx, builder) -> {
+                ServerHelper.getWorlds().forEach(it -> builder.suggest(RegistryHelper.ofString(it)));
+                return builder.buildFuture();
+            }
+        );
     }
 
     @SneakyThrows(CommandSyntaxException.class)
