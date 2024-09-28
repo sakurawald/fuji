@@ -193,5 +193,7 @@ public class WorldManager {
 
         server.worlds.put(world.getRegistryKey(), world);
         ServerWorldEvents.LOAD.invoker().fire(server, world);
+
+        world.tick(() -> true);
     }
 }
