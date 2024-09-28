@@ -29,6 +29,9 @@ public class TeleportTicket extends BossBarTicket {
         this.source = source;
         this.destination = destination;
         this.interruptDistance = interruptDistance;
+
+        // set progress
+        this.getBossBar().setPercent(progress);
     }
 
     public static @NotNull TeleportTicket of(@NotNull ServerPlayerEntity player, SpatialPose source, SpatialPose destination, int totalMs, double interruptDistance) {

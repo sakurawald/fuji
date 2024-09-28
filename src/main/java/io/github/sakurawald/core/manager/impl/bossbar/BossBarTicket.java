@@ -10,18 +10,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+@Getter
 public abstract class BossBarTicket {
-    @Getter
     private final float maxValue;
-    @Getter
     private final float deltaValue;
+
     private final ServerBossBar bossBar;
 
-    @Getter
     @Setter
     private boolean completed;
 
-    @Getter
     @Setter
     private boolean aborted;
 
