@@ -1,16 +1,13 @@
 package io.github.sakurawald.module.initializer.tester;
 
-import com.mojang.brigadier.context.CommandContext;
-import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.event.impl.ServerLifecycleEvents;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import lombok.SneakyThrows;
-import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-
 
 @CommandNode("tester")
 @CommandRequirement(level = 4)
@@ -20,6 +17,7 @@ public class TesterInitializer extends ModuleInitializer {
     @CommandNode("run")
     private static int $run(@CommandSource ServerPlayerEntity player) {
         player.sendMessage(Text.of("run"));
+
 
         return 1;
     }
@@ -36,9 +34,17 @@ public class TesterInitializer extends ModuleInitializer {
         return 1;
     }
 
-    @CommandNode("console")
-    private static int console(@CommandSource CommandContext<ServerCommandSource> context) {
-        LogUtil.debug("you are {}", context.getSource().getServer().getClass().getName());
+    @CommandNode("register-event")
+    private static int registerEvent(@CommandSource ServerPlayerEntity player) {
+        ServerLifecycleEvents.EXAMPLE_EVENT.register((a,b)-> {
+            player.sendMessage(Text.literal("a = %d, b = %d".formatted(a,b)));
+        });
+        return 1;
+    }
+
+    @CommandNode("trigger-event")
+    private static int triggerEvent(@CommandSource ServerPlayerEntity player) {
+        ServerLifecycleEvents.EXAMPLE_EVENT.invoker().interact(1,2);
         return 1;
     }
 
