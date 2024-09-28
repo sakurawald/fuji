@@ -5,6 +5,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import io.github.sakurawald.core.accessor.SimpleRegistryAccessor;
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.event.impl.ServerTickEvents;
 import io.github.sakurawald.core.event.impl.ServerWorldEvents;
 import io.github.sakurawald.core.manager.Managers;
@@ -17,7 +18,6 @@ import io.github.sakurawald.module.initializer.world.structure.VoidWorldGenerati
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import lombok.SneakyThrows;
 import net.minecraft.entity.boss.dragon.EnderDragonFight;
-import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -97,10 +97,6 @@ public class WorldManager {
         return world.getPlayers().isEmpty() && world.getChunkManager().getLoadedChunkCount() <= 0;
     }
 
-    private static SimpleRegistry<DimensionOptions> getDimensionRegistry(@NotNull MinecraftServer server) {
-        DynamicRegistryManager registryManager = server.getCombinedDynamicRegistries().getCombinedRegistryManager();
-        return (SimpleRegistry<DimensionOptions>) registryManager.get(RegistryKeys.DIMENSION);
-    }
 
     private static void deleteWorld(@NotNull ServerWorld world) {
         MinecraftServer server = world.getServer();
@@ -108,7 +104,7 @@ public class WorldManager {
         RegistryKey<World> dimensionKey = world.getRegistryKey();
         if (server.worlds.remove(dimensionKey, world)) {
             ServerWorldEvents.UNLOAD.invoker().fire(server, world);
-            SimpleRegistry<DimensionOptions> dimensionsRegistry = getDimensionRegistry(server);
+            SimpleRegistry<DimensionOptions> dimensionsRegistry = (SimpleRegistry<DimensionOptions>) RegistryHelper.ofRegistry(RegistryKeys.DIMENSION);
             SimpleRegistryAccessor.remove(dimensionsRegistry, dimensionKey.getValue());
             File worldDirectory = server.session.getWorldDirectory(dimensionKey).toFile();
             cleanFiles(worldDirectory);
@@ -152,8 +148,7 @@ public class WorldManager {
         MyWorldProperties worldProperties = new MyWorldProperties(server.getSaveProperties(), seed);
         RegistryKey<World> worldRegistryKey = RegistryKey.of(RegistryKeys.WORLD, dimensionIdentifier);
 
-        DynamicRegistryManager registryManager = server.getCombinedDynamicRegistries().getCombinedRegistryManager();
-        Registry<DimensionOptions> registry = registryManager.get(RegistryKeys.DIMENSION);
+        Registry<DimensionOptions> registry = RegistryHelper.ofRegistry(RegistryKeys.DIMENSION);
         DimensionOptions dimensionOptions = makeDimensionOptions(registry, dimenstionTypeIdentifier);
 
         ServerWorld world;
@@ -182,7 +177,7 @@ public class WorldManager {
         /* register the world */
         ((IDimensionOptions) (Object) dimensionOptions).fuji$setSaveProperties(false);
 
-        SimpleRegistry<DimensionOptions> dimensionOptionsRegistry = (SimpleRegistry<DimensionOptions>) registryManager.get(RegistryKeys.DIMENSION);
+        SimpleRegistry<DimensionOptions> dimensionOptionsRegistry = (SimpleRegistry<DimensionOptions>) RegistryHelper.ofRegistry(RegistryKeys.DIMENSION);
         boolean original = ((SimpleRegistryAccessor<?>) dimensionOptionsRegistry).fuji$isFrozen();
         ((SimpleRegistryAccessor<?>) dimensionOptionsRegistry).fuji$setFrozen(false);
         RegistryKey<DimensionOptions> dimensionOptionsRegistryKey = RegistryKey.of(RegistryKeys.DIMENSION, worldRegistryKey.getValue());
