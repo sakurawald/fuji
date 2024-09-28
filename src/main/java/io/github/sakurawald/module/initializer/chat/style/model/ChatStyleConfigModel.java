@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.chat.config.model;
+package io.github.sakurawald.module.initializer.chat.style.model;
 
 import io.github.sakurawald.core.job.impl.MentionPlayersJob;
 import io.github.sakurawald.core.structure.RegexRewriteEntry;
@@ -6,7 +6,7 @@ import io.github.sakurawald.core.structure.RegexRewriteEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChatConfigModel {
+public class ChatStyleConfigModel {
     public String format = "<#B1B2FF>[%fuji:player_playtime%\uD83D\uDD25 %fuji:player_mined%⛏ %fuji:player_placed%\uD83D\uDD33 %fuji:player_killed%\uD83D\uDDE1 %fuji:player_moved%\uD83C\uDF0D]<reset> <<dark_green><click:suggest_command:'/msg %player:name% '><hover:show_text:'Time: %fuji:date%<newline><italic>Click to Message'>%player:displayname_visual%</hover></click></dark_green>> %message%";
 
     public Rewrite rewrite = new Rewrite();

@@ -1,8 +1,8 @@
-package io.github.sakurawald.module.mixin.chat;
+package io.github.sakurawald.module.mixin.chat.style;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import io.github.sakurawald.core.annotation.Cite;
-import io.github.sakurawald.module.initializer.chat.ChatInitializer;
+import io.github.sakurawald.module.initializer.chat.style.ChatStyleInitializer;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.MutableRegistry;
@@ -34,7 +34,7 @@ public class RegistryLoaderMixin {
 
             if (registryKey.equals(RegistryKeys.MESSAGE_TYPE)) {
                 Registry<MessageType> registryForMessageType = (Registry<MessageType>) registry;
-                Registry.register(registryForMessageType, ChatInitializer.MESSAGE_TYPE_KEY, ChatInitializer.MESSAGE_TYPE_VALUE);
+                Registry.register(registryForMessageType, ChatStyleInitializer.MESSAGE_TYPE_KEY, ChatStyleInitializer.MESSAGE_TYPE_VALUE);
             }
         }
     }
