@@ -16,8 +16,8 @@ import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfi
 import io.github.sakurawald.core.job.impl.MentionPlayersJob;
 import io.github.sakurawald.core.structure.RegexRewriteEntry;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.chat.style.model.ChatStyleConfigModel;
 import io.github.sakurawald.module.initializer.chat.style.model.ChatFormatModel;
+import io.github.sakurawald.module.initializer.chat.style.model.ChatStyleConfigModel;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
@@ -51,7 +51,7 @@ public class ChatStyleInitializer extends ModuleInitializer {
 
     public static final MessageType MESSAGE_TYPE_VALUE = new MessageType(
         new Decoration("%s", List.of(Decoration.Parameter.CONTENT), Style.EMPTY),
-        Decoration.ofChat("chat.type.text.narrate"));
+        new Decoration("%s", List.of(Decoration.Parameter.CONTENT), Style.EMPTY));
 
     @Override
     public void onInitialize() {

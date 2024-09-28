@@ -1,10 +1,10 @@
-package io.github.sakurawald.module.mixin.chat;
+package io.github.sakurawald.module.mixin.chat.style;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
-import io.github.sakurawald.module.initializer.chat.ChatInitializer;
+import io.github.sakurawald.module.initializer.chat.style.ChatStyleInitializer;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.network.message.SignedMessage;
 import net.minecraft.server.PlayerManager;
@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(value = ServerPlayNetworkHandler.class, priority = 9999)
+@Mixin(value = ServerPlayNetworkHandler.class, priority = 1000 + 250)
 public abstract class ServerGamePacketListenerImplMixin {
 
     @Shadow
@@ -25,13 +25,13 @@ public abstract class ServerGamePacketListenerImplMixin {
     public void modifyChatMessageSentByPlayers(PlayerManager instance, SignedMessage signedMessage, ServerPlayerEntity serverPlayerEntity, MessageType.Parameters parameters, Operation<Void> original) {
         // visit the node and build the string.
         String string = signedMessage.getContent().getString();
-        if (ChatInitializer.config.getModel().spy.output_unparsed_message_into_console) {
+        if (ChatStyleInitializer.config.getModel().spy.output_unparsed_message_into_console) {
             LogUtil.info("[chat spy] <{}> {}", player.getGameProfile().getName(), string);
         }
 
         // parse
-        Text text = ChatInitializer.parseText(player, string);
+        Text text = ChatStyleInitializer.parseText(player, string);
         signedMessage = signedMessage.withUnsignedContent(text);
-        ServerHelper.getPlayerManager().broadcast(signedMessage, player, MessageType.params(ChatInitializer.MESSAGE_TYPE_KEY, player));
+        ServerHelper.getPlayerManager().broadcast(signedMessage, player, MessageType.params(ChatStyleInitializer.MESSAGE_TYPE_KEY, player));
     }
 }
