@@ -18,8 +18,12 @@ import io.github.sakurawald.core.structure.RegexRewriteEntry;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.chat.config.model.ChatConfigModel;
 import io.github.sakurawald.module.initializer.chat.config.model.ChatFormatModel;
+import net.minecraft.network.message.MessageType;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.ClickEvent;
+import net.minecraft.text.Decoration;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -42,6 +46,12 @@ public class ChatInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<ChatConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatConfigModel.class);
 
     private static Map<Pattern, String> patterns;
+
+    public static final RegistryKey<MessageType> MESSAGE_TYPE_KEY = RegistryKey.of(RegistryKeys.MESSAGE_TYPE, Identifier.ofVanilla("fuji_chat"));
+
+    public static final MessageType MESSAGE_TYPE_VALUE = new MessageType(
+        new Decoration("%s", List.of(Decoration.Parameter.CONTENT), Style.EMPTY),
+        Decoration.ofChat("chat.type.text.narrate"));
 
     @Override
     public void onInitialize() {
