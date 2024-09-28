@@ -5,9 +5,9 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.event.impl.CommandEvents;
 import io.github.sakurawald.core.manager.abst.BaseManager;
 import io.github.sakurawald.core.manager.impl.callback.structure.TTLMap;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.ClickEvent;
@@ -29,7 +29,7 @@ public class CallbackManager extends BaseManager {
     }
 
     private void registerCLI() {
-        CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) -> dispatcher.register(
+        CommandEvents.REGISTRATION.register(((dispatcher, registryAccess, environment) -> dispatcher.register(
             literal(COMMAND_CALLBACK)
                 .then(argument(CommandHelper.UUID, StringArgumentType.greedyString())
                     .executes(this::$executeCallback)

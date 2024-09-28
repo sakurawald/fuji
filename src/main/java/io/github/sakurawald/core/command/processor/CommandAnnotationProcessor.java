@@ -17,10 +17,10 @@ import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.core.command.exception.AbortOperationException;
+import io.github.sakurawald.core.event.impl.CommandEvents;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import lombok.Getter;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -59,7 +59,7 @@ public class CommandAnnotationProcessor {
     private static CommandRegistryAccess registryAccess;
 
     public static void process() {
-        CommandRegistrationCallback.EVENT.register(((dispatcher, registryAccess, environment) -> {
+        CommandEvents.REGISTRATION.register(((dispatcher, registryAccess, environment) -> {
             /* environment */
             CommandAnnotationProcessor.dispatcher = dispatcher;
             CommandAnnotationProcessor.registryAccess = registryAccess;

@@ -7,12 +7,12 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
+import io.github.sakurawald.core.event.impl.CommandEvents;
 import io.github.sakurawald.core.service.gameprofile_fetcher.MojangProfileFetcher;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.skin.config.model.SkinConfigModel;
 import io.github.sakurawald.module.initializer.skin.enums.SkinVariant;
 import io.github.sakurawald.module.initializer.skin.provider.MineSkinSkinProvider;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.GameProfileArgumentType;
 import net.minecraft.server.command.CommandManager;
@@ -34,7 +34,7 @@ public class SkinInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register(this::registerCommand);
+        CommandEvents.REGISTRATION.register(this::registerCommand);
     }
 
     public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess commandBuildContext, CommandManager.RegistrationEnvironment commandSelection) {
