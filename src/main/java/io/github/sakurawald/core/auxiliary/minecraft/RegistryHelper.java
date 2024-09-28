@@ -47,7 +47,7 @@ public class RegistryHelper {
     }
 
     public static <T> Registry<T> ofRegistry(RegistryKey<? extends Registry<? extends T>> registryKey) {
-        return ServerHelper.getDefaultServer().getRegistryManager().get(registryKey);
+        return ServerHelper.getDefaultServer().getCombinedDynamicRegistries().getCombinedRegistryManager().get(registryKey);
     }
 
     public static <T> RegistryKey<T> ofRegistryKey(@NotNull RegistryKey<? extends Registry<T>> registryKey, Identifier identifier) {

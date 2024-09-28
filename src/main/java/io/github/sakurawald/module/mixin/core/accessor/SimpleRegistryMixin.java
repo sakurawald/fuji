@@ -50,6 +50,7 @@ public abstract class SimpleRegistryMixin<T> implements SimpleRegistryAccessor<T
     @Final
     private Reference2IntMap<T> entryToRawId;
 
+    @SuppressWarnings("ShadowModifiers")
     @Shadow
     @Final
     RegistryKey<? extends Registry<T>> key;

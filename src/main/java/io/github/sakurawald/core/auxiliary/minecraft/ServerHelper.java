@@ -8,8 +8,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.UserCache;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +22,10 @@ public class ServerHelper {
 
     public static MinecraftServer getDefaultServer() {
         return server;
+    }
+
+    public static Collection<ServerWorld> getWorlds() {
+        return getDefaultServer().worlds.values();
     }
 
     public static CommandDispatcher<ServerCommandSource> getCommandDispatcher() {
