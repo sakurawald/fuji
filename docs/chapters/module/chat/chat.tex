@@ -1,91 +1,14 @@
 \LevelOne{chat}
 \LevelTwo{Purpose}
-This module provides chat system customization.
-
-\LevelTwo{Feature}
-\begin{enumerate}
-    \item You can create your own \ttt{regex transformer} to replace \ttt{chat message} sent by players.
-    \item You can insert any \ttt{placeholder} like \ph{world:name}
-    \item {You can insert player's prefix and suffix. Just insert \ph{fuji:player\_prefix} and \ph{fuji:player\_suffix}.}
-    \item You can insert \str{item}, \str{inv} and \str{ender} to display your item, inventory and ender-chest.
-    \item You can insert \str{Steve} to mention another player named Steve.
-    \item You can insert \str{pos} to show the position.
-    \item You can use \ttt{markdown language} to define simple format.
-    \item You can use \ttt{mini-message language} to define complex format.
-    \item Besides the \ttt{server chat format}, each player can also set their per-player chat format.
-    \item This module doesn't \tbf{cancel} the vanilla chat events, so it can work with other chat related mods.
-\end{enumerate}
-
-\begin{note}{Set prefix and suffix for players}
-    Luckperms is required to set \ttt{prefix} and \ttt{suffix}. \\
-    \\
-    After you installed \ttt{luckperms} mod, just issue \ic{/lp group default meta setprefix <yellow>[awesome]} to assign prefix. \\
-    Don't forget to change the format in chat module, and issue \ic{/fuji reload}
-\end{note}
-
-\begin{tips}{Write complex style using mini-language}
-    You can use \ttt{mini-language} to write complex text.\\
-    \\
-    See more:
-    \begin{enumerate}
-        \item \url{https://docs.advntr.dev/minimessage/format.html}
-        \item \url{https://placeholders.pb4.eu/user/quicktext}
-    \end{enumerate}
-\end{tips}
-
-\LevelTwo{Command}
-\LevelThree{/chat}
-
-\LevelTwo{Placeholder}
-\begin{description}
-    \item[\ph{fuji:pos}] player current position
-    \item[\ph{fuji:player\_prefix}] player prefix
-    \item[\ph{fuji:player\_suffix}] player suffix
-\end{description}
-
-\LevelTwo{Configuration}
-\begin{Configuration}
-    \item[format]{
-        The server chat format for all players.
-    }
-
-    \item[rewrite]{
-        The \ttt{regex language} list used to \ttt{rewrite} the player chat message.\\
-        You can use regex language to transform player's chat input (only chat message, no command usage).
-    }
-
-    \item[mention\_player]{
-        \label{itm:mention_player}
-        If you insert \tbf{Steve} in chat message, then the player named Steve will get audio mention.
-
-        \begin{NestedList}
-            \item[sound]{
-                The type of \tbf{sound} used to notify the mentioned player.
-                \begin{tips}{Query all identifiers of sound}
-                    \ic{/playsound \ldots}
-                \end{tips}
-            }
-
-            \item[volume]
-            \item[pitch]
-            \item[repeat\_count]{
-                The sound repeat count.
-            }
-
-            \item[interval\_ms]{
-                The interval between each repeat.
-            }
-        \end{NestedList}
-
-        \item[spy]{
-            Log chat information into server-console.
-        }
-
-    }
-\end{Configuration}
+This module provides chat related customization.
 
 \LevelTwo{Sub-Module}
+\input{chapters/module/chat/style/style}
+
+\clearpage
 \input{chapters/module/chat/display/display}
+
+\clearpage
 \input{chapters/module/chat/history/history}
 
 \LevelTwo{Reference}

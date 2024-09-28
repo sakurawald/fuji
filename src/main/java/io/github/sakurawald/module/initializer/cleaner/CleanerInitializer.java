@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-
 @CommandNode("cleaner")
 @CommandRequirement(level = 4)
 public class CleanerInitializer extends ModuleInitializer {
