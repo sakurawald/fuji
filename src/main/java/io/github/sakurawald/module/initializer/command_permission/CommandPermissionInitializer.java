@@ -1,21 +1,40 @@
 package io.github.sakurawald.module.initializer.command_permission;
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.tree.CommandNode;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
+import io.github.sakurawald.core.command.annotation.CommandNode;
+import io.github.sakurawald.core.command.annotation.CommandRequirement;
+import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.module.initializer.command_permission.gui.CommandPermissionGui;
+import io.github.sakurawald.module.initializer.command_permission.structure.CommandNodeEntry;
+import io.github.sakurawald.module.initializer.command_permission.structure.WrappedPredicate;
 import net.luckperms.api.util.Tristate;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.function.Predicate;
 
 
+@CommandNode("command-permission")
+@CommandRequirement(level = 4)
 public class CommandPermissionInitializer extends ModuleInitializer {
 
-    public static @NotNull String computeCommandNodePath(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandNode<ServerCommandSource> node) {
-        String[] array = dispatcher.getPath(node).toArray(new String[]{});
-        return String.join(".", array);
+    @CommandNode
+    public static int gui(@CommandSource ServerPlayerEntity player) {
+        List<CommandNodeEntry> entities = CommandHelper.getCommandNodes().stream()
+            .map(CommandNodeEntry::new)
+            .sorted(Comparator.comparing(CommandNodeEntry::getPath))
+            .toList();
+        new CommandPermissionGui(player, entities, 0).open();
+        return CommandHelper.Return.SUCCESS;
+    }
+
+    public static String computeCommandPermission(String commandPath) {
+        return "fuji.permission.%s".formatted(commandPath);
     }
 
     public static @NotNull WrappedPredicate<ServerCommandSource> makeWrappedPredicate(String commandPath, @NotNull Predicate<ServerCommandSource> original) {
@@ -32,7 +51,7 @@ public class CommandPermissionInitializer extends ModuleInitializer {
 
                    Only valid command has its command path (command-alias also has its path, but it will redirect the execution to the real command-path)
                  */
-                Tristate triState = PermissionHelper.checkPermission(source.getPlayer().getUuid(), "fuji.permission.%s".formatted(commandPath));
+                Tristate triState = PermissionHelper.checkPermission(source.getPlayer().getUuid(), computeCommandPermission(commandPath));
                 if (triState != Tristate.UNDEFINED) {
                     return triState.asBoolean();
                 }

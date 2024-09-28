@@ -1,7 +1,10 @@
 package io.github.sakurawald.core.auxiliary.minecraft;
 
+import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
+import com.mojang.brigadier.tree.CommandNode;
+import com.mojang.brigadier.tree.RootCommandNode;
 import lombok.experimental.UtilityClass;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registry;
@@ -11,7 +14,9 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -19,6 +24,28 @@ import java.util.function.Function;
 public class CommandHelper {
 
     public static final String UUID = "uuid";
+
+    public static @NotNull String computeCommandNodePath(CommandNode<ServerCommandSource> node) {
+        CommandDispatcher<ServerCommandSource> dispatcher = ServerHelper.getCommandDispatcher();
+        String[] array = dispatcher.getPath(node).toArray(new String[]{});
+        return String.join(".", array);
+    }
+
+    public static List<CommandNode<ServerCommandSource>> getCommandNodes() {
+        List<CommandNode<ServerCommandSource>> ret = new ArrayList<>();
+        RootCommandNode<ServerCommandSource> root = ServerHelper.getDefaultServer().getCommandManager().getDispatcher().getRoot();
+        getCommandNodes(ret,root);
+        return ret;
+    }
+
+    private static void getCommandNodes(List<CommandNode<ServerCommandSource>> list, CommandNode<ServerCommandSource> parent) {
+        parent.getChildren().forEach(it->getCommandNodes(list, it));
+
+        // ignore the root command node
+        if (!parent.getName().isEmpty()) {
+            list.add(parent);
+        }
+    }
 
     @SuppressWarnings("unused")
     public static class Return {

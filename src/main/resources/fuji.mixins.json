@@ -28,7 +28,7 @@
         "command_event.ServerPlayerEntityMixin",
         "command_event.ServerPlayNetworkHandlerMixin",
         "command_interactive.SignBlockMixin",
-        "command_permission.CommandNodeAccessor",
+        "command_permission.CommandNodeMixin",
         "command_rewrite.ServerPlayNetworkHandlerMixin",
         "command_spy.CommandsMixin",
         "command_toolbox.nickname.ServerPlayerEntityMixin",

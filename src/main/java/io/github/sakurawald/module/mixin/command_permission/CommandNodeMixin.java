@@ -4,9 +4,10 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.CommandNode;
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.module.initializer.command_permission.CommandPermissionInitializer;
-import io.github.sakurawald.module.initializer.command_permission.WrappedPredicate;
+import io.github.sakurawald.module.initializer.command_permission.structure.WrappedPredicate;
 import net.minecraft.server.command.ServerCommandSource;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import java.util.function.Predicate;
 
 @Mixin(value = CommandNode.class, remap = false)
-public class CommandNodeAccessor<S> {
+public class CommandNodeMixin {
 
     @Mutable
     @Shadow
@@ -35,7 +36,7 @@ public class CommandNodeAccessor<S> {
         // wrap the predicate until the dispatcher is initialized.
         CommandDispatcher<ServerCommandSource> dispatcher = ServerHelper.getDefaultServer().getCommandManager().getDispatcher();
         if (dispatcher != null && !(original instanceof WrappedPredicate<?>)) {
-            String path = CommandPermissionInitializer.computeCommandNodePath(dispatcher, node);
+            String path = CommandHelper.computeCommandNodePath(node);
             LogUtil.debug("wrap the predicate of command {}", path);
 
             requirement = CommandPermissionInitializer.makeWrappedPredicate(path, (Predicate<ServerCommandSource>) original);
