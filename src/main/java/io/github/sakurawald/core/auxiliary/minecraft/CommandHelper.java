@@ -9,13 +9,13 @@ import lombok.experimental.UtilityClass;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -58,27 +58,8 @@ public class CommandHelper {
         public static <T> @NotNull SuggestionProvider<ServerCommandSource> identifiers(RegistryKey<? extends Registry<T>> registryKey) {
             return (context, builder) -> {
                 Registry<T> registry = RegistryHelper.ofRegistry(registryKey);
-                Iterator<T> iterator = registry.iterator();
-                while (iterator.hasNext()) {
-                    T entry;
-
-                    /*
-                     * Steps to trigger the following exception:
-                     * 1. /world create 1 minecraft:overworld
-                     * 2. /world delete fuji:1
-                     * 3. /world tp
-                     *
-                     * Failed to handle packet net.minecraft.network.packet.c2s.play.RequestCommandCompletionsC2SPacket@72fe7802, suppressing error
-                     *  java.lang.NullPointerException: null
-                     */
-                    try {
-                        entry = iterator.next();
-                    } catch (NullPointerException e) {
-                        continue;
-                    }
-
-                    Identifier id = registry.getId(entry);
-                    builder.suggest(String.valueOf(id));
+                for (Identifier identifier : registry.getIds()) {
+                    builder.suggest(identifier.toString());
                 }
                 return builder.buildFuture();
             };
