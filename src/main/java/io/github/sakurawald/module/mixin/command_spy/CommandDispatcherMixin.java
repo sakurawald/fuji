@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = CommandDispatcher.class, remap = false)
-public class CommandsMixin {
+public class CommandDispatcherMixin {
 
     // Listen on the parse() instead of execute(), to ensure that we will not miss some commands. (it's possible that we spy on some commands that just parsed without execution)
     @Inject(method = "parse(Lcom/mojang/brigadier/StringReader;Ljava/lang/Object;)Lcom/mojang/brigadier/ParseResults;", at = @At("HEAD"))

@@ -30,7 +30,7 @@
         "command_interactive.SignBlockMixin",
         "command_permission.CommandNodeMixin",
         "command_rewrite.ServerPlayNetworkHandlerMixin",
-        "command_spy.CommandsMixin",
+        "command_spy.CommandDispatcherMixin",
         "command_toolbox.nickname.ServerPlayerEntityMixin",
         "command_toolbox.reply.MsgCommandMixin",
         "command_toolbox.seen.PlayerListMixin",
