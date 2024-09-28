@@ -49,7 +49,7 @@ public class CommandExecutor {
                 command = LocaleHelper.resolvePlaceholder(ServerHelper.getDefaultServer(), command);
             }
 
-            return server.getCommandManager().getDispatcher().execute(command, server.getCommandSource());
+            return ServerHelper.getCommandDispatcher().execute(command, server.getCommandSource());
         } catch (CommandSyntaxException e) {
             LogUtil.error("CommandExecuter fails to execute commands.", e);
         }
@@ -60,8 +60,7 @@ public class CommandExecutor {
     public static int executeCommandAsPlayer(@NotNull PlayerEntity player, String command, Function<ServerCommandSource, ServerCommandSource> source) {
         command = LocaleHelper.resolvePlaceholder(player, command);
 
-        CommandManager commandManager = ServerHelper.getDefaultServer().getCommandManager();
-        CommandDispatcher<ServerCommandSource> dispatcher = commandManager.getDispatcher();
+        CommandDispatcher<ServerCommandSource> dispatcher = ServerHelper.getCommandDispatcher();
 
         ServerCommandSource serverCommandSource = source.apply(player.getCommandSource());
 

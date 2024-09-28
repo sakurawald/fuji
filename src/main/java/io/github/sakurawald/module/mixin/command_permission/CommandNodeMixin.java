@@ -33,7 +33,7 @@ public class CommandNodeMixin {
     @ModifyReturnValue(method = "getRequirement", at = @At("TAIL"))
     private Predicate<?> injected(Predicate<?> original) {
         // wrap the predicate until the dispatcher is initialized.
-        CommandDispatcher<ServerCommandSource> dispatcher = ServerHelper.getDefaultServer().getCommandManager().getDispatcher();
+        CommandDispatcher<ServerCommandSource> dispatcher = ServerHelper.getCommandDispatcher();
         if (dispatcher != null && !(original instanceof WrappedPredicate<?>)) {
             String path = CommandHelper.computeCommandNodePath(node);
             requirement = CommandPermissionInitializer.makeWrappedPredicate(path, (Predicate<ServerCommandSource>) original);
