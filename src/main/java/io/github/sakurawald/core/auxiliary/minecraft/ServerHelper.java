@@ -1,10 +1,12 @@
 package io.github.sakurawald.core.auxiliary.minecraft;
 
 import com.mojang.authlib.GameProfile;
+import com.mojang.brigadier.CommandDispatcher;
 import lombok.Setter;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.UserCache;
 
@@ -18,6 +20,10 @@ public class ServerHelper {
 
     public static MinecraftServer getDefaultServer() {
         return server;
+    }
+
+    public static CommandDispatcher<ServerCommandSource> getCommandDispatcher() {
+        return getDefaultServer().getCommandManager().getDispatcher();
     }
 
     public static Optional<GameProfile> getGameProfileByName(String playerName) {

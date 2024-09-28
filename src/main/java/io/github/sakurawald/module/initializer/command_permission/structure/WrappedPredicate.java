@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.command_permission;
+package io.github.sakurawald.module.initializer.command_permission.structure;
 
 import java.util.function.Predicate;
 
