@@ -17,7 +17,6 @@ public class CommandEventInitializer extends ModuleInitializer {
         ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> CommandExecutor.executeSpecializedCommand(newPlayer, config.getModel().event.after_player_respawn.command_list));
 
         ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> CommandExecutor.executeSpecializedCommand(player, config.getModel().event.after_player_change_world.command_list));
-
     }
 
 }

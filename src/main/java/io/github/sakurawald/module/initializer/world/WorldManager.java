@@ -5,6 +5,8 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import io.github.sakurawald.core.accessor.SimpleRegistryAccessor;
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.event.impl.ServerTickEvents;
+import io.github.sakurawald.core.event.impl.ServerWorldEvents;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.core.structure.TeleportTicket;
@@ -14,8 +16,6 @@ import io.github.sakurawald.module.initializer.world.structure.MyWorldProperties
 import io.github.sakurawald.module.initializer.world.structure.VoidWorldGenerationProgressListener;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import lombok.SneakyThrows;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.entity.boss.dragon.EnderDragonFight;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registry;
@@ -107,7 +107,7 @@ public class WorldManager {
 
         RegistryKey<World> dimensionKey = world.getRegistryKey();
         if (server.worlds.remove(dimensionKey, world)) {
-            ServerWorldEvents.UNLOAD.invoker().onWorldUnload(server, world);
+            ServerWorldEvents.UNLOAD.invoker().fire(server, world);
             SimpleRegistry<DimensionOptions> dimensionsRegistry = getDimensionRegistry(server);
             SimpleRegistryAccessor.remove(dimensionsRegistry, dimensionKey.getValue());
             File worldDirectory = server.session.getWorldDirectory(dimensionKey).toFile();
@@ -192,6 +192,6 @@ public class WorldManager {
         ((SimpleRegistryAccessor<?>) dimensionOptionsRegistry).fuji$setFrozen(original);
 
         server.worlds.put(world.getRegistryKey(), world);
-        ServerWorldEvents.LOAD.invoker().onWorldLoad(server, world);
+        ServerWorldEvents.LOAD.invoker().fire(server, world);
     }
 }

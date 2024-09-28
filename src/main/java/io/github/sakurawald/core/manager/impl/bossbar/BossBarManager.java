@@ -1,7 +1,7 @@
 package io.github.sakurawald.core.manager.impl.bossbar;
 
+import io.github.sakurawald.core.event.impl.ServerTickEvents;
 import io.github.sakurawald.core.manager.abst.BaseManager;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
