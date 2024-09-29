@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.world.structure;
 
-import com.google.common.collect.Iterators;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Lifecycle;
 import net.minecraft.registry.Registry;
@@ -22,15 +21,14 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-@SuppressWarnings({"unused", "InfiniteRecursion"})
 public class FilteredRegistry<T> extends SimpleRegistry<T> {
     private final @NotNull Registry<T> source;
-    private final Predicate<T> check;
+    private final Predicate<T> filter;
 
-    public FilteredRegistry(@NotNull Registry<T> source, Predicate<T> check) {
+    public FilteredRegistry(@NotNull Registry<T> source, Predicate<T> filter) {
         super(source.getKey(), source.getLifecycle());
         this.source = source;
-        this.check = check;
+        this.filter = filter;
     }
 
     public @NotNull Registry<T> getSource() {
@@ -40,17 +38,17 @@ public class FilteredRegistry<T> extends SimpleRegistry<T> {
     @Nullable
     @Override
     public Identifier getId(T value) {
-        return check.test(value) ? this.source.getId(value) : null;
+        return filter.test(value) ? this.source.getId(value) : null;
     }
 
     @Override
     public Optional<RegistryKey<T>> getKey(T entry) {
-        return check.test(entry) ? this.source.getKey(entry) : Optional.empty();
+        return filter.test(entry) ? this.source.getKey(entry) : Optional.empty();
     }
 
     @Override
     public int getRawId(@Nullable T value) {
-        return check.test(value) ? this.source.getRawId(value) : -1;
+        return filter.test(value) ? this.source.getRawId(value) : -1;
     }
 
     @Nullable
@@ -73,24 +71,24 @@ public class FilteredRegistry<T> extends SimpleRegistry<T> {
     @Nullable
     @Override
     public T get(@Nullable Identifier id) {
-        return this.get(id);
+        return source.get(id);
     }
 
     @Override
     public Lifecycle getLifecycle() {
-        return this.source.getLifecycle();
+        return source.getLifecycle();
     }
 
     @Override
     public Set<Identifier> getIds() {
-        return this.getIds();
+        return source.getIds();
     }
 
     @Override
     public @NotNull Set<Map.Entry<RegistryKey<T>, T>> getEntrySet() {
         Set<Map.Entry<RegistryKey<T>, T>> set = new HashSet<>();
         for (Map.Entry<RegistryKey<T>, T> e : this.source.getEntrySet()) {
-            if (this.check.test(e.getValue())) {
+            if (this.filter.test(e.getValue())) {
                 set.add(e);
             }
         }
@@ -139,7 +137,7 @@ public class FilteredRegistry<T> extends SimpleRegistry<T> {
 
     @Override
     public Stream<RegistryEntry.Reference<T>> streamEntries() {
-        return this.source.streamEntries().filter((e) -> this.check.test(e.value));
+        return this.source.streamEntries().filter((e) -> this.filter.test(e.value));
     }
 
     @Override
@@ -159,22 +157,23 @@ public class FilteredRegistry<T> extends SimpleRegistry<T> {
 
     @Override
     public @Nullable Stream<TagKey<T>> streamTags() {
+        // no-op
         return null;
     }
 
     @Override
     public void clearTags() {
-
+        // no-op
     }
 
     @Override
     public void populateTags(Map<TagKey<T>, List<RegistryEntry<T>>> tagEntries) {
-
+        // no-op
     }
 
     @NotNull
     @Override
     public Iterator<T> iterator() {
-        return Iterators.filter(this.source.iterator(), this.check::test);
+        return source.stream().filter(this.filter).iterator();
     }
 }
