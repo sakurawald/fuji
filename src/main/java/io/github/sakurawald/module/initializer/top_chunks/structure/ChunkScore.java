@@ -1,6 +1,8 @@
 package io.github.sakurawald.module.initializer.top_chunks.structure;
 
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
+import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.structure.TypeFormatter;
 import io.github.sakurawald.module.initializer.top_chunks.TopChunksInitializer;
 import lombok.Getter;
@@ -9,6 +11,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
@@ -16,19 +19,20 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
+import net.minecraft.world.Heightmap;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class ChunkScore implements Comparable<ChunkScore> {
     private final HashMap<String, Integer> type2amount = new HashMap<>();
 
     @Getter
-    private final World dimension;
+    private final ServerWorld dimension;
     @Getter
     private final ChunkPos chunkPos;
     @Getter
@@ -36,7 +40,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
     @Getter
     private int score;
 
-    public ChunkScore(World dimension, ChunkPos chunkPos) {
+    public ChunkScore(ServerWorld dimension, ChunkPos chunkPos) {
         this.dimension = dimension;
         this.chunkPos = chunkPos;
     }
@@ -83,6 +87,10 @@ public class ChunkScore implements Comparable<ChunkScore> {
         return Integer.compare(that.score, this.score);
     }
 
+    public static boolean hasPermissionToClickToTeleport(@NotNull ServerPlayerEntity player) {
+        return player.hasPermissionLevel(4) || PermissionHelper.hasPermission(player.getUuid(), "top_chunks.teleport");
+    }
+
     public @NotNull Text asText(@NotNull ServerCommandSource source) {
         String chunkLocation;
         if (TopChunksInitializer.config.getModel().hide_location) {
@@ -104,7 +112,6 @@ public class ChunkScore implements Comparable<ChunkScore> {
             .append(LocaleHelper.TEXT_NEWLINE)
             .append(LocaleHelper.getTextByKey(source, "top_chunks.prop.players", this.players))
             .append(LocaleHelper.TEXT_NEWLINE)
-            .append(LocaleHelper.getTextByKey(source, "top_chunks.prop.types"))
             .append(TypeFormatter.formatTypes(source, this.type2amount));
 
         return Text.empty()
@@ -112,6 +119,11 @@ public class ChunkScore implements Comparable<ChunkScore> {
             .fillStyle(Style.EMPTY
                 .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText))
                 .withFormatting(this.players.isEmpty() ? Formatting.GRAY : Formatting.DARK_GREEN)
+                .withClickEvent(Managers.getCallbackManager().makeCallback((player) -> {
+                    if (!hasPermissionToClickToTeleport(player)) return;
+
+                    player.teleport(dimension, chunkPos.getCenterX(), dimension.getTopPosition(Heightmap.Type.MOTION_BLOCKING, player.getBlockPos()).getY(), chunkPos.getCenterZ(), player.getYaw(), player.getPitch());
+                }, 5, TimeUnit.MINUTES))
             );
     }
 }

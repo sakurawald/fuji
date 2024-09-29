@@ -86,6 +86,11 @@ public class TopChunksInitializer extends ModuleInitializer {
             }
 
             ctx.getSource().sendMessage(textComponentBuilder);
+
+            if (ctx.getSource().getPlayer() != null && ChunkScore.hasPermissionToClickToTeleport(ctx.getSource().getPlayer())) {
+                LocaleHelper.sendMessageByKey(ctx.getSource(), "prompt.click.teleport");
+            }
+
         });
 
         return CommandHelper.Return.SUCCESS;
