@@ -73,7 +73,7 @@ public class TopChunksInitializer extends ModuleInitializer {
 
             /* send output */
             var config = TopChunksInitializer.config.getModel();
-            calculateNearestPlayer(ctx.getSource(), PQ, config.top.rows * config.top.columns);
+            computeNearestPlayer(ctx.getSource(), PQ, config.top.rows * config.top.columns);
 
             MutableText textComponentBuilder = Text.empty();
             outer:
@@ -96,7 +96,7 @@ public class TopChunksInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    private static void calculateNearestPlayer(ServerCommandSource source, @NotNull PriorityQueue<ChunkScore> PQ, int limit) {
+    private static void computeNearestPlayer(ServerCommandSource source, @NotNull PriorityQueue<ChunkScore> PQ, int limit) {
         int count = 0;
         for (ChunkScore chunkScore : PQ) {
             if (count++ >= limit) break;

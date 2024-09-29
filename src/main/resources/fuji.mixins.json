@@ -22,7 +22,7 @@
         "command_attachment.EntityMixin",
         "command_attachment.ServerPlayerInteractionManagerMixin",
         "command_attachment.ServerPlayNetworkHandlerMixin",
-        "command_cooldown.CommandsMixin",
+        "command_cooldown.CommandManagerMixin",
         "command_event.BlockMixin",
         "command_event.PlayerListManagerMixin",
         "command_event.ServerPlayerEntityMixin",
