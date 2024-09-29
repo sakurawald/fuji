@@ -12,7 +12,6 @@ public class CommandSpyInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<CommandSpyConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, CommandSpyConfigModel.class);
 
     public static void process(ParseResults<ServerCommandSource> parseResults) {
-
         // verify
         ServerCommandSource source = parseResults.getContext().getSource();
         if (!CommandSpyInitializer.config.getModel().spy_on_console
