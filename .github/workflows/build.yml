@@ -22,6 +22,7 @@ jobs:
           distribution: 'microsoft'
       - name: crowdin action
         uses: crowdin/github-action@v2
+        if: github.ref == 'refs/heads/dev'
         with:
             upload_sources: true
             download_sources: false
