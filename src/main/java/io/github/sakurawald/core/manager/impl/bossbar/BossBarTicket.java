@@ -63,24 +63,24 @@ public abstract class BossBarTicket {
     }
 
     @SuppressWarnings({"EmptyMethod", "unused"})
-    public void onPlayerDisconnected(ServerPlayerEntity player) {
+    protected void onPlayerDisconnected(ServerPlayerEntity player) {
         // no-op
     }
 
     /***
-     * @return ticket valid
+     * @return abort this ticket
      */
-    public boolean preProgressChange() {
+    protected boolean preProgressChange() {
         return true;
     }
 
     /***
-     * @return ticket valid
+     * @return abort this ticket
      */
-    public boolean postProgressChange() {
+    protected boolean postProgressChange() {
         return true;
     }
 
-    public abstract void onComplete();
+    protected abstract void onComplete();
 
 }

@@ -1,4 +1,4 @@
-package io.github.sakurawald.core.structure;
+package io.github.sakurawald.module.initializer.command_warmup.structure;
 
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.manager.impl.bossbar.BossBarTicket;
@@ -23,11 +23,11 @@ public class CommandWarmupTicket extends BossBarTicket {
     }
 
     @Override
-    public void onComplete() {
+    protected void onComplete() {
         player.networkHandler.executeCommand(command);
     }
 
-    public static CommandWarmupTicket of(ServerPlayerEntity player, String command, int ms) {
+    public static CommandWarmupTicket make(ServerPlayerEntity player, String command, int ms) {
         ServerBossBar bossbar = new ServerBossBar(LocaleHelper.getTextByKey(player, "command_warmup.bossbar.name", command), net.minecraft.entity.boss.BossBar.Color.GREEN, net.minecraft.entity.boss.BossBar.Style.PROGRESS);
         return new CommandWarmupTicket(bossbar, ms, player, command);
     }

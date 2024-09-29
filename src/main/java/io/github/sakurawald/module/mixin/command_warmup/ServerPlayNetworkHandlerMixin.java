@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.command_warmup;
 
 import io.github.sakurawald.core.manager.Managers;
-import io.github.sakurawald.core.structure.CommandWarmupTicket;
+import io.github.sakurawald.module.initializer.command_warmup.structure.CommandWarmupTicket;
 import io.github.sakurawald.module.initializer.command_warmup.CommandWarmupInitializer;
 import net.minecraft.network.packet.c2s.play.CommandExecutionC2SPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -38,7 +38,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
 
         int ms = getMs(command);
         if (ms > 0) {
-            Managers.getBossBarManager().addTicket(CommandWarmupTicket.of(player, command, ms));
+            Managers.getBossBarManager().addTicket(CommandWarmupTicket.make(player, command, ms));
             ci.cancel();
         }
     }

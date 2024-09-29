@@ -49,7 +49,7 @@ public abstract class ServerPlayerMixin {
 
         TeleportTicket ticket = getTeleportTicket(player);
         if (ticket == null) {
-            ticket = TeleportTicket.of(
+            ticket = TeleportTicket.make(
                 player
                 , SpatialPose.of(player)
                 , new SpatialPose(targetWorld, x, y, z, yaw, pitch)

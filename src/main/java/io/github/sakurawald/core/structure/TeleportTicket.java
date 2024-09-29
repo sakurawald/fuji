@@ -16,7 +16,6 @@ public class TeleportTicket extends BossBarTicket {
     private final @NotNull ServerPlayerEntity player;
     private final SpatialPose source;
     private final SpatialPose destination;
-
     private final double interruptDistance;
 
     private TeleportTicket(@NotNull ServerPlayerEntity player, SpatialPose source, SpatialPose destination, float progress, int totalMs, double interruptDistance) {
@@ -34,25 +33,24 @@ public class TeleportTicket extends BossBarTicket {
         this.getBossBar().setPercent(progress);
     }
 
-    public static @NotNull TeleportTicket of(@NotNull ServerPlayerEntity player, SpatialPose source, SpatialPose destination, int totalMs, double interruptDistance) {
+    public static @NotNull TeleportTicket make(@NotNull ServerPlayerEntity player, SpatialPose source, SpatialPose destination, int totalMs, double interruptDistance) {
         return new TeleportTicket(player, source, destination, 0f, totalMs, interruptDistance);
     }
 
-    public static @NotNull TeleportTicket ofInstantTicket(@NotNull ServerPlayerEntity player, SpatialPose source, SpatialPose destination, int totalMs, double interruptDistance) {
+    public static @NotNull TeleportTicket makeVipTicket(@NotNull ServerPlayerEntity player, SpatialPose source, SpatialPose destination, int totalMs, double interruptDistance) {
         return new TeleportTicket(player, source, destination, 1f, totalMs, interruptDistance);
     }
 
     @SuppressWarnings("RedundantIfStatement")
     @Override
-    public boolean preProgressChange() {
-
-        // check combat
+    protected boolean preProgressChange() {
+        // check in combat
         if (((PlayerCombatExtension) player).fuji$inCombat()) {
             LocaleHelper.sendActionBarByKey(player, "teleport_warmup.in_combat");
             return false;
         }
 
-        // check damage
+        // check damaged
         if (player.getPos().squaredDistanceTo(this.source.getX(), this.source.getY(), this.source.getZ()) >= this.interruptDistance) {
             return false;
         }
@@ -61,11 +59,8 @@ public class TeleportTicket extends BossBarTicket {
     }
 
     @Override
-    public void onComplete() {
-        // set ready before teleport
-        if (!player.isDisconnected()) {
-            destination.teleport(player);
-        }
+    protected void onComplete() {
+        destination.teleport(player);
     }
 
 }
