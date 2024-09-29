@@ -21,7 +21,7 @@ import java.util.function.Function;
 @CommandNode("compass")
 public class CompassInitializer extends ModuleInitializer {
 
-    private static int acceptCompassItem(ServerPlayerEntity source, Function<ItemStack, Integer> function) {
+    private static int withCompassInHand(ServerPlayerEntity source, Function<ItemStack, Integer> function) {
         ItemStack itemStack = source.getMainHandStack();
         if (!itemStack.getItem().equals(Items.COMPASS)) {
             LocaleHelper.sendMessageByKey(source, "compass.no_compass");
@@ -38,7 +38,7 @@ public class CompassInitializer extends ModuleInitializer {
 
     @CommandNode("track pos")
     private static int track(@CommandSource ServerPlayerEntity player, Dimension dimension, BlockPos blockPos) {
-        return acceptCompassItem(player,(itemStack) -> {
+        return withCompassInHand(player,(itemStack) -> {
            setTrackedTarget(itemStack, dimension.getValue(), blockPos);
            return CommandHelper.Return.SUCCESS;
         });
@@ -46,7 +46,7 @@ public class CompassInitializer extends ModuleInitializer {
 
     @CommandNode("track player")
     private static int track(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
-        return acceptCompassItem(player,(itemStack) -> {
+        return withCompassInHand(player,(itemStack) -> {
             setTrackedTarget(itemStack,target.getServerWorld(),target.getBlockPos());
             return CommandHelper.Return.SUCCESS;
         });
@@ -54,7 +54,7 @@ public class CompassInitializer extends ModuleInitializer {
 
     @CommandNode("reset")
     private static int reset(@CommandSource ServerPlayerEntity player) {
-        return acceptCompassItem(player,(itemStack) -> {
+        return withCompassInHand(player,(itemStack) -> {
             itemStack.set(DataComponentTypes.LODESTONE_TRACKER, null);
             return CommandHelper.Return.SUCCESS;
         });
