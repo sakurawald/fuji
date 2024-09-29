@@ -120,7 +120,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
             }
 
             Optional<String> o = PermissionHelper.getMeta(ctx.player().getUuid(), args, String::valueOf);
-            String value = o.orElse("NO_EXIST");
+            String value = o.orElse("NOT_EXIST");
             return PlaceholderResult.value(Text.literal(value));
         });
     }
