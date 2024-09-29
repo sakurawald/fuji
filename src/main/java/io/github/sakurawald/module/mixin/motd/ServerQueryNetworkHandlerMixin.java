@@ -23,29 +23,19 @@
  */
 package io.github.sakurawald.module.mixin.motd;
 
-import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.module.initializer.motd.MotdInitializer;
 import net.minecraft.server.ServerMetadata;
 import net.minecraft.server.network.ServerQueryNetworkHandler;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
-
-import java.util.Optional;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(ServerQueryNetworkHandler.class)
 public abstract class ServerQueryNetworkHandlerMixin {
 
-    @Redirect(method = "onRequest", at = @At(value = "FIELD", target = "Lnet/minecraft/server/network/ServerQueryNetworkHandler;metadata:Lnet/minecraft/server/ServerMetadata;"))
-    public @NotNull ServerMetadata handleStatusRequest(final net.minecraft.server.network.ServerQueryNetworkHandler instance) {
-        ServerMetadata vanillaStatus = ServerHelper.getDefaultServer().getServerMetadata();
-        if (vanillaStatus == null) {
-            LogUtil.warn("can't inject into the vanilla server status. (reason: the vanilla one is null)");
-            return new ServerMetadata(MotdInitializer.getRandomDescription(), Optional.empty(), Optional.empty(), MotdInitializer.getRandomIcon(), false);
-        }
-
-        return new ServerMetadata(MotdInitializer.getRandomDescription(), vanillaStatus.comp_1274(), vanillaStatus.comp_1275(), MotdInitializer.getRandomIcon(), vanillaStatus.secureChatEnforced());
+    @ModifyArg(method = "onRequest", at = @At(value = "INVOKE", target = "Lnet/minecraft/network/packet/s2c/query/QueryResponseS2CPacket;<init>(Lnet/minecraft/server/ServerMetadata;)V"))
+    public @NotNull ServerMetadata handleQueryRequest(ServerMetadata original) {
+        return new ServerMetadata(MotdInitializer.getRandomMotdText(), original.comp_1274(), original.comp_1275(), MotdInitializer.getRandomIcon(), original.secureChatEnforced());
     }
 }

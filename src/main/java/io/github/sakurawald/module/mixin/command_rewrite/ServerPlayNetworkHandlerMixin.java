@@ -21,7 +21,7 @@ public class ServerPlayNetworkHandlerMixin {
             }
 
             if (string.matches(entry.getRegex())) {
-                LogUtil.debug("rewrite the command: {}", string);
+                LogUtil.debug("rewrite the command: /{}", string);
                 return string.replaceAll(entry.getRegex(), entry.getReplacement());
             }
         }
