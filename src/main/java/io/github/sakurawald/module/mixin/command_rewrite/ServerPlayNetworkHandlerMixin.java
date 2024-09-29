@@ -16,11 +16,12 @@ public class ServerPlayNetworkHandlerMixin {
     public String interceptPacketsOfIssuedCommand(@NotNull String string) {
         for (RegexRewriteEntry entry : CommandRewriteInitializer.config.getModel().regex) {
             if (entry.getRegex() == null || entry.getReplacement() == null) {
-                LogUtil.warn("there is an invalid `null` entry in `command_rewrite.regex`, you should remove it.");
+                LogUtil.warn("there is an invalid `null` entry in `command_rewrite.regex`, you should remove it: {}", entry);
                 continue;
             }
 
             if (string.matches(entry.getRegex())) {
+                LogUtil.debug("rewrite the command: {}", string);
                 return string.replaceAll(entry.getRegex(), entry.getReplacement());
             }
         }
