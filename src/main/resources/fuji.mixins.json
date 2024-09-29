@@ -5,7 +5,8 @@
     "plugin": "io.github.sakurawald.module.mixin.GlobalMixinConfigPlugin",
     "server": [
         "color.anvil.AnvilScreenHandlerMixin",
-        "color.sign.SignBlockEntityMixin"
+        "color.sign.SignBlockEntityMixin",
+        "command_spy.CommandDispatcherMixin"
     ],
     "mixins": [
         "afk.ServerPlayerMixin",
