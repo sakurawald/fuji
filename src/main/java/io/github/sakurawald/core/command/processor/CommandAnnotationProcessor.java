@@ -365,6 +365,7 @@ public class CommandAnnotationProcessor {
 
 
         // set requirement (method)
+        // get last literal argument builder, so that a normal player can use `/warp tp`, but can use `/warp set`
         setRequirement(getLastLiteralArgumentBuilder(builders), method.getAnnotation(CommandRequirement.class));
 
         return builders;
