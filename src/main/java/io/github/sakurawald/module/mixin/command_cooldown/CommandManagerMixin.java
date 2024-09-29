@@ -13,10 +13,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(CommandManager.class)
+public class CommandManagerMixin {
 
-public class CommandsMixin {
-
-    // If you issue "///abcdefg", then commandLine = "//abcdefg"
     @Inject(method = "execute", at = @At("HEAD"), cancellable = true)
     public void watchCommandExecution(@NotNull ParseResults<ServerCommandSource> parseResults, String string, @NotNull CallbackInfo ci) {
         ServerPlayerEntity player = parseResults.getContext().getSource().getPlayer();

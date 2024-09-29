@@ -48,6 +48,7 @@ public class CommandAliasInitializer extends ModuleInitializer {
 
             builder = CommandManager.literal(name).then(builder);
         }
+        if (builder == null) return;
 
         /* copy the requirement from the parent of the target node */
         CommandNode<ServerCommandSource> targetRoot = dispatcher.findNode(List.of(entry.getTo().getFirst()));
