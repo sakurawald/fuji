@@ -2,6 +2,7 @@ package io.github.sakurawald.core.config.transformer.impl;
 
 import com.google.gson.JsonObject;
 import com.jayway.jsonpath.DocumentContext;
+import io.github.sakurawald.core.auxiliary.JsonUtil;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.abst.ConfigurationTransformer;
 import lombok.SneakyThrows;
@@ -43,12 +44,12 @@ public class FlattenTreeTransformer extends ConfigurationTransformer {
 
         // remove empty subtree
         parent.keySet().stream().toList().stream()
-            .filter(key -> parent.get(key).isJsonObject() && parent.getAsJsonObject(key).isEmpty())
+            .filter(key -> parent.get(key).isJsonObject() && JsonUtil.isEmpty(parent.getAsJsonObject(key)))
             .forEach(parent::remove);
 
         // if the tree is not empty, migrate it to a standalone file
         Path currentTreeOutPath = level2outPath.apply(level);
-        if (!parent.isEmpty() && Files.notExists(currentTreeOutPath)) {
+        if (!JsonUtil.isEmpty(parent) && Files.notExists(currentTreeOutPath)) {
             logConsole("flatten tree `{}` into the file `{}`", level, currentTreeOutPath);
             Files.createDirectories(currentTreeOutPath.getParent());
             String json = BaseConfigurationHandler.getGson().toJson(parent);
@@ -70,7 +71,7 @@ public class FlattenTreeTransformer extends ConfigurationTransformer {
                     makeSkeletonTree(parent.getAsJsonObject(key));
 
                     // remove the subtree if empty. (the subtree will not be empty, if it is a sub-module
-                    if (parent.getAsJsonObject(key).isEmpty()) parent.remove(key);
+                    if (JsonUtil.isEmpty(parent.getAsJsonObject(key))) parent.remove(key);
                 } else parent.remove(key);
             });
         return parent;
