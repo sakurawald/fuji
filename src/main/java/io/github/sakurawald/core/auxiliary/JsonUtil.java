@@ -38,4 +38,10 @@ public class JsonUtil {
 
         return root.has(nodes[nodes.length - 1]);
     }
+
+    // The JsonObject.isEmpty() is not exist in old version gson, so the sinytra-connector will fail to load the mod.
+    @SuppressWarnings("SizeReplaceableByIsEmpty")
+    public static boolean isEmpty(JsonObject obt) {
+        return obt.size()==0;
+    }
 }
