@@ -27,6 +27,7 @@ io.github.sakurawald.module.initializer.command_toolbox.compass.CompassInitializ
 io.github.sakurawald.module.initializer.command_toolbox.extinguish.ExtinguishInitializer
 io.github.sakurawald.module.initializer.command_toolbox.feed.FeedInitializer
 io.github.sakurawald.module.initializer.command_toolbox.fly.FlyInitializer
+io.github.sakurawald.module.initializer.command_toolbox.glow.GlowInitializer
 io.github.sakurawald.module.initializer.command_toolbox.god.GodInitializer
 io.github.sakurawald.module.initializer.command_toolbox.hat.HatInitializer
 io.github.sakurawald.module.initializer.command_toolbox.heal.HealInitializer
