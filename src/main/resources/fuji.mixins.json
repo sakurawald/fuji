@@ -75,8 +75,8 @@
         "temp_ban.PlayerManagerMixin",
         "whitelist.UserWhiteListMixin",
         "works.HopperBlockEntityMixin",
+        "world.DimensionOptionsMixin",
         "world.EndGatewayBlockEntityMixin",
-        "world.IDimensionOptions",
         "world.MinecraftServerMixin",
         "world.ServerWorldMixin",
         "world.WorldGenSettingsMixin"

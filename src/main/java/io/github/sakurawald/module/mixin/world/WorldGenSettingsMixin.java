@@ -17,7 +17,7 @@ import java.util.Map;
 public class WorldGenSettingsMixin {
 
     @ModifyArg(method = "encode(Lcom/mojang/serialization/DynamicOps;Lnet/minecraft/world/gen/GeneratorOptions;Lnet/minecraft/world/dimension/DimensionOptionsRegistryHolder;)Lcom/mojang/serialization/DataResult;", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/WorldGenSettings;<init>(Lnet/minecraft/world/gen/GeneratorOptions;Lnet/minecraft/world/dimension/DimensionOptionsRegistryHolder;)V"), index = 1)
-    private static @NotNull DimensionOptionsRegistryHolder $wrapWorldGenSettings(@NotNull DimensionOptionsRegistryHolder original) {
+    private static @NotNull DimensionOptionsRegistryHolder $wrapWorldGenSettings(DimensionOptionsRegistryHolder original) {
         Map<RegistryKey<DimensionOptions>, DimensionOptions> dimensions = original.comp_1014();
         var saveDimensions = Maps.filterEntries(dimensions, entry -> IDimensionOptions.SAVE_PROPERTIES_PREDICATE.test(entry.getValue()));
         return new DimensionOptionsRegistryHolder(saveDimensions);

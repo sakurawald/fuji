@@ -129,7 +129,6 @@ public class WorldManager {
     /**
      * To avoid share the same reference of the vanilla minecraft default `DimensionOptions` instance,
      * we must create new instance.
-     *
      */
     @SneakyThrows(CommandSyntaxException.class)
     private static @NotNull DimensionOptions makeDimensionOptions(@NotNull Registry<DimensionOptions> registry, Identifier dimensionTypeIdentifier) {
@@ -154,17 +153,17 @@ public class WorldManager {
         ServerWorld world;
         try {
             world = new MyServerWorld(server,
-                    Util.getMainWorkerExecutor(),
-                    server.session,
-                    worldProperties,
-                    worldRegistryKey,
-                    dimensionOptions,
-                    VoidWorldGenerationProgressListener.INSTANCE,
-                    false,
-                    BiomeAccess.hashSeed(seed),
-                    ImmutableList.of(),
-                    true,
-                    null);
+                Util.getMainWorkerExecutor(),
+                server.session,
+                worldProperties,
+                worldRegistryKey,
+                dimensionOptions,
+                VoidWorldGenerationProgressListener.INSTANCE,
+                false,
+                BiomeAccess.hashSeed(seed),
+                ImmutableList.of(),
+                true,
+                null);
         } catch (Exception e) {
             LogUtil.warn("failed to create world: worldId = {}, dimensionTypeId = {}, error = {}", dimensionIdentifier, dimenstionTypeIdentifier, e);
             return;
