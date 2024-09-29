@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class CommandManagerMixin {
 
     @Inject(method = "execute", at = @At("HEAD"))
-    public void watchCommandExecution(@NotNull ParseResults<ServerCommandSource> parseResults, String string, CallbackInfo ci) {
+    public void onExecuteInCommandManager(@NotNull ParseResults<ServerCommandSource> parseResults, String string, CallbackInfo ci) {
         CommandSpyInitializer.process(parseResults);
     }
 }
