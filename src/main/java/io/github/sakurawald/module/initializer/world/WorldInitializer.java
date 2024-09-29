@@ -65,12 +65,9 @@ public class WorldInitializer extends ModuleInitializer {
             if (!dimensionEntry.isEnable()) continue;
 
             try {
-                Identifier dimensionType = Identifier.of(dimensionEntry.getDimension_type());
-                Identifier dimension = Identifier.of(dimensionEntry.getDimension());
-                long seed = dimensionEntry.getSeed();
-                WorldManager.requestToCreateWorld(server, dimension, dimensionType, seed);
+                WorldManager.requestToCreateWorld(dimensionEntry);
 
-                LogUtil.info("load world {} done.", dimensionEntry);
+                LogUtil.info("load dimension {} into server successfully.", dimensionEntry.getDimension());
             } catch (Exception e) {
                 LogUtil.error("failed to load dimension `{}`", dimensionEntry, e);
             }
@@ -100,10 +97,11 @@ public class WorldInitializer extends ModuleInitializer {
         }
 
         long $seed = seed.orElse(RandomSeed.getSeed());
-        WorldManager.requestToCreateWorld(ServerHelper.getDefaultServer(), dimensionIdentifier, dimensionTypeIdentifier, $seed);
-
-        storage.getModel().dimension_list.add(new DimensionEntry(true, dimensionIdentifier.toString(), dimensionTypeIdentifier.toString(), $seed));
+        DimensionEntry dimensionEntry = new DimensionEntry(true, dimensionIdentifier.toString(), dimensionTypeIdentifier.toString(), $seed);
+        storage.getModel().dimension_list.add(dimensionEntry);
         storage.writeStorage();
+
+        WorldManager.requestToCreateWorld(dimensionEntry);
 
         LocaleHelper.sendBroadcastByKey("world.dimension.created", dimensionIdentifier);
         return CommandHelper.Return.SUCCESS;
@@ -144,22 +142,23 @@ public class WorldInitializer extends ModuleInitializer {
         String identifier = RegistryHelper.ofString(world);
         checkBlacklist(ctx, identifier);
 
-        Optional<DimensionEntry> first = storage.getModel().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
-        if (first.isEmpty()) {
+        Optional<DimensionEntry> dimensionEntryOpt = storage.getModel().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
+        if (dimensionEntryOpt.isEmpty()) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found");
             return CommandHelper.Return.FAIL;
         }
-        // just delete it
+
+        // request the deletion
         WorldManager.requestToDeleteWorld(world);
 
+        // set the new seed
         Boolean $useTheSameSeed = useTheSameSeed.orElse(false);
-
-        long newSeed = $useTheSameSeed ? first.get().getSeed() : RandomSeed.getSeed();
-        WorldManager.requestToCreateWorld(ServerHelper.getDefaultServer(), Identifier.of(identifier), Identifier.of(first.get().getDimension_type()), newSeed);
-
-        // save the new seed
-        first.get().setSeed(newSeed);
+        long newSeed = $useTheSameSeed ? dimensionEntryOpt.get().getSeed() : RandomSeed.getSeed();
+        dimensionEntryOpt.get().setSeed(newSeed);
         storage.writeStorage();
+
+        // request the creation
+        WorldManager.requestToCreateWorld(dimensionEntryOpt.get());
 
         LocaleHelper.sendBroadcastByKey("world.dimension.reset", identifier);
         return CommandHelper.Return.SUCCESS;
