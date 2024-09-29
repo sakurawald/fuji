@@ -34,6 +34,7 @@ command_toolbox.compass
 command_toolbox.extinguish
 command_toolbox.feed
 command_toolbox.fly
+command_toolbox.freeze
 command_toolbox.glow
 command_toolbox.god
 command_toolbox.hat
