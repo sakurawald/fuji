@@ -20,7 +20,8 @@ public class CommandManagerMixin {
         ServerPlayerEntity player = parseResults.getContext().getSource().getPlayer();
         if (player == null) return;
 
-        long cooldown = CommandCooldownInitializer.calculateCommandCooldown(player, string);
+        long cooldown = CommandCooldownInitializer.computeLeftTime(player, string);
+
         if (cooldown > 0) {
             LocaleHelper.sendActionBarByKey(player, "command_cooldown.cooldown", cooldown / 1000);
             ci.cancel();
