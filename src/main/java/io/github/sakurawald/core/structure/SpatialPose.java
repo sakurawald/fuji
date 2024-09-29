@@ -46,10 +46,12 @@ public class SpatialPose {
         return new SpatialPose(world, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), player.getYaw(), player.getPitch());
     }
 
+    @SuppressWarnings("unused")
     public ServerWorld ofDimension() {
         return RegistryHelper.ofServerWorld(Identifier.of(this.level));
     }
 
+    @SuppressWarnings("unused")
     public @NotNull BlockPos ofBlockPos() {
         return new BlockPos((int) this.x, (int) this.y, (int) this.z);
     }
@@ -58,6 +60,7 @@ public class SpatialPose {
         return this.level.equals(level.getRegistryKey().getValue().toString());
     }
 
+    @SuppressWarnings("unused")
     public double distanceToSqr(@NotNull SpatialPose spatialPose) {
         if (!this.level.equals(spatialPose.level)) return Double.MAX_VALUE;
         double x = this.x - spatialPose.x;
