@@ -492,6 +492,16 @@ public class ConfigModel {
             public Near near = new Near();
             public Jump jump = new Jump();
             public Compass compass = new Compass();
+            public Glow glow = new Glow();
+            public Freeze freeze = new Freeze();
+
+            public static class Glow {
+                public boolean enable = false;
+            }
+
+            public static class Freeze {
+                public boolean enable = false;
+            }
 
             public static class Bed {
                 public boolean enable = false;
