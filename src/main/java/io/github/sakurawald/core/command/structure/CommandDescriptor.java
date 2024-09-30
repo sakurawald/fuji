@@ -128,7 +128,8 @@ public class CommandDescriptor {
 
     private static CommandNode<ServerCommandSource> computeRedirectTargetOfOptionalArgument(List<Argument> arguments) {
         List<String> prefix = arguments.stream()
-            .takeWhile(arg -> !arg.isOptional() && !arg.isCommandSource())
+            .filter(arg -> !arg.isCommandSource())
+            .takeWhile(arg -> !arg.isOptional())
             .map(Argument::getArgumentName)
             .toList();
 
