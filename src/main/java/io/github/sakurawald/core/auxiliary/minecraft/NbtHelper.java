@@ -2,6 +2,7 @@ package io.github.sakurawald.core.auxiliary.minecraft;
 
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.structure.SpatialBlock;
 import lombok.experimental.UtilityClass;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
@@ -129,7 +130,7 @@ public class NbtHelper {
         return NbtComponent.of(ret);
     }
 
-    public static @Nullable String getUuid(@Nullable NbtComponent nbtComponent) {
+    public static @Nullable String computeUuid(@Nullable NbtComponent nbtComponent) {
         if (nbtComponent == null) return null;
 
         NbtCompound root = nbtComponent.copyNbt();
@@ -145,18 +146,22 @@ public class NbtHelper {
         return dimension + "#" + pos;
     }
 
-    public static String getUuid(World world, BlockPos blockPos) {
+    public static String computeUuid(World world, BlockPos blockPos) {
         return UUID.nameUUIDFromBytes(formatString(world, blockPos).getBytes()).toString();
     }
 
     public static @NotNull String getOrMakeUUIDNbt(ItemStack itemStack) {
         NbtComponent nbtComponent = itemStack.get(DataComponentTypes.CUSTOM_DATA);
-        if (getUuid(nbtComponent) == null) {
+        if (computeUuid(nbtComponent) == null) {
             nbtComponent = addUuidToNbtComponentIfAbsent(nbtComponent);
             itemStack.set(DataComponentTypes.CUSTOM_DATA, nbtComponent);
         }
 
         //noinspection DataFlowIssue
-        return getUuid(nbtComponent);
+        return computeUuid(nbtComponent);
+    }
+
+    public static String computeUuid(SpatialBlock spatialBlock) {
+        return computeUuid(spatialBlock.ofDimension(), spatialBlock.ofBlockPos());
     }
 }

@@ -23,7 +23,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
     @Inject(method = "swingHand", at = @At("HEAD"))
     void onPlayerLeftClick(Hand hand, CallbackInfo ci) {
         if (hand.equals(Hand.MAIN_HAND)) {
-            String uuid = NbtHelper.getUuid(player.getMainHandStack().get(DataComponentTypes.CUSTOM_DATA));
+            String uuid = NbtHelper.computeUuid(player.getMainHandStack().get(DataComponentTypes.CUSTOM_DATA));
             if (uuid == null) return;
 
             ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
