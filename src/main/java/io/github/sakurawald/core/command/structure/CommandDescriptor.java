@@ -11,7 +11,6 @@ import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
-import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.core.command.exception.AbortCommandExecutionException;
@@ -30,7 +29,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,22 +37,18 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class CommandDescriptor {
+
     Method method;
+
     List<Argument> arguments;
 
-    private static LiteralArgumentBuilder<ServerCommandSource> makeLiteralArgumentBuilder(String name) {
-        return CommandManager.literal(name);
+    private static LiteralArgumentBuilder<ServerCommandSource> makeLiteralArgumentBuilder(Argument argument) {
+        return CommandManager.literal(argument.getArgumentName());
     }
 
-    private static RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(Parameter parameter) {
-        /* verify */
-        CommandSource commandSource = parameter.getDeclaredAnnotation(CommandSource.class);
-        if (commandSource != null) {
-            throw new RuntimeException("It's likely you specify a wrong `parameter index` for the command pattern.");
-        }
-
+    private static RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(Argument argument) {
         /* use adapter to make the required argument builder */
-        return BaseArgumentTypeAdapter.getAdapter(parameter).makeRequiredArgumentBuilder(parameter);
+        return BaseArgumentTypeAdapter.getAdapter(argument.getType()).makeRequiredArgumentBuilder(argument.getArgumentName());
     }
 
     @SuppressWarnings("RedundantIfStatement")
@@ -94,13 +88,16 @@ public class CommandDescriptor {
         return (LiteralArgumentBuilder<ServerCommandSource>) root;
     }
 
-    private static List<Object> makeCommandFunctionArgs(CommandContext<ServerCommandSource> ctx, Method method) {
+    protected List<Object> makeCommandFunctionArgs(CommandContext<ServerCommandSource> ctx, CommandDescriptor descriptor) {
         List<Object> args = new ArrayList<>();
 
-        for (Parameter parameter : method.getParameters()) {
+        for (Argument argument : descriptor.arguments) {
+            /* the literal argument doesn't receive a value. */
+            if (argument.isLiteralArgument()) continue;
 
+            /* inject the value into a required argument. */
             try {
-                Object arg = BaseArgumentTypeAdapter.getAdapter(parameter).makeParameterObject(ctx, parameter);
+                Object arg = BaseArgumentTypeAdapter.getAdapter(argument.getType()).makeParameterObject(ctx, argument);
                 args.add(arg);
             } catch (Exception e) {
                 /*
@@ -131,7 +128,7 @@ public class CommandDescriptor {
 
     private static CommandNode<ServerCommandSource> computeRedirectTargetOfOptionalArgument(List<Argument> arguments) {
         List<String> prefix = arguments.stream()
-            .takeWhile(arg -> !arg.isOptional())
+            .takeWhile(arg -> !arg.isOptional() && !arg.isCommandSource())
             .map(Argument::getArgumentName)
             .toList();
 
@@ -142,11 +139,15 @@ public class CommandDescriptor {
         List<ArgumentBuilder<ServerCommandSource, ?>> builders = new ArrayList<>();
         descriptor.arguments
             .stream()
-            // ignore the optional arguments, since we will process them in the second pass.
-            .filter(it -> !it.isOptional())
+            .filter(
+                it ->
+                    // ignore the optional arguments, since we will process them in the second pass.
+                    !it.isOptional()
+                        // ignore the command source arguments, the command source value is directly inject into the method invoke, should not register it in game.
+                        && !it.isCommandSource())
             .forEach(argument -> {
                 // make the builder
-                ArgumentBuilder<ServerCommandSource, ?> builder = makeArgumentBuilder(descriptor, argument);
+                ArgumentBuilder<ServerCommandSource, ?> builder = makeArgumentBuilder(argument);
 
                 // set requirement specified by the argument for the builder
                 setRequirementForArgumentBuilder(builder, argument.getRequirement());
@@ -158,27 +159,25 @@ public class CommandDescriptor {
         return builders;
     }
 
-    private static ArgumentBuilder<ServerCommandSource, ?> makeArgumentBuilder(CommandDescriptor descriptor, Argument argument) {
+    private static ArgumentBuilder<ServerCommandSource, ?> makeArgumentBuilder(Argument argument) {
         ArgumentBuilder<ServerCommandSource, ?> builder;
         if (argument.isRequiredArgument()) {
-            int parameterIndex = argument.getMethodParameterIndex();
-            Parameter parameter = descriptor.method.getParameters()[parameterIndex];
-            builder = makeRequiredArgumentBuilder(parameter);
+            builder = makeRequiredArgumentBuilder(argument);
         } else {
-            builder = makeLiteralArgumentBuilder(argument.getArgumentName());
+            builder = makeLiteralArgumentBuilder(argument);
         }
         return builder;
     }
 
-    private static Command<ServerCommandSource> makeCommandFunctionClosure(CommandDescriptor descriptor) {
+    protected Command<ServerCommandSource> makeCommandFunctionClosure(CommandDescriptor descriptor) {
         return (ctx) -> {
             /* verify command source */
-            if (!verifyCommandSource(ctx, descriptor.method)) {
+            if (!verifyCommandSource(ctx, descriptor)) {
                 return CommandHelper.Return.FAIL;
             }
 
             /* invoke the command function */
-            List<Object> args = makeCommandFunctionArgs(ctx, descriptor.method);
+            List<Object> args = makeCommandFunctionArgs(ctx, descriptor);
             int value;
             try {
                 value = (int) descriptor.method.invoke(null, args.toArray());
@@ -199,19 +198,18 @@ public class CommandDescriptor {
         };
     }
 
-    private static boolean verifyCommandSource(CommandContext<ServerCommandSource> ctx, Method method) {
-        Parameter expectedCommandSourceParameter = null;
+    private static boolean verifyCommandSource(CommandContext<ServerCommandSource> ctx, CommandDescriptor descriptor) {
+        List<Argument> expectedCommandSources = descriptor.arguments
+            .stream()
+            .filter(Argument::isCommandSource)
+            .toList();
 
-        for (Parameter parameter : method.getParameters()) {
-            if (parameter.isAnnotationPresent(CommandSource.class)) {
-                expectedCommandSourceParameter = parameter;
-                break;
-            }
-        }
+        // yeah, any type of source can use it.
+        if (expectedCommandSources.isEmpty()) return true;
+        // oh no, specify too many command sources.
+        if (expectedCommandSources.size() > 1) throw new IllegalArgumentException("Expected only one command source: " + descriptor);
 
-        if (expectedCommandSourceParameter == null) return true;
-
-        return BaseArgumentTypeAdapter.getAdapter(expectedCommandSourceParameter).verifyCommandSource(ctx);
+        return BaseArgumentTypeAdapter.getAdapter(expectedCommandSources.getFirst().getType()).verifyCommandSource(ctx);
     }
 
     private static void reportException(ServerCommandSource source, Method method, Throwable throwable) {
@@ -269,12 +267,10 @@ public class CommandDescriptor {
             .filter(Argument::isOptional)
             .forEach(optionalArgument -> {
                 /* make it */
-                int parameterIndex = optionalArgument.getMethodParameterIndex();
-                Parameter parameter = this.method.getParameters()[parameterIndex];
                 ArgumentBuilder<ServerCommandSource, ?> optionalArgumentBuilder =
                     CommandManager
                         .literal("--" + optionalArgument.getArgumentName())
-                        .then(makeRequiredArgumentBuilder(parameter).executes(redirectTargetNode.getCommand()).redirect(redirectTargetNode));
+                        .then(makeRequiredArgumentBuilder(optionalArgument).executes(redirectTargetNode.getCommand()).redirect(redirectTargetNode));
 
                 /* register it */
                 redirectTargetNode.addChild(optionalArgumentBuilder.build());
