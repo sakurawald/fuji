@@ -38,7 +38,7 @@ public abstract class BaseArgumentTypeAdapter {
 
     }
 
-    public abstract boolean match(Type type);
+    protected abstract boolean match(Type type);
 
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(Parameter parameter) {
         String argumentName = parameter.getName();
