@@ -274,6 +274,8 @@ public class CommandDescriptor {
     }
 
     public void register() {
+        LogUtil.debug("register command: {}", this);
+
         /* first pass */
         registerNonOptionalArguments();
 
