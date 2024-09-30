@@ -55,17 +55,17 @@ public class CommandAnnotationProcessor {
         Managers.getModuleManager().getModuleRegistry().values()
             .stream()
             .filter(Objects::nonNull)
-            .forEach(initializer -> processClass(initializer.getClass(), initializer));
+            .forEach(initializer -> processClass(initializer.getClass()));
     }
 
-    private static void processClass(Class<?> clazz, Object instance) {
+    private static void processClass(Class<?> clazz) {
         Set<Method> methods = ReflectionUtil.getMethodsWithAnnotation(clazz, CommandNode.class);
         for (Method method : methods) {
-            processMethod(clazz, instance, method);
+            processMethod(clazz, method);
         }
     }
 
-    private static void processMethod(Class<?> clazz, Object instance, Method method) {
+    private static void processMethod(Class<?> clazz, Method method) {
         /* verify */
         if (!method.getReturnType().equals(int.class)) {
             throw new RuntimeException("The method `%s` in class `%s` must return the primitive int data type.".formatted(method.getName(), clazz.getName()));
@@ -76,13 +76,13 @@ public class CommandAnnotationProcessor {
         }
 
         /* make command descriptor */
-        CommandDescriptor descriptor = makeCommandDescriptor(clazz, instance, method);
+        CommandDescriptor descriptor = makeCommandDescriptor(clazz, method);
 
         /* register the command descriptor */
         descriptor.register();
     }
 
-    private static @NotNull CommandDescriptor makeCommandDescriptor(Class<?> clazz, Object instance, Method method) {
+    private static @NotNull CommandDescriptor makeCommandDescriptor(Class<?> clazz, Method method) {
         List<Argument> argumentList = new ArrayList<>();
 
         /* process the @CommandNode above the class. */
@@ -144,7 +144,7 @@ public class CommandAnnotationProcessor {
             throw new RuntimeException("The argument list of @CommandNode annotated in method `%s` in class `%s` is empty.".formatted(method.getName(), clazz.getName()));
         }
 
-        return new CommandDescriptor(instance, method, argumentList);
+        return new CommandDescriptor(method, argumentList);
     }
 
 }
