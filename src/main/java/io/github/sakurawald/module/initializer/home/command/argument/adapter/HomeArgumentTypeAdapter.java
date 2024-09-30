@@ -12,7 +12,6 @@ import io.github.sakurawald.module.initializer.home.command.argument.wrapper.Hom
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 import java.util.Map;
 

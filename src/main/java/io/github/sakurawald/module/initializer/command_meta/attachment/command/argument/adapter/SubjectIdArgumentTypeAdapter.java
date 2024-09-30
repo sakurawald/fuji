@@ -10,7 +10,6 @@ import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.command_meta.attachment.command.argument.wrapper.SubjectId;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
 public class SubjectIdArgumentTypeAdapter extends BaseArgumentTypeAdapter {

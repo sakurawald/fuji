@@ -11,7 +11,6 @@ import io.github.sakurawald.core.command.argument.wrapper.impl.DimensionType;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
 public class DimensionTypeArgumentTypeAdapter extends BaseArgumentTypeAdapter {

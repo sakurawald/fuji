@@ -10,7 +10,6 @@ import io.github.sakurawald.module.initializer.kit.KitInitializer;
 import io.github.sakurawald.module.initializer.kit.command.argument.wrapper.KitName;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
 public class KitNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {

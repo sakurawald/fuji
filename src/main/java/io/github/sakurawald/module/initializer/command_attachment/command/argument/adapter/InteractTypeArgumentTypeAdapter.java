@@ -9,7 +9,6 @@ import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.module.initializer.command_attachment.command.argument.wrapper.InteractType;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
 public class InteractTypeArgumentTypeAdapter extends BaseArgumentTypeAdapter {

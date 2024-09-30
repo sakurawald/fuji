@@ -3,7 +3,6 @@ package io.github.sakurawald.module.mixin.command_spy;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.ParseResults;
 import io.github.sakurawald.module.initializer.command_spy.CommandSpyInitializer;
-import net.minecraft.client.network.ClientCommandSource;
 import net.minecraft.server.command.ServerCommandSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
