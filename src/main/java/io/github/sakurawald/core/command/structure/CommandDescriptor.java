@@ -29,7 +29,6 @@ import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class CommandDescriptor {
         /* verify */
         CommandSource commandSource = parameter.getDeclaredAnnotation(CommandSource.class);
         if (commandSource != null) {
-            throw new RuntimeException("It's like you specify a wrong `parameter index` for the command pattern.");
+            throw new RuntimeException("It's likely you specify a wrong `parameter index` for the command pattern.");
         }
 
         /* use adapter to make the required argument builder */
@@ -98,16 +97,10 @@ public class CommandDescriptor {
     private static List<Object> makeCommandFunctionArgs(CommandContext<ServerCommandSource> ctx, Method method) {
         List<Object> args = new ArrayList<>();
 
-        Parameter[] parameters = method.getParameters();
-        for (Parameter parameter : parameters) {
+        for (Parameter parameter : method.getParameters()) {
 
             try {
-                Object arg = BaseArgumentTypeAdapter.getAdapter(parameter).makeArgumentObject(ctx, parameter);
-
-                if (parameter.getType().equals(Optional.class)) {
-                    arg = Optional.of(arg);
-                }
-
+                Object arg = BaseArgumentTypeAdapter.getAdapter(parameter).makeParameterObject(ctx, parameter);
                 args.add(arg);
             } catch (Exception e) {
                 /*
@@ -186,10 +179,10 @@ public class CommandDescriptor {
 
             /* invoke the command function */
             List<Object> args = makeCommandFunctionArgs(ctx, descriptor.method);
-            Object value;
+            int value;
             try {
-                value = descriptor.method.invoke(null, args.toArray());
-            } catch (IllegalAccessException | InvocationTargetException e) {
+                value = (int) descriptor.method.invoke(null, args.toArray());
+            } catch (Exception e) {
                 // get the real exception during reflection.
                 Throwable theRealException = e.getCause();
 
@@ -202,7 +195,7 @@ public class CommandDescriptor {
                 return CommandHelper.Return.FAIL;
             }
 
-            return (int) value;
+            return value;
         };
     }
 
@@ -222,7 +215,7 @@ public class CommandDescriptor {
     }
 
     private static void reportException(ServerCommandSource source, Method method, Throwable throwable) {
-        // report to console
+        /* report to console */
         String string = """
             [Fuji Exception Catcher]
             - Source: %s
@@ -237,9 +230,8 @@ public class CommandDescriptor {
             , throwable.toString());
         LogUtil.error(string, throwable);
 
-        // report to command source
+        /* report to command source */
         String stacktrace = String.join("\n", LogUtil.getStackTraceAsList(throwable));
-
         MutableText report = LocaleHelper.getTextByValue(source, string)
             .copy()
             .setStyle(Style.EMPTY
