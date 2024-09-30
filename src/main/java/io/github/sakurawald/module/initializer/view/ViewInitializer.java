@@ -6,7 +6,7 @@ import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.OfflinePlayerName;
-import io.github.sakurawald.core.command.exception.AbortOperationException;
+import io.github.sakurawald.core.command.exception.AbortCommandExecutionException;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.view.gui.EnderChestRedirectScreen;
 import io.github.sakurawald.module.initializer.view.gui.InventoryRedirectScreen;
@@ -19,7 +19,7 @@ public class ViewInitializer extends ModuleInitializer {
     private static void checkSelfView(ServerPlayerEntity source, OfflinePlayerName target) {
         if (source.getGameProfile().getName().equals(target.getValue())) {
             LocaleHelper.sendMessageByKey(source, "view.failed.self_view");
-            throw new AbortOperationException();
+            throw new AbortCommandExecutionException();
         }
     }
 

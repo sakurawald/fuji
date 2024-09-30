@@ -8,7 +8,7 @@ import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
-import io.github.sakurawald.core.command.exception.AbortOperationException;
+import io.github.sakurawald.core.command.exception.AbortCommandExecutionException;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -32,17 +32,17 @@ public class ShellInitializer extends ModuleInitializer {
 
         if (!config.enable_warning.equals("CONFIRM")) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "shell.failed.rtfm");
-            throw new AbortOperationException();
+            throw new AbortCommandExecutionException();
         }
 
         if (config.security.only_allow_console && ctx.getSource().getPlayer() != null) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "command.console_only");
-            throw new AbortOperationException();
+            throw new AbortCommandExecutionException();
         }
 
         if (ctx.getSource().getName() != null && !config.security.allowed_player_names.contains(ctx.getSource().getName())) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "shell.failed.not_in_allowed_list");
-            throw new AbortOperationException();
+            throw new AbortCommandExecutionException();
         }
 
     }
