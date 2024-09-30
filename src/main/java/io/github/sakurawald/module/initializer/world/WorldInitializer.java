@@ -88,6 +88,16 @@ public class WorldInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
+    @CommandNode("world list")
+    private static int $list(@CommandSource ServerPlayerEntity player) {
+        ServerHelper.getWorlds().forEach(world -> {
+            String dimensionType = world.getDimensionEntry().getIdAsString();
+            String dimension = String.valueOf(world.getRegistryKey().getValue());
+            LocaleHelper.sendMessageByKey(player, "world.dimension.list.entry", dimension, dimensionType);
+        });
+        return CommandHelper.Return.SUCCESS;
+    }
+
     @CommandNode("world create")
     private static int $create(@CommandSource CommandContext<ServerCommandSource> ctx, String name,
                                Optional<Long> seed, DimensionType dimensionType) {
