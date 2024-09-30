@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Map;
 
 @Mixin(Text.class)
-public interface ComponentMixin {
+public interface TextMixin {
 
     @Inject(method = "translatable(Ljava/lang/String;[Ljava/lang/Object;)Lnet/minecraft/text/MutableText;", at = @At("RETURN"), cancellable = true)
     private static void hijackTranslatableText(String key, Object[] args, @NotNull CallbackInfoReturnable<MutableText> cir) {
@@ -37,12 +37,12 @@ public interface ComponentMixin {
         Map<String, String> key2value = SystemMessageInitializer.config.getModel().key2value;
         if (key2value.containsKey(key)) {
             if (ServerHelper.getDefaultServer() == null) {
-                LogUtil.warn("server is null currently -> cannot hijack message key: {}", key);
+                LogUtil.warn("server is null currently -> cannot hijack the text with the key: {}", key);
                 return null;
             }
             String value = key2value.get(key);
-            String miniMessageSource = MutableText.of(new TranslatableTextContent("force_fallback", value, args)).getString();
-            return LocaleHelper.getTextByValue(null, miniMessageSource).copy();
+            String quickMessageString = MutableText.of(new TranslatableTextContent("force_fallback", value, args)).getString();
+            return LocaleHelper.getTextByValue(null, quickMessageString).copy();
         }
         return null;
     }

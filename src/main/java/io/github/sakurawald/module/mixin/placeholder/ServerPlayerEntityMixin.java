@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayerEntity.class)
-public abstract class PlayerEntityMixin {
+public abstract class ServerPlayerEntityMixin {
 
     @Inject(method = "increaseStat(Lnet/minecraft/stat/Stat;I)V", at = @At("HEAD"))
     public void syncSumUpPlaceholderInMemory(@NotNull Stat<?> stat, int i, CallbackInfo ci) {
