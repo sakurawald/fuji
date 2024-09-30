@@ -80,72 +80,20 @@ public class CommandDescriptor {
     }
 
     @SuppressWarnings("unchecked")
-    private static LiteralArgumentBuilder<ServerCommandSource> makeRootArgumentBuilder(
-        List<ArgumentBuilder<ServerCommandSource, ?>> builders
-        , Command<ServerCommandSource> command) {
-
+    private static LiteralArgumentBuilder<ServerCommandSource> makeRootArgumentBuilder(List<ArgumentBuilder<ServerCommandSource, ?>> builders, Command<ServerCommandSource> command) {
         ArgumentBuilder<ServerCommandSource, ?> root = null;
 
-        for (int i = builders.size() - 1; i >= 0; i--) {
-            ArgumentBuilder<ServerCommandSource, ?> node = builders.get(i);
-
+        for (ArgumentBuilder<ServerCommandSource, ?> node : builders.reversed()) {
             if (root == null) {
                 root = node;
                 root = root.executes(command);
                 continue;
             }
-
             root = node.then(root);
         }
 
-        // the command dispatcher only accepts the LiteralArgumentBuilder as the root command node.
+        // the command dispatcher only accepts the LiteralArgumentBuilder for register()
         return (LiteralArgumentBuilder<ServerCommandSource>) root;
-    }
-
-    private static boolean verifyCommandSource(CommandContext<ServerCommandSource> ctx, Method method) {
-        Parameter expectedCommandSourceParameter = null;
-
-        for (Parameter parameter : method.getParameters()) {
-            if (parameter.isAnnotationPresent(CommandSource.class)) {
-                expectedCommandSourceParameter = parameter;
-                break;
-            }
-        }
-
-        if (expectedCommandSourceParameter == null) return true;
-
-        return BaseArgumentTypeAdapter.getAdapter(expectedCommandSourceParameter).verifyCommandSource(ctx);
-    }
-
-    private static void reportException(ServerCommandSource source, Object instance, Method method, Throwable throwable) {
-        // report to console
-        String string = """
-            [Fuji Exception Catcher]
-            - Source: %s
-            - Module: %s
-            - Class: %s
-            - Method: %s
-            - Message: %s
-
-            """.formatted(
-            source.getName()
-            , ModuleManager.computeModulePath(instance.getClass().getName())
-            , instance.getClass().getName()
-            , method.getName()
-            , throwable.toString());
-        LogUtil.error(string, throwable);
-
-        // report to command source
-        String stacktrace = String.join("\n", LogUtil.getStackTraceAsList(throwable));
-
-        MutableText report = LocaleHelper.getTextByValue(source, string)
-            .copy()
-            .setStyle(Style.EMPTY
-                .withColor(16736000)
-                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of("Click to copy the stacktrace.")))
-                .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, stacktrace)));
-
-        source.sendMessage(report);
     }
 
     private static List<Object> makeCommandFunctionArgs(CommandContext<ServerCommandSource> ctx, Method method) {
@@ -259,6 +207,52 @@ public class CommandDescriptor {
         };
     }
 
+    private static boolean verifyCommandSource(CommandContext<ServerCommandSource> ctx, Method method) {
+        Parameter expectedCommandSourceParameter = null;
+
+        for (Parameter parameter : method.getParameters()) {
+            if (parameter.isAnnotationPresent(CommandSource.class)) {
+                expectedCommandSourceParameter = parameter;
+                break;
+            }
+        }
+
+        if (expectedCommandSourceParameter == null) return true;
+
+        return BaseArgumentTypeAdapter.getAdapter(expectedCommandSourceParameter).verifyCommandSource(ctx);
+    }
+
+    private static void reportException(ServerCommandSource source, Object instance, Method method, Throwable throwable) {
+        // report to console
+        String string = """
+            [Fuji Exception Catcher]
+            - Source: %s
+            - Module: %s
+            - Class: %s
+            - Method: %s
+            - Message: %s
+
+            """.formatted(
+            source.getName()
+            , ModuleManager.computeModulePath(instance.getClass().getName())
+            , instance.getClass().getName()
+            , method.getName()
+            , throwable.toString());
+        LogUtil.error(string, throwable);
+
+        // report to command source
+        String stacktrace = String.join("\n", LogUtil.getStackTraceAsList(throwable));
+
+        MutableText report = LocaleHelper.getTextByValue(source, string)
+            .copy()
+            .setStyle(Style.EMPTY
+                .withColor(16736000)
+                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of("Click to copy the stacktrace.")))
+                .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, stacktrace)));
+
+        source.sendMessage(report);
+    }
+
     public void register() {
         LogUtil.debug("register command: {}", this);
 
@@ -280,29 +274,28 @@ public class CommandDescriptor {
     }
 
     private void registerOptionalArguments() {
-        CommandNode<ServerCommandSource> root = computeRedirectTargetOfOptionalArgument(this.arguments);
-        Command<ServerCommandSource> function = root.getCommand();
+        CommandNode<ServerCommandSource> redirectTargetNode = computeRedirectTargetOfOptionalArgument(this.arguments);
 
-        // filter
         this.arguments.stream()
             .filter(Argument::isOptional)
             .forEach(optionalArgument -> {
+                /* make it */
                 int parameterIndex = optionalArgument.getMethodParameterIndex();
                 Parameter parameter = this.method.getParameters()[parameterIndex];
+                ArgumentBuilder<ServerCommandSource, ?> optionalArgumentBuilder =
+                    CommandManager
+                        .literal("--" + optionalArgument.getArgumentName())
+                        .then(makeRequiredArgumentBuilder(parameter).executes(redirectTargetNode.getCommand()).redirect(redirectTargetNode));
 
-                ArgumentBuilder<ServerCommandSource, ?> optionalArgumentBuilder = CommandManager.literal("--" + optionalArgument.getArgumentName())
-                    .then(makeRequiredArgumentBuilder(parameter).executes(function).redirect(root));
-
-                // register it
-                root.addChild(optionalArgumentBuilder.build());
+                /* register it */
+                redirectTargetNode.addChild(optionalArgumentBuilder.build());
             });
     }
 
     @Override
     public String toString() {
-        return "/" + arguments.stream().map(Argument::toString).collect(Collectors.joining(" ")) + "\n"
-            + "method = " + method;
+        return "/" + this.arguments.stream().map(Argument::toString).collect(Collectors.joining(" ")) + "\n"
+            + "method = " + this.method;
     }
-
 
 }

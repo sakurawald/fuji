@@ -6,8 +6,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * 1. Treat RequiredArgument the same as the LiteralArgument, except the GreedyStringArgument.
- * 2. The GreedyStringArgument should always be the last argument.
+ * Rules:
+ * - There are 2 kinds of Argument: LiteralArgument and RequiredArgument.
+ * - The treatment of RequiredArgument is the same as the LiteralArgument, except the GreedyStringArgument.
+ * - The GreedyStringArgument should always be the last parameter written in the method.
+ * - An optional argument is a RequiredArgument.
  */
 @Getter
 public class Argument {
