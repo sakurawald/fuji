@@ -10,7 +10,6 @@ import io.github.sakurawald.module.initializer.command_scheduler.CommandSchedule
 import io.github.sakurawald.module.initializer.command_scheduler.command.argument.wrapper.ScheduleJobName;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
 public class ScheduleJobArgumentTypeAdapter extends BaseArgumentTypeAdapter {

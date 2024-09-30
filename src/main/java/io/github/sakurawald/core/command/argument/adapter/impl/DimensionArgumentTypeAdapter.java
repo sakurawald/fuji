@@ -13,7 +13,6 @@ import lombok.SneakyThrows;
 import net.minecraft.command.argument.DimensionArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
 public class DimensionArgumentTypeAdapter extends BaseArgumentTypeAdapter {
