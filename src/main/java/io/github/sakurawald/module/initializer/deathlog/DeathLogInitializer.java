@@ -148,13 +148,17 @@ public class DeathLogInitializer extends ModuleInitializer {
             .literal(String.valueOf(index))
             .fillStyle(Style.EMPTY
                 .withFormatting(Formatting.RED)
-                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,hoverText))
-                .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND,"/deathlog restore %s %d %s".formatted(from, index, to)))
+                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText))
+                .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/deathlog restore %s %d %s".formatted(from, index, to)))
             )
             .append(LocaleHelper.TEXT_SPACE);
     }
 
     public static void store(@NotNull ServerPlayerEntity player) {
+        /* verify */
+        if (player.getInventory().isEmpty()) return;
+
+        /* primary */
         Path path = STORAGE_PATH.resolve(getFileName(player.getGameProfile().getName()));
 
         NbtCompound root = NbtHelper.readOrDefault(path);

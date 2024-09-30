@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Set;
 
 @Mixin(value = ServerPlayerEntity.class)
-public abstract class ServerPlayerMixin {
+public abstract class ServerPlayerEntityMixin {
 
     @Unique
     @NotNull

@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 
 @Mixin(ServerPlayerEntity.class)
-
 public abstract class ServerPlayerMixin {
 
     @Inject(method = "setClientOptions", at = @At("HEAD"))

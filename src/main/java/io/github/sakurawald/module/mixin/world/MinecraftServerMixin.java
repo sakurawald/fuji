@@ -13,7 +13,7 @@ import java.util.Iterator;
 
 @Mixin(MinecraftServer.class)
 public abstract class MinecraftServerMixin {
-    /* After issue /rw reset, then it's possible that all the worlds will be ticked 2 times.
+    /* After issue /world reset, then it's possible that all the worlds will be ticked 2 times.
        and do it again it's 3 times...
      */
     @Redirect(method = "tickWorlds", at = @At(value = "INVOKE", target = "Ljava/lang/Iterable;iterator()Ljava/util/Iterator;", ordinal = 0), require = 0)
