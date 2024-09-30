@@ -32,7 +32,7 @@ public class ServerPlayerInteractionManagerMixin {
 
     @Inject(method = "interactItem", at = @At("HEAD"))
     void onPlayerRightClick(ServerPlayerEntity serverPlayerEntity, World world, @NotNull ItemStack itemStack, Hand hand, @NotNull CallbackInfoReturnable<ActionResult> cir) {
-        String uuid = NbtHelper.getUuid(itemStack.get(DataComponentTypes.CUSTOM_DATA));
+        String uuid = NbtHelper.computeUuid(itemStack.get(DataComponentTypes.CUSTOM_DATA));
         if (uuid == null) return;
 
         CommandAttachmentInitializer.triggerAttachmentModel(uuid, player, List.of(InteractType.RIGHT, InteractType.BOTH));
@@ -41,7 +41,7 @@ public class ServerPlayerInteractionManagerMixin {
     @Inject(method = "onBlockBreakingAction", at = @At("HEAD"))
     void onPlayerLeftClickBlock(BlockPos blockPos, boolean bl, int i, String string, CallbackInfo ci) {
         if (string.equals("actual start of destroying")) {
-            String uuid = NbtHelper.getUuid(player.getServerWorld(), blockPos);
+            String uuid = NbtHelper.computeUuid(player.getServerWorld(), blockPos);
             if (!CommandAttachmentInitializer.existsAttachmentModel(uuid)) return;
             CommandAttachmentInitializer.triggerAttachmentModel(uuid, player, List.of(InteractType.LEFT, InteractType.BOTH));
         }
@@ -51,7 +51,7 @@ public class ServerPlayerInteractionManagerMixin {
     void onPlayerRightClickBlock(ServerPlayerEntity serverPlayerEntity, @NotNull World world, ItemStack itemStack, Hand hand, @NotNull BlockHitResult blockHitResult, @NotNull CallbackInfoReturnable<ActionResult> cir) {
 
         if (hand == Hand.MAIN_HAND) {
-            String uuid = NbtHelper.getUuid(world, blockHitResult.getBlockPos());
+            String uuid = NbtHelper.computeUuid(world, blockHitResult.getBlockPos());
             if (!CommandAttachmentInitializer.existsAttachmentModel(uuid)) return;
             CommandAttachmentInitializer.triggerAttachmentModel(uuid, player, List.of(InteractType.RIGHT, InteractType.BOTH));
             cir.setReturnValue(ActionResult.FAIL);

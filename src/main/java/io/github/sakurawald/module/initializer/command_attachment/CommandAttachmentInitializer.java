@@ -56,7 +56,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     private static void testSteppingBlockForPlayer(ServerPlayerEntity player) {
         String playerName = player.getGameProfile().getName();
         String originalUuid = player2uuid.get(playerName);
-        String uuid = NbtHelper.getUuid(player.getServerWorld(), player.getSteppingPos());
+        String uuid = NbtHelper.computeUuid(player.getServerWorld(), player.getSteppingPos());
 
         if (uuid.equals(originalUuid)) return;
         // update value
@@ -209,7 +209,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         , GreedyString command
     ) {
         // get entity id
-        String uuid = NbtHelper.getUuid(player.getServerWorld(), blockPos);
+        String uuid = NbtHelper.computeUuid(player.getServerWorld(), blockPos);
         CommandAttachmentModel model = getAttachmentModel(uuid);
 
         // new entry
@@ -255,7 +255,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
     @CommandNode("detach-block-all")
     private static int detachBlockAll(@CommandSource ServerPlayerEntity player, BlockPos blockPos) {
-        String uuid = NbtHelper.getUuid(player.getServerWorld(), blockPos);
+        String uuid = NbtHelper.computeUuid(player.getServerWorld(), blockPos);
 
         doDetachAttachment(player, uuid);
         return CommandHelper.Return.SUCCESS;
@@ -270,7 +270,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     private static int queryItem(@CommandSource ServerPlayerEntity player) {
         ItemStack mainHandStack = player.getMainHandStack();
         checkItemStackInHand(player, mainHandStack);
-        String uuid = NbtHelper.getUuid(mainHandStack.get(DataComponentTypes.CUSTOM_DATA));
+        String uuid = NbtHelper.computeUuid(mainHandStack.get(DataComponentTypes.CUSTOM_DATA));
 
         doQueryAttachment(player, uuid);
         return CommandHelper.Return.SUCCESS;
@@ -285,7 +285,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
     @CommandNode("query-block")
     private static int queryBlock(@CommandSource ServerPlayerEntity player, BlockPos blockPos) {
-        String uuid = NbtHelper.getUuid(player.getServerWorld(), blockPos);
+        String uuid = NbtHelper.computeUuid(player.getServerWorld(), blockPos);
         doQueryAttachment(player, uuid);
         return CommandHelper.Return.SUCCESS;
     }
