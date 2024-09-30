@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Mixin(AbstractSignBlock.class)
-public class SignBlockMixin {
+public class AbstractSignBlockMixin {
 
     @Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
     private void listenSignBlockUse(BlockState blockState, @NotNull World world, BlockPos blockPos, @NotNull PlayerEntity player, BlockHitResult blockHitResult, @NotNull CallbackInfoReturnable<ActionResult> cir) {
