@@ -210,6 +210,7 @@
     "world.dimension.exist": "<red>Параметр уже существует",
     "world.dimension.not_found": "<red>The dimension %s not exists.",
     "world.dimension.reset": "<gold>Начать сброс размера ресурса %s",
+    "world.dimension.list.entry": "<gold>Dimension -> %s\n<gold>Dimension Type -> %s\n",
     "world_downloader.request": "<#8DDFCB>Игрок %s только что запросил загрузку файла мира (Размер: %.2f MB)",
     "world_downloader.response": "<#8DDFCB>Ссылка для скачивания: <hover:show_text:'<green>Откройте ссылку'><click:open_url:'%s'><green>[OPEN]</click></hover>",
     "deathlog.empty": "<red>Для этого игрока не найдено журналов смерти.",
@@ -243,5 +244,8 @@
     "command_permission.command.set_false": "<orange>Issue the command to<green> disallow <orange>all players to use the command `%s`: %s <hover:show_text:'<green>Copy to clipboard'><click:copy_to_clipboard:'%s'><green>[COPY]</click></hover>",
     "command_permission.command.unset": "<orange>Issue the command to <green>unset<orange> the requirement for command `%s`: %s <hover:show_text:'<green>Copy to clipboard'><click:copy_to_clipboard:'%s'><green>[COPY]</click></hover>",
     "glow.on": "<orange>Glow mode: on",
-    "glow.off": "<orange>Glow mode: off"
+    "glow.off": "<orange>Glow mode: off",
+    "fuji.list_commands.gui.title": "<blue>Server Commands",
+    "fuji.list_commands.gui.help.lore": "<green>Left click -> copy the command path",
+    "fuji.list_commands.gui.copy_command_path": "<orange>Copy the command path: `%s` <hover:show_text:'<green>Copy to clipboard'><click:copy_to_clipboard:'%s'><green>[COPY]</click></hover>"
 }
