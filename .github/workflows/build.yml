@@ -33,10 +33,12 @@ jobs:
             push_translations: true
 
             create_pull_request: true
-            localization_branch_name: crowdin-bot
-            pull_request_title: 'i18n: new translations from crowdin'
-            pull_request_body: 'i18n: new crowdin translations by [Crowdin GH Action](https://github.com/crowdin/github-action)'
             pull_request_base_branch_name: 'dev'
+            localization_branch_name: crowdin-bot
+            commit_message: 'i18n: new translations from crowdin'
+            pull_request_title: 'i18n: new translations from crowdin'
+            pull_request_body: 'i18n: new translations from crowdin'
+            pull_request_labels: 'i18n'
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
