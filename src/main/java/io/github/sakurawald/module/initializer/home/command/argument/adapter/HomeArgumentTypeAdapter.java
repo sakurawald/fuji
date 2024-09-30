@@ -5,6 +5,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
+import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.module.initializer.home.HomeInitializer;
 import io.github.sakurawald.module.initializer.home.command.argument.wrapper.HomeName;
@@ -28,13 +29,13 @@ public class HomeArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     }
 
     @Override
-    public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Parameter parameter) {
-        return new HomeName(StringArgumentType.getString(context, parameter.getName()));
+    public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
+        return new HomeName(StringArgumentType.getString(context, argument.getArgumentName()));
     }
 
     @Override
-    public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(Parameter parameter) {
-        return super.makeRequiredArgumentBuilder(parameter).suggests((context, builder) -> {
+    public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(String argumentName) {
+        return super.makeRequiredArgumentBuilder(argumentName).suggests((context, builder) -> {
                     ServerPlayerEntity player = context.getSource().getPlayer();
                     if (player == null) return builder.buildFuture();
 
