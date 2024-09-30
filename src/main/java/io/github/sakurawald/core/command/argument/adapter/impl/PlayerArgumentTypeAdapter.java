@@ -4,14 +4,13 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
+import io.github.sakurawald.core.command.argument.structure.Argument;
 import lombok.SneakyThrows;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
 
 public class PlayerArgumentTypeAdapter extends BaseArgumentTypeAdapter {
@@ -28,12 +27,12 @@ public class PlayerArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @SneakyThrows(CommandSyntaxException.class)
     @Override
-    public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Parameter parameter) {
-        if (parameter.isAnnotationPresent(CommandSource.class)) {
+    public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
+        if (argument.isCommandSource()) {
             return context.getSource().getPlayer();
         }
 
-        return EntityArgumentType.getPlayer(context,parameter.getName());
+        return EntityArgumentType.getPlayer(context, argument.getArgumentName());
     }
 
     @Override

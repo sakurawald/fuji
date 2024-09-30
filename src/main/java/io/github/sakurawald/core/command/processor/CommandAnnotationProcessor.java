@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -82,6 +83,15 @@ public class CommandAnnotationProcessor {
         descriptor.register();
     }
 
+    private static Class<?> unbox(Parameter parameter) {
+        if (parameter.getType().equals(Optional.class)) {
+            ParameterizedType parameterizedType = (ParameterizedType) parameter.getParameterizedType();
+            return (Class<?>) parameterizedType.getActualTypeArguments()[0];
+        }
+
+        return parameter.getType();
+    }
+
     private static @NotNull CommandDescriptor makeCommandDescriptor(Class<?> clazz, Method method) {
         List<Argument> argumentList = new ArrayList<>();
 
@@ -121,21 +131,25 @@ public class CommandAnnotationProcessor {
                 /* replace the required argument placeholder `$1` with the parameter in method whose index is 1*/
                 int methodParameterIndex = argument.getMethodParameterIndex();
                 Parameter parameter = method.getParameters()[methodParameterIndex];
+                Class<?> type = unbox(parameter);
                 boolean isOptional = parameter.getType().equals(Optional.class);
-                argumentList.set(argumentIndex, Argument.makeRequiredArgument(parameter.getName(), methodParameterIndex, isOptional, methodRequirement));
+                argumentList.set(argumentIndex, Argument.makeRequiredArgument(type, parameter.getName(), methodParameterIndex, isOptional, methodRequirement));
             }
         } else {
             /* generate the mappings between argument and parameter automatically. */
             Parameter[] parameters = method.getParameters();
             for (int parameterIndex = 0; parameterIndex < parameters.length; parameterIndex++) {
-                Parameter parameter = parameters[parameterIndex];
-
-                /* ignore @CommandSource, since it won't provide value for command argument. */
-                if (parameter.isAnnotationPresent(CommandSource.class)) continue;
-
                 /* append the argument to the tail*/
+                Parameter parameter = parameters[parameterIndex];
+                Class<?> type = unbox(parameter);
                 boolean isOptional = parameter.getType().equals(Optional.class);
-                argumentList.add(Argument.makeRequiredArgument(parameter.getName(), parameterIndex, isOptional, methodRequirement));
+                Argument argument = Argument.makeRequiredArgument(type, parameter.getName(), parameterIndex, isOptional, methodRequirement);
+                argumentList.add(argument);
+
+                /* mark as command source */
+                if (parameter.isAnnotationPresent(CommandSource.class)) {
+                    argument.markCommandSource();
+                }
             }
         }
 
