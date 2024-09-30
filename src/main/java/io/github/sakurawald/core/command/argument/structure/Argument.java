@@ -2,6 +2,8 @@ package io.github.sakurawald.core.command.argument.structure;
 
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * 1. Treat RequiredArgument the same as the LiteralArgument, except the GreedyStringArgument.
@@ -23,15 +25,15 @@ public class Argument {
         this.isOptional = isOptional;
         this.requirement = requirement;
 
-        // parse the method parameter index
-        this.methodParameterIndex = this.parseMethodParameterIndex();
+        // if it's a required argument placeholder...
+        this.methodParameterIndex = this.tryParseMethodParameterIndexFromArgumentName();
     }
 
-    public static Argument makeRequiredArgument(String argumentName, int methodParameterIndex, boolean isOptional, CommandRequirement requirement) {
+    public static Argument makeRequiredArgument(@NotNull String argumentName, int methodParameterIndex, boolean isOptional, @Nullable CommandRequirement requirement) {
         return new Argument(argumentName, methodParameterIndex, isOptional, requirement);
     }
 
-    public static Argument makeLiteralArgument(String argumentName, CommandRequirement requirement) {
+    public static Argument makeLiteralArgument(@NotNull String argumentName, @Nullable CommandRequirement requirement) {
         return new Argument(argumentName, THE_METHOD_PARAMETER_INDEX_FOR_LITERAL_ARGUMENT, false, requirement);
     }
 
@@ -69,7 +71,7 @@ public class Argument {
         return "%s{%s}".formatted(this.argumentName, this.computeRequirementString());
     }
 
-    private int parseMethodParameterIndex() {
+    private int tryParseMethodParameterIndexFromArgumentName() {
         // parse the method parameter index
         if (argumentName.startsWith(REQUIRED_ARGUMENT_PLACEHOLDER)) {
             this.methodParameterIndex = Integer.parseInt(argumentName.substring(REQUIRED_ARGUMENT_PLACEHOLDER.length()));
