@@ -17,17 +17,34 @@ It's good to have a checklist, to avoid forgetting something.
 
 ## Some interesting tests
 - Summon a fake player using `/player 1 spawn` and throw exp bottle to it. 
+  - Test the luckperms integration with fake-player user.
+- Issue the command `/tppos --z 128 --x 128 --y 128`.
+  - Test the context passing after command redirection.
 - See if a pickaxe gets the max power level in `/emchantment`.
+  - Test the lambda for power of providers.
 - See an inventory display contains a shulker box.
+  - Test the deep-level gui.
+  - Test the shulker entity reader. 
 - Try to move an afk player.
-- See chunks using `/chunks` .
 - Buy a new head in `/head`.
 - Get a kit from `/kit`.
+  - Test the screen gui.
 - Start a sample for a production work.
+  - Test the sign input gui.
+  - Test the chunks iterator.
+  - Test the hopper mixins.
 - Teleport to an offline player's location using `/tppos offline`.
+  - Test the player instance making.
+  - Test the offline data reader.
 - Enter afk using `/afk` and watch the player list.
-- Test the requirement of `/warp`
-- Test the requirement of `/world`
+- Test command requirements:
+  - Test the requirement of `/warp`
+  - Test the requirement of `/world`
+- Test platform environments:
+  - The fabric server-side environment.
+  - The fabric client-side environment.
+  - The neoforge client-side environment.
+  - The neoforge server-side environment.
  
 ## Publish a new version
 - sync the language files.
