@@ -85,8 +85,7 @@ public class CommandAnnotationProcessor {
     private static @NotNull CommandDescriptor makeCommandDescriptor(Class<?> clazz, Object instance, Method method) {
         List<Argument> argumentList = new ArrayList<>();
 
-        /* process the @CommandNode above the class.
-           To simplify the implementation, just treat the @CommandNode as the first argument. */
+        /* process the @CommandNode above the class. */
         CommandNode classAnnotation = clazz.getAnnotation(CommandNode.class);
         CommandRequirement classRequirement = clazz.getAnnotation(CommandRequirement.class);
         if (classAnnotation != null && !classAnnotation.value().isBlank()) {
@@ -96,25 +95,24 @@ public class CommandAnnotationProcessor {
         /* process the @CommandNode above the method. */
         method.setAccessible(true);
         CommandNode methodAnnotation = method.getAnnotation(CommandNode.class);
-        Arrays.stream(methodAnnotation.value().trim().split(" "))
+        CommandRequirement methodRequirement = null;
+        for (String argumentName : Arrays.stream(methodAnnotation.value().trim().split(" "))
             .filter(node -> !node.isBlank())
-            .forEach(node -> {
-                CommandRequirement methodRequirement = method.getAnnotation(CommandRequirement.class);
+            .toList()) {
 
-                /* pass the class requirement down, if the method requirement is null */
-                if (methodRequirement == null) {
-                    methodRequirement = classRequirement;
-                }
+            /* pass the class requirement down, if the method requirement is null */
+            methodRequirement = method.getAnnotation(CommandRequirement.class);
+            if (methodRequirement == null) {
+                methodRequirement = clazz.getAnnotation(CommandRequirement.class);
+            }
 
-                argumentList.add(Argument.makeLiteralArgument(node, methodRequirement));
-            });
+            argumentList.add(Argument.makeLiteralArgument(argumentName, methodRequirement));
+        }
 
         /* get the command requirement */
-        CommandRequirement commandRequirement = method.getAnnotation(CommandRequirement.class);
-
-        boolean isParameterIndexSpecifiedManually = argumentList.stream().anyMatch(Argument::isRequiredArgumentPlaceholder);
-        if (isParameterIndexSpecifiedManually) {
-            /* fill the command pattern manually. */
+        boolean hasAnyRequiredArgumentPlaceholder = argumentList.stream().anyMatch(Argument::isRequiredArgumentPlaceholder);
+        if (hasAnyRequiredArgumentPlaceholder) {
+            /* specify the mappings between argument and parameter manually.  */
             for (int argumentIndex = 0; argumentIndex < argumentList.size(); argumentIndex++) {
                 /* find $1, $2 ... and replace them with the correct argument. */
                 Argument argument = argumentList.get(argumentIndex);
@@ -124,25 +122,26 @@ public class CommandAnnotationProcessor {
                 int methodParameterIndex = argument.getMethodParameterIndex();
                 Parameter parameter = method.getParameters()[methodParameterIndex];
                 boolean isOptional = parameter.getType().equals(Optional.class);
-                argumentList.set(argumentIndex, Argument.makeRequiredArgument(parameter.getName(), methodParameterIndex, isOptional, commandRequirement));
+                argumentList.set(argumentIndex, Argument.makeRequiredArgument(parameter.getName(), methodParameterIndex, isOptional, methodRequirement));
             }
         } else {
-            /* fill the command pattern automatically. */
+            /* generate the mappings between argument and parameter automatically. */
             Parameter[] parameters = method.getParameters();
             for (int parameterIndex = 0; parameterIndex < parameters.length; parameterIndex++) {
                 Parameter parameter = parameters[parameterIndex];
+
                 /* ignore @CommandSource, since it won't provide value for command argument. */
                 if (parameter.isAnnotationPresent(CommandSource.class)) continue;
 
                 /* append the argument to the tail*/
                 boolean isOptional = parameter.getType().equals(Optional.class);
-                argumentList.add(Argument.makeRequiredArgument(parameter.getName(), parameterIndex, isOptional, commandRequirement));
+                argumentList.add(Argument.makeRequiredArgument(parameter.getName(), parameterIndex, isOptional, methodRequirement));
             }
         }
 
         /* verify */
         if (argumentList.isEmpty()) {
-            throw new RuntimeException("The @CommandNode annotation of method `%s` in class `%s` must have at least one argument.".formatted(method.getName(), clazz.getName()));
+            throw new RuntimeException("The argument list of @CommandNode annotated in method `%s` in class `%s` is empty.".formatted(method.getName(), clazz.getName()));
         }
 
         return new CommandDescriptor(instance, method, argumentList);

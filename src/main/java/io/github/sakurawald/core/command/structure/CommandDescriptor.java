@@ -68,27 +68,15 @@ public class CommandDescriptor {
         Predicate<ServerCommandSource> predicate = (ctx) -> {
             ServerPlayerEntity player = ctx.getPlayer();
             if (player == null) return true;
-            if (ctx.hasPermissionLevel(annotation.level())) return true;
             if (!annotation.string().isEmpty() && PermissionHelper.hasPermission(player.getUuid(), annotation.string()))
                 return true;
+            if (ctx.hasPermissionLevel(annotation.level())) return true;
 
             return false;
         };
 
         /* set the predicate */
         builder.requires(predicate);
-    }
-
-    private static ArgumentBuilder<ServerCommandSource, ?> getLastLiteralArgumentBuilder(List<ArgumentBuilder<ServerCommandSource, ?>> builders) {
-        for (int i = builders.size() - 1; i >= 0; i--) {
-            ArgumentBuilder<ServerCommandSource, ?> builder = builders.get(i);
-            if (builder instanceof LiteralArgumentBuilder) {
-                return builder;
-            }
-
-        }
-
-        throw new RuntimeException("No last literal argument builder found.");
     }
 
     @SuppressWarnings("unchecked")
@@ -210,7 +198,7 @@ public class CommandDescriptor {
         return CommandAnnotationProcessor.getDispatcher().findNode(prefix);
     }
 
-    public static List<ArgumentBuilder<ServerCommandSource, ?>> makeArgumentBuilders(CommandDescriptor descriptor) {
+    private static List<ArgumentBuilder<ServerCommandSource, ?>> makeArgumentBuilders(CommandDescriptor descriptor) {
         List<ArgumentBuilder<ServerCommandSource, ?>> builders = new ArrayList<>();
         descriptor.arguments
             .stream()
@@ -227,8 +215,6 @@ public class CommandDescriptor {
                 builders.add(builder);
             });
 
-        // get last literal argument builder, so that a normal player can use `/warp tp`, but can use `/warp set`
-        setRequirementForArgumentBuilder(getLastLiteralArgumentBuilder(builders), descriptor.method.getAnnotation(CommandRequirement.class));
         return builders;
     }
 
@@ -298,16 +284,18 @@ public class CommandDescriptor {
         Command<ServerCommandSource> function = root.getCommand();
 
         // filter
-        this.arguments.stream().filter(Argument::isOptional).forEach(optionalArgument -> {
-            int parameterIndex = optionalArgument.getMethodParameterIndex();
-            Parameter parameter = this.method.getParameters()[parameterIndex];
+        this.arguments.stream()
+            .filter(Argument::isOptional)
+            .forEach(optionalArgument -> {
+                int parameterIndex = optionalArgument.getMethodParameterIndex();
+                Parameter parameter = this.method.getParameters()[parameterIndex];
 
-            ArgumentBuilder<ServerCommandSource, ?> optionalArgumentBuilder = CommandManager.literal("--" + optionalArgument.getArgumentName())
-                .then(makeRequiredArgumentBuilder(parameter).executes(function).redirect(root));
+                ArgumentBuilder<ServerCommandSource, ?> optionalArgumentBuilder = CommandManager.literal("--" + optionalArgument.getArgumentName())
+                    .then(makeRequiredArgumentBuilder(parameter).executes(function).redirect(root));
 
-            // register it
-            root.addChild(optionalArgumentBuilder.build());
-        });
+                // register it
+                root.addChild(optionalArgumentBuilder.build());
+            });
     }
 
     @Override
