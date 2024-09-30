@@ -135,6 +135,16 @@ public class CommandAnnotationProcessor {
                 boolean isOptional = parameter.getType().equals(Optional.class);
                 argumentList.set(argumentIndex, Argument.makeRequiredArgument(type, parameter.getName(), methodParameterIndex, isOptional, methodRequirement));
             }
+            /* generate the command source argument for lazy programmers. */
+            for (int parameterIndex = 0; parameterIndex < method.getParameters().length; parameterIndex++) {
+                Parameter parameter = method.getParameters()[parameterIndex];
+                if (parameter.getAnnotation(CommandSource.class) == null) continue;
+                Class<?> type = unbox(parameter);
+                Argument commandSourceArgument = Argument.makeRequiredArgument(type, parameter.getName(), parameterIndex, false, methodRequirement);
+                commandSourceArgument.markAsCommandSource();
+                // for a command source argument, we don't care the index
+                argumentList.addFirst(commandSourceArgument);
+            }
         } else {
             /* generate the mappings between argument and parameter automatically. */
             Parameter[] parameters = method.getParameters();
@@ -148,7 +158,7 @@ public class CommandAnnotationProcessor {
 
                 /* mark as command source */
                 if (parameter.isAnnotationPresent(CommandSource.class)) {
-                    argument.markCommandSource();
+                    argument.markAsCommandSource();
                 }
             }
         }

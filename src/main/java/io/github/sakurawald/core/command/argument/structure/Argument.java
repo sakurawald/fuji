@@ -93,7 +93,7 @@ public class Argument {
         return methodParameterIndex;
     }
 
-    public void markCommandSource() {
+    public void markAsCommandSource() {
         this.isCommandSource = true;
     }
 }
