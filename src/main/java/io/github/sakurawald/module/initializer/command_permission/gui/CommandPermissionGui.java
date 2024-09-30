@@ -8,7 +8,7 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.gui.PagedGui;
 import io.github.sakurawald.core.gui.layer.SingleLineLayer;
 import io.github.sakurawald.module.initializer.command_permission.CommandPermissionInitializer;
-import io.github.sakurawald.module.initializer.command_permission.structure.CommandNodeEntry;
+import io.github.sakurawald.module.initializer.command_permission.structure.CommandNodePermissionEntry;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -17,9 +17,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class CommandPermissionGui extends PagedGui<CommandNodeEntry> {
+public class CommandPermissionGui extends PagedGui<CommandNodePermissionEntry> {
 
-    public CommandPermissionGui(ServerPlayerEntity player, @NotNull List<CommandNodeEntry> entities, int pageIndex) {
+    public CommandPermissionGui(ServerPlayerEntity player, @NotNull List<CommandNodePermissionEntry> entities, int pageIndex) {
         super(null, player, LocaleHelper.getTextByKey(player, "command_permission.list.gui.title"), entities, pageIndex);
 
         SingleLineLayer footer = new SingleLineLayer();
@@ -29,12 +29,12 @@ public class CommandPermissionGui extends PagedGui<CommandNodeEntry> {
     }
 
     @Override
-    public PagedGui<CommandNodeEntry> make(@Nullable SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<CommandNodeEntry> entities, int pageIndex) {
+    public PagedGui<CommandNodePermissionEntry> make(@Nullable SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<CommandNodePermissionEntry> entities, int pageIndex) {
         return new CommandPermissionGui(player, entities, pageIndex);
     }
 
     @Override
-    public GuiElementInterface toGuiElement(CommandNodeEntry entity) {
+    public GuiElementInterface toGuiElement(CommandNodePermissionEntry entity) {
         List<Text> lore = List.of(LocaleHelper.getTextByKey(getPlayer(), "command_permission.list.gui.entry.lore", entity.isWrapped()));
 
         return new GuiElementBuilder()
@@ -62,7 +62,7 @@ public class CommandPermissionGui extends PagedGui<CommandNodeEntry> {
     }
 
     @Override
-    public List<CommandNodeEntry> filter(String keyword) {
+    public List<CommandNodePermissionEntry> filter(String keyword) {
         return getEntities().stream()
             .filter(it -> it.getPath().contains(keyword))
             .toList();
