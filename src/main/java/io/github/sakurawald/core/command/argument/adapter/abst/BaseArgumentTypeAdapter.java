@@ -48,13 +48,18 @@ public abstract class BaseArgumentTypeAdapter {
 
     protected abstract ArgumentType<?> makeArgumentType();
 
-    public abstract Object makeArgumentObject(CommandContext<ServerCommandSource> context, Parameter parameter);
+    protected abstract Object makeArgumentObject(CommandContext<ServerCommandSource> context, Parameter parameter);
+
+    public Object makeParameterObject(CommandContext<ServerCommandSource> ctx, Parameter parameter) {
+        Object argumentObject = this.makeArgumentObject(ctx, parameter);
+        return box(parameter, argumentObject);
+    }
 
     public boolean verifyCommandSource(CommandContext<ServerCommandSource> context) {
         return true;
     }
 
-    private static Type unpackType(Parameter parameter) {
+    private static Type unbox(Parameter parameter) {
         if (parameter.getType().equals(Optional.class)) {
             ParameterizedType parameterizedType = (ParameterizedType) parameter.getParameterizedType();
             return parameterizedType.getActualTypeArguments()[0];
@@ -63,8 +68,17 @@ public abstract class BaseArgumentTypeAdapter {
         return parameter.getType();
     }
 
+    private static Object box(Parameter parameter, Object value) {
+        // pack the type
+        if (parameter.getType().equals(Optional.class)) {
+            return Optional.of(value);
+        }
+
+        return value;
+    }
+
     public static BaseArgumentTypeAdapter getAdapter(Parameter parameter) {
-        Type type = unpackType(parameter);
+        Type type = unbox(parameter);
 
         for (BaseArgumentTypeAdapter adapter : adapters) {
             if (adapter.match(type)) {
