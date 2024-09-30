@@ -40,7 +40,6 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 public class CommandDescriptor {
-    Object instance;
     Method method;
     List<Argument> arguments;
 
@@ -189,7 +188,7 @@ public class CommandDescriptor {
             List<Object> args = makeCommandFunctionArgs(ctx, descriptor.method);
             Object value;
             try {
-                value = descriptor.method.invoke(descriptor.instance, args.toArray());
+                value = descriptor.method.invoke(null, args.toArray());
             } catch (IllegalAccessException | InvocationTargetException e) {
                 // get the real exception during reflection.
                 Throwable theRealException = e.getCause();
@@ -199,7 +198,7 @@ public class CommandDescriptor {
                     return CommandHelper.Return.FAIL;
                 }
 
-                reportException(ctx.getSource(), descriptor.instance, descriptor.method, theRealException);
+                reportException(ctx.getSource(), descriptor.method, theRealException);
                 return CommandHelper.Return.FAIL;
             }
 
@@ -222,20 +221,18 @@ public class CommandDescriptor {
         return BaseArgumentTypeAdapter.getAdapter(expectedCommandSourceParameter).verifyCommandSource(ctx);
     }
 
-    private static void reportException(ServerCommandSource source, Object instance, Method method, Throwable throwable) {
+    private static void reportException(ServerCommandSource source, Method method, Throwable throwable) {
         // report to console
         String string = """
             [Fuji Exception Catcher]
             - Source: %s
             - Module: %s
-            - Class: %s
             - Method: %s
             - Message: %s
 
             """.formatted(
             source.getName()
-            , ModuleManager.computeModulePath(instance.getClass().getName())
-            , instance.getClass().getName()
+            , ModuleManager.computeModulePath(method.getDeclaringClass().getName())
             , method.getName()
             , throwable.toString());
         LogUtil.error(string, throwable);
