@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.command_permission;
 
+import io.github.sakurawald.core.annotation.Cite;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 
+@Cite("https://github.com/DrexHD/VanillaPermissions")
 @CommandNode("command-permission")
 @CommandRequirement(level = 4)
 public class CommandPermissionInitializer extends ModuleInitializer {

@@ -10,8 +10,10 @@ import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.job.abst.BaseJob;
 import io.github.sakurawald.core.manager.Managers;
+import io.github.sakurawald.core.structure.CommandNodeEntry;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.fuji.gui.AboutGui;
+import io.github.sakurawald.module.initializer.fuji.gui.ListCommandsGui;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.fabricmc.loader.api.metadata.Person;
@@ -19,6 +21,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -55,4 +58,13 @@ public class FujiInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
+    @CommandNode("list-commands")
+    private static int $listCommands(@CommandSource ServerPlayerEntity player) {
+        List<CommandNodeEntry> entities = CommandHelper.getCommandNodes().stream()
+            .map(CommandNodeEntry::new)
+            .sorted(Comparator.comparing(CommandNodeEntry::getPath))
+            .toList();
+        new ListCommandsGui(player, entities, 0).open();
+        return CommandHelper.Return.SUCCESS;
+    }
 }
