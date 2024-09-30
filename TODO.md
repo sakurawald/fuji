@@ -10,4 +10,3 @@
   by the spawn point set by the user using bed...
 
 - add: a command-bundle module, to execute commands. (/rules, /vote, regex , placeholder)
-
