@@ -3,9 +3,11 @@ package io.github.sakurawald.module.initializer.command_permission;
 import io.github.sakurawald.core.annotation.Cite;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.event.impl.ServerLifecycleEvents;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_permission.gui.CommandPermissionGui;
 import io.github.sakurawald.module.initializer.command_permission.structure.CommandNodePermissionEntry;
@@ -24,6 +26,15 @@ import java.util.function.Predicate;
 @CommandNode("command-permission")
 @CommandRequirement(level = 4)
 public class CommandPermissionInitializer extends ModuleInitializer {
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @Override
+    public void onInitialize() {
+        ServerLifecycleEvents.SERVER_STARTED.register(server-> {
+            // ensure the getRequirement() is triggered.
+            CommandHelper.getCommandNodes().forEach(com.mojang.brigadier.tree.CommandNode::getRequirement);
+        });
+    }
 
     @CommandNode
     public static int gui(@CommandSource ServerPlayerEntity player) {
