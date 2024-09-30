@@ -2,7 +2,6 @@ package io.github.sakurawald.core.command.processor;
 
 import com.mojang.brigadier.CommandDispatcher;
 import io.github.sakurawald.core.annotation.Cite;
-import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -67,7 +66,7 @@ public class CommandAnnotationProcessor {
     }
 
     private static void processMethod(Class<?> clazz, Object instance, Method method) {
-        /* verity */
+        /* verify */
         if (!method.getReturnType().equals(int.class)) {
             throw new RuntimeException("The method `%s` in class `%s` must return the primitive int data type.".formatted(method.getName(), clazz.getName()));
         }
@@ -80,7 +79,6 @@ public class CommandAnnotationProcessor {
         CommandDescriptor descriptor = makeCommandDescriptor(clazz, instance, method);
 
         /* register the command descriptor */
-        LogUtil.debug("register command: {}", descriptor);
         descriptor.register();
     }
 
@@ -90,8 +88,9 @@ public class CommandAnnotationProcessor {
         /* process the @CommandNode above the class.
            To simplify the implementation, just treat the @CommandNode as the first argument. */
         CommandNode classAnnotation = clazz.getAnnotation(CommandNode.class);
+        CommandRequirement classRequirement = clazz.getAnnotation(CommandRequirement.class);
         if (classAnnotation != null && !classAnnotation.value().isBlank()) {
-            argumentList.add(Argument.makeLiteralArgument(classAnnotation.value().trim(), clazz.getAnnotation(CommandRequirement.class)));
+            argumentList.add(Argument.makeLiteralArgument(classAnnotation.value().trim(), classRequirement));
         }
 
         /* process the @CommandNode above the method. */
@@ -99,7 +98,16 @@ public class CommandAnnotationProcessor {
         CommandNode methodAnnotation = method.getAnnotation(CommandNode.class);
         Arrays.stream(methodAnnotation.value().trim().split(" "))
             .filter(node -> !node.isBlank())
-            .forEach(node -> argumentList.add(Argument.makeLiteralArgument(node, method.getAnnotation(CommandRequirement.class))));
+            .forEach(node -> {
+                CommandRequirement methodRequirement = method.getAnnotation(CommandRequirement.class);
+
+                /* pass the class requirement down, if the method requirement is null */
+                if (methodRequirement == null) {
+                    methodRequirement = classRequirement;
+                }
+
+                argumentList.add(Argument.makeLiteralArgument(node, methodRequirement));
+            });
 
         /* get the command requirement */
         CommandRequirement commandRequirement = method.getAnnotation(CommandRequirement.class);

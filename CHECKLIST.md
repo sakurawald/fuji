@@ -26,6 +26,8 @@ It's good to have a checklist, to avoid forgetting something.
 - Start a sample for a production work.
 - Teleport to an offline player's location using `/tppos offline`.
 - Enter afk using `/afk` and watch the player list.
+- Test the requirement of `/warp`
+- Test the requirement of `/world`
  
 ## Publish a new version
 - sync the language files.
