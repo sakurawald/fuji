@@ -32,17 +32,4 @@ public class TesterInitializer extends ModuleInitializer {
         player.sendMessage(Text.of("root"));
         return 1;
     }
-
-    @CommandNode("register-event")
-    private static int registerEvent(@CommandSource ServerPlayerEntity player) {
-
-        return 1;
-    }
-
-    @CommandNode("trigger-event")
-    private static int triggerEvent(@CommandSource ServerPlayerEntity player) {
-
-        return 1;
-    }
-
 }
