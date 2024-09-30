@@ -124,7 +124,12 @@ public class ChunkScore implements Comparable<ChunkScore> {
                     if (!hasPermissionToClickToTeleport(player)) return;
 
                     BlockPos blockPos = new BlockPos(chunkPos.getCenterX(), 128, chunkPos.getCenterZ());
-                    player.teleport(dimension, chunkPos.getCenterX(), dimension.getTopPosition(Heightmap.Type.MOTION_BLOCKING, blockPos).getY(), chunkPos.getCenterZ(), player.getYaw(), player.getPitch());
+                    int y = dimension.getTopPosition(Heightmap.Type.MOTION_BLOCKING, blockPos).getY();
+                    // if the chunk is unloaded, the map height will be -64
+                    if (y == -64) {
+                        y = 128;
+                    }
+                    player.teleport(dimension, blockPos.getX(), y, blockPos.getZ(), player.getYaw(), player.getPitch());
                 }, 5, TimeUnit.MINUTES))
             );
     }
