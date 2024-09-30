@@ -109,7 +109,7 @@ public class CommandAnnotationProcessor {
             argumentList.add(Argument.makeLiteralArgument(argumentName, methodRequirement));
         }
 
-        /* get the command requirement */
+        /* process the required arguments */
         boolean hasAnyRequiredArgumentPlaceholder = argumentList.stream().anyMatch(Argument::isRequiredArgumentPlaceholder);
         if (hasAnyRequiredArgumentPlaceholder) {
             /* specify the mappings between argument and parameter manually.  */
