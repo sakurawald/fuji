@@ -210,6 +210,7 @@
     "world.dimension.exist": "<red>維度已經存在",
     "world.dimension.not_found": "<red>維度 %s 不存在",
     "world.dimension.reset": "<gold>開始重設維度 %s",
+    "world.dimension.list.entry": "<gold>Dimension -> %s\n<gold>Dimension Type -> %s\n",
     "world_downloader.request": "<#8DDFCB>玩家 %s 剛剛向世界下載器遞交下載請求 (總大小：%.2f MB)",
     "world_downloader.response": "<#8DDFCB>已產生下載連結：<hover:show_text:'<green>開啟此連結'><click:open_url:'%s'><green>[開啟]</click></hover>",
     "deathlog.empty": "<red>找不到此玩家的死亡記錄檔。",
@@ -243,5 +244,8 @@
     "command_permission.command.set_false": "<orange>Issue the command to<green> disallow <orange>all players to use the command `%s`: %s <hover:show_text:'<green>Copy to clipboard'><click:copy_to_clipboard:'%s'><green>[COPY]</click></hover>",
     "command_permission.command.unset": "<orange>Issue the command to <green>unset<orange> the requirement for command `%s`: %s <hover:show_text:'<green>Copy to clipboard'><click:copy_to_clipboard:'%s'><green>[COPY]</click></hover>",
     "glow.on": "<orange>Glow mode: on",
-    "glow.off": "<orange>Glow mode: off"
+    "glow.off": "<orange>Glow mode: off",
+    "fuji.list_commands.gui.title": "<blue>Server Commands",
+    "fuji.list_commands.gui.help.lore": "<green>Left click -> copy the command path",
+    "fuji.list_commands.gui.copy_command_path": "<orange>Copy the command path: `%s` <hover:show_text:'<green>Copy to clipboard'><click:copy_to_clipboard:'%s'><green>[COPY]</click></hover>"
 }
