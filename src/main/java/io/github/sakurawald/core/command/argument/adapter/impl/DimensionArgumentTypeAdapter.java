@@ -7,6 +7,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
+import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
 import lombok.SneakyThrows;
 import net.minecraft.command.argument.DimensionArgumentType;
@@ -27,12 +28,12 @@ public class DimensionArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     }
 
     @Override
-    public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(Parameter parameter) {
+    public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(String argumentName) {
             /*
              The DimensionArgumentType.dimension() will not suggest the new registered dimension types.
              Each time the server started, the dimensions will be shared with client and server.
              */
-        return super.makeRequiredArgumentBuilder(parameter).suggests(
+        return super.makeRequiredArgumentBuilder(argumentName).suggests(
             (ctx, builder) -> {
                 ServerHelper.getWorlds().forEach(it -> builder.suggest(RegistryHelper.ofString(it)));
                 return builder.buildFuture();
@@ -42,7 +43,7 @@ public class DimensionArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @SneakyThrows(CommandSyntaxException.class)
     @Override
-    public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Parameter parameter) {
-        return new Dimension(DimensionArgumentType.getDimensionArgument(context, parameter.getName()));
+    public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
+        return new Dimension(DimensionArgumentType.getDimensionArgument(context, argument.getArgumentName()));
     }
 }

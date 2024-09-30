@@ -5,6 +5,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
+import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.module.initializer.kit.KitInitializer;
 import io.github.sakurawald.module.initializer.kit.command.argument.wrapper.KitName;
 import net.minecraft.server.command.ServerCommandSource;
@@ -25,13 +26,13 @@ public class KitNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     }
 
     @Override
-    public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Parameter parameter) {
-        return new KitName(StringArgumentType.getString(context, parameter.getName()));
+    public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
+        return new KitName(StringArgumentType.getString(context, argument.getArgumentName()));
     }
 
     @Override
-    public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(Parameter parameter) {
-        return super.makeRequiredArgumentBuilder(parameter).suggests((context, builder) -> {
+    public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(String argumentName) {
+        return super.makeRequiredArgumentBuilder(argumentName).suggests((context, builder) -> {
             KitInitializer.getKitNameList().forEach(builder::suggest);
             return builder.buildFuture();
         });
