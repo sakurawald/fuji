@@ -28,7 +28,7 @@ public class CommandBundleInitializer extends ModuleInitializer {
     @SneakyThrows
     private static void registerCommandBundles() {
         config.getModel().getEntries().stream()
-            .map(BundleCommandDescriptor::makeDynamicCommandDescriptor)
+            .map(BundleCommandDescriptor::make)
             .forEach(BundleCommandDescriptor::register);
     }
 }

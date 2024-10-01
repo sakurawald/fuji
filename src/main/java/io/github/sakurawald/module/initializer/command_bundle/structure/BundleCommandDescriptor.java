@@ -27,9 +27,15 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/*
+ * 1. For a bundle command, there is no need to verify the command source: the verification is done by the end commands.
+ * 2. A bundle command is type-safe for input, and type-unsafe for output.
+ *
+ * */
 public class BundleCommandDescriptor extends CommandDescriptor {
 
-    @SuppressWarnings("RegExpRedundantEscape")
+    /* DSL definition */
+    @SuppressWarnings({"RegExpRedundantEscape", "RegExpSimplifiable"})
     private static final Pattern BUNDLE_COMMAND_DSL = Pattern.compile("([<](\\S+)\\s+(\\S+)[>])|(\\[(\\S+)\\s+(\\S+)\\s?([\\s\\S]*?)\\])|(\\S+)");
     private static final int LEXEME_GROUP_INDEX = 0;
     private static final int REQUIRED_NON_OPTIONAL_ARGUMENT_TYPE_GROUP_INDEX = 2;
@@ -40,14 +46,15 @@ public class BundleCommandDescriptor extends CommandDescriptor {
     private static final int LITERAL_ARGUMENT_NAME_GROUP_INDEX = 8;
     private static final String ARGUMENT_NAME_PLACEHOLDER = "$";
 
+    /* global environment */
     final BundleCommandEntry entry;
     @Getter
-    final Map<String, String> defaultValueForOptionalArguments;
+    final Map<String, String> optionalArgumentName2DefaultValue;
 
-    private BundleCommandDescriptor(Method method, List<Argument> arguments, BundleCommandEntry entry, Map<String, String> defaultValueForOptionalArguments) {
+    private BundleCommandDescriptor(Method method, List<Argument> arguments, BundleCommandEntry entry, Map<String, String> optionalArgumentName2DefaultValue) {
         super(method, arguments);
         this.entry = entry;
-        this.defaultValueForOptionalArguments = defaultValueForOptionalArguments;
+        this.optionalArgumentName2DefaultValue = optionalArgumentName2DefaultValue;
     }
 
     @SneakyThrows
@@ -57,6 +64,7 @@ public class BundleCommandDescriptor extends CommandDescriptor {
             , BundleCommandDescriptor.class
             , List.class);
         functionClosure.setAccessible(true);
+
         return functionClosure;
     }
 
@@ -67,7 +75,7 @@ public class BundleCommandDescriptor extends CommandDescriptor {
 
         /* log */
         LogUtil.debug("the closure for `bundle command` associated with {} is invoked with args: ", descriptor.entry);
-        args.forEach(it -> LogUtil.debug("arg: {}", it));
+        args.forEach(arg -> LogUtil.debug("arg: {}", arg));
 
         /* execute with context */
         List<String> commands = new ArrayList<>(descriptor.entry.getBundle());
@@ -104,7 +112,7 @@ public class BundleCommandDescriptor extends CommandDescriptor {
         return 1;
     }
 
-    public static BundleCommandDescriptor makeDynamicCommandDescriptor(BundleCommandEntry entry) {
+    public static BundleCommandDescriptor make(BundleCommandEntry entry) {
         /* make arguments */
         List<Argument> arguments = new ArrayList<>();
         Map<String, String> defaultValueForOptionalArguments = new HashMap<>();
@@ -146,8 +154,7 @@ public class BundleCommandDescriptor extends CommandDescriptor {
             argumentIndex++;
         }
 
-        Method functionClosure = getFunctionClosure();
-        return new BundleCommandDescriptor(functionClosure, arguments, entry, defaultValueForOptionalArguments);
+        return new BundleCommandDescriptor(getFunctionClosure(), arguments, entry, defaultValueForOptionalArguments);
     }
 
     private static boolean matchLiteralArgument(Matcher matcher) {
@@ -164,22 +171,23 @@ public class BundleCommandDescriptor extends CommandDescriptor {
             if (!(argument.isRequiredArgument())) continue;
 
             String argumentName = argument.getArgumentName();
-            ParsedArgument<?, ?> parsedArgument = ctxAccessor.fuji$getArguments().get(argumentName);
 
             /* collect the matched lexeme. */
-            String arg = null;
+            String arg;
 
-            // for optional arg
+            ParsedArgument<?, ?> parsedArgument = ctxAccessor.fuji$getArguments().get(argumentName);
             if (parsedArgument != null) {
                 StringRange range = parsedArgument.getRange();
                 arg = ctx.getInput().substring(range.getStart(), range.getEnd());
             } else {
-                arg = getDefaultValueForOptionalArguments().get(argumentName);
+                // if the optional argument is not specified, it will be null.
+                arg = optionalArgumentName2DefaultValue.get(argumentName);
             }
 
             args.add(arg);
         }
-        LogUtil.debug("args for bundle command: {}", args);
+
+        LogUtil.debug("make args for bundle command: {}", args);
         return args;
     }
 
@@ -188,18 +196,13 @@ public class BundleCommandDescriptor extends CommandDescriptor {
     protected Command<ServerCommandSource> makeCommandFunctionClosure() {
         return (ctx) -> {
 
-            /* verify command source */
-            if (!verifyCommandSource(ctx, this)) {
-                return CommandHelper.Return.FAIL;
-            }
-
             /* invoke the command function */
+            BundleCommandDescriptor descriptor = this;
             List<Object> args = makeCommandFunctionArgs(ctx);
-            BundleCommandDescriptor bundleCommandDescriptor = this;
 
             int value;
             try {
-                value = (int) this.method.invoke(null, ctx, bundleCommandDescriptor, args);
+                value = (int) this.method.invoke(null, ctx, descriptor, args);
             } catch (Exception e) {
                 /* get the real exception during reflection. */
                 Throwable theRealException = e;
