@@ -36,7 +36,12 @@ public class TpposInitializer extends ModuleInitializer {
         , Optional<Integer> minY
         , Optional<Integer> maxY
         , Optional<Integer> maxTryTimes
+        , Optional<ServerPlayerEntity> targetPlayer
     ) {
+        // specify another player
+        if (targetPlayer.isPresent()) {
+            player = targetPlayer.get();
+        }
 
         ServerWorld world = dimension.isPresent() ? dimension.get().getValue() : player.getServerWorld();
 
@@ -64,7 +69,6 @@ public class TpposInitializer extends ModuleInitializer {
             , $maxY, $maxTryTimes);
 
         RandomTeleporter.request(player, teleportSetup, null);
-
         return CommandHelper.Return.SUCCESS;
     }
 

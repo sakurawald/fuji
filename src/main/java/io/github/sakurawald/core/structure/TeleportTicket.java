@@ -50,7 +50,7 @@ public class TeleportTicket extends BossBarTicket {
             return false;
         }
 
-        // check damaged
+        // check distance
         if (player.getPos().squaredDistanceTo(this.source.getX(), this.source.getY(), this.source.getZ()) >= this.interruptDistance) {
             return false;
         }

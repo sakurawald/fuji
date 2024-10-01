@@ -38,3 +38,7 @@ This module allows you to attach commands into itemstack.
 \begin{example}{Say hello if you steppd on a specific block}
     \ic{/command-attachment attach-block-one 0 0 0 --interactType STEP\_ON say hello \ph{player:name}}
 \end{example}
+
+\begin{example}{Make a portal on a specific block}
+    \ic{/command-attachment attach-block-one 0 0 0 --interactType STEP\_ON tppos --targetPlayer \ph{player:name} --dimension minecraft:the\_end --x 0 --y 66 --z 0 \ph{player:name}}
+\end{example}
