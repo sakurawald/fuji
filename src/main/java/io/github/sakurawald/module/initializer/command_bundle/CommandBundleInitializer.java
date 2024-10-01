@@ -9,6 +9,7 @@ import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.command.processor.CommandAnnotationProcessor;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
@@ -92,6 +93,17 @@ public class CommandBundleInitializer extends ModuleInitializer {
     @CommandNode("list")
     private static int list(@CommandSource CommandContext<ServerCommandSource> ctx) {
         registeredBundleCommands.forEach(it -> ctx.getSource().sendMessage(Text.literal(CommandHelper.buildCommandNodePath(it.build()))));
+        return CommandHelper.Return.SUCCESS;
+    }
+
+    @CommandNode("list-type-strings")
+    private static int listTypeStrings(@CommandSource CommandContext<ServerCommandSource> ctx) {
+        BaseArgumentTypeAdapter.getAdapters().forEach(adapter -> adapter.getTypeStrings().forEach(typeString -> {
+            String typeClass = adapter.getTypeClasses().getFirst().getSimpleName();
+            String string2types = "%s -> %s".formatted(typeString, typeClass);
+            ctx.getSource().sendMessage(Text.literal(string2types));
+        }));
+
         return CommandHelper.Return.SUCCESS;
     }
 
