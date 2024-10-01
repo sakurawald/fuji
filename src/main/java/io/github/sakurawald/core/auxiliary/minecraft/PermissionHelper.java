@@ -52,7 +52,10 @@ public class PermissionHelper {
         return userFuture.join();
     }
 
-    public static @NotNull Tristate checkPermission(@NotNull UUID uuid, @NotNull String permission) {
+    public static @NotNull Tristate checkPermission(@NotNull UUID uuid, @Nullable String permission) {
+        if (permission == null) return Tristate.FALSE;
+        if (permission.isBlank()) return Tristate.FALSE;
+
         LuckPerms api = getAPI();
         if (api == null) {
             return Tristate.UNDEFINED;
@@ -65,7 +68,6 @@ public class PermissionHelper {
     }
 
     public static boolean hasPermission(UUID uuid, @Nullable String permission) {
-        if (permission == null) return false;
         return checkPermission(uuid, permission).asBoolean();
     }
 

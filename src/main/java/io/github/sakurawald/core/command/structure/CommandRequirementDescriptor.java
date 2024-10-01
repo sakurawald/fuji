@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Nullable;
 public class CommandRequirementDescriptor {
 
     final int level;
-    final String string;
+    final @Nullable String string;
 
     public static @Nullable CommandRequirementDescriptor of(@Nullable CommandRequirement annotation) {
         if (annotation == null) {
