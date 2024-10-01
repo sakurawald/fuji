@@ -18,11 +18,16 @@ import java.util.Optional;
 
 public abstract class BaseArgumentTypeAdapter {
 
-    private static final Map<String, Class<?>> string2class = new HashMap<>() {
-        // predefined only for test env
+    // predefined only for test env
+    private static final Map<String, Class<?>> predefined = new HashMap<>() {
         {
             this.put("str", String.class);
             this.put("int", int.class);
+        }
+    };
+    private static final Map<String, Class<?>> string2class = new HashMap<>() {
+        {
+            this.putAll(predefined);
         }
     };
     private static final List<BaseArgumentTypeAdapter> adapters = new ArrayList<>();
@@ -42,7 +47,12 @@ public abstract class BaseArgumentTypeAdapter {
 
                     /* register type mapping */
                     Class<?> typeClass = adapter.getTypeClasses().getFirst();
-                    adapter.getTypeStrings().forEach(typeString -> string2class.put(typeString, typeClass));
+                    adapter.getTypeStrings().forEach(typeString -> {
+                        if (string2class.containsKey(typeString) && !predefined.containsKey(typeString)) {
+                            throw new IllegalStateException("Type `%s` is already registered".formatted(typeString));
+                        }
+                        string2class.put(typeString, typeClass);
+                    });
 
                 } catch (Exception e) {
                     throw new RuntimeException(e);
