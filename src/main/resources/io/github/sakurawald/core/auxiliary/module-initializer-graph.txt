@@ -9,6 +9,7 @@ io.github.sakurawald.module.initializer.cleaner.CleanerInitializer
 io.github.sakurawald.module.initializer.color.sign.SignInitializer
 io.github.sakurawald.module.initializer.command_alias.CommandAliasInitializer
 io.github.sakurawald.module.initializer.command_attachment.CommandAttachmentInitializer
+io.github.sakurawald.module.initializer.command_bundle.CommandBundleInitializer
 io.github.sakurawald.module.initializer.command_cooldown.CommandCooldownInitializer
 io.github.sakurawald.module.initializer.command_event.CommandEventInitializer
 io.github.sakurawald.module.initializer.command_meta.attachment.AttachmentInitializer

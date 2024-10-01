@@ -12,6 +12,7 @@ color.anvil
 color.sign
 command_alias
 command_attachment
+command_bundle
 command_cooldown
 command_event
 command_interactive
