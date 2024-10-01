@@ -37,6 +37,9 @@ public abstract class BaseArgumentTypeAdapter {
 
     @SuppressWarnings("unchecked")
     public static void registerAdapters() {
+        // the `/reload` command will trigger the command registration event.
+        string2class.clear();
+
         ReflectionUtil.getGraph(ReflectionUtil.ARGUMENT_TYPE_ADAPTER_GRAPH_FILE_NAME)
             .stream()
             .filter(className -> Managers.getModuleManager().shouldWeEnableThis(className))
