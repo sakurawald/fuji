@@ -16,6 +16,7 @@ import io.github.sakurawald.core.command.exception.AbortCommandExecutionExceptio
 import io.github.sakurawald.core.command.processor.CommandAnnotationProcessor;
 import io.github.sakurawald.core.manager.impl.module.ModuleManager;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -36,6 +37,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
+@Getter
 public class CommandDescriptor {
 
     public Method method;
@@ -92,16 +94,17 @@ public class CommandDescriptor {
         return (LiteralArgumentBuilder<ServerCommandSource>) root;
     }
 
-    protected static List<Object> makeCommandFunctionArgs(CommandContext<ServerCommandSource> ctx, CommandDescriptor descriptor) {
+    protected List<Object> makeCommandFunctionArgs(CommandContext<ServerCommandSource> ctx) {
         List<Object> args = new ArrayList<>();
 
-        for (Argument argument : descriptor.arguments) {
+        for (Argument argument : this.arguments) {
             /* the literal argument doesn't receive a value. */
             if (argument.isLiteralArgument()) continue;
 
             /* inject the value into a required argument. */
             try {
                 Object arg = BaseArgumentTypeAdapter.getAdapter(argument.getType()).makeParameterObject(ctx, argument);
+
                 args.add(arg);
             } catch (Exception e) {
                 /*
@@ -174,20 +177,20 @@ public class CommandDescriptor {
         return builder;
     }
 
-    protected Command<ServerCommandSource> makeCommandFunctionClosure(CommandDescriptor descriptor) {
+    protected Command<ServerCommandSource> makeCommandFunctionClosure() {
         return (ctx) -> {
 
             /* verify command source */
-            if (!verifyCommandSource(ctx, descriptor)) {
+            if (!verifyCommandSource(ctx, this)) {
                 return CommandHelper.Return.FAIL;
             }
 
             /* invoke the command function */
-            List<Object> args = makeCommandFunctionArgs(ctx, descriptor);
+            List<Object> args = makeCommandFunctionArgs(ctx);
 
             int value;
             try {
-                value = (int) descriptor.method.invoke(null, args.toArray());
+                value = (int) this.method.invoke(null, args.toArray());
             } catch (Exception wrappedOrUnwrappedException) {
                 /* get the real exception during reflection. */
                 Throwable theRealException = wrappedOrUnwrappedException;
@@ -202,7 +205,7 @@ public class CommandDescriptor {
                 }
 
                 /* report the exception */
-                reportException(ctx.getSource(), descriptor.method, theRealException);
+                reportException(ctx.getSource(), this.method, theRealException);
                 return CommandHelper.Return.FAIL;
             }
 
@@ -267,7 +270,7 @@ public class CommandDescriptor {
     private void registerNonOptionalArguments() {
         /* make root builder */
         List<ArgumentBuilder<ServerCommandSource, ?>> builders = makeArgumentBuilders(this);
-        Command<ServerCommandSource> command = makeCommandFunctionClosure(this);
+        Command<ServerCommandSource> command = makeCommandFunctionClosure();
         LiteralArgumentBuilder<ServerCommandSource> root = makeRootArgumentBuilder(builders, command);
 
         /* register it */

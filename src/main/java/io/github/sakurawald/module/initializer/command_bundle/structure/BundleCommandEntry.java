@@ -8,12 +8,11 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class CommandBundleEntry {
+public class BundleCommandEntry {
 
     CommandRequirementDescriptor requirement;
 
     String pattern;
 
     List<String> bundle;
-
 }
