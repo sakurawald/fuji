@@ -13,3 +13,23 @@ This module allows you to create bundle commands, input one command, output many
     \item {a powerful type-system to ensure the \ttt{type-safe} input, with fully command suggestion.}
     \item {register and un-register commands on the fly, without the server restart!}
 \end{enumerate}
+
+\LevelThree{Example}
+\begin{example}{Combine commands into one command}
+    \begin{json}
+    {
+        "requirement": {
+        "level": 0,
+        "string": null
+    },
+        "pattern": "composite-heal",
+        "bundle": [
+        "say before heal %player:name%",
+        "run as player %player:name% heal",
+        "say after heal %player:name%"
+        ]
+    }
+
+    \end{json}
+
+\end{example}

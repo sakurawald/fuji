@@ -25,16 +25,6 @@ import java.util.function.Function;
 public class CommandExecutor {
 
     public static void executeSpecializedCommand(@Nullable PlayerEntity contextPlayer, @NotNull List<String> commands) {
-        /* context
-         *
-         * !as_console
-         * !as_player
-         * !as_fake_op
-         *
-         *
-         *  */
-        // ... to write
-
         /* resolve */
         for (String command : commands) {
             executeCommandAsConsole(contextPlayer, command);
