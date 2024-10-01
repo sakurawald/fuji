@@ -7,7 +7,6 @@ import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.core.command.processor.CommandAnnotationProcessor;
 import net.minecraft.command.argument.ItemPredicateArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.structure.OceanMonumentGenerator;
 
 import java.util.List;
 
