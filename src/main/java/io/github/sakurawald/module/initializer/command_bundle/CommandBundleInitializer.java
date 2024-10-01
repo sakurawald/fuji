@@ -49,9 +49,10 @@ public class CommandBundleInitializer extends ModuleInitializer {
 
     @CommandNode("register")
     private static int register() {
-        registerCommandBundles();
-        CommandHelper.updateCommandTree();
-
+        if (registeredBundleCommands.isEmpty()) {
+            registerCommandBundles();
+            CommandHelper.updateCommandTree();
+        }
         return CommandHelper.Return.SUCCESS;
     }
 
