@@ -10,13 +10,9 @@ import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.command_meta.attachment.command.argument.wrapper.SubjectName;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.lang.reflect.Type;
+import java.util.List;
 
 public class SubjectNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
-    @Override
-    public boolean match(Type type) {
-        return SubjectName.class.equals(type);
-    }
 
     @Override
     protected ArgumentType<?> makeArgumentType() {
@@ -26,6 +22,16 @@ public class SubjectNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
         return new SubjectName(StringArgumentType.getString(context, argument.getArgumentName()));
+    }
+
+    @Override
+    public List<Class<?>> getTypeClasses() {
+        return List.of(SubjectName.class);
+    }
+
+    @Override
+    public List<String> getTypeStrings() {
+        return List.of("subject-name");
     }
 
     @Override

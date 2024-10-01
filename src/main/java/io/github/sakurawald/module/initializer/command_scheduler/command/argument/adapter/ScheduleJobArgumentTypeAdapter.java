@@ -10,14 +10,9 @@ import io.github.sakurawald.module.initializer.command_scheduler.CommandSchedule
 import io.github.sakurawald.module.initializer.command_scheduler.command.argument.wrapper.ScheduleJobName;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.lang.reflect.Type;
+import java.util.List;
 
 public class ScheduleJobArgumentTypeAdapter extends BaseArgumentTypeAdapter {
-
-    @Override
-    public boolean match(Type type) {
-        return ScheduleJobName.class.equals(type);
-    }
 
     @Override
     protected ArgumentType<?> makeArgumentType() {
@@ -27,6 +22,16 @@ public class ScheduleJobArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
         return new ScheduleJobName(StringArgumentType.getString(context, argument.getArgumentName()));
+    }
+
+    @Override
+    public List<Class<?>> getTypeClasses() {
+        return List.of(ScheduleJobName.class);
+    }
+
+    @Override
+    public List<String> getTypeStrings() {
+        return List.of("schedule-job-name");
     }
 
     @Override

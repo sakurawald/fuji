@@ -10,13 +10,9 @@ import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.lang.reflect.Type;
+import java.util.List;
 
 public class EntityArgumentTypeAdapter extends BaseArgumentTypeAdapter {
-    @Override
-    public boolean match(Type type) {
-        return Entity.class.equals(type);
-    }
 
     @Override
     protected ArgumentType<?> makeArgumentType() {
@@ -27,5 +23,15 @@ public class EntityArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
         return EntityArgumentType.getEntity(context, argument.getArgumentName());
+    }
+
+    @Override
+    public List<Class<?>> getTypeClasses() {
+        return List.of(Entity.class);
+    }
+
+    @Override
+    public List<String> getTypeStrings() {
+        return List.of("entity");
     }
 }

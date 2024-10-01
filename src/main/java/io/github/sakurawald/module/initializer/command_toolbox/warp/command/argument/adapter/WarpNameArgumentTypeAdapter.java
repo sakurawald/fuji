@@ -10,14 +10,9 @@ import io.github.sakurawald.module.initializer.command_toolbox.warp.WarpInitiali
 import io.github.sakurawald.module.initializer.command_toolbox.warp.command.argument.wrapper.WarpName;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.lang.reflect.Type;
+import java.util.List;
 
 public class WarpNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
-
-    @Override
-    public boolean match(Type type) {
-        return WarpName.class.equals(type);
-    }
 
     @Override
     protected ArgumentType<?> makeArgumentType() {
@@ -27,6 +22,16 @@ public class WarpNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
         return new WarpName(StringArgumentType.getString(context, argument.getArgumentName()));
+    }
+
+    @Override
+    public List<Class<?>> getTypeClasses() {
+        return List.of(WarpName.class);
+    }
+
+    @Override
+    public List<String> getTypeStrings() {
+        return List.of("warp-name");
     }
 
     @Override

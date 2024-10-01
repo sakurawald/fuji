@@ -11,14 +11,9 @@ import io.github.sakurawald.core.command.argument.wrapper.impl.DimensionType;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.lang.reflect.Type;
+import java.util.List;
 
 public class DimensionTypeArgumentTypeAdapter extends BaseArgumentTypeAdapter {
-
-    @Override
-    public boolean match(Type type) {
-        return DimensionType.class.equals(type);
-    }
 
     @Override
     protected ArgumentType<?> makeArgumentType() {
@@ -28,6 +23,16 @@ public class DimensionTypeArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
         return new DimensionType(StringArgumentType.getString(context, argument.getArgumentName()));
+    }
+
+    @Override
+    public List<Class<?>> getTypeClasses() {
+        return List.of(DimensionType.class);
+    }
+
+    @Override
+    public List<String> getTypeStrings() {
+        return List.of("dimension-type", "world-type");
     }
 
     @Override

@@ -7,14 +7,9 @@ import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeA
 import io.github.sakurawald.core.command.argument.structure.Argument;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.lang.reflect.Type;
+import java.util.List;
 
 public class IntegerArgumentTypeAdapter extends BaseArgumentTypeAdapter {
-
-    @Override
-    public boolean match(Type type) {
-        return  int.class.equals(type) || Integer.class.equals(type);
-    }
 
     @Override
     protected ArgumentType<?> makeArgumentType() {
@@ -24,5 +19,15 @@ public class IntegerArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
         return IntegerArgumentType.getInteger(context, argument.getArgumentName());
+    }
+
+    @Override
+    public List<Class<?>> getTypeClasses() {
+        return List.of(int.class, Integer.class);
+    }
+
+    @Override
+    public List<String> getTypeStrings() {
+        return List.of("int", "integer");
     }
 }

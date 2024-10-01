@@ -7,14 +7,9 @@ import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeA
 import io.github.sakurawald.core.command.argument.structure.Argument;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.lang.reflect.Type;
+import java.util.List;
 
 public class LongArgumentTypeAdapter extends BaseArgumentTypeAdapter {
-
-    @Override
-    public boolean match(Type type) {
-        return  long.class.equals(type) || Long.class.equals(type);
-    }
 
     @Override
     protected ArgumentType<?> makeArgumentType() {
@@ -24,5 +19,15 @@ public class LongArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
         return LongArgumentType.getLong(context, argument.getArgumentName());
+    }
+
+    @Override
+    public List<Class<?>> getTypeClasses() {
+        return List.of(long.class, Long.class);
+    }
+
+    @Override
+    public List<String> getTypeStrings() {
+        return List.of("long");
     }
 }

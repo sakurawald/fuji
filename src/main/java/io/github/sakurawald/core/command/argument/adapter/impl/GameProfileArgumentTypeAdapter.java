@@ -11,13 +11,9 @@ import net.minecraft.command.argument.GameProfileArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
 public class GameProfileArgumentTypeAdapter extends BaseArgumentTypeAdapter {
-
-    @Override
-    public boolean match(Type type) {
-        return GameProfileCollection.class.equals(type);
-    }
 
     @Override
     protected ArgumentType<?> makeArgumentType() {
@@ -28,5 +24,15 @@ public class GameProfileArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
         return new GameProfileCollection(GameProfileArgumentType.getProfileArgument(context, argument.getArgumentName()));
+    }
+
+    @Override
+    public List<Class<?>> getTypeClasses() {
+        return List.of(GameProfileCollection.class);
+    }
+
+    @Override
+    public List<String> getTypeStrings() {
+        return List.of("game-profile", "profile");
     }
 }
