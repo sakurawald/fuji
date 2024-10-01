@@ -5,10 +5,8 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.context.ParsedArgument;
 import com.mojang.brigadier.context.StringRange;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.command.argument.structure.Argument;
-import io.github.sakurawald.core.command.exception.AbortCommandExecutionException;
 import io.github.sakurawald.core.command.structure.CommandDescriptor;
 import io.github.sakurawald.core.command.structure.CommandRequirementDescriptor;
 import io.github.sakurawald.core.service.command_executor.CommandExecutor;
@@ -18,7 +16,6 @@ import lombok.SneakyThrows;
 import net.minecraft.server.command.ServerCommandSource;
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -204,21 +201,7 @@ public class BundleCommandDescriptor extends CommandDescriptor {
             try {
                 value = (int) this.method.invoke(null, ctx, descriptor, args);
             } catch (Exception e) {
-                /* get the real exception during reflection. */
-                Throwable theRealException = e;
-                if (e instanceof InvocationTargetException) {
-                    theRealException = e.getCause();
-                }
-
-                /* handle AbortCommandExecutionException */
-                if (theRealException instanceof AbortCommandExecutionException) {
-                    // the logging is done before throwing the AbortOperationException, here we just swallow this exception.
-                    return CommandHelper.Return.FAIL;
-                }
-
-                /* report the exception */
-                reportException(ctx.getSource(), this.method, theRealException);
-                return CommandHelper.Return.FAIL;
+                return handleException(ctx, this.method, e);
             }
 
             return value;

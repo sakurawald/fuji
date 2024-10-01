@@ -192,25 +192,30 @@ public class CommandDescriptor {
             try {
                 value = (int) this.method.invoke(null, args.toArray());
             } catch (Exception wrappedOrUnwrappedException) {
-                /* get the real exception during reflection. */
-                Throwable theRealException = wrappedOrUnwrappedException;
-                if (wrappedOrUnwrappedException instanceof InvocationTargetException) {
-                    theRealException = wrappedOrUnwrappedException.getCause();
-                }
-
-                /* handle AbortCommandExecutionException */
-                if (theRealException instanceof AbortCommandExecutionException) {
-                    // the logging is done before throwing the AbortOperationException, here we just swallow this exception.
-                    return CommandHelper.Return.FAIL;
-                }
-
-                /* report the exception */
-                reportException(ctx.getSource(), this.method, theRealException);
-                return CommandHelper.Return.FAIL;
+                return handleException(ctx, this.method, wrappedOrUnwrappedException);
             }
 
             return value;
         };
+    }
+
+    @SuppressWarnings("SameReturnValue")
+    protected static int handleException(CommandContext<ServerCommandSource> ctx, Method method, Exception wrappedOrUnwrappedException) {
+        /* get the real exception during reflection. */
+        Throwable theRealException = wrappedOrUnwrappedException;
+        if (wrappedOrUnwrappedException instanceof InvocationTargetException) {
+            theRealException = wrappedOrUnwrappedException.getCause();
+        }
+
+        /* handle AbortCommandExecutionException */
+        if (theRealException instanceof AbortCommandExecutionException) {
+            // the logging is done before throwing the AbortOperationException, here we just swallow this exception.
+            return CommandHelper.Return.FAIL;
+        }
+
+        /* report the exception */
+        reportException(ctx.getSource(), method, theRealException);
+        return CommandHelper.Return.FAIL;
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -228,6 +233,7 @@ public class CommandDescriptor {
 
         return BaseArgumentTypeAdapter.getAdapter(expectedCommandSources.getFirst().getType()).verifyCommandSource(ctx);
     }
+
 
     protected static void reportException(ServerCommandSource source, Method method, Throwable throwable) {
         /* report to console */
