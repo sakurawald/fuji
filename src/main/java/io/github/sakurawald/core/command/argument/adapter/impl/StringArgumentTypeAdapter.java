@@ -7,7 +7,6 @@ import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeA
 import io.github.sakurawald.core.command.argument.structure.Argument;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 public class StringArgumentTypeAdapter extends BaseArgumentTypeAdapter {
