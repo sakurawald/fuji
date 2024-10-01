@@ -54,17 +54,17 @@ public class CommandDescriptor {
     }
 
     @SuppressWarnings("RedundantIfStatement")
-    private static void setRequirementForArgumentBuilder(@NotNull ArgumentBuilder<ServerCommandSource, ?> builder, @Nullable CommandRequirementDescriptor annotation) {
+    private static void setRequirementForArgumentBuilder(@NotNull ArgumentBuilder<ServerCommandSource, ?> builder, @Nullable CommandRequirementDescriptor requirement) {
         // don't override the command requirement if the annotation is null
-        if (annotation == null) return;
+        if (requirement == null) return;
 
         /* make the predicate */
         Predicate<ServerCommandSource> predicate = (ctx) -> {
             ServerPlayerEntity player = ctx.getPlayer();
             if (player == null) return true;
-            if (!annotation.getString().isEmpty() && PermissionHelper.hasPermission(player.getUuid(), annotation.getString()))
+            if (PermissionHelper.hasPermission(player.getUuid(), requirement.getString()))
                 return true;
-            if (ctx.hasPermissionLevel(annotation.getLevel())) return true;
+            if (ctx.hasPermissionLevel(requirement.getLevel())) return true;
 
             return false;
         };
