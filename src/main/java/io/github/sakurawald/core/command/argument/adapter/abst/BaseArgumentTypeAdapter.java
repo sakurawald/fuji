@@ -6,6 +6,7 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.core.manager.Managers;
+import lombok.Getter;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 
@@ -30,6 +31,8 @@ public abstract class BaseArgumentTypeAdapter {
             this.putAll(predefined);
         }
     };
+
+    @Getter
     private static final List<BaseArgumentTypeAdapter> adapters = new ArrayList<>();
 
     @SuppressWarnings("unchecked")
