@@ -40,6 +40,7 @@ public class CommandAnnotationProcessor {
     private static CommandRegistryAccess registryAccess;
 
     public static void process() {
+        // note that: the `/reload` will trigger the `REGISTRATION` event.
         CommandEvents.REGISTRATION.register(((dispatcher, registryAccess, environment) -> {
             /* environment */
             CommandAnnotationProcessor.dispatcher = dispatcher;
