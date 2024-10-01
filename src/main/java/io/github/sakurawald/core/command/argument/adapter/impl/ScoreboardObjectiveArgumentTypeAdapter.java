@@ -5,7 +5,6 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.command.argument.structure.Argument;
 import lombok.SneakyThrows;
-import net.minecraft.command.argument.ScoreboardCriterionArgumentType;
 import net.minecraft.command.argument.ScoreboardObjectiveArgumentType;
 import net.minecraft.scoreboard.ScoreboardObjective;
 import net.minecraft.server.command.ServerCommandSource;
