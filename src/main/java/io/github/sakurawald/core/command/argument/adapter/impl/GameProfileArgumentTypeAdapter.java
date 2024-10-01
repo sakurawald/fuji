@@ -10,7 +10,6 @@ import lombok.SneakyThrows;
 import net.minecraft.command.argument.GameProfileArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 public class GameProfileArgumentTypeAdapter extends BaseArgumentTypeAdapter {
