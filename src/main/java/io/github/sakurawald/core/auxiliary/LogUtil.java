@@ -1,6 +1,7 @@
 package io.github.sakurawald.core.auxiliary;
 
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.config.Configs;
 import lombok.Getter;
 import lombok.experimental.UtilityClass;
 import net.fabricmc.loader.api.FabricLoader;
@@ -22,7 +23,8 @@ public class LogUtil {
     private static final @NotNull Logger LOGGER = createLogger(StringUtils.capitalize(Fuji.MOD_ID));
 
     public static void debug(String message, Object... args) {
-        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()
+            || Configs.configHandler.getModel().core.debug.log_debug_messages) {
             String format = "\u001B[35m[DEV] " + message;
             LOGGER.info(format, args);
         } else {
@@ -54,9 +56,9 @@ public class LogUtil {
         return logger;
     }
 
-     public static List<String> getStackTraceAsList(Throwable throwable) {
+    public static List<String> getStackTraceAsList(Throwable throwable) {
         return Arrays.stream(throwable.getStackTrace())
-                     .map(StackTraceElement::toString)
-                     .collect(Collectors.toList());
+            .map(StackTraceElement::toString)
+            .collect(Collectors.toList());
     }
 }

@@ -37,6 +37,7 @@ public class ConfigModel {
 
         public static class Debug {
             public boolean disable_all_modules = false;
+            public boolean log_debug_messages = false;
         }
     }
 
