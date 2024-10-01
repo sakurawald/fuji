@@ -93,7 +93,11 @@ public class Argument {
         return methodParameterIndex;
     }
 
-    public void markAsCommandSource() {
+    public Argument markAsCommandSource() {
+        if (!this.isRequiredArgument()) throw new IllegalArgumentException("The argument for command source must be a required argument.");
+        if (this.getType() == null) throw new IllegalArgumentException("The type of the argument for command source must not null.");
+
         this.isCommandSource = true;
+        return this;
     }
 }

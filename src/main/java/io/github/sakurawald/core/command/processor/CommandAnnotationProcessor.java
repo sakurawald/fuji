@@ -140,10 +140,8 @@ public class CommandAnnotationProcessor {
                 Parameter parameter = method.getParameters()[parameterIndex];
                 if (parameter.getAnnotation(CommandSource.class) == null) continue;
                 Class<?> type = unbox(parameter);
-                Argument commandSourceArgument = Argument.makeRequiredArgument(type, parameter.getName(), parameterIndex, false, methodRequirement);
-                commandSourceArgument.markAsCommandSource();
                 // for a command source argument, we don't care the index
-                argumentList.addFirst(commandSourceArgument);
+                argumentList.addFirst(Argument.makeRequiredArgument(type, parameter.getName(), parameterIndex, false, methodRequirement).markAsCommandSource());
             }
         } else {
             /* generate the mappings between argument and parameter automatically. */
