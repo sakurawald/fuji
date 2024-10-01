@@ -52,6 +52,13 @@ public class CommandHelper {
         }
     }
 
+    public static String buildCommandNodePath(CommandNode<ServerCommandSource> node) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(node.getName());
+        node.getChildren().forEach(child -> sb.append(".").append(buildCommandNodePath(child)));
+        return sb.toString();
+    }
+
     @SuppressWarnings("unused")
     public static class Return {
         public static final int FAIL = -1;
