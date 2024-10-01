@@ -91,10 +91,7 @@ public class CommandBundleInitializer extends ModuleInitializer {
 
     @CommandNode("list")
     private static int list(@CommandSource CommandContext<ServerCommandSource> ctx) {
-        registeredBundleCommands.forEach(it -> {
-            String path = CommandHelper.computeCommandNodePath(it.build());
-            ctx.getSource().sendMessage(Text.literal(path));
-        });
+        registeredBundleCommands.forEach(it -> ctx.getSource().sendMessage(Text.literal(CommandHelper.buildCommandNodePath(it.build()))));
         return CommandHelper.Return.SUCCESS;
     }
 
