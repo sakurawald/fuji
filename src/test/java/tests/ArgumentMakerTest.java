@@ -15,7 +15,7 @@ public class ArgumentMakerTest {
 
     @Test
     void test1() {
-        BundleCommandDescriptor descriptor = BundleCommandDescriptor.makeDynamicCommandDescriptor(new BundleCommandEntry(null, "my-command <int int-arg-name> [str str-arg-name]", null));
+        BundleCommandDescriptor descriptor = BundleCommandDescriptor.make(new BundleCommandEntry(null, "my-command <int int-arg-name> [str str-arg-name]", null));
         System.out.println(descriptor);
         List<Argument> args = descriptor.getArguments();
 
@@ -38,7 +38,7 @@ public class ArgumentMakerTest {
 
     @Test
     void test2() {
-        BundleCommandDescriptor descriptor = BundleCommandDescriptor.makeDynamicCommandDescriptor(new BundleCommandEntry(null, "my-command <int int-arg-name> first-literal [str str-arg-name] second-literal", null));
+        BundleCommandDescriptor descriptor = BundleCommandDescriptor.make(new BundleCommandEntry(null, "my-command <int int-arg-name> first-literal [str str-arg-name] second-literal", null));
         System.out.println(descriptor);
 
         List<Argument> args = descriptor.getArguments();
@@ -71,7 +71,7 @@ public class ArgumentMakerTest {
 
     @Test
     void test3() {
-        BundleCommandDescriptor descriptor = BundleCommandDescriptor.makeDynamicCommandDescriptor(new BundleCommandEntry(null, "my-command <int int-arg-name> [str str-arg-name hello world] first-literal", null));
+        BundleCommandDescriptor descriptor = BundleCommandDescriptor.make(new BundleCommandEntry(null, "my-command <int int-arg-name> [str str-arg-name hello world] first-literal", null));
         System.out.println(descriptor);
 
         List<Argument> args = descriptor.getArguments();
@@ -90,7 +90,7 @@ public class ArgumentMakerTest {
         assertTrue(thirdArg.isRequiredArgument());
         assertEquals("str-arg-name", thirdArg.getArgumentName());
         assertTrue(thirdArg.isOptional());
-        assertEquals("hello world", descriptor.getDefaultValueForOptionalArguments().get("str-arg-name"));
+        assertEquals("hello world", descriptor.getOptionalArgumentName2DefaultValue().get("str-arg-name"));
 
         Argument fourthArg = args.get(3);
         assertTrue(fourthArg.isLiteralArgument());
