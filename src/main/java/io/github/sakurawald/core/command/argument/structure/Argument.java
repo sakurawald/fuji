@@ -1,6 +1,6 @@
 package io.github.sakurawald.core.command.argument.structure;
 
-import io.github.sakurawald.core.command.annotation.CommandRequirement;
+import io.github.sakurawald.core.command.structure.CommandRequirementDescriptor;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,11 +20,11 @@ public class Argument {
     final Class<?> type;
     final String argumentName;
     final boolean isOptional;
-    final CommandRequirement requirement;
+    final CommandRequirementDescriptor requirement;
     int methodParameterIndex;
     boolean isCommandSource;
 
-    private Argument(@Nullable Class<?> type, @NotNull String argumentName, int methodParameterIndex, boolean isOptional, @Nullable CommandRequirement requirement) {
+    private Argument(@Nullable Class<?> type, @NotNull String argumentName, int methodParameterIndex, boolean isOptional, @Nullable CommandRequirementDescriptor requirement) {
         this.type = type;
         this.argumentName = argumentName;
         this.methodParameterIndex = methodParameterIndex;
@@ -35,11 +35,11 @@ public class Argument {
         this.methodParameterIndex = this.tryParseMethodParameterIndexFromArgumentName();
     }
 
-    public static Argument makeRequiredArgument(@Nullable Class<?> type, @NotNull String argumentName, int methodParameterIndex, boolean isOptional, @Nullable CommandRequirement requirement) {
+    public static Argument makeRequiredArgument(@Nullable Class<?> type, @NotNull String argumentName, int methodParameterIndex, boolean isOptional, @Nullable CommandRequirementDescriptor requirement) {
         return new Argument(type, argumentName, methodParameterIndex, isOptional, requirement);
     }
 
-    public static Argument makeLiteralArgument(@NotNull String argumentName, @Nullable CommandRequirement requirement) {
+    public static Argument makeLiteralArgument(@NotNull String argumentName, @Nullable CommandRequirementDescriptor requirement) {
         return new Argument(null, argumentName, THE_METHOD_PARAMETER_INDEX_FOR_LITERAL_ARGUMENT, false, requirement);
     }
 
@@ -59,7 +59,7 @@ public class Argument {
 
     private String computeRequirementString() {
         if (this.requirement != null) {
-            return "%d %s".formatted(this.requirement.level(), this.requirement.string())
+            return "%d %s".formatted(this.requirement.getLevel(), this.requirement.getString())
                 .trim();
         }
 

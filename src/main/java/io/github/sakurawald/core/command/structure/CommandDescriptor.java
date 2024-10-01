@@ -10,7 +10,6 @@ import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
-import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.core.command.exception.AbortCommandExecutionException;
@@ -53,7 +52,7 @@ public class CommandDescriptor {
     }
 
     @SuppressWarnings("RedundantIfStatement")
-    private static void setRequirementForArgumentBuilder(@NotNull ArgumentBuilder<ServerCommandSource, ?> builder, @Nullable CommandRequirement annotation) {
+    private static void setRequirementForArgumentBuilder(@NotNull ArgumentBuilder<ServerCommandSource, ?> builder, @Nullable CommandRequirementDescriptor annotation) {
         // don't override the command requirement if the annotation is null
         if (annotation == null) return;
 
@@ -61,9 +60,9 @@ public class CommandDescriptor {
         Predicate<ServerCommandSource> predicate = (ctx) -> {
             ServerPlayerEntity player = ctx.getPlayer();
             if (player == null) return true;
-            if (!annotation.string().isEmpty() && PermissionHelper.hasPermission(player.getUuid(), annotation.string()))
+            if (!annotation.getString().isEmpty() && PermissionHelper.hasPermission(player.getUuid(), annotation.getString()))
                 return true;
-            if (ctx.hasPermissionLevel(annotation.level())) return true;
+            if (ctx.hasPermissionLevel(annotation.getLevel())) return true;
 
             return false;
         };
