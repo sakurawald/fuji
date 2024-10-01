@@ -6,6 +6,7 @@ import com.mojang.brigadier.context.ParsedArgument;
 import com.mojang.brigadier.context.StringRange;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
+import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.core.command.exception.AbortCommandExecutionException;
 import io.github.sakurawald.core.command.structure.CommandDescriptor;
@@ -37,12 +38,6 @@ public class BundleCommandDescriptor extends CommandDescriptor {
     private static final int REQUIRED_OPTIONAL_ARGUMENT_NAME_GROUP_INDEX = 6;
     private static final int REQUIRED_OPTIONAL_ARGUMENT_DEFAULT_VALUE_GROUP_INDEX = 7;
     private static final int LITERAL_ARGUMENT_NAME_GROUP_INDEX = 8;
-    private static final Map<String, Class<?>> str2type = new HashMap<>() {
-        {
-            this.put("int", int.class);
-            this.put("str", String.class);
-        }
-    };
     private static final String ARGUMENT_NAME_PLACEHOLDER = "$";
 
     final BundleCommandEntry entry;
@@ -129,7 +124,7 @@ public class BundleCommandDescriptor extends CommandDescriptor {
                 if (isOptional) {
                     String argumentType = matcher.group(REQUIRED_OPTIONAL_ARGUMENT_TYPE_GROUP_INDEX);
                     String argumentName = matcher.group(REQUIRED_OPTIONAL_ARGUMENT_NAME_GROUP_INDEX);
-                    Class<?> type = getArgumentType(argumentType);
+                    Class<?> type = BaseArgumentTypeAdapter.toTypeClass(argumentType);
                     arguments.add(Argument.makeRequiredArgument(type, argumentName, argumentIndex, true, requirement));
 
                     // put default value for optional argument
@@ -142,7 +137,7 @@ public class BundleCommandDescriptor extends CommandDescriptor {
                 } else {
                     String argumentType = matcher.group(REQUIRED_NON_OPTIONAL_ARGUMENT_TYPE_GROUP_INDEX);
                     String argumentName = matcher.group(REQUIRED_NON_OPTIONAL_ARGUMENT_NAME_GROUP_INDEX);
-                    Class<?> type = getArgumentType(argumentType);
+                    Class<?> type = BaseArgumentTypeAdapter.toTypeClass(argumentType);
                     arguments.add(Argument.makeRequiredArgument(type, argumentName, argumentIndex, false, requirement));
                 }
 
@@ -157,10 +152,6 @@ public class BundleCommandDescriptor extends CommandDescriptor {
 
     private static boolean matchLiteralArgument(Matcher matcher) {
         return matcher.group(LITERAL_ARGUMENT_NAME_GROUP_INDEX) != null;
-    }
-
-    private static Class<?> getArgumentType(String typeString) {
-        return str2type.get(typeString);
     }
 
     @Override

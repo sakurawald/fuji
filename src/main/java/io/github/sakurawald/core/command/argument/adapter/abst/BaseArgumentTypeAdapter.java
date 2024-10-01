@@ -10,13 +10,21 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public abstract class BaseArgumentTypeAdapter {
 
+    private static final Map<String, Class<?>> string2class = new HashMap<>() {
+        // predefined only for test env
+        {
+            this.put("str", String.class);
+            this.put("int", int.class);
+        }
+    };
     private static final List<BaseArgumentTypeAdapter> adapters = new ArrayList<>();
 
     @SuppressWarnings("unchecked")
@@ -26,10 +34,16 @@ public abstract class BaseArgumentTypeAdapter {
             .filter(className -> Managers.getModuleManager().shouldWeEnableThis(className))
             .forEach(className -> {
                 try {
+                    /* make instance of type adapter */
                     Class<? extends BaseArgumentTypeAdapter> clazz = (Class<? extends BaseArgumentTypeAdapter>) Class.forName(className);
                     Constructor<? extends BaseArgumentTypeAdapter> constructor = clazz.getDeclaredConstructor();
-                    BaseArgumentTypeAdapter instance = constructor.newInstance();
-                    adapters.add(instance);
+                    BaseArgumentTypeAdapter adapter = constructor.newInstance();
+                    adapters.add(adapter);
+
+                    /* register type mapping */
+                    Class<?> typeClass = adapter.getTypeClasses().getFirst();
+                    adapter.getTypeStrings().forEach(typeString -> string2class.put(typeString, typeClass));
+
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -38,7 +52,7 @@ public abstract class BaseArgumentTypeAdapter {
     }
 
     private boolean match(Class<?> clazz) {
-        return this.getTypeClasses().stream().anyMatch(it ->it.equals(clazz));
+        return this.getTypeClasses().stream().anyMatch(it -> it.equals(clazz));
     }
 
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(String argumentName) {
@@ -53,6 +67,14 @@ public abstract class BaseArgumentTypeAdapter {
     public abstract List<Class<?>> getTypeClasses();
 
     public abstract List<String> getTypeStrings();
+
+    public static Class<?> toTypeClass(String typeString) {
+        Class<?> type = string2class.get(typeString);
+        if (type == null)
+            throw new IllegalArgumentException("Unknown argument type `%s`".formatted(typeString));
+
+        return type;
+    }
 
     public Object makeParameterObject(CommandContext<ServerCommandSource> ctx, Argument argument) {
         Object argumentObject = this.makeArgumentObject(ctx, argument);
