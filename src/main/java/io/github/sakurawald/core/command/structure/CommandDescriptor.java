@@ -28,6 +28,7 @@ import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +39,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CommandDescriptor {
 
-    Method method;
+    public Method method;
 
-    List<Argument> arguments;
+    public List<Argument> arguments;
 
     private static LiteralArgumentBuilder<ServerCommandSource> makeLiteralArgumentBuilder(Argument argument) {
         return CommandManager.literal(argument.getArgumentName());
@@ -85,10 +86,14 @@ public class CommandDescriptor {
         }
 
         // the command dispatcher only accepts the LiteralArgumentBuilder for register()
+        if (!(root instanceof LiteralArgumentBuilder)) {
+            throw new IllegalArgumentException("The root argument builder must be a literal argument builder.");
+        }
+
         return (LiteralArgumentBuilder<ServerCommandSource>) root;
     }
 
-    protected List<Object> makeCommandFunctionArgs(CommandContext<ServerCommandSource> ctx, CommandDescriptor descriptor) {
+    protected static List<Object> makeCommandFunctionArgs(CommandContext<ServerCommandSource> ctx, CommandDescriptor descriptor) {
         List<Object> args = new ArrayList<>();
 
         for (Argument argument : descriptor.arguments) {
@@ -172,6 +177,7 @@ public class CommandDescriptor {
 
     protected Command<ServerCommandSource> makeCommandFunctionClosure(CommandDescriptor descriptor) {
         return (ctx) -> {
+
             /* verify command source */
             if (!verifyCommandSource(ctx, descriptor)) {
                 return CommandHelper.Return.FAIL;
@@ -179,18 +185,24 @@ public class CommandDescriptor {
 
             /* invoke the command function */
             List<Object> args = makeCommandFunctionArgs(ctx, descriptor);
+
             int value;
             try {
                 value = (int) descriptor.method.invoke(null, args.toArray());
-            } catch (Exception e) {
-                // get the real exception during reflection.
-                Throwable theRealException = e.getCause();
+            } catch (Exception wrappedOrUnwrappedException) {
+                /* get the real exception during reflection. */
+                Throwable theRealException = wrappedOrUnwrappedException;
+                if (wrappedOrUnwrappedException instanceof InvocationTargetException) {
+                    theRealException = wrappedOrUnwrappedException.getCause();
+                }
 
+                /* handle AbortCommandExecutionException */
                 if (theRealException instanceof AbortCommandExecutionException) {
                     // the logging is done before throwing the AbortOperationException, here we just swallow this exception.
                     return CommandHelper.Return.FAIL;
                 }
 
+                /* report the exception */
                 reportException(ctx.getSource(), descriptor.method, theRealException);
                 return CommandHelper.Return.FAIL;
             }
@@ -199,7 +211,8 @@ public class CommandDescriptor {
         };
     }
 
-    private static boolean verifyCommandSource(CommandContext<ServerCommandSource> ctx, CommandDescriptor descriptor) {
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    protected static boolean verifyCommandSource(CommandContext<ServerCommandSource> ctx, CommandDescriptor descriptor) {
         List<Argument> expectedCommandSources = descriptor.arguments
             .stream()
             .filter(Argument::isCommandSource)
@@ -208,12 +221,13 @@ public class CommandDescriptor {
         // yeah, any type of source can use it.
         if (expectedCommandSources.isEmpty()) return true;
         // oh no, specify too many command sources.
-        if (expectedCommandSources.size() > 1) throw new IllegalArgumentException("Expected only one command source: " + descriptor);
+        if (expectedCommandSources.size() > 1)
+            throw new IllegalArgumentException("Expected only one command source: " + descriptor);
 
         return BaseArgumentTypeAdapter.getAdapter(expectedCommandSources.getFirst().getType()).verifyCommandSource(ctx);
     }
 
-    private static void reportException(ServerCommandSource source, Method method, Throwable throwable) {
+    protected static void reportException(ServerCommandSource source, Method method, Throwable throwable) {
         /* report to console */
         String string = """
             [Fuji Exception Catcher]
@@ -226,7 +240,7 @@ public class CommandDescriptor {
             source.getName()
             , ModuleManager.computeModulePath(method.getDeclaringClass().getName())
             , method.getName()
-            , throwable.toString());
+            , throwable);
         LogUtil.error(string, throwable);
 
         /* report to command source */
