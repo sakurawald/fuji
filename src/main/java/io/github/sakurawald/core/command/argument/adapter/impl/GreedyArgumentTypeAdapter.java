@@ -8,14 +8,9 @@ import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.lang.reflect.Type;
+import java.util.List;
 
 public class GreedyArgumentTypeAdapter extends BaseArgumentTypeAdapter {
-
-    @Override
-    public boolean match(Type type) {
-        return GreedyString.class.equals(type);
-    }
 
     @Override
     public ArgumentType<?> makeArgumentType() {
@@ -25,5 +20,15 @@ public class GreedyArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
         return new GreedyString(StringArgumentType.getString(context, argument.getArgumentName()));
+    }
+
+    @Override
+    public List<Class<?>> getTypeClasses() {
+        return List.of(GreedyString.class);
+    }
+
+    @Override
+    public List<String> getTypeStrings() {
+        return List.of("greedy-string", "greedy");
     }
 }

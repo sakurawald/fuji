@@ -11,14 +11,9 @@ import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import java.lang.reflect.Type;
+import java.util.List;
 
 public class PlayerArgumentTypeAdapter extends BaseArgumentTypeAdapter {
-
-    @Override
-    public boolean match(Type type) {
-        return ServerPlayerEntity.class.equals(type);
-    }
 
     @Override
     public ArgumentType<?> makeArgumentType() {
@@ -33,6 +28,16 @@ public class PlayerArgumentTypeAdapter extends BaseArgumentTypeAdapter {
         }
 
         return EntityArgumentType.getPlayer(context, argument.getArgumentName());
+    }
+
+    @Override
+    public List<Class<?>> getTypeClasses() {
+        return List.of(ServerPlayerEntity.class);
+    }
+
+    @Override
+    public List<String> getTypeStrings() {
+        return List.of("player");
     }
 
     @Override

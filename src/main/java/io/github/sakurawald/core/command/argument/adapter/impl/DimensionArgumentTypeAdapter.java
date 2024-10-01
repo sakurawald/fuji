@@ -13,13 +13,9 @@ import lombok.SneakyThrows;
 import net.minecraft.command.argument.DimensionArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.lang.reflect.Type;
+import java.util.List;
 
 public class DimensionArgumentTypeAdapter extends BaseArgumentTypeAdapter {
-    @Override
-    public boolean match(Type type) {
-        return Dimension.class.equals(type);
-    }
 
     @Override
     protected ArgumentType<?> makeArgumentType() {
@@ -44,5 +40,15 @@ public class DimensionArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
         return new Dimension(DimensionArgumentType.getDimensionArgument(context, argument.getArgumentName()));
+    }
+
+    @Override
+    public List<Class<?>> getTypeClasses() {
+        return List.of(Dimension.class);
+    }
+
+    @Override
+    public List<String> getTypeStrings() {
+        return List.of("dimension", "world");
     }
 }

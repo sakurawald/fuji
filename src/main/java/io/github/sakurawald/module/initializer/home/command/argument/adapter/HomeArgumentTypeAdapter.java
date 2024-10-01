@@ -12,15 +12,10 @@ import io.github.sakurawald.module.initializer.home.command.argument.wrapper.Hom
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 
 public class HomeArgumentTypeAdapter extends BaseArgumentTypeAdapter {
-
-    @Override
-    public boolean match(Type type) {
-        return HomeName.class.equals(type);
-    }
 
     @Override
     protected ArgumentType<?> makeArgumentType() {
@@ -30,6 +25,16 @@ public class HomeArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
         return new HomeName(StringArgumentType.getString(context, argument.getArgumentName()));
+    }
+
+    @Override
+    public List<Class<?>> getTypeClasses() {
+        return List.of(HomeName.class);
+    }
+
+    @Override
+    public List<String> getTypeStrings() {
+        return List.of("home-name");
     }
 
     @Override

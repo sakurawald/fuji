@@ -37,7 +37,9 @@ public abstract class BaseArgumentTypeAdapter {
 
     }
 
-    protected abstract boolean match(Type type);
+    private boolean match(Class<?> clazz) {
+        return this.getTypeClasses().stream().anyMatch(it ->it.equals(clazz));
+    }
 
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(String argumentName) {
         ArgumentType<?> argumentType = this.makeArgumentType();
@@ -47,6 +49,10 @@ public abstract class BaseArgumentTypeAdapter {
     protected abstract ArgumentType<?> makeArgumentType();
 
     protected abstract Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument);
+
+    public abstract List<Class<?>> getTypeClasses();
+
+    public abstract List<String> getTypeStrings();
 
     public Object makeParameterObject(CommandContext<ServerCommandSource> ctx, Argument argument) {
         Object argumentObject = this.makeArgumentObject(ctx, argument);

@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.Map;
 
-@Mixin(CommandContext.class)
+@Mixin(value = CommandContext.class, remap = false)
 public abstract class CommandContextMixin<S> implements CommandContextAccessor<S> {
 
     @Shadow

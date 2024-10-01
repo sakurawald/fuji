@@ -10,14 +10,9 @@ import io.github.sakurawald.module.initializer.kit.KitInitializer;
 import io.github.sakurawald.module.initializer.kit.command.argument.wrapper.KitName;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.lang.reflect.Type;
+import java.util.List;
 
 public class KitNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
-
-    @Override
-    public boolean match(Type type) {
-        return KitName.class.equals(type);
-    }
 
     @Override
     protected ArgumentType<?> makeArgumentType() {
@@ -27,6 +22,16 @@ public class KitNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
         return new KitName(StringArgumentType.getString(context, argument.getArgumentName()));
+    }
+
+    @Override
+    public List<Class<?>> getTypeClasses() {
+        return List.of(KitName.class);
+    }
+
+    @Override
+    public List<String> getTypeStrings() {
+        return List.of("kit-name");
     }
 
     @Override

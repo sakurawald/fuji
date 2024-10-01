@@ -8,13 +8,10 @@ import io.github.sakurawald.core.command.argument.structure.Argument;
 import net.minecraft.server.command.ServerCommandSource;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
 public class StringArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
-    @Override
-    public boolean match(Type type) {
-        return String.class.equals(type);
-    }
 
     @Override
     public ArgumentType<?> makeArgumentType() {
@@ -24,5 +21,15 @@ public class StringArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
         return StringArgumentType.getString(context, argument.getArgumentName());
+    }
+
+    @Override
+    public List<Class<?>> getTypeClasses() {
+        return List.of(String.class);
+    }
+
+    @Override
+    public List<String> getTypeStrings() {
+        return List.of("str", "string");
     }
 }
