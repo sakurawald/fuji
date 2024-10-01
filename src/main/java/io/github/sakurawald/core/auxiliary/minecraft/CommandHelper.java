@@ -9,6 +9,7 @@ import lombok.experimental.UtilityClass;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
@@ -35,6 +36,11 @@ public class CommandHelper {
         RootCommandNode<ServerCommandSource> root = ServerHelper.getCommandDispatcher().getRoot();
         getCommandNodes(ret,root);
         return ret;
+    }
+
+    public static void updateCommandTree() {
+        CommandManager commandManager = ServerHelper.getDefaultServer().getCommandManager();
+        ServerHelper.getPlayers().forEach(commandManager::sendCommandTree);
     }
 
     private static void getCommandNodes(List<CommandNode<ServerCommandSource>> list, CommandNode<ServerCommandSource> parent) {
