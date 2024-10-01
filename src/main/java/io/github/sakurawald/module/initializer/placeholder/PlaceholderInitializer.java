@@ -57,6 +57,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
         registerRandomPlayerPlaceholder();
         registerRandomPlaceholder();
         registerEscapePlaceholder();
+        registerProtectPlaceholder();
         registerDatePlaceholder();
 
         /* events */
@@ -99,6 +100,13 @@ public class PlaceholderInitializer extends ModuleInitializer {
             }
 
             return PlaceholderResult.value(Text.literal("%" + args + "%"));
+        });
+    }
+
+    private void registerProtectPlaceholder() {
+        Placeholders.register(Identifier.of(Fuji.MOD_ID, "protect"), (ctx, args) -> {
+            if (args == null) return PlaceholderResult.invalid();
+            return PlaceholderResult.value(Text.literal(args));
         });
     }
 
