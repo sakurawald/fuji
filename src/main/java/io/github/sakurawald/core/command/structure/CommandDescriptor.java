@@ -263,17 +263,20 @@ public class CommandDescriptor {
         source.sendMessage(report);
     }
 
-    public void register() {
+    public LiteralArgumentBuilder<ServerCommandSource> register() {
         LogUtil.debug("register command: {}", this);
 
         /* first pass */
-        registerNonOptionalArguments();
+        var root = registerNonOptionalArguments();
 
         /* second pass */
         registerOptionalArguments();
+
+        return root;
     }
 
-    private void registerNonOptionalArguments() {
+    @SuppressWarnings("UnusedReturnValue")
+    private LiteralArgumentBuilder<ServerCommandSource> registerNonOptionalArguments() {
         /* make root builder */
         List<ArgumentBuilder<ServerCommandSource, ?>> builders = makeArgumentBuilders(this);
         Command<ServerCommandSource> command = makeCommandFunctionClosure();
@@ -281,6 +284,8 @@ public class CommandDescriptor {
 
         /* register it */
         CommandAnnotationProcessor.getDispatcher().register(root);
+
+        return root;
     }
 
     private void registerOptionalArguments() {
