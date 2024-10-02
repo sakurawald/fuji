@@ -18,7 +18,7 @@ public class ForEachInitializer extends ModuleInitializer {
         String $rest = rest.getValue();
 
         for (ServerPlayerEntity player : ServerHelper.getPlayers()) {
-            CommandExecutor.executeAsConsole(ExtendedCommandSource.ofPlayer(player), $rest);
+            CommandExecutor.execute(ExtendedCommandSource.asConsole(player.getCommandSource()), $rest);
         }
         return CommandHelper.Return.SUCCESS;
     }
