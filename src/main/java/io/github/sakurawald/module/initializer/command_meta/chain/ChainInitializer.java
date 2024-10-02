@@ -4,7 +4,8 @@ import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
-import io.github.sakurawald.core.service.command_executor.CommandExecutor;
+import io.github.sakurawald.core.command.executor.CommandExecutor;
+import io.github.sakurawald.core.command.structure.ExtendedCommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 
 import java.util.regex.Matcher;
@@ -23,13 +24,13 @@ public class ChainInitializer extends ModuleInitializer {
         if (matcher.find()) {
             String first = matcher.group(1);
             String second = matcher.group(2);
-            int value = CommandExecutor.executeCommandAsConsole(null, first);
+            int value = CommandExecutor.executeAsConsole(ExtendedCommandSource.of(), first);
             // break chain, if command `fail`.
             if (value >= 0) {
-                CommandExecutor.executeCommandAsConsole(null, second);
+                CommandExecutor.executeAsConsole(ExtendedCommandSource.of(), second);
             }
         } else {
-            CommandExecutor.executeCommandAsConsole(null, $rest);
+            CommandExecutor.executeAsConsole(ExtendedCommandSource.of(), $rest);
         }
 
         return CommandHelper.Return.SUCCESS;

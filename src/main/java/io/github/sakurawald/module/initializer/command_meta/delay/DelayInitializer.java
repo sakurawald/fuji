@@ -4,8 +4,9 @@ import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
+import io.github.sakurawald.core.command.structure.ExtendedCommandSource;
 import io.github.sakurawald.core.event.impl.ServerLifecycleEvents;
-import io.github.sakurawald.core.service.command_executor.CommandExecutor;
+import io.github.sakurawald.core.command.executor.CommandExecutor;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 
 import java.util.concurrent.Executors;
@@ -28,7 +29,7 @@ public class DelayInitializer extends ModuleInitializer {
         String $rest = rest.getValue();
 
         executor.schedule(() -> {
-            CommandExecutor.executeCommandAsConsole(null, $rest);
+            CommandExecutor.executeAsConsole(ExtendedCommandSource.of(), $rest);
         }, time, TimeUnit.SECONDS);
 
         return CommandHelper.Return.SUCCESS;

@@ -10,7 +10,8 @@ import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeA
 import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.core.command.structure.CommandDescriptor;
 import io.github.sakurawald.core.command.structure.CommandRequirementDescriptor;
-import io.github.sakurawald.core.service.command_executor.CommandExecutor;
+import io.github.sakurawald.core.command.executor.CommandExecutor;
+import io.github.sakurawald.core.command.structure.ExtendedCommandSource;
 import io.github.sakurawald.module.initializer.command_bundle.accessor.CommandContextAccessor;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -108,7 +109,7 @@ public class BundleCommandDescriptor extends CommandDescriptor {
 
         /* execute the commands */
         LogUtil.debug("execute bundle command: {}", commands);
-        CommandExecutor.executeSpecializedCommand(ctx.getSource().getPlayer(), commands);
+        CommandExecutor.executeAsConsole(ExtendedCommandSource.of(ctx.getSource(), true), commands);
 
         return 1;
     }
