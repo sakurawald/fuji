@@ -35,7 +35,7 @@ public class AbstractSignBlockMixin {
         if (player.isSneaking()) return;
 
         // interact with sign
-        if (player instanceof ServerPlayerEntity serverPlayer) {
+        if (player instanceof ServerPlayerEntity) {
             BlockEntity blockEntity = world.getBlockEntity(blockPos);
             if (blockEntity instanceof SignBlockEntity signBlockEntity) {
                 SignText signText = signBlockEntity.getText(signBlockEntity.isPlayerFacingFront(player));
@@ -45,7 +45,7 @@ public class AbstractSignBlockMixin {
                     cir.setReturnValue(ActionResult.CONSUME);
                     List<String> commands = splitCommands(text);
 
-                    commands.forEach(command -> CommandExecutor.executeAsPlayer(ExtendedCommandSource.ofPlayer(player),command));
+                    commands.forEach(command -> CommandExecutor.execute(ExtendedCommandSource.asPlayer(player.getCommandSource(), player), command));
                 }
             }
         }
