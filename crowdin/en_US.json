@@ -247,5 +247,6 @@
     "glow.off": "<orange>Glow mode: off",
     "fuji.list_commands.gui.title": "<blue>Server Commands",
     "fuji.list_commands.gui.help.lore": "<green>Left click -> copy the command path",
-    "fuji.list_commands.gui.copy_command_path": "<orange>Copy the command path: `%s` <hover:show_text:'<green>Copy to clipboard'><click:copy_to_clipboard:'%s'><green>[COPY]</click></hover>"
+    "fuji.list_commands.gui.copy_command_path": "<orange>Copy the command path: `%s` <hover:show_text:'<green>Copy to clipboard'><click:copy_to_clipboard:'%s'><green>[COPY]</click></hover>",
+    "placeholder.list.gui.title": "<pink>Placeholder"
 }
