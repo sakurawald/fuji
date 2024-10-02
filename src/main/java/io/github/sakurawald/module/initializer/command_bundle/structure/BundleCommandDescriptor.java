@@ -105,11 +105,12 @@ public class BundleCommandDescriptor extends CommandDescriptor {
         }).toList();
 
         /* substitute the placeholders */
-        commands = commands.stream().map(command -> LocaleHelper.resolvePlaceholder(ctx.getSource().getPlayer(), command)).toList();
+        ServerCommandSource source = ctx.getSource();
+        commands = commands.stream().map(command -> LocaleHelper.resolvePlaceholder(source, command)).toList();
 
         /* execute the commands */
         LogUtil.debug("execute bundle command: {}", commands);
-        CommandExecutor.executeAsConsole(ExtendedCommandSource.ofSource(ctx.getSource(), true), commands);
+        CommandExecutor.executeAsConsole(ExtendedCommandSource.ofSource(source, true), commands);
 
         return 1;
     }
