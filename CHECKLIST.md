@@ -47,6 +47,7 @@ It's good to have a checklist, to avoid forgetting something.
   - The fabric client-side environment.
   - The neoforge client-side environment.
   - The neoforge server-side environment.
+- Test `/reload`
  
 ## Publish a new version
 - sync the language files.
