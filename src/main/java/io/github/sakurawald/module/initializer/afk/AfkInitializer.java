@@ -4,6 +4,7 @@ import io.github.sakurawald.core.accessor.PlayerCombatExtension;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
+import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
@@ -14,7 +15,9 @@ import io.github.sakurawald.module.initializer.afk.config.model.AfkConfigModel;
 import io.github.sakurawald.module.initializer.afk.job.AfkMarkerJob;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MovementType;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 
 
@@ -32,9 +35,9 @@ public class AfkInitializer extends ModuleInitializer {
     @CommandNode("afk")
     private static int $afk(@CommandSource ServerPlayerEntity player) {
         if (!player.isOnGround()
-                || player.isOnFire()
-                || player.inPowderSnow
-                || ((PlayerCombatExtension) player).fuji$inCombat()) {
+            || player.isOnFire()
+            || player.inPowderSnow
+            || ((PlayerCombatExtension) player).fuji$inCombat()) {
 
             LocaleHelper.sendMessageByKey(player, "afk.on.failed");
             return CommandHelper.Return.FAIL;
@@ -43,6 +46,14 @@ public class AfkInitializer extends ModuleInitializer {
         ((AfkStateAccessor) player).fuji$setAfk(true);
         LocaleHelper.sendMessageByKey(player, "afk.on");
         return CommandHelper.Return.SUCCESS;
+    }
+
+    @CommandNode("test-afk")
+    @CommandRequirement(level = 4)
+    private static int testAfk(@CommandSource ServerCommandSource source, ServerPlayerEntity player) {
+        boolean test = ((AfkStateAccessor) player).fuji$isAfk();
+        source.sendMessage(Text.literal(String.valueOf(test)));
+        return CommandHelper.Return.fromBoolean(test);
     }
 
     public static boolean isAfk(Entity entity) {
@@ -58,8 +69,8 @@ public class AfkInitializer extends ModuleInitializer {
         if (movementType == MovementType.PLAYER) {
             // filter zero movement: Vec3d.ZERO
             return Double.compare(vec3d.x, 0) != 0
-                    || Double.compare(vec3d.y, 0) != 0
-                    || Double.compare(vec3d.z, 0) != 0;
+                || Double.compare(vec3d.y, 0) != 0
+                || Double.compare(vec3d.z, 0) != 0;
         }
 
         return false;

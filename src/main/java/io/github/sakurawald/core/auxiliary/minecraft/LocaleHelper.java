@@ -203,7 +203,6 @@ public class LocaleHelper {
         return LocaleHelper.getText(PLACEHOLDER_PARSER, audience, false, value).getString();
     }
 
-
     /* This is the core method to map `String` into `Text`.
      *  All methods that return `Vomponent` are converted from this method.
      * */

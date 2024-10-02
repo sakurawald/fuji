@@ -34,7 +34,7 @@ public class CommandHelper {
     public static List<CommandNode<ServerCommandSource>> getCommandNodes() {
         List<CommandNode<ServerCommandSource>> ret = new ArrayList<>();
         RootCommandNode<ServerCommandSource> root = ServerHelper.getCommandDispatcher().getRoot();
-        getCommandNodes(ret,root);
+        getCommandNodes(ret, root);
         return ret;
     }
 
@@ -44,7 +44,7 @@ public class CommandHelper {
     }
 
     private static void getCommandNodes(List<CommandNode<ServerCommandSource>> list, CommandNode<ServerCommandSource> parent) {
-        parent.getChildren().forEach(it->getCommandNodes(list, it));
+        parent.getChildren().forEach(it -> getCommandNodes(list, it));
 
         // ignore the root command node
         if (!parent.getName().isEmpty()) {
@@ -64,6 +64,10 @@ public class CommandHelper {
         public static final int FAIL = -1;
         public static final int PASS = 0;
         public static final int SUCCESS = 1;
+
+        public static int fromBoolean(boolean value) {
+            return value ? SUCCESS : FAIL;
+        }
     }
 
     public static class Suggestion {
