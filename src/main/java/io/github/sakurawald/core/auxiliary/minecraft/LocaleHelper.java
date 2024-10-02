@@ -203,6 +203,7 @@ public class LocaleHelper {
         return LocaleHelper.getText(PLACEHOLDER_PARSER, audience, false, value).getString();
     }
 
+
     /* This is the core method to map `String` into `Text`.
      *  All methods that return `Vomponent` are converted from this method.
      * */
@@ -212,15 +213,21 @@ public class LocaleHelper {
         // resolve args
         value = resolveArgs(value, args);
 
+        PlaceholderContext placeholderContext = makePlaceholderContext(audience);
+        ParserContext parserContext = ParserContext.of(PlaceholderContext.KEY, placeholderContext);
+
+        return parser.parseText(TextNode.of(value), parserContext);
+    }
+
+    private static @NotNull PlaceholderContext makePlaceholderContext(@Nullable Object audience) {
         PlaceholderContext placeholderContext;
         if (audience instanceof PlayerEntity playerEntity) {
             placeholderContext = PlaceholderContext.of(playerEntity);
         } else {
             placeholderContext = PlaceholderContext.of(ServerHelper.getDefaultServer());
         }
-        ParserContext parserContext = ParserContext.of(PlaceholderContext.KEY, placeholderContext);
 
-        return parser.parseText(TextNode.of(value), parserContext);
+        return placeholderContext;
     }
 
     private static @NotNull Text getText(@Nullable Object audience, boolean isKey, String keyOrValue, Object... args) {
