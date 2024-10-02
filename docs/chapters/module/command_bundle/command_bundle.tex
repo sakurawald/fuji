@@ -30,9 +30,22 @@ This module allows you to create bundle commands, input one command, output many
         "say after heal %player:name%"
         ]
     }
-
     \end{json}
+\end{example}
 
+\begin{example}{Transform a command}
+    \begin{json}
+    {
+        "requirement": {
+        "level": 4,
+        "string": null
+    },
+        "pattern": "warn <player player-arg> <greedy greedy-arg>",
+        "bundle": [
+        "run as player %player:name% send-message $player-arg <red>You are warned: $greedy-arg"
+        ]
+    }
+    \end{json}
 \end{example}
 
 \LevelTwo{Reference}
