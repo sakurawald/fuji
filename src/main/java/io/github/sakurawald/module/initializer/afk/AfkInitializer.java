@@ -51,9 +51,8 @@ public class AfkInitializer extends ModuleInitializer {
     @CommandNode("test-afk")
     @CommandRequirement(level = 4)
     private static int testAfk(@CommandSource ServerCommandSource source, ServerPlayerEntity player) {
-        boolean test = ((AfkStateAccessor) player).fuji$isAfk();
-        source.sendMessage(Text.literal(String.valueOf(test)));
-        return CommandHelper.Return.fromBoolean(test);
+        boolean value = ((AfkStateAccessor) player).fuji$isAfk();
+        return CommandHelper.Return.outputBoolean(source, value);
     }
 
     public static boolean isAfk(Entity entity) {

@@ -95,6 +95,7 @@ motd
 multiplier
 nametag
 placeholder
+predicate
 profiler
 pvp
 rtp

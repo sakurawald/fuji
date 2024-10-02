@@ -48,6 +48,7 @@ public class ConfigModel {
         public Language language = new Language();
         public Chat chat = new Chat();
         public Placeholder placeholder = new Placeholder();
+        public Predicate predicate = new Predicate();
         public MOTD motd = new MOTD();
         public Nametag nametag = new Nametag();
         public TabList tab_list = new TabList();
@@ -236,6 +237,10 @@ public class ConfigModel {
         }
 
         public static class Placeholder {
+            public boolean enable = false;
+        }
+
+        public static class Predicate {
             public boolean enable = false;
         }
 
