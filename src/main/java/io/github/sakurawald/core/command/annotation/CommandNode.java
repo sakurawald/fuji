@@ -11,4 +11,6 @@ public @interface CommandNode {
 
     String value() default "";
 
+    boolean topLevel() default false;
+
 }

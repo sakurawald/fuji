@@ -107,6 +107,11 @@ public class CommandAnnotationProcessor {
         /* process the @CommandNode above the method. */
         method.setAccessible(true);
         CommandNode methodAnnotation = method.getAnnotation(CommandNode.class);
+
+        if (methodAnnotation.topLevel()) {
+            argumentList.clear();
+        }
+
         CommandRequirement methodRequirement = null;
         for (String argumentName : Arrays.stream(methodAnnotation.value().trim().split(" "))
             .filter(node -> !node.isBlank())
