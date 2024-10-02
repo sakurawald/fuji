@@ -10,23 +10,41 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Function;
+/*
 
+Cases:
+1. A command is initialized by player alice, and executed as player bob.
+2. A command is initialized by player alice, and executed as the console.
+3. A command is initialized by the console, and executed as the console. (command scheduler)
+4. A command is initialized by a player, and executed as the player. (interactive sign)
+
+ */
 @Data
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExtendedCommandSource {
-    ServerCommandSource source;
+
+    @NotNull ServerCommandSource initiatingSource;
+    @NotNull ServerCommandSource executingSource;
     boolean parsePlaceholder;
 
-    public ExtendedCommandSource modifySource(Function<ServerCommandSource, ServerCommandSource> modifier) {
-        this.source = modifier.apply(this.source);
-        return this;
+    public boolean sameSource() {
+        return executingSource.getName().equals(initiatingSource.getName());
     }
 
-    public String processCommand(String string) {
+    private ServerCommandSource getPlaceholderParsingSource() {
+        // use the deepest source as the source for placeholder parsing.
+        if (executingSource.isExecutedByPlayer()) {
+            return executingSource;
+        }
+
+        return initiatingSource;
+    }
+
+    public String expandCommand(String string) {
+        // escape the placeholder parsing.
         if (!this.parsePlaceholder) return string;
 
-        ServerPlayerEntity contextualPlayer = this.source.getPlayer();
+        ServerPlayerEntity contextualPlayer = getPlaceholderParsingSource().getPlayer();
         if (contextualPlayer != null) {
             string = LocaleHelper.resolvePlaceholder(contextualPlayer, string);
         } else {
@@ -36,28 +54,33 @@ public class ExtendedCommandSource {
         return string;
     }
 
-    public static ExtendedCommandSource ofSource(@NotNull ServerCommandSource source, boolean parsePlaceholder) {
-        return new ExtendedCommandSource(source, parsePlaceholder);
+    public static ExtendedCommandSource fromSource(@NotNull ServerCommandSource initiatingSource) {
+        return new ExtendedCommandSource(initiatingSource, initiatingSource, true);
     }
 
-    public static ExtendedCommandSource ofPlayer(@NotNull PlayerEntity player, boolean parsePlaceholder) {
-        return new ExtendedCommandSource(player.getCommandSource(), parsePlaceholder);
+    public static ExtendedCommandSource asConsole(@NotNull ServerCommandSource initiatingSource, boolean parsePlaceholder) {
+        return new ExtendedCommandSource(initiatingSource, ServerHelper.getDefaultServer().getCommandSource(), parsePlaceholder);
     }
 
-    public static ExtendedCommandSource ofServer(boolean parsePlaceholder) {
-        ServerCommandSource commandSource = ServerHelper.getDefaultServer().getCommandSource();
-        return new ExtendedCommandSource(commandSource, parsePlaceholder);
+    public static ExtendedCommandSource asPlayer(@NotNull ServerCommandSource initiatingSource, PlayerEntity executingPlayer, boolean parsePlaceholder) {
+        return new ExtendedCommandSource(initiatingSource, executingPlayer.getCommandSource(), parsePlaceholder);
     }
 
-    public static ExtendedCommandSource ofSource(@NotNull ServerCommandSource source) {
-        return ofSource(source, true);
+    public static ExtendedCommandSource asFakeOp(@NotNull ServerCommandSource initiatingSource, PlayerEntity executingPlayer, boolean parsePlaceholder) {
+        return new ExtendedCommandSource(initiatingSource, executingPlayer.getCommandSource().withLevel(4), parsePlaceholder);
     }
 
-    public static ExtendedCommandSource ofPlayer(@NotNull PlayerEntity player) {
-        return ofPlayer(player, true);
+    public static ExtendedCommandSource asConsole(@NotNull ServerCommandSource initiatingSource) {
+        return asConsole(initiatingSource, true);
     }
 
-    public static ExtendedCommandSource ofServer() {
-        return ofServer(true);
+
+    public static ExtendedCommandSource asPlayer(@NotNull ServerCommandSource initiatingSource, PlayerEntity executingPlayer) {
+        return asPlayer(initiatingSource, executingPlayer, true);
     }
+
+    public static ExtendedCommandSource asFakeOp(@NotNull ServerCommandSource initiatingSource, PlayerEntity executingPlayer) {
+        return asFakeOp(initiatingSource, executingPlayer, true);
+    }
+
 }
