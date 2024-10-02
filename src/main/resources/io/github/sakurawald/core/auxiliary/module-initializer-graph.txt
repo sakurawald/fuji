@@ -79,6 +79,7 @@ io.github.sakurawald.module.initializer.language.LanguageInitializer
 io.github.sakurawald.module.initializer.motd.MotdInitializer
 io.github.sakurawald.module.initializer.nametag.NametagInitializer
 io.github.sakurawald.module.initializer.placeholder.PlaceholderInitializer
+io.github.sakurawald.module.initializer.predicate.PredicateInitializer
 io.github.sakurawald.module.initializer.profiler.ProfilerInitializer
 io.github.sakurawald.module.initializer.pvp.PvpInitializer
 io.github.sakurawald.module.initializer.rtp.RtpInitializer
