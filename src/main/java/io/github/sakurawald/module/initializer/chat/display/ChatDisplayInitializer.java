@@ -29,7 +29,9 @@ public class ChatDisplayInitializer extends ModuleInitializer {
         Placeholders.register(
             Identifier.of(Fuji.MOD_ID, "ender"),
             (ctx, arg) -> {
-                if (ctx.player() == null) PlaceholderResult.invalid();
+                if (ctx.player() == null) {
+                   return PlaceholderResult.invalid();
+                }
 
                 ServerPlayerEntity player = ctx.player();
                 String displayUUID = DisplayHelper.createEnderChestDisplay(player);
@@ -50,7 +52,9 @@ public class ChatDisplayInitializer extends ModuleInitializer {
         Placeholders.register(
             Identifier.of(Fuji.MOD_ID, "inv"),
             (ctx, arg) -> {
-                if (ctx.player() == null) PlaceholderResult.invalid();
+                if (ctx.player() == null) {
+                    return PlaceholderResult.invalid();
+                }
 
                 ServerPlayerEntity player = ctx.player();
                 String displayUUID = DisplayHelper.createInventoryDisplay(player);
@@ -69,7 +73,9 @@ public class ChatDisplayInitializer extends ModuleInitializer {
         Placeholders.register(
             Identifier.of(Fuji.MOD_ID, "item"),
             (ctx, arg) -> {
-                if (ctx.player() == null) PlaceholderResult.invalid();
+                if (ctx.player() == null) {
+                   return PlaceholderResult.invalid();
+                }
 
                 ServerPlayerEntity player = ctx.player();
                 String displayUUID = DisplayHelper.createItemDisplay(player);
