@@ -20,6 +20,6 @@ public class CommandSpyInitializer extends ModuleInitializer {
         // spy
         String name = source.getName();
         String string = parseResults.getReader().getString();
-        LogUtil.info("{} issued server command: /{}", name, string);
+        LogUtil.info("{} issued the server command: /{}", name, string);
     }
 }
