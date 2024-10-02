@@ -2,7 +2,8 @@ package io.github.sakurawald.module.initializer.command_scheduler.structure;
 
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
-import io.github.sakurawald.core.service.command_executor.CommandExecutor;
+import io.github.sakurawald.core.command.executor.CommandExecutor;
+import io.github.sakurawald.core.command.structure.ExtendedCommandSource;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -31,6 +32,6 @@ public class ScheduleJob {
         List<String> commands = this.commands_list.get(new Random().nextInt(this.commands_list.size()));
 
         // fix: sync command execution
-        ServerHelper.getDefaultServer().executeSync(() -> CommandExecutor.executeSpecializedCommand(null, commands));
+        ServerHelper.getDefaultServer().executeSync(() -> CommandExecutor.executeAsConsole(ExtendedCommandSource.of(), commands));
     }
 }

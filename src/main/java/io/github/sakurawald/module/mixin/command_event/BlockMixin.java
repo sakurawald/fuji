@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.mixin.command_event;
 
-import io.github.sakurawald.core.service.command_executor.CommandExecutor;
+import io.github.sakurawald.core.command.executor.CommandExecutor;
+import io.github.sakurawald.core.command.structure.ExtendedCommandSource;
 import io.github.sakurawald.module.initializer.command_event.CommandEventInitializer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -22,14 +23,14 @@ public class BlockMixin {
     @Inject(method = "onPlaced", at = @At("TAIL"))
     void onBlockPlaced(World world, BlockPos blockPos, BlockState blockState, LivingEntity livingEntity, ItemStack itemStack, CallbackInfo ci) {
         if (livingEntity instanceof ServerPlayerEntity player) {
-            CommandExecutor.executeSpecializedCommand(player, CommandEventInitializer.config.getModel().event.after_player_place_block.command_list);
+            CommandExecutor.executeAsConsole(ExtendedCommandSource.of(player), CommandEventInitializer.config.getModel().event.after_player_place_block.command_list);
         }
     }
 
     @Inject(method = "onBreak", at = @At("TAIL"))
     void onBlockBreak(World world, BlockPos blockPos, BlockState blockState, PlayerEntity playerEntity, CallbackInfoReturnable<BlockState> cir) {
         if (playerEntity instanceof ServerPlayerEntity player) {
-            CommandExecutor.executeSpecializedCommand(player, CommandEventInitializer.config.getModel().event.after_player_break_block.command_list);
+            CommandExecutor.executeAsConsole(ExtendedCommandSource.of(player), CommandEventInitializer.config.getModel().event.after_player_break_block.command_list);
         }
     }
 

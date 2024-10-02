@@ -3,7 +3,8 @@ package io.github.sakurawald.module.mixin.afk;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.authlib.GameProfile;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.service.command_executor.CommandExecutor;
+import io.github.sakurawald.core.command.executor.CommandExecutor;
+import io.github.sakurawald.core.command.structure.ExtendedCommandSource;
 import io.github.sakurawald.module.initializer.afk.AfkInitializer;
 import io.github.sakurawald.module.initializer.afk.accessor.AfkStateAccessor;
 import io.github.sakurawald.module.initializer.afk.config.model.AfkConfigModel;
@@ -75,7 +76,7 @@ public abstract class ServerPlayerMixin extends PlayerEntity implements AfkState
         // trigger event
         AfkConfigModel.AfkEvent afkEvent = AfkInitializer.config.getModel().afk_event;
         List<String> commandList = this.afk ? afkEvent.on_enter_afk : afkEvent.on_leave_afk;
-        CommandExecutor.executeSpecializedCommand(player, commandList);
+        CommandExecutor.executeAsConsole(ExtendedCommandSource.of(player), commandList);
     }
 
     @Override

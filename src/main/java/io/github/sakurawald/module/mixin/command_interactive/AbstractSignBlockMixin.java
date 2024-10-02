@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.mixin.command_interactive;
 
-import io.github.sakurawald.core.service.command_executor.CommandExecutor;
+import io.github.sakurawald.core.command.executor.CommandExecutor;
+import io.github.sakurawald.core.command.structure.ExtendedCommandSource;
 import net.minecraft.block.AbstractSignBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -44,7 +45,7 @@ public class AbstractSignBlockMixin {
                     cir.setReturnValue(ActionResult.CONSUME);
                     List<String> commands = splitCommands(text);
 
-                    commands.forEach(command -> CommandExecutor.executeCommandAsPlayer(serverPlayer,command));
+                    commands.forEach(command -> CommandExecutor.executeAsPlayer(ExtendedCommandSource.of(player),command));
                 }
             }
         }
