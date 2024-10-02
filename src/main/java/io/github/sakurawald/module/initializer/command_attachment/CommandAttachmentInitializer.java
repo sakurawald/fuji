@@ -125,9 +125,9 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
             /* execute as */
             ExecuteAsType executeAsType = e.getExecuteAsType();
             switch (executeAsType) {
-                case CONSOLE -> CommandExecutor.executeAsConsole(ExtendedCommandSource.of(player), e.getCommand());
-                case PLAYER -> CommandExecutor.executeAsPlayer(ExtendedCommandSource.of(player), e.getCommand());
-                case FAKE_OP -> CommandExecutor.executeAsFakeOp(ExtendedCommandSource.of(player), e.getCommand());
+                case CONSOLE -> CommandExecutor.executeAsConsole(ExtendedCommandSource.ofPlayer(player), e.getCommand());
+                case PLAYER -> CommandExecutor.executeAsPlayer(ExtendedCommandSource.ofPlayer(player), e.getCommand());
+                case FAKE_OP -> CommandExecutor.executeAsFakeOp(ExtendedCommandSource.ofPlayer(player), e.getCommand());
             }
 
             /* item destroy */

@@ -109,7 +109,7 @@ public class BundleCommandDescriptor extends CommandDescriptor {
 
         /* execute the commands */
         LogUtil.debug("execute bundle command: {}", commands);
-        CommandExecutor.executeAsConsole(ExtendedCommandSource.of(ctx.getSource(), true), commands);
+        CommandExecutor.executeAsConsole(ExtendedCommandSource.ofSource(ctx.getSource(), true), commands);
 
         return 1;
     }
