@@ -6,6 +6,7 @@ import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeA
 import io.github.sakurawald.core.command.argument.structure.Argument;
 import net.minecraft.server.command.ServerCommandSource;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ServerCommandSourceAdapter extends BaseArgumentTypeAdapter {
@@ -27,6 +28,6 @@ public class ServerCommandSourceAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     public List<String> getTypeStrings() {
-        return List.of("source", "command-source");
+        return Collections.emptyList();
     }
 }
