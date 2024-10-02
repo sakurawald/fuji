@@ -256,7 +256,7 @@ public class CommandDescriptor {
         MutableText report = LocaleHelper.getTextByValue(source, string)
             .copy()
             .setStyle(Style.EMPTY
-                .withColor(16736000)
+                .withColor(CommandHelper.EXCEPTION_COLOR)
                 .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.of("Click to copy the stacktrace.")))
                 .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, stacktrace)));
 

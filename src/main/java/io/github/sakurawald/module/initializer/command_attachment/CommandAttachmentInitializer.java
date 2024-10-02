@@ -33,6 +33,7 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -124,10 +125,11 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
             /* execute as */
             ExecuteAsType executeAsType = e.getExecuteAsType();
+            ServerCommandSource source = player.getCommandSource();
             switch (executeAsType) {
-                case CONSOLE -> CommandExecutor.executeAsConsole(ExtendedCommandSource.ofPlayer(player), e.getCommand());
-                case PLAYER -> CommandExecutor.executeAsPlayer(ExtendedCommandSource.ofPlayer(player), e.getCommand());
-                case FAKE_OP -> CommandExecutor.executeAsFakeOp(ExtendedCommandSource.ofPlayer(player), e.getCommand());
+                case CONSOLE -> CommandExecutor.execute(ExtendedCommandSource.asConsole(source), e.getCommand());
+                case PLAYER -> CommandExecutor.execute(ExtendedCommandSource.asPlayer(source, player), e.getCommand());
+                case FAKE_OP -> CommandExecutor.execute(ExtendedCommandSource.asFakeOp(source,player), e.getCommand());
             }
 
             /* item destroy */

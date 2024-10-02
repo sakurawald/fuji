@@ -23,14 +23,14 @@ public class BlockMixin {
     @Inject(method = "onPlaced", at = @At("TAIL"))
     void onBlockPlaced(World world, BlockPos blockPos, BlockState blockState, LivingEntity livingEntity, ItemStack itemStack, CallbackInfo ci) {
         if (livingEntity instanceof ServerPlayerEntity player) {
-            CommandExecutor.executeAsConsole(ExtendedCommandSource.ofPlayer(player), CommandEventInitializer.config.getModel().event.after_player_place_block.command_list);
+            CommandExecutor.execute(ExtendedCommandSource.asConsole(player.getCommandSource()), CommandEventInitializer.config.getModel().event.after_player_place_block.command_list);
         }
     }
 
     @Inject(method = "onBreak", at = @At("TAIL"))
     void onBlockBreak(World world, BlockPos blockPos, BlockState blockState, PlayerEntity playerEntity, CallbackInfoReturnable<BlockState> cir) {
         if (playerEntity instanceof ServerPlayerEntity player) {
-            CommandExecutor.executeAsConsole(ExtendedCommandSource.ofPlayer(player), CommandEventInitializer.config.getModel().event.after_player_break_block.command_list);
+            CommandExecutor.execute(ExtendedCommandSource.asConsole(player.getCommandSource()), CommandEventInitializer.config.getModel().event.after_player_break_block.command_list);
         }
     }
 

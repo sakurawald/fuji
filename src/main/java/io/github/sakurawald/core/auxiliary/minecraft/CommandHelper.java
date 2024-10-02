@@ -25,6 +25,7 @@ import java.util.function.Function;
 public class CommandHelper {
 
     public static final String UUID = "uuid";
+    public static final int EXCEPTION_COLOR = 16736000;
 
     public static @NotNull String computeCommandNodePath(CommandNode<ServerCommandSource> node) {
         CommandDispatcher<ServerCommandSource> dispatcher = ServerHelper.getCommandDispatcher();
