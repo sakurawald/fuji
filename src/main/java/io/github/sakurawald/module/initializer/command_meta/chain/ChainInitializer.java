@@ -24,13 +24,13 @@ public class ChainInitializer extends ModuleInitializer {
         if (matcher.find()) {
             String first = matcher.group(1);
             String second = matcher.group(2);
-            int value = CommandExecutor.executeAsConsole(ExtendedCommandSource.of(), first);
+            int value = CommandExecutor.executeAsConsole(ExtendedCommandSource.ofServer(), first);
             // break chain, if command `fail`.
             if (value >= 0) {
-                CommandExecutor.executeAsConsole(ExtendedCommandSource.of(), second);
+                CommandExecutor.executeAsConsole(ExtendedCommandSource.ofServer(), second);
             }
         } else {
-            CommandExecutor.executeAsConsole(ExtendedCommandSource.of(), $rest);
+            CommandExecutor.executeAsConsole(ExtendedCommandSource.ofServer(), $rest);
         }
 
         return CommandHelper.Return.SUCCESS;

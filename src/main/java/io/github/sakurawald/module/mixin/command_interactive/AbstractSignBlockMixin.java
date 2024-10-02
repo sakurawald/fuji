@@ -45,7 +45,7 @@ public class AbstractSignBlockMixin {
                     cir.setReturnValue(ActionResult.CONSUME);
                     List<String> commands = splitCommands(text);
 
-                    commands.forEach(command -> CommandExecutor.executeAsPlayer(ExtendedCommandSource.of(player),command));
+                    commands.forEach(command -> CommandExecutor.executeAsPlayer(ExtendedCommandSource.ofPlayer(player),command));
                 }
             }
         }

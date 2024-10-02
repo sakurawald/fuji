@@ -36,21 +36,28 @@ public class ExtendedCommandSource {
         return string;
     }
 
-    public static ExtendedCommandSource of(@NotNull ServerCommandSource source, boolean parsePlaceholder) {
+    public static ExtendedCommandSource ofSource(@NotNull ServerCommandSource source, boolean parsePlaceholder) {
         return new ExtendedCommandSource(source, parsePlaceholder);
     }
 
-    public static ExtendedCommandSource of(@NotNull PlayerEntity player, boolean parsePlaceholder) {
+    public static ExtendedCommandSource ofPlayer(@NotNull PlayerEntity player, boolean parsePlaceholder) {
         return new ExtendedCommandSource(player.getCommandSource(), parsePlaceholder);
     }
 
-    public static ExtendedCommandSource of(@NotNull PlayerEntity player) {
-        return new ExtendedCommandSource(player.getCommandSource(), true);
-    }
-
-    public static ExtendedCommandSource of() {
+    public static ExtendedCommandSource ofServer(boolean parsePlaceholder) {
         ServerCommandSource commandSource = ServerHelper.getDefaultServer().getCommandSource();
-        return new ExtendedCommandSource(commandSource, true);
+        return new ExtendedCommandSource(commandSource, parsePlaceholder);
     }
 
+    public static ExtendedCommandSource ofSource(@NotNull ServerCommandSource source) {
+        return ofSource(source, true);
+    }
+
+    public static ExtendedCommandSource ofPlayer(@NotNull PlayerEntity player) {
+        return ofPlayer(player, true);
+    }
+
+    public static ExtendedCommandSource ofServer() {
+        return ofServer(true);
+    }
 }

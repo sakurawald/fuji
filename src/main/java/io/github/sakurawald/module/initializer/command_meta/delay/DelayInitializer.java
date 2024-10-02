@@ -29,7 +29,7 @@ public class DelayInitializer extends ModuleInitializer {
         String $rest = rest.getValue();
 
         executor.schedule(() -> {
-            CommandExecutor.executeAsConsole(ExtendedCommandSource.of(), $rest);
+            CommandExecutor.executeAsConsole(ExtendedCommandSource.ofServer(), $rest);
         }, time, TimeUnit.SECONDS);
 
         return CommandHelper.Return.SUCCESS;

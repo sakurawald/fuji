@@ -15,17 +15,17 @@ public class RunInitializer extends ModuleInitializer {
 
     @CommandNode("as console")
     private static int runAsConsole(GreedyString rest) {
-        CommandExecutor.executeAsConsole(ExtendedCommandSource.of(), rest.getValue());
+        CommandExecutor.executeAsConsole(ExtendedCommandSource.ofServer(), rest.getValue());
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("as player")
     private static int runAsPlayer(ServerPlayerEntity player, GreedyString rest) {
-        return CommandExecutor.executeAsPlayer(ExtendedCommandSource.of(player), rest.getValue());
+        return CommandExecutor.executeAsPlayer(ExtendedCommandSource.ofPlayer(player), rest.getValue());
     }
 
     @CommandNode("as fake-op")
     private static int runAsFakeOp(ServerPlayerEntity player, GreedyString rest) {
-        return CommandExecutor.executeAsFakeOp(ExtendedCommandSource.of(player), rest.getValue());
+        return CommandExecutor.executeAsFakeOp(ExtendedCommandSource.ofPlayer(player), rest.getValue());
     }
 }
