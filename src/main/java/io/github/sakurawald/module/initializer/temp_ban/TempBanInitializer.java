@@ -11,6 +11,7 @@ import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GameProfileCollection;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
+import io.github.sakurawald.core.structure.DateParser;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import net.minecraft.command.EntitySelector;
 import net.minecraft.server.BannedIpEntry;
@@ -21,11 +22,8 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @CommandNode("temp-ban")
 @CommandRequirement(level = 4)
@@ -39,7 +37,7 @@ public class TempBanInitializer extends ModuleInitializer {
         }
 
         // add
-        Date expire = parseDate(expiry);
+        Date expire = DateParser.parseDate(expiry);
         ServerCommandSource serverCommandSource = ctx.getSource();
         BannedIpEntry bannedIpEntry = new BannedIpEntry(ip, null, ctx.getSource().getName(), expire, reason.getValue());
         serverCommandSource.getServer().getPlayerManager().getIpBanList().add(bannedIpEntry);
@@ -61,7 +59,7 @@ public class TempBanInitializer extends ModuleInitializer {
     private static int player(@CommandSource CommandContext<ServerCommandSource> ctx, GameProfileCollection collection, String expiry, GreedyString reason) {
         MinecraftServer server = ctx.getSource().getServer();
         PlayerManager playerManager = server.getPlayerManager();
-        Date expire = parseDate(expiry);
+        Date expire = DateParser.parseDate(expiry);
 
         for (GameProfile gameProfile : collection.getValue()) {
             // add
@@ -77,45 +75,6 @@ public class TempBanInitializer extends ModuleInitializer {
         }
 
         return CommandHelper.Return.SUCCESS;
-    }
-
-    private static Date parseDate(String expiry) {
-
-        // Regular expression to match hours, minutes, and seconds
-        Pattern pattern = Pattern.compile("(\\d+)([dhms])");
-        Matcher matcher = pattern.matcher(expiry);
-
-        int totalSeconds = 0;
-
-        // Parse the input string and convert to total seconds
-        while (matcher.find()) {
-            int value = Integer.parseInt(matcher.group(1));
-            String unit = matcher.group(2);
-
-            switch (unit) {
-                case "d":
-                    totalSeconds += value * 86400;
-                    break;
-                case "h":
-                    totalSeconds += value * 3600;
-                    break;
-                case "m":
-                    totalSeconds += value * 60;
-                    break;
-                case "s":
-                    totalSeconds += value;
-                    break;
-                default:
-                    throw new IllegalArgumentException("Unknown time unit: " + unit);
-            }
-        }
-
-        // Get the current date and time
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.SECOND, totalSeconds);
-
-        // Return the new date with added time
-        return calendar.getTime();
     }
 
 }
