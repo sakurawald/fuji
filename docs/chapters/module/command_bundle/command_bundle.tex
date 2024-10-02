@@ -14,7 +14,7 @@ This module allows you to create bundle commands, input one command, output many
     \item {register and un-register commands on the fly, without the server restart!}
 \end{enumerate}
 
-\LevelThree{Example}
+\LevelTwo{Example}
 \begin{example}{Combine commands into one command}
     \begin{json}
     {
@@ -25,6 +25,7 @@ This module allows you to create bundle commands, input one command, output many
         "pattern": "composite-heal",
         "bundle": [
         "say before heal %player:name%",
+        "run as fake-op %player:name% particle minecraft:heart ~ ~2 ~"
         "run as player %player:name% heal",
         "say after heal %player:name%"
         ]
@@ -33,3 +34,9 @@ This module allows you to create bundle commands, input one command, output many
     \end{json}
 
 \end{example}
+
+\LevelTwo{Reference}
+\begin{enumerate}
+    \item \url{https://www.gamergeeks.net/apps/minecraft/particle-command-generator}
+    \item \url{https://learn.microsoft.com/en-us/minecraft/creator/documents/particleeffects?view=minecraft-bedrock-stable}
+\end{enumerate}
