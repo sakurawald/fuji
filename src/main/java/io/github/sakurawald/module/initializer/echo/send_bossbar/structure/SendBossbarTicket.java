@@ -15,6 +15,7 @@ public class SendBossbarTicket extends BossBarTicket {
     final ServerPlayerEntity player;
     final String title;
     final Runnable onComplete;
+    final int totalSecond = (int) (getTotalTicks() / 20);
     private float elapsedTicks;
 
     public SendBossbarTicket(String title, BossBar.Color color, BossBar.Style style, int totalMS, @NotNull ServerPlayerEntity player, Runnable onComplete) {
@@ -26,8 +27,13 @@ public class SendBossbarTicket extends BossBarTicket {
 
     @Override
     protected boolean preProgressChange() {
-        String timeStr = this.title.replace("[total_time]", (int) this.getTotalTicks() / 20 + "s")
-            .replace("[elapsed_time]", (int) this.elapsedTicks / 20 + "s");
+        int elapsedSeconds = (int) (this.elapsedTicks / 20);
+        int leftSeconds = totalSecond - elapsedSeconds;
+
+        String timeStr = this.title
+            .replace("[total_time]", String.valueOf(totalSecond))
+            .replace("[elapsed_time]", String.valueOf(elapsedSeconds))
+            .replace("[left_time]", String.valueOf(leftSeconds));
 
         Text title = LocaleHelper.getTextByValue(this.player, timeStr);
         this.getBossBar().setName(title);
