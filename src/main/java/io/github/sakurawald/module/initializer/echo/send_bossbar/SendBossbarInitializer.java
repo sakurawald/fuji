@@ -14,22 +14,14 @@ import io.github.sakurawald.core.manager.impl.bossbar.BossBarTicket;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.echo.send_bossbar.structure.SendBossbarTicket;
 import net.minecraft.entity.boss.BossBar;
-import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 @CommandRequirement(level = 4)
 public class SendBossbarInitializer extends ModuleInitializer {
-
-    @Override
-    public void onInitialize() {
-
-    }
 
     @CommandNode("send-bossbar")
     private static int sendBossbar(@CommandSource ServerCommandSource source
@@ -38,25 +30,28 @@ public class SendBossbarInitializer extends ModuleInitializer {
         , Optional<BossBar.Color> color
         , Optional<BossBar.Style> style
         , Optional<StringList> commandList
+        , Optional<Boolean> notifyMeOnComplete
         , GreedyString title) {
 
-        Text $title = LocaleHelper.getTextByValue(player, title.getValue());
+        // forward, reversed, fixed 25/100
+
+        /* extract props */
+        Integer $totalMs = totalMs.orElse(3000);
         BossBar.Color $color = color.orElse(BossBar.Color.PURPLE);
         BossBar.Style $style = style.orElse(BossBar.Style.PROGRESS);
-
-        ServerBossBar bossbar = new ServerBossBar($title, $color, $style);
-
-        Integer $totalMs = totalMs.orElse(3000);
-        List<ServerPlayerEntity> $player = List.of(player);
         StringList $commandList = commandList.orElse(new StringList(Collections.emptyList()));
+        Boolean $notifyMeOnComplete = notifyMeOnComplete.orElse(false);
 
-        BossBarTicket bossBarTicket = new SendBossbarTicket(bossbar, $totalMs, $player, () -> {
+        /* construct the ticket*/
+        BossBarTicket bossBarTicket = new SendBossbarTicket(title.getValue(), $color, $style, $totalMs, player, () -> {
             ExtendedCommandSource extendedCommandSource = ExtendedCommandSource.asConsole(player.getCommandSource());
             CommandExecutor.execute(extendedCommandSource, $commandList.getValue());
 
-            source.sendMessage(Text.of("the bossbar is done"));
+            // notify
+            if ($notifyMeOnComplete) {
+                LocaleHelper.sendMessageByKey(source, "echo.send_bossbar.notify", player.getGameProfile().getName(), $commandList.getValue());
+            }
         });
-
         Managers.getBossBarManager().addTicket(bossBarTicket);
 
         return CommandHelper.Return.SUCCESS;
