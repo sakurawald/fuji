@@ -206,6 +206,7 @@ public class ConfigModel {
             public SendTitle send_title = new SendTitle();
             public SendToast send_toast = new SendToast();
             public SendChat send_chat = new SendChat();
+            public SendBossbar send_bossbar = new SendBossbar();
 
             public static class SendMessage {
                 public boolean enable = true;
@@ -228,6 +229,10 @@ public class ConfigModel {
             }
 
             public static class SendChat {
+                public boolean enable = true;
+            }
+
+            public static class SendBossbar {
                 public boolean enable = true;
             }
         }

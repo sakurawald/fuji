@@ -1,6 +1,8 @@
 io.github.sakurawald.core.command.argument.adapter.impl.BlockPosArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.BlockStateArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.BooleanArgumentTypeAdapter
+io.github.sakurawald.core.command.argument.adapter.impl.BossBarColorArgumentTypeAdapter
+io.github.sakurawald.core.command.argument.adapter.impl.BossBarStyleArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.ColorArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.ColumnPosArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.CommandContextArgumentTypeAdapter
