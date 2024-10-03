@@ -5,6 +5,16 @@ import net.minecraft.server.MinecraftServer;
 
 public class ServerLifecycleEvents {
 
+    public static Event<ServerStartingCallback> SERVER_STARTING = new Event<>((listeners) -> (server) -> {
+        for (ServerStartingCallback listener : listeners) {
+            listener.fire(server);
+        }
+    });
+
+    public interface ServerStartingCallback {
+        void fire(MinecraftServer server);
+    }
+
     public static Event<ServerStartedCallback> SERVER_STARTED = new Event<>((listeners) -> (server) -> {
         for (ServerStartedCallback listener : listeners) {
             listener.fire(server);

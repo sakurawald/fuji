@@ -85,6 +85,18 @@ public class Argument {
         return "%s{%s}".formatted(this.argumentName, this.computeRequirementString());
     }
 
+    public String toInGameString() {
+        if (this.isLiteralArgument()) {
+            return this.argumentName;
+        }
+
+        if (isOptional) {
+            return "[%s %s]".formatted(this.argumentName, this.getType().getSimpleName());
+        } else {
+            return "<%s %s>".formatted(this.argumentName, this.getType().getSimpleName());
+        }
+    }
+
     private int tryParseMethodParameterIndexFromArgumentName() {
         // parse the method parameter index
         if (argumentName.startsWith(REQUIRED_ARGUMENT_PLACEHOLDER)) {

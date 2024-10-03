@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Cite({
     "https://github.com/Revxrsal/Lamp"
@@ -39,8 +40,17 @@ public class CommandAnnotationProcessor {
     @Getter
     private static CommandRegistryAccess registryAccess;
 
+    /*
+     yeah, this is a concurrent hash set.
+     Be careful don't to write the hashCode() for command descriptor, just use the memory address, use the command path to identify a command descriptor is possible to broken in some cases of register() and unregister().
+     */
+    public static final Set<CommandDescriptor> descriptors = ConcurrentHashMap.newKeySet();
+
     public static void process() {
-        // note that: the `/reload` will trigger the `REGISTRATION` event.
+        /*
+         note that: the `/reload` will trigger the `REGISTRATION` event.
+         Also, the vanilla minecraft will remove all commands, so we must register fuji commands after reload.
+         */
         CommandEvents.REGISTRATION.register(((dispatcher, registryAccess, environment) -> {
             /* environment */
             CommandAnnotationProcessor.dispatcher = dispatcher;
@@ -50,6 +60,7 @@ public class CommandAnnotationProcessor {
             BaseArgumentTypeAdapter.registerAdapters();
 
             /* register commands */
+            descriptors.clear();
             processClasses();
         }));
     }

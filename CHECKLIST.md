@@ -48,7 +48,8 @@ It's good to have a checklist, to avoid forgetting something.
   - The fabric client-side environment.
   - The neoforge client-side environment.
   - The neoforge server-side environment.
-- Test `/reload`
+- Test `/save-all`
+- Test `/reload`, `/fuji reload`, `/fuji inspect fuji-commands` and `/command-bundle list`
 - Special states of a player
   - as a fake-player
   - died
