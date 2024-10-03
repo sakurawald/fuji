@@ -87,6 +87,16 @@ public class CommandHelper {
                 return builder.buildFuture();
             };
         }
+
+        public static <T> @NotNull SuggestionProvider<ServerCommandSource> enums(T[] enums) {
+            return (context, builder) -> {
+                for (T value : enums) {
+                    builder.suggest(value.toString());
+                }
+                return builder.buildFuture();
+            };
+        }
+
     }
 
     public static class Pattern {

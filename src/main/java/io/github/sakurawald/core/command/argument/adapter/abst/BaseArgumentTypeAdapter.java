@@ -92,7 +92,7 @@ public abstract class BaseArgumentTypeAdapter {
         return type;
     }
 
-    public Object makeParameterObject(CommandContext<ServerCommandSource> ctx, Argument argument) {
+    public final Object makeParameterObject(CommandContext<ServerCommandSource> ctx, Argument argument) {
         Object argumentObject = this.makeArgumentObject(ctx, argument);
         return box(argument, argumentObject);
     }
