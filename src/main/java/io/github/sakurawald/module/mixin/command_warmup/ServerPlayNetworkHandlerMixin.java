@@ -26,8 +26,8 @@ public abstract class ServerPlayNetworkHandlerMixin {
 
         for (CommandWarmupEntry entry : CommandWarmupInitializer.config.getModel().entries) {
             // cancel the usage of command, if a warmup entry matches.
-            if (command.matches(entry.getCommand())) {
-                Managers.getBossBarManager().addTicket(CommandWarmupTicket.make(player, entry));
+            if (command.matches(entry.getCommand().getRegex())) {
+                Managers.getBossBarManager().addTicket(CommandWarmupTicket.make(player, command, entry));
                 ci.cancel();
                 break;
             }

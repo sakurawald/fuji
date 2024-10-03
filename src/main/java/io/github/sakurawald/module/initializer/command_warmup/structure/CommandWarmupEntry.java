@@ -6,8 +6,15 @@ import lombok.Data;
 @Data
 public class CommandWarmupEntry {
 
-    final String command;
-    final int ms;
+
+    final Command command;
+
+    @Data
+    public static class Command {
+        final String regex;
+        final int ms;
+    }
+
     final Interruptible interruptible;
 
 }
