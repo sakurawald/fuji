@@ -66,6 +66,7 @@ disabler.move_speed_disabler
 disabler.move_wrongly_disabler
 echo
 echo.send_actionbar
+echo.send_bossbar
 echo.send_broadcast
 echo.send_chat
 echo.send_message
