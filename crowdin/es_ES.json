@@ -22,7 +22,8 @@
     "command.player_only": "<red>This command can only be executed by a player",
     "command_attachment.query.no_attachment": "<red>No hay adjuntos.",
     "command_cooldown.cooldown": "<yellow>%d s",
-    "command_warmup.bossbar.name": "<dark_green>Comando warmup: %s",
+    "command_warmup.bossbar.name": "<dark_green>Command warmup: /%s",
+    "command_warmup.warn_for_move": "<red>Don't move over %.2f meters away!",
     "compass.no_compass": "<red>You should hold a compass in hand.",
     "confirm": "<#FFA1F5>Confirmar",
     "deleted": "<red>Deleted.",
@@ -245,10 +246,12 @@
     "command_permission.command.unset": "<orange>Issue the command to <green>unset<orange> the requirement for command `%s`: %s <hover:show_text:'<green>Copy to clipboard'><click:copy_to_clipboard:'%s'><green>[COPY]</click></hover>",
     "glow.on": "<orange>Glow mode: on",
     "glow.off": "<orange>Glow mode: off",
-    "fuji.list_commands.gui.title": "<blue>Server Commands",
-    "fuji.list_commands.gui.help.lore": "<green>Left click -> copy the command path",
-    "fuji.list_commands.gui.copy_command_path": "<orange>Copy the command path: `%s` <hover:show_text:'<green>Copy to clipboard'><click:copy_to_clipboard:'%s'><green>[COPY]</click></hover>",
+    "fuji.inspect.server_commands.gui.title": "<blue>Server Commands",
+    "fuji.inspect.server_commands.gui.help.lore": "<green>Left click -> copy the command path",
+    "fuji.inspect.server_commands.gui.copy_command_path": "<orange>Copy the command path: `%s` <hover:show_text:'<green>Copy to clipboard'><click:copy_to_clipboard:'%s'><green>[COPY]</click></hover>",
+    "fuji.inspect.modules.gui.title": "<blue>Modules",
     "placeholder.list.gui.title": "<pink>Placeholder",
     "command.execute.echo.executing_source": "<#FF5F00>An exception occurs during the execution of `/%s`\nMessage: %s",
-    "command.execute.echo.initiating_source": "<#FF5F00>An exception occurs during executing the command `/%s` as `%s`\nMessage: %s"
+    "command.execute.echo.initiating_source": "<#FF5F00>An exception occurs during executing the command `/%s` as `%s`\nMessage: %s",
+    "echo.send_bossbar.notify": "<green>The bossbar sent to `%s` with command list `%s` is completed."
 }
