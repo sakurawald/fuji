@@ -28,13 +28,29 @@ Also, each \tbf{command node} has its \tbf{requirement}, which is a \tbf{predica
 \end{tips}
 
 \LevelTwo{Example}
-\begin{example}{Allow everyone to use /op command}
-    \ic{/lp group default permission set fuji.permission.op true}
+\begin{example}{Allow everyone to use \ic{/gamemode} command}
+    \ic{/lp group default permission set fuji.permission.gamemode true}
 \end{example}
 
-\begin{example}{Allow the client-side to use gamemode switcher menu}
-    After you assign the \ttt{/gamemode} command permission for players, the client-side also requires to install a mod to bypass the client-side permission checking: \url{https://modrinth.com/mod/switcher}
+\begin{example}{Allow everyone to use \ic{/gamemode} command except the player Alice}
+    \ic{/lp group default permission set fuji.permission.gamemode true}\\
+    \ic{/lp user Alice permission set fuji.permission.gamemode false}
 \end{example}
+
+\begin{example}{Only allow everyone to use \ic{/gamemode spectator}}
+    It's impossible to assign a single gamemode, since the command path of \ic{/gamemode creative} and \ic{/gamemode spectator} are both \str{gamemode.gamemode}.
+
+    Notice that the first \str{gamemode} in the command path, means the literal argument \str{gamemode}.\\
+    The second \str{gamemode} in the command path, means an argument, whose type if \ttt{gamemode}.
+    This gamemode argument contains all the 4 gamemodes: adventure, creative, spectator and survival.
+    That's the real reason why we can't assign a single gamemode for the command \ic{/gamemode}.\\\\
+    If you really want to assign only 1 single gamemode for everyone, you can use~\nameref{ch:command_bundle} to create a new command, which only switch the gamemode of player into spectator.
+
+\end{example}
+
+\begin{tips}{Allow the client-side to use gamemode switcher menu}
+    After you assign the \ttt{/gamemode} command permission for players, the client-side also requires to install a mod to bypass the client-side permission checking: \url{https://modrinth.com/mod/switcher}
+\end{tips}
 
 \begin{example}{More examples}
     See~\nameref{ch:permission}
