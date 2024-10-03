@@ -22,7 +22,7 @@
     "command.player_only": "<red>This command can only be executed by a player",
     "command_attachment.query.no_attachment": "<red>No attachments.",
     "command_cooldown.cooldown": "<yellow>%d s",
-    "command_warmup.bossbar.name": "<dark_green>Command warmup: %s",
+    "command_warmup.bossbar.name": "<dark_green>Command warmup: /%s",
     "compass.no_compass": "<red>You should hold a compass in hand.",
     "confirm": "<#FFA1F5>Confirm",
     "deleted": "<red>Deleted.",
