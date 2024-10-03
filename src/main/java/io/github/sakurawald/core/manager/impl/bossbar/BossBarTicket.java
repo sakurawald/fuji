@@ -12,9 +12,9 @@ import java.util.List;
 
 @Getter
 public abstract class BossBarTicket {
-    private final float maxValue;
-    private final float deltaValue;
 
+    private final float totalTicks;
+    private final float deltaPerTick;
     private final ServerBossBar bossBar;
 
     @Setter
@@ -25,8 +25,8 @@ public abstract class BossBarTicket {
 
     public BossBarTicket(ServerBossBar bossBar, int totalMS, @NotNull List<ServerPlayerEntity> players) {
         this.bossBar = bossBar;
-        this.maxValue = 20 * ((float) totalMS / 1000);
-        this.deltaValue = 1F / this.maxValue;
+        this.totalTicks = 20 * ((float) totalMS / 1000);
+        this.deltaPerTick = 1F / this.totalTicks;
 
         // the default percent is 1.0f
         this.bossBar.setPercent(0);
