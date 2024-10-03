@@ -250,5 +250,6 @@
     "fuji.list_commands.gui.copy_command_path": "<orange>Copy the command path: `%s` <hover:show_text:'<green>Copy to clipboard'><click:copy_to_clipboard:'%s'><green>[COPY]</click></hover>",
     "placeholder.list.gui.title": "<pink>Placeholder",
     "command.execute.echo.executing_source": "<#FF5F00>An exception occurs during the execution of `/%s`\nMessage: %s",
-    "command.execute.echo.initiating_source": "<#FF5F00>An exception occurs during executing the command `/%s` as `%s`\nMessage: %s"
+    "command.execute.echo.initiating_source": "<#FF5F00>An exception occurs during executing the command `/%s` as `%s`\nMessage: %s",
+    "echo.send_bossbar.notify": "<green>The bossbar sent to `%s` with command list `%s` is completed."
 }
