@@ -33,7 +33,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
                 Managers.getBossBarManager().addTicket(CommandWarmupTicket.make(player, command, entry));
 
                 if (config.warn_for_move) {
-                    LocaleHelper.sendActionBarByKey(player,"command_warmup.warn_for_move");
+                    LocaleHelper.sendActionBarByKey(player, "command_warmup.warn_for_move", entry.getInterruptible().getInterruptDistance());
                 }
 
                 ci.cancel();
