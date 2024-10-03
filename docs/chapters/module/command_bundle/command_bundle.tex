@@ -1,4 +1,4 @@
-\LevelOne{command\_bundle}\label{chap:command_bundle}
+\LevelOne{command\_bundle}\label{ch:command_bundle}
 
 \LevelTwo{Purpose}
 This module allows you to create bundle commands, input one command, output many commands.
@@ -9,9 +9,20 @@ This module allows you to create bundle commands, input one command, output many
 \LevelTwo{Feature}
 \begin{enumerate}
     \item {a user-friendly DSL to create new custom commands easily, with the interoperation of \ttt{variables}, \ttt{placeholders} and \ttt{selectors}.}
-    \item {support complex \ttt{command argument type}: \ttt{required argument}, \ttt{literal argument} and even the \ttt{optional argument} with a default value.}
-    \item {a powerful type-system to ensure the \ttt{type-safe} input, with fully command suggestion.}
-    \item {register and un-register commands on the fly, without the server restart!}
+    \item {support complex \ttt{command argument type}: \ttt{required argument}, \ttt{literal argument} and even the \ttt{optional argument} with a default value.
+    }
+    \item {a powerful type-system to ensure the \ttt{type-safe} input, with fully command suggestion.
+        \begin{tips}{To query all type strings}
+            \ic{/command-bundle list-type-strings}
+        \end{tips}
+    }
+    \item {register and un-register commands on the fly, without the server restart!
+    \begin{example}{Reload the bundle commands}
+        Each time you modify the configuration file, you should issue \ic{/fuji reload}, this will unregister all bundle commands in the server, and register the bundle commands defined in the file into the server.\\\\
+        Also, you can use the \ic{/command-bundle un-register} and \ic{/command-bundle register} manually.
+    \end{example}
+
+    }
 \end{enumerate}
 
 \LevelTwo{Example}
@@ -47,6 +58,11 @@ This module allows you to create bundle commands, input one command, output many
     }
     \end{json}
 \end{example}
+
+\begin{tips}{Assign a string permission for a bundle command}
+    See~\nameref{ch:permission}
+\end{tips}
+
 
 \LevelTwo{Reference}
 \begin{enumerate}

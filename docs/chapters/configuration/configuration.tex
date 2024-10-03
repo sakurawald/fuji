@@ -17,6 +17,10 @@
                         Used to test the compatibility between fuji and other mods.
                     }
 
+                    \item[log\_debug\_messages]{
+                        Whether to log the debug level messages into the console. Use this only for debug purpose, or it will cause console spam.
+                    }
+
                 \end{NestedList}
 
             }
@@ -86,3 +90,8 @@
 \clearpage
 \LevelOne{Module-Control File}
 You can read more about \ttt{module-control file} for each \ttt{module} in \nameref{ch:module}
+
+\begin{tips}{Use \ic{/fuji reload} command to hot reload the configuration files.}
+    The \ic{/fuji reload} command is provided by \ttt{fuji module}.
+    See~\nameref{ch:fuji}
+\end{tips}

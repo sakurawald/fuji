@@ -1,4 +1,4 @@
-\LevelOne{fuji}
+\LevelOne{fuji}\label{ch:fuji}
 
 \LevelTwo{Purpose}
 This module provides the command \ic{/fuji}, which includes some operations on fuji itself.
@@ -6,13 +6,22 @@ This module provides the command \ic{/fuji}, which includes some operations on f
 \LevelTwo{Command}
 \LevelThree{/fuji reload}
 Reload all \ttt{configuration files} and all \ttt{modules}.
-\LevelThree{/fuji about}
-\LevelThree{/fuji inspect modules}
-\LevelThree{/fuji inspect server-commands}
-\LevelThree{/fuji inspect fuji-commands}
 
 \begin{note}{Module itself can't be hot reloaded}
     After you \ttt{enable} or \ttt{disable} a module, you must \ttt{restart} the server.
 \end{note}
+
+\LevelThree{/fuji about}
+Open a gui to display the about, including the mod version and contributor list.
+
+\LevelThree{/fuji inspect modules}
+Inspect all the enabled/disabled modules.
+
+\LevelThree{/fuji inspect server-commands}
+Inspect all the registered commands in the server.
+
+\LevelThree{/fuji inspect fuji-commands}
+Inspect all the commands registered by fuji mod.
+
 
 

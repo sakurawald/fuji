@@ -1,3 +1,14 @@
 \LevelOne{predicate}
 \LevelTwo{Purpose}
 This module provides \ttt{predicate} commands, that starts with \ttt{test-}
+
+\LevelTwo{How it works}
+The \ttt{return value} is represented an \ttt{integer} provided by vanilla minecraft command return layer.
+This command will return \ttt{1} if test is success, and \ttt{-1} if test is failed.\\\\
+See more: \url{https://minecraft.fandom.com/wiki/Commands/return}
+
+\LevelTwo{Example}
+\begin{example}{Test a condition and then run a command}
+    See more in~\nameref{ch:chain}\\
+    \ic{/run as player <player> chain test-level-perm \ph{player:name} 4 chain say value is true}
+\end{example}
