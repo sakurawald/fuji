@@ -28,3 +28,9 @@ This module provides commands to send echo to players.
 \begin{example}{Send chat as a player for online players}
     \ic{/foreach send-chat \ph{player:name} i am \ph{player:name}}
 \end{example}
+
+\LevelThree{/send-bossbar}
+
+\begin{example}{All in one exapmle}
+    \ic{/send-bossbar <player> --stepType BACKWARD --totalMs 5000 --color PURPLE --style NOTCHED\_6 --notifyMeOnComplete true --commandList "say the player \ph{player:name} is healed|heal \ph{player:name}" <rb>Healing is coming [elapsed\_time]/[total\_time]/[left\_time]}
+\end{example}
