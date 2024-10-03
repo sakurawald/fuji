@@ -12,6 +12,7 @@ import io.github.sakurawald.core.command.structure.ExtendedCommandSource;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.manager.impl.bossbar.BossBarTicket;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
+import io.github.sakurawald.core.command.argument.wrapper.StepType;
 import io.github.sakurawald.module.initializer.echo.send_bossbar.structure.SendBossbarTicket;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.server.command.ServerCommandSource;
@@ -31,6 +32,7 @@ public class SendBossbarInitializer extends ModuleInitializer {
         , Optional<BossBar.Style> style
         , Optional<StringList> commandList
         , Optional<Boolean> notifyMeOnComplete
+        , Optional<StepType> stepType
         , GreedyString title) {
 
         // forward, reversed, fixed 25/100
@@ -41,9 +43,10 @@ public class SendBossbarInitializer extends ModuleInitializer {
         BossBar.Style $style = style.orElse(BossBar.Style.PROGRESS);
         StringList $commandList = commandList.orElse(new StringList(Collections.emptyList()));
         Boolean $notifyMeOnComplete = notifyMeOnComplete.orElse(false);
+        StepType $stepType = stepType.orElse(StepType.FORWARD);
 
         /* construct the ticket*/
-        BossBarTicket bossBarTicket = new SendBossbarTicket(title.getValue(), $color, $style, $totalMs, player, () -> {
+        BossBarTicket bossBarTicket = new SendBossbarTicket(title.getValue(), $color, $style, $totalMs, $stepType, player, () -> {
             ExtendedCommandSource extendedCommandSource = ExtendedCommandSource.asConsole(player.getCommandSource());
             CommandExecutor.execute(extendedCommandSource, $commandList.getValue());
 

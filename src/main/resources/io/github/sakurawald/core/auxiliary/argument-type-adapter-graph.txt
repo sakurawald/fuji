@@ -38,6 +38,7 @@ io.github.sakurawald.core.command.argument.adapter.impl.ScoreboardObjectiveArgum
 io.github.sakurawald.core.command.argument.adapter.impl.ScoreboardSlotArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.ServerCommandSourceAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.SlotRangeArgumentTypeAdapter
+io.github.sakurawald.core.command.argument.adapter.impl.StepTypeArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.StringArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.StringListArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.StyleArgumentTypeAdapter
