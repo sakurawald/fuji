@@ -2,6 +2,7 @@ package io.github.sakurawald.module.initializer.fuji;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -11,8 +12,10 @@ import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.job.abst.BaseJob;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.structure.CommandNodeEntry;
+import io.github.sakurawald.core.structure.Pair;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.fuji.gui.AboutGui;
+import io.github.sakurawald.module.initializer.fuji.gui.ModulesGui;
 import io.github.sakurawald.module.initializer.fuji.gui.ServerCommandsGui;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
@@ -59,12 +62,25 @@ public class FujiInitializer extends ModuleInitializer {
     }
 
     @CommandNode("inspect server-commands")
-    private static int $listCommands(@CommandSource ServerPlayerEntity player) {
+    private static int $listServerCommands(@CommandSource ServerPlayerEntity player) {
         List<CommandNodeEntry> entities = CommandHelper.getCommandNodes().stream()
             .map(CommandNodeEntry::new)
             .sorted(Comparator.comparing(CommandNodeEntry::getPath))
             .toList();
         new ServerCommandsGui(player, entities, 0).open();
+        return CommandHelper.Return.SUCCESS;
+    }
+
+    @CommandNode("inspect modules")
+    private static int $listModules(@CommandSource ServerPlayerEntity player) {
+        List<Pair<String, Boolean>> list = Managers.getModuleManager().getModule2enable()
+            .entrySet()
+            .stream()
+            .map(it -> new Pair<>(ReflectionUtil.joinModulePath(it.getKey()), it.getValue()))
+            .sorted(Comparator.comparing(Pair::getKey))
+            .toList();
+
+        new ModulesGui(player, list, 0).open();
         return CommandHelper.Return.SUCCESS;
     }
 }

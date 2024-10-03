@@ -53,6 +53,10 @@ public class ReflectionUtil {
         return lines;
     }
 
+    public static String joinModulePath(List<String> modulePath) {
+        return String.join(".", modulePath);
+    }
+
     public static String computeModulePath(String className) {
         return String.join(".", ModuleManager.computeModulePath(className));
     }
