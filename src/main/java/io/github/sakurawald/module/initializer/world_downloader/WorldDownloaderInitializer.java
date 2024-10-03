@@ -83,7 +83,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
 
         /* remove redundant contexts */
         if (contextQueue.remainingCapacity() == 0) {
-            LogUtil.info("contexts is full, remove the oldest context. {}", contextQueue.peek());
+            LogUtil.debug("contexts is full, remove the oldest context. {}", contextQueue.peek());
             safelyRemoveContext(contextQueue.poll());
         }
 
