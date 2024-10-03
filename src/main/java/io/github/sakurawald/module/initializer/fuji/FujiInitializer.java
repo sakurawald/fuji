@@ -8,6 +8,8 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.command.processor.CommandAnnotationProcessor;
+import io.github.sakurawald.core.command.structure.CommandDescriptor;
 import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.job.abst.BaseJob;
 import io.github.sakurawald.core.manager.Managers;
@@ -15,6 +17,7 @@ import io.github.sakurawald.core.structure.CommandNodeEntry;
 import io.github.sakurawald.core.structure.Pair;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.fuji.gui.AboutGui;
+import io.github.sakurawald.module.initializer.fuji.gui.CommandDescriptorGui;
 import io.github.sakurawald.module.initializer.fuji.gui.ModulesGui;
 import io.github.sakurawald.module.initializer.fuji.gui.ServerCommandsGui;
 import net.fabricmc.loader.api.FabricLoader;
@@ -81,6 +84,19 @@ public class FujiInitializer extends ModuleInitializer {
             .toList();
 
         new ModulesGui(player, list, 0).open();
+        return CommandHelper.Return.SUCCESS;
+    }
+
+    @CommandNode("inspect fuji-commands")
+    private static int $listFujiCommands(@CommandSource ServerPlayerEntity player) {
+        List<CommandDescriptor> descriptors = CommandAnnotationProcessor
+            .descriptors
+            .stream()
+            .sorted(Comparator.comparing(CommandDescriptor::buildCommandNodePath))
+            .toList();
+
+        new CommandDescriptorGui(player, descriptors, 0).open();
+
         return CommandHelper.Return.SUCCESS;
     }
 }

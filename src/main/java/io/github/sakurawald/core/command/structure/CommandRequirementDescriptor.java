@@ -17,4 +17,12 @@ public class CommandRequirementDescriptor {
 
         return new CommandRequirementDescriptor(annotation.level(), annotation.string());
     }
+
+    public static int getDefaultLevel() {
+        return 0;
+    }
+
+    public static String getDefaultString() {
+        return "";
+    }
 }

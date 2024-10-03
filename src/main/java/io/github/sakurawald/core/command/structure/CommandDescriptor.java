@@ -6,6 +6,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.CommandNode;
+import com.mojang.brigadier.tree.LiteralCommandNode;
+import com.mojang.brigadier.tree.RootCommandNode;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
@@ -15,7 +17,6 @@ import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.core.command.exception.AbortCommandExecutionException;
 import io.github.sakurawald.core.command.processor.CommandAnnotationProcessor;
 import io.github.sakurawald.core.manager.impl.module.ModuleManager;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -36,13 +37,19 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
 @Getter
 public class CommandDescriptor {
 
-    public Method method;
+    public final Method method;
+    public final List<Argument> arguments;
 
-    public List<Argument> arguments;
+    // it's null if get before register()
+    private @Nullable LiteralArgumentBuilder<ServerCommandSource> registerReturnValue;
+
+    public CommandDescriptor(Method method, List<Argument> arguments) {
+        this.method = method;
+        this.arguments = arguments;
+    }
 
     private static LiteralArgumentBuilder<ServerCommandSource> makeLiteralArgumentBuilder(Argument argument) {
         return CommandManager.literal(argument.getArgumentName());
@@ -92,6 +99,56 @@ public class CommandDescriptor {
         }
 
         return (LiteralArgumentBuilder<ServerCommandSource>) root;
+    }
+
+    public String buildCommandNodePath() {
+        assert this.registerReturnValue != null;
+        return buildCommandNodePath(this.registerReturnValue.build());
+    }
+
+    private static String buildCommandNodePath(CommandNode<ServerCommandSource> node) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(node.getName());
+        node.getChildren().forEach(child -> sb.append(".").append(buildCommandNodePath(child)));
+        return sb.toString();
+    }
+
+    public void unregister() {
+        LogUtil.debug("un-register command: {}", this);
+
+        RootCommandNode<ServerCommandSource> root = CommandAnnotationProcessor.getDispatcher().getRoot();
+
+        assert this.registerReturnValue != null;
+        LiteralCommandNode<ServerCommandSource> navigationNode = this.registerReturnValue.build();
+        com.mojang.brigadier.tree.CommandNode<ServerCommandSource> targetNode = root.getChild(navigationNode.getName());
+        if (targetNode != null) {
+            if (CommandDescriptor.unregister(targetNode, navigationNode)) {
+                root.getChildren().removeIf(p -> p.getName().equals(navigationNode.getName()));
+            }
+        }
+
+        // sync the registry
+        CommandAnnotationProcessor.descriptors.remove(this);
+    }
+
+    private static boolean unregister(
+        CommandNode<ServerCommandSource> targetNode
+        , CommandNode<ServerCommandSource> navigationNode
+    ) {
+
+        /* go down */
+        navigationNode.getChildren()
+            .stream()
+            .toList()
+            .forEach(child -> {
+                if (unregister(targetNode.getChild(child.getName()), child)) {
+                    // identify by argument name
+                    targetNode.getChildren().removeIf(it -> it.getName().equals(child.getName()));
+                }
+            });
+
+        /* remove leaf node */
+        return targetNode.getChildren().isEmpty();
     }
 
     protected List<Object> makeCommandFunctionArgs(CommandContext<ServerCommandSource> ctx) {
@@ -272,8 +329,14 @@ public class CommandDescriptor {
         /* second pass */
         registerOptionalArguments();
 
+        /* fill the props */
+        this.registerReturnValue = root;
+
+        /* sync the registry */
+        CommandAnnotationProcessor.descriptors.add(this);
         return root;
     }
+
 
     @SuppressWarnings("UnusedReturnValue")
     private LiteralArgumentBuilder<ServerCommandSource> registerNonOptionalArguments() {
@@ -307,8 +370,53 @@ public class CommandDescriptor {
 
     @Override
     public String toString() {
-        return "/" + this.arguments.stream().map(Argument::toString).collect(Collectors.joining(" ")) + "\n"
-            + "method = " + this.method;
+        return "/" + this.arguments.stream().map(Argument::toString).collect(Collectors.joining(" "));
     }
 
+    public String computeCommandSyntax() {
+        StringBuilder sb = new StringBuilder()
+            .append("/");
+
+        this.getArguments().stream()
+            .filter(it -> !it.isCommandSource())
+            .forEach(it -> sb.append(it.toInGameString()).append(" "));
+
+        return sb.toString();
+    }
+
+    public int computeLevelPermission() {
+        int maxRequiredLevel = CommandRequirementDescriptor.getDefaultLevel();
+        for (Argument argument : this.arguments) {
+            if (argument.getRequirement() == null) continue;
+
+            maxRequiredLevel = Math.max(maxRequiredLevel, argument.getRequirement().getLevel());
+        }
+        return maxRequiredLevel;
+    }
+
+    public String computeStringPermission() {
+        String requiredString = CommandRequirementDescriptor.getDefaultString();
+        for (Argument argument : this.arguments) {
+            if (argument.getRequirement() == null) continue;
+
+            String string = argument.getRequirement().getString();
+            if (string != null && !string.isBlank()) {
+                requiredString = string;
+                break;
+            }
+        }
+
+        return requiredString.isBlank() ? "none" : requiredString;
+    }
+
+    public boolean canBeExecutedByConsole() {
+        for (Argument argument : this.arguments) {
+            if (!argument.isCommandSource()) continue;
+
+            return argument.getType().equals(CommandContext.class)
+                || argument.getType().equals(ServerCommandSource.class);
+        }
+
+        return true;
+    }
 }
