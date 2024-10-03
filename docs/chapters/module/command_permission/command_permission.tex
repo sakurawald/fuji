@@ -14,17 +14,24 @@ In this system, all commands are build into \tbf{a tree structure}, that is to s
 \begin{example}{What is the path of a specific command node?}
     For example, the command \ic{/gamemode creative Steve} is composed by 3 command node:
     \begin{description}
-        \item [literal command node] = \ttt{"gamemode"}
-        \item [argument command node] = \tbf{a gamemode argument}
-        \item [argument command node] = \tbf{a player argument}
+        \item [\str{gamemode}] = \ttt{a literal whose name is "gamemode"}
+        \item [\str{creative}] = \tbf{an argument whose type is gamemode, its name is \str{gamemode} and its value is \str{creative}}
+        \item [\str{Steve}] = \tbf{an argument whose type is player, its name is \str{target}, and its value is \str{Steve}}
     \end{description}
     We say that the command path of \ic{/gamemode creative Steve}, is \ttt{["gamemode", "gamemode", "target"]}.
+
+    \begin{tips}{How to query the name of an argument}
+        You can issue \ic{/help gamemode} which will display the name of arguments.
+        Or you can issue \ic{/fuji inspect server-commands} to query the \ttt{command path} of all commands registered in the server.
+    \end{tips}
 \end{example}
 
 Also, each \tbf{command node} has its \tbf{requirement}, which is a \tbf{predicate} to check if the \tbf{command source} can use the command node.
 
-\begin{tips}{Query all the registered command path}
-    \ic{/lp group default permission set fuji.permission\ldots}
+\begin{tips}{Query the command path of a command.}
+    \ic{/lp group default permission set fuji.permission\ldots}\\
+    or \ic{/command-permission}\\
+    or \ic{/fuji inspect server-commands}
 \end{tips}
 
 \LevelTwo{Example}
