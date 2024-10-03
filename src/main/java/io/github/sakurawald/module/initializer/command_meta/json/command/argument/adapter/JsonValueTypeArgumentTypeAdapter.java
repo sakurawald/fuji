@@ -4,6 +4,7 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.module.initializer.command_meta.json.command.argument.wrapper.JsonValueType;
@@ -35,12 +36,6 @@ public class JsonValueTypeArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(String argumentName) {
-        return super.makeRequiredArgumentBuilder(argumentName).suggests((ctx, builder) -> {
-            for (JsonValueType value : JsonValueType.values()) {
-                builder.suggest(value.name());
-            }
-
-            return builder.buildFuture();
-        });
+        return super.makeRequiredArgumentBuilder(argumentName).suggests(CommandHelper.Suggestion.enums(JsonValueType.values()));
     }
 }
