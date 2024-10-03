@@ -20,13 +20,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@Getter
 public class ModuleManager extends BaseManager {
 
     public static final String ENABLE_SUPPLIER_KEY = "enable";
     public static final String CORE_MODULE_ROOT = "core";
     private static final Set<String> MODULES = new HashSet<>(ReflectionUtil.getGraph(ReflectionUtil.MODULE_GRAPH_FILE_NAME));
 
-    @Getter
     private final Map<Class<? extends ModuleInitializer>, ModuleInitializer> moduleRegistry = new HashMap<>();
     private final Map<List<String>, Boolean> module2enable = new HashMap<>();
 
@@ -83,7 +83,7 @@ public class ModuleManager extends BaseManager {
     private void serverStartupReport() {
         List<String> enabledModuleList = new ArrayList<>();
         module2enable.forEach((module, enable) -> {
-            if (enable) enabledModuleList.add(String.join(".", module));
+            if (enable) enabledModuleList.add(ReflectionUtil.joinModulePath(module));
         });
 
         enabledModuleList.sort(String::compareTo);
