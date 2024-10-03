@@ -23,16 +23,14 @@ public class BossBarManager extends BaseManager {
     public void onInitialize() {
         ServerTickEvents.START_SERVER_TICK.register(this::onServerTick);
 
-        PlayerEvents.ON_DAMAGED.register((player, damageSource, amount) -> {
-            tickets.stream()
-                .filter(it -> it instanceof InterruptibleTicket interruptibleTicket
-                    && interruptibleTicket.getInterruptible().isEnable()
-                    && interruptibleTicket.getInterruptible().isInterruptOnDamaged()
-                    // the spawn mechanism of fake-player is different, they are spawned in overworld, and then teleport to target position.
-                    && EntityHelper.isRealPlayer(player)
-                    && it.getPlayers().stream().anyMatch(p -> p.equals(player)))
-                .forEach(it -> it.setAborted(true));
-        });
+        PlayerEvents.ON_DAMAGED.register((player, damageSource, amount) -> tickets.stream()
+            .filter(it -> it instanceof InterruptibleTicket interruptibleTicket
+                && interruptibleTicket.getInterruptible().isEnable()
+                && interruptibleTicket.getInterruptible().isInterruptOnDamaged()
+                // the spawn mechanism of fake-player is different, they are spawned in overworld, and then teleport to target position.
+                && EntityHelper.isRealPlayer(player)
+                && it.getPlayers().stream().anyMatch(p -> p.equals(player)))
+            .forEach(it -> it.setAborted(true)));
     }
 
     public Collection<BossBarTicket> getTickets() {
@@ -80,7 +78,7 @@ public class BossBarManager extends BaseManager {
 
             // fix: bossbar.progress() may be greater than 1.0F and throw an IllegalArgumentException.
             try {
-                ticket.progress(Math.min(1f, ticket.progress() + ticket.getDeltaPerTick()));
+                ticket.step();
             } catch (Exception e) {
                 /*
                  The exception will be thrown, if
@@ -97,8 +95,7 @@ public class BossBarManager extends BaseManager {
             }
 
             // even the ServerPlayer is disconnected, the bossbar will still be ticked.
-            if (Float.compare(ticket.progress(), 1f) == 0) {
-                ticket.setCompleted(true);
+            if (ticket.isCompleted()) {
                 // set completed tickets to abort, so that it will be removed form the list.
                 ticket.setAborted(true);
                 completedTickets.add(ticket);

@@ -1,5 +1,6 @@
 package io.github.sakurawald.core.manager.impl.bossbar;
 
+import io.github.sakurawald.core.command.argument.wrapper.StepType;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.entity.boss.ServerBossBar;
@@ -13,32 +14,60 @@ import java.util.List;
 @Getter
 public abstract class BossBarTicket {
 
-    private final float totalTicks;
-    private final float deltaPerTick;
-    private final ServerBossBar bossBar;
+    // the type of ticks should be `float`, instead of `int`.
+    final float totalTicks;
+    final float stepTicksPerTick;
+    final ServerBossBar bossBar;
+    final StepType stepType;
 
     @Setter
-    private boolean completed;
+    boolean aborted;
 
-    @Setter
-    private boolean aborted;
 
-    public BossBarTicket(ServerBossBar bossBar, int totalMS, @NotNull List<ServerPlayerEntity> players) {
+    public BossBarTicket(ServerBossBar bossBar, int totalMs, StepType stepType, @NotNull List<ServerPlayerEntity> players) {
         this.bossBar = bossBar;
-        this.totalTicks = 20 * ((float) totalMS / 1000);
-        this.deltaPerTick = 1F / this.totalTicks;
+        this.totalTicks = 20 * ((float) totalMs / 1000);
+        this.stepType = stepType;
 
-        // the default percent is 1.0f
-        this.bossBar.setPercent(0);
+        // compute fields
+        this.bossBar.setPercent(this.computeInitialProgress());
+        this.stepTicksPerTick = this.computeStepTicksPerTick();
 
         // add players for this bossbar
         players.forEach(this::addPlayer);
+    }
 
-        this.aborted = false;
+    public BossBarTicket(ServerBossBar bossBar, int totalMs, @NotNull List<ServerPlayerEntity> players) {
+        this(bossBar, totalMs, StepType.FORWARD, players);
+    }
+
+    private float computeInitialProgress() {
+        return this.stepType == StepType.FORWARD ? 0f : 1f;
+    }
+
+    private float computeStepTicksPerTick() {
+        float abs = 1F / this.totalTicks;
+        return this.stepType == StepType.FORWARD ? abs : -abs;
     }
 
     public @NotNull Collection<ServerPlayerEntity> getPlayers() {
         return Collections.unmodifiableCollection(this.bossBar.getPlayers());
+    }
+
+    public void step() {
+        if (this.stepType == StepType.FORWARD) {
+            this.progress(Math.min(1f, this.progress() + this.stepTicksPerTick));
+        } else {
+            this.progress(Math.max(0f, this.progress() + this.stepTicksPerTick));
+        }
+    }
+
+    public boolean isCompleted() {
+        if (this.stepType == StepType.FORWARD) {
+            return Float.compare(this.progress(), 1f) == 0;
+        } else {
+            return Float.compare(this.progress(), 0f) == 0;
+        }
     }
 
     public float progress() {
