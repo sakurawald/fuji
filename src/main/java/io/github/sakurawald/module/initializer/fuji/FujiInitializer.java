@@ -13,7 +13,7 @@ import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.structure.CommandNodeEntry;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.fuji.gui.AboutGui;
-import io.github.sakurawald.module.initializer.fuji.gui.ListCommandsGui;
+import io.github.sakurawald.module.initializer.fuji.gui.ServerCommandsGui;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.fabricmc.loader.api.metadata.Person;
@@ -58,13 +58,13 @@ public class FujiInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @CommandNode("list-commands")
+    @CommandNode("inspect server-commands")
     private static int $listCommands(@CommandSource ServerPlayerEntity player) {
         List<CommandNodeEntry> entities = CommandHelper.getCommandNodes().stream()
             .map(CommandNodeEntry::new)
             .sorted(Comparator.comparing(CommandNodeEntry::getPath))
             .toList();
-        new ListCommandsGui(player, entities, 0).open();
+        new ServerCommandsGui(player, entities, 0).open();
         return CommandHelper.Return.SUCCESS;
     }
 }

@@ -35,8 +35,6 @@ public class SendBossbarInitializer extends ModuleInitializer {
         , Optional<StepType> stepType
         , GreedyString title) {
 
-        // forward, reversed, fixed 25/100
-
         /* extract props */
         Integer $totalMs = totalMs.orElse(3000);
         BossBar.Color $color = color.orElse(BossBar.Color.PURPLE);
