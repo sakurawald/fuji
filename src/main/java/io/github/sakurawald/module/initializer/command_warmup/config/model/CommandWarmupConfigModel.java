@@ -8,6 +8,8 @@ import java.util.List;
 
 public class CommandWarmupConfigModel {
 
+    public boolean warn_for_move = true;
+
     public List<CommandWarmupEntry> entries = new ArrayList<>(){
         {
             this.add(new CommandWarmupEntry(new CommandWarmupEntry.Command("back", 3 * 1000), new Interruptible(true, 3, true, true)));
