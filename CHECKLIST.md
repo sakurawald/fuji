@@ -42,6 +42,7 @@ It's good to have a checklist, to avoid forgetting something.
 - Test command requirements:
   - Test the requirement of `/warp`
   - Test the requirement of `/world`
+- Test the command tree for a default user.
 - Test platform environments:
   - The fabric server-side environment.
   - The fabric client-side environment.

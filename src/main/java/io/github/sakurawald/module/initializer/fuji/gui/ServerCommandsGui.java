@@ -16,20 +16,20 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ListCommandsGui extends PagedGui<CommandNodeEntry> {
+public class ServerCommandsGui extends PagedGui<CommandNodeEntry> {
 
-    public ListCommandsGui(ServerPlayerEntity player, @NotNull List<CommandNodeEntry> entities, int pageIndex) {
-        super(null, player, LocaleHelper.getTextByKey(player, "fuji.list_commands.gui.title"), entities, pageIndex);
+    public ServerCommandsGui(ServerPlayerEntity player, @NotNull List<CommandNodeEntry> entities, int pageIndex) {
+        super(null, player, LocaleHelper.getTextByKey(player, "fuji.inspect.server_commands.gui.title"), entities, pageIndex);
 
         SingleLineLayer footer = new SingleLineLayer();
         footer.setSlot(4, GuiHelper.makeHelpButton(player)
-            .setLore(LocaleHelper.getTextListByKey(player, "fuji.list_commands.gui.help.lore")));
+            .setLore(LocaleHelper.getTextListByKey(player, "fuji.inspect.server_commands.gui.help.lore")));
         this.addLayer(footer, 0, this.getHeight() - 1);
     }
 
     @Override
     public PagedGui<CommandNodeEntry> make(@Nullable SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<CommandNodeEntry> entities, int pageIndex) {
-        return new ListCommandsGui(player, entities, pageIndex);
+        return new ServerCommandsGui(player, entities, pageIndex);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class ListCommandsGui extends PagedGui<CommandNodeEntry> {
             .setCallback((index, clickType, actionType) -> {
                 String commandPath = entity.getPath();
                 if (clickType.isLeft) {
-                    LocaleHelper.sendMessageByKey(getPlayer(), "fuji.list_commands.gui.copy_command_path", commandPath, commandPath);
+                    LocaleHelper.sendMessageByKey(getPlayer(), "fuji.inspect.server_commands.gui.copy_command_path", commandPath, commandPath);
                 }
                 close();
             })
