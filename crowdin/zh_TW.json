@@ -22,7 +22,8 @@
     "command.player_only": "<red>該指令只能由玩家執行",
     "command_attachment.query.no_attachment": "<red>該物品沒有綁定的指令.",
     "command_cooldown.cooldown": "<yellow>%d 秒",
-    "command_warmup.bossbar.name": "<dark_green>指令預熱：%s",
+    "command_warmup.bossbar.name": "<dark_green>Command warmup: /%s",
+    "command_warmup.warn_for_move": "<red>Don't move over %.2f meters away!",
     "compass.no_compass": "<red>您需要手持羅盤.",
     "confirm": "<#FFA1F5>確認",
     "deleted": "<red>已刪除",
@@ -245,10 +246,12 @@
     "command_permission.command.unset": "<orange>發出指令以<green>取消<orange>指令 `%s` 的需求：%s <hover:show_text:'<green>複製到剪貼簿'><click:copy_to_clipboard:'%s'><green>[複製]</click></hover>",
     "glow.on": "<orange>發光模式：開啟",
     "glow.off": "<orange>發光模式：關閉",
-    "fuji.list_commands.gui.title": "<blue>伺服器指令",
-    "fuji.list_commands.gui.help.lore": "<green>按下左鍵 -> 複製指令路徑",
-    "fuji.list_commands.gui.copy_command_path": "<orange>複製指令路徑：`%s` <hover:show_text:'<green>複製到剪貼簿'><click:copy_to_clipboard:'%s'><green>[複製]</click></hover>",
+    "fuji.inspect.server_commands.gui.title": "<blue>Server Commands",
+    "fuji.inspect.server_commands.gui.help.lore": "<green>Left click -> copy the command path",
+    "fuji.inspect.server_commands.gui.copy_command_path": "<orange>Copy the command path: `%s` <hover:show_text:'<green>Copy to clipboard'><click:copy_to_clipboard:'%s'><green>[COPY]</click></hover>",
+    "fuji.inspect.modules.gui.title": "<blue>Modules",
     "placeholder.list.gui.title": "<pink>Placeholder",
     "command.execute.echo.executing_source": "<#FF5F00>An exception occurs during the execution of `/%s`\nMessage: %s",
-    "command.execute.echo.initiating_source": "<#FF5F00>An exception occurs during executing the command `/%s` as `%s`\nMessage: %s"
+    "command.execute.echo.initiating_source": "<#FF5F00>An exception occurs during executing the command `/%s` as `%s`\nMessage: %s",
+    "echo.send_bossbar.notify": "<green>The bossbar sent to `%s` with command list `%s` is completed."
 }
