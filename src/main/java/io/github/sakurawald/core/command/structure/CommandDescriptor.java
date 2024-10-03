@@ -385,13 +385,13 @@ public class CommandDescriptor {
     }
 
     public int computeLevelPermission() {
-        int maxRequiredLevel = CommandRequirementDescriptor.getDefaultLevel();
+        int minRequiredLevel = CommandRequirementDescriptor.getDefaultLevel();
         for (Argument argument : this.arguments) {
             if (argument.getRequirement() == null) continue;
 
-            maxRequiredLevel = Math.max(maxRequiredLevel, argument.getRequirement().getLevel());
+            minRequiredLevel = Math.max(minRequiredLevel, argument.getRequirement().getLevel());
         }
-        return maxRequiredLevel;
+        return minRequiredLevel;
     }
 
     public String computeStringPermission() {
