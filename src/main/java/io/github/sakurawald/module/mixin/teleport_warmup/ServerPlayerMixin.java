@@ -7,7 +7,6 @@ import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.core.structure.TeleportTicket;
 import io.github.sakurawald.module.initializer.teleport_warmup.TeleportWarmupInitializer;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +14,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = ServerPlayerEntity.class, priority = 1000 - 500)
 public abstract class ServerPlayerMixin {
@@ -23,7 +21,7 @@ public abstract class ServerPlayerMixin {
     @Inject(method = "teleport(Lnet/minecraft/server/world/ServerWorld;DDDFF)V", at = @At("HEAD"), cancellable = true)
     public void interceptTeleportAndAddTicket(@NotNull ServerWorld targetWorld, double x, double y, double z, float yaw, float pitch, @NotNull CallbackInfo ci) {
         // check blacklist
-        if (!TeleportWarmupInitializer.config.getModel().dimension.list.contains(RegistryHelper.ofString(targetWorld))) {
+        if (!TeleportWarmupInitializer.config.getModel().dimension.blacklist.contains(RegistryHelper.ofString(targetWorld))) {
             return;
         }
 
@@ -40,7 +38,7 @@ public abstract class ServerPlayerMixin {
                 , SpatialPose.of(player)
                 , new SpatialPose(targetWorld, x, y, z, yaw, pitch)
                 , TeleportWarmupInitializer.config.getModel().warmup_second * 1000
-                , TeleportWarmupInitializer.config.getModel().interrupt_distance
+                , TeleportWarmupInitializer.config.getModel().interruptible
             );
             Managers.getBossBarManager().addTicket(ticket);
             ci.cancel();
@@ -52,17 +50,4 @@ public abstract class ServerPlayerMixin {
         // yeah, let's do teleport now.
     }
 
-    @Inject(method = "damage", at = @At("RETURN"))
-    public void abortTicketIfGetDamaged(DamageSource damageSource, float amount, @NotNull CallbackInfoReturnable<Boolean> cir) {
-        // If damage was actually applied...
-        if (cir.getReturnValue()) {
-            ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-            if (EntityHelper.isNonRealPlayer(player)) return;
-
-            TeleportTicket ticket = TeleportWarmupInitializer.getTeleportTicket(player);
-            if (ticket != null) {
-                ticket.setAborted(true);
-            }
-        }
-    }
 }

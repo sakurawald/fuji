@@ -2,6 +2,7 @@ package io.github.sakurawald.module.mixin.command_warmup;
 
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.command_warmup.CommandWarmupInitializer;
+import io.github.sakurawald.module.initializer.command_warmup.structure.CommandWarmupEntry;
 import io.github.sakurawald.module.initializer.command_warmup.structure.CommandWarmupTicket;
 import net.minecraft.network.packet.c2s.play.CommandExecutionC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -23,10 +24,14 @@ public abstract class ServerPlayNetworkHandlerMixin {
     public void interceptCommandUsagePackets(@NotNull CommandExecutionC2SPacket commandExecutionC2SPacket, @NotNull CallbackInfo ci) {
         String command = commandExecutionC2SPacket.comp_808();
 
-        int ms = CommandWarmupInitializer.command2ms(command);
-        if (ms > 0) {
-            Managers.getBossBarManager().addTicket(CommandWarmupTicket.make(player, command, ms));
-            ci.cancel();
+        for (CommandWarmupEntry entry : CommandWarmupInitializer.config.getModel().entries) {
+            // cancel the usage of command, if a warmup entry matches.
+            if (command.matches(entry.getCommand())) {
+                Managers.getBossBarManager().addTicket(CommandWarmupTicket.make(player, entry));
+                ci.cancel();
+                break;
+            }
         }
+
     }
 }

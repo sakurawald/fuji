@@ -1,25 +1,26 @@
 package io.github.sakurawald.module.initializer.command_warmup.structure;
 
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.manager.impl.bossbar.BossBarTicket;
+import io.github.sakurawald.core.manager.impl.bossbar.structure.InterruptibleTicket;
+import io.github.sakurawald.core.structure.SpatialPose;
 import lombok.Getter;
 import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 @Getter
-public class CommandWarmupTicket extends BossBarTicket {
-
-    private final @NotNull ServerPlayerEntity player;
+public class CommandWarmupTicket extends InterruptibleTicket {
 
     private final String command;
 
-    public CommandWarmupTicket(ServerBossBar bossBar, int totalMS, @NotNull ServerPlayerEntity player, String command) {
-        super(bossBar, totalMS, List.of(player));
-        this.player = player;
-        this.command = command;
+    public CommandWarmupTicket(@NotNull ServerPlayerEntity player, CommandWarmupEntry entry) {
+        super(new ServerBossBar(LocaleHelper.getTextByKey(player, "command_warmup.bossbar.name", entry.getCommand()), net.minecraft.entity.boss.BossBar.Color.GREEN, net.minecraft.entity.boss.BossBar.Style.PROGRESS)
+            , entry.getMs()
+            , player
+            , SpatialPose.of(player)
+            , entry.getInterruptible());
+
+        this.command = entry.getCommand();
     }
 
     @Override
@@ -27,9 +28,8 @@ public class CommandWarmupTicket extends BossBarTicket {
         player.networkHandler.executeCommand(command);
     }
 
-    public static CommandWarmupTicket make(ServerPlayerEntity player, String command, int ms) {
-        ServerBossBar bossbar = new ServerBossBar(LocaleHelper.getTextByKey(player, "command_warmup.bossbar.name", command), net.minecraft.entity.boss.BossBar.Color.GREEN, net.minecraft.entity.boss.BossBar.Style.PROGRESS);
-        return new CommandWarmupTicket(bossbar, ms, player, command);
+    public static CommandWarmupTicket make(ServerPlayerEntity player, CommandWarmupEntry entry) {
+        return new CommandWarmupTicket(player, entry);
     }
 
 }
