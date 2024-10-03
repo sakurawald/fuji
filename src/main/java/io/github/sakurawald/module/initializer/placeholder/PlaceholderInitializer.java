@@ -50,7 +50,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
 
     @CommandNode("list")
     private static int list(@CommandSource ServerPlayerEntity player) {
-        List<Identifier> list = Placeholders.getPlaceholders().keySet().stream().toList();
+        List<Identifier> list = Placeholders.getPlaceholders().keySet().asList();
         new PlaceholderGui(player, list, 0).open();
         return CommandHelper.Return.SUCCESS;
     }
