@@ -13,7 +13,6 @@ public class TeleportWarmupConfigModel {
     public Interruptible interruptible = new Interruptible(true, 1, true, true);
 
     public Dimension dimension = new Dimension();
-
     public static class Dimension {
 
         @SerializedName(value = "blacklist", alternate = "list")
