@@ -22,7 +22,7 @@ It's good to have a checklist, to avoid forgetting something.
   - Test the context passing after command redirection.
 - Issue the command `/send-title Steve --mainTitle "<rainbow>Hello" --subTitle "<blue>World"
 --fadeInTicks 60 --stayTicks 60 --fadeOutTicks 60`
-- See if a pickaxe gets the max power level in `/emchantment`.
+- See if a pickaxe gets the max power level in `/enchantment`.
   - Test the lambda for power of providers.
 - See an inventory display contains a shulker box.
   - Test the deep-level gui.
