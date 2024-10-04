@@ -90,6 +90,15 @@ public class CommandHelper {
             };
         }
 
+        public static <T> @NotNull SuggestionProvider<ServerCommandSource> iterable(Iterable<T> iterable) {
+            return (context, builder) -> {
+                for (T value : iterable) {
+                    builder.suggest(value.toString());
+                }
+                return builder.buildFuture();
+            };
+        }
+
     }
 
     public static class Pattern {

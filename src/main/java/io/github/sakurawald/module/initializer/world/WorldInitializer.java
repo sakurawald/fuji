@@ -47,6 +47,7 @@ import java.util.Optional;
 
 @Cite("https://github.com/NucleoidMC/fantasy")
 @Getter
+@CommandNode("world")
 @CommandRequirement(level = 4)
 public class WorldInitializer extends ModuleInitializer {
 
@@ -80,7 +81,7 @@ public class WorldInitializer extends ModuleInitializer {
         }
     }
 
-    @CommandNode("world tp")
+    @CommandNode("tp")
     private static int $tp(@CommandSource ServerPlayerEntity player, Dimension dimension) {
         ServerWorld world = dimension.getValue();
         BlockPos spawnPos = world.getSpawnPos();
@@ -88,7 +89,7 @@ public class WorldInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @CommandNode("world list")
+    @CommandNode("list")
     private static int $list(@CommandSource ServerPlayerEntity player) {
         ServerHelper.getWorlds().forEach(world -> {
             String dimensionType = world.getDimensionEntry().getIdAsString();
@@ -98,7 +99,7 @@ public class WorldInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @CommandNode("world create")
+    @CommandNode("create")
     private static int $create(@CommandSource CommandContext<ServerCommandSource> ctx, String name,
                                Optional<Long> seed, DimensionType dimensionType) {
 
@@ -126,7 +127,7 @@ public class WorldInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @CommandNode("world delete")
+    @CommandNode("delete")
     private static int $delete(@CommandSource CommandContext<ServerCommandSource> ctx, Dimension dimension) {
         /* check blacklist */
         ServerWorld world = dimension.getValue();
@@ -149,7 +150,7 @@ public class WorldInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @CommandNode("world reset")
+    @CommandNode("reset")
     private static int $reset(@CommandSource CommandContext<ServerCommandSource> ctx, Optional<Boolean> useTheSameSeed, Dimension dimension) {
         // draw seed and save
         ServerWorld world = dimension.getValue();
