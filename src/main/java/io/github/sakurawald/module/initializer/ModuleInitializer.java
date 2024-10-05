@@ -23,11 +23,16 @@ public class ModuleInitializer {
         this.registerGsonTypeAdapter();
         this.loadConfigurationFiles();
         this.onInitialize();
+        this.registerPlaceholder();
     }
 
     public final void doReload() {
         this.loadConfigurationFiles();
         this.onReload();
+    }
+
+    public void registerPlaceholder() {
+
     }
 
     public void registerGsonTypeAdapter() {
