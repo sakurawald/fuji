@@ -130,8 +130,7 @@ public class AboutGui extends PagedGui<Person> {
 
     @Override
     public List<Person> filter(String keyword) {
-        return getEntities().stream().filter(e ->
-            {
+        return getEntities().stream().filter(e -> {
                 Map<String, String> contact = e.getContact().asMap();
                 return e.getName().contains(keyword)
                     || contact.entrySet().stream().anyMatch(it -> it.getKey().contains(keyword) || it.getValue().contains(keyword));

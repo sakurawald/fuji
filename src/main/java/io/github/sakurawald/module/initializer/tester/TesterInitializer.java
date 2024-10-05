@@ -19,6 +19,7 @@ public class TesterInitializer extends ModuleInitializer {
     private static int $run(@CommandSource ServerPlayerEntity player) {
 
 
+
         return 1;
     }
 

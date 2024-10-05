@@ -36,7 +36,7 @@ public class IOUtil {
                 if (file.isFile()) {
                     try (FileInputStream fis = new FileInputStream(file)) {
 
-                        ZipEntry zipEntry = new ZipEntry(getEntryName(base,file));
+                        ZipEntry zipEntry = new ZipEntry(getEntryName(base, file));
                         zos.putNextEntry(zipEntry);
 
                         byte[] buffer = new byte[BUFFER_SIZE];

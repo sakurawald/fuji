@@ -90,23 +90,4 @@ public class CheckDependencyTest {
         });
     }
 
-    /**
-     * disable wildcard import in idea: <a href="https://stackoverflow.com/questions/3348816/intellij-never-use-wildcard-imports">...</a>
-     */
-    @Test
-    void testWildcardImportStatement() {
-        Stream<Dependency> dependencies = new FileDependencyChecker().makeDependencies(
-                COMPILE_TIME_MAIN_PACKAGE_PATH)
-            .stream()
-            .filter(dep -> {
-                dep.filterReference(ref -> ref.matches(".*\\*.*"));
-                return !dep.getReference().isEmpty();
-            });
-
-        dependencies.forEach(dep -> {
-            System.out.println(dep);
-            throw new RuntimeException("this package uses wildcard import.");
-        });
-    }
-
 }

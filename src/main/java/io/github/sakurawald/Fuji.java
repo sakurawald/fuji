@@ -7,12 +7,14 @@ import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Path;
 
+
 @Cite({
     "https://github.com/EssentialsX/Essentials/"
     , "https://github.com/NucleusPowered/Nucleus"
     , "https://github.com/Zrips/CMI-API"
     , "https://github.com/ForgeEssentials/ForgeEssentials"
 })
+
 public class Fuji implements ModInitializer {
 
     public static final String MOD_ID = "fuji";

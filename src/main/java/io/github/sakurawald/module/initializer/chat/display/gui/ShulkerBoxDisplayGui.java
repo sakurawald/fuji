@@ -35,7 +35,7 @@ public class ShulkerBoxDisplayGui extends DisplayGuiBuilder {
         }
         gui.setSlot(4, itemStack);
         if (this.parentGui != null) {
-            gui.setSlot(LINE_SIZE - 1,  GuiHelper.makeBackButton(player).setCallback(parentGui::open));
+            gui.setSlot(LINE_SIZE - 1, GuiHelper.makeBackButton(player).setCallback(parentGui::open));
         }
 
         /* construct items */

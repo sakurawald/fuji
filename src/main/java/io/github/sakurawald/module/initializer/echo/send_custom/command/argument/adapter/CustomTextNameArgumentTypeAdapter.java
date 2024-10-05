@@ -9,14 +9,12 @@ import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeA
 import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.module.initializer.echo.send_custom.SendCustomInitializer;
 import io.github.sakurawald.module.initializer.echo.send_custom.command.argument.wrapper.CustomTextName;
-import lombok.Cleanup;
 import lombok.SneakyThrows;
 import net.minecraft.server.command.ServerCommandSource;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class CustomTextNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override

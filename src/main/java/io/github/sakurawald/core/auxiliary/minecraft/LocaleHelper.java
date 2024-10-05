@@ -184,7 +184,7 @@ public class LocaleHelper {
         return resolveArgs(getValue(audience, key), args);
     }
 
-    private static @NotNull String resolveArgs(@NotNull String string, Object @NotNull ... args) {
+    private static @NotNull String resolveArgs(@NotNull String string, Object... args) {
         if (args.length > 0) {
             try {
                 return String.format(string, args);

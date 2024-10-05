@@ -12,8 +12,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class SendBroadcastInitializer extends ModuleInitializer {
 
     @CommandNode("send-broadcast")
-    @CommandRequirement(level =  4)
-    private static int sendBroadcast(GreedyString rest){
+    @CommandRequirement(level = 4)
+    private static int sendBroadcast(GreedyString rest) {
         String message = rest.getValue();
 
         for (ServerPlayerEntity player : ServerHelper.getPlayers()) {
