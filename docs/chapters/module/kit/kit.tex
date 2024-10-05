@@ -24,7 +24,7 @@ Give a kit to a player.
 \end{example}
 
 \begin{example}{Give a kit to a player}
-    \ic{/kit give <player> <kit-name>}
+    \ic{/kit give \player <kit-name>}
     \begin{note}{The giving function behaviour}
         \begin{enumerate}
             \item {try to insert the item in the specified slot}
@@ -37,7 +37,7 @@ Give a kit to a player.
 \begin{example}{Associate a cooldown to a kit}
     To associate a cooldown with commands: see~\nameref{ch:command_cooldown}\\\\
     Create a \ttt{named cooldown} with 60sec cooldown and infinite usage: \ic{/command-cooldown create example-kit-cooldown 60000}\\\\
-    Test the named cooldown, giving the kit to the player if the test is success:\ic{/command-cooldown test example-kit-cooldown <player> --onFailed "send-message \ph{player:name} wait a moment" kit give \ph{player:name} example-kit|send-message \ph{player:name} kit received.}\\\\
+    Test the named cooldown, giving the kit to the player if the test is success:\ic{/command-cooldown test example-kit-cooldown \player --onFailed "send-message \ph{player:name} wait a moment" kit give \ph{player:name} example-kit|send-message \ph{player:name} kit received.}\\\\
 
     Now, create a new command using~\nameref{ch:command_bundle} module to execute the test command
     \begin{example}{The config to create a new command for cooldown test command to give a kit if the test is success}

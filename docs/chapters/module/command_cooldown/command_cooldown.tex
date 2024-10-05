@@ -19,12 +19,12 @@ This module provides:
 \end{example}
 
 \begin{example}{Test a named cooldown}
-    \ic{/command-cooldown test example <player> --onFailed "say false \ph{fuji:command\_cooldown\_left\_time 1}/\ph{fuji:command\_cooldown\_left\_usage 1}" say true}
+    \ic{/command-cooldown test example \player --onFailed "say false \ph{fuji:command\_cooldown\_left\_time 1}/\ph{fuji:command\_cooldown\_left\_usage 1}" say true}
 \end{example}
 
 \begin{example}{Reset a named cooldown for a player}
     Note that this will only reset the \ttt{timestamp} associated with the player, the \ttt{usage} associated with the player will not be reset.\\
-    \ic{/command-cooldown reset example <player>}
+    \ic{/command-cooldown reset example \player}
 \end{example}
 
 \begin{example}{Create a named cooldown with 3 max usage and 15 sec cooldown}
