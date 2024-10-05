@@ -8,7 +8,7 @@
   associate cooldown with commands.
     - create a named cooldown: `/command-cooldown create example 3000`
     - test a named cooldown:
-      `/command-cooldown test example SakuraWald --onFailed "say false %fuji:command_cooldown_left_time 1%/%fuji:command_cooldown_left_usage 1%" say true`
+      `/command-cooldown test example <player> --onFailed "say false %fuji:command_cooldown_left_time 1%/%fuji:command_cooldown_left_usage 1%" say true`
 - feature: improve the kit giving logic:
     - first: try to insert item in specified slot.
     - second: try to insert item in any slot.
