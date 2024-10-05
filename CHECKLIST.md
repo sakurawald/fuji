@@ -34,6 +34,7 @@ It's good to have a checklist, to avoid forgetting something.
 - Buy a new head in `/head`.
 - Get a kit from `/kit`.
     - Test the screen gui.
+    - Test the `/kit give` command while inventory is full. (note that the player in creative mode can always pick up the same items even the inventory is full.)
 - Start a sample for a production work.
     - Test the sign input gui.
     - Test the chunks iterator.
