@@ -28,7 +28,7 @@ public class CommandCooldownArgumentTypeAdapter extends BaseArgumentTypeAdapter 
     @Override
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(String argumentName) {
         return super.makeRequiredArgumentBuilder(argumentName)
-            .suggests(CommandHelper.Suggestion.iterable(CommandCooldownInitializer.config.getModel().data.cooldowns.keySet()));
+            .suggests(CommandHelper.Suggestion.iterable(CommandCooldownInitializer.config.getModel().namedCooldown.cooldowns.keySet()));
     }
 
     @Override
