@@ -38,9 +38,9 @@ public class CommandCooldownInitializer extends ModuleInitializer {
         public void beforeWriteStorage() {
             this.getModel().namedCooldown.list.values()
                 .stream()
-                .filter(it-> !it.isPersistent())
+                .filter(it -> !it.isPersistent())
                 // clear the timestamp for non-persistent cooldown before writing storage.
-                .forEach(it->it.getTimestamp().clear());
+                .forEach(it -> it.getTimestamp().clear());
         }
     };
 
@@ -133,7 +133,7 @@ public class CommandCooldownInitializer extends ModuleInitializer {
         CommandCooldown commandCooldown = new CommandCooldown(name, cooldownMs, $maxUsage, $persistent, $global);
         config.getModel().namedCooldown.list.put(name, commandCooldown);
 
-        LocaleHelper.sendMessageByKey(source, "created");
+        LocaleHelper.sendMessageByKey(source, "command_cooldown.created", name);
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -143,7 +143,7 @@ public class CommandCooldownInitializer extends ModuleInitializer {
 
         String key = name.getValue();
         config.getModel().namedCooldown.list.remove(key);
-        LocaleHelper.sendMessageByKey(source, "deleted");
+        LocaleHelper.sendMessageByKey(source, "command_cooldown.deleted", name.getValue());
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -170,14 +170,14 @@ public class CommandCooldownInitializer extends ModuleInitializer {
 
     private static void ensureExist(ServerCommandSource source, CommandCooldownName name) {
         if (!config.getModel().namedCooldown.list.containsKey(name.getValue())) {
-            LocaleHelper.sendMessageByKey(source, "not_found");
+            LocaleHelper.sendMessageByKey(source, "command_cooldown.not_found", name.getValue());
             throw new AbortCommandExecutionException();
         }
     }
 
     private static void ensureNotExist(ServerCommandSource source, String name) {
         if (config.getModel().namedCooldown.list.containsKey(name)) {
-            LocaleHelper.sendMessageByKey(source, "already_exists");
+            LocaleHelper.sendMessageByKey(source, "command_cooldown.already_exists", name);
             throw new AbortCommandExecutionException();
         }
     }
