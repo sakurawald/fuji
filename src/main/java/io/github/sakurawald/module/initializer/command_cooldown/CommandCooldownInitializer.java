@@ -46,7 +46,7 @@ public class CommandCooldownInitializer extends ModuleInitializer {
     @Override
     public void registerPlaceholder() {
         PlaceholderHelper.playerPlaceholder("command_cooldown_left_time", ((player, args) -> {
-            CommandCooldown cooldown = config.getModel().data.cooldowns.get(args);
+            CommandCooldown cooldown = config.getModel().namedCooldown.cooldowns.get(args);
             if (cooldown == null) return NOT_COOLDOWN_FOUND;
 
             String key = player.getGameProfile().getName();
@@ -56,7 +56,7 @@ public class CommandCooldownInitializer extends ModuleInitializer {
         }));
 
         PlaceholderHelper.playerPlaceholder("command_cooldown_left_usage", ((player, args) -> {
-            CommandCooldown cooldown = config.getModel().data.cooldowns.get(args);
+            CommandCooldown cooldown = config.getModel().namedCooldown.cooldowns.get(args);
             if (cooldown == null) return NOT_COOLDOWN_FOUND;
 
             String key = player.getGameProfile().getName();
@@ -89,7 +89,7 @@ public class CommandCooldownInitializer extends ModuleInitializer {
     ) {
         ensureExist(source, name);
 
-        CommandCooldown cooldown = config.getModel().data.cooldowns.get(name.getValue());
+        CommandCooldown cooldown = config.getModel().namedCooldown.cooldowns.get(name.getValue());
         StringList $onFailed = onFailed.orElse(new StringList(Collections.emptyList()));
         String key = player.getGameProfile().getName();
 
@@ -121,7 +121,7 @@ public class CommandCooldownInitializer extends ModuleInitializer {
         Boolean $global = global.orElse(false);
 
         CommandCooldown commandCooldown = new CommandCooldown(name, cooldownMs, $maxUsage, $persistent, $global);
-        config.getModel().data.cooldowns.put(name, commandCooldown);
+        config.getModel().namedCooldown.cooldowns.put(name, commandCooldown);
 
         LocaleHelper.sendMessageByKey(source, "created");
         return CommandHelper.Return.SUCCESS;
@@ -132,14 +132,14 @@ public class CommandCooldownInitializer extends ModuleInitializer {
         ensureExist(source, name);
 
         String key = name.getValue();
-        config.getModel().data.cooldowns.remove(key);
+        config.getModel().namedCooldown.cooldowns.remove(key);
         LocaleHelper.sendMessageByKey(source, "deleted");
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("list")
     private static int list(@CommandSource ServerCommandSource source) {
-        config.getModel().data.cooldowns.keySet().forEach(it -> source.sendMessage(Text.literal(it)));
+        config.getModel().namedCooldown.cooldowns.keySet().forEach(it -> source.sendMessage(Text.literal(it)));
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -149,7 +149,7 @@ public class CommandCooldownInitializer extends ModuleInitializer {
         , ServerPlayerEntity player) {
         ensureExist(source, name);
 
-        CommandCooldown commandCooldown = config.getModel().data.cooldowns.get(name.getValue());
+        CommandCooldown commandCooldown = config.getModel().namedCooldown.cooldowns.get(name.getValue());
 
         String key = player.getGameProfile().getName();
         commandCooldown.getTimestamp().put(key, 0L);
@@ -159,14 +159,14 @@ public class CommandCooldownInitializer extends ModuleInitializer {
     }
 
     private static void ensureExist(ServerCommandSource source, CommandCooldownName name) {
-        if (!config.getModel().data.cooldowns.containsKey(name.getValue())) {
+        if (!config.getModel().namedCooldown.cooldowns.containsKey(name.getValue())) {
             LocaleHelper.sendMessageByKey(source, "not_found");
             throw new AbortCommandExecutionException();
         }
     }
 
     private static void ensureNotExist(ServerCommandSource source, String name) {
-        if (config.getModel().data.cooldowns.containsKey(name)) {
+        if (config.getModel().namedCooldown.cooldowns.containsKey(name)) {
             LocaleHelper.sendMessageByKey(source, "already_exists");
             throw new AbortCommandExecutionException();
         }

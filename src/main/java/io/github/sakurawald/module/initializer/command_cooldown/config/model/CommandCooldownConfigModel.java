@@ -18,10 +18,10 @@ public class CommandCooldownConfigModel {
         }
     };
 
-    public Data data = new Data();
+    public NamedCooldown namedCooldown = new NamedCooldown();
 
     @lombok.Data
-    public static class Data {
-        public Map<String,CommandCooldown> cooldowns = new HashMap<>();
+    public static class NamedCooldown {
+        public Map<String, CommandCooldown> cooldowns = new HashMap<>();
     }
 }
