@@ -31,7 +31,7 @@ import java.util.List;
 @CommandRequirement(level = 4)
 public class KitInitializer extends ModuleInitializer {
 
-    public static final String INVENTORY = "inventory";
+    private static final String INVENTORY = "inventory";
 
     private static final Path STORAGE_PATH = ReflectionUtil.getModuleConfigPath(KitInitializer.class).resolve("kit-data");
 
@@ -101,32 +101,31 @@ public class KitInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    /*
-     * - %fuji:check_counter <counter-name> <player>%
-     * - kit give <player>
-     * - %fuji:update_counter <counter-name> <player>%
-     *
-     * counter for: times, cooldown
-     * */
     @CommandNode("give")
     private static int $give(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player, KitName kit) {
-
+        /* read kit*/
         Kit $kit = readKit(kit.getValue());
         if ($kit.getStackList().isEmpty()) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "kit.kit.empty");
             return CommandHelper.Return.FAIL;
         }
 
+        /* try to insert the item in specified slot */
         PlayerInventory playerInventory = player.getInventory();
+        List<ItemStack> failedList = new ArrayList<>();
         for (int i = 0; i < $kit.getStackList().size(); i++) {
             ItemStack copy = $kit.getStackList().get(i).copy();
 
-            if (playerInventory.getStack(i).isEmpty()) {
-                playerInventory.setStack(i, copy);
-            } else {
-                player.dropStack(copy);
+            if (!playerInventory.insertStack(i, copy)) {
+                failedList.add(copy);
             }
         }
+
+        /* try to insert the item in any slot */
+        failedList.removeIf(playerInventory::insertStack);
+
+        /* the inventory of player is full, just drop the item in the ground */
+        failedList.forEach(it -> player.dropItem(it, true));
 
         return CommandHelper.Return.SUCCESS;
     }
