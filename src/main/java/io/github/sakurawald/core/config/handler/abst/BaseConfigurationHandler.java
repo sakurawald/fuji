@@ -65,6 +65,7 @@ public abstract class BaseConfigurationHandler<T> {
         .serializeNulls()
         .create();
 
+    @Getter
     protected final @NotNull Path path;
 
     protected T model;
@@ -148,6 +149,10 @@ public abstract class BaseConfigurationHandler<T> {
         }
     }
 
+    public void beforeWriteStorage() {
+        // no-op
+    }
+
     public void writeStorage() {
         try {
             // set default data tree
@@ -156,6 +161,9 @@ public abstract class BaseConfigurationHandler<T> {
                 this.model = this.getDefaultModel();
                 LogUtil.info("write default configuration: {}", this.path.toFile().getAbsolutePath());
             }
+
+            // before write storage
+            this.beforeWriteStorage();
 
             // write data tree to disk
             Files.createDirectories(this.path.getParent());

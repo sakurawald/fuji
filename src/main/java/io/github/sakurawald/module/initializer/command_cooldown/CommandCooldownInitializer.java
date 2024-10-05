@@ -33,7 +33,17 @@ import java.util.Optional;
 @CommandNode("command-cooldown")
 @CommandRequirement(level = 4)
 public class CommandCooldownInitializer extends ModuleInitializer {
-    public static final BaseConfigurationHandler<CommandCooldownConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, CommandCooldownConfigModel.class);
+    public static final BaseConfigurationHandler<CommandCooldownConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, CommandCooldownConfigModel.class) {
+        @Override
+        public void beforeWriteStorage() {
+            this.getModel().namedCooldown.cooldowns.values()
+                .stream()
+                .filter(it-> !it.isPersistent())
+                // clear the timestamp for non-persistent cooldown before writing storage.
+                .forEach(it->it.getTimestamp().clear());
+        }
+    };
+
     public static final MutableText NOT_COOLDOWN_FOUND = Text.literal("NOT_COOLDOWN_FOUND");
 
     private static final Map<String, Cooldown<String>> player2cooldown = new HashMap<>();
