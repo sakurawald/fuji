@@ -32,14 +32,14 @@
         {
             "name": "dirtTW",
             "contact": {
-                "role": "translator",
+                "role": "zh_TW translator",
                 "homepage": "https://github.com/yichifauzi"
             }
         },
         {
             "name": "notlin4",
             "contact": {
-                "role": "translator",
+                "role": "zh_TW translator",
                 "homepage": "https://github.com/notlin4"
             }
         }
