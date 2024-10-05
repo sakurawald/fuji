@@ -166,9 +166,9 @@ tasks.register('processLatex', Copy) {
     include "**/*.tex"
 
     filter(ReplaceTokens, tokens: [
-        'TOKEN_MOD_VERSION' : project.version.toString(),
-        'TOKEN_PROJECT_ROOT': project.rootDir.absolutePath,
-        'TOKEN_TEX_OUT_DIR' : texOutDir.toString()
+            'TOKEN_MOD_VERSION' : project.version.toString(),
+            'TOKEN_PROJECT_ROOT': project.rootDir.absolutePath,
+            'TOKEN_TEX_OUT_DIR' : texOutDir.toString()
     ])
 }
 
@@ -182,13 +182,13 @@ tasks.register('compileLatex') {
             exec {
                 workingDir = processTexDir
                 commandLine "pdflatex",
-                    "-file-line-error",
-                    "-interaction=nonstopmode",
-                    "-synctex=1",
-                    "-output-format=pdf",
-                    "-output-directory=${texOutDir}",
-                    "-shell-escape",
-                    "fuji.tex"
+                        "-file-line-error",
+                        "-interaction=nonstopmode",
+                        "-synctex=1",
+                        "-output-format=pdf",
+                        "-output-directory=${texOutDir}",
+                        "-shell-escape",
+                        "fuji.tex"
                 println("Compile TeX once.")
             }
         }
