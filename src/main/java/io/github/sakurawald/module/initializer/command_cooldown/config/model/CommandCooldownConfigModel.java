@@ -1,5 +1,7 @@
 package io.github.sakurawald.module.initializer.command_cooldown.config.model;
 
+import io.github.sakurawald.core.structure.CommandCooldown;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,4 +17,11 @@ public class CommandCooldownConfigModel {
             this.put("repair\\s*", 300 * 1000L);
         }
     };
+
+    public Data data = new Data();
+
+    @lombok.Data
+    public static class Data {
+        public Map<String,CommandCooldown> cooldowns = new HashMap<>();
+    }
 }

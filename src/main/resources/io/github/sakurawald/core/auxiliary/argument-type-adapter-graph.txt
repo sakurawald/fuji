@@ -18,6 +18,7 @@ io.github.sakurawald.core.command.argument.adapter.impl.FloatRangeArgumentTypeAd
 io.github.sakurawald.core.command.argument.adapter.impl.GameProfileArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.GamemodeArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.GreedyArgumentTypeAdapter
+io.github.sakurawald.core.command.argument.adapter.impl.GreedyStringListArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.IdentifierArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.IntRangeArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.IntegerArgumentTypeAdapter
@@ -48,6 +49,7 @@ io.github.sakurawald.core.command.argument.adapter.impl.Vec2ArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.Vec3ArgumentTypeAdapter
 io.github.sakurawald.module.initializer.command_attachment.command.argument.adapter.ExecuteAsTypeArgumentTypeAdapter
 io.github.sakurawald.module.initializer.command_attachment.command.argument.adapter.InteractTypeArgumentTypeAdapter
+io.github.sakurawald.module.initializer.command_cooldown.command.argument.adapter.CommandCooldownArgumentTypeAdapter
 io.github.sakurawald.module.initializer.command_meta.attachment.command.argument.adapter.SubjectIdArgumentTypeAdapter
 io.github.sakurawald.module.initializer.command_meta.attachment.command.argument.adapter.SubjectNameArgumentTypeAdapter
 io.github.sakurawald.module.initializer.command_meta.json.command.argument.adapter.JsonValueTypeArgumentTypeAdapter
