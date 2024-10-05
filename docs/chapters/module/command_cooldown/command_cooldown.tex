@@ -1,7 +1,12 @@
 \LevelOne{command\_cooldown}\label{ch:command_cooldown}
 
 \LevelTwo{Purpose}
-This module adds a cooldown after command execution.
+This module provides:
+
+\begin{description}
+    \item [unnamed cooldown]: {per command cooldown after the \ttt{command execution}}
+    \item [named cooldown]: {support to associate a named cooldown with commands.}
+\end{description}
 
 \begin{tips}{How to write regex language?}
     See:~\nameref{term:regex}
@@ -22,12 +27,13 @@ This module adds a cooldown after command execution.
 \end{example}
 
 \begin{example}{Create a named global cooldown for all players}
-    A \ttt{named global cooldown} means that, all players shares the same cooldown, instead of \ttt{per-player}.
+    A \ttt{named global cooldown} means that, all players shares the same cooldown, instead of \ttt{per-player}.\\
     \ic{/command-cooldown create example 3000 --global true}
 \end{example}
 
 \begin{example}{Create a non-persistent named cooldown}
     A \ttt{non-persistent named cooldown} means that, the \ttt{timestamp} associated with a player will not be persisted into the storage.
-    That's to say, a server restart will forget all \ttt{timestamp}, but the \ttt{usage} associated with a player will always be persisted.
-    \ic{/command-cooldown create example 9999999 --persistent false}
+    That's to say, a server restart will forget all \ttt{timestamp}, but the \ttt{usage} associated with a player will always be persisted.\\
+    \ic{/command-cooldown create example 9999999 --persistent false}\\
+    Taken this example, it means that each time the server restarted, the cooldown will be available only once.
 \end{example}
