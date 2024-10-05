@@ -12,8 +12,6 @@ import java.util.concurrent.TimeUnit;
 
 public class PagedMessageText extends PagedText {
 
-    final List<String> pageCallbacks;
-
     public PagedMessageText(ServerPlayerEntity player, String string) {
         /* split pages */
         String[] split = string.split(NEW_PAGE_DELIMITER);
@@ -21,7 +19,7 @@ public class PagedMessageText extends PagedText {
         Arrays.stream(split).forEach(it -> pages.add(LocaleHelper.getTextByValue(player, it)));
 
         /* generate page callbacks */
-        pageCallbacks = new ArrayList<>();
+        List<String> pageCallbacks = new ArrayList<>();
         for (int i = 0; i < getPages().size(); i++) {
             pageCallbacks.add(i, this.makeClickCallbackCommand(i));
         }
@@ -34,11 +32,11 @@ public class PagedMessageText extends PagedText {
             int currentPage = i + 1;
             /* make the paginator */
             if (i == 0) {
-                text.append(LocaleHelper.getTextByKey(player, "echo.send_custom.custom_text.paginator.first_page", currentPage, totalPages, this.pageCallbacks.get(i + 1)));
+                text.append(LocaleHelper.getTextByKey(player, "echo.send_custom.custom_text.paginator.first_page", currentPage, totalPages, pageCallbacks.get(i + 1)));
             } else if (i == getPages().size() - 1) {
-                text.append(LocaleHelper.getTextByKey(player, "echo.send_custom.custom_text.paginator.last_page", this.pageCallbacks.get(i - 1), currentPage, totalPages));
+                text.append(LocaleHelper.getTextByKey(player, "echo.send_custom.custom_text.paginator.last_page", pageCallbacks.get(i - 1), currentPage, totalPages));
             } else {
-                text.append(LocaleHelper.getTextByKey(player, "echo.send_custom.custom_text.paginator.middle_page", this.pageCallbacks.get(i - 1), currentPage, totalPages, this.pageCallbacks.get(i + 1)));
+                text.append(LocaleHelper.getTextByKey(player, "echo.send_custom.custom_text.paginator.middle_page", pageCallbacks.get(i - 1), currentPage, totalPages, pageCallbacks.get(i + 1)));
             }
 
             /* append the paginator */

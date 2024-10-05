@@ -32,10 +32,9 @@ public class CustomTextNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @SneakyThrows
     @Override
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(String argumentName) {
-        @Cleanup Stream<Path> list = Files.list(SendCustomInitializer.CUSTOM_TEXT_DIR_PATH);
         return super.makeRequiredArgumentBuilder(argumentName).suggests(
             CommandHelper.Suggestion.iterable(
-                list
+                Files.list(SendCustomInitializer.CUSTOM_TEXT_DIR_PATH)
                     .filter(it -> it.toFile().isFile())
                     .map(Path::getFileName)
                     .toList()

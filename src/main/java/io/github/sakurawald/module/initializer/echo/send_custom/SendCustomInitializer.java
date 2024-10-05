@@ -28,7 +28,8 @@ import java.util.Optional;
 @CommandRequirement(level = 4)
 public class SendCustomInitializer extends ModuleInitializer {
 
-    public static final Path CUSTOM_TEXT_DIR_PATH = ReflectionUtil.getModuleConfigPath(SendCustomInitializer.class);
+    public static final Path CUSTOM_TEXT_DIR_PATH = ReflectionUtil.getModuleConfigPath(SendCustomInitializer.class)
+        .resolve("custom-text");
 
     @SneakyThrows
     @Override
