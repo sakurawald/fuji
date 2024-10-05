@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_warmup.config.model;
 
-import io.github.sakurawald.module.initializer.command_warmup.structure.CommandWarmupEntry;
 import io.github.sakurawald.core.manager.impl.bossbar.structure.Interruptible;
+import io.github.sakurawald.module.initializer.command_warmup.structure.CommandWarmupEntry;
 
 import java.util.ArrayList;
 import java.util.List;
