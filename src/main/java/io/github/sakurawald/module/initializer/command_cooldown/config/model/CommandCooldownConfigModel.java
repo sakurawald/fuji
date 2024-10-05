@@ -22,6 +22,6 @@ public class CommandCooldownConfigModel {
 
     @lombok.Data
     public static class NamedCooldown {
-        public Map<String, CommandCooldown> cooldowns = new HashMap<>();
+        public Map<String, CommandCooldown> list = new HashMap<>();
     }
 }
