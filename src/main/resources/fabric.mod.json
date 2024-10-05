@@ -35,6 +35,13 @@
                 "role": "translator",
                 "homepage": "https://github.com/yichifauzi"
             }
+        },
+        {
+            "name": "notlin4",
+            "contact": {
+                "role": "translator",
+                "homepage": "https://github.com/notlin4"
+            }
         }
     ],
     "environment": "*",
