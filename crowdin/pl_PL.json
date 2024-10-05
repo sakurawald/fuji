@@ -262,5 +262,9 @@
   "created": "<green>Created.",
   "not_found": "<red>Not found.",
   "already_exists": "<red>Already exists.",
-  "command_cooldown.reset": "<green>The timestamp of %s is reset in cooldown %s."
+  "command_cooldown.reset": "<green>The timestamp of `%s` is reset in cooldown `%s`.",
+  "command_cooldown.not_found": "<red>The cooldown `%s` not found.",
+  "command_cooldown.already_exists": "<red>The cooldown `%s` already exists.",
+  "command_cooldown.deleted": "<red>The cooldown `%s` deleted.",
+  "command_cooldown.created": "<red>The cooldown `%s` created."
 }
