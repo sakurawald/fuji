@@ -46,7 +46,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
         this.chunkPos = chunkPos;
     }
 
-    public void addEntity(@NotNull Entity entity) {
+    public void plusEntity(@NotNull Entity entity) {
         String type = entity.getType().getTranslationKey();
         type = TypeFormatter.type2transform_type.getOrDefault(type, type);
 
@@ -58,19 +58,21 @@ public class ChunkScore implements Comparable<ChunkScore> {
         }
     }
 
-    public void addBlockEntity(@NotNull BlockEntity blockEntity) {
+    public void plusBlockEntity(@NotNull BlockEntity blockEntity) {
         Identifier id = BlockEntityType.getId(blockEntity.getType());
         if (id == null) return;
 
         // fix: add the prefix of BlockEntity
         String type = id.toTranslationKey("block");
+
         // fix: some block entity has an error translatable key, like mob_spawner
         type = TypeFormatter.type2transform_type.getOrDefault(type, type);
+
         type2amount.putIfAbsent(type, 0);
         type2amount.put(type, type2amount.get(type) + 1);
     }
 
-    public void sumUpScore() {
+    public void sum() {
         this.score = 0;
         for (String type : this.type2amount.keySet()) {
             HashMap<String, Integer> type2score = TopChunksInitializer.config.model().type2score;
@@ -116,7 +118,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
             .append(TypeFormatter.formatTypes(source, this.type2amount));
 
         return Text.empty()
-            .append(Text.of(this.toString()))
+            .append(Text.literal(this.toString()))
             .fillStyle(Style.EMPTY
                 .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText))
                 .withFormatting(this.players.isEmpty() ? Formatting.GRAY : Formatting.DARK_GREEN)
@@ -129,6 +131,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
                     if (y == -64) {
                         y = 128;
                     }
+
                     player.teleport(dimension, blockPos.getX(), y, blockPos.getZ(), player.getYaw(), player.getPitch());
                 }, 5, TimeUnit.MINUTES))
             );

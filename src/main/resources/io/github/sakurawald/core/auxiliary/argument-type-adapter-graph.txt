@@ -57,5 +57,5 @@ io.github.sakurawald.module.initializer.command_scheduler.command.argument.adapt
 io.github.sakurawald.module.initializer.command_toolbox.warp.command.argument.adapter.WarpNameArgumentTypeAdapter
 io.github.sakurawald.module.initializer.echo.send_custom.command.argument.adapter.CustomTextNameArgumentTypeAdapter
 io.github.sakurawald.module.initializer.echo.send_toast.command.argument.adapter.AdvancementFrameArgumentTypeAdapter
-io.github.sakurawald.module.initializer.home.command.argument.adapter.HomeArgumentTypeAdapter
+io.github.sakurawald.module.initializer.home.command.argument.adapter.HomeNameArgumentTypeAdapter
 io.github.sakurawald.module.initializer.kit.command.argument.adapter.KitNameArgumentTypeAdapter

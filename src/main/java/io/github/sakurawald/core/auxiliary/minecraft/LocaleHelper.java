@@ -71,7 +71,10 @@ public class LocaleHelper {
         }
     }
 
-    // clear the map to remove `UNSUPPORTED LANGUAGE`
+    /**
+     * Clear the language file loaded into the memory.
+     * Note that once the attempt to load a language file from storage is failed, a JsonObject marker named `UNSUPPORTED LANGUAGE` will be put into the map, leading the subsequent attempts simply return the marker.
+     */
     public static void clearLoadedLanguageJsons() {
         code2json.clear();
     }

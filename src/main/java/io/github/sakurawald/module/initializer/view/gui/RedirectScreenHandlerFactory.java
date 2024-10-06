@@ -15,7 +15,6 @@ import net.minecraft.text.Text;
 
 public abstract class RedirectScreenHandlerFactory {
 
-
     private final String targetPlayerName;
     private final Text title;
 

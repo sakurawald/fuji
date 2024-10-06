@@ -11,9 +11,9 @@ public class BetterInfoInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {
         CommandEvents.REGISTRATION.register((dispatcher, registryAccess, environment) -> dispatcher.register(
-                CommandManager.literal("info").then(
-                        dispatcher.findNode(List.of("data", "get", "entity"))
-                )
+            CommandManager.literal("info").then(
+                dispatcher.findNode(List.of("data", "get", "entity"))
+            )
         ));
     }
 

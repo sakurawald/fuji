@@ -32,7 +32,6 @@ import java.util.List;
 public class KitInitializer extends ModuleInitializer {
 
     private static final String INVENTORY = "inventory";
-
     private static final Path STORAGE_PATH = ReflectionUtil.getModuleConfigPath(KitInitializer.class).resolve("kit-data");
 
     public static void writeKit(@NotNull Kit kit) {

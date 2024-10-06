@@ -9,13 +9,15 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.teleport_warmup.config.model.TeleportWarmupConfigModel;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
 public class TeleportWarmupInitializer extends ModuleInitializer {
+
     public static final BaseConfigurationHandler<TeleportWarmupConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, TeleportWarmupConfigModel.class);
 
-    public static TeleportTicket getTeleportTicket(@NotNull ServerPlayerEntity player) {
+    public static @Nullable TeleportTicket getTeleportTicket(@NotNull ServerPlayerEntity player) {
         Optional<BossBarTicket> optValue = Managers.getBossBarManager().getTickets()
             .stream()
             .filter(it ->

@@ -12,6 +12,6 @@ public class UpdateNametagJob extends CronJob {
 
     @Override
     public void execute(JobExecutionContext context) {
-        NametagInitializer.updateNametags();
+        NametagInitializer.processNametagsForOnlinePlayers();
     }
 }

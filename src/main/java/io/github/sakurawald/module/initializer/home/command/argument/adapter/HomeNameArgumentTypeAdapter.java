@@ -15,7 +15,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import java.util.List;
 import java.util.Map;
 
-public class HomeArgumentTypeAdapter extends BaseArgumentTypeAdapter {
+public class HomeNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected ArgumentType<?> makeArgumentType() {

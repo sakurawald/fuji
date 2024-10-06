@@ -17,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class AddWorkGui extends InputSignGui {
 
-
     public AddWorkGui(@NotNull ServerPlayerEntity player) {
         super(player,LocaleHelper.getTextByKey(player, "works.work.add.prompt.input.name"));
     }

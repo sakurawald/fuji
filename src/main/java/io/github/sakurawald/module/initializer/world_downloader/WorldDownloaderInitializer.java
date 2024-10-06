@@ -33,7 +33,7 @@ import java.util.UUID;
 
 public class WorldDownloaderInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<WorldDownloaderConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, WorldDownloaderConfigModel.class);
+    private static final BaseConfigurationHandler<WorldDownloaderConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, WorldDownloaderConfigModel.class);
 
     private static EvictingQueue<String> contextQueue;
     private static HttpServer server;
@@ -49,7 +49,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         initServer();
     }
 
-    public static void initServer() {
+    private static void initServer() {
         if (server != null) {
             server.stop(0);
         }
@@ -62,7 +62,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         }
     }
 
-    public static void safelyRemoveContext(String path) {
+    private static void safelyRemoveContext(String path) {
         try {
             server.removeContext(path);
         } catch (IllegalArgumentException e) {
@@ -92,8 +92,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
 
         int port = config.model().port;
         url = url.replace("%port%", String.valueOf(port));
-
-        String path = "/download/" + UUID.randomUUID();
+        String path = "/world-download/" + UUID.randomUUID();
         url = url.replace("%path%", path);
 
         contextQueue.add(path);

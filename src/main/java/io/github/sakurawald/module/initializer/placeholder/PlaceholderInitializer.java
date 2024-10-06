@@ -37,7 +37,8 @@ import java.util.regex.Pattern;
 @CommandNode("placeholder")
 @CommandRequirement(level = 4)
 public class PlaceholderInitializer extends ModuleInitializer {
-    private final Map<String, Map<String, String>> rotate = new HashMap<>();
+
+    private static final Map<String, Map<String, String>> ROTATE_CACHE = new HashMap<>();
 
     private static final Pattern ESCAPE_PARSER = Pattern.compile("\\s*([\\s\\S]+)\\s+(\\d+)\\s*");
 
@@ -191,8 +192,8 @@ public class PlaceholderInitializer extends ModuleInitializer {
                 namespace = ctx.player().getGameProfile().getName();
             }
 
-            rotate.putIfAbsent(namespace, new HashMap<>());
-            Map<String, String> rotateMap = rotate.get(namespace);
+            ROTATE_CACHE.putIfAbsent(namespace, new HashMap<>());
+            Map<String, String> rotateMap = ROTATE_CACHE.get(namespace);
             rotateMap.putIfAbsent(args, args);
 
             String frame = rotateMap.get(args);

@@ -6,6 +6,7 @@ import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
+import io.github.sakurawald.core.command.exception.AbortCommandExecutionException;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.service.random_teleport.RandomTeleporter;
@@ -21,27 +22,28 @@ import java.util.Optional;
 
 public class RtpInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<RtpConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, RtpConfigModel.class);
+    private static final BaseConfigurationHandler<RtpConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, RtpConfigModel.class);
 
-    private static @NotNull Optional<TeleportSetup> getTeleportSetup(@NotNull ServerWorld world) {
+    private static @NotNull TeleportSetup withTeleportSetup(@NotNull ServerPlayerEntity player, @NotNull ServerWorld world) {
         List<TeleportSetup> list = config.model().setup.dimension;
         String dimension = RegistryHelper.ofString(world);
-        return list.stream().filter(o -> o.getDimension().equals(dimension)).findFirst();
+
+        Optional<TeleportSetup> first = list.stream().filter(o -> o.getDimension().equals(dimension)).findFirst();
+        if (first.isEmpty()) {
+            LocaleHelper.sendMessageByKey(player, "rtp.dimension.disallow", RegistryHelper.ofString(world));
+            throw new AbortCommandExecutionException();
+        }
+
+        return first.get();
     }
 
     @CommandNode("rtp")
     private static int $rtp(@CommandSource ServerPlayerEntity player, Optional<Dimension> dimension) {
-
         ServerWorld serverWorld = dimension.isPresent() ? dimension.get().getValue() : player.getServerWorld();
-
-        Optional<TeleportSetup> first = getTeleportSetup(serverWorld);
-        if (first.isEmpty()) {
-            LocaleHelper.sendMessageByKey(player, "rtp.dimension.disallow", RegistryHelper.ofString(serverWorld));
-            return CommandHelper.Return.FAIL;
-        }
+        TeleportSetup setup = withTeleportSetup(player, serverWorld);
 
         LocaleHelper.sendActionBarByKey(player, "rtp.tip");
-        RandomTeleporter.request(player, first.get(), (position -> LocaleHelper.sendMessageByKey(player, "rtp.success")));
+        RandomTeleporter.request(player, setup, (position -> LocaleHelper.sendMessageByKey(player, "rtp.success")));
         return CommandHelper.Return.SUCCESS;
     }
 }
