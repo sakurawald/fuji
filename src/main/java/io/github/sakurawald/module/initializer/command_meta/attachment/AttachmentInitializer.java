@@ -25,15 +25,12 @@ public class AttachmentInitializer extends ModuleInitializer {
     @SneakyThrows(IOException.class)
     private static int set(@CommandSource CommandContext<ServerCommandSource> ctx, SubjectName subject, SubjectId uuid, GreedyString data) {
         Managers.getAttachmentManager().setAttachment(subject.getValue(), uuid.getValue(), data.getValue());
-
-        LocaleHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("unset")
     private static int unset(@CommandSource CommandContext<ServerCommandSource> ctx, SubjectName subject, SubjectId uuid) {
         boolean flag = Managers.getAttachmentManager().unsetAttachment(subject.getValue(), uuid.getValue());
-
         LocaleHelper.sendMessageByKey(ctx.getSource(), flag ? "operation.success" : "operation.fail");
         return CommandHelper.Return.SUCCESS;
     }

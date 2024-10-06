@@ -171,8 +171,6 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
         // save model
         setAttachmentModel(uuid, model);
-
-        LocaleHelper.sendMessageByKey(player, "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -198,8 +196,6 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
         // save model
         setAttachmentModel(uuid, model);
-
-        LocaleHelper.sendMessageByKey(player, "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -226,8 +222,6 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
         // save model
         setAttachmentModel(uuid, model);
-
-        LocaleHelper.sendMessageByKey(player, "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -266,7 +260,6 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
     private static void doDetachAttachment(ServerPlayerEntity player, String uuid) {
         Managers.getAttachmentManager().unsetAttachment(COMMAND_ATTACHMENT_SUBJECT_NAME, uuid);
-        LocaleHelper.sendMessageByKey(player, "operation.success");
     }
 
     @CommandNode("query-item")
