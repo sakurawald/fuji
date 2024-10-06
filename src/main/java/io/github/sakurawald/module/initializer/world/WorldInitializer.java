@@ -59,7 +59,7 @@ public class WorldInitializer extends ModuleInitializer {
         ServerLifecycleEvents.SERVER_STARTED.register(this::loadWorlds);
     }
 
-    public void loadWorlds(@NotNull MinecraftServer server) {
+    private void loadWorlds(@NotNull MinecraftServer server) {
         storage.model().dimension_list.stream()
             .filter(DimensionEntry::isEnable)
             .forEach(it -> {

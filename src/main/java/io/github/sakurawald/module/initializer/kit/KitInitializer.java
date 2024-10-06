@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.kit;
 
-import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
@@ -105,14 +104,15 @@ public class KitInitializer extends ModuleInitializer {
     }
 
     @CommandNode("give")
-    private static int $give(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player, KitName kit) {
-        /* read kit*/
-        Kit $kit = readKit(kit.getValue());
-        if ($kit.getStackList().isEmpty()) {
-            LocaleHelper.sendMessageByKey(ctx.getSource(), "kit.kit.empty");
+    private static int $give(@CommandSource ServerCommandSource source, ServerPlayerEntity player, KitName kit) {
+        /* verify */
+        if (Files.notExists(computePath(kit.getValue()))) {
+            LocaleHelper.sendMessageByKey(source, "kit.kit.empty");
             return CommandHelper.Return.FAIL;
         }
 
+        /* read kit*/
+        Kit $kit = readKit(kit.getValue());
         insertKit(player, $kit);
         return CommandHelper.Return.SUCCESS;
     }

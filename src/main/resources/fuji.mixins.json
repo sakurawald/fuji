@@ -57,7 +57,7 @@
         "functional.enchantment.EnchantmentScreenHandlerMixin",
         "gameplay.carpet.better_info.InfoCommandMixin",
         "gameplay.carpet.fake_player_manager.PlayerCommandMixin",
-        "gameplay.carpet.fake_player_manager.PlayerMixin",
+      "gameplay.carpet.fake_player_manager.PlayerEntityMixin",
         "gameplay.multi_obsidian_platform.EndPortalBlockMixin",
         "language.ServerPlayerMixin",
         "motd.ServerQueryNetworkHandlerMixin",
