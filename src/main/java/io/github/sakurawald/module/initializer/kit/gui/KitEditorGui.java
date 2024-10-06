@@ -31,25 +31,29 @@ public class KitEditorGui extends PagedGui<Kit> {
     public KitEditorGui(ServerPlayerEntity player, @NotNull List<Kit> entities, int pageIndex) {
         super(null, player, LocaleHelper.getTextByKey(player, "kit.gui.editor.title"), entities, pageIndex);
 
+        /* make footer */
         SingleLineLayer footer = new SingleLineLayer();
         footer.setSlot(1, GuiHelper.makeHelpButton(player)
             .setLore(LocaleHelper.getTextListByKey(player, "kit.gui.editor.help.lore")));
         footer.setSlot(4, GuiHelper.makeAddButton(player).setCallback(() -> new InputSignGui(player, LocaleHelper.getTextByKey(player, "prompt.input.name")) {
+
             @Override
             public void onClose() {
+                /* input kit name */
                 String name = getLine(0).getString().trim();
                 if (name.isEmpty()) {
                     LocaleHelper.sendActionBarByKey(player, "operation.cancelled");
                     return;
                 }
 
-                openEditKitGui(getPlayer(), KitInitializer.readKit(name));
+                /* open edit kit gui */
+                openKitEditingGui(getPlayer(), KitInitializer.readKit(name));
             }
         }.open()));
         this.addLayer(footer, 0, this.getHeight() - 1);
     }
 
-    private void openEditKitGui(@NotNull ServerPlayerEntity player, @NotNull Kit kit) {
+    private void openKitEditingGui(@NotNull ServerPlayerEntity player, @NotNull Kit kit) {
         int rows = 5;
         SimpleInventory simpleInventory = new SimpleInventory(rows * 9);
         for (int i = 0; i < kit.getStackList().size(); i++) {
@@ -81,7 +85,6 @@ public class KitEditorGui extends PagedGui<Kit> {
                 }
 
             }, LocaleHelper.getTextByKey(player, "kit.gui.editor.kit.title", kit.getName()));
-
         player.openHandledScreen(simpleNamedScreenHandlerFactory);
     }
 
@@ -97,14 +100,13 @@ public class KitEditorGui extends PagedGui<Kit> {
             .setCallback((event) -> {
 
                 if (event.isLeft) {
-                    openEditKitGui(getPlayer(), entity);
+                    openKitEditingGui(getPlayer(), entity);
                 }
 
                 if (event.shift && event.isRight) {
                     KitInitializer.deleteKit(entity.getName());
-                    LocaleHelper.sendActionBarByKey(getPlayer(), "deleted");
-
                     deleteEntity(entity);
+                    LocaleHelper.sendActionBarByKey(getPlayer(), "deleted");
                 }
 
             })

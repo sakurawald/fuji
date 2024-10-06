@@ -13,9 +13,9 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.kit.command.argument.wrapper.KitName;
 import io.github.sakurawald.module.initializer.kit.gui.KitEditorGui;
 import io.github.sakurawald.module.initializer.kit.structure.Kit;
+import lombok.SneakyThrows;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -25,72 +25,74 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 @CommandNode("kit")
 @CommandRequirement(level = 4)
 public class KitInitializer extends ModuleInitializer {
 
+    /* schema keys */
     private static final String INVENTORY = "inventory";
-    private static final Path STORAGE_PATH = ReflectionUtil.getModuleConfigPath(KitInitializer.class).resolve("kit-data");
+
+    private static final Path KIT_DATA_DIR_PATH = ReflectionUtil.getModuleConfigPath(KitInitializer.class).resolve("kit-data");
+
+    public static @NotNull List<String> listKitNames() {
+        try (Stream<Path> list = Files.list(KIT_DATA_DIR_PATH)) {
+            return list
+                .map(it -> it.toFile().getName())
+                .toList();
+        } catch (IOException e) {
+            LogUtil.error("failed to list kits in storage.");
+            return Collections.emptyList();
+        }
+    }
+
+    private static @NotNull List<Kit> readKits() {
+        return listKitNames()
+            .stream()
+            .map(KitInitializer::readKit)
+            .toList();
+    }
+
+    private static Path computePath(String kitName) {
+        return KIT_DATA_DIR_PATH.resolve(kitName);
+    }
+
+    @SneakyThrows(IOException.class)
+    public static void deleteKit(@NotNull String kitName) {
+        Files.delete(computePath(kitName));
+    }
 
     public static void writeKit(@NotNull Kit kit) {
-        Path path = STORAGE_PATH.resolve(kit.getName());
-
-        NbtCompound root = NbtHelper.readOrDefault(path);
-        if (root == null) {
-            LogUtil.warn("failed to write kit {}", kit);
-            return;
-        }
-
-        NbtList nbtList = new NbtList();
-        NbtHelper.writeSlotsNode(nbtList, kit.getStackList());
-
-        root.put(INVENTORY, nbtList);
-        NbtHelper.write(root, path);
+        NbtHelper.withNbtCompound(computePath(kit.getName()), root -> {
+            NbtList nbtList = new NbtList();
+            NbtHelper.writeSlotsNode(nbtList, kit.getStackList());
+            root.put(INVENTORY, nbtList);
+        });
     }
 
-    public static @NotNull List<String> getKitNameList() {
-        List<String> ret = new ArrayList<>();
-        try {
-            Files.list(STORAGE_PATH).forEach(p -> ret.add(p.toFile().getName()));
-        } catch (IOException e) {
-            LogUtil.error("failed to list kits {}", e.toString());
-        }
-        return ret;
+    public static @NotNull Kit readKit(@NotNull String kitName) {
+        List<ItemStack> itemStacks = NbtHelper.withNbtCompoundAndReturnValue(computePath(kitName), root -> {
+            /* write empty list if there is no INVENTORY tag */
+            if (root.get(INVENTORY) == null) {
+                NbtList nbtList = new NbtList();
+                root.put(INVENTORY, nbtList);
+            }
+
+            /* read slots */
+            NbtList nbtList = (NbtList) root.get(INVENTORY);
+            return NbtHelper.readSlotsNode(nbtList);
+        });
+
+        return new Kit(kitName, itemStacks);
     }
 
-    public static @NotNull List<Kit> readKits() {
-        List<Kit> ret = new ArrayList<>();
-        for (String name : getKitNameList()) {
-            ret.add(readKit(name));
-        }
-        return ret;
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static void deleteKit(@NotNull String name) {
-        Path path = STORAGE_PATH.resolve(name);
-        path.toFile().delete();
-    }
-
-    public static @NotNull Kit readKit(@NotNull String name) {
-        Path p = STORAGE_PATH.resolve(name);
-        NbtCompound root = NbtHelper.readOrDefault(p);
-
-        if (root == null) {
-            return new Kit(p.toFile().getName(), new ArrayList<>());
-        }
-
-        NbtList nbtList = (NbtList) root.get(INVENTORY);
-        List<ItemStack> itemStacks = NbtHelper.readSlotsNode(nbtList);
-        return new Kit(p.toFile().getName(), itemStacks);
-    }
-
-    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @SneakyThrows(IOException.class)
     @Override
     public void onInitialize() {
-        STORAGE_PATH.toFile().mkdirs();
+        Files.createDirectories(KIT_DATA_DIR_PATH);
     }
 
     @CommandNode("editor")
@@ -109,11 +111,16 @@ public class KitInitializer extends ModuleInitializer {
             return CommandHelper.Return.FAIL;
         }
 
+        insertKit(player, $kit);
+        return CommandHelper.Return.SUCCESS;
+    }
+
+    private static void insertKit(ServerPlayerEntity player, Kit kit) {
         /* try to insert the item in specified slot */
         PlayerInventory playerInventory = player.getInventory();
         List<ItemStack> tryAgainList = new ArrayList<>();
-        for (int i = 0; i < $kit.getStackList().size(); i++) {
-            ItemStack copy = $kit.getStackList().get(i).copy();
+        for (int i = 0; i < kit.getStackList().size(); i++) {
+            ItemStack copy = kit.getStackList().get(i).copy();
 
             if (!playerInventory.insertStack(i, copy)) {
                 tryAgainList.add(copy);
@@ -125,8 +132,6 @@ public class KitInitializer extends ModuleInitializer {
 
         /* the inventory of player is full, just drop the item in the ground */
         tryAgainList.forEach(it -> player.dropItem(it, true));
-
-        return CommandHelper.Return.SUCCESS;
     }
 
 }

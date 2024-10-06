@@ -2,7 +2,9 @@ package io.github.sakurawald.core.auxiliary.minecraft;
 
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.command.exception.AbortCommandExecutionException;
 import io.github.sakurawald.core.structure.SpatialBlock;
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.NbtComponent;
@@ -17,11 +19,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 @UtilityClass
 public class NbtHelper {
@@ -70,27 +74,6 @@ public class NbtHelper {
         // get the value
         String key = nodes[nodes.length - 1];
         return root.get(key);
-    }
-
-    public static @Nullable NbtCompound readOrDefault(@NotNull Path path) {
-        try {
-            if (!path.toFile().exists()) {
-                NbtIo.write(new NbtCompound(), path);
-            }
-            return Objects.requireNonNull(NbtIo.read(path));
-        } catch (IOException e) {
-            LogUtil.error("failed to create nbt file in {}", path);
-        }
-
-        return null;
-    }
-
-    public static void write(@NotNull NbtCompound root, @NotNull Path path) {
-        try {
-            NbtIo.write(root, path);
-        } catch (IOException e) {
-            LogUtil.error("failed to write nbt file in {}", path);
-        }
     }
 
     public static NbtList writeSlotsNode(@NotNull NbtList node, @NotNull List<ItemStack> itemStackList) {
@@ -163,5 +146,37 @@ public class NbtHelper {
 
     public static String computeUuid(SpatialBlock spatialBlock) {
         return computeUuid(spatialBlock.ofDimension(), spatialBlock.ofBlockPos());
+    }
+
+    public static void withNbtCompound(@NotNull Path path, @NotNull Consumer<NbtCompound> function) {
+        //discard the return value
+        withNbtCompoundAndReturnValue(path, (root) -> {
+            function.accept(root);
+            return null;
+        });
+    }
+
+    @SneakyThrows(IOException.class)
+    public static <T> T withNbtCompoundAndReturnValue(@NotNull Path path, @NotNull Function<NbtCompound, T> function) {
+        /* make file if not exists */
+        if (Files.notExists(path)) {
+            NbtIo.write(new NbtCompound(), path);
+        }
+
+        /* read the file */
+        NbtCompound read = NbtIo.read(path);
+        if (read == null) {
+            LogUtil.error("failed to read the nbt file in {}", path);
+            throw new AbortCommandExecutionException();
+        }
+
+        /* call the consumer */
+        T value = function.apply(read);
+
+        /* always write the data back, whether it's a destructive operation or not */
+        NbtIo.write(read, path);
+
+        /* return the useful value to outer space */
+        return value;
     }
 }
