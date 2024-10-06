@@ -6,6 +6,7 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.command.exception.AbortCommandExecutionException;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
@@ -30,15 +31,19 @@ public class WarpInitializer extends ModuleInitializer {
         data.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 
-    @CommandNode("tp")
-    private static int $tp(@CommandSource ServerPlayerEntity player, WarpName warpName) {
+    private static void ensureWarpExists(ServerPlayerEntity player, WarpName warpName) {
         String name = warpName.getValue();
-
         if (!data.model().name2warp.containsKey(name)) {
             LocaleHelper.sendMessageByKey(player, "warp.not_found", name);
-            return 0;
+            throw new AbortCommandExecutionException();
         }
+    }
 
+    @CommandNode("tp")
+    private static int $tp(@CommandSource ServerPlayerEntity player, WarpName warpName) {
+        ensureWarpExists(player,warpName);
+
+        String name = warpName.getValue();
         WarpEntry entry = data.model().name2warp.get(name);
         entry.getPosition().teleport(player);
         return CommandHelper.Return.SUCCESS;
@@ -47,13 +52,9 @@ public class WarpInitializer extends ModuleInitializer {
     @CommandNode("unset")
     @CommandRequirement(level = 4)
     private static int $unset(@CommandSource ServerPlayerEntity player, WarpName warpName) {
+        ensureWarpExists(player,warpName);
+
         String name = warpName.getValue();
-
-        if (!data.model().name2warp.containsKey(name)) {
-            LocaleHelper.sendMessageByKey(player, "warp.not_found", name);
-            return 0;
-        }
-
         data.model().name2warp.remove(name);
         LocaleHelper.sendMessageByKey(player, "warp.unset.success", name);
         return CommandHelper.Return.SUCCESS;
