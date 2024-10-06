@@ -2,7 +2,6 @@ package io.github.sakurawald.module.initializer.temp_ban;
 
 import com.google.common.net.InetAddresses;
 import com.mojang.authlib.GameProfile;
-import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
@@ -30,7 +29,7 @@ import java.util.List;
 public class TempBanInitializer extends ModuleInitializer {
 
     @CommandNode("ip")
-    private static int ip(@CommandSource CommandContext<ServerCommandSource> ctx, String ip, String expiry, GreedyString reason) throws CommandSyntaxException {
+    private static int ip(@CommandSource ServerCommandSource source, String ip, String expiry, GreedyString reason) throws CommandSyntaxException {
 
         if (!InetAddresses.isInetAddress(ip)) {
             throw new SimpleCommandExceptionType(Text.translatable("commands.banip.invalid")).create();
@@ -38,15 +37,14 @@ public class TempBanInitializer extends ModuleInitializer {
 
         // add
         Date expire = DateParser.parseDate(expiry);
-        ServerCommandSource serverCommandSource = ctx.getSource();
-        BannedIpEntry bannedIpEntry = new BannedIpEntry(ip, null, ctx.getSource().getName(), expire, reason.getValue());
-        serverCommandSource.getServer().getPlayerManager().getIpBanList().add(bannedIpEntry);
-        serverCommandSource.sendFeedback(() -> Text.translatable("commands.banip.success", ip, bannedIpEntry.getReason()), true);
+        BannedIpEntry bannedIpEntry = new BannedIpEntry(ip, null, source.getName(), expire, reason.getValue());
+        source.getServer().getPlayerManager().getIpBanList().add(bannedIpEntry);
+        source.sendFeedback(() -> Text.translatable("commands.banip.success", ip, bannedIpEntry.getReason()), true);
 
         // feedback
-        List<ServerPlayerEntity> list = serverCommandSource.getServer().getPlayerManager().getPlayersByIp(ip);
+        List<ServerPlayerEntity> list = source.getServer().getPlayerManager().getPlayersByIp(ip);
         if (!list.isEmpty()) {
-            serverCommandSource.sendFeedback(() -> Text.translatable("commands.banip.info", list.size(), EntitySelector.getNames(list)), true);
+            source.sendFeedback(() -> Text.translatable("commands.banip.info", list.size(), EntitySelector.getNames(list)), true);
         }
         for (ServerPlayerEntity serverPlayerEntity : list) {
             serverPlayerEntity.networkHandler.disconnect(Text.translatable("multiplayer.disconnect.ip_banned"));
@@ -56,16 +54,16 @@ public class TempBanInitializer extends ModuleInitializer {
     }
 
     @CommandNode("player")
-    private static int player(@CommandSource CommandContext<ServerCommandSource> ctx, GameProfileCollection collection, String expiry, GreedyString reason) {
-        MinecraftServer server = ctx.getSource().getServer();
+    private static int player(@CommandSource ServerCommandSource source, GameProfileCollection collection, String expiry, GreedyString reason) {
+        MinecraftServer server = source.getServer();
         PlayerManager playerManager = server.getPlayerManager();
         Date expire = DateParser.parseDate(expiry);
 
         for (GameProfile gameProfile : collection.getValue()) {
             // add
-            BannedPlayerEntry bannedPlayerEntry = new BannedPlayerEntry(gameProfile, null, ctx.getSource().getName(), expire, reason.getValue());
+            BannedPlayerEntry bannedPlayerEntry = new BannedPlayerEntry(gameProfile, null, source.getName(), expire, reason.getValue());
             playerManager.getUserBanList().add(bannedPlayerEntry);
-            ctx.getSource().sendFeedback(() -> Text.translatable("commands.ban.success", Text.literal(gameProfile.getName()), bannedPlayerEntry.getReason()), true);
+            source.sendFeedback(() -> Text.translatable("commands.ban.success", Text.literal(gameProfile.getName()), bannedPlayerEntry.getReason()), true);
 
             // kick
             ServerPlayerEntity serverPlayerEntity = playerManager.getPlayer(gameProfile.getId());
