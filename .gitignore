@@ -41,3 +41,5 @@ logs/
 
 # yarn
 remappedSrc
+config/
+
