@@ -8,15 +8,8 @@
 > - @notlin4
 > - @Kaysil
 
-- feature: add `named cooldown` feature for `command cooldown module`, now supports to create `named cooldown` to
-  associate cooldown with commands.
-    - create a named cooldown: `/command-cooldown create example 3000`
-    - test a named cooldown:
-      `/command-cooldown test example <player> --onFailed "say false %fuji:command_cooldown_left_time 1%/%fuji:command_cooldown_left_usage 1%" say true`
-- feature: improve the kit giving logic:
-    - first: try to insert item in specified slot.
-    - second: try to insert item in any slot.
-    - third: drop the item in the ground with the player as its thrower.
-- feature: allow to use the `delimiter |` to separate `command string` into `command list`. (command_meta module) 
-- feature: unify the style of error messages for all registered fuji placeholders.
-- build: now this project will follow the `semver` specification: https://semver.org/
+- feature: add `/send-custom` command, which sends the `custom text` to a player, with pagination feature. (echo.send_custom module)
+  - send custom text as a `book`: `/send-custom as-book <player> guide --author "alice" --title "<rb>The Guice" --giveBook true --openBook true `
+  - send custom text as a `message`: `/send-custom as-message <player> guide `
+- docs: add many examples into the docs.
+- 

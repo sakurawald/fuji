@@ -9,6 +9,7 @@ import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @UtilityClass
@@ -29,7 +30,7 @@ public class CommandExecutor {
         command = context.expandCommand(command);
 
         try {
-            return ServerHelper.getCommandDispatcher().execute(command, context.getExecutingSource());
+            return Objects.requireNonNull(ServerHelper.getCommandDispatcher()).execute(command, context.getExecutingSource());
         } catch (CommandSyntaxException e) {
             // echo to the executing source
             LocaleHelper.sendMessageByKey(context.getExecutingSource(),"command.execute.echo.executing_source", command, e.getMessage());

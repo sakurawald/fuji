@@ -25,7 +25,10 @@ public class CommandAliasInitializer extends ModuleInitializer {
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register((server -> {
             CommandDispatcher<ServerCommandSource> dispatcher = ServerHelper.getCommandDispatcher();
-            config.getModel().alias.forEach(it -> processCommandAliasEntry(dispatcher, it));
+            config.getModel().alias.forEach(it -> {
+                assert dispatcher != null;
+                processCommandAliasEntry(dispatcher, it);
+            });
         }));
     }
 
