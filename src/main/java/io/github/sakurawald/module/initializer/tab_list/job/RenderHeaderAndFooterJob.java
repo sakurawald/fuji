@@ -7,7 +7,7 @@ import org.quartz.JobExecutionContext;
 public class RenderHeaderAndFooterJob extends CronJob {
 
     public RenderHeaderAndFooterJob() {
-        super(() -> TabListInitializer.config.getModel().update_cron);
+        super(() -> TabListInitializer.config.model().update_cron);
     }
 
     @Override

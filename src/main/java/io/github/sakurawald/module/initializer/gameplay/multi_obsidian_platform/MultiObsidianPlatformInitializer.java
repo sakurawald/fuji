@@ -78,7 +78,7 @@ public class MultiObsidianPlatformInitializer extends ModuleInitializer {
         // fix: for sand-dupe, the blockpos (x, ?, z) of sand may differ +1 or -1
         bp = findNearbyEndPortalBlock(bp);
         bp = findCenterEndPortalBlock(bp);
-        double factor = config.getModel().factor;
+        double factor = config.model().factor;
         int x = (int) (bp.getX() / factor);
         int y = 50;
         int z = (int) (bp.getZ() / factor);

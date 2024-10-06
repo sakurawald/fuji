@@ -73,7 +73,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
     public void sumUpScore() {
         this.score = 0;
         for (String type : this.type2amount.keySet()) {
-            HashMap<String, Integer> type2score = TopChunksInitializer.config.getModel().type2score;
+            HashMap<String, Integer> type2score = TopChunksInitializer.config.model().type2score;
             this.score += type2score.getOrDefault(type, type2score.get("default")) * type2amount.get(type);
         }
     }
@@ -94,7 +94,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
 
     public @NotNull Text asText(@NotNull ServerCommandSource source) {
         String chunkLocation;
-        if (TopChunksInitializer.config.getModel().hide_location) {
+        if (TopChunksInitializer.config.model().hide_location) {
             chunkLocation = LocaleHelper.getValue(source, "top_chunks.prop.hidden");
             if (source.hasPermissionLevel(4)) {
                 chunkLocation = LocaleHelper.getValue(source, "top_chunks.prop.hidden.bypass", this.getChunkPos().toString());

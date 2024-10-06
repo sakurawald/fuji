@@ -36,7 +36,7 @@ public class BackInitializer extends ModuleInitializer {
 
     public static void saveCurrentPosition(@NotNull ServerPlayerEntity player) {
         SpatialPose lastPos = player2lastPos.get(player.getGameProfile().getName());
-        double ignoreDistance = config.getModel().ignore_distance;
+        double ignoreDistance = config.model().ignore_distance;
         if (lastPos == null
                 || (!lastPos.sameLevel(player.getWorld()))
                 || (lastPos.sameLevel(player.getWorld()) && player.getPos().squaredDistanceTo(lastPos.getX(), lastPos.getY(), lastPos.getZ()) > ignoreDistance * ignoreDistance)

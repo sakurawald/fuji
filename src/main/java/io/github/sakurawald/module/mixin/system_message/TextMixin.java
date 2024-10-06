@@ -34,7 +34,7 @@ public interface TextMixin {
 
     @Unique
     private static @Nullable MutableText transform(String key, Object... args) {
-        Map<String, String> key2value = SystemMessageInitializer.config.getModel().key2value;
+        Map<String, String> key2value = SystemMessageInitializer.config.model().key2value;
         if (key2value.containsKey(key)) {
             if (ServerHelper.getDefaultServer() == null) {
                 LogUtil.warn("server is null currently -> cannot hijack the text with the key: {}", key);

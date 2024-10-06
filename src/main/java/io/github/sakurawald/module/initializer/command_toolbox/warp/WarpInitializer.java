@@ -34,12 +34,12 @@ public class WarpInitializer extends ModuleInitializer {
     private static int $tp(@CommandSource ServerPlayerEntity player, WarpName warpName) {
         String name = warpName.getValue();
 
-        if (!data.getModel().name2warp.containsKey(name)) {
+        if (!data.model().name2warp.containsKey(name)) {
             LocaleHelper.sendMessageByKey(player, "warp.not_found", name);
             return 0;
         }
 
-        WarpEntry entry = data.getModel().name2warp.get(name);
+        WarpEntry entry = data.model().name2warp.get(name);
         entry.getPosition().teleport(player);
         return CommandHelper.Return.SUCCESS;
     }
@@ -49,12 +49,12 @@ public class WarpInitializer extends ModuleInitializer {
     private static int $unset(@CommandSource ServerPlayerEntity player, WarpName warpName) {
         String name = warpName.getValue();
 
-        if (!data.getModel().name2warp.containsKey(name)) {
+        if (!data.model().name2warp.containsKey(name)) {
             LocaleHelper.sendMessageByKey(player, "warp.not_found", name);
             return 0;
         }
 
-        data.getModel().name2warp.remove(name);
+        data.model().name2warp.remove(name);
         LocaleHelper.sendMessageByKey(player, "warp.unset.success", name);
         return CommandHelper.Return.SUCCESS;
     }
@@ -64,21 +64,21 @@ public class WarpInitializer extends ModuleInitializer {
     private static int $set(@CommandSource ServerPlayerEntity player, WarpName warpName, Optional<Boolean> override) {
         String name = warpName.getValue();
 
-        if (data.getModel().name2warp.containsKey(name)) {
+        if (data.model().name2warp.containsKey(name)) {
             if (!override.orElse(false)) {
                 LocaleHelper.sendMessageByKey(player, "warp.set.fail.need_override", name);
                 return CommandHelper.Return.FAIL;
             }
         }
 
-        data.getModel().name2warp.put(name, new WarpEntry(SpatialPose.of(player)));
+        data.model().name2warp.put(name, new WarpEntry(SpatialPose.of(player)));
         LocaleHelper.sendMessageByKey(player, "warp.set.success", name);
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("list")
     private static int $list(@CommandSource ServerPlayerEntity player) {
-        LocaleHelper.sendMessageByKey(player, "warp.list", data.getModel().name2warp.keySet());
+        LocaleHelper.sendMessageByKey(player, "warp.list", data.model().name2warp.keySet());
         return CommandHelper.Return.SUCCESS;
     }
 }

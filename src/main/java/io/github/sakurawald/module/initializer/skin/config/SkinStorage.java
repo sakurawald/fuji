@@ -22,7 +22,7 @@ public class SkinStorage {
     }
 
     public Property getDefaultSkin() {
-        return SkinInitializer.config.getModel().default_skin;
+        return SkinInitializer.config.model().default_skin;
     }
 
     public Property getSkin(UUID uuid) {

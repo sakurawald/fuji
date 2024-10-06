@@ -72,7 +72,7 @@ public class TopChunksInitializer extends ModuleInitializer {
             }
 
             /* send output */
-            var config = TopChunksInitializer.config.getModel();
+            var config = TopChunksInitializer.config.model();
             computeNearestPlayer(ctx.getSource(), PQ, config.top.rows * config.top.columns);
 
             MutableText textComponentBuilder = Text.empty();
@@ -104,7 +104,7 @@ public class TopChunksInitializer extends ModuleInitializer {
             World world = chunkScore.getDimension();
             ChunkPos chunkPos = chunkScore.getChunkPos();
             BlockPos blockPos = chunkPos.getStartPos();
-            PlayerEntity nearestPlayer = world.getClosestPlayer(blockPos.getX(), blockPos.getY(), blockPos.getZ(), config.getModel().nearest_distance, false);
+            PlayerEntity nearestPlayer = world.getClosestPlayer(blockPos.getX(), blockPos.getY(), blockPos.getZ(), config.model().nearest_distance, false);
             if (nearestPlayer != null) {
                 chunkScore.getPlayers().add(LocaleHelper.getValue(source, "top_chunks.prop.players.nearest", nearestPlayer.getGameProfile().getName()));
             }

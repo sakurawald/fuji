@@ -38,8 +38,8 @@ public class TabListInitializer extends ModuleInitializer {
     }
 
     public static void render() {
-        String headerControl = RandomUtil.drawList(config.getModel().style.header);
-        String footerControl = RandomUtil.drawList(config.getModel().style.footer);
+        String headerControl = RandomUtil.drawList(config.model().style.header);
+        String footerControl = RandomUtil.drawList(config.model().style.footer);
         for (ServerPlayerEntity player : ServerHelper.getPlayers()) {
             @NotNull Text header = LocaleHelper.getTextByValue(player, headerControl);
             @NotNull Text footer = LocaleHelper.getTextByValue(player, footerControl);

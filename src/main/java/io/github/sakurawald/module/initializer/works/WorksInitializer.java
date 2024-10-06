@@ -44,7 +44,7 @@ public class WorksInitializer extends ModuleInitializer {
 
     @CommandNode("works")
     private static int $works(@CommandSource ServerPlayerEntity player) {
-        new WorksGui(player, worksHandler.getModel().works, 0).open();
+        new WorksGui(player, worksHandler.model().works, 0).open();
         return CommandHelper.Return.SUCCESS;
     }
 

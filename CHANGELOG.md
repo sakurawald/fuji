@@ -12,4 +12,3 @@
   - send custom text as a `book`: `/send-custom as-book <player> guide --author "alice" --title "<rb>The Guice" --giveBook true --openBook true `
   - send custom text as a `message`: `/send-custom as-message <player> guide `
 - docs: add many examples into the docs.
-- 

@@ -174,11 +174,8 @@ public abstract class BaseConfigurationHandler<T> {
     }
 
     public JsonElement convertModelToJsonTree() {
-        if (this.model == null) {
-            throw new IllegalStateException("The model instance is null now, maybe it's too early to call this function ?");
-        }
-
-        return gson.toJsonTree(this.model);
+        // call model() instead of this.model to ensure the model is loaded.
+        return gson.toJsonTree(this.model());
     }
 
     /**
@@ -199,10 +196,14 @@ public abstract class BaseConfigurationHandler<T> {
         });
     }
 
-    public T getModel() {
+    public @NotNull T model() {
         // load storage if necessary.
         if (this.model == null) {
             this.readStorage();
+        }
+
+        if (this.model == null) {
+            throw new IllegalStateException("The model of configuration file %s is null".formatted(this.path));
         }
 
         return this.model;

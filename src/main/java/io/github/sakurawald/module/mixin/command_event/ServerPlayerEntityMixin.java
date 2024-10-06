@@ -18,12 +18,12 @@ public class ServerPlayerEntityMixin {
     @Inject(method = "onDeath", at = @At("HEAD"))
     public void onPlayerDeath(DamageSource damageSource, CallbackInfo ci) {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-        CommandExecutor.execute(ExtendedCommandSource.asConsole(player.getCommandSource()), CommandEventInitializer.config.getModel().event.on_player_death.command_list);
+        CommandExecutor.execute(ExtendedCommandSource.asConsole(player.getCommandSource()), CommandEventInitializer.config.model().event.on_player_death.command_list);
     }
 
     @Inject(method = "worldChanged(Lnet/minecraft/server/world/ServerWorld;)V", at = @At("TAIL"))
     private void afterWorldChanged(ServerWorld origin, CallbackInfo ci) {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-        CommandExecutor.execute(ExtendedCommandSource.asConsole(player.getCommandSource()), CommandEventInitializer.config.getModel().event.after_player_change_world.command_list);
+        CommandExecutor.execute(ExtendedCommandSource.asConsole(player.getCommandSource()), CommandEventInitializer.config.model().event.after_player_change_world.command_list);
     }
 }

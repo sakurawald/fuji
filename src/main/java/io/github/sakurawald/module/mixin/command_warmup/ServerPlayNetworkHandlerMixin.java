@@ -25,7 +25,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
     public void interceptCommandUsagePackets(@NotNull CommandExecutionC2SPacket commandExecutionC2SPacket, @NotNull CallbackInfo ci) {
         String command = commandExecutionC2SPacket.comp_808();
 
-        var config = CommandWarmupInitializer.config.getModel();
+        var config = CommandWarmupInitializer.config.model();
 
         for (CommandWarmupEntry entry : config.entries) {
             // cancel the usage of command, if a warmup entry matches.

@@ -68,7 +68,7 @@ public class ChatStyleInitializer extends ModuleInitializer {
 
     private void compilePatterns() {
         patterns = new HashMap<>();
-        for (RegexRewriteEntry regexRewriteEntry : config.getModel().rewrite.regex) {
+        for (RegexRewriteEntry regexRewriteEntry : config.model().rewrite.regex) {
             patterns.put(java.util.regex.Pattern.compile(regexRewriteEntry.getRegex()), regexRewriteEntry.getReplacement());
         }
     }
@@ -125,7 +125,7 @@ public class ChatStyleInitializer extends ModuleInitializer {
         /* save the format*/
         String name = player.getGameProfile().getName();
         String $format = format.getValue();
-        chatFormatHandler.getModel().format.player2format.put(name, $format);
+        chatFormatHandler.model().format.player2format.put(name, $format);
         chatFormatHandler.writeStorage();
 
         /* feedback */
@@ -140,7 +140,7 @@ public class ChatStyleInitializer extends ModuleInitializer {
     @CommandNode("chat format reset")
     private static int $reset(@CommandSource ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
-        chatFormatHandler.getModel().format.player2format.remove(name);
+        chatFormatHandler.model().format.player2format.remove(name);
         chatFormatHandler.writeStorage();
         LocaleHelper.sendMessageByKey(player, "chat.format.reset");
         return CommandHelper.Return.SUCCESS;
@@ -164,7 +164,7 @@ public class ChatStyleInitializer extends ModuleInitializer {
 
         /* run mention player task */
         if (!mentionedPlayers.isEmpty()) {
-            MentionPlayersJob.requestJob(config.getModel().mention_player, mentionedPlayers);
+            MentionPlayersJob.requestJob(config.model().mention_player, mentionedPlayers);
         }
 
         return string;
@@ -181,11 +181,11 @@ public class ChatStyleInitializer extends ModuleInitializer {
         /* parse message */
         message = resolvePatterns(message);
         message = resolveMentionTag(message);
-        message = chatFormatHandler.getModel().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
+        message = chatFormatHandler.model().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
             .replace("%message%", message);
 
         /* parse format */
-        String format = config.getModel().format;
+        String format = config.model().format;
 
         /* combine */
         String string = format.replace("%message%", message);

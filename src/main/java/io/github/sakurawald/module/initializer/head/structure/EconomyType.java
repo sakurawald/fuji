@@ -36,8 +36,8 @@ public enum EconomyType {
     }
 
     public static void tryPurchase(@NotNull ServerPlayerEntity player, int amount, @NotNull Runnable onPurchase) {
-        int trueAmount = amount * HeadInitializer.headHandler.getModel().cost_amount;
-        switch (HeadInitializer.headHandler.getModel().economy_type) {
+        int trueAmount = amount * HeadInitializer.headHandler.model().cost_amount;
+        switch (HeadInitializer.headHandler.model().economy_type) {
             case FREE -> onPurchase.run();
             case ITEM -> {
                 if (extract(player, getCostItem(), trueAmount)) {
@@ -48,14 +48,14 @@ public enum EconomyType {
     }
 
     public static Text getCost() {
-        return switch (HeadInitializer.headHandler.getModel().economy_type) {
+        return switch (HeadInitializer.headHandler.model().economy_type) {
             case ITEM ->
-                Text.empty().append(getCostItem().getName()).append(Text.of(" × " + HeadInitializer.headHandler.getModel().cost_amount));
+                Text.empty().append(getCostItem().getName()).append(Text.of(" × " + HeadInitializer.headHandler.model().cost_amount));
             case FREE -> Text.empty();
         };
     }
 
     private static @NotNull Item getCostItem() {
-        return RegistryHelper.ofItem(HeadInitializer.headHandler.getModel().cost_type);
+        return RegistryHelper.ofItem(HeadInitializer.headHandler.model().cost_type);
     }
 }

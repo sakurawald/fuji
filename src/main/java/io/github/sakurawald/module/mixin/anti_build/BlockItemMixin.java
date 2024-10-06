@@ -24,7 +24,7 @@ public class BlockItemMixin {
         if (!(player instanceof ServerPlayerEntity)) return;
 
         String id = RegistryHelper.ofString(itemPlacementContext.getStack());
-        if (AntiBuildInitializer.config.getModel().anti.place_block.id.contains(id)
+        if (AntiBuildInitializer.config.model().anti.place_block.id.contains(id)
             && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("place_block", id))
         ) {
             player.sendMessage(LocaleHelper.getTextByKey(player, "anti_build.disallow"));

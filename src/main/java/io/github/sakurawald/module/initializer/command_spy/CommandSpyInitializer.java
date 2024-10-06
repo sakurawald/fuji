@@ -14,7 +14,7 @@ public class CommandSpyInitializer extends ModuleInitializer {
     public static void process(ParseResults<ServerCommandSource> parseResults) {
         // verify
         ServerCommandSource source = parseResults.getContext().getSource();
-        if (!CommandSpyInitializer.config.getModel().spy_on_console
+        if (!CommandSpyInitializer.config.model().spy_on_console
             && source.getPlayer() == null) return;
 
         // spy

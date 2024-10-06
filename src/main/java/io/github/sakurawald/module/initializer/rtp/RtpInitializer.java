@@ -24,7 +24,7 @@ public class RtpInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<RtpConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, RtpConfigModel.class);
 
     private static @NotNull Optional<TeleportSetup> getTeleportSetup(@NotNull ServerWorld world) {
-        List<TeleportSetup> list = config.getModel().setup.dimension;
+        List<TeleportSetup> list = config.model().setup.dimension;
         String dimension = RegistryHelper.ofString(world);
         return list.stream().filter(o -> o.getDimension().equals(dimension)).findFirst();
     }

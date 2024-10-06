@@ -56,7 +56,7 @@ public class MotdInitializer extends ModuleInitializer {
     }
 
     public static @NotNull Text getRandomMotdText() {
-        var motdList = config.getModel().list;
+        var motdList = config.model().list;
         String string = motdList.get(new Random().nextInt(motdList.size()));
 
         return LocaleHelper.getTextByValue(null, string);

@@ -34,7 +34,7 @@ public class HomeInitializer extends ModuleInitializer {
 
     public static Map<String, SpatialPose> ofHomes(@NotNull ServerPlayerEntity player) {
         String playerName = player.getGameProfile().getName();
-        Map<String, Map<String, SpatialPose>> homes = storage.getModel().name2home;
+        Map<String, Map<String, SpatialPose>> homes = storage.model().name2home;
         homes.computeIfAbsent(playerName, k -> new HashMap<>());
         return homes.get(playerName);
     }

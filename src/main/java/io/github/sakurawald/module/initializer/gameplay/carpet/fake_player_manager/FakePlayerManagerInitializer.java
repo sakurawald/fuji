@@ -71,7 +71,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
 
     public static void renewFakePlayers(@NotNull ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
-        int duration = config.getModel().renew_duration_ms;
+        int duration = config.model().renew_duration_ms;
         long newTime = System.currentTimeMillis() + duration;
         player2expiration.put(name, newTime);
         LocaleHelper.sendMessageByKey(player, "fake_player_manager.renew.success", DateUtil.toStandardDateFormat(newTime));
@@ -126,7 +126,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
     }
 
     public static int getCurrentAmountLimit() {
-        List<List<Integer>> rules = config.getModel().caps_limit_rule;
+        List<List<Integer>> rules = config.model().caps_limit_rule;
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
         int currentDays = currentDate.getDayOfWeek().getValue();

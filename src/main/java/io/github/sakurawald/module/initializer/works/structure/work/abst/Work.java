@@ -69,7 +69,7 @@ public abstract class Work {
     }
 
     private static @Nullable Work getWorkByID(String uuid) {
-        List<Work> works = WorksInitializer.worksHandler.getModel().works;
+        List<Work> works = WorksInitializer.worksHandler.model().works;
         for (Work work : works) {
             if (work.getId().equals(uuid)) {
                 return work;
@@ -164,7 +164,7 @@ public abstract class Work {
             .setCallback(() -> new ConfirmGui(player) {
                 @Override
                 public void onConfirm() {
-                    WorksInitializer.worksHandler.getModel().works.remove(work);
+                    WorksInitializer.worksHandler.model().works.remove(work);
                     LocaleHelper.sendActionBarByKey(player, "works.work.delete.done");
                 }
             }.open())

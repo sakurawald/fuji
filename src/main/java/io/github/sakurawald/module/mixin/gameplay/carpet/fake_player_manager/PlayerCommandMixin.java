@@ -21,7 +21,7 @@ public abstract class PlayerCommandMixin {
 
     @Unique
     private static @NotNull String transformFakePlayerName(@NotNull String fakePlayerName) {
-        return FakePlayerManagerInitializer.config.getModel().transform_name.replace("%name%", fakePlayerName);
+        return FakePlayerManagerInitializer.config.model().transform_name.replace("%name%", fakePlayerName);
     }
 
     @Redirect(method = "cantSpawn", at = @At(

@@ -60,7 +60,7 @@ public class PlayerHeadInputGui extends AnvilInputGui {
                     .setItem(Items.PLAYER_HEAD)
                     .setSkullOwner(gameProfile, player.server);
 
-                if (HeadInitializer.headHandler.getModel().economy_type != EconomyType.FREE) {
+                if (HeadInitializer.headHandler.model().economy_type != EconomyType.FREE) {
                     builder.addLoreLine(Text.empty());
                     builder.addLoreLine(LocaleHelper.getTextByKey(player, "head.price").copy().append(EconomyType.getCost()));
                 }

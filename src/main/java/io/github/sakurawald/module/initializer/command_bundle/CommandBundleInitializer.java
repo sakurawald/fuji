@@ -47,7 +47,7 @@ public class CommandBundleInitializer extends ModuleInitializer {
     private static int registerAllBundleCommands() {
         LogUtil.info("register bundle commands.");
 
-        config.getModel().getEntries().stream()
+        config.model().getEntries().stream()
             .map(BundleCommandDescriptor::make)
             .forEach(CommandDescriptor::register);
         CommandHelper.updateCommandTree();

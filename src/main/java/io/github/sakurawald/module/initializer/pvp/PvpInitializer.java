@@ -23,7 +23,7 @@ public class PvpInitializer extends ModuleInitializer {
 
     @CommandNode("pvp on")
     private static int $on(@CommandSource ServerPlayerEntity player) {
-        Set<String> whitelist = pvpHandler.getModel().whitelist;
+        Set<String> whitelist = pvpHandler.model().whitelist;
         String name = player.getGameProfile().getName();
         if (!whitelist.contains(name)) {
             whitelist.add(name);
@@ -40,7 +40,7 @@ public class PvpInitializer extends ModuleInitializer {
 
     @CommandNode("pvp off")
     private static int $off(@CommandSource ServerPlayerEntity player) {
-            Set<String> whitelist = pvpHandler.getModel().whitelist;
+            Set<String> whitelist = pvpHandler.model().whitelist;
             String name = player.getGameProfile().getName();
             if (whitelist.contains(name)) {
                 whitelist.remove(name);
@@ -56,7 +56,7 @@ public class PvpInitializer extends ModuleInitializer {
 
     @CommandNode("pvp status")
     private static int $status(@CommandSource ServerPlayerEntity player) {
-            Set<String> whitelist = pvpHandler.getModel().whitelist;
+            Set<String> whitelist = pvpHandler.model().whitelist;
             player.sendMessage(LocaleHelper.getTextByKey(player, "pvp.status")
                     .copy()
                     .append(whitelist.contains(player.getGameProfile().getName()) ? LocaleHelper.getTextByKey(player, "on") : LocaleHelper.getTextByKey(player, "off")));
@@ -65,13 +65,13 @@ public class PvpInitializer extends ModuleInitializer {
 
     @CommandNode("pvp list")
     private static int $list(@CommandSource CommandContext<ServerCommandSource> ctx) {
-        Set<String> whitelist = pvpHandler.getModel().whitelist;
+        Set<String> whitelist = pvpHandler.model().whitelist;
         LocaleHelper.sendMessageByKey(ctx.getSource(), "pvp.list", whitelist);
         return CommandHelper.Return.SUCCESS;
     }
 
     public static boolean contains(String name) {
-        return pvpHandler.getModel().whitelist.contains(name);
+        return pvpHandler.model().whitelist.contains(name);
     }
 
 }

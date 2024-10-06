@@ -14,7 +14,7 @@ public class ServerPlayNetworkHandlerMixin {
 
     @ModifyVariable(method = "executeCommand", at = @At(value = "HEAD"), ordinal = 0, argsOnly = true)
     public String interceptPacketsOfIssuedCommand(@NotNull String string) {
-        for (RegexRewriteEntry entry : CommandRewriteInitializer.config.getModel().regex) {
+        for (RegexRewriteEntry entry : CommandRewriteInitializer.config.model().regex) {
             if (entry.getRegex() == null || entry.getReplacement() == null) {
                 LogUtil.warn("there is an invalid `null` entry in `command_rewrite.regex`, you should remove it: {}", entry);
                 continue;

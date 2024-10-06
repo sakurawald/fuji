@@ -56,7 +56,7 @@ public abstract class OverrideTabListNameMixin {
             Text realPlayerGetDisplayName = realPlayerGetDisplayNameSave.get(name);
             // if nobody sets the display name, then we can set it.
             // someone else set teh display name, we should respect it.
-            return Objects.requireNonNullElseGet(realPlayerGetDisplayName, () -> LocaleHelper.getTextByValue(entry.getRealPlayer(), RandomUtil.drawList(TabListInitializer.config.getModel().style.body)));
+            return Objects.requireNonNullElseGet(realPlayerGetDisplayName, () -> LocaleHelper.getTextByValue(entry.getRealPlayer(), RandomUtil.drawList(TabListInitializer.config.model().style.body)));
 
         } else {
             /* listen to real player's get display name invoke, and sync it to the dummy-player */

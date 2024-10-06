@@ -63,7 +63,7 @@ public class ChatDisplayInitializer extends ModuleInitializer {
 
     @NotNull
     private ClickEvent makeDisplayClickEvent(String displayUUID) {
-        return Managers.getCallbackManager().makeCallbackEvent((player) -> DisplayHelper.viewDisplay(player, displayUUID), config.getModel().expiration_duration_s, TimeUnit.SECONDS);
+        return Managers.getCallbackManager().makeCallbackEvent((player) -> DisplayHelper.viewDisplay(player, displayUUID), config.model().expiration_duration_s, TimeUnit.SECONDS);
     }
 
     @Override
