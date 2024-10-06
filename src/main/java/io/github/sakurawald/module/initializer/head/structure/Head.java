@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class Head {
+
     public final @NotNull String name;
     public final UUID uuid;
     public final String value;
@@ -35,7 +36,11 @@ public class Head {
         return tags == null ? "" : tags;
     }
 
-    public ItemStack of() {
-        return new GuiElementBuilder().setItem(Items.PLAYER_HEAD).setName(Text.literal(name)).setSkullOwner(value, null, uuid).asStack();
+    public ItemStack toItemStack() {
+        return new GuiElementBuilder()
+            .setItem(Items.PLAYER_HEAD)
+            .setName(Text.literal(name))
+            .setSkullOwner(value, null, uuid)
+            .asStack();
     }
 }

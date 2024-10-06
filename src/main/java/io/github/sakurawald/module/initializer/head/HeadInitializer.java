@@ -18,25 +18,27 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 @Cite("https://github.com/PotatoPresident/HeadIndex")
+@CommandNode("head")
 public class HeadInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<HeadConfigModel> headHandler = new ObjectConfigurationHandler<>("head.json", HeadConfigModel.class).addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("head.json"),HeadInitializer.class));
+    public static final BaseConfigurationHandler<HeadConfigModel> head = new ObjectConfigurationHandler<>("head.json", HeadConfigModel.class)
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("head.json"), HeadInitializer.class));
 
-    @CommandNode("head sync")
+    @CommandNode("sync")
     @CommandRequirement(level = 4)
     private static int $sync(@CommandSource CommandContext<ServerCommandSource> ctx) {
         HeadProvider.fetchData();
         return CommandHelper.Return.SUCCESS;
     }
 
-    @CommandNode("head")
+    @CommandNode
     private static int $head(@CommandSource ServerPlayerEntity player) {
-        new HeadGui(player).open();
-        return CommandHelper.Return.SUCCESS;
+        return $gui(player);
     }
 
-    @CommandNode("head gui")
+    @CommandNode("gui")
     private static int $gui(@CommandSource ServerPlayerEntity player) {
-        return $head(player);
+        new HeadGui(player).open();
+        return CommandHelper.Return.SUCCESS;
     }
 }

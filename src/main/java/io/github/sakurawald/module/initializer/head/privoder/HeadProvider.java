@@ -26,12 +26,16 @@ import java.nio.file.Path;
 @UtilityClass
 public class HeadProvider {
 
-    private static final Path STORAGE_PATH = ReflectionUtil.getModuleConfigPath(HeadInitializer.class).resolve("head-data").toAbsolutePath();
+    private static final Path HEAD_DATA_DIR_PATH = ReflectionUtil.getModuleConfigPath(HeadInitializer.class).resolve("head-data").toAbsolutePath();
 
-    private static final String API = "https://minecraft-heads.com/scripts/api.php?cat=%s&tags=true";
+    private static final String HEAD_DATABASE_API = "https://minecraft-heads.com/scripts/api.php?cat=%s&tags=true";
 
     @Getter(lazy = true)
-    private static final Multimap<Category, Head> heads = fetchData();
+    private static final Multimap<Category, Head> loadedHeads = fetchData();
+
+    private static Path computePath(Category category) {
+        return HEAD_DATA_DIR_PATH.resolve(category.name + ".json");
+    }
 
     public static Multimap<Category, Head> fetchData() {
         HashMultimap<Category, Head> result = HashMultimap.create();
@@ -39,15 +43,15 @@ public class HeadProvider {
         for (Category category : Category.values()) {
             String URL = null;
             try {
-                File destination = STORAGE_PATH.resolve(category.getFileName()).toFile();
+                File destination = computePath(category).toFile();
 
-                // skip
+                // skip the downloading if file exists.
                 if (destination.exists()) {
                     loadCategory(result, category);
                     continue;
                 }
 
-                URL = API.formatted(category.name);
+                URL = HEAD_DATABASE_API.formatted(category.name);
                 URI uri = URI.create(URL);
                 Downloader downloader = new Downloader(uri.toURL(), destination) {
                     @Override
@@ -65,8 +69,11 @@ public class HeadProvider {
 
     private static void loadCategory(HashMultimap<Category, Head> result, Category category) {
         try {
-            LogUtil.info("load head category: {}", category.name);
-            @Cleanup InputStreamReader reader = new InputStreamReader(Files.newInputStream(STORAGE_PATH.resolve(category.name + ".json")));
+            LogUtil.debug("load head category: {}", category.name);
+
+            Path path = computePath(category);
+            @Cleanup InputStreamReader reader = new InputStreamReader(Files.newInputStream(path));
+
             JsonArray headsJson = JsonParser.parseReader(reader).getAsJsonArray();
             for (JsonElement headJson : headsJson) {
                 try {

@@ -18,41 +18,42 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PagedHeadGui extends PagedGui<Head> {
+public class CategoryHeadGui extends PagedGui<Head> {
 
-    public PagedHeadGui(SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<Head> entities, int pageIndex) {
+    public CategoryHeadGui(SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<Head> entities, int pageIndex) {
         super(parent, player, title, entities, pageIndex);
     }
 
     @Override
     public PagedGui<Head> make(@Nullable SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<Head> entities, int pageIndex) {
-        return new PagedHeadGui(parent, player, title, entities, pageIndex);
+        return new CategoryHeadGui(parent, player, title, entities, pageIndex);
     }
 
     @Override
     public GuiElementInterface toGuiElement(Head entity) {
-        var builder = GuiElementBuilder.from(entity.of());
-        if (HeadInitializer.headHandler.model().economy_type != EconomyType.FREE) {
+        var builder = GuiElementBuilder.from(entity.toItemStack());
+        if (HeadInitializer.head.model().economy_type != EconomyType.FREE) {
             builder.addLoreLine(Text.empty());
-            builder.addLoreLine(LocaleHelper.getTextByKey(getPlayer(), "head.price").copy().append(EconomyType.getCost()));
+            builder.addLoreLine(LocaleHelper.getTextByKey(getPlayer(), "head.price").copy().append(EconomyType.getCostText()));
         }
-        builder.setCallback((index, type, action) -> processHeadClick(entity, type));
+
+        builder.setCallback((index, type, action) -> handleEntityClick(entity, type));
         return builder.build();
     }
 
     @Override
     public List<Head> filter(String keywords) {
         return getEntities().stream()
-                .filter(head -> head.name.toLowerCase().contains(keywords.toLowerCase())
-                        || head.getTagsOrEmpty().toLowerCase().contains(keywords.toLowerCase()))
-                .collect(Collectors.toList());
+            .filter(head -> head.name.toLowerCase().contains(keywords.toLowerCase())
+                || head.getTagsOrEmpty().toLowerCase().contains(keywords.toLowerCase()))
+            .collect(Collectors.toList());
     }
 
-    private void processHeadClick(@NotNull Head head, @NotNull ClickType type) {
+    private void handleEntityClick(@NotNull Head head, @NotNull ClickType type) {
         ServerPlayerEntity player = getPlayer();
 
         ItemStack cursorStack = player.currentScreenHandler.getCursorStack();
-        ItemStack headStack = head.of();
+        ItemStack headStack = head.toItemStack();
 
         if (cursorStack.isEmpty()) {
             if (type.shift) {
@@ -69,10 +70,11 @@ public class PagedHeadGui extends PagedGui<Head> {
             //noinspection UnnecessaryReturnStatement
             return;
         } else if (ItemStack.areItemsAndComponentsEqual(headStack, cursorStack)) {
+            /* switch click type */
             if (type.isLeft) {
                 EconomyType.tryPurchase(player, 1, () -> cursorStack.increment(1));
             } else if (type.isRight) {
-                if (HeadInitializer.headHandler.model().economy_type == EconomyType.FREE)
+                if (HeadInitializer.head.model().economy_type == EconomyType.FREE)
                     cursorStack.decrement(1);
             } else if (type.isMiddle) {
                 var amount = headStack.getMaxCount() - cursorStack.getCount();
@@ -81,9 +83,8 @@ public class PagedHeadGui extends PagedGui<Head> {
                     player.currentScreenHandler.setCursorStack(headStack);
                 });
             }
-        } else {
-            if (HeadInitializer.headHandler.model().economy_type ==EconomyType.FREE)
-                player.currentScreenHandler.setCursorStack(ItemStack.EMPTY);
+        } else if (HeadInitializer.head.model().economy_type == EconomyType.FREE) {
+            player.currentScreenHandler.setCursorStack(ItemStack.EMPTY);
         }
     }
 }

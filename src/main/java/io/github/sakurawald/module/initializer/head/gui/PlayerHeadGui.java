@@ -16,12 +16,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
-public class PlayerHeadInputGui extends AnvilInputGui {
+public class PlayerHeadGui extends AnvilInputGui {
 
     private final @NotNull SimpleGui parentGui;
     private long apiDebounce = 0;
 
-    public PlayerHeadInputGui(@NotNull HeadGui parentGui) {
+    public PlayerHeadGui(@NotNull HeadGui parentGui) {
         super(parentGui.player, false);
         this.parentGui = parentGui;
         this.setTitle(LocaleHelper.getTextByKey(player, "head.category.player"));
@@ -55,26 +55,30 @@ public class PlayerHeadInputGui extends AnvilInputGui {
             apiDebounce = 0;
 
             CompletableFuture.runAsync(() -> {
+                /* make gui element */
                 GameProfile gameProfile = MojangProfileFetcher.makeGameProfile(this.getInput());
                 GuiElementBuilder builder = new GuiElementBuilder()
                     .setItem(Items.PLAYER_HEAD)
                     .setSkullOwner(gameProfile, player.server);
 
-                if (HeadInitializer.headHandler.model().economy_type != EconomyType.FREE) {
+                /* make head item */
+                if (HeadInitializer.head.model().economy_type != EconomyType.FREE) {
                     builder.addLoreLine(Text.empty());
-                    builder.addLoreLine(LocaleHelper.getTextByKey(player, "head.price").copy().append(EconomyType.getCost()));
+                    builder.addLoreLine(LocaleHelper.getTextByKey(player, "head.price").copy().append(EconomyType.getCostText()));
                 }
-                ItemStack resultStack = builder.asStack();
 
-                this.setSlot(2, resultStack, (index, type, action, gui) ->
+                ItemStack headStack = builder.asStack();
+
+                /* purchase */
+                this.setSlot(2, headStack, (index, type, action, gui) ->
                     EconomyType.tryPurchase(player, 1, () -> {
                         var cursorStack = getPlayer().currentScreenHandler.getCursorStack();
                         if (player.currentScreenHandler.getCursorStack().isEmpty()) {
-                            player.currentScreenHandler.setCursorStack(resultStack.copy());
-                        } else if (ItemStack.areItemsAndComponentsEqual(resultStack, cursorStack) && cursorStack.getCount() < cursorStack.getMaxCount()) {
+                            player.currentScreenHandler.setCursorStack(headStack.copy());
+                        } else if (ItemStack.areItemsAndComponentsEqual(headStack, cursorStack) && cursorStack.getCount() < cursorStack.getMaxCount()) {
                             cursorStack.increment(1);
                         } else {
-                            player.dropItem(resultStack.copy(), false);
+                            player.dropItem(headStack.copy(), false);
                         }
                     })
                 );
