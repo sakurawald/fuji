@@ -32,7 +32,7 @@ public class NbtHelper {
 
     private static final String FUJI_UUID = Fuji.MOD_ID + "$uuid";
 
-    public static void set(@NotNull NbtCompound root, @NotNull String path, NbtElement value) {
+    public static <T extends NbtElement> void setPath(@NotNull NbtCompound root, @NotNull String path, T value) {
         // search the path
         String[] nodes = path.split("\\.");
         for (int i = 0; i < nodes.length - 1; i++) {
@@ -50,15 +50,16 @@ public class NbtHelper {
         root.put(key, value);
     }
 
-    public static NbtElement getOrDefault(@NotNull NbtCompound root, @NotNull String path, NbtElement defaultValue) {
-        if (get(root, path) == null) {
-            set(root, path, defaultValue);
+    public static <T extends NbtElement> T withNbtElement(@NotNull NbtCompound root, @NotNull String path, T orElse) {
+        if (readPath(root, path) == null) {
+            setPath(root, path, orElse);
         }
 
-        return get(root, path);
+        //noinspection unchecked
+        return (T) readPath(root, path);
     }
 
-    public static @org.jetbrains.annotations.Nullable NbtElement get(@NotNull NbtCompound root, @NotNull String path) {
+    public static @Nullable NbtElement readPath(@NotNull NbtCompound root, @NotNull String path) {
         // search the path
         String[] nodes = path.split("\\.");
         for (int i = 0; i < nodes.length - 1; i++) {

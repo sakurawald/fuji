@@ -69,7 +69,8 @@ public class DeathLogInitializer extends ModuleInitializer {
         NbtHelper.withNbtCompound(computePath(from), root -> {
             ensureDeathlogNotEmpty(source, root);
 
-            NbtList deathsNode = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
+            NbtList deathsNode = NbtHelper.withNbtElement(root, DEATHS, new NbtList());
+
             if (index >= deathsNode.size()) {
                 LocaleHelper.sendMessageByKey(source, "deathlog.index.not_found", index);
                 throw new AbortCommandExecutionException();
@@ -124,7 +125,7 @@ public class DeathLogInitializer extends ModuleInitializer {
         NbtHelper.withNbtCompound(computePath($from), root -> {
             ensureDeathlogNotEmpty(player.getCommandSource(), root);
 
-            NbtList deaths = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
+            NbtList deaths = NbtHelper.withNbtElement(root, DEATHS, new NbtList());
 
             MutableText deathlogViewText = Text.empty();
             String to = player.getGameProfile().getName();
@@ -166,7 +167,7 @@ public class DeathLogInitializer extends ModuleInitializer {
 
         /* primary */
         NbtHelper.withNbtCompound(computePath(player.getGameProfile().getName()), root -> {
-            NbtList deathsNode = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
+            NbtList deathsNode = NbtHelper.withNbtElement(root, DEATHS, new NbtList());
             deathsNode.add(makeDeathNode(player));
         });
     }
