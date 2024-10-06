@@ -4,13 +4,11 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import lombok.experimental.UtilityClass;
-import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 @UtilityClass
@@ -35,64 +33,59 @@ public class GuiHelper {
 
     public static GuiElementInterface makeBarrier() {
         return new GuiElementBuilder()
-                .setItem(Items.BARRIER)
-                .hideTooltip()
-                .setComponent(DataComponentTypes.CUSTOM_NAME, Text.empty())
-                .build();
-
+            .setItem(Items.BARRIER)
+            .hideTooltip()
+            .build();
     }
 
-    public static GuiElementInterface makePlaceholder() {
+
+    public static GuiElementInterface makeSlotPlaceholder() {
         return new GuiElementBuilder()
-                .setItem(Items.GRAY_STAINED_GLASS_PANE)
-                .hideTooltip().build();
+            .setItem(Items.GRAY_STAINED_GLASS_PANE)
+            .hideTooltip()
+            .build();
+    }
+
+    public static GuiElementBuilder makeSkullButton(String skullOwner) {
+        return new GuiElementBuilder()
+            .setItem(Items.PLAYER_HEAD)
+            .setSkullOwner(skullOwner);
     }
 
     public static GuiElementBuilder makePreviousPageButton(ServerPlayerEntity player) {
-        return new GuiElementBuilder()
-                .setItem(Items.PLAYER_HEAD)
-                .setName(LocaleHelper.getTextByKey(player, "previous_page"))
-                .setSkullOwner(Icon.PREVIOUS_PAGE_ICON);
+        return makeSkullButton(Icon.PREVIOUS_PAGE_ICON)
+            .setName(LocaleHelper.getTextByKey(player, "previous_page"));
     }
 
     public static GuiElementBuilder makeNextPageButton(ServerPlayerEntity player) {
-        return new GuiElementBuilder()
-                .setItem(Items.PLAYER_HEAD)
-                .setName(LocaleHelper.getTextByKey(player, "next_page"))
-                .setSkullOwner(Icon.NEXT_PAGE_ICON);
+        return makeSkullButton(Icon.NEXT_PAGE_ICON)
+            .setName(LocaleHelper.getTextByKey(player, "next_page"));
     }
 
     public static GuiElementBuilder makeBackButton(ServerPlayerEntity player) {
-        return new GuiElementBuilder()
-                .setItem(Items.PLAYER_HEAD)
-                .setName(LocaleHelper.getTextByKey(player, "back"))
-                .setSkullOwner(Icon.PREVIOUS_PAGE_ICON);
+        return makeSkullButton(Icon.PREVIOUS_PAGE_ICON)
+            .setName(LocaleHelper.getTextByKey(player, "back"));
     }
 
     public static GuiElementBuilder makeSearchButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
-                .setItem(Items.COMPASS)
-                .setName(LocaleHelper.getTextByKey(player, "search"));
+            .setItem(Items.COMPASS)
+            .setName(LocaleHelper.getTextByKey(player, "search"));
     }
 
     public static GuiElementBuilder makeAddButton(ServerPlayerEntity player) {
-        return new GuiElementBuilder()
-                .setItem(Items.PLAYER_HEAD)
-                .setName(LocaleHelper.getTextByKey(player, "add"))
-                .setSkullOwner(GuiHelper.Icon.PLUS_ICON);
+        return makeSkullButton(GuiHelper.Icon.PLUS_ICON)
+            .setName(LocaleHelper.getTextByKey(player, "add"));
     }
 
     public static GuiElementBuilder makeHelpButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
-                .setItem(Items.PLAYER_HEAD)
-                .setName(LocaleHelper.getTextByKey(player, "help"))
-                .setSkullOwner(Icon.HEART_ICON);
+            .setItem(Items.BOOK)
+            .setName(LocaleHelper.getTextByKey(player, "help"));
     }
 
     public static GuiElementBuilder makePlayerPlaceholder() {
-        return new GuiElementBuilder()
-            .setItem(Items.PLAYER_HEAD)
-            .setSkullOwner(Icon.PLAYER_PLACEHOLDER_ICON);
+        return makeSkullButton(Icon.PLAYER_PLACEHOLDER_ICON);
     }
 
     public static void fill(@NotNull SimpleGui gui, ItemStack itemStack) {
