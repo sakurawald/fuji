@@ -66,7 +66,7 @@ public class KitInitializer extends ModuleInitializer {
     }
 
     public static void writeKit(@NotNull Kit kit) {
-        NbtHelper.withNbtCompound(computePath(kit.getName()), root -> {
+        NbtHelper.withNbtFile(computePath(kit.getName()), root -> {
             NbtList nbtList = new NbtList();
             NbtHelper.writeSlotsNode(nbtList, kit.getStackList());
             root.put(INVENTORY, nbtList);
@@ -74,7 +74,7 @@ public class KitInitializer extends ModuleInitializer {
     }
 
     public static @NotNull Kit readKit(@NotNull String kitName) {
-        List<ItemStack> itemStacks = NbtHelper.withNbtCompoundAndReturnValue(computePath(kitName), root -> {
+        List<ItemStack> itemStacks = NbtHelper.withNbtFileAndGettingReturnValue(computePath(kitName), root -> {
             /* write empty list if there is no INVENTORY tag */
             if (root.get(INVENTORY) == null) {
                 NbtList nbtList = new NbtList();

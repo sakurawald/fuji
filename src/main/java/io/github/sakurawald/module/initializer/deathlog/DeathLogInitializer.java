@@ -66,7 +66,7 @@ public class DeathLogInitializer extends ModuleInitializer {
     @CommandNode("restore")
     private static int restore(@CommandSource ServerCommandSource source, String from, int index, ServerPlayerEntity to) {
         /* read from file */
-        NbtHelper.withNbtCompound(computePath(from), root -> {
+        NbtHelper.withNbtFile(computePath(from), root -> {
             ensureDeathlogNotEmpty(source, root);
 
             NbtList deathsNode = NbtHelper.withNbtElement(root, DEATHS, new NbtList());
@@ -122,7 +122,7 @@ public class DeathLogInitializer extends ModuleInitializer {
     private static int view(@CommandSource ServerPlayerEntity player, OfflinePlayerName from) {
         String $from = from.getValue();
 
-        NbtHelper.withNbtCompound(computePath($from), root -> {
+        NbtHelper.withNbtFile(computePath($from), root -> {
             ensureDeathlogNotEmpty(player.getCommandSource(), root);
 
             NbtList deaths = NbtHelper.withNbtElement(root, DEATHS, new NbtList());
@@ -166,7 +166,7 @@ public class DeathLogInitializer extends ModuleInitializer {
         if (player.getInventory().isEmpty()) return;
 
         /* primary */
-        NbtHelper.withNbtCompound(computePath(player.getGameProfile().getName()), root -> {
+        NbtHelper.withNbtFile(computePath(player.getGameProfile().getName()), root -> {
             NbtList deathsNode = NbtHelper.withNbtElement(root, DEATHS, new NbtList());
             deathsNode.add(makeDeathNode(player));
         });

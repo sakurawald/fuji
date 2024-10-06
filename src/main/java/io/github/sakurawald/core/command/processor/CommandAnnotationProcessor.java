@@ -42,7 +42,7 @@ public class CommandAnnotationProcessor {
 
     /*
      yeah, this is a concurrent hash set.
-     Be careful don't to write the hashCode() for command descriptor, just use the memory address, use the command path to identify a command descriptor is possible to broken in some cases of register() and unregister().
+     Be careful don't write the hashCode() for command descriptor, just use the memory address, use the command path to identify a command descriptor is possible to broken in some cases of register() and unregister().
      */
     public static final Set<CommandDescriptor> descriptors = ConcurrentHashMap.newKeySet();
 
