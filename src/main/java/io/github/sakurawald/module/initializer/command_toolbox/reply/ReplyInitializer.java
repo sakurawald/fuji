@@ -18,17 +18,17 @@ public class ReplyInitializer extends ModuleInitializer {
 
     private static final HashMap<String, String> player2target = new HashMap<>();
 
-    public static void updateReplyTarget(String player, String target) {
+    public static void setReplyTarget(String player, String target) {
         player2target.put(player, target);
     }
-
 
     @CommandNode("reply")
     private static int $reply(@CommandSource ServerPlayerEntity player, GreedyString message) {
         String target = player2target.get(player.getGameProfile().getName());
 
         try {
-            Objects.requireNonNull(ServerHelper.getCommandDispatcher()).execute("msg %s %s".formatted(target, message.getValue()), player.getCommandSource());
+            Objects.requireNonNull(ServerHelper.getCommandDispatcher())
+                .execute("msg %s %s".formatted(target, message.getValue()), player.getCommandSource());
         } catch (CommandSyntaxException e) {
             LocaleHelper.sendMessageByKey(player, "reply.no_target");
         }

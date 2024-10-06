@@ -33,13 +33,14 @@ import java.util.Set;
 @Cite("https://github.com/BradBot1/FabricSit")
 public class SitInitializer extends ModuleInitializer {
 
-    public static final Vec3d CHAIR_ENTITY_OFFSET = new Vec3d(0, -1.375, 0);
+    private static final Vec3d CHAIR_ENTITY_OFFSET = new Vec3d(0, -1.375, 0);
     private static final Set<Entity> CHAIR_ENTITY_LIST = new HashSet<>();
 
     public static final BaseConfigurationHandler<SitConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, SitConfigModel.class);
 
     @Override
     public void onInitialize() {
+        // kill all sit entities on server stopping
         ServerLifecycleEvents.SERVER_STOPPING.register((server) -> CHAIR_ENTITY_LIST.forEach(e -> {
             if (e.isAlive()) e.kill();
         }));
@@ -47,7 +48,11 @@ public class SitInitializer extends ModuleInitializer {
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean canSit(ServerPlayerEntity player) {
-        return !player.hasVehicle() && !player.isFallFlying() && !player.isSleeping() && !player.isSwimming() && !player.isSpectator();
+        return !player.hasVehicle()
+            && !player.isFallFlying()
+            && !player.isSleeping()
+            && !player.isSwimming()
+            && !player.isSpectator();
     }
 
     @SuppressWarnings("deprecation")

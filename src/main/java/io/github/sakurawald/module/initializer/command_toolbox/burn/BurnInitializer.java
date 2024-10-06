@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.command_toolbox.burn;
 
-import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -14,10 +13,10 @@ public class BurnInitializer extends ModuleInitializer {
 
     @CommandNode("burn")
     @CommandRequirement(level = 4)
-    private static int burn(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player, int ticks) {
+    private static int burn(@CommandSource ServerCommandSource source, ServerPlayerEntity player, int ticks) {
         player.setFireTicks(ticks);
 
-        LocaleHelper.sendMessageByKey(ctx.getSource(), "operation.success");
+        LocaleHelper.sendMessageByKey(source, "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 }

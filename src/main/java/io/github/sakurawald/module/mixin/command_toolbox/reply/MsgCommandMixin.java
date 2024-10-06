@@ -21,6 +21,6 @@ public class MsgCommandMixin {
         ServerPlayerEntity source = commandSourceStack.getPlayer();
         if (source == null) return;
 
-        collection.forEach(target -> ReplyInitializer.updateReplyTarget(target.getGameProfile().getName(), source.getGameProfile().getName()));
+        collection.forEach(target -> ReplyInitializer.setReplyTarget(target.getGameProfile().getName(), source.getGameProfile().getName()));
     }
 }

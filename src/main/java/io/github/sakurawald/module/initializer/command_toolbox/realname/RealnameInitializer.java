@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.command_toolbox.realname;
 
-import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -17,7 +16,7 @@ public class RealnameInitializer extends ModuleInitializer {
 
     @SuppressWarnings("UnnecessaryLocalVariable")
     @CommandNode("realname")
-    private static int $realname(@CommandSource CommandContext<ServerCommandSource> ctx) {
+    private static int $realname(@CommandSource ServerCommandSource source) {
         MutableText builder = Text.empty();
 
         for (ServerPlayerEntity player : ServerHelper.getPlayers()) {
@@ -33,7 +32,7 @@ public class RealnameInitializer extends ModuleInitializer {
                 .append(Text.literal("\n"));
         }
 
-        ctx.getSource().sendMessage(builder);
+        source.sendMessage(builder);
         return CommandHelper.Return.SUCCESS;
     }
 

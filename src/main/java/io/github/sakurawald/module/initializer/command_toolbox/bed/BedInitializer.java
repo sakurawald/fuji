@@ -20,13 +20,13 @@ public class BedInitializer extends ModuleInitializer {
         BlockPos respawnPosition = player.getSpawnPointPosition();
         RegistryKey<World> respawnDimension = player.getSpawnPointDimension();
 
-        ServerWorld serverLevel = ServerHelper.getDefaultServer().getWorld(respawnDimension);
-        if (respawnPosition == null || serverLevel == null) {
+        ServerWorld world = ServerHelper.getDefaultServer().getWorld(respawnDimension);
+        if (respawnPosition == null || world == null) {
             LocaleHelper.sendMessageByKey(player, "bed.not_found");
             return CommandHelper.Return.FAIL;
         }
 
-        player.teleport(serverLevel, respawnPosition.getX(), respawnPosition.getY(), respawnPosition.getZ(), player.getYaw(), player.getPitch());
+        player.teleport(world, respawnPosition.getX(), respawnPosition.getY(), respawnPosition.getZ(), player.getYaw(), player.getPitch());
         LocaleHelper.sendMessageByKey(player, "bed.success");
         return CommandHelper.Return.SUCCESS;
     }

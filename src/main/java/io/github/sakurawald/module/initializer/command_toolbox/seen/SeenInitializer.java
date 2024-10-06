@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.command_toolbox.seen;
 
-import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
@@ -25,14 +24,14 @@ public class SeenInitializer extends ModuleInitializer {
 
     @CommandNode("seen")
     @CommandRequirement(level = 4)
-    private static int $seen(@CommandSource CommandContext<ServerCommandSource> ctx, OfflinePlayerName playerName) {
+    private static int $seen(@CommandSource ServerCommandSource source, OfflinePlayerName playerName) {
         String target = playerName.getValue();
 
         if (data.model().player2seen.containsKey(target)) {
             Long time = data.model().player2seen.get(target);
-            LocaleHelper.sendMessageByKey(ctx.getSource(), "seen.success", target, DateUtil.toStandardDateFormat(time));
+            LocaleHelper.sendMessageByKey(source, "seen.success", target, DateUtil.toStandardDateFormat(time));
         } else {
-            LocaleHelper.sendMessageByKey(ctx.getSource(), "seen.fail");
+            LocaleHelper.sendMessageByKey(source, "seen.fail");
         }
         return CommandHelper.Return.SUCCESS;
     }

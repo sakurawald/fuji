@@ -37,7 +37,7 @@ import java.util.List;
 @CommandNode("deathlog")
 @CommandRequirement(level = 4)
 public class DeathLogInitializer extends ModuleInitializer {
-    private static final Path STORAGE_PATH = ReflectionUtil.getModuleConfigPath(DeathLogInitializer.class).resolve("death-data");
+    private static final Path DEATH_DATA_DIR_PATH = ReflectionUtil.getModuleConfigPath(DeathLogInitializer.class).resolve("death-data");
 
     private static final String DEATHS = "Deaths";
     private static final String TIME = "time";
@@ -58,7 +58,7 @@ public class DeathLogInitializer extends ModuleInitializer {
     @SneakyThrows(IOException.class)
     @Override
     public void onInitialize() {
-        Files.createDirectories(STORAGE_PATH);
+        Files.createDirectories(DEATH_DATA_DIR_PATH);
     }
 
     @CommandNode("restore")
@@ -66,7 +66,7 @@ public class DeathLogInitializer extends ModuleInitializer {
         /* read from file */
         ServerCommandSource source = ctx.getSource();
 
-        Path path = STORAGE_PATH.resolve(getFileName(from));
+        Path path = DEATH_DATA_DIR_PATH.resolve(getFileName(from));
         NbtCompound root = NbtHelper.readOrDefault(path);
         if (root == null || root.isEmpty()) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "deathlog.empty");
@@ -114,7 +114,7 @@ public class DeathLogInitializer extends ModuleInitializer {
     @CommandNode("view")
     private static int $view(@CommandSource ServerPlayerEntity player, OfflinePlayerName from) {
         String $from = from.getValue();
-        NbtCompound root = NbtHelper.readOrDefault(STORAGE_PATH.resolve(getFileName($from)));
+        NbtCompound root = NbtHelper.readOrDefault(DEATH_DATA_DIR_PATH.resolve(getFileName($from)));
         if (root == null || root.isEmpty()) {
             LocaleHelper.sendMessageByKey(player, "deathlog.empty");
             return CommandHelper.Return.FAIL;
@@ -159,7 +159,7 @@ public class DeathLogInitializer extends ModuleInitializer {
         if (player.getInventory().isEmpty()) return;
 
         /* primary */
-        Path path = STORAGE_PATH.resolve(getFileName(player.getGameProfile().getName()));
+        Path path = DEATH_DATA_DIR_PATH.resolve(getFileName(player.getGameProfile().getName()));
 
         NbtCompound root = NbtHelper.readOrDefault(path);
         NbtList deathsNode = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
