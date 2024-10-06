@@ -94,7 +94,7 @@ public class SendToastInitializer extends ModuleInitializer {
 
     @CommandNode("send-toast")
     @CommandRequirement(level = 4)
-    private static int sendToast(@CommandSource CommandContext<ServerCommandSource> ctx
+    private static int sendToast(@CommandSource ServerCommandSource source
         , ServerPlayerEntity player
         , Optional<AdvancementFrame> toastType
         , Optional<Item> icon
@@ -106,7 +106,6 @@ public class SendToastInitializer extends ModuleInitializer {
         Text title = LocaleHelper.getTextByValue(player, message.getValue());
         sendToast(player, $toastType, $icon, title);
 
-        LocaleHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
