@@ -81,7 +81,7 @@ public class CommandCooldownInitializer extends ModuleInitializer {
 
         Cooldown<String> cooldown = player2cooldown.computeIfAbsent(name, k -> new Cooldown<>());
 
-        Optional<Map.Entry<String, Long>> first = config.model().regex2ms.entrySet()
+        Optional<Map.Entry<String, Long>> first = config.model().unnamed_cooldown.entrySet()
             .stream()
             .filter(it -> commandLine.matches(it.getKey()))
             .findFirst();
