@@ -43,7 +43,7 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        schedulerHandler.scheduleSaveConfigurationHandlerJob(ScheduleManager.CRON_EVERY_MINUTE);
+        schedulerHandler.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
         updateJobs();
     }
 

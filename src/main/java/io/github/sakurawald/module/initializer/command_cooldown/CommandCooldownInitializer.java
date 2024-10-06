@@ -50,7 +50,7 @@ public class CommandCooldownInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        config.scheduleSaveConfigurationHandlerJob(ScheduleManager.CRON_EVERY_MINUTE);
+        config.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 
     @Override

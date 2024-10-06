@@ -33,7 +33,7 @@ public class WorksInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        worksHandler.scheduleSaveConfigurationHandlerJob(ScheduleManager.CRON_EVERY_MINUTE);
+        worksHandler.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new WorksScheduleJob(new JobDataMap() {
             {

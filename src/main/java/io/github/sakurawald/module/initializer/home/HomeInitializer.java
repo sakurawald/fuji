@@ -30,7 +30,7 @@ public class HomeInitializer extends ModuleInitializer {
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("home.json"), HomeInitializer.class));
 
     public void onInitialize() {
-        storage.scheduleSaveConfigurationHandlerJob(ScheduleManager.CRON_EVERY_MINUTE);
+        storage.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 
     public static Map<String, SpatialPose> withHomes(@NotNull ServerPlayerEntity player) {
