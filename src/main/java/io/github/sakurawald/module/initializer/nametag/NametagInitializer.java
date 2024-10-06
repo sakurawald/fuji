@@ -171,6 +171,8 @@ public class NametagInitializer extends ModuleInitializer {
         ServerHelper.getPlayers().forEach(player -> {
             if (player.isDead()) return;
             if (player.isSneaking()) return;
+            // when the player jumps into the ender portal in the end, its world is minecraft:overworld, its removal reason is `CHANGED_DIMENSION`
+            if (player.getRemovalReason() != null) return;
 
             // make if not exists
             if (!player2nametag.containsKey(player)) {
