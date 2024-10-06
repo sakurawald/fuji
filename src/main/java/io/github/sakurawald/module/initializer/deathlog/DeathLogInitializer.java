@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.deathlog;
 
-import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
@@ -9,6 +8,7 @@ import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.OfflinePlayerName;
+import io.github.sakurawald.core.command.exception.AbortCommandExecutionException;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import lombok.SneakyThrows;
 import net.minecraft.entity.player.PlayerInventory;
@@ -37,8 +37,10 @@ import java.util.List;
 @CommandNode("deathlog")
 @CommandRequirement(level = 4)
 public class DeathLogInitializer extends ModuleInitializer {
+
     private static final Path DEATH_DATA_DIR_PATH = ReflectionUtil.getModuleConfigPath(DeathLogInitializer.class).resolve("death-data");
 
+    /* schema keys */
     private static final String DEATHS = "Deaths";
     private static final String TIME = "time";
     private static final String REASON = "reason";
@@ -62,73 +64,77 @@ public class DeathLogInitializer extends ModuleInitializer {
     }
 
     @CommandNode("restore")
-    private static int $restore(@CommandSource CommandContext<ServerCommandSource> ctx, String from, int index, ServerPlayerEntity to) {
+    private static int restore(@CommandSource ServerCommandSource source, String from, int index, ServerPlayerEntity to) {
         /* read from file */
-        ServerCommandSource source = ctx.getSource();
+        NbtHelper.withNbtCompound(computePath(from), root -> {
+            ensureDeathlogNotEmpty(source, root);
 
-        Path path = DEATH_DATA_DIR_PATH.resolve(getFileName(from));
-        NbtCompound root = NbtHelper.readOrDefault(path);
-        if (root == null || root.isEmpty()) {
-            LocaleHelper.sendMessageByKey(ctx.getSource(), "deathlog.empty");
-            return CommandHelper.Return.FAIL;
-        }
+            NbtList deathsNode = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
+            if (index >= deathsNode.size()) {
+                LocaleHelper.sendMessageByKey(source, "deathlog.index.not_found", index);
+                throw new AbortCommandExecutionException();
+            }
 
-        NbtList deathsNode = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
-        if (index >= deathsNode.size()) {
-            LocaleHelper.sendMessageByKey(source, "deathlog.index.not_found", index);
-            return CommandHelper.Return.FAIL;
-        }
+            // check the player's inventory for safety
+            if (!to.getInventory().isEmpty()) {
+                LocaleHelper.sendMessageByKey(source, "deathlog.restore.target_player.inventory_not_empty", to.getGameProfile().getName());
+                throw new AbortCommandExecutionException();
+            }
 
-        // check the player's inventory for safety
-        if (!to.getInventory().isEmpty()) {
-            LocaleHelper.sendMessageByKey(source, "deathlog.restore.target_player.inventory_not_empty", to.getGameProfile().getName());
-            return CommandHelper.Return.FAIL;
-        }
+            /* restore inventory */
+            NbtCompound inventoryNode = deathsNode.getCompound(index).getCompound(INVENTORY);
+            List<ItemStack> item = NbtHelper.readSlotsNode((NbtList) inventoryNode.get(ITEM));
+            for (int i = 0; i < item.size(); i++) {
+                to.getInventory().main.set(i, item.get(i));
+            }
+            List<ItemStack> armor = NbtHelper.readSlotsNode((NbtList) inventoryNode.get(ARMOR));
+            for (int i = 0; i < armor.size(); i++) {
+                to.getInventory().armor.set(i, armor.get(i));
+            }
+            List<ItemStack> offhand = NbtHelper.readSlotsNode((NbtList) inventoryNode.get(OFFHAND));
+            for (int i = 0; i < offhand.size(); i++) {
+                to.getInventory().offHand.set(i, offhand.get(i));
+            }
+            to.setScore(inventoryNode.getInt(SCORE));
+            to.experienceLevel = inventoryNode.getInt(XP_LEVEL);
+            to.experienceProgress = inventoryNode.getFloat(XP_PROGRESS);
 
-        /* restore inventory */
-        NbtCompound inventoryNode = deathsNode.getCompound(index).getCompound(INVENTORY);
-        List<ItemStack> item = NbtHelper.readSlotsNode((NbtList) inventoryNode.get(ITEM));
-        for (int i = 0; i < item.size(); i++) {
-            to.getInventory().main.set(i, item.get(i));
-        }
-        List<ItemStack> armor = NbtHelper.readSlotsNode((NbtList) inventoryNode.get(ARMOR));
-        for (int i = 0; i < armor.size(); i++) {
-            to.getInventory().armor.set(i, armor.get(i));
-        }
-        List<ItemStack> offhand = NbtHelper.readSlotsNode((NbtList) inventoryNode.get(OFFHAND));
-        for (int i = 0; i < offhand.size(); i++) {
-            to.getInventory().offHand.set(i, offhand.get(i));
-        }
-        to.setScore(inventoryNode.getInt(SCORE));
-        to.experienceLevel = inventoryNode.getInt(XP_LEVEL);
-        to.experienceProgress = inventoryNode.getFloat(XP_PROGRESS);
+            LocaleHelper.sendMessageByKey(source, "deathlog.restore.success", from, index, to.getGameProfile().getName());
+        });
 
-        LocaleHelper.sendMessageByKey(source, "deathlog.restore.success", from, index, to.getGameProfile().getName());
         return CommandHelper.Return.SUCCESS;
     }
 
-    private static @NotNull String getFileName(String playerName) {
-        return Uuids.getOfflinePlayerUuid(playerName) + ".dat";
+    private static @NotNull Path computePath(String playerName) {
+        String fileName = Uuids.getOfflinePlayerUuid(playerName) + ".dat";
+        return DEATH_DATA_DIR_PATH.resolve(fileName);
+    }
+
+    private static void ensureDeathlogNotEmpty(ServerCommandSource source, NbtCompound root) {
+        if (root == null || root.isEmpty()) {
+            LocaleHelper.sendMessageByKey(source, "deathlog.empty");
+            throw new AbortCommandExecutionException();
+        }
     }
 
     @CommandNode("view")
-    private static int $view(@CommandSource ServerPlayerEntity player, OfflinePlayerName from) {
+    private static int view(@CommandSource ServerPlayerEntity player, OfflinePlayerName from) {
         String $from = from.getValue();
-        NbtCompound root = NbtHelper.readOrDefault(DEATH_DATA_DIR_PATH.resolve(getFileName($from)));
-        if (root == null || root.isEmpty()) {
-            LocaleHelper.sendMessageByKey(player, "deathlog.empty");
-            return CommandHelper.Return.FAIL;
-        }
 
-        NbtList deaths = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
+        NbtHelper.withNbtCompound(computePath($from), root -> {
+            ensureDeathlogNotEmpty(player.getCommandSource(), root);
 
-        MutableText deathlogViewText = Text.empty();
-        String to = player.getGameProfile().getName();
-        for (int i = 0; i < deaths.size(); i++) {
-            deathlogViewText.append(asViewText(player, deaths.getCompound(i), $from, i, to));
-        }
+            NbtList deaths = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
 
-        player.sendMessage(deathlogViewText);
+            MutableText deathlogViewText = Text.empty();
+            String to = player.getGameProfile().getName();
+            for (int i = 0; i < deaths.size(); i++) {
+                deathlogViewText.append(asViewText(player, deaths.getCompound(i), $from, i, to));
+            }
+
+            player.sendMessage(deathlogViewText);
+        });
+
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -159,12 +165,10 @@ public class DeathLogInitializer extends ModuleInitializer {
         if (player.getInventory().isEmpty()) return;
 
         /* primary */
-        Path path = DEATH_DATA_DIR_PATH.resolve(getFileName(player.getGameProfile().getName()));
-
-        NbtCompound root = NbtHelper.readOrDefault(path);
-        NbtList deathsNode = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
-        deathsNode.add(makeDeathNode(player));
-        NbtHelper.write(root, path);
+        NbtHelper.withNbtCompound(computePath(player.getGameProfile().getName()), root -> {
+            NbtList deathsNode = (NbtList) NbtHelper.getOrDefault(root, DEATHS, new NbtList());
+            deathsNode.add(makeDeathNode(player));
+        });
     }
 
     private static @NotNull NbtCompound makeDeathNode(@NotNull ServerPlayerEntity player) {
