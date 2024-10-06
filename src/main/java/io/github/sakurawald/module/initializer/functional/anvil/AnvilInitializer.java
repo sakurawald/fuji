@@ -9,6 +9,7 @@ import net.minecraft.screen.AnvilScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 
 public class AnvilInitializer extends ModuleInitializer {
@@ -21,6 +22,7 @@ public class AnvilInitializer extends ModuleInitializer {
                 return true;
             }
         }, Text.translatable("container.repair")));
+        player.incrementStat(Stats.INTERACT_WITH_ANVIL);
         return CommandHelper.Return.SUCCESS;
     }
 }

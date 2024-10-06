@@ -9,6 +9,7 @@ import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.screen.StonecutterScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 
 public class StoneCutterInitializer extends ModuleInitializer {
@@ -21,6 +22,7 @@ public class StoneCutterInitializer extends ModuleInitializer {
                 return true;
             }
         }, Text.translatable("container.stonecutter")));
+        player.incrementStat(Stats.INTERACT_WITH_STONECUTTER);
         return CommandHelper.Return.SUCCESS;
     }
 }
