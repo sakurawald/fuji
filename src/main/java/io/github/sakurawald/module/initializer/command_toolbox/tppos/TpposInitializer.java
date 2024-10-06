@@ -43,8 +43,10 @@ public class TpposInitializer extends ModuleInitializer {
             player = targetPlayer.get();
         }
 
+        /* specify the dimension */
         ServerWorld world = dimension.isPresent() ? dimension.get().getValue() : player.getServerWorld();
 
+        /* mode: fixed teleport */
         if (x.isPresent() || y.isPresent() || z.isPresent()) {
             double $x = x.orElse(player.getX());
             double $y = y.orElse(player.getY());
@@ -56,6 +58,7 @@ public class TpposInitializer extends ModuleInitializer {
             return CommandHelper.Return.SUCCESS;
         }
 
+        /* mode: random teleport */
         int $centerX = centerX.orElse((int) world.getWorldBorder().getCenterX());
         int $centerZ = centerZ.orElse((int) world.getWorldBorder().getCenterZ());
         boolean $circle = circle.orElse(false);
@@ -76,7 +79,7 @@ public class TpposInitializer extends ModuleInitializer {
     @CommandRequirement(level = 4)
     private static int tppos(@CommandSource ServerPlayerEntity source, OfflinePlayerName player) {
         ServerPlayerEntity dummy = EntityHelper.loadOfflinePlayer(player.getValue());
-        source.teleport(dummy.getServerWorld(),dummy.getX(),dummy.getY(),dummy.getZ(),dummy.getYaw(),dummy.getPitch());
+        source.teleport(dummy.getServerWorld(), dummy.getX(), dummy.getY(), dummy.getZ(), dummy.getYaw(), dummy.getPitch());
         return CommandHelper.Return.SUCCESS;
     }
 
