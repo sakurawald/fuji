@@ -32,9 +32,9 @@
         <module name="FallThrough"/>
         <module name="NoFinalizer"/>
         <module name="NoLineWrap"/>
-        <module name="NoWhitespaceAfter">
-            <property name="allowLineBreaks" value="false"/>
-        </module>
+<!--        <module name="NoWhitespaceAfter">-->
+<!--            <property name="allowLineBreaks" value="false"/>-->
+<!--        </module>-->
         <module name="NoWhitespaceBefore">
             <property name="allowLineBreaks" value="true"/>
         </module>

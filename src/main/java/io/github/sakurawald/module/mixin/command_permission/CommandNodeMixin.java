@@ -34,10 +34,11 @@ public class CommandNodeMixin {
     @SuppressWarnings("unchecked")
     @ModifyReturnValue(method = "getRequirement", at = @At("TAIL"))
     private Predicate<?> injected(Predicate<?> original) {
+
         // wrap the predicate until the dispatcher is initialized.
         @Nullable CommandDispatcher<ServerCommandSource> dispatcher = ServerHelper.getCommandDispatcher();
         if (dispatcher == null) {
-            LogUtil.debug("The CommandNode#getRequirement is trigger too early, fuji will just ignore this call.");
+            LogUtil.debug("The CommandNode#getRequirement is triggered too early, fuji will just ignore this call.");
             return original;
         }
 
