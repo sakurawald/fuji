@@ -27,6 +27,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @CommandNode("kit")
@@ -53,7 +54,8 @@ public class KitInitializer extends ModuleInitializer {
         return listKitNames()
             .stream()
             .map(KitInitializer::readKit)
-            .toList();
+            // ensure the deletion operation on list is supported.
+            .collect(Collectors.toList());
     }
 
     private static Path computePath(String kitName) {

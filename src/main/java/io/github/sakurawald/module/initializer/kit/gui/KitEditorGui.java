@@ -60,9 +60,24 @@ public class KitEditorGui extends PagedGui<Kit> {
             simpleInventory.setStack(i, kit.getStackList().get(i));
         }
 
-        // forbidden
+        /* set default items if the kit is empty */
+        if (simpleInventory.isEmpty()) {
+            simpleInventory.setStack(0, Items.IRON_SWORD.getDefaultStack());
+
+            ItemStack food = Items.BREAD.getDefaultStack();
+            food.setCount(16);
+            simpleInventory.setStack(1, food);
+
+            simpleInventory.setStack(36, Items.IRON_BOOTS.getDefaultStack());
+            simpleInventory.setStack(37, Items.IRON_LEGGINGS.getDefaultStack());
+            simpleInventory.setStack(38, Items.IRON_CHESTPLATE.getDefaultStack());
+            simpleInventory.setStack(39, Items.IRON_HELMET.getDefaultStack());
+            simpleInventory.setStack(40, Items.SHIELD.getDefaultStack());
+        }
+
+        /* put the forbidden zone */
         for (int i = 41; i <= 44; i++) {
-            simpleInventory.setStack(i, Items.BARRIER.getDefaultStack());
+            simpleInventory.setStack(i, GuiHelper.makeBarrier().getItemStack());
         }
 
         SimpleNamedScreenHandlerFactory simpleNamedScreenHandlerFactory = new SimpleNamedScreenHandlerFactory((i, playerInventory, p) ->
