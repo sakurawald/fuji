@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 @UtilityClass
 public class CommandHelper {
@@ -83,18 +84,18 @@ public class CommandHelper {
             };
         }
 
-        public static <T> @NotNull SuggestionProvider<ServerCommandSource> enums(T[] enums) {
+        public static <T> @NotNull SuggestionProvider<ServerCommandSource> enums(Supplier<T[]> enumSupplier) {
             return (context, builder) -> {
-                for (T value : enums) {
+                for (T value : enumSupplier.get()) {
                     builder.suggest(value.toString());
                 }
                 return builder.buildFuture();
             };
         }
 
-        public static <T> @NotNull SuggestionProvider<ServerCommandSource> iterable(Iterable<T> iterable) {
+        public static <T> @NotNull SuggestionProvider<ServerCommandSource> iterable(Supplier<Iterable<T>> iterableSupplier) {
             return (context, builder) -> {
-                for (T value : iterable) {
+                for (T value : iterableSupplier.get()) {
                     builder.suggest(value.toString());
                 }
                 return builder.buildFuture();

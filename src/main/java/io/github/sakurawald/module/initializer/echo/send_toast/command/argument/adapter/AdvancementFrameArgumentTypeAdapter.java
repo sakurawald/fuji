@@ -36,6 +36,6 @@ public class AdvancementFrameArgumentTypeAdapter extends BaseArgumentTypeAdapter
 
     @Override
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(String argumentName) {
-        return super.makeRequiredArgumentBuilder(argumentName).suggests(CommandHelper.Suggestion.enums(AdvancementFrame.values()));
+        return super.makeRequiredArgumentBuilder(argumentName).suggests(CommandHelper.Suggestion.enums(AdvancementFrame::values));
     }
 }

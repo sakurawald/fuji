@@ -36,6 +36,6 @@ public class ExecuteAsTypeArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(String argumentName) {
-        return super.makeRequiredArgumentBuilder(argumentName).suggests(CommandHelper.Suggestion.enums(ExecuteAsType.values()));
+        return super.makeRequiredArgumentBuilder(argumentName).suggests(CommandHelper.Suggestion.enums(ExecuteAsType::values));
     }
 }
