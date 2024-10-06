@@ -22,40 +22,53 @@
     <module name="NewlineAtEndOfFile"/>
 
     <module name="TreeWalker">
-        <module name="AvoidStarImport"/>
-        <module name="ArrayTypeStyle"/>
+
+        <!-- string -->
         <module name="AvoidEscapedUnicodeCharacters">
             <property name="allowByTailComment" value="true"/>
         </module>
+
+        <!-- brace -->
         <module name="LeftCurly"/>
         <module name="RightCurly"/>
-        <module name="FallThrough"/>
-        <module name="NoFinalizer"/>
-        <module name="NoLineWrap"/>
-<!--        <module name="NoWhitespaceAfter">-->
-<!--            <property name="allowLineBreaks" value="false"/>-->
-<!--        </module>-->
+
+        <!-- blank -->
         <module name="NoWhitespaceBefore">
+            <property name="tokens"
+                      value="COMMA, SEMI, POST_INC, POST_DEC, DOT,
+                    LABELED_STAT, METHOD_REF"/>
             <property name="allowLineBreaks" value="true"/>
         </module>
+        <module name="NoLineWrap"/>
         <module name="SingleSpaceSeparator">
             <property name="validateComments" value="true"/>
         </module>
+        <module name="GenericWhitespace"/>
 
+        <!-- object -->
+        <module name="NoFinalizer"/>
+        <module name="OneTopLevelClass"/>
         <module name="RequireThis"/>
+        <module name="OuterTypeFilename"/>
+        <module name="MissingOverride"/>
+
+        <!-- element -->
+        <module name="RedundantModifier"/>
+        <module name="FallThrough"/>
+        <module name="EmptyCatchBlock"/>
+        <module name="UpperEll"/>
+        <module name="ArrayTypeStyle"/>
+
+        <!-- pad -->
         <module name="EmptyForInitializerPad"/>
         <module name="EmptyForIteratorPad"/>
-        <module name="GenericWhitespace"/>
-        <module name="UpperEll"/>
-        <module name="UnusedImports"/>
         <module name="TypecastParenPad"/>
         <module name="MethodParamPad"/>
-        <module name="RedundantModifier"/>
-        <module name="MissingOverride"/>
-        <module name="EmptyCatchBlock"/>
-        <module name="OuterTypeFilename"/>
-        <module name="OneTopLevelClass"/>
-        <!--        <module name="Indentation"/>-->
+
+
+        <!-- import -->
+        <module name="UnusedImports"/>
+        <module name="AvoidStarImport"/>
 
     </module>
 
