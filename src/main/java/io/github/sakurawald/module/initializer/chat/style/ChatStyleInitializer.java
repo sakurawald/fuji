@@ -74,7 +74,7 @@ public class ChatStyleInitializer extends ModuleInitializer {
     }
 
     private void registerPosPlaceholder() {
-        PlaceholderHelper.playerPlaceholder("pos", (player) -> {
+        PlaceholderHelper.withPlayer("pos", (player) -> {
             int x = player.getBlockX();
             int y = player.getBlockY();
             int z = player.getBlockZ();
@@ -107,14 +107,14 @@ public class ChatStyleInitializer extends ModuleInitializer {
     }
 
     private void registerPrefixPlaceholder() {
-        PlaceholderHelper.playerPlaceholder("player_prefix",(player, arg)->{
+        PlaceholderHelper.withPlayer("player_prefix",(player, arg)->{
             String prefix = PermissionHelper.getPrefix(player.getUuid());
             return LocaleHelper.getTextByValue(player, prefix);
         });
     }
 
     private void registerSuffixPlaceholder() {
-        PlaceholderHelper.playerPlaceholder("player_suffix",(player,arg)->{
+        PlaceholderHelper.withPlayer("player_suffix",(player, arg)->{
             String prefix = PermissionHelper.getSuffix(player.getUuid());
             return LocaleHelper.getTextByValue(player, prefix);
         });
