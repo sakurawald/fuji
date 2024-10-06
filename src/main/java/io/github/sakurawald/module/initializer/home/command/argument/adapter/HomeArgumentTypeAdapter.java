@@ -43,7 +43,7 @@ public class HomeArgumentTypeAdapter extends BaseArgumentTypeAdapter {
                     ServerPlayerEntity player = context.getSource().getPlayer();
                     if (player == null) return builder.buildFuture();
 
-                    Map<String, SpatialPose> name2position = HomeInitializer.ofHomes(player);
+                    Map<String, SpatialPose> name2position = HomeInitializer.withHomes(player);
                     name2position.keySet().forEach(builder::suggest);
                     return builder.buildFuture();
                 }
