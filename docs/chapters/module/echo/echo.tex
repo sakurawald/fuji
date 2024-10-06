@@ -7,7 +7,7 @@ This module provides commands to send echo to players.
 \LevelThree{/send-actionbar}
 \LevelThree{/send-title}
 \begin{example}{Send title to a player}
-    \ic{/send-title Steve --mainTitle "<rainbow>Hello" --subTitle "<blue>World" --fadeInTicks 60 --stayTicks 60 --fadeOutTicks 60}
+    \ic{/send-title \player --mainTitle "<rainbow>Hello" --subTitle "<blue>World" --fadeInTicks 60 --stayTicks 60 --fadeOutTicks 60}
 \end{example}
 
 \begin{example}{Send title to online players}
@@ -16,7 +16,7 @@ This module provides commands to send echo to players.
 \LevelThree{/send-toast}
 
 \begin{example}{Send toast to a player}
-    \ic{/send-toast Steve --icon minecraft:golden\_carrot <rb>eat this carrot}
+    \ic{/send-toast \player --icon minecraft:golden\_carrot <rb>eat this carrot}
 \end{example}
 
 \LevelThree{/send-chat}
@@ -33,4 +33,47 @@ This module provides commands to send echo to players.
 
 \begin{example}{All in one exapmle}
     \ic{/send-bossbar \player --stepType BACKWARD --totalMs 5000 --color PURPLE --style NOTCHED\_6 --notifyMeOnComplete true --commandList "say the player \ph{player:name} is healed|heal \ph{player:name}" <rb>Healing is coming [elapsed\_time]/[total\_time]/[left\_time]}
+\end{example}
+
+\LevelThree{/send-custom}
+\begin{example}{Create a custom text}
+    Create a plain text file named \str{guide} in \textbf{config/fuji/modules/echo/send\_custom/custom-text/guide} with content:
+    \begin{sh}
+        <blue>===== custom text =====
+        Hello <orange>%player:name%</orange>, you are in <orange>%world:name%</orange> now.
+
+        <hover:show_text:'you see me!'>Hover me</hover>
+
+        <click:run_command:'/back'>click me to run `/back` command</click>
+
+        <u><i><click:change_page:'3'>click me to the third page (this only works inside a book)</click></i></u>
+
+        <newpage><blue>This is the second page!
+
+        <click:suggest_command:'/back'>click me to suggest /back command (This doesn't work inside a book)</click>
+
+        <insert:'hello'>shift + click me to insert "hello" (This doesn't work inside a book)</insert>
+
+        <click:open_url:'https://placeholders.pb4.eu/user/text-format/'>click me to open the url</click>
+
+        <newpage>This is the third page!
+
+        <bold><click:change_page:'1'>click me to the first page</click></bold>
+
+        <orange>You can press `<keybind:'key.jump'>` key to jump!</orange>
+
+        <gradient:red:green:blue>This is gradient text.</gradient>
+
+        <rb>The rainbow text</rb>
+
+        <newpage>The end.
+    \end{sh}
+\end{example}
+
+\begin{example}{Send custom text as a book}
+    \ic{/send-custom as-book \player guide --author "alice" --title "<rb>The Guice" --giveBook true --openBook true}
+\end{example}
+
+\begin{example}{Send custom text as a message}
+    \ic{/send-custom as-message \player guide}
 \end{example}

@@ -112,20 +112,20 @@ public class KitInitializer extends ModuleInitializer {
 
         /* try to insert the item in specified slot */
         PlayerInventory playerInventory = player.getInventory();
-        List<ItemStack> failedList = new ArrayList<>();
+        List<ItemStack> tryAgainList = new ArrayList<>();
         for (int i = 0; i < $kit.getStackList().size(); i++) {
             ItemStack copy = $kit.getStackList().get(i).copy();
 
             if (!playerInventory.insertStack(i, copy)) {
-                failedList.add(copy);
+                tryAgainList.add(copy);
             }
         }
 
         /* try to insert the item in any slot */
-        failedList.removeIf(playerInventory::insertStack);
+        tryAgainList.removeIf(playerInventory::insertStack);
 
         /* the inventory of player is full, just drop the item in the ground */
-        failedList.forEach(it -> player.dropItem(it, true));
+        tryAgainList.forEach(it -> player.dropItem(it, true));
 
         return CommandHelper.Return.SUCCESS;
     }

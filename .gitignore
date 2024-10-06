@@ -29,6 +29,7 @@ bin/
 
 # fabric
 run/
+mods/
 
 # jvm
 hs_err_*.log
@@ -41,4 +42,4 @@ logs/
 # yarn
 remappedSrc
 config/
-mods/
+

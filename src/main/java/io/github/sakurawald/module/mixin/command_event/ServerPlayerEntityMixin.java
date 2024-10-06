@@ -22,8 +22,8 @@ public class ServerPlayerEntityMixin {
     }
 
     @Inject(method = "worldChanged(Lnet/minecraft/server/world/ServerWorld;)V", at = @At("TAIL"))
-	private void afterWorldChanged(ServerWorld origin, CallbackInfo ci) {
+    private void afterWorldChanged(ServerWorld origin, CallbackInfo ci) {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
         CommandExecutor.execute(ExtendedCommandSource.asConsole(player.getCommandSource()), CommandEventInitializer.config.getModel().event.after_player_change_world.command_list);
-	}
+    }
 }

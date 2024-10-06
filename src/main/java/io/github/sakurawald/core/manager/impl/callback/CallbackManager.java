@@ -12,6 +12,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.ClickEvent;
 
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
@@ -55,13 +56,21 @@ public class CallbackManager extends BaseManager {
         consumer.accept(player);
     }
 
-    private ClickEvent makeCallback(String uuid, Consumer<ServerPlayerEntity> callback, long ttl, TimeUnit timeUnit) {
+    private String makeCallbackCommand(String uuid, Consumer<ServerPlayerEntity> callback, long ttl, TimeUnit timeUnit) {
         LogUtil.debug("makeCallback: uuid = {}", uuid);
         this.uuid2consumer.put(uuid, callback, ttl, timeUnit);
-        return new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + COMMAND_CALLBACK + " " + uuid);
+        return "/" + COMMAND_CALLBACK + " " + uuid;
     }
 
-    public ClickEvent makeCallback(Consumer<ServerPlayerEntity> callback, long ttl, TimeUnit timeUnit) {
-        return this.makeCallback(java.util.UUID.randomUUID().toString(), callback, ttl, timeUnit);
+    private ClickEvent makeCallbackEvent(String uuid, Consumer<ServerPlayerEntity> callback, long ttl, TimeUnit timeUnit) {
+        return new ClickEvent(ClickEvent.Action.RUN_COMMAND, makeCallbackCommand(uuid, callback, ttl, timeUnit));
+    }
+
+    public String makeCallbackCommand(Consumer<ServerPlayerEntity> callback, long ttl, TimeUnit timeUnit) {
+        return this.makeCallbackCommand(UUID.randomUUID().toString(), callback, ttl, timeUnit);
+    }
+
+    public ClickEvent makeCallbackEvent(Consumer<ServerPlayerEntity> callback, long ttl, TimeUnit timeUnit) {
+        return this.makeCallbackEvent(UUID.randomUUID().toString(), callback, ttl, timeUnit);
     }
 }

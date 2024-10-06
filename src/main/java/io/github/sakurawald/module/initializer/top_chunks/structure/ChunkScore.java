@@ -120,7 +120,7 @@ public class ChunkScore implements Comparable<ChunkScore> {
             .fillStyle(Style.EMPTY
                 .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText))
                 .withFormatting(this.players.isEmpty() ? Formatting.GRAY : Formatting.DARK_GREEN)
-                .withClickEvent(Managers.getCallbackManager().makeCallback((player) -> {
+                .withClickEvent(Managers.getCallbackManager().makeCallbackEvent((player) -> {
                     if (!hasPermissionToClickToTeleport(player)) return;
 
                     BlockPos blockPos = new BlockPos(chunkPos.getCenterX(), 128, chunkPos.getCenterZ());

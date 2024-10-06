@@ -10,6 +10,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.UserCache;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.List;
@@ -28,7 +29,11 @@ public class ServerHelper {
         return getDefaultServer().worlds.values();
     }
 
-    public static CommandDispatcher<ServerCommandSource> getCommandDispatcher() {
+    public static @Nullable CommandDispatcher<ServerCommandSource> getCommandDispatcher() {
+        if (getDefaultServer() == null || getDefaultServer().getCommandManager() == null) {
+            return null;
+        }
+
         return getDefaultServer().getCommandManager().getDispatcher();
     }
 

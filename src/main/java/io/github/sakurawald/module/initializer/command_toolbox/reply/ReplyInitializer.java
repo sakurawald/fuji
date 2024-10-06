@@ -11,6 +11,7 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 
 public class ReplyInitializer extends ModuleInitializer {
@@ -27,7 +28,7 @@ public class ReplyInitializer extends ModuleInitializer {
         String target = player2target.get(player.getGameProfile().getName());
 
         try {
-            ServerHelper.getCommandDispatcher().execute("msg %s %s".formatted(target, message.getValue()), player.getCommandSource());
+            Objects.requireNonNull(ServerHelper.getCommandDispatcher()).execute("msg %s %s".formatted(target, message.getValue()), player.getCommandSource());
         } catch (CommandSyntaxException e) {
             LocaleHelper.sendMessageByKey(player, "reply.no_target");
         }

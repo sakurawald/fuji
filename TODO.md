@@ -6,6 +6,3 @@
   predicate,
   equal... (similar: skript)
     - application: /air, /alert, /respawn, /vote
-
-
-- custom text. (ctext interpolation with books)

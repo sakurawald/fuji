@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -29,13 +30,14 @@ public class CommandHelper {
 
     public static @NotNull String computeCommandNodePath(CommandNode<ServerCommandSource> node) {
         CommandDispatcher<ServerCommandSource> dispatcher = ServerHelper.getCommandDispatcher();
+        assert dispatcher != null;
         String[] array = dispatcher.getPath(node).toArray(new String[]{});
         return String.join(".", array);
     }
 
     public static List<CommandNode<ServerCommandSource>> getCommandNodes() {
         List<CommandNode<ServerCommandSource>> ret = new ArrayList<>();
-        RootCommandNode<ServerCommandSource> root = ServerHelper.getCommandDispatcher().getRoot();
+        RootCommandNode<ServerCommandSource> root = Objects.requireNonNull(ServerHelper.getCommandDispatcher()).getRoot();
         getCommandNodes(ret, root);
         return ret;
     }

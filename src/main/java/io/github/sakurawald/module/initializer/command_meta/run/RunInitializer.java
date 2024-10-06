@@ -27,7 +27,7 @@ public class RunInitializer extends ModuleInitializer {
     }
 
     @CommandNode("as fake-op")
-    private static int runAsFakeOp(@CommandSource ServerCommandSource source,  ServerPlayerEntity player, GreedyString rest) {
-        return CommandExecutor.execute(ExtendedCommandSource.asFakeOp(source, player), rest.getValue() );
+    private static int runAsFakeOp(@CommandSource ServerCommandSource source, ServerPlayerEntity player, GreedyString rest) {
+        return CommandExecutor.execute(ExtendedCommandSource.asFakeOp(source, player), rest.getValue());
     }
 }
