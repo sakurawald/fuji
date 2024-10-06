@@ -48,6 +48,7 @@ public class MotdInitializer extends ModuleInitializer {
 
             File randomIcon = RandomUtil.drawList(icons);
             BufferedImage bufferedImage = ImageIO.read(randomIcon);
+
             Preconditions.checkState(bufferedImage.getWidth() == 64, "Must be 64 pixels wide: %s".formatted(randomIcon));
             Preconditions.checkState(bufferedImage.getHeight() == 64, "Must be 64 pixels high: %s".formatted(randomIcon));
 

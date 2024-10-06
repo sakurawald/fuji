@@ -8,8 +8,7 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.gui.ConfirmGui;
 import io.github.sakurawald.core.gui.InputSignGui;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;
-import io.github.sakurawald.module.initializer.works.abst.Schedulable;
-import io.github.sakurawald.module.initializer.works.structure.WorksCache;
+import io.github.sakurawald.module.initializer.works.structure.WorksBinding;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import lombok.NoArgsConstructor;
 import net.minecraft.block.entity.BlockEntity;
@@ -36,7 +35,7 @@ import java.util.stream.Stream;
 
 @NoArgsConstructor
 
-public class ProductionWork extends Work implements Schedulable {
+public class ProductionWork extends Work {
 
     public @NotNull Sample sample = new Sample();
 
@@ -99,7 +98,7 @@ public class ProductionWork extends Work implements Schedulable {
     }
 
     @Override
-    protected @NotNull String getDefaultIcon() {
+    protected @NotNull String getDefaultIconItemIdentifier() {
         return "minecraft:redstone";
     }
 
@@ -156,14 +155,14 @@ public class ProductionWork extends Work implements Schedulable {
         gui.open();
     }
 
-    public boolean isSampling() {
+    private boolean isSampling() {
         return System.currentTimeMillis() < this.sample.sampleEndTimeMS;
     }
 
     @SuppressWarnings("EmptyMethod")
     @Override
-    public Item asItem() {
-        return super.asItem();
+    public Item getIconItem() {
+        return super.getIconItem();
     }
 
     private boolean insideSampleDistance(@NotNull BlockPos position, @NotNull BlockPos blockPos) {
@@ -181,9 +180,9 @@ public class ProductionWork extends Work implements Schedulable {
         return sb.toString();
     }
 
-    public int resolveHoppers(@NotNull ServerPlayerEntity player) {
+    private int resolveHoppers(@NotNull ServerPlayerEntity player) {
         // clear cache entry
-        WorksCache.unbind(this);
+        WorksBinding.unbind(this);
 
         // add cache entry
         int hopperBlockCount = 0;
@@ -199,7 +198,7 @@ public class ProductionWork extends Work implements Schedulable {
                 // improve: check type first for performance
                 if (blockEntity instanceof HopperBlockEntity) {
                     if (insideSampleDistance(player.getBlockPos(), blockEntity.getPos())) {
-                        WorksCache.bind(blockEntity.getPos(), this);
+                        WorksBinding.bind(blockEntity.getPos(), this);
                         hopperBlockCount++;
                     }
                 }
@@ -208,7 +207,7 @@ public class ProductionWork extends Work implements Schedulable {
         for (Entity entity : world.iterateEntities()) {
             if (entity instanceof HopperMinecartEntity) {
                 if (insideSampleDistance(player.getBlockPos(), entity.getBlockPos())) {
-                    WorksCache.bind(entity.getId(), this);
+                    WorksBinding.bind(entity.getId(), this);
                     minecartHopperCount++;
                 }
             }
@@ -225,7 +224,7 @@ public class ProductionWork extends Work implements Schedulable {
         }
     }
 
-    public void startSample(@NotNull ServerPlayerEntity player) {
+    private void startSample(@NotNull ServerPlayerEntity player) {
         this.sample.sampleStartTimeMS = System.currentTimeMillis();
         this.sample.sampleEndTimeMS = this.sample.sampleStartTimeMS + WorksInitializer.config.model().sample_time_ms;
         this.sample.sampleDimension = player.getServerWorld().getRegistryKey().getValue().toString();
@@ -241,16 +240,16 @@ public class ProductionWork extends Work implements Schedulable {
         LocaleHelper.sendBroadcastByKey("works.production_work.sample.start", name, this.creator);
     }
 
-    public void endSample() {
+    private void endSample() {
         // unbind all block pos
-        WorksCache.unbind(this);
+        WorksBinding.unbind(this);
         LocaleHelper.sendBroadcastByKey("works.production_work.sample.end", this.name, this.creator);
 
         // trim counter to avoid spam
         trimCounter();
     }
 
-    public void trimCounter() {
+    private void trimCounter() {
         List<Map.Entry<String, Long>> sortedEntries = this.sample.sampleCounter.entrySet()
             .stream()
             .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue()))

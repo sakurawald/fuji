@@ -58,6 +58,7 @@ It's good to have a checklist, to avoid forgetting something.
     - as a fake-player
     - died
     - offline
+    - in spectator gamemode
     - in the end portal
 - Test `/stop` and see if the server closed (in production server).
 

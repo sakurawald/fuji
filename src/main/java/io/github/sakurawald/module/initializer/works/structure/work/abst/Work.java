@@ -69,13 +69,11 @@ public abstract class Work {
     }
 
     private static @Nullable Work getWorkByID(String uuid) {
-        List<Work> works = WorksInitializer.worksHandler.model().works;
-        for (Work work : works) {
-            if (work.getId().equals(uuid)) {
-                return work;
-            }
-        }
-        return null;
+        return WorksInitializer.works.model().works
+            .stream()
+            .filter(it -> it.getId().equals(uuid))
+            .findFirst()
+            .orElse(null);
     }
 
     protected abstract String getType();
@@ -93,10 +91,13 @@ public abstract class Work {
         return id.hashCode();
     }
 
-    protected abstract String getDefaultIcon();
+    protected abstract String getDefaultIconItemIdentifier();
+
+    public void onSchedule() {
+        // no-op
+    }
 
     public abstract void openSpecializedSettingsGui(ServerPlayerEntity player, SimpleGui parentGui);
-
 
     public void openGeneralSettingsGui(@NotNull ServerPlayerEntity player, @NotNull SimpleGui parentGui) {
         Work work = this;
@@ -164,7 +165,7 @@ public abstract class Work {
             .setCallback(() -> new ConfirmGui(player) {
                 @Override
                 public void onConfirm() {
-                    WorksInitializer.worksHandler.model().works.remove(work);
+                    WorksInitializer.works.model().works.remove(work);
                     LocaleHelper.sendActionBarByKey(player, "works.work.delete.done");
                 }
             }.open())
@@ -179,11 +180,11 @@ public abstract class Work {
         gui.open();
     }
 
-    public Item asItem() {
+    public Item getIconItem() {
+        /* make item stack from identifier */
         NbtCompound rootTag = new NbtCompound();
-        rootTag.putString("id", this.getIcon());
+        rootTag.putString("id", this.getIconItemIdentifier());
         rootTag.putInt("Count", 1);
-
         Optional<ItemStack> itemStack = ItemStack.fromNbt(ServerHelper.getDefaultServer().getRegistryManager(), rootTag);
         if (itemStack.isEmpty()) {
             return Items.BARRIER;
@@ -192,15 +193,16 @@ public abstract class Work {
         return itemStack.get().getItem();
     }
 
-    public @NotNull String getIcon() {
-        return this.icon == null ? getDefaultIcon() : this.icon;
+    public @NotNull String getIconItemIdentifier() {
+        return this.icon == null ? getDefaultIconItemIdentifier() : this.icon;
     }
 
     public List<Text> asLore(ServerPlayerEntity player) {
         List<Text> ret = new ArrayList<>();
         ret.add(LocaleHelper.getTextByKey(player, "works.work.prop.creator", this.creator));
-        if (this.introduction != null)
+        if (this.introduction != null) {
             ret.add(LocaleHelper.getTextByKey(player, "works.work.prop.introduction", this.introduction));
+        }
         ret.add(LocaleHelper.getTextByKey(player, "works.work.prop.time", DateUtil.toStandardDateFormat(this.createTimeMS)));
         ret.add(LocaleHelper.getTextByKey(player, "works.work.prop.dimension", this.level));
         ret.add(LocaleHelper.getTextByKey(player, "works.work.prop.coordinate", this.x, this.y, this.z));
@@ -218,7 +220,6 @@ public abstract class Work {
     public enum WorkType {NonProductionWork, ProductionWork}
 
     public static class WorkTypeAdapter implements JsonDeserializer<Work> {
-
         @Override
         public @Nullable Work deserialize(@NotNull JsonElement json, Type typeOfT, @NotNull JsonDeserializationContext context) throws JsonParseException {
             String type = json.getAsJsonObject().get("type").getAsString();
@@ -230,7 +231,6 @@ public abstract class Work {
 
             return null;
         }
-
     }
 }
 

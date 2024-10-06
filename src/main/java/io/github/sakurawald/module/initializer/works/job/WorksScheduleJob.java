@@ -1,8 +1,7 @@
 package io.github.sakurawald.module.initializer.works.job;
 
 import io.github.sakurawald.core.job.abst.CronJob;
-import io.github.sakurawald.module.initializer.works.abst.Schedulable;
-import io.github.sakurawald.module.initializer.works.structure.WorksCache;
+import io.github.sakurawald.module.initializer.works.structure.WorksBinding;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -22,12 +21,9 @@ public class WorksScheduleJob extends CronJob {
 
     @Override
     public void execute(@NotNull JobExecutionContext context) {
-        // run schedule method
-        Set<Work> works = new HashSet<>();
-        WorksCache.getBlockpos2works().values().forEach(works::addAll);
-        WorksCache.getEntity2works().values().forEach(works::addAll);
-        works.forEach(work -> {
-            if (work instanceof Schedulable sm) sm.onSchedule();
-        });
+        Set<Work> activeWorks = new HashSet<>();
+        WorksBinding.getBlockpos2works().values().forEach(activeWorks::addAll);
+        WorksBinding.getEntity2works().values().forEach(activeWorks::addAll);
+        activeWorks.forEach(Work::onSchedule);
     }
 }

@@ -19,7 +19,7 @@ public class NonProductionWork extends Work {
     }
 
     @Override
-    protected @NotNull String getDefaultIcon() {
+    protected @NotNull String getDefaultIconItemIdentifier() {
         return "minecraft:gunpowder";
     }
 

@@ -21,7 +21,7 @@ import org.quartz.JobDataMap;
 
 public class WorksInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<WorksDataModel> worksHandler = new ObjectConfigurationHandler<>("works.json", WorksDataModel.class)
+    public static final BaseConfigurationHandler<WorksDataModel> works = new ObjectConfigurationHandler<>("works.json", WorksDataModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("works.json"), WorksInitializer.class));
 
     public static final BaseConfigurationHandler<WorksConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, WorksConfigModel.class);
@@ -33,7 +33,7 @@ public class WorksInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        worksHandler.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
+        works.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new WorksScheduleJob(new JobDataMap() {
             {
@@ -44,7 +44,7 @@ public class WorksInitializer extends ModuleInitializer {
 
     @CommandNode("works")
     private static int $works(@CommandSource ServerPlayerEntity player) {
-        new WorksGui(player, worksHandler.model().works, 0).open();
+        new WorksGui(player, works.model().works, 0).open();
         return CommandHelper.Return.SUCCESS;
     }
 

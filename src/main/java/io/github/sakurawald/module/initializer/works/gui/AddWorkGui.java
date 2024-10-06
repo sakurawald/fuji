@@ -35,7 +35,7 @@ public class AddWorkGui extends InputSignGui {
         selectWorkTypeGui.setTitle(LocaleHelper.getTextByKey(player, "works.work.add.select_work_type.title"));
         GuiHelper.fill(selectWorkTypeGui, GuiHelper.Item.PLACEHOLDER);
 
-        BaseConfigurationHandler<WorksDataModel> worksHandler = WorksInitializer.worksHandler;
+        BaseConfigurationHandler<WorksDataModel> worksHandler = WorksInitializer.works;
         selectWorkTypeGui.setSlot(11, new GuiElementBuilder().setItem(Items.GUNPOWDER).setName(LocaleHelper.getTextByKey(player, "works.non_production_work.name")).setCallback(() -> {
             // add
             worksHandler.model().works.addFirst(new NonProductionWork(player, name));
