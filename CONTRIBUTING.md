@@ -7,7 +7,7 @@ Help us translate this project, you can do it in the following ways:
 2. **The second way**: Clone the `dev` branch, and do the translation work offline, then create a pull-request using `your github account` in github. (The translation files are located in [here](https://github.com/sakurawald/fuji/tree/dev/crowdin))
 
 ### How the language file works 
-The `language file` speaks a language contains the following language:
+The `language file` speaks a language combines the following languages:
 1. Simplified Text Language: https://placeholders.pb4.eu/user/text-format/
 2. Markdown Language: https://github.com/adam-p/markdown-here/wiki/markdown-cheatsheet
 3. Placeholder: the placeholder looks like `%player:name%`, and will be replaced by the contextual player. 
