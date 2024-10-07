@@ -257,7 +257,7 @@
   "command.requirement.string_permission": "<blue>需要的字串權限： %s",
   "placeholder.list.gui.title": "<pink>佔位符",
   "command.execute.echo.executing_source": "<#FF5F00>執行 /%s 時發生例外狀況\n訊息： %s",
-  "command.execute.echo.initiating_source": "<#FF5F00>An exception occurs during executing the command `/%1$s` as `%2$s`\nMessage: %3$s",
+  "command.execute.echo.initiating_source": "<#FF5F00>以 %2$s 的身分執行指令 /%1$s 時發生例外狀況\n訊息： %3$s",
   "echo.send_bossbar.notify": "<green>傳送給 %s 的指令清單 %s 中的 Boss 狀態條已完成。",
   "created": "<green>已創建。",
   "not_found": "<red>未找到。",
