@@ -23,7 +23,7 @@ public class GreedyStringListArgumentTypeAdapter extends BaseArgumentTypeAdapter
 
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        String string = StringArgumentType.getString(context,argument.getArgumentName());
+        String string = StringArgumentType.getString(context, argument.getArgumentName());
         List<String> stringList = Arrays.stream(STRING_SPLITTER_DSL.split(string)).toList();
         return new GreedyStringList(stringList);
     }

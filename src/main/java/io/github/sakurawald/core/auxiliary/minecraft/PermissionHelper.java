@@ -63,8 +63,8 @@ public class PermissionHelper {
 
         User user = loadUser(api, uuid);
         return user
-                .getCachedData()
-                .getPermissionData().checkPermission(permission);
+            .getCachedData()
+            .getPermissionData().checkPermission(permission);
     }
 
     public static boolean hasPermission(UUID uuid, @Nullable String permission) {
@@ -81,8 +81,8 @@ public class PermissionHelper {
 
         User user = loadUser(api, uuid);
         return user.getCachedData()
-                .getMetaData()
-                .getMetaValue(meta, valueTransformer);
+            .getMetaData()
+            .getMetaValue(meta, valueTransformer);
     }
 
     public static @Nullable String getPrefix(UUID uuid) {
@@ -94,9 +94,9 @@ public class PermissionHelper {
         User user = loadUser(api, uuid);
 
         return user
-                .getCachedData()
-                .getMetaData()
-                .getPrefix();
+            .getCachedData()
+            .getMetaData()
+            .getPrefix();
 
     }
 
@@ -109,9 +109,9 @@ public class PermissionHelper {
         User user = loadUser(api, uuid);
 
         return user
-                .getCachedData()
-                .getMetaData()
-                .getSuffix();
+            .getCachedData()
+            .getMetaData()
+            .getSuffix();
 
     }
 

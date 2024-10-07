@@ -33,36 +33,25 @@ import java.util.UUID;
 
 public class WorldDownloaderInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<WorldDownloaderConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, WorldDownloaderConfigModel.class);
+    private static final BaseConfigurationHandler<WorldDownloaderConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, WorldDownloaderConfigModel.class);
 
     private static EvictingQueue<String> contextQueue;
     private static HttpServer server;
 
-
-    @Override
-    public void onInitialize() {
-        contextQueue = EvictingQueue.create(config.getModel().context_cache_size);
-    }
-
-    @Override
-    public void onReload() {
-        initServer();
-    }
-
-    public static void initServer() {
+    private static void initServer() {
         if (server != null) {
             server.stop(0);
         }
 
         try {
-            server = HttpServer.create(new InetSocketAddress(config.getModel().port), 0);
+            server = HttpServer.create(new InetSocketAddress(config.model().port), 0);
             server.start();
         } catch (IOException e) {
             LogUtil.error("failed to start http server: {}", e.getMessage());
         }
     }
 
-    public static void safelyRemoveContext(String path) {
+    private static void safelyRemoveContext(String path) {
         try {
             server.removeContext(path);
         } catch (IllegalArgumentException e) {
@@ -88,19 +77,18 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         }
 
         /* create context */
-        String url = config.getModel().url_format;
+        String url = config.model().url_format;
 
-        int port = config.getModel().port;
+        int port = config.model().port;
         url = url.replace("%port%", String.valueOf(port));
-
-        String path = "/download/" + UUID.randomUUID();
+        String path = "/world-download/" + UUID.randomUUID();
         url = url.replace("%path%", path);
 
         contextQueue.add(path);
         File file = compressRegionFile(player);
         double BYTE_TO_MEGABYTE = 1.0 * 1024 * 1024;
         LocaleHelper.sendBroadcastByKey("world_downloader.request", player.getGameProfile().getName(), file.length() / BYTE_TO_MEGABYTE);
-        server.createContext(path, new FileDownloadHandler(file, config.getModel().bytes_per_second_limit));
+        server.createContext(path, new FileDownloadHandler(file, config.model().bytes_per_second_limit));
         LocaleHelper.sendMessageByKey(player, "world_downloader.response", url);
         return CommandHelper.Return.SUCCESS;
     }
@@ -136,6 +124,16 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         }
         LogUtil.info("generate region file: {}", output.getAbsolutePath());
         return output;
+    }
+
+    @Override
+    public void onInitialize() {
+        contextQueue = EvictingQueue.create(config.model().context_cache_size);
+    }
+
+    @Override
+    public void onReload() {
+        initServer();
     }
 
 }

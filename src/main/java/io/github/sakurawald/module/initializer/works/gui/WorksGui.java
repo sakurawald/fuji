@@ -11,7 +11,6 @@ import io.github.sakurawald.core.gui.PagedGui;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import io.github.sakurawald.module.initializer.works.structure.work.impl.ProductionWork;
-import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -34,23 +33,20 @@ public class WorksGui extends PagedGui<Work> {
             .setName(LocaleHelper.getTextByKey(player, "works.list.add"))
             .setCallback(() -> new AddWorkGui(player).open())
         );
-        controlLayer.addSlot(new GuiElementBuilder()
-            .setItem(Items.PLAYER_HEAD)
-            .setName(LocaleHelper.getTextByKey(player, "help"))
-            .setSkullOwner(GuiHelper.Icon.QUESTION_MARK_ICON)
+        controlLayer.addSlot(GuiHelper.makeHelpButton(player)
             .setLore(LocaleHelper.getTextListByKey(player, "works.list.help.lore")));
 
-        if (entities == WorksInitializer.worksHandler.getModel().works) {
-            controlLayer.addSlot(GuiHelper.makeHelpButton(player)
-                .setName(LocaleHelper.getTextByKey(player, "works.list.my_works"))
-                .setCallback(() -> search(player.getGameProfile().getName()).open())
+        if (entities == WorksInitializer.works.model().works) {
+            controlLayer.addSlot(
+                GuiHelper.makeSkullButton(GuiHelper.Icon.QUESTION_MARK_ICON)
+                    .setName(LocaleHelper.getTextByKey(player, "works.list.my_works"))
+                    .setCallback(() -> search(player.getGameProfile().getName()).open())
             );
         } else {
-            controlLayer.addSlot(new GuiElementBuilder()
-                .setItem(Items.PLAYER_HEAD)
-                .setName(LocaleHelper.getTextByKey(player, "works.list.all_works"))
-                .setSkullOwner(GuiHelper.Icon.A_ICON)
-                .setCallback(() -> new WorksGui(player, WorksInitializer.worksHandler.getModel().works, 0).open())
+            controlLayer.addSlot(
+                GuiHelper.makeSkullButton(GuiHelper.Icon.A_ICON)
+                    .setName(LocaleHelper.getTextByKey(player, "works.list.all_works"))
+                    .setCallback(() -> new WorksGui(player, WorksInitializer.works.model().works, 0).open())
             );
         }
 
@@ -73,8 +69,8 @@ public class WorksGui extends PagedGui<Work> {
     public GuiElementInterface toGuiElement(@NotNull Work entity) {
         ServerPlayerEntity player = getPlayer();
         return new GuiElementBuilder()
-            .setItem(entity.asItem())
-            .setName(LocaleHelper.getTextByValue(null,entity.name))
+            .setItem(entity.getIconItem())
+            .setName(LocaleHelper.getTextByValue(null, entity.name))
             .setLore(entity.asLore(player))
             .setCallback((index, clickType, actionType) -> {
                 /* left click -> visit */
@@ -120,7 +116,7 @@ public class WorksGui extends PagedGui<Work> {
                 || w.name.contains(keyword)
                 || (w.introduction != null && w.introduction.contains(keyword))
                 || w.level.contains(keyword)
-                || w.getIcon().contains(keyword)
+                || w.getIconItemIdentifier().contains(keyword)
                 || (w instanceof ProductionWork pw && pw.sample.sampleCounter != null && pw.sample.sampleCounter.keySet().stream().anyMatch(k -> k.contains(keyword)))
         ).toList();
     }

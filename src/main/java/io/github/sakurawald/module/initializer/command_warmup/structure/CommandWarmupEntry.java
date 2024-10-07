@@ -8,13 +8,12 @@ public class CommandWarmupEntry {
 
 
     final Command command;
+    final Interruptible interruptible;
 
     @Data
     public static class Command {
         final String regex;
         final int ms;
     }
-
-    final Interruptible interruptible;
 
 }

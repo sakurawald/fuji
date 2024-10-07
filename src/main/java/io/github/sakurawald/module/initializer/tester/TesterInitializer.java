@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.tester;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -10,14 +11,18 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @CommandNode("tester")
 @CommandRequirement(level = 4)
 public class TesterInitializer extends ModuleInitializer {
 
+    private static final Map<String, String> map = new HashMap<>();
+
     @SneakyThrows(Exception.class)
     @CommandNode("run")
     private static int $run(@CommandSource ServerPlayerEntity player) {
-
 
 
         return 1;

@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.mixin;
 
-import io.github.sakurawald.core.config.Configs;
 import io.github.sakurawald.core.manager.Managers;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -13,11 +12,6 @@ import java.util.Set;
 
 
 public class GlobalMixinConfigPlugin implements IMixinConfigPlugin {
-
-    static {
-        // this is the first time to load configHandler
-        Configs.configHandler.readStorage();
-    }
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, @NotNull String mixinClassName) {

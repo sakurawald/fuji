@@ -24,7 +24,7 @@ public class FloatArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     public List<Class<?>> getTypeClasses() {
-        return List.of(float.class,Float.class);
+        return List.of(float.class, Float.class);
     }
 
     @Override

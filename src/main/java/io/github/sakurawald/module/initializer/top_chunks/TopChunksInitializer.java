@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.top_chunks;
 
-import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -35,11 +34,13 @@ public class TopChunksInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<TopChunksConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, TopChunksConfigModel.class);
 
     @CommandNode("chunks")
-    private static int $chunks(@CommandSource CommandContext<ServerCommandSource> ctx) {
+    private static int $chunks(@CommandSource ServerCommandSource source) {
         CompletableFuture.runAsync(() -> {
+
             PriorityQueue<ChunkScore> PQ = new PriorityQueue<>();
+
             /* iter worlds */
-            MinecraftServer server = ctx.getSource().getServer();
+            MinecraftServer server = source.getServer();
             for (ServerWorld world : server.getWorlds()) {
                 HashMap<ChunkPos, ChunkScore> chunkPos2ChunkScore = new HashMap<>();
 
@@ -47,7 +48,7 @@ public class TopChunksInitializer extends ModuleInitializer {
                 for (Entity entity : world.iterateEntities()) {
                     ChunkPos pos = entity.getChunkPos();
                     chunkPos2ChunkScore.putIfAbsent(pos, new ChunkScore(world, pos));
-                    chunkPos2ChunkScore.get(pos).addEntity(entity);
+                    chunkPos2ChunkScore.get(pos).plusEntity(entity);
                 }
 
                 /* block-entity in this world */
@@ -60,37 +61,36 @@ public class TopChunksInitializer extends ModuleInitializer {
                     for (BlockEntity blockEntity : worldChunk.getBlockEntities().values()) {
                         ChunkPos pos = worldChunk.getPos();
                         chunkPos2ChunkScore.putIfAbsent(pos, new ChunkScore(world, pos));
-                        chunkPos2ChunkScore.get(pos).addBlockEntity(blockEntity);
+                        chunkPos2ChunkScore.get(pos).plusBlockEntity(blockEntity);
                     }
                 }
 
                 /* add all ChunkScore in this world */
                 chunkPos2ChunkScore.values().forEach(chunkScore -> {
-                    chunkScore.sumUpScore();
+                    chunkScore.sum();
                     PQ.add(chunkScore);
                 });
             }
 
             /* send output */
-            var config = TopChunksInitializer.config.getModel();
-            computeNearestPlayer(ctx.getSource(), PQ, config.top.rows * config.top.columns);
+            var config = TopChunksInitializer.config.model();
+            computeNearestPlayer(source, PQ, config.top.rows * config.top.columns);
 
             MutableText textComponentBuilder = Text.empty();
             outer:
             for (int j = 0; j < config.top.rows; j++) {
                 for (int i = 0; i < config.top.columns; i++) {
                     if (PQ.isEmpty()) break outer;
-                    textComponentBuilder.append(PQ.poll().asText(ctx.getSource())).append(LocaleHelper.TEXT_SPACE);
+                    textComponentBuilder.append(PQ.poll().asText(source)).append(LocaleHelper.TEXT_SPACE);
                 }
                 textComponentBuilder.append(LocaleHelper.TEXT_NEWLINE);
             }
+            source.sendMessage(textComponentBuilder);
 
-            ctx.getSource().sendMessage(textComponentBuilder);
-
-            if (ctx.getSource().getPlayer() != null && ChunkScore.hasPermissionToClickToTeleport(ctx.getSource().getPlayer())) {
-                LocaleHelper.sendMessageByKey(ctx.getSource(), "prompt.click.teleport");
+            /* send click prompt */
+            if (source.getPlayer() != null && ChunkScore.hasPermissionToClickToTeleport(source.getPlayer())) {
+                LocaleHelper.sendMessageByKey(source, "prompt.click.teleport");
             }
-
         });
 
         return CommandHelper.Return.SUCCESS;
@@ -104,7 +104,7 @@ public class TopChunksInitializer extends ModuleInitializer {
             World world = chunkScore.getDimension();
             ChunkPos chunkPos = chunkScore.getChunkPos();
             BlockPos blockPos = chunkPos.getStartPos();
-            PlayerEntity nearestPlayer = world.getClosestPlayer(blockPos.getX(), blockPos.getY(), blockPos.getZ(), config.getModel().nearest_distance, false);
+            PlayerEntity nearestPlayer = world.getClosestPlayer(blockPos.getX(), blockPos.getY(), blockPos.getZ(), config.model().nearest_distance, false);
             if (nearestPlayer != null) {
                 chunkScore.getPlayers().add(LocaleHelper.getValue(source, "top_chunks.prop.players.nearest", nearestPlayer.getGameProfile().getName()));
             }

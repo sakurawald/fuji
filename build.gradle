@@ -208,7 +208,7 @@ tasks.register('compileLatex') {
 tasks.compileLatex.dependsOn(processLatex)
 
 /* generate graph */
-tasks.runServer.dependsOn(test)
+tasks.runServer.dependsOn(check)
 
 /* copy translation files into resource directory */
 tasks.register('copyTranslationFiles', Copy) {

@@ -20,7 +20,7 @@ public class TeamArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @SneakyThrows
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return TeamArgumentType.getTeam(context,argument.getArgumentName());
+        return TeamArgumentType.getTeam(context, argument.getArgumentName());
     }
 
     @Override

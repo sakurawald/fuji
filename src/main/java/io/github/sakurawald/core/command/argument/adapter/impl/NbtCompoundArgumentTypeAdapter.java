@@ -18,7 +18,7 @@ public class NbtCompoundArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return NbtCompoundArgumentType.getNbtCompound(context,argument.getArgumentName());
+        return NbtCompoundArgumentType.getNbtCompound(context, argument.getArgumentName());
     }
 
     @Override

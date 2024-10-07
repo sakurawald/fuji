@@ -37,18 +37,13 @@ public class CleanerInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<CleanerConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, CleanerConfigModel.class);
 
-    @Override
-    public void onInitialize() {
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> new CleanerJob().schedule());
-    }
-
     @SuppressWarnings("RedundantIfStatement")
     private static boolean ignoreEntity(Entity entity) {
         if (entity.getType().equals(EntityType.PLAYER)) return true;
         if (entity instanceof BlockAttachedEntity) return true;
         if (entity instanceof VehicleEntity) return true;
 
-        var config = CleanerInitializer.config.getModel().ignore;
+        var config = CleanerInitializer.config.model().ignore;
 
         if (config.ignore_item_entity && entity instanceof ItemEntity) return true;
         if (config.ignore_living_entity && entity.isLiving()) return true;
@@ -66,7 +61,7 @@ public class CleanerInitializer extends ModuleInitializer {
     }
 
     private static boolean shouldRemove(String key, int age) {
-        Map<String, Integer> regex2age = config.getModel().key2age;
+        Map<String, Integer> regex2age = config.model().key2age;
         return regex2age.containsKey(key) && age >= regex2age.get(key);
     }
 
@@ -119,6 +114,11 @@ public class CleanerInitializer extends ModuleInitializer {
                         .withHoverEvent(new net.minecraft.text.HoverEvent(net.minecraft.text.HoverEvent.Action.SHOW_TEXT, hoverText)));
             player.sendMessage(text);
         }
+    }
+
+    @Override
+    public void onInitialize() {
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> new CleanerJob().schedule());
     }
 
 }

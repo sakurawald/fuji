@@ -26,7 +26,7 @@ public class JsonUtil {
         return false;
     }
 
-    public static boolean existsNode(@NotNull JsonObject root, @NotNull String path){
+    public static boolean existsNode(@NotNull JsonObject root, @NotNull String path) {
         String[] nodes = path.split("\\.");
         for (int i = 0; i < nodes.length - 1; i++) {
             String node = nodes[i];
@@ -42,6 +42,6 @@ public class JsonUtil {
     // The JsonObject.isEmpty() is not exist in old version gson, so the sinytra-connector will fail to load the mod.
     @SuppressWarnings("SizeReplaceableByIsEmpty")
     public static boolean isEmpty(JsonObject obt) {
-        return obt.size()==0;
+        return obt.size() == 0;
     }
 }

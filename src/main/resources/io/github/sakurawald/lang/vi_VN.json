@@ -257,7 +257,7 @@
   "command.requirement.string_permission": "<blue>Cấp độ quyền yêu cầu (chuỗi): %s",
   "placeholder.list.gui.title": "<pink>Placeholder",
   "command.execute.echo.executing_source": "<#FF5F00>Đã xảy ra lỗi trong quá trình thực thi lệnh `/%s`\nNội dung: %s",
-  "command.execute.echo.initiating_source": "<#FF5F00>Đã xảy ra lỗi trong quá trình thực thi lệnh `/%s` dưới dạng `%s`\nNội dung: %s",
+  "command.execute.echo.initiating_source": "<#FF5F00>An exception occurs during executing the command `/%1$s` as `%2$s`\nMessage: %3$s",
   "echo.send_bossbar.notify": "<green>The bossbar sent to `%s` with command list `%s` is completed.",
   "created": "<green>Đã tạo.",
   "not_found": "<red>Không tìm thấy.",

@@ -14,8 +14,8 @@ public class FakePlayerPingMixin {
 
     @Inject(method = "getLatency", at = @At("HEAD"), cancellable = true)
     void fakePing(@NotNull CallbackInfoReturnable<Integer> cir) {
-        int min = TabListFakerInitializer.config.getModel().ping.min_ping;
-        int max = TabListFakerInitializer.config.getModel().ping.max_ping;
+        int min = TabListFakerInitializer.config.model().ping.min_ping;
+        int max = TabListFakerInitializer.config.model().ping.max_ping;
         int ping = RandomUtil.getRandom().nextInt(min, max);
         cir.setReturnValue(ping);
     }

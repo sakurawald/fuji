@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.echo.send_title;
 
-import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -20,12 +19,12 @@ public class SendTitleInitializer extends ModuleInitializer {
 
     @CommandNode("send-title")
     @CommandRequirement(level = 4)
-    private static int sendTitle(@CommandSource CommandContext<ServerCommandSource> ctx, ServerPlayerEntity player
-            , Optional<String> mainTitle
-            , Optional<String> subTitle
-            , Optional<Integer> fadeInTicks
-            , Optional<Integer> stayTicks
-            , Optional<Integer> fadeOutTicks
+    private static int sendTitle(@CommandSource ServerCommandSource source, ServerPlayerEntity player
+        , Optional<String> mainTitle
+        , Optional<String> subTitle
+        , Optional<Integer> fadeInTicks
+        , Optional<Integer> stayTicks
+        , Optional<Integer> fadeOutTicks
     ) {
 
         String $mainTitle = mainTitle.orElse("main title");
@@ -41,7 +40,6 @@ public class SendTitleInitializer extends ModuleInitializer {
         player.networkHandler.sendPacket(new TitleS2CPacket(mainTitleComponent));
         player.networkHandler.sendPacket(new SubtitleS2CPacket(subTitleComponent));
 
-        LocaleHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 }

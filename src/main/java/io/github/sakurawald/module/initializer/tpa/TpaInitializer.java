@@ -53,11 +53,11 @@ public class TpaInitializer extends ModuleInitializer {
     private static int doResponse(ServerPlayerEntity player, ServerPlayerEntity target, ResponseStatus status) {
         /* resolve relative request */
         Optional<TpaRequest> requestOptional = requests.stream()
-                .filter(request ->
-                        status == ResponseStatus.CANCEL ?
-                                (request.getSender().equals(player) && request.getReceiver().equals(target))
-                                : (request.getSender().equals(target) && request.getReceiver().equals(player)))
-                .findFirst();
+            .filter(request ->
+                status == ResponseStatus.CANCEL ?
+                    (request.getSender().equals(player) && request.getReceiver().equals(target))
+                    : (request.getSender().equals(target) && request.getReceiver().equals(player)))
+            .findFirst();
         if (requestOptional.isEmpty()) {
             LocaleHelper.sendActionBarByKey(player, "tpa.no_relative_ticket");
             return CommandHelper.Return.FAIL;
@@ -69,7 +69,7 @@ public class TpaInitializer extends ModuleInitializer {
 
             ServerPlayerEntity who = request.getTeleportWho();
             ServerPlayerEntity to = request.getTeleportTo();
-            MentionPlayersJob.requestJob(config.getModel().mention_player, request.isTpahere() ? to : who);
+            MentionPlayersJob.requestJob(config.model().mention_player, request.isTpahere() ? to : who);
             who.teleport((ServerWorld) to.getWorld(), to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
         } else if (status == ResponseStatus.DENY) {
             request.getSender().sendMessage(request.asSenderText$Denied(), true);
@@ -105,7 +105,7 @@ public class TpaInitializer extends ModuleInitializer {
 
         /* feedback */
         request.getReceiver().sendMessage(request.asReceiverText$Sent());
-        MentionPlayersJob.requestJob(config.getModel().mention_player, request.getReceiver());
+        MentionPlayersJob.requestJob(config.model().mention_player, request.getReceiver());
         request.getSender().sendMessage(request.asSenderText$Sent());
         return CommandHelper.Return.SUCCESS;
     }

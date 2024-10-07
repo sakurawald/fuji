@@ -21,10 +21,16 @@ import org.quartz.JobDataMap;
 
 public class WorksInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<WorksDataModel> worksHandler = new ObjectConfigurationHandler<>("works.json", WorksDataModel.class)
+    public static final BaseConfigurationHandler<WorksDataModel> works = new ObjectConfigurationHandler<>("works.json", WorksDataModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("works.json"), WorksInitializer.class));
 
     public static final BaseConfigurationHandler<WorksConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, WorksConfigModel.class);
+
+    @CommandNode("works")
+    private static int $works(@CommandSource ServerPlayerEntity player) {
+        new WorksGui(player, works.model().works, 0).open();
+        return CommandHelper.Return.SUCCESS;
+    }
 
     @Override
     public void registerGsonTypeAdapter() {
@@ -33,19 +39,13 @@ public class WorksInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        worksHandler.scheduleSaveConfigurationHandlerJob(ScheduleManager.CRON_EVERY_MINUTE);
+        works.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new WorksScheduleJob(new JobDataMap() {
             {
                 this.put(MinecraftServer.class.getName(), server);
             }
         }, () -> ScheduleManager.CRON_EVERY_MINUTE).schedule());
-    }
-
-    @CommandNode("works")
-    private static int $works(@CommandSource ServerPlayerEntity player) {
-        new WorksGui(player, worksHandler.getModel().works, 0).open();
-        return CommandHelper.Return.SUCCESS;
     }
 
 }

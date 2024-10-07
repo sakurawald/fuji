@@ -69,6 +69,9 @@ public class BossBarManager extends BaseManager {
                 continue;
             }
 
+            // ensure visibility
+            ticket.getBossBar().setVisible(true);
+
             for (ServerPlayerEntity player : ticket.getPlayers()) {
                 if (player.isDisconnected()) {
                     ticket.onPlayerDisconnected(player);

@@ -20,13 +20,13 @@ public class BossBarStyleArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        String name = StringArgumentType.getString(context,argument.getArgumentName());
+        String name = StringArgumentType.getString(context, argument.getArgumentName());
         return BossBar.Style.valueOf(name);
     }
 
     @Override
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(String argumentName) {
-        return super.makeRequiredArgumentBuilder(argumentName).suggests(CommandHelper.Suggestion.enums(BossBar.Style.values()));
+        return super.makeRequiredArgumentBuilder(argumentName).suggests(CommandHelper.Suggestion.enums(BossBar.Style::values));
     }
 
     @Override

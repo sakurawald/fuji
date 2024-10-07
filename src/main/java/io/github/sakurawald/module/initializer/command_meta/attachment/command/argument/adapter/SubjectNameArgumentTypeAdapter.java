@@ -36,7 +36,7 @@ public class SubjectNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(String argumentName) {
-        return super.makeRequiredArgumentBuilder(argumentName).suggests((ctx, builder)-> {
+        return super.makeRequiredArgumentBuilder(argumentName).suggests((ctx, builder) -> {
             Managers.getAttachmentManager().listSubjectName().forEach(builder::suggest);
             return builder.buildFuture();
         });

@@ -3,7 +3,6 @@ package io.github.sakurawald.module.initializer.command_meta.json;
 import com.jayway.jsonpath.DocumentContext;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -58,8 +57,6 @@ public class JsonInitializer extends ModuleInitializer {
             documentContext.set(jsonPath, obj);
             return true;
         });
-
-        LocaleHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -69,8 +66,6 @@ public class JsonInitializer extends ModuleInitializer {
             documentContext.delete(jsonPath);
             return true;
         });
-
-        LocaleHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -81,8 +76,6 @@ public class JsonInitializer extends ModuleInitializer {
             documentContext.put(jsonPath, jsonKey, obj);
             return true;
         });
-
-        LocaleHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -92,8 +85,6 @@ public class JsonInitializer extends ModuleInitializer {
             documentContext.renameKey(jsonPath, oldJsonKey, newJsonKey);
             return true;
         });
-
-        LocaleHelper.sendMessageByKey(ctx.getSource(), "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 }

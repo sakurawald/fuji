@@ -17,9 +17,9 @@ public class JumpInitializer extends ModuleInitializer {
     @CommandRequirement(level = 4)
     private static int jump(@CommandSource ServerPlayerEntity player, Optional<Integer> distance) {
         int $distance = distance.orElse(128);
-        HitResult raycast = player.raycast($distance,0,false);
+        HitResult raycast = player.raycast($distance, 0, false);
         Vec3d hitPos = raycast.getPos();
-        player.teleport(player.getServerWorld(),hitPos.x, hitPos.y, hitPos.z,player.getYaw(), player.getPitch());
+        player.teleport(player.getServerWorld(), hitPos.x, hitPos.y, hitPos.z, player.getYaw(), player.getPitch());
         return CommandHelper.Return.SUCCESS;
     }
 }

@@ -15,16 +15,11 @@ import net.minecraft.text.Text;
 
 public abstract class RedirectScreenHandlerFactory {
 
-
     private final String targetPlayerName;
     private final Text title;
 
     private boolean onlineEditMode;
     private ServerPlayerEntity targetPlayer;
-
-    protected ServerPlayerEntity getTargetPlayer() {
-        return this.targetPlayer;
-    }
 
     public RedirectScreenHandlerFactory(String targetPlayerName, Text title) {
         this.targetPlayerName = targetPlayerName;
@@ -32,6 +27,10 @@ public abstract class RedirectScreenHandlerFactory {
 
         // load
         this.loadTargetPlayer();
+    }
+
+    protected ServerPlayerEntity getTargetPlayer() {
+        return this.targetPlayer;
     }
 
     private void loadTargetPlayer() {
@@ -87,7 +86,7 @@ public abstract class RedirectScreenHandlerFactory {
 
     public SimpleNamedScreenHandlerFactory makeFactory() {
         return new SimpleNamedScreenHandlerFactory(
-                this::makeGenericContainerScreenHandler, this.title);
+            this::makeGenericContainerScreenHandler, this.title);
     }
 
 }

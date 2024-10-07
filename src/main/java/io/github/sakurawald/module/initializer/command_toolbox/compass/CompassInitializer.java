@@ -38,23 +38,23 @@ public class CompassInitializer extends ModuleInitializer {
 
     @CommandNode("track pos")
     private static int track(@CommandSource ServerPlayerEntity player, Dimension dimension, BlockPos blockPos) {
-        return withCompassInHand(player,(itemStack) -> {
-           setTrackedTarget(itemStack, dimension.getValue(), blockPos);
-           return CommandHelper.Return.SUCCESS;
+        return withCompassInHand(player, (itemStack) -> {
+            setTrackedTarget(itemStack, dimension.getValue(), blockPos);
+            return CommandHelper.Return.SUCCESS;
         });
     }
 
     @CommandNode("track player")
     private static int track(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
-        return withCompassInHand(player,(itemStack) -> {
-            setTrackedTarget(itemStack,target.getServerWorld(),target.getBlockPos());
+        return withCompassInHand(player, (itemStack) -> {
+            setTrackedTarget(itemStack, target.getServerWorld(), target.getBlockPos());
             return CommandHelper.Return.SUCCESS;
         });
     }
 
     @CommandNode("reset")
     private static int reset(@CommandSource ServerPlayerEntity player) {
-        return withCompassInHand(player,(itemStack) -> {
+        return withCompassInHand(player, (itemStack) -> {
             itemStack.set(DataComponentTypes.LODESTONE_TRACKER, null);
             return CommandHelper.Return.SUCCESS;
         });

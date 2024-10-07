@@ -19,7 +19,7 @@ public class RotationArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return RotationArgumentType.getRotation(context,argument.getArgumentName());
+        return RotationArgumentType.getRotation(context, argument.getArgumentName());
     }
 
     @Override

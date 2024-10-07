@@ -11,21 +11,21 @@ public class VoidWorldGenerationProgressListener implements WorldGenerationProgr
 
     @Override
     public void start(ChunkPos spawnPos) {
-
+        // no-op
     }
 
     @Override
     public void setChunkStatus(ChunkPos pos, @Nullable ChunkStatus status) {
-
+        // no-op
     }
 
     @Override
     public void start() {
-
+        // no-op
     }
 
     @Override
     public void stop() {
-
+        // no-op
     }
 }

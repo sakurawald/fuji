@@ -23,7 +23,7 @@ It's good to have a checklist, to avoid forgetting something.
     - Test the luckperms integration with fake-player user.
 - Issue the command `/tppos --z 64 --x 32 --y 128`.
     - Test the context passing after command redirection.
-- Issue the command `/send-title Steve --mainTitle "<rainbow>Hello" --subTitle "<blue>World"
+- Issue the command `/send-title @s --mainTitle "<rainbow>Hello" --subTitle "<blue>World"
 --fadeInTicks 60 --stayTicks 60 --fadeOutTicks 60`
 - See if a pickaxe gets the max power level in `/enchantment`.
     - Test the lambda for power of providers.
@@ -35,6 +35,7 @@ It's good to have a checklist, to avoid forgetting something.
 - Get a kit from `/kit`.
     - Test the screen gui.
     - Test the `/kit give` command while inventory is full. (note that the player in creative mode can always pick up the same items even the inventory is full.)
+    - Issue `/clear`, `/give @s minecraft:apple 32`, `/kit give`...
 - Start a sample for a production work.
     - Test the sign input gui.
     - Test the chunks iterator.
@@ -58,6 +59,7 @@ It's good to have a checklist, to avoid forgetting something.
     - as a fake-player
     - died
     - offline
+    - in spectator gamemode
     - in the end portal
 - Test `/stop` and see if the server closed (in production server).
 

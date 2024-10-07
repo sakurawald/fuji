@@ -18,7 +18,7 @@ public class IdentifierArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return IdentifierArgumentType.getIdentifier(context,argument.getArgumentName());
+        return IdentifierArgumentType.getIdentifier(context, argument.getArgumentName());
     }
 
     @Override

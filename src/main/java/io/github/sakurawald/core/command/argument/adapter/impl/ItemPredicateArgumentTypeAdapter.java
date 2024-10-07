@@ -18,7 +18,7 @@ public class ItemPredicateArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return ItemPredicateArgumentType.getItemStackPredicate(context,argument.getArgumentName());
+        return ItemPredicateArgumentType.getItemStackPredicate(context, argument.getArgumentName());
     }
 
     @Override

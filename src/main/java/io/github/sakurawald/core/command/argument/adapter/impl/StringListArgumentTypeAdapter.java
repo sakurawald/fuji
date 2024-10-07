@@ -19,7 +19,7 @@ public class StringListArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        String string = StringArgumentType.getString(context,argument.getArgumentName());
+        String string = StringArgumentType.getString(context, argument.getArgumentName());
         List<String> stringList = Arrays.stream(string.split("\\|")).toList();
         return new StringList(stringList);
     }

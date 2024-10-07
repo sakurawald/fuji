@@ -18,7 +18,7 @@ public class ColumnPosArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return ColumnPosArgumentType.getColumnPos(context,argument.getArgumentName());
+        return ColumnPosArgumentType.getColumnPos(context, argument.getArgumentName());
     }
 
     @Override

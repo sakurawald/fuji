@@ -11,7 +11,6 @@ import java.util.List;
 
 public class StringArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
-
     @Override
     public ArgumentType<?> makeArgumentType() {
         return StringArgumentType.string();

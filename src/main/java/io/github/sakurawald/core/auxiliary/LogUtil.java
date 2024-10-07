@@ -24,7 +24,7 @@ public class LogUtil {
 
     public static void debug(String message, Object... args) {
         if (FabricLoader.getInstance().isDevelopmentEnvironment()
-            || Configs.configHandler.getModel().core.debug.log_debug_messages) {
+            || Configs.configHandler.model().core.debug.log_debug_messages) {
             String format = "\u001B[35m[DEV] " + message; // escape the color code
             LOGGER.info(format, args);
         } else {

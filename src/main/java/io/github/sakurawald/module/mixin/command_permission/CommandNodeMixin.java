@@ -22,14 +22,13 @@ import java.util.function.Predicate;
 @Mixin(value = CommandNode.class, remap = false)
 public class CommandNodeMixin {
 
+    @SuppressWarnings("unchecked")
+    @Unique
+    final CommandNode<ServerCommandSource> node = (CommandNode<ServerCommandSource>) (Object) this;
     @Mutable
     @Shadow
     @Final
     private Predicate<ServerCommandSource> requirement;
-
-    @SuppressWarnings("unchecked")
-    @Unique
-    final CommandNode<ServerCommandSource> node = (CommandNode<ServerCommandSource>) (Object) this;
 
     @SuppressWarnings("unchecked")
     @ModifyReturnValue(method = "getRequirement", at = @At("TAIL"))

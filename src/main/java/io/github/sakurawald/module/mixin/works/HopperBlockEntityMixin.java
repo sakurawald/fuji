@@ -2,7 +2,7 @@ package io.github.sakurawald.module.mixin.works;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.module.initializer.works.structure.WorksCache;
+import io.github.sakurawald.module.initializer.works.structure.WorksBinding;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import io.github.sakurawald.module.initializer.works.structure.work.impl.ProductionWork;
 import net.minecraft.block.BlockState;
@@ -58,9 +58,9 @@ public abstract class HopperBlockEntityMixin extends LootableContainerBlockEntit
         // If this hopper is a work's hopper, then we exclude it from carpet hoppers
         Set<Work> works;
         if (container2 instanceof HopperBlockEntity hb) {
-            works = WorksCache.getBlockpos2works().get(hb.getPos());
+            works = WorksBinding.getBlockpos2works().get(hb.getPos());
         } else if (container2 instanceof HopperMinecartEntity mh) {
-            works = WorksCache.getEntity2works().get(mh.getId());
+            works = WorksBinding.getEntity2works().get(mh.getId());
         } else {
             LogUtil.warn("addItem() found an unknown container: {}", container2);
             return;

@@ -12,6 +12,7 @@ public class ChatStyleConfigModel {
     public Rewrite rewrite = new Rewrite();
     public MentionPlayersJob.MentionPlayer mention_player = new MentionPlayersJob.MentionPlayer();
     public Spy spy = new Spy();
+
     public static class Rewrite {
         public List<RegexRewriteEntry> regex = new ArrayList<>() {
             {

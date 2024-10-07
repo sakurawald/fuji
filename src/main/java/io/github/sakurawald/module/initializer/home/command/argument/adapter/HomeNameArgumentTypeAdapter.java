@@ -15,7 +15,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import java.util.List;
 import java.util.Map;
 
-public class HomeArgumentTypeAdapter extends BaseArgumentTypeAdapter {
+public class HomeNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected ArgumentType<?> makeArgumentType() {
@@ -40,13 +40,13 @@ public class HomeArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(String argumentName) {
         return super.makeRequiredArgumentBuilder(argumentName).suggests((context, builder) -> {
-                    ServerPlayerEntity player = context.getSource().getPlayer();
-                    if (player == null) return builder.buildFuture();
+                ServerPlayerEntity player = context.getSource().getPlayer();
+                if (player == null) return builder.buildFuture();
 
-                    Map<String, SpatialPose> name2position = HomeInitializer.ofHomes(player);
-                    name2position.keySet().forEach(builder::suggest);
-                    return builder.buildFuture();
-                }
+                Map<String, SpatialPose> name2position = HomeInitializer.withHomes(player);
+                name2position.keySet().forEach(builder::suggest);
+                return builder.buildFuture();
+            }
         );
     }
 }

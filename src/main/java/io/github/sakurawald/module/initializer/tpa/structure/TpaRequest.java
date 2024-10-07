@@ -63,7 +63,7 @@ public class TpaRequest {
                     TpaInitializer.getRequests().remove(that);
                 }
             },
-            TpaInitializer.config.getModel().timeout * 1000L
+            TpaInitializer.config.model().timeout * 1000L
         );
     }
 

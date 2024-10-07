@@ -23,13 +23,13 @@ public class CommandWarmupTicket extends InterruptibleTicket {
         this.input = input;
     }
 
+    public static CommandWarmupTicket make(ServerPlayerEntity player, String input, CommandWarmupEntry entry) {
+        return new CommandWarmupTicket(player, input, entry);
+    }
+
     @Override
     protected void onComplete() {
         player.networkHandler.executeCommand(input);
-    }
-
-    public static CommandWarmupTicket make(ServerPlayerEntity player, String input, CommandWarmupEntry entry) {
-        return new CommandWarmupTicket(player, input, entry);
     }
 
 }

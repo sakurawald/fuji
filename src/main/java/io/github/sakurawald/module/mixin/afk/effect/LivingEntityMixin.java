@@ -13,7 +13,7 @@ public abstract class LivingEntityMixin {
 
     @Inject(method = "canTarget(Lnet/minecraft/entity/LivingEntity;)Z", at = @At("HEAD"), cancellable = true)
     void targetableEffect(LivingEntity livingEntity, CallbackInfoReturnable<Boolean> cir) {
-        if (!AfkEffectInitializer.config.getModel().targetable && AfkInitializer.isAfk(livingEntity)) {
+        if (!AfkEffectInitializer.config.model().targetable && AfkInitializer.isAfk(livingEntity)) {
             cir.setReturnValue(false);
         }
     }

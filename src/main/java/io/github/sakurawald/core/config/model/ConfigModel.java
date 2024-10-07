@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+/* sometimes i really hate the typing system of java... */
 public class ConfigModel {
 
     public Core core = new Core();
@@ -237,7 +238,7 @@ public class ConfigModel {
                 public boolean enable = true;
             }
 
-            public static class SendCustom{
+            public static class SendCustom {
                 public boolean enable = true;
             }
         }
@@ -303,7 +304,6 @@ public class ConfigModel {
 
             public static class AfkEffect {
                 public boolean enable = true;
-
             }
 
         }

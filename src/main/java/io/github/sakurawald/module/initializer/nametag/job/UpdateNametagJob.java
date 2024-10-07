@@ -7,11 +7,11 @@ import org.quartz.JobExecutionContext;
 public class UpdateNametagJob extends CronJob {
 
     public UpdateNametagJob() {
-        super(() -> NametagInitializer.config.getModel().update_cron);
+        super(() -> NametagInitializer.config.model().update_cron);
     }
 
     @Override
     public void execute(JobExecutionContext context) {
-        NametagInitializer.updateNametags();
+        NametagInitializer.processNametagsForOnlinePlayers();
     }
 }

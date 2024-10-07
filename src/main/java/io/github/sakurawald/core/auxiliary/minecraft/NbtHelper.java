@@ -1,35 +1,30 @@
 package io.github.sakurawald.core.auxiliary.minecraft;
 
-import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.structure.SpatialBlock;
+import io.github.sakurawald.core.command.exception.AbortCommandExecutionException;
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.NbtComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 @UtilityClass
 public class NbtHelper {
 
-    private static final String FUJI_UUID = Fuji.MOD_ID + "$uuid";
-
-    public static void set(@NotNull NbtCompound root, @NotNull String path, NbtElement value) {
-        // search the path
+    public static <T extends NbtElement> void setPath(@NotNull NbtCompound root, @NotNull String path, T value) {
+        /* walk the path */
         String[] nodes = path.split("\\.");
         for (int i = 0; i < nodes.length - 1; i++) {
             String node = nodes[i];
@@ -41,20 +36,21 @@ public class NbtHelper {
             root = root.getCompound(node);
         }
 
-        // set the value
+        /* set the value */
         String key = nodes[nodes.length - 1];
         root.put(key, value);
     }
 
-    public static NbtElement getOrDefault(@NotNull NbtCompound root, @NotNull String path, NbtElement defaultValue) {
-        if (get(root, path) == null) {
-            set(root, path, defaultValue);
+    @SuppressWarnings("unchecked")
+    public static <T extends NbtElement> T withNbtElement(@NotNull NbtCompound root, @NotNull String path, T orElse) {
+        if (readPath(root, path) == null) {
+            setPath(root, path, orElse);
         }
 
-        return get(root, path);
+        return (T) readPath(root, path);
     }
 
-    public static @org.jetbrains.annotations.Nullable NbtElement get(@NotNull NbtCompound root, @NotNull String path) {
+    public static @Nullable NbtElement readPath(@NotNull NbtCompound root, @NotNull String path) {
         // search the path
         String[] nodes = path.split("\\.");
         for (int i = 0; i < nodes.length - 1; i++) {
@@ -70,27 +66,6 @@ public class NbtHelper {
         // get the value
         String key = nodes[nodes.length - 1];
         return root.get(key);
-    }
-
-    public static @Nullable NbtCompound readOrDefault(@NotNull Path path) {
-        try {
-            if (!path.toFile().exists()) {
-                NbtIo.write(new NbtCompound(), path);
-            }
-            return Objects.requireNonNull(NbtIo.read(path));
-        } catch (IOException e) {
-            LogUtil.error("failed to create nbt file in {}", path);
-        }
-
-        return null;
-    }
-
-    public static void write(@NotNull NbtCompound root, @NotNull Path path) {
-        try {
-            NbtIo.write(root, path);
-        } catch (IOException e) {
-            LogUtil.error("failed to write nbt file in {}", path);
-        }
     }
 
     public static NbtList writeSlotsNode(@NotNull NbtList node, @NotNull List<ItemStack> itemStackList) {
@@ -111,57 +86,35 @@ public class NbtHelper {
     }
 
 
-    private static NbtCompound addUuidToNbtCompoundIfAbsent(@Nullable NbtCompound root) {
-        if (root == null) {
-            root = new NbtCompound();
-        }
-        if (root.contains(FUJI_UUID)) return root;
-
-        root.putString(FUJI_UUID, String.valueOf(UUID.randomUUID()));
-        return root;
+    public static void withNbtFile(@NotNull Path path, @NotNull Consumer<NbtCompound> function) {
+        //discard the return value
+        withNbtFileAndGettingReturnValue(path, (root) -> {
+            function.accept(root);
+            return null;
+        });
     }
 
-    public static @NotNull NbtComponent addUuidToNbtComponentIfAbsent(@Nullable NbtComponent nbtComponent) {
-        if (nbtComponent == null) {
-            return NbtComponent.of(addUuidToNbtCompoundIfAbsent(null));
-        }
-
-        NbtCompound ret = addUuidToNbtCompoundIfAbsent(nbtComponent.copyNbt());
-        return NbtComponent.of(ret);
-    }
-
-    public static @Nullable String computeUuid(@Nullable NbtComponent nbtComponent) {
-        if (nbtComponent == null) return null;
-
-        NbtCompound root = nbtComponent.copyNbt();
-
-        if (!root.contains(FUJI_UUID)) return null;
-
-        return root.getString(FUJI_UUID);
-    }
-
-    public static String formatString(World world, BlockPos blockPos) {
-        String dimension = RegistryHelper.ofString(world);
-        String pos = blockPos.getX() + "#" + blockPos.getY() + "#" + blockPos.getZ();
-        return dimension + "#" + pos;
-    }
-
-    public static String computeUuid(World world, BlockPos blockPos) {
-        return UUID.nameUUIDFromBytes(formatString(world, blockPos).getBytes()).toString();
-    }
-
-    public static @NotNull String getOrMakeUUIDNbt(ItemStack itemStack) {
-        NbtComponent nbtComponent = itemStack.get(DataComponentTypes.CUSTOM_DATA);
-        if (computeUuid(nbtComponent) == null) {
-            nbtComponent = addUuidToNbtComponentIfAbsent(nbtComponent);
-            itemStack.set(DataComponentTypes.CUSTOM_DATA, nbtComponent);
+    @SneakyThrows(IOException.class)
+    public static <T> T withNbtFileAndGettingReturnValue(@NotNull Path path, @NotNull Function<NbtCompound, T> function) {
+        /* make file if not exists */
+        if (Files.notExists(path)) {
+            NbtIo.write(new NbtCompound(), path);
         }
 
-        //noinspection DataFlowIssue
-        return computeUuid(nbtComponent);
-    }
+        /* read the file */
+        NbtCompound read = NbtIo.read(path);
+        if (read == null) {
+            LogUtil.error("failed to read the nbt file in {}", path);
+            throw new AbortCommandExecutionException();
+        }
 
-    public static String computeUuid(SpatialBlock spatialBlock) {
-        return computeUuid(spatialBlock.ofDimension(), spatialBlock.ofBlockPos());
+        /* call the consumer */
+        T value = function.apply(read);
+
+        /* always write the data back, whether it's a destructive operation or not */
+        NbtIo.write(read, path);
+
+        /* return the useful value to outer space */
+        return value;
     }
 }

@@ -21,7 +21,7 @@ public class ScoreboardObjectiveArgumentTypeAdapter extends BaseArgumentTypeAdap
     @SneakyThrows
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return ScoreboardObjectiveArgumentType.getObjective(context,argument.getArgumentName());
+        return ScoreboardObjectiveArgumentType.getObjective(context, argument.getArgumentName());
     }
 
     @Override

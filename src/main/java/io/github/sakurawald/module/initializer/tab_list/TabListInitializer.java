@@ -16,9 +16,21 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
+// test: join/leave fake players
 public class TabListInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<TabListConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, TabListConfigModel.class);
+
+    public static void render() {
+        String headerControl = RandomUtil.drawList(config.model().style.header);
+        String footerControl = RandomUtil.drawList(config.model().style.footer);
+        for (ServerPlayerEntity player : ServerHelper.getPlayers()) {
+            @NotNull Text header = LocaleHelper.getTextByValue(player, headerControl);
+            @NotNull Text footer = LocaleHelper.getTextByValue(player, footerControl);
+            player.networkHandler.sendPacket(new PlayerListHeaderS2CPacket(header, footer));
+        }
+
+    }
 
     @Override
     public void onInitialize() {
@@ -35,17 +47,6 @@ public class TabListInitializer extends ModuleInitializer {
         for (ServerPlayerEntity player : ServerHelper.getPlayers()) {
             server.getPlayerManager().sendToAll(new PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME, player));
         }
-    }
-
-    public static void render() {
-        String headerControl = RandomUtil.drawList(config.getModel().style.header);
-        String footerControl = RandomUtil.drawList(config.getModel().style.footer);
-        for (ServerPlayerEntity player : ServerHelper.getPlayers()) {
-            @NotNull Text header = LocaleHelper.getTextByValue(player, headerControl);
-            @NotNull Text footer = LocaleHelper.getTextByValue(player, footerControl);
-            player.networkHandler.sendPacket(new PlayerListHeaderS2CPacket(header, footer));
-        }
-
     }
 
 }

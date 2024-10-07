@@ -30,6 +30,26 @@ This module provides some simple commands.
 \LevelThree{/top}
 \LevelThree{/trashcan}
 \LevelThree{/tppos}
+
+\LevelFour{Example}
+\begin{example}{Teleport to offline location of a player}
+    \ic{/tppos offline \player}
+\end{example}
+
+\begin{example}{Specify another player as the target player}
+    \ic{/tppos --targetPlayer \player}
+\end{example}
+
+\begin{example}{Use fixed teleport mode}
+    When any of the following args is specified, the \ic{/tppos} command will do a \ttt{fixed teleport}.\\
+    \ic{/tppos --x 32 --y 64 --z 128 --yaw 60 --pitch 90 --dimension minecraft:overworld}
+\end{example}
+
+\begin{example}{Use random teleport mode}
+    The \ic{/tppos} command will do a \ttt{random teleport} if not doing a \ttt{fixed teleport}.\\
+    \ic{/tppos --centerX 0 --centerZ 0 --circle true --minRange 512 --maxRange 2048 --minY 32 --maxY 128 --maxTryTimes 8 --dimension minecraft:overworld}
+\end{example}
+
 \LevelThree{/warp}
 \LevelThree{/burn}
 \LevelThree{/help-op}

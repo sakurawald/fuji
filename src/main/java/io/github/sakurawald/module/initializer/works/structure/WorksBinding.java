@@ -11,10 +11,11 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-public class WorksCache {
+public class WorksBinding {
 
     @Getter
     private static final ConcurrentHashMap<BlockPos, Set<Work>> blockpos2works = new ConcurrentHashMap<>();
+
     @Getter
     private static final ConcurrentHashMap<Integer, Set<Work>> entity2works = new ConcurrentHashMap<>();
 

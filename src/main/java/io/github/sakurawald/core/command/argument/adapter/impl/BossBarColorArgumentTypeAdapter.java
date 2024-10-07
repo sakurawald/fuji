@@ -22,12 +22,12 @@ public class BossBarColorArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(String argumentName) {
         return super.makeRequiredArgumentBuilder(argumentName)
-            .suggests(CommandHelper.Suggestion.enums(BossBar.Color.values()));
+            .suggests(CommandHelper.Suggestion.enums(BossBar.Color::values));
     }
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        String name = StringArgumentType.getString(context,argument.getArgumentName());
+        String name = StringArgumentType.getString(context, argument.getArgumentName());
         return BossBar.Color.valueOf(name);
     }
 

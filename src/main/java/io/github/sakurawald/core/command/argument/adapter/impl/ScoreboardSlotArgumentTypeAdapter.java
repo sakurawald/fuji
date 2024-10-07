@@ -18,7 +18,7 @@ public class ScoreboardSlotArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return ScoreboardSlotArgumentType.getScoreboardSlot(context,argument.getArgumentName());
+        return ScoreboardSlotArgumentType.getScoreboardSlot(context, argument.getArgumentName());
     }
 
     @Override

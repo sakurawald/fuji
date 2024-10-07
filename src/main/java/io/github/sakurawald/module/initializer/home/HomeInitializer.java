@@ -6,6 +6,7 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.command.exception.AbortCommandExecutionException;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
@@ -26,50 +27,47 @@ public class HomeInitializer extends ModuleInitializer {
 
     @Getter
     private static final BaseConfigurationHandler<HomeDataModel> storage = new ObjectConfigurationHandler<>("home.json", HomeDataModel.class)
-        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("home.json"),HomeInitializer.class));
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("home.json"), HomeInitializer.class));
 
-    public void onInitialize() {
-        storage.scheduleSaveConfigurationHandlerJob(ScheduleManager.CRON_EVERY_MINUTE);
-    }
-
-    public static Map<String, SpatialPose> ofHomes(@NotNull ServerPlayerEntity player) {
+    public static Map<String, SpatialPose> withHomes(@NotNull ServerPlayerEntity player) {
         String playerName = player.getGameProfile().getName();
-        Map<String, Map<String, SpatialPose>> homes = storage.getModel().name2home;
+        Map<String, Map<String, SpatialPose>> homes = storage.model().name2home;
         homes.computeIfAbsent(playerName, k -> new HashMap<>());
         return homes.get(playerName);
     }
 
     @CommandNode("home tp")
     private static int $tp(@CommandSource ServerPlayerEntity player, HomeName home) {
-        Map<String, SpatialPose> name2position = ofHomes(player);
+        Map<String, SpatialPose> homes = withHomes(player);
         String homeName = home.getValue();
-        if (!name2position.containsKey(homeName)) {
-            LocaleHelper.sendMessageByKey(player, "home.not_found", homeName);
-            return 0;
-        }
+        ensureHomeExists(player, homes, homeName);
 
-        SpatialPose spatialPose = name2position.get(homeName);
+        SpatialPose spatialPose = homes.get(homeName);
         spatialPose.teleport(player);
         return CommandHelper.Return.SUCCESS;
     }
 
+    private static void ensureHomeExists(ServerPlayerEntity player, Map<String, SpatialPose> homes, String homeName) {
+        if (!homes.containsKey(homeName)) {
+            LocaleHelper.sendMessageByKey(player, "home.not_found", homeName);
+            throw new AbortCommandExecutionException();
+        }
+    }
+
     @CommandNode("home unset")
     private static int $unset(@CommandSource ServerPlayerEntity player, HomeName home) {
-        Map<String, SpatialPose> name2position = ofHomes(player);
+        Map<String, SpatialPose> homes = withHomes(player);
         String homeName = home.getValue();
-        if (!name2position.containsKey(homeName)) {
-            LocaleHelper.sendMessageByKey(player, "home.not_found", homeName);
-            return 0;
-        }
+        ensureHomeExists(player, homes, homeName);
 
-        name2position.remove(homeName);
+        homes.remove(homeName);
         LocaleHelper.sendMessageByKey(player, "home.unset.success", homeName);
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("home set")
     private static int $set(@CommandSource ServerPlayerEntity player, HomeName home, Optional<Boolean> override) {
-        Map<String, SpatialPose> name2position = ofHomes(player);
+        Map<String, SpatialPose> name2position = withHomes(player);
         String homeName = home.getValue();
 
         if (name2position.containsKey(homeName)) {
@@ -90,11 +88,14 @@ public class HomeInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-
     @CommandNode("home list")
     private static int $list(@CommandSource ServerPlayerEntity player) {
-        LocaleHelper.sendMessageByKey(player, "home.list", ofHomes(player).keySet());
+        LocaleHelper.sendMessageByKey(player, "home.list", withHomes(player).keySet());
         return CommandHelper.Return.SUCCESS;
+    }
+
+    public void onInitialize() {
+        storage.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 
 }

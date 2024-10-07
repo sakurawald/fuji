@@ -28,7 +28,7 @@ public class ShellInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<ShellConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ShellConfigModel.class);
 
     private static void checkSecurity(CommandContext<ServerCommandSource> ctx) {
-        var config = ShellInitializer.config.getModel();
+        var config = ShellInitializer.config.model();
 
         if (!config.enable_warning.equals("CONFIRM")) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "shell.failed.rtfm");

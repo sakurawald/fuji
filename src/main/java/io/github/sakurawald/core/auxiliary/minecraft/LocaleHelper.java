@@ -71,7 +71,10 @@ public class LocaleHelper {
         }
     }
 
-    // clear the map to remove `UNSUPPORTED LANGUAGE`
+    /**
+     * Clear the language file loaded into the memory.
+     * Note that once the attempt to load a language file from storage is failed, a JsonObject marker named `UNSUPPORTED LANGUAGE` will be put into the map, leading the subsequent attempts simply return the marker.
+     */
     public static void clearLoadedLanguageJsons() {
         code2json.clear();
     }
@@ -91,7 +94,7 @@ public class LocaleHelper {
             //read it
             resourceConfigurationHandler.readStorage();
 
-            code2json.put(languageCode, resourceConfigurationHandler.getModel().getAsJsonObject());
+            code2json.put(languageCode, resourceConfigurationHandler.model().getAsJsonObject());
             LogUtil.info("language {} loaded.", languageCode);
         } catch (Exception e) {
             code2json.put(languageCode, UNSUPPORTED_LANGUAGE_MARKER);
@@ -149,7 +152,7 @@ public class LocaleHelper {
 
     private static String getDefaultLanguageCode() {
         // allow user to write `en_us` in `config.json`.
-        return convertToLanguageCode(Configs.configHandler.getModel().core.language.default_language);
+        return convertToLanguageCode(Configs.configHandler.model().core.language.default_language);
     }
 
     private static boolean isDefaultLanguageCode(String languageCode) {

@@ -17,7 +17,7 @@ public class OperationArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return OperationArgumentType.getOperation(context,argument.getArgumentName());
+        return OperationArgumentType.getOperation(context, argument.getArgumentName());
     }
 
     @Override

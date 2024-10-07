@@ -31,12 +31,6 @@ public class SendCustomInitializer extends ModuleInitializer {
     public static final Path CUSTOM_TEXT_DIR_PATH = ReflectionUtil.getModuleConfigPath(SendCustomInitializer.class)
         .resolve("custom-text");
 
-    @SneakyThrows
-    @Override
-    public void onInitialize() {
-        Files.createDirectories(CUSTOM_TEXT_DIR_PATH);
-    }
-
     private static String withCustomText(ServerPlayerEntity player, CustomTextName name) {
         String value = name.getValue();
         Path resolve = CUSTOM_TEXT_DIR_PATH.resolve(value);
@@ -94,5 +88,11 @@ public class SendCustomInitializer extends ModuleInitializer {
         }
 
         return CommandHelper.Return.SUCCESS;
+    }
+
+    @SneakyThrows
+    @Override
+    public void onInitialize() {
+        Files.createDirectories(CUSTOM_TEXT_DIR_PATH);
     }
 }

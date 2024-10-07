@@ -35,6 +35,9 @@ public abstract class BossBarTicket {
 
         // add players for this bossbar
         players.forEach(this::addPlayer);
+
+        // hide the bossbar, so that if the ticket is aborted in the first tick, will not be rendered.
+        this.bossBar.setVisible(false);
     }
 
     public BossBarTicket(ServerBossBar bossBar, int totalMs, @NotNull List<ServerPlayerEntity> players) {

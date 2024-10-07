@@ -28,7 +28,7 @@ public class StepTypeArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(String argumentName) {
         return super.makeRequiredArgumentBuilder(argumentName)
-            .suggests(CommandHelper.Suggestion.enums(StepType.values()));
+            .suggests(CommandHelper.Suggestion.enums(StepType::values));
     }
 
     @Override

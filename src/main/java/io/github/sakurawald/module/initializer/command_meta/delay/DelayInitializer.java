@@ -19,11 +19,6 @@ public class DelayInitializer extends ModuleInitializer {
 
     private static final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
-    @Override
-    public void onInitialize() {
-        ServerLifecycleEvents.SERVER_STOPPING.register((server) -> executor.shutdown());
-    }
-
     @CommandNode("delay")
     @CommandRequirement(level = 4)
     private static int delay(@CommandSource ServerCommandSource source, int time, GreedyString rest) {
@@ -35,5 +30,10 @@ public class DelayInitializer extends ModuleInitializer {
         }, time, TimeUnit.SECONDS);
 
         return CommandHelper.Return.SUCCESS;
+    }
+
+    @Override
+    public void onInitialize() {
+        ServerLifecycleEvents.SERVER_STOPPING.register((server) -> executor.shutdown());
     }
 }

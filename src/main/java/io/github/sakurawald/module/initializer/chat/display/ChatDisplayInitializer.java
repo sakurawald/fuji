@@ -22,7 +22,7 @@ public class ChatDisplayInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<ChatDisplayConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatDisplayConfigModel.class);
 
     private void registerEnderPlaceholder() {
-        PlaceholderHelper.playerPlaceholder("ender",(player)->{
+        PlaceholderHelper.withPlayer("ender", (player) -> {
             String displayUUID = DisplayHelper.createEnderChestDisplay(player);
             return LocaleHelper.getTextByKey(player, "display.ender_chest.text")
                 .copy()
@@ -35,7 +35,7 @@ public class ChatDisplayInitializer extends ModuleInitializer {
     }
 
     private void registerInvPlaceholder() {
-        PlaceholderHelper.playerPlaceholder("inv",(player)->{
+        PlaceholderHelper.withPlayer("inv", (player) -> {
             String displayUUID = DisplayHelper.createInventoryDisplay(player);
             return LocaleHelper.getTextByKey(player, "display.inventory.text")
                 .copy()
@@ -47,7 +47,7 @@ public class ChatDisplayInitializer extends ModuleInitializer {
     }
 
     public void registerItemPlaceholder() {
-        PlaceholderHelper.playerPlaceholder("item",(player)->{
+        PlaceholderHelper.withPlayer("item", (player) -> {
             String displayUUID = DisplayHelper.createItemDisplay(player);
 
             MutableText text = LocaleHelper.getTextByKey(player, "display.item.text").copy();
@@ -63,7 +63,7 @@ public class ChatDisplayInitializer extends ModuleInitializer {
 
     @NotNull
     private ClickEvent makeDisplayClickEvent(String displayUUID) {
-        return Managers.getCallbackManager().makeCallbackEvent((player) -> DisplayHelper.viewDisplay(player, displayUUID), config.getModel().expiration_duration_s, TimeUnit.SECONDS);
+        return Managers.getCallbackManager().makeCallbackEvent((player) -> DisplayHelper.viewDisplay(player, displayUUID), config.model().expiration_duration_s, TimeUnit.SECONDS);
     }
 
     @Override

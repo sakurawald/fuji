@@ -37,7 +37,8 @@ import java.util.regex.Pattern;
 @CommandNode("placeholder")
 @CommandRequirement(level = 4)
 public class PlaceholderInitializer extends ModuleInitializer {
-    private final Map<String, Map<String, String>> rotate = new HashMap<>();
+
+    private static final Map<String, Map<String, String>> ROTATE_CACHE = new HashMap<>();
 
     private static final Pattern ESCAPE_PARSER = Pattern.compile("\\s*([\\s\\S]+)\\s+(\\d+)\\s*");
 
@@ -57,6 +58,46 @@ public class PlaceholderInitializer extends ModuleInitializer {
         Text text = LocaleHelper.getTextByValue(target, input.getValue());
         source.sendMessage(text);
         return CommandHelper.Return.SUCCESS;
+    }
+
+    private static void registerServerPlaytimePlaceholder() {
+        PlaceholderHelper.withServer("server_playtime", server -> Text.literal(String.valueOf(SumUpPlaceholder.ofServer().playtime)));
+    }
+
+    private static void registerPlayerPlaytimePlaceholder() {
+        PlaceholderHelper.withPlayer("player_playtime", player -> Text.literal(String.valueOf(SumUpPlaceholder.ofPlayer(player.getUuidAsString()).playtime)));
+    }
+
+    private static void registerServerMovedPlaceholder() {
+        PlaceholderHelper.withServer("server_moved", server -> Text.literal(String.valueOf(SumUpPlaceholder.ofServer().moved)));
+    }
+
+    private static void registerPlayerMovedPlaceholder() {
+        PlaceholderHelper.withPlayer("player_moved", player -> Text.literal(String.valueOf(SumUpPlaceholder.ofPlayer(player.getUuidAsString()).moved)));
+    }
+
+    private static void registerServerKilledPlaceholder() {
+        PlaceholderHelper.withServer("server_killed", server -> Text.literal(String.valueOf(SumUpPlaceholder.ofServer().killed)));
+    }
+
+    private static void registerPlayerKilledPlaceholder() {
+        PlaceholderHelper.withPlayer("player_killed", player -> Text.literal(String.valueOf(SumUpPlaceholder.ofPlayer(player.getUuidAsString()).killed)));
+    }
+
+    private static void registerServerPlacedPlaceholder() {
+        PlaceholderHelper.withServer("server_placed", server -> Text.literal(String.valueOf(SumUpPlaceholder.ofServer().placed)));
+    }
+
+    private static void registerPlayerPlacedPlaceholder() {
+        PlaceholderHelper.withPlayer("player_placed", player -> Text.literal(String.valueOf(SumUpPlaceholder.ofPlayer(player.getUuidAsString()).placed)));
+    }
+
+    private static void registerServerMinedPlaceholder() {
+        PlaceholderHelper.withServer("server_mined", (server) -> Text.literal(String.valueOf(SumUpPlaceholder.ofServer().mined)));
+    }
+
+    private static void registerPlayerMinedPlaceholder() {
+        PlaceholderHelper.withPlayer("player_mined", (player -> Text.literal(String.valueOf(SumUpPlaceholder.ofPlayer(player.getUuidAsString()).mined))));
     }
 
     @Override
@@ -96,7 +137,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
     }
 
     private void registerDatePlaceholder() {
-        PlaceholderHelper.serverPlaceholder("date", (server, arg) -> {
+        PlaceholderHelper.withServer("date", (server, arg) -> {
             if (arg == null || arg.isEmpty()) {
                 return Text.literal(DateUtil.getCurrentDate());
             }
@@ -111,7 +152,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
     }
 
     private void registerEscapePlaceholder() {
-        PlaceholderHelper.serverPlaceholder("escape", (server, args) -> {
+        PlaceholderHelper.withServer("escape", (server, args) -> {
             if (args == null) return PlaceholderHelper.INVALID;
 
             Matcher matcher = ESCAPE_PARSER.matcher(args);
@@ -128,28 +169,28 @@ public class PlaceholderInitializer extends ModuleInitializer {
     }
 
     private void registerProtectPlaceholder() {
-        PlaceholderHelper.serverPlaceholder("protect", (server, args) -> {
+        PlaceholderHelper.withServer("protect", (server, args) -> {
             if (args == null) return Text.empty();
             return Text.literal(args);
         });
     }
 
     private void registerHasPermissionPlaceholder() {
-        PlaceholderHelper.playerPlaceholder("has_permission", (player, args) -> {
+        PlaceholderHelper.withPlayer("has_permission", (player, args) -> {
             boolean value = PermissionHelper.hasPermission(player.getUuid(), args);
             return Text.literal(String.valueOf(value));
         });
     }
 
     private void registerGetMetaPlaceholder() {
-        PlaceholderHelper.playerPlaceholder("get_meta", (player, args) -> {
+        PlaceholderHelper.withPlayer("get_meta", (player, args) -> {
             Optional<String> metaValue = PermissionHelper.getMeta(player.getUuid(), args, String::valueOf);
             return Text.literal(metaValue.orElse("META_NOT_FOUND"));
         });
     }
 
     private void registerRandomPlayerPlaceholder() {
-        PlaceholderHelper.serverPlaceholder("random_player", (server, args) -> {
+        PlaceholderHelper.withServer("random_player", (server, args) -> {
             List<ServerPlayerEntity> playerList = ServerHelper.getPlayers();
             ServerPlayerEntity serverPlayerEntity = RandomUtil.drawList(playerList);
             return Text.literal(serverPlayerEntity.getGameProfile().getName());
@@ -157,7 +198,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
     }
 
     private void registerRandomPlaceholder() {
-        PlaceholderHelper.serverPlaceholder("random", (server, args) -> {
+        PlaceholderHelper.withServer("random", (server, args) -> {
             if (args == null) return PlaceholderHelper.INVALID;
 
             String[] split = args.split(" ");
@@ -175,7 +216,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
     }
 
     private void registerHealthBarPlaceholder() {
-        PlaceholderHelper.playerPlaceholder("health_bar", (player -> {
+        PlaceholderHelper.withPlayer("health_bar", (player -> {
             int totalHearts = 10;
             int filledHearts = (int) (player.getHealth() / 2);
             int unfilledHearts = totalHearts - filledHearts;
@@ -191,8 +232,8 @@ public class PlaceholderInitializer extends ModuleInitializer {
                 namespace = ctx.player().getGameProfile().getName();
             }
 
-            rotate.putIfAbsent(namespace, new HashMap<>());
-            Map<String, String> rotateMap = rotate.get(namespace);
+            ROTATE_CACHE.putIfAbsent(namespace, new HashMap<>());
+            Map<String, String> rotateMap = ROTATE_CACHE.get(namespace);
             rotateMap.putIfAbsent(args, args);
 
             String frame = rotateMap.get(args);
@@ -200,46 +241,6 @@ public class PlaceholderInitializer extends ModuleInitializer {
 
             return PlaceholderResult.value(Text.literal(frame));
         });
-    }
-
-    private static void registerServerPlaytimePlaceholder() {
-        PlaceholderHelper.serverPlaceholder("server_playtime", server -> Text.literal(String.valueOf(SumUpPlaceholder.ofServer().playtime)));
-    }
-
-    private static void registerPlayerPlaytimePlaceholder() {
-        PlaceholderHelper.playerPlaceholder("player_playtime", player -> Text.literal(String.valueOf(SumUpPlaceholder.ofPlayer(player.getUuidAsString()).playtime)));
-    }
-
-    private static void registerServerMovedPlaceholder() {
-        PlaceholderHelper.serverPlaceholder("server_moved", server -> Text.literal(String.valueOf(SumUpPlaceholder.ofServer().moved)));
-    }
-
-    private static void registerPlayerMovedPlaceholder() {
-        PlaceholderHelper.playerPlaceholder("player_moved", player -> Text.literal(String.valueOf(SumUpPlaceholder.ofPlayer(player.getUuidAsString()).moved)));
-    }
-
-    private static void registerServerKilledPlaceholder() {
-        PlaceholderHelper.serverPlaceholder("server_killed", server -> Text.literal(String.valueOf(SumUpPlaceholder.ofServer().killed)));
-    }
-
-    private static void registerPlayerKilledPlaceholder() {
-        PlaceholderHelper.playerPlaceholder("player_killed", player -> Text.literal(String.valueOf(SumUpPlaceholder.ofPlayer(player.getUuidAsString()).killed)));
-    }
-
-    private static void registerServerPlacedPlaceholder() {
-        PlaceholderHelper.serverPlaceholder("server_placed", server -> Text.literal(String.valueOf(SumUpPlaceholder.ofServer().placed)));
-    }
-
-    private static void registerPlayerPlacedPlaceholder() {
-        PlaceholderHelper.playerPlaceholder("player_placed", player -> Text.literal(String.valueOf(SumUpPlaceholder.ofPlayer(player.getUuidAsString()).placed)));
-    }
-
-    private static void registerServerMinedPlaceholder() {
-        PlaceholderHelper.serverPlaceholder("server_mined", (server) -> Text.literal(String.valueOf(SumUpPlaceholder.ofServer().mined)));
-    }
-
-    private static void registerPlayerMinedPlaceholder() {
-        PlaceholderHelper.playerPlaceholder("player_mined", (player -> Text.literal(String.valueOf(SumUpPlaceholder.ofPlayer(player.getUuidAsString()).mined))));
     }
 
 }

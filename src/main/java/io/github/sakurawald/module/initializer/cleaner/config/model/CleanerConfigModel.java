@@ -23,7 +23,7 @@ public class CleanerConfigModel {
     public static class Ignore {
         @SerializedName(value = "ignore_item_entity", alternate = "ignoreItemEntity")
         public boolean ignore_item_entity = false;
-        @SerializedName(value="ignore_living_entity", alternate = "ignoreLivingEntity")
+        @SerializedName(value = "ignore_living_entity", alternate = "ignoreLivingEntity")
         public boolean ignore_living_entity = true;
         @SerializedName(value = "ignore_named_entity", alternate = "ignoreNamedEntity")
         public boolean ignore_named_entity = true;

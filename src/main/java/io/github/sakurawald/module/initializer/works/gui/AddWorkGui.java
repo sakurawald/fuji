@@ -17,9 +17,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class AddWorkGui extends InputSignGui {
 
-
     public AddWorkGui(@NotNull ServerPlayerEntity player) {
-        super(player,LocaleHelper.getTextByKey(player, "works.work.add.prompt.input.name"));
+        super(player, LocaleHelper.getTextByKey(player, "works.work.add.prompt.input.name"));
     }
 
     @Override
@@ -36,10 +35,10 @@ public class AddWorkGui extends InputSignGui {
         selectWorkTypeGui.setTitle(LocaleHelper.getTextByKey(player, "works.work.add.select_work_type.title"));
         GuiHelper.fill(selectWorkTypeGui, GuiHelper.Item.PLACEHOLDER);
 
-        BaseConfigurationHandler<WorksDataModel> worksHandler = WorksInitializer.worksHandler;
+        BaseConfigurationHandler<WorksDataModel> worksHandler = WorksInitializer.works;
         selectWorkTypeGui.setSlot(11, new GuiElementBuilder().setItem(Items.GUNPOWDER).setName(LocaleHelper.getTextByKey(player, "works.non_production_work.name")).setCallback(() -> {
             // add
-            worksHandler.getModel().works.addFirst(new NonProductionWork(player, name));
+            worksHandler.model().works.addFirst(new NonProductionWork(player, name));
             LocaleHelper.sendActionBarByKey(player, "works.work.add.done");
             LocaleHelper.sendBroadcastByKey("works.work.add.broadcast", player.getGameProfile().getName(), name);
             selectWorkTypeGui.close();
@@ -48,7 +47,7 @@ public class AddWorkGui extends InputSignGui {
         selectWorkTypeGui.setSlot(15, new GuiElementBuilder().setItem(Items.REDSTONE).setName(LocaleHelper.getTextByKey(player, "works.production_work.name")).setCallback(() -> {
             // add
             ProductionWork work = new ProductionWork(player, name);
-            worksHandler.getModel().works.addFirst(work);
+            worksHandler.model().works.addFirst(work);
             LocaleHelper.sendActionBarByKey(player, "works.work.add.done");
             LocaleHelper.sendBroadcastByKey("works.work.add.broadcast", player.getGameProfile().getName(), name);
             selectWorkTypeGui.close();

@@ -31,34 +31,53 @@ public class KitEditorGui extends PagedGui<Kit> {
     public KitEditorGui(ServerPlayerEntity player, @NotNull List<Kit> entities, int pageIndex) {
         super(null, player, LocaleHelper.getTextByKey(player, "kit.gui.editor.title"), entities, pageIndex);
 
+        /* make footer */
         SingleLineLayer footer = new SingleLineLayer();
         footer.setSlot(1, GuiHelper.makeHelpButton(player)
             .setLore(LocaleHelper.getTextListByKey(player, "kit.gui.editor.help.lore")));
         footer.setSlot(4, GuiHelper.makeAddButton(player).setCallback(() -> new InputSignGui(player, LocaleHelper.getTextByKey(player, "prompt.input.name")) {
+
             @Override
             public void onClose() {
+                /* input kit name */
                 String name = getLine(0).getString().trim();
                 if (name.isEmpty()) {
                     LocaleHelper.sendActionBarByKey(player, "operation.cancelled");
                     return;
                 }
 
-                openEditKitGui(getPlayer(), KitInitializer.readKit(name));
+                /* open edit kit gui */
+                openKitEditingGui(getPlayer(), KitInitializer.readKit(name));
             }
         }.open()));
         this.addLayer(footer, 0, this.getHeight() - 1);
     }
 
-    private void openEditKitGui(@NotNull ServerPlayerEntity player, @NotNull Kit kit) {
+    private void openKitEditingGui(@NotNull ServerPlayerEntity player, @NotNull Kit kit) {
         int rows = 5;
         SimpleInventory simpleInventory = new SimpleInventory(rows * 9);
         for (int i = 0; i < kit.getStackList().size(); i++) {
             simpleInventory.setStack(i, kit.getStackList().get(i));
         }
 
-        // forbidden
+        /* set default items if the kit is empty */
+        if (simpleInventory.isEmpty()) {
+            simpleInventory.setStack(0, Items.IRON_SWORD.getDefaultStack());
+
+            ItemStack food = Items.BREAD.getDefaultStack();
+            food.setCount(16);
+            simpleInventory.setStack(1, food);
+
+            simpleInventory.setStack(36, Items.IRON_BOOTS.getDefaultStack());
+            simpleInventory.setStack(37, Items.IRON_LEGGINGS.getDefaultStack());
+            simpleInventory.setStack(38, Items.IRON_CHESTPLATE.getDefaultStack());
+            simpleInventory.setStack(39, Items.IRON_HELMET.getDefaultStack());
+            simpleInventory.setStack(40, Items.SHIELD.getDefaultStack());
+        }
+
+        /* put the forbidden zone */
         for (int i = 41; i <= 44; i++) {
-            simpleInventory.setStack(i, Items.BARRIER.getDefaultStack());
+            simpleInventory.setStack(i, GuiHelper.makeBarrier().getItemStack());
         }
 
         SimpleNamedScreenHandlerFactory simpleNamedScreenHandlerFactory = new SimpleNamedScreenHandlerFactory((i, playerInventory, p) ->
@@ -81,7 +100,6 @@ public class KitEditorGui extends PagedGui<Kit> {
                 }
 
             }, LocaleHelper.getTextByKey(player, "kit.gui.editor.kit.title", kit.getName()));
-
         player.openHandledScreen(simpleNamedScreenHandlerFactory);
     }
 
@@ -97,14 +115,13 @@ public class KitEditorGui extends PagedGui<Kit> {
             .setCallback((event) -> {
 
                 if (event.isLeft) {
-                    openEditKitGui(getPlayer(), entity);
+                    openKitEditingGui(getPlayer(), entity);
                 }
 
                 if (event.shift && event.isRight) {
                     KitInitializer.deleteKit(entity.getName());
-                    LocaleHelper.sendActionBarByKey(getPlayer(), "deleted");
-
                     deleteEntity(entity);
+                    LocaleHelper.sendActionBarByKey(getPlayer(), "deleted");
                 }
 
             })

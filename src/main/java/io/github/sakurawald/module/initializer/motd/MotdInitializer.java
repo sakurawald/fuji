@@ -9,6 +9,7 @@ import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.motd.config.model.MotdConfigModel;
+import lombok.Cleanup;
 import net.minecraft.server.ServerMetadata;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
@@ -22,27 +23,32 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Stream;
 
 public class MotdInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<MotdConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, MotdConfigModel.class);
+    private static final BaseConfigurationHandler<MotdConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, MotdConfigModel.class);
 
     private static final Path ICON_FOLDER = ReflectionUtil.getModuleConfigPath(MotdInitializer.class).resolve("icon");
 
     public static @NotNull Optional<ServerMetadata.Favicon> getRandomIcon() {
         ByteArrayOutputStream byteArrayOutputStream;
         try {
+            /* get icon files */
             Files.createDirectories(ICON_FOLDER);
-            List<File> icons = Files.list(ICON_FOLDER)
+            @Cleanup Stream<Path> list = Files.list(ICON_FOLDER);
+            List<File> icons = list
                 .map(Path::toFile)
                 .toList();
 
+            /* draw a random icon */
             if (icons.isEmpty()) {
                 return Optional.empty();
             }
 
             File randomIcon = RandomUtil.drawList(icons);
             BufferedImage bufferedImage = ImageIO.read(randomIcon);
+
             Preconditions.checkState(bufferedImage.getWidth() == 64, "Must be 64 pixels wide: %s".formatted(randomIcon));
             Preconditions.checkState(bufferedImage.getHeight() == 64, "Must be 64 pixels high: %s".formatted(randomIcon));
 
@@ -52,11 +58,12 @@ public class MotdInitializer extends ModuleInitializer {
             LogUtil.error("failed to encode motd icon.", e);
             return Optional.empty();
         }
+
         return Optional.of(new ServerMetadata.Favicon(byteArrayOutputStream.toByteArray()));
     }
 
     public static @NotNull Text getRandomMotdText() {
-        var motdList = config.getModel().list;
+        var motdList = config.model().list;
         String string = motdList.get(new Random().nextInt(motdList.size()));
 
         return LocaleHelper.getTextByValue(null, string);

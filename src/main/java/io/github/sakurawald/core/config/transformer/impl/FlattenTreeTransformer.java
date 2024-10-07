@@ -22,7 +22,7 @@ public class FlattenTreeTransformer extends ConfigurationTransformer {
 
     private boolean overrideTheOriginalFileWithSkeletonTree;
 
-    public FlattenTreeTransformer(String jsonPath, String subtreeIdentifier, String topLevel,Function<String, Path> level2outPath) {
+    public FlattenTreeTransformer(String jsonPath, String subtreeIdentifier, String topLevel, Function<String, Path> level2outPath) {
         this.subtreeIdentifier = subtreeIdentifier;
         this.jsonPath = jsonPath;
         this.topLevel = topLevel;
@@ -81,12 +81,12 @@ public class FlattenTreeTransformer extends ConfigurationTransformer {
     public void apply() {
         DocumentContext context = this.makeDocumentContext();
 
-        JsonObject root = (JsonObject) read(context,this.jsonPath);
+        JsonObject root = (JsonObject) read(context, this.jsonPath);
         this.flatten(root, this.topLevel);
 
         if (overrideTheOriginalFileWithSkeletonTree) {
-            JsonObject skeletonTree = (JsonObject) read(context,this.jsonPath);
-            set(context,this.jsonPath, makeSkeletonTree(skeletonTree));
+            JsonObject skeletonTree = (JsonObject) read(context, this.jsonPath);
+            set(context, this.jsonPath, makeSkeletonTree(skeletonTree));
             writeStorage(context);
         }
     }

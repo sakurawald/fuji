@@ -31,7 +31,7 @@ public class Downloader {
         });
     }
 
-    public void onComplete(){
+    public void onComplete() {
         // no-op
     }
 

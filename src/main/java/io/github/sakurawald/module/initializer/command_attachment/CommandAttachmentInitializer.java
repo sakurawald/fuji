@@ -6,8 +6,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.UuidHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -58,7 +58,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     private static void testSteppingBlockForPlayer(ServerPlayerEntity player) {
         String playerName = player.getGameProfile().getName();
         String originalUuid = player2uuid.get(playerName);
-        String uuid = NbtHelper.computeUuid(player.getServerWorld(), player.getSteppingPos());
+        String uuid = UuidHelper.getAttachedUuid(player.getServerWorld(), player.getSteppingPos());
 
         if (uuid.equals(originalUuid)) return;
         // update value
@@ -72,16 +72,6 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
     public static void testSteppingBlockForPlayers() {
         ServerHelper.getPlayers().forEach(CommandAttachmentInitializer::testSteppingBlockForPlayer);
-    }
-
-    @Override
-    public void onInitialize() {
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> new TestSteppingOnBlockJob().schedule());
-    }
-
-    @Override
-    public void registerGsonTypeAdapter() {
-        BaseConfigurationHandler.registerTypeAdapter(CommandAttachmentEntry.class, new CommandAttachmentEntryAdapter());
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -129,7 +119,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
             switch (executeAsType) {
                 case CONSOLE -> CommandExecutor.execute(ExtendedCommandSource.asConsole(source), e.getCommand());
                 case PLAYER -> CommandExecutor.execute(ExtendedCommandSource.asPlayer(source, player), e.getCommand());
-                case FAKE_OP -> CommandExecutor.execute(ExtendedCommandSource.asFakeOp(source,player), e.getCommand());
+                case FAKE_OP -> CommandExecutor.execute(ExtendedCommandSource.asFakeOp(source, player), e.getCommand());
             }
 
             /* item destroy */
@@ -157,7 +147,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         ItemStack mainHandStack = player.getMainHandStack();
         checkItemStackInHand(player, mainHandStack);
 
-        String uuid = NbtHelper.getOrMakeUUIDNbt(mainHandStack);
+        String uuid = UuidHelper.getOrSetAttachedUuid(mainHandStack);
         CommandAttachmentModel model = getAttachmentModel(uuid);
 
         // new entry
@@ -171,8 +161,6 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
         // save model
         setAttachmentModel(uuid, model);
-
-        LocaleHelper.sendMessageByKey(player, "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -198,8 +186,6 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
         // save model
         setAttachmentModel(uuid, model);
-
-        LocaleHelper.sendMessageByKey(player, "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -212,7 +198,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         , GreedyString command
     ) {
         // get entity id
-        String uuid = NbtHelper.computeUuid(player.getServerWorld(), blockPos);
+        String uuid = UuidHelper.getAttachedUuid(player.getServerWorld(), blockPos);
         CommandAttachmentModel model = getAttachmentModel(uuid);
 
         // new entry
@@ -221,13 +207,11 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         ExecuteAsType $executeAsType = executeAsType.orElse(ExecuteAsType.FAKE_OP);
         Integer $maxUseTimes = maxUseTimes.orElse(Integer.MAX_VALUE);
 
-        String createdIn = NbtHelper.formatString(player.getWorld(), blockPos);
+        String createdIn = UuidHelper.toUuid(player.getWorld(), blockPos);
         model.getEntries().add(new BlockCommandAttachmentEntry(createdIn, $command, $interactType, $executeAsType, $maxUseTimes, 0));
 
         // save model
         setAttachmentModel(uuid, model);
-
-        LocaleHelper.sendMessageByKey(player, "operation.success");
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -242,7 +226,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     private static int detachItemAll(@CommandSource ServerPlayerEntity player) {
         ItemStack mainHandStack = player.getMainHandStack();
         checkItemStackInHand(player, mainHandStack);
-        String uuid = NbtHelper.getOrMakeUUIDNbt(mainHandStack);
+        String uuid = UuidHelper.getOrSetAttachedUuid(mainHandStack);
 
         doDetachAttachment(player, uuid);
         return CommandHelper.Return.SUCCESS;
@@ -258,7 +242,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
     @CommandNode("detach-block-all")
     private static int detachBlockAll(@CommandSource ServerPlayerEntity player, BlockPos blockPos) {
-        String uuid = NbtHelper.computeUuid(player.getServerWorld(), blockPos);
+        String uuid = UuidHelper.getAttachedUuid(player.getServerWorld(), blockPos);
 
         doDetachAttachment(player, uuid);
         return CommandHelper.Return.SUCCESS;
@@ -266,14 +250,13 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
     private static void doDetachAttachment(ServerPlayerEntity player, String uuid) {
         Managers.getAttachmentManager().unsetAttachment(COMMAND_ATTACHMENT_SUBJECT_NAME, uuid);
-        LocaleHelper.sendMessageByKey(player, "operation.success");
     }
 
     @CommandNode("query-item")
     private static int queryItem(@CommandSource ServerPlayerEntity player) {
         ItemStack mainHandStack = player.getMainHandStack();
         checkItemStackInHand(player, mainHandStack);
-        String uuid = NbtHelper.computeUuid(mainHandStack.get(DataComponentTypes.CUSTOM_DATA));
+        String uuid = UuidHelper.getAttachedUuid(mainHandStack.get(DataComponentTypes.CUSTOM_DATA));
 
         doQueryAttachment(player, uuid);
         return CommandHelper.Return.SUCCESS;
@@ -288,7 +271,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
     @CommandNode("query-block")
     private static int queryBlock(@CommandSource ServerPlayerEntity player, BlockPos blockPos) {
-        String uuid = NbtHelper.computeUuid(player.getServerWorld(), blockPos);
+        String uuid = UuidHelper.getAttachedUuid(player.getServerWorld(), blockPos);
         doQueryAttachment(player, uuid);
         return CommandHelper.Return.SUCCESS;
     }
@@ -304,6 +287,15 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         player.sendMessage(Text.literal(attachment));
     }
 
+    @Override
+    public void onInitialize() {
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> new TestSteppingOnBlockJob().schedule());
+    }
+
+    @Override
+    public void registerGsonTypeAdapter() {
+        BaseConfigurationHandler.registerTypeAdapter(CommandAttachmentEntry.class, new CommandAttachmentEntryAdapter());
+    }
 
     private static class CommandAttachmentEntryAdapter implements JsonDeserializer<CommandAttachmentEntry> {
 

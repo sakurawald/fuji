@@ -29,25 +29,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class NametagInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<NametagConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, NametagConfigModel.class);
-
     private static Map<ServerPlayerEntity, DisplayEntity.TextDisplayEntity> player2nametag;
-
-    @Override
-    public void onInitialize() {
-        player2nametag = new ConcurrentHashMap<>();
-
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> new UpdateNametagJob().schedule());
-    }
-
-    @Override
-    public void onReload() {
-        player2nametag.forEach((key, value) -> value.stopRiding());
-    }
 
     private static DisplayEntity.TextDisplayEntity makeNametag(ServerPlayerEntity player) {
         LogUtil.debug("make nametag for player: {}", player.getGameProfile().getName());
 
         DisplayEntity.TextDisplayEntity nametag = new DisplayEntity.TextDisplayEntity(EntityType.TEXT_DISPLAY, player.getWorld()) {
+
             private void discardNametag() {
                 ServerHelper.sendPacketToAll(new EntitiesDestroyS2CPacket(this.getId()));
                 this.remove(RemovalReason.DISCARDED);
@@ -55,6 +43,7 @@ public class NametagInitializer extends ModuleInitializer {
 
             @Override
             public void tick() {
+                /* call super */
                 super.tick();
 
                 /* discard nametag if the vehicle is empty */
@@ -71,7 +60,8 @@ public class NametagInitializer extends ModuleInitializer {
 
             }
         };
-        // let the nametag riding in internal server-side.
+
+        // let the nametag riding in internal server-side, so that the server will handle the position update for nametags.
         nametag.setInvulnerable(true);
         nametag.startRiding(player);
 
@@ -118,9 +108,9 @@ public class NametagInitializer extends ModuleInitializer {
         dataTracker.set(DisplayEntity.TextDisplayEntity.TEXT_DISPLAY_FLAGS, setTextDisplayFlags(original, flag, value));
     }
 
-    private static void updateNametag(DisplayEntity.TextDisplayEntity nametag, ServerPlayerEntity player) {
+    private static void renderNametag(DisplayEntity.TextDisplayEntity nametag, ServerPlayerEntity player) {
         /* update props of nametag entity */
-        var config = NametagInitializer.config.getModel();
+        var config = NametagInitializer.config.model();
 
         nametag.setBillboardMode(DisplayEntity.BillboardMode.CENTER);
 
@@ -158,8 +148,8 @@ public class NametagInitializer extends ModuleInitializer {
         }
     }
 
-    public static void updateNametags() {
-        // since the virtual entity is not added into the server, so we should tick() it ourselves.
+    public static void processNametagsForOnlinePlayers() {
+        // since the virtual entity is not added into the server, so we should call tick() ourselves.
         player2nametag.values().forEach(DisplayEntity::tick);
 
         // invalidate keys
@@ -169,6 +159,8 @@ public class NametagInitializer extends ModuleInitializer {
         ServerHelper.getPlayers().forEach(player -> {
             if (player.isDead()) return;
             if (player.isSneaking()) return;
+            // when the player jumps into the ender portal in the end, its world is minecraft:overworld, its removal reason is `CHANGED_DIMENSION`
+            if (player.getRemovalReason() != null) return;
 
             // make if not exists
             if (!player2nametag.containsKey(player)) {
@@ -176,8 +168,20 @@ public class NametagInitializer extends ModuleInitializer {
             }
 
             DisplayEntity.TextDisplayEntity nametag = player2nametag.get(player);
-            updateNametag(nametag, player);
+            renderNametag(nametag, player);
         });
+    }
+
+    @Override
+    public void onInitialize() {
+        player2nametag = new ConcurrentHashMap<>();
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> new UpdateNametagJob().schedule());
+    }
+
+    @Override
+    public void onReload() {
+        // discard all existed nametags, since the `text format` may be changed after reload.
+        player2nametag.forEach((key, value) -> value.stopRiding());
     }
 
 }

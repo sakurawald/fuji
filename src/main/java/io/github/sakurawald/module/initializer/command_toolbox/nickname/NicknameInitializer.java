@@ -19,22 +19,22 @@ public class NicknameInitializer extends ModuleInitializer {
 
     @Getter
     private static final BaseConfigurationHandler<NicknameDataModel> nicknameHandler = new ObjectConfigurationHandler<>("nickname.json", NicknameDataModel.class)
-        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("nickname.json"),NicknameInitializer.class));
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("nickname.json"), NicknameInitializer.class));
 
     @CommandNode("set")
     private static int $set(@CommandSource ServerPlayerEntity player, GreedyString format) {
-            String name = player.getGameProfile().getName();
-            nicknameHandler.getModel().format.player2format.put(name, format.getValue());
-            nicknameHandler.writeStorage();
+        String name = player.getGameProfile().getName();
+        nicknameHandler.model().format.player2format.put(name, format.getValue());
+        nicknameHandler.writeStorage();
 
-            LocaleHelper.sendMessageByKey(player, "nickname.set");
-            return CommandHelper.Return.SUCCESS;
+        LocaleHelper.sendMessageByKey(player, "nickname.set");
+        return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("reset")
     private static int $reset(@CommandSource ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
-        nicknameHandler.getModel().format.player2format.remove(name);
+        nicknameHandler.model().format.player2format.remove(name);
         nicknameHandler.writeStorage();
 
         LocaleHelper.sendMessageByKey(player, "nickname.unset");

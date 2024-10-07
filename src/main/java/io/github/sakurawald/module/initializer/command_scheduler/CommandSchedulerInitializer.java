@@ -24,11 +24,22 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
 
     @Getter
     private static final BaseConfigurationHandler<CommandSchedulerConfigModel> schedulerHandler = new ObjectConfigurationHandler<>("scheduler.json", CommandSchedulerConfigModel.class)
-        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("scheduler.json"),CommandSchedulerInitializer.class));
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("scheduler.json"), CommandSchedulerInitializer.class));
+
+    @CommandNode("trigger")
+    private static int $trigger(ScheduleJobName jobName) {
+        schedulerHandler.model().jobs.forEach(job -> {
+            if (job.getName().equals(jobName.getValue())) {
+                job.trigger();
+            }
+        });
+
+        return CommandHelper.Return.SUCCESS;
+    }
 
     private void updateJobs() {
         Managers.getScheduleManager().deleteJobs(CommandScheduleJob.class);
-        schedulerHandler.getModel().jobs.forEach(scheduleJob -> {
+        schedulerHandler.model().jobs.forEach(scheduleJob -> {
             if (scheduleJob.isEnable()) {
                 scheduleJob.getCrons().forEach(cron -> new CommandScheduleJob(new JobDataMap() {
                     {
@@ -43,24 +54,13 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        schedulerHandler.scheduleSaveConfigurationHandlerJob(ScheduleManager.CRON_EVERY_MINUTE);
+        schedulerHandler.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
         updateJobs();
     }
 
     @Override
     public void onReload() {
         updateJobs();
-    }
-
-    @CommandNode("trigger")
-    private static int $trigger(ScheduleJobName jobName) {
-        schedulerHandler.getModel().jobs.forEach(job -> {
-            if (job.getName().equals(jobName.getValue())) {
-                job.trigger();
-            }
-        });
-
-        return CommandHelper.Return.SUCCESS;
     }
 
 }

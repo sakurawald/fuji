@@ -23,6 +23,9 @@ import java.util.Set;
 @Mixin(PlayerListS2CPacket.class)
 public class SyncGameProfileToDummyPlayerMixin {
 
+    @Unique
+    private static final Set<String> visited = new HashSet<>();
+
     @Inject(method = "<init>(Ljava/util/EnumSet;Ljava/util/Collection;)V", at = @At("TAIL"))
     void syncGameProfileChangeToDummyPlayer(EnumSet<PlayerListS2CPacket.Action> enumSet, Collection<ServerPlayerEntity> collection, CallbackInfo ci) {
         if (enumSet.contains(PlayerListS2CPacket.Action.ADD_PLAYER)) {
@@ -36,9 +39,6 @@ public class SyncGameProfileToDummyPlayerMixin {
             syncGameProfileChangeToDummyPlayer(List.of(serverPlayerEntity));
         }
     }
-
-    @Unique
-    private static final Set<String> visited = new HashSet<>();
 
     @Unique
     void syncGameProfileChangeToDummyPlayer(Collection<ServerPlayerEntity> players) {

@@ -37,7 +37,7 @@ public class WarpNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(String argumentName) {
         return super.makeRequiredArgumentBuilder(argumentName).suggests((ctx, builder) -> {
-            WarpInitializer.data.getModel().name2warp.keySet().forEach(builder::suggest);
+            WarpInitializer.data.model().name2warp.keySet().forEach(builder::suggest);
             return builder.buildFuture();
         });
     }

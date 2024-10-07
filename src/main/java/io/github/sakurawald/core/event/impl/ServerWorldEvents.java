@@ -11,16 +11,15 @@ public class ServerWorldEvents {
             listener.fire(server, world);
         }
     });
-
-    public interface ServerWorldUnloadCallback {
-        void fire(MinecraftServer server, ServerWorld world);
-    }
-
     public static final Event<ServerWorldLoadCallback> LOAD = new Event<>((listeners) -> (server, world) -> {
         for (ServerWorldLoadCallback listener : listeners) {
             listener.fire(server, world);
         }
     });
+
+    public interface ServerWorldUnloadCallback {
+        void fire(MinecraftServer server, ServerWorld world);
+    }
 
     public interface ServerWorldLoadCallback {
         void fire(MinecraftServer server, ServerWorld world);

@@ -7,7 +7,7 @@ import org.quartz.JobExecutionContext;
 public class CleanerJob extends CronJob {
 
     public CleanerJob() {
-        super(() -> CleanerInitializer.config.getModel().cron);
+        super(() -> CleanerInitializer.config.model().cron);
     }
 
     @Override

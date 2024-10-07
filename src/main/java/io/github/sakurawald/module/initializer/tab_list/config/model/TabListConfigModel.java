@@ -7,6 +7,7 @@ public class TabListConfigModel {
 
     public Style style = new Style();
     public String update_cron = "* * * ? * *";
+
     public static class Style {
         public List<String> header = new ArrayList<>() {
             {

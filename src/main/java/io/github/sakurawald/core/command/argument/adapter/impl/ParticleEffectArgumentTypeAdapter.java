@@ -19,7 +19,7 @@ public class ParticleEffectArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return ParticleEffectArgumentType.getParticle(context,argument.getArgumentName());
+        return ParticleEffectArgumentType.getParticle(context, argument.getArgumentName());
     }
 
     @Override

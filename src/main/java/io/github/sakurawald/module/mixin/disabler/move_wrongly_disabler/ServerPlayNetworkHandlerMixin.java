@@ -14,11 +14,11 @@ public abstract class ServerPlayNetworkHandlerMixin {
     public ServerPlayerEntity player;
 
     @ModifyExpressionValue(
-            method = "onPlayerMove",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/server/network/ServerPlayerInteractionManager;isCreative()Z"
-            )
+        method = "onPlayerMove",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/server/network/ServerPlayerInteractionManager;isCreative()Z"
+        )
     )
     public boolean disablePlayerMovedWrongly(boolean original) {
         return true;

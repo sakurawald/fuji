@@ -22,7 +22,6 @@ import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.world.config.model.WorldConfigModel;
 import io.github.sakurawald.module.initializer.world.config.model.WorldDataModel;
 import io.github.sakurawald.module.initializer.world.structure.DimensionEntry;
-import lombok.Getter;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -46,36 +45,17 @@ import java.util.Optional;
  */
 
 @Cite("https://github.com/NucleoidMC/fantasy")
-@Getter
 @CommandNode("world")
 @CommandRequirement(level = 4)
 public class WorldInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<WorldConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, WorldConfigModel.class);
+    private static final BaseConfigurationHandler<WorldConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, WorldConfigModel.class);
 
     private static final BaseConfigurationHandler<WorldDataModel> storage = new ObjectConfigurationHandler<>("world.json", WorldDataModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("world.json"), WorldInitializer.class));
 
-    @Override
-    public void onInitialize() {
-        ServerLifecycleEvents.SERVER_STARTED.register(this::loadWorlds);
-    }
-
-    public void loadWorlds(@NotNull MinecraftServer server) {
-        storage.getModel().dimension_list.stream()
-            .filter(DimensionEntry::isEnable)
-            .forEach(it -> {
-                try {
-                    WorldManager.requestToCreateWorld(it);
-                    LogUtil.info("load dimension {} into server done.", it.getDimension());
-                } catch (Exception e) {
-                    LogUtil.error("failed to load dimension `{}`", it, e);
-                }
-            });
-    }
-
     private static void checkBlacklist(CommandContext<ServerCommandSource> ctx, String identifier) {
-        if (config.getModel().blacklist.dimension_list.contains(identifier)) {
+        if (config.model().blacklist.dimension_list.contains(identifier)) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.blacklist", identifier);
             throw new AbortCommandExecutionException();
         }
@@ -117,7 +97,7 @@ public class WorldInitializer extends ModuleInitializer {
         long $seed = seed.orElse(RandomSeed.getSeed());
         Identifier dimensionTypeIdentifier = Identifier.of(dimensionType.getValue());
         DimensionEntry dimensionEntry = new DimensionEntry(true, dimensionIdentifier.toString(), dimensionTypeIdentifier.toString(), $seed);
-        storage.getModel().dimension_list.add(dimensionEntry);
+        storage.model().dimension_list.add(dimensionEntry);
         storage.writeStorage();
 
         /* request creation */
@@ -138,12 +118,12 @@ public class WorldInitializer extends ModuleInitializer {
         WorldManager.requestToDeleteWorld(world);
 
         /* write entry */
-        Optional<DimensionEntry> first = storage.getModel().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
+        Optional<DimensionEntry> first = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
         if (first.isEmpty()) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found", identifier);
             return CommandHelper.Return.FAIL;
         }
-        storage.getModel().dimension_list.remove(first.get());
+        storage.model().dimension_list.remove(first.get());
         storage.writeStorage();
 
         LocaleHelper.sendBroadcastByKey("world.dimension.deleted", identifier);
@@ -157,7 +137,7 @@ public class WorldInitializer extends ModuleInitializer {
         String identifier = RegistryHelper.ofString(world);
         checkBlacklist(ctx, identifier);
 
-        Optional<DimensionEntry> dimensionEntryOpt = storage.getModel().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
+        Optional<DimensionEntry> dimensionEntryOpt = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
         if (dimensionEntryOpt.isEmpty()) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found");
             return CommandHelper.Return.FAIL;
@@ -177,5 +157,23 @@ public class WorldInitializer extends ModuleInitializer {
 
         LocaleHelper.sendBroadcastByKey("world.dimension.reset", identifier);
         return CommandHelper.Return.SUCCESS;
+    }
+
+    @Override
+    public void onInitialize() {
+        ServerLifecycleEvents.SERVER_STARTED.register(this::loadWorlds);
+    }
+
+    private void loadWorlds(@NotNull MinecraftServer server) {
+        storage.model().dimension_list.stream()
+            .filter(DimensionEntry::isEnable)
+            .forEach(it -> {
+                try {
+                    WorldManager.requestToCreateWorld(it);
+                    LogUtil.info("load dimension {} into server done.", it.getDimension());
+                } catch (Exception e) {
+                    LogUtil.error("failed to load dimension `{}`", it, e);
+                }
+            });
     }
 }

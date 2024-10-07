@@ -22,18 +22,16 @@ public class SearchHeadsInputGui extends InputSignGui {
     @Override
     public void onClose() {
         String keywords = reduceInputOrEmpty();
-
         if (keywords.isEmpty()) {
             parentGui.open();
             return;
         }
 
-        List<Head> entities = HeadProvider.getHeads().values().stream()
-                .filter(head -> head.name.toLowerCase().contains(keywords.toLowerCase())
-                        || head.getTagsOrEmpty().toLowerCase().contains(keywords.toLowerCase()))
-                .collect(Collectors.toList());
-
+        List<Head> entities = HeadProvider.getLoadedHeads().values().stream()
+            .filter(head -> head.name.toLowerCase().contains(keywords.toLowerCase())
+                || head.getTagsOrEmpty().toLowerCase().contains(keywords.toLowerCase()))
+            .collect(Collectors.toList());
         Text title = LocaleHelper.getTextByKey(player, "gui.search.title", keywords);
-        new PagedHeadGui(this.parentGui, player, title, entities, 0).open();
+        new CategoryHeadGui(this.parentGui, player, title, entities, 0).open();
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.screen.GrindstoneScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 
 public class GrindStoneInitializer extends ModuleInitializer {
@@ -21,6 +22,7 @@ public class GrindStoneInitializer extends ModuleInitializer {
                 return true;
             }
         }, Text.translatable("container.grindstone_title")));
+        player.incrementStat(Stats.INTERACT_WITH_GRINDSTONE);
         return CommandHelper.Return.SUCCESS;
     }
 }

@@ -25,112 +25,11 @@ public class ModuleManager extends BaseManager {
 
     public static final String ENABLE_SUPPLIER_KEY = "enable";
     public static final String CORE_MODULE_ROOT = "core";
-    private static final Set<String> MODULES = new HashSet<>(ReflectionUtil.getGraph(ReflectionUtil.MODULE_GRAPH_FILE_NAME));
+
+    private static final Set<String> MODULE_PATHS = new HashSet<>(ReflectionUtil.getGraph(ReflectionUtil.MODULE_GRAPH_FILE_NAME));
 
     private final Map<Class<? extends ModuleInitializer>, ModuleInitializer> moduleRegistry = new HashMap<>();
     private final Map<List<String>, Boolean> module2enable = new HashMap<>();
-
-    @Override
-    public void onInitialize() {
-        initializeModuleInitializers();
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> this.serverStartupReport());
-    }
-
-    @SuppressWarnings("unchecked")
-    private void initializeModuleInitializers() {
-        ReflectionUtil.getGraph(ReflectionUtil.MODULE_INITIALIZER_GRAPH_FILE_NAME)
-            .stream()
-            .filter(className -> Managers.getModuleManager().shouldWeEnableThis(className))
-            .forEach(className -> {
-                try {
-                    Class<? extends ModuleInitializer> clazz = (Class<? extends ModuleInitializer>) Class.forName(className);
-                    this.initializeModuleInitializer(clazz);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
-    }
-
-    /**
-     * (If a module is enabled, but the module doesn't extend AbstractModule, then this me*
-     * hod will also return null, but the module doesn't extend AbstractModule, then this method will also return null.)
-     */
-    public <T extends ModuleInitializer> void initializeModuleInitializer(@NotNull Class<T> clazz) {
-        if (!moduleRegistry.containsKey(clazz)) {
-            if (shouldWeEnableThis(clazz.getName())) {
-                try {
-                    ModuleInitializer moduleInitializer = clazz.getDeclaredConstructor().newInstance();
-                    moduleInitializer.doInitialize();
-                    moduleRegistry.put(clazz, moduleInitializer);
-                } catch (Exception e) {
-                    LogUtil.error("failed to initialize module %s.".formatted(clazz.getSimpleName()), e);
-                }
-            }
-        }
-    }
-
-    public void reloadModuleInitializers() {
-        moduleRegistry.values().forEach(initializer -> {
-                try {
-                    initializer.doReload();
-                } catch (Exception e) {
-                    LogUtil.error("failed to reload module.", e);
-                }
-            }
-        );
-    }
-
-    private void serverStartupReport() {
-        List<String> enabledModuleList = new ArrayList<>();
-        module2enable.forEach((module, enable) -> {
-            if (enable) enabledModuleList.add(ReflectionUtil.joinModulePath(module));
-        });
-
-        enabledModuleList.sort(String::compareTo);
-        LogUtil.info("enabled {}/{} modules -> {}", enabledModuleList.size(), module2enable.size(), enabledModuleList);
-    }
-
-    public boolean shouldWeEnableThis(String className) {
-        return shouldWeEnableThis(computeModulePath(className));
-    }
-
-    private boolean shouldWeEnableThis(@NotNull List<String> modulePath) {
-        if (Configs.configHandler.getModel().core.debug.disable_all_modules) return false;
-        if (modulePath.getFirst().equals(CORE_MODULE_ROOT)) return true;
-
-        // cache
-        if (module2enable.containsKey(modulePath)) {
-            return module2enable.get(modulePath);
-        }
-
-        // soft fail if required mod is not installed.
-        if (!isRequiredModsInstalled(modulePath)) {
-            LogUtil.warn("refuse to load module {} (reason: the required dependency mod isn't installed)", modulePath);
-            module2enable.put(modulePath, false);
-            return false;
-        }
-
-        // check enable-supplier
-        boolean enable = true;
-        JsonObject parent = Configs.configHandler.convertModelToJsonTree().getAsJsonObject().get("modules").getAsJsonObject();
-        for (String node : modulePath) {
-            parent = parent.getAsJsonObject(node);
-
-            if (parent == null || !parent.has(ModuleManager.ENABLE_SUPPLIER_KEY)) {
-                throw new RuntimeException("Missing `enable supplier` key for dir name list `%s`".formatted(modulePath));
-            }
-
-            // only enable a sub-module if the parent module is enabled.
-            if (!parent.getAsJsonPrimitive(ModuleManager.ENABLE_SUPPLIER_KEY).getAsBoolean()) {
-                enable = false;
-                break;
-            }
-        }
-
-        // cache
-        module2enable.put(modulePath, enable);
-        return enable;
-    }
 
     /**
      * @return the module path for given class name, if the class is not inside a module, then a special module path List.of("core") will be returned.
@@ -170,7 +69,7 @@ public class ModuleManager extends BaseManager {
 
         /* remove the trailing directories until the string is a module path string */
         String modulePathString = String.join(".", modulePath);
-        while (!MODULES.contains(modulePathString)) {
+        while (!MODULE_PATHS.contains(modulePathString)) {
             // remove last!
             if (modulePath.isEmpty()) {
                 throw new RuntimeException("Can't find the module enable-supplier in `config.json` for class name %s. Did you forget to add the enable-supplier key in ConfigModel ?".formatted(className));
@@ -182,6 +81,107 @@ public class ModuleManager extends BaseManager {
         }
 
         return modulePath;
+    }
+
+    @Override
+    public void onInitialize() {
+        invokeModuleInitializers();
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> this.serverStartupReport());
+    }
+
+    @SuppressWarnings("unchecked")
+    private void invokeModuleInitializers() {
+        ReflectionUtil.getGraph(ReflectionUtil.MODULE_INITIALIZER_GRAPH_FILE_NAME)
+            .stream()
+            .filter(className -> Managers.getModuleManager().shouldWeEnableThis(className))
+            .forEach(className -> {
+                try {
+                    Class<? extends ModuleInitializer> clazz = (Class<? extends ModuleInitializer>) Class.forName(className);
+                    this.initializeModuleInitializer(clazz);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+    }
+
+    /**
+     * If a module is enabled, but the module doesn't extend AbstractModule, then this method will also return null, but the module doesn't extend AbstractModule, then this method will also return null.
+     */
+    public <T extends ModuleInitializer> void initializeModuleInitializer(@NotNull Class<T> clazz) {
+        if (!moduleRegistry.containsKey(clazz)) {
+            if (shouldWeEnableThis(clazz.getName())) {
+                try {
+                    ModuleInitializer moduleInitializer = clazz.getDeclaredConstructor().newInstance();
+                    moduleInitializer.doInitialize();
+                    moduleRegistry.put(clazz, moduleInitializer);
+                } catch (Exception e) {
+                    LogUtil.error("failed to invoke doInitialize() of module initializer of module {}", clazz.getSimpleName(), e);
+                }
+            }
+        }
+    }
+
+    public void reloadModuleInitializers() {
+        moduleRegistry.values().forEach(initializer -> {
+                try {
+                    initializer.doReload();
+                } catch (Exception e) {
+                    LogUtil.error("failed to reload module.", e);
+                }
+            }
+        );
+    }
+
+    private void serverStartupReport() {
+        List<String> enabledModuleList = new ArrayList<>();
+        module2enable.forEach((module, enable) -> {
+            if (enable) enabledModuleList.add(ReflectionUtil.joinModulePath(module));
+        });
+
+        enabledModuleList.sort(String::compareTo);
+        LogUtil.info("enabled {}/{} modules -> {}", enabledModuleList.size(), module2enable.size(), enabledModuleList);
+    }
+
+    public boolean shouldWeEnableThis(String className) {
+        return shouldWeEnableThis(computeModulePath(className));
+    }
+
+    private boolean shouldWeEnableThis(@NotNull List<String> modulePath) {
+        if (Configs.configHandler.model().core.debug.disable_all_modules) return false;
+        if (modulePath.getFirst().equals(CORE_MODULE_ROOT)) return true;
+
+        // cache
+        if (module2enable.containsKey(modulePath)) {
+            return module2enable.get(modulePath);
+        }
+
+        // soft fail if required mod is not installed.
+        if (!isRequiredModsInstalled(modulePath)) {
+            LogUtil.warn("refuse to enable module {} (reason: the required dependency mod for this module isn't installed, please read the official wiki!)", modulePath);
+            module2enable.put(modulePath, false);
+            return false;
+        }
+
+        // check enable-supplier
+        boolean enable = true;
+        JsonObject parent = Configs.configHandler.convertModelToJsonTree().getAsJsonObject().get("modules").getAsJsonObject();
+        for (String node : modulePath) {
+            parent = parent.getAsJsonObject(node);
+
+            if (parent == null || !parent.has(ModuleManager.ENABLE_SUPPLIER_KEY)) {
+                throw new RuntimeException("Missing `enable supplier` key for dir name list `%s`".formatted(modulePath));
+            }
+
+            // only enable a sub-module if the parent module is enabled.
+            if (!parent.getAsJsonPrimitive(ModuleManager.ENABLE_SUPPLIER_KEY).getAsBoolean()) {
+                enable = false;
+                break;
+            }
+        }
+
+        // cache
+        module2enable.put(modulePath, enable);
+        return enable;
     }
 
     private boolean isRequiredModsInstalled(@NotNull List<String> modulePath) {
