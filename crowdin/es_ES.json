@@ -257,7 +257,7 @@
   "command.requirement.string_permission": "<blue>Required String Permission: %s",
   "placeholder.list.gui.title": "<pink>Placeholder",
   "command.execute.echo.executing_source": "<#FF5F00>An exception occurs during the execution of `/%s`\nMessage: %s",
-  "command.execute.echo.initiating_source": "<#FF5F00>An exception occurs during executing the command `/%s` as `%s`\nMessage: %s",
+  "command.execute.echo.initiating_source": "<#FF5F00>An exception occurs during executing the command `/%1$s` as `%2$s`\nMessage: %3$s",
   "echo.send_bossbar.notify": "<green>The bossbar sent to `%s` with command list `%s` is completed.",
   "created": "<green>Created.",
   "not_found": "<red>Not found.",
