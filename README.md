@@ -19,11 +19,11 @@ A mod that ports EssentialsX / CMI from bukkit to fabric.
 ## Manual
 
 Download a copy of [fuji-manual.pdf](
-https://github.com/sakurawald/fuji/raw/dev/docs/release/fuji.pdf)
+https://github.com/sakurawald/fuji/raw/dev/docs/release/fuji.pdf)()
 
 ## Contribution
 
-Help us translate this project, see: [crowdin-project](https://crowdin.com/project/fuji-fabric)
+See [contributing](https://github.com/sakurawald/fuji/blob/dev/CONTRIBUTING.md)
 
 ## Cite
 

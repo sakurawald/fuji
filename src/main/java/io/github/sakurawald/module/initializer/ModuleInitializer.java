@@ -32,7 +32,7 @@ public class ModuleInitializer {
     }
 
     public void registerPlaceholder() {
-
+        // no-op
     }
 
     public void registerGsonTypeAdapter() {
