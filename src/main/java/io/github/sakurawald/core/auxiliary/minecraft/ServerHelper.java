@@ -49,11 +49,15 @@ public class ServerHelper {
     }
 
     public static List<ServerPlayerEntity> getPlayers() {
-        return getDefaultServer().getPlayerManager().getPlayerList();
+        return getPlayerManager().getPlayerList();
+    }
+
+    public static @Nullable ServerPlayerEntity getPlayer(String name) {
+        return getPlayerManager().getPlayer(name);
     }
 
     public static boolean isPlayerOnline(String name) {
-        return getDefaultServer().getPlayerManager().getPlayerList().stream().anyMatch(p -> p.getGameProfile().getName().equals(name));
+        return getPlayers().stream().anyMatch(p -> p.getGameProfile().getName().equals(name));
     }
 
     public static void sendPacketToAll(Packet<?> packet) {

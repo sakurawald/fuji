@@ -26,17 +26,15 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         super(entityType, level);
     }
 
+    @SuppressWarnings("DataFlowIssue")
     @Inject(method = "interact", at = @At("HEAD"), cancellable = true)
     private void canManipulateTheFakePlayer(Entity target, Hand hand, @NotNull CallbackInfoReturnable<ActionResult> cir) {
         if (target instanceof EntityPlayerMPFake fakePlayer) {
-
             ServerPlayerEntity source = (ServerPlayerEntity) (Object) this;
 
             if (!FakePlayerManagerInitializer.isMyFakePlayer(source, fakePlayer)) {
-                // cancel this event
                 cir.setReturnValue(ActionResult.FAIL);
 
-                // main-hand and off-hand will both trigger this event
                 if (hand == Hand.MAIN_HAND) {
                     LocaleHelper.sendMessageByKey(source, "fake_player_manager.manipulate.forbidden");
                 }

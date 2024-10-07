@@ -3,6 +3,7 @@ package io.github.sakurawald.module.mixin.gameplay.carpet.fake_player_manager;
 import carpet.commands.PlayerCommand;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager.FakePlayerManagerInitializer;
 import net.minecraft.server.command.ServerCommandSource;
@@ -45,25 +46,30 @@ public abstract class PlayerCommandMixin {
         ServerPlayerEntity player = context.getSource().getPlayer();
         if (player == null) return;
 
+        /* check: caps */
         if (!FakePlayerManagerInitializer.canSpawnFakePlayer(player)) {
             LocaleHelper.sendMessageByKey(player, "fake_player_manager.spawn.limit_exceed");
-            cir.setReturnValue(0);
+            cir.setReturnValue(CommandHelper.Return.FAIL);
         }
     }
 
     @Inject(method = "spawn", at = @At("TAIL"), remap = false)
     private static void $spawn_tail(@NotNull CommandContext<ServerCommandSource> context, CallbackInfoReturnable<Integer> cir) {
+        /* transform fake-player name */
+        String playerArg = StringArgumentType.getString(context, "player");
+        playerArg = transformFakePlayerName(playerArg);
+
+        /* track it */
         ServerPlayerEntity player = context.getSource().getPlayer();
-        String fakePlayerName = StringArgumentType.getString(context, "player");
-        fakePlayerName = transformFakePlayerName(fakePlayerName);
-        FakePlayerManagerInitializer.addFakePlayer(player, fakePlayerName);
-        FakePlayerManagerInitializer.renewFakePlayers(player);
+        FakePlayerManagerInitializer.addMyFakePlayer(player, playerArg);
+        FakePlayerManagerInitializer.renewMyFakePlayers(player);
     }
 
     @Inject(method = "cantManipulate", at = @At("HEAD"), remap = false, cancellable = true)
     private static void $cantManipulate(@NotNull CommandContext<ServerCommandSource> context, @NotNull CallbackInfoReturnable<Boolean> cir) {
-        String fakePlayerName = StringArgumentType.getString(context, "player");
-        if (!FakePlayerManagerInitializer.canManipulateFakePlayer(context, fakePlayerName)) {
+        String playerArg = StringArgumentType.getString(context, "player");
+
+        if (!FakePlayerManagerInitializer.canManipulateFakePlayer(context, playerArg)) {
             LocaleHelper.sendMessageByKey(context.getSource(), "fake_player_manager.manipulate.forbidden");
             cir.setReturnValue(true);
         }
