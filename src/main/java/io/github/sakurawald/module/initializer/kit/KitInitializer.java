@@ -115,10 +115,15 @@ public class KitInitializer extends ModuleInitializer {
         /* try to insert the item in specified slot */
         PlayerInventory playerInventory = player.getInventory();
         List<ItemStack> tryAgainList = new ArrayList<>();
-        for (int i = 0; i < kit.getStackList().size(); i++) {
-            ItemStack copy = kit.getStackList().get(i).copy();
 
-            if (!playerInventory.insertStack(i, copy)) {
+        for (int i = 0; i < kit.getStackList().size(); i++) {
+            ItemStack template = kit.getStackList().get(i);
+            if (template.isEmpty()) {
+                continue;
+            }
+
+            ItemStack copy = template.copy();
+            if (!playerInventory.getStack(i).isEmpty() || !playerInventory.insertStack(i, copy)) {
                 tryAgainList.add(copy);
             }
         }
