@@ -46,4 +46,4 @@ the first string is banana and the second string is apple
 Read the chapter `Development` in fuji manual.
 
 ## Don't forget to write your name in the contributor list
-You are welcome to open a `pull-request` in github to add your name into the `contributor list` locates in (here)[https://github.com/sakurawald/fuji/blob/dev/src/main/resources/fabric.mod.json].
+You are welcome to open a `pull-request` in github to add your name into the `contributor list` locates in [here](https://github.com/sakurawald/fuji/blob/dev/src/main/resources/fabric.mod.json).
