@@ -29,10 +29,6 @@ public class HomeInitializer extends ModuleInitializer {
     private static final BaseConfigurationHandler<HomeDataModel> storage = new ObjectConfigurationHandler<>("home.json", HomeDataModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("home.json"), HomeInitializer.class));
 
-    public void onInitialize() {
-        storage.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
-    }
-
     public static Map<String, SpatialPose> withHomes(@NotNull ServerPlayerEntity player) {
         String playerName = player.getGameProfile().getName();
         Map<String, Map<String, SpatialPose>> homes = storage.model().name2home;
@@ -92,11 +88,14 @@ public class HomeInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-
     @CommandNode("home list")
     private static int $list(@CommandSource ServerPlayerEntity player) {
         LocaleHelper.sendMessageByKey(player, "home.list", withHomes(player).keySet());
         return CommandHelper.Return.SUCCESS;
+    }
+
+    public void onInitialize() {
+        storage.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 
 }

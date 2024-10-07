@@ -18,7 +18,7 @@ public class Vec3ArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return Vec3ArgumentType.getVec3(context,argument.getArgumentName());
+        return Vec3ArgumentType.getVec3(context, argument.getArgumentName());
     }
 
     @Override

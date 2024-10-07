@@ -18,7 +18,7 @@ public class ScoreboardCriterionArgumentTypeAdapter extends BaseArgumentTypeAdap
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return ScoreboardCriterionArgumentType.getCriterion(context,argument.getArgumentName());
+        return ScoreboardCriterionArgumentType.getCriterion(context, argument.getArgumentName());
     }
 
     @Override

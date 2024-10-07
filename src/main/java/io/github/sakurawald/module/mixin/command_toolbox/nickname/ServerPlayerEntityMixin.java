@@ -23,7 +23,7 @@ public class ServerPlayerEntityMixin {
         String format = NicknameInitializer.getNicknameHandler().model().format.player2format.get(player.getGameProfile().getName());
 
         if (format != null) {
-            cir.setReturnValue(LocaleHelper.getTextByValue(null,format));
+            cir.setReturnValue(LocaleHelper.getTextByValue(null, format));
         }
     }
 

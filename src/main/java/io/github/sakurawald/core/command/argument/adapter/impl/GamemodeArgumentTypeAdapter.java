@@ -21,7 +21,7 @@ public class GamemodeArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @SneakyThrows
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return GameModeArgumentType.getGameMode(context,argument.getArgumentName());
+        return GameModeArgumentType.getGameMode(context, argument.getArgumentName());
     }
 
     @Override

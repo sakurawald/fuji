@@ -27,7 +27,7 @@ public class BossBarColorArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        String name = StringArgumentType.getString(context,argument.getArgumentName());
+        String name = StringArgumentType.getString(context, argument.getArgumentName());
         return BossBar.Color.valueOf(name);
     }
 

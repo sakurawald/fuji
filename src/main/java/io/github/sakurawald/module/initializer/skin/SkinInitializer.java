@@ -39,42 +39,42 @@ public class SkinInitializer extends ModuleInitializer {
 
     public void registerCommand(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess commandBuildContext, CommandManager.RegistrationEnvironment commandSelection) {
         dispatcher.register(literal("skin")
-                .then(literal("set")
-                        .then(literal("mojang")
-                                .then(argument("skin_name", StringArgumentType.word())
-                                        .executes(context ->
-                                                skinAction(context.getSource(),
-                                                        () -> MojangProfileFetcher.fetchOnlineSkin(StringArgumentType.getString(context, "skin_name"))))
-                                        .then(argument("targets", GameProfileArgumentType.gameProfile()).requires(source -> source.hasPermissionLevel(4))
-                                                .executes(context ->
-                                                        skinAction(context.getSource(), GameProfileArgumentType.getProfileArgument(context, "targets"), true,
-                                                                () -> MojangProfileFetcher.fetchOnlineSkin(StringArgumentType.getString(context, "skin_name")))))))
-                        .then(literal("web")
-                                .then(literal("classic")
-                                        .then(argument("url", StringArgumentType.string())
-                                                .executes(context ->
-                                                        skinAction(context.getSource(),
-                                                                () -> MineSkinSkinProvider.getSkin(StringArgumentType.getString(context, "url"), SkinVariant.CLASSIC)))
-                                                .then(argument("targets", GameProfileArgumentType.gameProfile()).requires(source -> source.hasPermissionLevel(4))
-                                                        .executes(context ->
-                                                                skinAction(context.getSource(), GameProfileArgumentType.getProfileArgument(context, "targets"), true,
-                                                                        () -> MineSkinSkinProvider.getSkin(StringArgumentType.getString(context, "url"), SkinVariant.CLASSIC))))))
-                                .then(literal("slim")
-                                        .then(argument("url", StringArgumentType.string())
-                                                .executes(context ->
-                                                        skinAction(context.getSource(),
-                                                                () -> MineSkinSkinProvider.getSkin(StringArgumentType.getString(context, "url"), SkinVariant.SLIM)))
-                                                .then(argument("targets", GameProfileArgumentType.gameProfile()).requires(source -> source.hasPermissionLevel(4))
-                                                        .executes(context ->
-                                                                skinAction(context.getSource(), GameProfileArgumentType.getProfileArgument(context, "targets"), true,
-                                                                        () -> MineSkinSkinProvider.getSkin(StringArgumentType.getString(context, "url"), SkinVariant.SLIM))))))))
-                .then(literal("clear")
+            .then(literal("set")
+                .then(literal("mojang")
+                    .then(argument("skin_name", StringArgumentType.word())
                         .executes(context ->
-                                skinAction(context.getSource(),
-                                        () -> SkinRestorer.getSkinStorage().getDefaultSkin()))
-                        .then(argument("targets", GameProfileArgumentType.gameProfile()).executes(context ->
+                            skinAction(context.getSource(),
+                                () -> MojangProfileFetcher.fetchOnlineSkin(StringArgumentType.getString(context, "skin_name"))))
+                        .then(argument("targets", GameProfileArgumentType.gameProfile()).requires(source -> source.hasPermissionLevel(4))
+                            .executes(context ->
                                 skinAction(context.getSource(), GameProfileArgumentType.getProfileArgument(context, "targets"), true,
-                                        () -> SkinRestorer.getSkinStorage().getDefaultSkin()))))
+                                    () -> MojangProfileFetcher.fetchOnlineSkin(StringArgumentType.getString(context, "skin_name")))))))
+                .then(literal("web")
+                    .then(literal("classic")
+                        .then(argument("url", StringArgumentType.string())
+                            .executes(context ->
+                                skinAction(context.getSource(),
+                                    () -> MineSkinSkinProvider.getSkin(StringArgumentType.getString(context, "url"), SkinVariant.CLASSIC)))
+                            .then(argument("targets", GameProfileArgumentType.gameProfile()).requires(source -> source.hasPermissionLevel(4))
+                                .executes(context ->
+                                    skinAction(context.getSource(), GameProfileArgumentType.getProfileArgument(context, "targets"), true,
+                                        () -> MineSkinSkinProvider.getSkin(StringArgumentType.getString(context, "url"), SkinVariant.CLASSIC))))))
+                    .then(literal("slim")
+                        .then(argument("url", StringArgumentType.string())
+                            .executes(context ->
+                                skinAction(context.getSource(),
+                                    () -> MineSkinSkinProvider.getSkin(StringArgumentType.getString(context, "url"), SkinVariant.SLIM)))
+                            .then(argument("targets", GameProfileArgumentType.gameProfile()).requires(source -> source.hasPermissionLevel(4))
+                                .executes(context ->
+                                    skinAction(context.getSource(), GameProfileArgumentType.getProfileArgument(context, "targets"), true,
+                                        () -> MineSkinSkinProvider.getSkin(StringArgumentType.getString(context, "url"), SkinVariant.SLIM))))))))
+            .then(literal("clear")
+                .executes(context ->
+                    skinAction(context.getSource(),
+                        () -> SkinRestorer.getSkinStorage().getDefaultSkin()))
+                .then(argument("targets", GameProfileArgumentType.gameProfile()).executes(context ->
+                    skinAction(context.getSource(), GameProfileArgumentType.getProfileArgument(context, "targets"), true,
+                        () -> SkinRestorer.getSkinStorage().getDefaultSkin()))))
         );
     }
 

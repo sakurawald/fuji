@@ -18,7 +18,7 @@ public class FloatRangeArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return NumberRangeArgumentType.FloatRangeArgumentType.getRangeArgument(context,argument.getArgumentName());
+        return NumberRangeArgumentType.FloatRangeArgumentType.getRangeArgument(context, argument.getArgumentName());
     }
 
     @Override

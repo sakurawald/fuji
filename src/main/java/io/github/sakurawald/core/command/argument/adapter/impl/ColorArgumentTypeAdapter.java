@@ -18,7 +18,7 @@ public class ColorArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return ColorArgumentType.getColor(context,argument.getArgumentName());
+        return ColorArgumentType.getColor(context, argument.getArgumentName());
     }
 
     @Override

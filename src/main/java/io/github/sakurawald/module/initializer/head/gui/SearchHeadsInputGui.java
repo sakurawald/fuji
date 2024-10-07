@@ -28,9 +28,9 @@ public class SearchHeadsInputGui extends InputSignGui {
         }
 
         List<Head> entities = HeadProvider.getLoadedHeads().values().stream()
-                .filter(head -> head.name.toLowerCase().contains(keywords.toLowerCase())
-                        || head.getTagsOrEmpty().toLowerCase().contains(keywords.toLowerCase()))
-                .collect(Collectors.toList());
+            .filter(head -> head.name.toLowerCase().contains(keywords.toLowerCase())
+                || head.getTagsOrEmpty().toLowerCase().contains(keywords.toLowerCase()))
+            .collect(Collectors.toList());
         Text title = LocaleHelper.getTextByKey(player, "gui.search.title", keywords);
         new CategoryHeadGui(this.parentGui, player, title, entities, 0).open();
     }

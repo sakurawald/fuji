@@ -7,12 +7,11 @@ public class AfkConfigModel {
     public String format = "<gray>[AFK] %player:displayname_visual%";
 
     public AfkChecker afk_checker = new AfkChecker();
+    public AfkEvent afk_event = new AfkEvent();
 
     public static class AfkChecker {
         public String cron = "0 0/5 * ? * *";
     }
-
-    public AfkEvent afk_event = new AfkEvent();
 
     public static class AfkEvent {
         public List<String> on_enter_afk = new ArrayList<>() {

@@ -10,5 +10,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE, ElementType.METHOD})
 public @interface CommandRequirement {
     String string() default "";
+
     int level() default 0;
 }

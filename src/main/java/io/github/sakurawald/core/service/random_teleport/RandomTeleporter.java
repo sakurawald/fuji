@@ -40,7 +40,7 @@ public class RandomTeleporter {
 
             ServerWorld world = RegistryHelper.ofServerWorld(Identifier.of(setup.getDimension()));
             if (world == null) {
-                LocaleHelper.sendMessageByKey(player,"world.dimension.not_found");
+                LocaleHelper.sendMessageByKey(player, "world.dimension.not_found");
                 return;
             }
 
@@ -59,7 +59,7 @@ public class RandomTeleporter {
 
             // teleport the player
             SpatialPose spatialPose = new SpatialPose(world, result.get().getX() + 0.5, result.get().getY(), result.get().getZ() + 0.5, 0, 0);
-            ServerHelper.getDefaultServer().executeSync(()-> {
+            ServerHelper.getDefaultServer().executeSync(() -> {
                 // run the teleport action in main-thread
                 spatialPose.teleport(player);
             });
@@ -111,8 +111,8 @@ public class RandomTeleporter {
         int r_min = setup.getMinRange();
         int r_max = setup.getMaxRange();
         int r = (r_max == r_min
-                ? r_max
-                : rand.nextInt(r_min, r_max));
+            ? r_max
+            : rand.nextInt(r_min, r_max));
         final double angle = rand.nextDouble() * 2 * Math.PI;
         final double delta_x = r * Math.cos(angle);
         final double delta_z = r * Math.sin(angle);
@@ -134,12 +134,12 @@ public class RandomTeleporter {
     private static boolean isSatisfied(@NotNull TeleportSetup setup, @NotNull Chunk chunk, @NotNull BlockPos pos) {
         BlockState blockState = chunk.getBlockState(pos);
         return pos.getY() >= setup.getMinY()
-                && pos.getY() <= setup.getMaxY()
-                && blockState.getFluidState().isEmpty()
-                && blockState.getBlock() != Blocks.POWDER_SNOW
-                && blockState.getBlock() != Blocks.FIRE
-                && pos.getY() >= chunk.getBottomY()
-                && pos.getY() <= chunk.getTopY();
+            && pos.getY() <= setup.getMaxY()
+            && blockState.getFluidState().isEmpty()
+            && blockState.getBlock() != Blocks.POWDER_SNOW
+            && blockState.getBlock() != Blocks.FIRE
+            && pos.getY() >= chunk.getBottomY()
+            && pos.getY() <= chunk.getTopY();
     }
 
     public static @NotNull Iterable<BlockPos.Mutable> getChunkCandidateBlocks(@NotNull ChunkPos chunkPos) {

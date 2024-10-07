@@ -20,18 +20,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 // the carpet-fabric default event handler priority is 1000
 @Mixin(value = PlayerEntity.class, priority = 999)
+public abstract class PlayerEntityMixin extends LivingEntity {
 
-public abstract class PlayerMixin extends LivingEntity {
-
-    protected PlayerMixin(@NotNull EntityType<? extends LivingEntity> entityType, World level) {
+    protected PlayerEntityMixin(@NotNull EntityType<? extends LivingEntity> entityType, World level) {
         super(entityType, level);
     }
 
-    @SuppressWarnings("DataFlowIssue")
     @Inject(method = "interact", at = @At("HEAD"), cancellable = true)
     private void canManipulateTheFakePlayer(Entity target, Hand hand, @NotNull CallbackInfoReturnable<ActionResult> cir) {
         if (target instanceof EntityPlayerMPFake fakePlayer) {
+
             ServerPlayerEntity source = (ServerPlayerEntity) (Object) this;
+
             if (!FakePlayerManagerInitializer.isMyFakePlayer(source, fakePlayer)) {
                 // cancel this event
                 cir.setReturnValue(ActionResult.FAIL);

@@ -14,22 +14,22 @@ public abstract class ServerGamePacketListenerImplMixin {
     public ServerPlayerEntity player;
 
     @ModifyExpressionValue(
-            method = "onPlayerMove",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;isHost()Z"
-            )
+        method = "onPlayerMove",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;isHost()Z"
+        )
     )
     public boolean disablePlayerMoveTooQuickly(boolean original) {
         return true;
     }
 
     @ModifyExpressionValue(
-            method = "onVehicleMove",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;isHost()Z"
-            )
+        method = "onVehicleMove",
+        at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;isHost()Z"
+        )
     )
     public boolean disableVehicleMoveTooQuickly(boolean original) {
         return true;

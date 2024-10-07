@@ -67,38 +67,12 @@ public abstract class BaseArgumentTypeAdapter {
 
     }
 
-    private boolean match(Class<?> clazz) {
-        return this.getTypeClasses().stream().anyMatch(it -> it.equals(clazz));
-    }
-
-    public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(String argumentName) {
-        ArgumentType<?> argumentType = this.makeArgumentType();
-        return CommandManager.argument(argumentName, argumentType);
-    }
-
-    protected abstract ArgumentType<?> makeArgumentType();
-
-    protected abstract Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument);
-
-    public abstract List<Class<?>> getTypeClasses();
-
-    public abstract List<String> getTypeStrings();
-
     public static Class<?> toTypeClass(String typeString) {
         Class<?> type = string2class.get(typeString);
         if (type == null)
             throw new IllegalArgumentException("Unknown argument type `%s`".formatted(typeString));
 
         return type;
-    }
-
-    public final Object makeParameterObject(CommandContext<ServerCommandSource> ctx, Argument argument) {
-        Object argumentObject = this.makeArgumentObject(ctx, argument);
-        return box(argument, argumentObject);
-    }
-
-    public boolean verifyCommandSource(CommandContext<ServerCommandSource> context) {
-        return true;
     }
 
     private static Object box(Argument argument, Object value) {
@@ -118,6 +92,32 @@ public abstract class BaseArgumentTypeAdapter {
         }
 
         throw new RuntimeException("No adapters match the argument type: " + type.getTypeName());
+    }
+
+    private boolean match(Class<?> clazz) {
+        return this.getTypeClasses().stream().anyMatch(it -> it.equals(clazz));
+    }
+
+    public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(String argumentName) {
+        ArgumentType<?> argumentType = this.makeArgumentType();
+        return CommandManager.argument(argumentName, argumentType);
+    }
+
+    protected abstract ArgumentType<?> makeArgumentType();
+
+    protected abstract Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument);
+
+    public abstract List<Class<?>> getTypeClasses();
+
+    public abstract List<String> getTypeStrings();
+
+    public final Object makeParameterObject(CommandContext<ServerCommandSource> ctx, Argument argument) {
+        Object argumentObject = this.makeArgumentObject(ctx, argument);
+        return box(argument, argumentObject);
+    }
+
+    public boolean verifyCommandSource(CommandContext<ServerCommandSource> context) {
+        return true;
     }
 
 }

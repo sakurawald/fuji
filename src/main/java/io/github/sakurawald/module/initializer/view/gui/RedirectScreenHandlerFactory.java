@@ -21,16 +21,16 @@ public abstract class RedirectScreenHandlerFactory {
     private boolean onlineEditMode;
     private ServerPlayerEntity targetPlayer;
 
-    protected ServerPlayerEntity getTargetPlayer() {
-        return this.targetPlayer;
-    }
-
     public RedirectScreenHandlerFactory(String targetPlayerName, Text title) {
         this.targetPlayerName = targetPlayerName;
         this.title = title;
 
         // load
         this.loadTargetPlayer();
+    }
+
+    protected ServerPlayerEntity getTargetPlayer() {
+        return this.targetPlayer;
     }
 
     private void loadTargetPlayer() {
@@ -86,7 +86,7 @@ public abstract class RedirectScreenHandlerFactory {
 
     public SimpleNamedScreenHandlerFactory makeFactory() {
         return new SimpleNamedScreenHandlerFactory(
-                this::makeGenericContainerScreenHandler, this.title);
+            this::makeGenericContainerScreenHandler, this.title);
     }
 
 }

@@ -38,11 +38,11 @@ public class BackInitializer extends ModuleInitializer {
         SpatialPose lastPos = player2lastPos.get(player.getGameProfile().getName());
         double ignoreDistance = config.model().ignore_distance;
         if (lastPos == null
-                || (!lastPos.sameLevel(player.getWorld()))
-                || (lastPos.sameLevel(player.getWorld()) && player.getPos().squaredDistanceTo(lastPos.getX(), lastPos.getY(), lastPos.getZ()) > ignoreDistance * ignoreDistance)
+            || (!lastPos.sameLevel(player.getWorld()))
+            || (lastPos.sameLevel(player.getWorld()) && player.getPos().squaredDistanceTo(lastPos.getX(), lastPos.getY(), lastPos.getZ()) > ignoreDistance * ignoreDistance)
         ) {
             player2lastPos.put(player.getGameProfile().getName(),
-                    SpatialPose.of(player));
+                SpatialPose.of(player));
         }
     }
 

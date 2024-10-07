@@ -31,6 +31,58 @@ public class ModuleManager extends BaseManager {
     private final Map<Class<? extends ModuleInitializer>, ModuleInitializer> moduleRegistry = new HashMap<>();
     private final Map<List<String>, Boolean> module2enable = new HashMap<>();
 
+    /**
+     * @return the module path for given class name, if the class is not inside a module, then a special module path List.of("core") will be returned.
+     */
+    public static @NotNull List<String> computeModulePath(@NotNull String className) {
+
+        /* remove leading directories */
+        int left = -1;
+        List<Class<?>> modulePackagePrefixes = List.of(ModuleInitializer.class, GlobalMixinConfigPlugin.class);
+        for (Class<?> modulePackagePrefix : modulePackagePrefixes) {
+            String prefix = modulePackagePrefix.getPackageName();
+            if (className.startsWith(prefix)) {
+
+                // skip self
+                if (className.equals(modulePackagePrefix.getName())) continue;
+
+                left = prefix.length() + 1;
+                break;
+            }
+        }
+
+        if (left == -1) {
+            return List.of(CORE_MODULE_ROOT);
+        }
+
+        String str = className.substring(left);
+
+        /* remove trailing directories */
+        int right = str.lastIndexOf(".");
+        str = str.substring(0, right);
+
+        List<String> modulePath = new ArrayList<>(List.of(str.split("\\.")));
+
+        if (modulePath.getFirst().equals(CORE_MODULE_ROOT)) {
+            return List.of(CORE_MODULE_ROOT);
+        }
+
+        /* remove the trailing directories until the string is a module path string */
+        String modulePathString = String.join(".", modulePath);
+        while (!MODULE_PATHS.contains(modulePathString)) {
+            // remove last!
+            if (modulePath.isEmpty()) {
+                throw new RuntimeException("Can't find the module enable-supplier in `config.json` for class name %s. Did you forget to add the enable-supplier key in ConfigModel ?".formatted(className));
+            }
+            modulePath.removeLast();
+
+            // compute it
+            modulePathString = String.join(".", modulePath);
+        }
+
+        return modulePath;
+    }
+
     @Override
     public void onInitialize() {
         invokeModuleInitializers();
@@ -130,58 +182,6 @@ public class ModuleManager extends BaseManager {
         // cache
         module2enable.put(modulePath, enable);
         return enable;
-    }
-
-    /**
-     * @return the module path for given class name, if the class is not inside a module, then a special module path List.of("core") will be returned.
-     */
-    public static @NotNull List<String> computeModulePath(@NotNull String className) {
-
-        /* remove leading directories */
-        int left = -1;
-        List<Class<?>> modulePackagePrefixes = List.of(ModuleInitializer.class, GlobalMixinConfigPlugin.class);
-        for (Class<?> modulePackagePrefix : modulePackagePrefixes) {
-            String prefix = modulePackagePrefix.getPackageName();
-            if (className.startsWith(prefix)) {
-
-                // skip self
-                if (className.equals(modulePackagePrefix.getName())) continue;
-
-                left = prefix.length() + 1;
-                break;
-            }
-        }
-
-        if (left == -1) {
-            return List.of(CORE_MODULE_ROOT);
-        }
-
-        String str = className.substring(left);
-
-        /* remove trailing directories */
-        int right = str.lastIndexOf(".");
-        str = str.substring(0, right);
-
-        List<String> modulePath = new ArrayList<>(List.of(str.split("\\.")));
-
-        if (modulePath.getFirst().equals(CORE_MODULE_ROOT)) {
-            return List.of(CORE_MODULE_ROOT);
-        }
-
-        /* remove the trailing directories until the string is a module path string */
-        String modulePathString = String.join(".", modulePath);
-        while (!MODULE_PATHS.contains(modulePathString)) {
-            // remove last!
-            if (modulePath.isEmpty()) {
-                throw new RuntimeException("Can't find the module enable-supplier in `config.json` for class name %s. Did you forget to add the enable-supplier key in ConfigModel ?".formatted(className));
-            }
-            modulePath.removeLast();
-
-            // compute it
-            modulePathString = String.join(".", modulePath);
-        }
-
-        return modulePath;
     }
 
     private boolean isRequiredModsInstalled(@NotNull List<String> modulePath) {

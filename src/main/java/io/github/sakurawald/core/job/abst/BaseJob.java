@@ -48,6 +48,12 @@ public abstract class BaseJob implements Job {
         this.triggerKey = new TriggerKey(jobName, jobGroup);
     }
 
+    public static void rescheduleAll() {
+        for (BaseJob reschedulableJob : reschedulableJobs) {
+            reschedulableJob.reschedule();
+        }
+    }
+
     public abstract Trigger makeTrigger();
 
     public void schedule() {
@@ -69,12 +75,6 @@ public abstract class BaseJob implements Job {
             Managers.getScheduleManager().rescheduleJob(this.triggerKey, this.makeTrigger());
         } catch (SchedulerException e) {
             LogUtil.error("failed to reschedule job: exception = {}, job = {}", e, this);
-        }
-    }
-
-    public static void rescheduleAll() {
-        for (BaseJob reschedulableJob : reschedulableJobs) {
-            reschedulableJob.reschedule();
         }
     }
 

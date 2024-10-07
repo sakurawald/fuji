@@ -17,7 +17,7 @@ public abstract class ServerPlayerEntityMixin {
         // If damage was actually applied...
         if (cir.getReturnValue()) {
             ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-            PlayerEvents.ON_DAMAGED.invoker().fire(player,damageSource, amount);
+            PlayerEvents.ON_DAMAGED.invoker().fire(player, damageSource, amount);
         }
     }
 }

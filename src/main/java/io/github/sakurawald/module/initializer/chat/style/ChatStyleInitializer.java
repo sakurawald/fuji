@@ -39,18 +39,85 @@ import java.util.regex.Pattern;
 
 public class ChatStyleInitializer extends ModuleInitializer {
 
-    private static final BaseConfigurationHandler<ChatFormatModel> chatFormatHandler = new ObjectConfigurationHandler<>("chat.json", ChatFormatModel.class)
-        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("chat.json"), ChatStyleInitializer.class));
-
     public static final BaseConfigurationHandler<ChatStyleConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatStyleConfigModel.class);
-
-    private static Map<Pattern, String> patterns;
-
     public static final RegistryKey<MessageType> MESSAGE_TYPE_KEY = RegistryKey.of(RegistryKeys.MESSAGE_TYPE, Identifier.ofVanilla("fuji_chat"));
-
     public static final MessageType MESSAGE_TYPE_VALUE = new MessageType(
         new Decoration("%s", List.of(Decoration.Parameter.CONTENT), Style.EMPTY),
         new Decoration("%s", List.of(Decoration.Parameter.CONTENT), Style.EMPTY));
+    private static final BaseConfigurationHandler<ChatFormatModel> chatFormatHandler = new ObjectConfigurationHandler<>("chat.json", ChatFormatModel.class)
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("chat.json"), ChatStyleInitializer.class));
+    private static Map<Pattern, String> patterns;
+
+    @CommandNode("chat format set")
+    private static int $format(@CommandSource ServerPlayerEntity player, GreedyString format) {
+        /* save the format*/
+        String name = player.getGameProfile().getName();
+        String $format = format.getValue();
+        chatFormatHandler.model().format.player2format.put(name, $format);
+        chatFormatHandler.writeStorage();
+
+        /* feedback */
+        $format = LocaleHelper.getValue(player, "chat.format.set").replace("%s", $format);
+        $format = $format.replace("%message%", LocaleHelper.getValue(player, "chat.format.show"));
+        Text text = LocaleHelper.getTextByValue(null, $format);
+
+        player.sendMessage(text);
+        return CommandHelper.Return.SUCCESS;
+    }
+
+    @CommandNode("chat format reset")
+    private static int $reset(@CommandSource ServerPlayerEntity player) {
+        String name = player.getGameProfile().getName();
+        chatFormatHandler.model().format.player2format.remove(name);
+        chatFormatHandler.writeStorage();
+        LocaleHelper.sendMessageByKey(player, "chat.format.reset");
+        return CommandHelper.Return.SUCCESS;
+    }
+
+    private static String resolveMentionTag(@NotNull String string) {
+        /* resolve player tag */
+        List<ServerPlayerEntity> mentionedPlayers = new ArrayList<>();
+
+        String[] playerNames = ServerHelper.getDefaultServer().getPlayerNames();
+        // fix: mention the longest name first
+        Arrays.sort(playerNames, Comparator.comparingInt(String::length).reversed());
+
+        for (String playerName : playerNames) {
+            // here we must continue so that mentionPlayers will not be added
+            if (!string.contains(playerName)) continue;
+            string = string.replace(playerName, "<aqua>%s</aqua>".formatted(playerName));
+            mentionedPlayers.add(ServerHelper.getDefaultServer().getPlayerManager().getPlayer(playerName));
+        }
+
+        /* run mention player task */
+        if (!mentionedPlayers.isEmpty()) {
+            MentionPlayersJob.requestJob(config.model().mention_player, mentionedPlayers);
+        }
+
+        return string;
+    }
+
+    private static String resolvePatterns(String string) {
+        for (Map.Entry<Pattern, String> entry : patterns.entrySet()) {
+            string = entry.getKey().matcher(string).replaceAll(entry.getValue());
+        }
+        return string;
+    }
+
+    public static @NotNull Text parseText(@NotNull ServerPlayerEntity player, String message) {
+        /* parse message */
+        message = resolvePatterns(message);
+        message = resolveMentionTag(message);
+        message = chatFormatHandler.model().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
+            .replace("%message%", message);
+
+        /* parse format */
+        String format = config.model().format;
+
+        /* combine */
+        String string = format.replace("%message%", message);
+        return LocaleHelper.getTextByValue(player, string);
+    }
 
     @Override
     public void onInitialize() {
@@ -107,89 +174,17 @@ public class ChatStyleInitializer extends ModuleInitializer {
     }
 
     private void registerPrefixPlaceholder() {
-        PlaceholderHelper.withPlayer("player_prefix",(player, arg)->{
+        PlaceholderHelper.withPlayer("player_prefix", (player, arg) -> {
             String prefix = PermissionHelper.getPrefix(player.getUuid());
             return LocaleHelper.getTextByValue(player, prefix);
         });
     }
 
     private void registerSuffixPlaceholder() {
-        PlaceholderHelper.withPlayer("player_suffix",(player, arg)->{
+        PlaceholderHelper.withPlayer("player_suffix", (player, arg) -> {
             String prefix = PermissionHelper.getSuffix(player.getUuid());
             return LocaleHelper.getTextByValue(player, prefix);
         });
-    }
-
-    @CommandNode("chat format set")
-    private static int $format(@CommandSource ServerPlayerEntity player, GreedyString format) {
-        /* save the format*/
-        String name = player.getGameProfile().getName();
-        String $format = format.getValue();
-        chatFormatHandler.model().format.player2format.put(name, $format);
-        chatFormatHandler.writeStorage();
-
-        /* feedback */
-        $format = LocaleHelper.getValue(player, "chat.format.set").replace("%s", $format);
-        $format = $format.replace("%message%", LocaleHelper.getValue(player, "chat.format.show"));
-        Text text = LocaleHelper.getTextByValue(null, $format);
-
-        player.sendMessage(text);
-        return CommandHelper.Return.SUCCESS;
-    }
-
-    @CommandNode("chat format reset")
-    private static int $reset(@CommandSource ServerPlayerEntity player) {
-        String name = player.getGameProfile().getName();
-        chatFormatHandler.model().format.player2format.remove(name);
-        chatFormatHandler.writeStorage();
-        LocaleHelper.sendMessageByKey(player, "chat.format.reset");
-        return CommandHelper.Return.SUCCESS;
-    }
-
-
-    private static String resolveMentionTag(@NotNull String string) {
-        /* resolve player tag */
-        List<ServerPlayerEntity> mentionedPlayers = new ArrayList<>();
-
-        String[] playerNames = ServerHelper.getDefaultServer().getPlayerNames();
-        // fix: mention the longest name first
-        Arrays.sort(playerNames, Comparator.comparingInt(String::length).reversed());
-
-        for (String playerName : playerNames) {
-            // here we must continue so that mentionPlayers will not be added
-            if (!string.contains(playerName)) continue;
-            string = string.replace(playerName, "<aqua>%s</aqua>".formatted(playerName));
-            mentionedPlayers.add(ServerHelper.getDefaultServer().getPlayerManager().getPlayer(playerName));
-        }
-
-        /* run mention player task */
-        if (!mentionedPlayers.isEmpty()) {
-            MentionPlayersJob.requestJob(config.model().mention_player, mentionedPlayers);
-        }
-
-        return string;
-    }
-
-    private static String resolvePatterns(String string) {
-        for (Map.Entry<Pattern, String> entry : patterns.entrySet()) {
-            string = entry.getKey().matcher(string).replaceAll(entry.getValue());
-        }
-        return string;
-    }
-
-    public static @NotNull Text parseText(@NotNull ServerPlayerEntity player, String message) {
-        /* parse message */
-        message = resolvePatterns(message);
-        message = resolveMentionTag(message);
-        message = chatFormatHandler.model().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
-            .replace("%message%", message);
-
-        /* parse format */
-        String format = config.model().format;
-
-        /* combine */
-        String string = format.replace("%message%", message);
-        return LocaleHelper.getTextByValue(player, string);
     }
 
 }

@@ -52,7 +52,7 @@ public class RescueBackupManager extends BaseBackupManager {
     }
 
     protected void makeBackup() {
-        IOUtil.compressFiles(Fuji.CONFIG_PATH.toFile(),this.getInputFiles(), this.getOutputFile());
+        IOUtil.compressFiles(Fuji.CONFIG_PATH.toFile(), this.getInputFiles(), this.getOutputFile());
     }
 
     public void backup() {

@@ -45,8 +45,8 @@ public class WorksGui extends PagedGui<Work> {
         } else {
             controlLayer.addSlot(
                 GuiHelper.makeSkullButton(GuiHelper.Icon.A_ICON)
-                .setName(LocaleHelper.getTextByKey(player, "works.list.all_works"))
-                .setCallback(() -> new WorksGui(player, WorksInitializer.works.model().works, 0).open())
+                    .setName(LocaleHelper.getTextByKey(player, "works.list.all_works"))
+                    .setCallback(() -> new WorksGui(player, WorksInitializer.works.model().works, 0).open())
             );
         }
 

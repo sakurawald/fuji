@@ -57,12 +57,6 @@ public class DeathLogInitializer extends ModuleInitializer {
     private static final String XP_PROGRESS = "xp_progress";
     private static final String INVENTORY = "inventory";
 
-    @SneakyThrows(IOException.class)
-    @Override
-    public void onInitialize() {
-        Files.createDirectories(DEATH_DATA_DIR_PATH);
-    }
-
     @CommandNode("restore")
     private static int restore(@CommandSource ServerCommandSource source, String from, int index, ServerPlayerEntity to) {
         /* read from file */
@@ -205,6 +199,12 @@ public class DeathLogInitializer extends ModuleInitializer {
         inventoryTag.putInt(XP_LEVEL, player.experienceLevel);
         inventoryTag.putFloat(XP_PROGRESS, player.experienceProgress);
         node.put(INVENTORY, inventoryTag);
+    }
+
+    @SneakyThrows(IOException.class)
+    @Override
+    public void onInitialize() {
+        Files.createDirectories(DEATH_DATA_DIR_PATH);
     }
 
 }

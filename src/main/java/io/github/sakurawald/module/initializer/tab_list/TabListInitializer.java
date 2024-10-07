@@ -21,6 +21,17 @@ public class TabListInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<TabListConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, TabListConfigModel.class);
 
+    public static void render() {
+        String headerControl = RandomUtil.drawList(config.model().style.header);
+        String footerControl = RandomUtil.drawList(config.model().style.footer);
+        for (ServerPlayerEntity player : ServerHelper.getPlayers()) {
+            @NotNull Text header = LocaleHelper.getTextByValue(player, headerControl);
+            @NotNull Text footer = LocaleHelper.getTextByValue(player, footerControl);
+            player.networkHandler.sendPacket(new PlayerListHeaderS2CPacket(header, footer));
+        }
+
+    }
+
     @Override
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new RenderHeaderAndFooterJob().schedule());
@@ -36,17 +47,6 @@ public class TabListInitializer extends ModuleInitializer {
         for (ServerPlayerEntity player : ServerHelper.getPlayers()) {
             server.getPlayerManager().sendToAll(new PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME, player));
         }
-    }
-
-    public static void render() {
-        String headerControl = RandomUtil.drawList(config.model().style.header);
-        String footerControl = RandomUtil.drawList(config.model().style.footer);
-        for (ServerPlayerEntity player : ServerHelper.getPlayers()) {
-            @NotNull Text header = LocaleHelper.getTextByValue(player, headerControl);
-            @NotNull Text footer = LocaleHelper.getTextByValue(player, footerControl);
-            player.networkHandler.sendPacket(new PlayerListHeaderS2CPacket(header, footer));
-        }
-
     }
 
 }

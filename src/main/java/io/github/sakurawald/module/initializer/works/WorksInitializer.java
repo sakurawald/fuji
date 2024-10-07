@@ -26,6 +26,12 @@ public class WorksInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<WorksConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, WorksConfigModel.class);
 
+    @CommandNode("works")
+    private static int $works(@CommandSource ServerPlayerEntity player) {
+        new WorksGui(player, works.model().works, 0).open();
+        return CommandHelper.Return.SUCCESS;
+    }
+
     @Override
     public void registerGsonTypeAdapter() {
         BaseConfigurationHandler.registerTypeAdapter(Work.class, new Work.WorkTypeAdapter());
@@ -40,12 +46,6 @@ public class WorksInitializer extends ModuleInitializer {
                 this.put(MinecraftServer.class.getName(), server);
             }
         }, () -> ScheduleManager.CRON_EVERY_MINUTE).schedule());
-    }
-
-    @CommandNode("works")
-    private static int $works(@CommandSource ServerPlayerEntity player) {
-        new WorksGui(player, works.model().works, 0).open();
-        return CommandHelper.Return.SUCCESS;
     }
 
 }

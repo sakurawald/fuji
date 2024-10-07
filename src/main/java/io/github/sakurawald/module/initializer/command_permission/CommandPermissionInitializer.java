@@ -26,15 +26,6 @@ import java.util.function.Predicate;
 @CommandRequirement(level = 4)
 public class CommandPermissionInitializer extends ModuleInitializer {
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    @Override
-    public void onInitialize() {
-        ServerLifecycleEvents.SERVER_STARTED.register(server-> {
-            // ensure the getRequirement() is triggered.
-            CommandHelper.getCommandNodes().forEach(com.mojang.brigadier.tree.CommandNode::getRequirement);
-        });
-    }
-
     @CommandNode
     public static int gui(@CommandSource ServerPlayerEntity player) {
         List<CommandNodePermissionEntry> entities = CommandHelper.getCommandNodes().stream()
@@ -73,6 +64,15 @@ public class CommandPermissionInitializer extends ModuleInitializer {
                 return original.test(source);
             }
         };
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    @Override
+    public void onInitialize() {
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+            // ensure the getRequirement() is triggered.
+            CommandHelper.getCommandNodes().forEach(com.mojang.brigadier.tree.CommandNode::getRequirement);
+        });
     }
 
 }

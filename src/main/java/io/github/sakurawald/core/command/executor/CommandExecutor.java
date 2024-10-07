@@ -33,11 +33,11 @@ public class CommandExecutor {
             return Objects.requireNonNull(ServerHelper.getCommandDispatcher()).execute(command, context.getExecutingSource());
         } catch (CommandSyntaxException e) {
             // echo to the executing source
-            LocaleHelper.sendMessageByKey(context.getExecutingSource(),"command.execute.echo.executing_source", command, e.getMessage());
+            LocaleHelper.sendMessageByKey(context.getExecutingSource(), "command.execute.echo.executing_source", command, e.getMessage());
 
             // echo to the initiating source
             if (!context.sameSource()) {
-                LocaleHelper.sendMessageByKey(context.getInitiatingSource(),"command.execute.echo.initiating_source", command,context.getExecutingSource().getName(), e.getMessage());
+                LocaleHelper.sendMessageByKey(context.getInitiatingSource(), "command.execute.echo.initiating_source", command, context.getExecutingSource().getName(), e.getMessage());
             }
         }
 

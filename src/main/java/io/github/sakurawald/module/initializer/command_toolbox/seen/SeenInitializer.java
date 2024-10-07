@@ -20,7 +20,7 @@ public class SeenInitializer extends ModuleInitializer {
 
     @Getter
     private static final BaseConfigurationHandler<SeenDataModel> data = new ObjectConfigurationHandler<>("seen.json", SeenDataModel.class)
-        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("seen.json"),SeenInitializer.class));
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("seen.json"), SeenInitializer.class));
 
     @CommandNode("seen")
     @CommandRequirement(level = 4)

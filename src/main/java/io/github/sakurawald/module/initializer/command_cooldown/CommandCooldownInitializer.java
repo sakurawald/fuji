@@ -48,34 +48,6 @@ public class CommandCooldownInitializer extends ModuleInitializer {
 
     private static final Map<String, Cooldown<String>> player2cooldown = new HashMap<>();
 
-    @Override
-    public void onInitialize() {
-        config.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
-    }
-
-    @Override
-    public void registerPlaceholder() {
-        PlaceholderHelper.withPlayer("command_cooldown_left_time", ((player, args) -> {
-            CommandCooldown cooldown = config.model().namedCooldown.list.get(args);
-            if (cooldown == null) return NOT_COOLDOWN_FOUND;
-
-            String key = player.getGameProfile().getName();
-            long leftTime = cooldown.computeCooldown(key, cooldown.getCooldownMs());
-            leftTime = Math.max(0, leftTime);
-            return Text.literal(String.valueOf(leftTime));
-        }));
-
-        PlaceholderHelper.withPlayer("command_cooldown_left_usage", ((player, args) -> {
-            CommandCooldown cooldown = config.model().namedCooldown.list.get(args);
-            if (cooldown == null) return NOT_COOLDOWN_FOUND;
-
-            String key = player.getGameProfile().getName();
-            int usage = cooldown.getUsage().getOrDefault(key, 0);
-            int leftUsage = cooldown.getMaxUsage() - usage;
-            return Text.literal(String.valueOf(leftUsage));
-        }));
-    }
-
     public static long computeCooldown(ServerPlayerEntity player, @NotNull String commandLine) {
         String name = player.getGameProfile().getName();
 
@@ -180,6 +152,34 @@ public class CommandCooldownInitializer extends ModuleInitializer {
             LocaleHelper.sendMessageByKey(source, "command_cooldown.already_exists", name);
             throw new AbortCommandExecutionException();
         }
+    }
+
+    @Override
+    public void onInitialize() {
+        config.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
+    }
+
+    @Override
+    public void registerPlaceholder() {
+        PlaceholderHelper.withPlayer("command_cooldown_left_time", ((player, args) -> {
+            CommandCooldown cooldown = config.model().namedCooldown.list.get(args);
+            if (cooldown == null) return NOT_COOLDOWN_FOUND;
+
+            String key = player.getGameProfile().getName();
+            long leftTime = cooldown.computeCooldown(key, cooldown.getCooldownMs());
+            leftTime = Math.max(0, leftTime);
+            return Text.literal(String.valueOf(leftTime));
+        }));
+
+        PlaceholderHelper.withPlayer("command_cooldown_left_usage", ((player, args) -> {
+            CommandCooldown cooldown = config.model().namedCooldown.list.get(args);
+            if (cooldown == null) return NOT_COOLDOWN_FOUND;
+
+            String key = player.getGameProfile().getName();
+            int usage = cooldown.getUsage().getOrDefault(key, 0);
+            int leftUsage = cooldown.getMaxUsage() - usage;
+            return Text.literal(String.valueOf(leftUsage));
+        }));
     }
 
 }

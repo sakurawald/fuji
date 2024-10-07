@@ -6,11 +6,11 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class PagedBookText extends PagedText{
+public class PagedBookText extends PagedText {
 
     public PagedBookText(ServerPlayerEntity player, String string) {
         String[] split = string.split(NEW_PAGE_DELIMITER);
         this.pages = new ArrayList<>();
-        Arrays.stream(split).forEach(it-> pages.add(LocaleHelper.getTextByValue(player, it)));
+        Arrays.stream(split).forEach(it -> pages.add(LocaleHelper.getTextByValue(player, it)));
     }
 }

@@ -26,23 +26,6 @@ public class CommandBundleInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<CommandBundleConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, CommandBundleConfigModel.class);
 
-    @Override
-    public void onInitialize() {
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-            // register in server started.
-            registerAllBundleCommands();
-
-            // to register bundle-commands automatically after `/reload` command.
-            CommandEvents.REGISTRATION.register((a, b, c) -> registerAllBundleCommands());
-        });
-    }
-
-    @Override
-    public void onReload() {
-        unregisterAllBundleCommands();
-        registerAllBundleCommands();
-    }
-
     @CommandNode("register")
     private static int registerAllBundleCommands() {
         LogUtil.info("register bundle commands.");
@@ -84,6 +67,23 @@ public class CommandBundleInitializer extends ModuleInitializer {
         }));
 
         return CommandHelper.Return.SUCCESS;
+    }
+
+    @Override
+    public void onInitialize() {
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+            // register in server started.
+            registerAllBundleCommands();
+
+            // to register bundle-commands automatically after `/reload` command.
+            CommandEvents.REGISTRATION.register((a, b, c) -> registerAllBundleCommands());
+        });
+    }
+
+    @Override
+    public void onReload() {
+        unregisterAllBundleCommands();
+        registerAllBundleCommands();
     }
 
 }

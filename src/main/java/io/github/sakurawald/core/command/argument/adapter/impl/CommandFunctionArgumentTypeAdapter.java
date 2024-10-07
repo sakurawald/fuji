@@ -20,7 +20,7 @@ public class CommandFunctionArgumentTypeAdapter extends BaseArgumentTypeAdapter 
     @SneakyThrows
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return CommandFunctionArgumentType.getFunctions(context,argument.getArgumentName());
+        return CommandFunctionArgumentType.getFunctions(context, argument.getArgumentName());
     }
 
     @Override

@@ -10,6 +10,6 @@ public class Interruptible {
     final boolean interruptInCombat;
 
     public static Interruptible makeUninterruptible() {
-        return new Interruptible(false, 2048, false,false);
+        return new Interruptible(false, 2048, false, false);
     }
 }

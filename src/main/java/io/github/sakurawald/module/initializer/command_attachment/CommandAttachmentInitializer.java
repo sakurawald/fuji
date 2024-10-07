@@ -74,16 +74,6 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         ServerHelper.getPlayers().forEach(CommandAttachmentInitializer::testSteppingBlockForPlayer);
     }
 
-    @Override
-    public void onInitialize() {
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> new TestSteppingOnBlockJob().schedule());
-    }
-
-    @Override
-    public void registerGsonTypeAdapter() {
-        BaseConfigurationHandler.registerTypeAdapter(CommandAttachmentEntry.class, new CommandAttachmentEntryAdapter());
-    }
-
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean existsAttachmentModel(String uuid) {
         return Managers.getAttachmentManager().existsAttachmentFile(COMMAND_ATTACHMENT_SUBJECT_NAME, uuid);
@@ -129,7 +119,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
             switch (executeAsType) {
                 case CONSOLE -> CommandExecutor.execute(ExtendedCommandSource.asConsole(source), e.getCommand());
                 case PLAYER -> CommandExecutor.execute(ExtendedCommandSource.asPlayer(source, player), e.getCommand());
-                case FAKE_OP -> CommandExecutor.execute(ExtendedCommandSource.asFakeOp(source,player), e.getCommand());
+                case FAKE_OP -> CommandExecutor.execute(ExtendedCommandSource.asFakeOp(source, player), e.getCommand());
             }
 
             /* item destroy */
@@ -297,6 +287,15 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         player.sendMessage(Text.literal(attachment));
     }
 
+    @Override
+    public void onInitialize() {
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> new TestSteppingOnBlockJob().schedule());
+    }
+
+    @Override
+    public void registerGsonTypeAdapter() {
+        BaseConfigurationHandler.registerTypeAdapter(CommandAttachmentEntry.class, new CommandAttachmentEntryAdapter());
+    }
 
     private static class CommandAttachmentEntryAdapter implements JsonDeserializer<CommandAttachmentEntry> {
 

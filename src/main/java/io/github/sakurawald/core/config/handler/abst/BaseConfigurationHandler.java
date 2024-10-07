@@ -45,7 +45,7 @@ import java.util.Set;
  * The configuration handler in module initializer should be static:
  * 1. The major point to make configuration handler a member of class, is that it's easier to control the lifecycle of objects, however, considering the fact that the configuration handler is a mapping between file system and memory, it should be static and unique.
  * 2. Create the instance of configuration handler should have no side effect, until the call to readStorage() and writeStorage()
- *
+ * <p>
  * Some other solutions:
  * 1. <a href="https://stackoverflow.com/questions/42503935/how-to-serialize-a-json-object-child-into-a-field">...</a>
  */
@@ -64,22 +64,17 @@ public abstract class BaseConfigurationHandler<T> {
         // null-value is value, we should serialize it.
         .serializeNulls()
         .create();
-
-    @Getter
-    protected final @NotNull Path path;
-
-    protected T model;
-
-    /* transformer */
-    private final List<ConfigurationTransformer> transformers = new ArrayList<>();
-
-    public BaseConfigurationHandler<T> addTransformer(ConfigurationTransformer transformer) {
-        this.transformers.add(transformer);
-        return this;
-    }
-
     /* json path */
     private static ParseContext jsonPathParser = null;
+    @Getter
+    protected final @NotNull Path path;
+    /* transformer */
+    private final List<ConfigurationTransformer> transformers = new ArrayList<>();
+    protected T model;
+
+    public BaseConfigurationHandler(@NotNull Path path) {
+        this.path = path;
+    }
 
     public static ParseContext getJsonPathParser() {
         if (jsonPathParser == null) {
@@ -114,8 +109,9 @@ public abstract class BaseConfigurationHandler<T> {
         gson = gson.newBuilder().registerTypeAdapter(type, typeAdapter).create();
     }
 
-    public BaseConfigurationHandler(@NotNull Path path) {
-        this.path = path;
+    public BaseConfigurationHandler<T> addTransformer(ConfigurationTransformer transformer) {
+        this.transformers.add(transformer);
+        return this;
     }
 
     protected abstract T getDefaultModel();

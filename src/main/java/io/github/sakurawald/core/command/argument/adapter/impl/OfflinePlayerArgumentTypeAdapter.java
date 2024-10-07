@@ -17,11 +17,6 @@ import java.util.List;
 
 public class OfflinePlayerArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
-    @Override
-    public ArgumentType<?> makeArgumentType() {
-        return StringArgumentType.string();
-    }
-
     private static @NotNull List<String> getPlayerNameListFromUserCache() {
         UserCache userCache = ServerHelper.getDefaultServer().getUserCache();
         if (userCache == null) return List.of();
@@ -29,6 +24,11 @@ public class OfflinePlayerArgumentTypeAdapter extends BaseArgumentTypeAdapter {
         List<String> playerNames = new ArrayList<>();
         userCache.byName.values().forEach(o -> playerNames.add(o.getProfile().getName()));
         return playerNames;
+    }
+
+    @Override
+    public ArgumentType<?> makeArgumentType() {
+        return StringArgumentType.string();
     }
 
     @Override

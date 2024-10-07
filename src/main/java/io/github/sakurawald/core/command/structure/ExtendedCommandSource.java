@@ -27,6 +27,34 @@ public class ExtendedCommandSource {
     @NotNull ServerCommandSource executingSource;
     boolean parsePlaceholder;
 
+    public static ExtendedCommandSource fromSource(@NotNull ServerCommandSource initiatingSource) {
+        return new ExtendedCommandSource(initiatingSource, initiatingSource, true);
+    }
+
+    public static ExtendedCommandSource asConsole(@NotNull ServerCommandSource initiatingSource, boolean parsePlaceholder) {
+        return new ExtendedCommandSource(initiatingSource, ServerHelper.getDefaultServer().getCommandSource(), parsePlaceholder);
+    }
+
+    public static ExtendedCommandSource asPlayer(@NotNull ServerCommandSource initiatingSource, PlayerEntity executingPlayer, boolean parsePlaceholder) {
+        return new ExtendedCommandSource(initiatingSource, executingPlayer.getCommandSource(), parsePlaceholder);
+    }
+
+    public static ExtendedCommandSource asFakeOp(@NotNull ServerCommandSource initiatingSource, PlayerEntity executingPlayer, boolean parsePlaceholder) {
+        return new ExtendedCommandSource(initiatingSource, executingPlayer.getCommandSource().withLevel(4), parsePlaceholder);
+    }
+
+    public static ExtendedCommandSource asConsole(@NotNull ServerCommandSource initiatingSource) {
+        return asConsole(initiatingSource, true);
+    }
+
+    public static ExtendedCommandSource asPlayer(@NotNull ServerCommandSource initiatingSource, PlayerEntity executingPlayer) {
+        return asPlayer(initiatingSource, executingPlayer, true);
+    }
+
+    public static ExtendedCommandSource asFakeOp(@NotNull ServerCommandSource initiatingSource, PlayerEntity executingPlayer) {
+        return asFakeOp(initiatingSource, executingPlayer, true);
+    }
+
     public boolean sameSource() {
         return executingSource.getName().equals(initiatingSource.getName());
     }
@@ -52,35 +80,6 @@ public class ExtendedCommandSource {
         }
 
         return string;
-    }
-
-    public static ExtendedCommandSource fromSource(@NotNull ServerCommandSource initiatingSource) {
-        return new ExtendedCommandSource(initiatingSource, initiatingSource, true);
-    }
-
-    public static ExtendedCommandSource asConsole(@NotNull ServerCommandSource initiatingSource, boolean parsePlaceholder) {
-        return new ExtendedCommandSource(initiatingSource, ServerHelper.getDefaultServer().getCommandSource(), parsePlaceholder);
-    }
-
-    public static ExtendedCommandSource asPlayer(@NotNull ServerCommandSource initiatingSource, PlayerEntity executingPlayer, boolean parsePlaceholder) {
-        return new ExtendedCommandSource(initiatingSource, executingPlayer.getCommandSource(), parsePlaceholder);
-    }
-
-    public static ExtendedCommandSource asFakeOp(@NotNull ServerCommandSource initiatingSource, PlayerEntity executingPlayer, boolean parsePlaceholder) {
-        return new ExtendedCommandSource(initiatingSource, executingPlayer.getCommandSource().withLevel(4), parsePlaceholder);
-    }
-
-    public static ExtendedCommandSource asConsole(@NotNull ServerCommandSource initiatingSource) {
-        return asConsole(initiatingSource, true);
-    }
-
-
-    public static ExtendedCommandSource asPlayer(@NotNull ServerCommandSource initiatingSource, PlayerEntity executingPlayer) {
-        return asPlayer(initiatingSource, executingPlayer, true);
-    }
-
-    public static ExtendedCommandSource asFakeOp(@NotNull ServerCommandSource initiatingSource, PlayerEntity executingPlayer) {
-        return asFakeOp(initiatingSource, executingPlayer, true);
     }
 
 }

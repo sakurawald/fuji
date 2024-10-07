@@ -21,14 +21,14 @@ public class HelpOpInitializer extends ModuleInitializer {
         List<ServerPlayerEntity> ops = playerManager.getPlayerList().stream().filter(p -> playerManager.isOperator(p.getGameProfile())).toList();
 
         if (ops.isEmpty()) {
-            LocaleHelper.sendMessageByKey(player,"helpop.fail");
+            LocaleHelper.sendMessageByKey(player, "helpop.fail");
             return CommandHelper.Return.FAIL;
         }
 
         Text text = LocaleHelper.getTextByKey(player, "helpop.format", player.getGameProfile().getName(), message.getValue());
         ops.forEach(o -> o.sendMessage(text));
 
-        LocaleHelper.sendMessageByKey(player,"helpop.success");
+        LocaleHelper.sendMessageByKey(player, "helpop.success");
         return CommandHelper.Return.SUCCESS;
     }
 

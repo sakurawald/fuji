@@ -52,7 +52,7 @@ public class FileDownloadHandler implements HttpHandler {
                     if (bytesReadCount + bytesRead > bytesReadExpected) {
                         try {
                             long sleepTime = ((bytesReadCount + bytesRead - bytesReadExpected) * NANO_TO_S)
-                                    / bytesPerSecond;
+                                / bytesPerSecond;
                             Thread.sleep(TimeUnit.NANOSECONDS.toMillis(sleepTime));
                         } catch (InterruptedException e) {
                             LogUtil.warn("interrupted while sleeping for throttling", e);

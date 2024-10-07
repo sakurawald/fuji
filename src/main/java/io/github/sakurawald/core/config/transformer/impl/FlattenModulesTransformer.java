@@ -18,7 +18,7 @@ public class FlattenModulesTransformer extends ConfigurationTransformer {
 
         String modulesPath = "$.modules";
         DocumentContext context = makeDocumentContext();
-        JsonObject modules = (JsonObject) read(context,modulesPath);
+        JsonObject modules = (JsonObject) read(context, modulesPath);
 
         for (String topLevelModule : modules.keySet()) {
             FlattenTreeTransformer flattenTreeTransformer = new FlattenTreeTransformer(

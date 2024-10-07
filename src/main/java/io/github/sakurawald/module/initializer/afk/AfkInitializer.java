@@ -24,12 +24,6 @@ public class AfkInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<AfkConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, AfkConfigModel.class);
 
-    @Override
-    public void onInitialize() {
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> new AfkMarkerJob().schedule());
-
-    }
-
     // note: issue command will update lastLastActionTime, so it's impossible to use /afk to disable afk
     @CommandNode("afk")
     private static int $afk(@CommandSource ServerPlayerEntity player) {
@@ -72,6 +66,12 @@ public class AfkInitializer extends ModuleInitializer {
         }
 
         return false;
+    }
+
+    @Override
+    public void onInitialize() {
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> new AfkMarkerJob().schedule());
+
     }
 
 }

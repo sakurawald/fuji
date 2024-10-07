@@ -17,7 +17,7 @@ public class EntityAnchorArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return EntityAnchorArgumentType.getEntityAnchor(context,argument.getArgumentName());
+        return EntityAnchorArgumentType.getEntityAnchor(context, argument.getArgumentName());
     }
 
     @Override

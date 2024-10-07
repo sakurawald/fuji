@@ -101,34 +101,11 @@ public class CommandDescriptor {
         return (LiteralArgumentBuilder<ServerCommandSource>) root;
     }
 
-    public String buildCommandNodePath() {
-        assert this.registerReturnValue != null;
-        return buildCommandNodePath(this.registerReturnValue.build());
-    }
-
     private static String buildCommandNodePath(CommandNode<ServerCommandSource> node) {
         StringBuilder sb = new StringBuilder();
         sb.append(node.getName());
         node.getChildren().forEach(child -> sb.append(".").append(buildCommandNodePath(child)));
         return sb.toString();
-    }
-
-    public void unregister() {
-        LogUtil.debug("un-register command: {}", this);
-
-        RootCommandNode<ServerCommandSource> root = CommandAnnotationProcessor.getDispatcher().getRoot();
-
-        assert this.registerReturnValue != null;
-        LiteralCommandNode<ServerCommandSource> navigationNode = this.registerReturnValue.build();
-        com.mojang.brigadier.tree.CommandNode<ServerCommandSource> targetNode = root.getChild(navigationNode.getName());
-        if (targetNode != null) {
-            if (CommandDescriptor.unregister(targetNode, navigationNode)) {
-                root.getChildren().removeIf(p -> p.getName().equals(navigationNode.getName()));
-            }
-        }
-
-        // sync the registry
-        CommandAnnotationProcessor.descriptors.remove(this);
     }
 
     private static boolean unregister(
@@ -149,45 +126,6 @@ public class CommandDescriptor {
 
         /* remove leaf node */
         return targetNode.getChildren().isEmpty();
-    }
-
-    protected List<Object> makeCommandFunctionArgs(CommandContext<ServerCommandSource> ctx) {
-        List<Object> args = new ArrayList<>();
-
-        for (Argument argument : this.arguments) {
-            /* the literal argument doesn't receive a value. */
-            if (argument.isLiteralArgument()) continue;
-
-            /* inject the value into a required argument. */
-            try {
-                Object arg = BaseArgumentTypeAdapter.getAdapter(argument.getType()).makeParameterObject(ctx, argument);
-
-                args.add(arg);
-            } catch (Exception e) {
-                /*
-                 * for command redirect, given 3 optional arguments named x, y and z.
-                 * The arguments are defined in order: (x, y, z).
-                 * The optional argument must be passed in the order that matches the defined order.
-                 * If the command source pass the optional arguments in the order (z, x, y), then thw following exceptions will be thrown:
-                 * java.lang.IllegalArgumentException, e.message = No such argument 'x' exists on this command
-                 * java.lang.IllegalArgumentException, e.message = No such argument 'y' exists on this command
-                 *
-                 * In order to continue the command-context passing process, we will temporally ignore the exception, so that the optional argument can be filled properly.
-                 *
-                 * The magic field "No such argument" is thrown by mojang's brigadier system.
-                 * */
-                if (e.getMessage() != null && e.getMessage().startsWith("No such argument")) {
-                    args.add(Optional.empty());
-                    continue;
-                }
-
-                // throw other exception for upper-level handler
-                throw e;
-            }
-
-        }
-
-        return args;
     }
 
     private static CommandNode<ServerCommandSource> computeRedirectTargetOfOptionalArgument(List<Argument> arguments) {
@@ -234,28 +172,6 @@ public class CommandDescriptor {
         return builder;
     }
 
-    protected Command<ServerCommandSource> makeCommandFunctionClosure() {
-        return (ctx) -> {
-
-            /* verify command source */
-            if (!verifyCommandSource(ctx, this)) {
-                return CommandHelper.Return.FAIL;
-            }
-
-            /* invoke the command function */
-            List<Object> args = makeCommandFunctionArgs(ctx);
-
-            int value;
-            try {
-                value = (int) this.method.invoke(null, args.toArray());
-            } catch (Exception wrappedOrUnwrappedException) {
-                return handleException(ctx, this.method, wrappedOrUnwrappedException);
-            }
-
-            return value;
-        };
-    }
-
     @SuppressWarnings("SameReturnValue")
     protected static int handleException(CommandContext<ServerCommandSource> ctx, Method method, Exception wrappedOrUnwrappedException) {
         /* get the real exception during reflection. */
@@ -291,7 +207,6 @@ public class CommandDescriptor {
         return BaseArgumentTypeAdapter.getAdapter(expectedCommandSources.getFirst().getType()).verifyCommandSource(ctx);
     }
 
-
     protected static void reportException(ServerCommandSource source, Method method, Throwable throwable) {
         /* report to console */
         String string = """
@@ -318,6 +233,90 @@ public class CommandDescriptor {
                 .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, stacktrace)));
 
         source.sendMessage(report);
+    }
+
+    public String buildCommandNodePath() {
+        assert this.registerReturnValue != null;
+        return buildCommandNodePath(this.registerReturnValue.build());
+    }
+
+    public void unregister() {
+        LogUtil.debug("un-register command: {}", this);
+
+        RootCommandNode<ServerCommandSource> root = CommandAnnotationProcessor.getDispatcher().getRoot();
+
+        assert this.registerReturnValue != null;
+        LiteralCommandNode<ServerCommandSource> navigationNode = this.registerReturnValue.build();
+        com.mojang.brigadier.tree.CommandNode<ServerCommandSource> targetNode = root.getChild(navigationNode.getName());
+        if (targetNode != null) {
+            if (CommandDescriptor.unregister(targetNode, navigationNode)) {
+                root.getChildren().removeIf(p -> p.getName().equals(navigationNode.getName()));
+            }
+        }
+
+        // sync the registry
+        CommandAnnotationProcessor.descriptors.remove(this);
+    }
+
+    protected List<Object> makeCommandFunctionArgs(CommandContext<ServerCommandSource> ctx) {
+        List<Object> args = new ArrayList<>();
+
+        for (Argument argument : this.arguments) {
+            /* the literal argument doesn't receive a value. */
+            if (argument.isLiteralArgument()) continue;
+
+            /* inject the value into a required argument. */
+            try {
+                Object arg = BaseArgumentTypeAdapter.getAdapter(argument.getType()).makeParameterObject(ctx, argument);
+
+                args.add(arg);
+            } catch (Exception e) {
+                /*
+                 * for command redirect, given 3 optional arguments named x, y and z.
+                 * The arguments are defined in order: (x, y, z).
+                 * The optional argument must be passed in the order that matches the defined order.
+                 * If the command source pass the optional arguments in the order (z, x, y), then thw following exceptions will be thrown:
+                 * java.lang.IllegalArgumentException, e.message = No such argument 'x' exists on this command
+                 * java.lang.IllegalArgumentException, e.message = No such argument 'y' exists on this command
+                 *
+                 * In order to continue the command-context passing process, we will temporally ignore the exception, so that the optional argument can be filled properly.
+                 *
+                 * The magic field "No such argument" is thrown by mojang's brigadier system.
+                 * */
+                if (e.getMessage() != null && e.getMessage().startsWith("No such argument")) {
+                    args.add(Optional.empty());
+                    continue;
+                }
+
+                // throw other exception for upper-level handler
+                throw e;
+            }
+
+        }
+
+        return args;
+    }
+
+    protected Command<ServerCommandSource> makeCommandFunctionClosure() {
+        return (ctx) -> {
+
+            /* verify command source */
+            if (!verifyCommandSource(ctx, this)) {
+                return CommandHelper.Return.FAIL;
+            }
+
+            /* invoke the command function */
+            List<Object> args = makeCommandFunctionArgs(ctx);
+
+            int value;
+            try {
+                value = (int) this.method.invoke(null, args.toArray());
+            } catch (Exception wrappedOrUnwrappedException) {
+                return handleException(ctx, this.method, wrappedOrUnwrappedException);
+            }
+
+            return value;
+        };
     }
 
     public LiteralArgumentBuilder<ServerCommandSource> register() {

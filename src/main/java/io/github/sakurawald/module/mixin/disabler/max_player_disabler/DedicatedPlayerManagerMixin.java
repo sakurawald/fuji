@@ -10,10 +10,10 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class DedicatedPlayerManagerMixin {
 
     @ModifyExpressionValue(
-            method = "canBypassPlayerLimit",
-            at = @At(
-                    value = "INVOKE", target = "Lnet/minecraft/server/OperatorList;canBypassPlayerLimit(Lcom/mojang/authlib/GameProfile;)Z"
-            )
+        method = "canBypassPlayerLimit",
+        at = @At(
+            value = "INVOKE", target = "Lnet/minecraft/server/OperatorList;canBypassPlayerLimit(Lcom/mojang/authlib/GameProfile;)Z"
+        )
     )
     public boolean disablePlayerLimit(boolean original, GameProfile profile) {
         return true;

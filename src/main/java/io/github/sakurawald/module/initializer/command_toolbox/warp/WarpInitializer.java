@@ -24,12 +24,7 @@ import java.util.Optional;
 public class WarpInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<WarpDataModel> data = new ObjectConfigurationHandler<>("warp.json", WarpDataModel.class)
-        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("warp.json"),WarpInitializer.class));
-
-    @Override
-    public void onInitialize() {
-        data.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
-    }
+        .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("warp.json"), WarpInitializer.class));
 
     private static void ensureWarpExists(ServerPlayerEntity player, WarpName warpName) {
         String name = warpName.getValue();
@@ -41,7 +36,7 @@ public class WarpInitializer extends ModuleInitializer {
 
     @CommandNode("tp")
     private static int $tp(@CommandSource ServerPlayerEntity player, WarpName warpName) {
-        ensureWarpExists(player,warpName);
+        ensureWarpExists(player, warpName);
 
         String name = warpName.getValue();
         WarpEntry entry = data.model().name2warp.get(name);
@@ -52,7 +47,7 @@ public class WarpInitializer extends ModuleInitializer {
     @CommandNode("unset")
     @CommandRequirement(level = 4)
     private static int $unset(@CommandSource ServerPlayerEntity player, WarpName warpName) {
-        ensureWarpExists(player,warpName);
+        ensureWarpExists(player, warpName);
 
         String name = warpName.getValue();
         data.model().name2warp.remove(name);
@@ -81,5 +76,10 @@ public class WarpInitializer extends ModuleInitializer {
     private static int $list(@CommandSource ServerPlayerEntity player) {
         LocaleHelper.sendMessageByKey(player, "warp.list", data.model().name2warp.keySet());
         return CommandHelper.Return.SUCCESS;
+    }
+
+    @Override
+    public void onInitialize() {
+        data.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 }

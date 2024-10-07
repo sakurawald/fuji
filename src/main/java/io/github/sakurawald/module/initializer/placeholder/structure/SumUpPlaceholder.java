@@ -38,12 +38,12 @@ public class SumUpPlaceholder {
 
     @SuppressWarnings("UnnecessaryLocalVariable")
     public static SumUpPlaceholder ofPlayer(String uuid) {
-       if (uuid2stats.containsKey(uuid)) {
-           return uuid2stats.get(uuid);
-       }
-        
+        if (uuid2stats.containsKey(uuid)) {
+            return uuid2stats.get(uuid);
+        }
+
         SumUpPlaceholder ret = new SumUpPlaceholder();
-        
+
         try {
             // get player statistics
             File file = getStatPath().resolve(uuid + ".json").toFile();

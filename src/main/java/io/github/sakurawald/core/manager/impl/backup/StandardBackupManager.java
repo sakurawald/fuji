@@ -78,7 +78,7 @@ public class StandardBackupManager extends BaseBackupManager {
 
     @Override
     protected void makeBackup() {
-        IOUtil.compressFiles(Fuji.CONFIG_PATH.toFile(),getInputFiles(), getOutputFile());
+        IOUtil.compressFiles(Fuji.CONFIG_PATH.toFile(), getInputFiles(), getOutputFile());
     }
 
     @SneakyThrows(IOException.class)

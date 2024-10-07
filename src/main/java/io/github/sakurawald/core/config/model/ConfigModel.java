@@ -238,7 +238,7 @@ public class ConfigModel {
                 public boolean enable = true;
             }
 
-            public static class SendCustom{
+            public static class SendCustom {
                 public boolean enable = true;
             }
         }

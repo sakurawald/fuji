@@ -40,13 +40,13 @@ public class HomeNameArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     public RequiredArgumentBuilder<ServerCommandSource, ?> makeRequiredArgumentBuilder(String argumentName) {
         return super.makeRequiredArgumentBuilder(argumentName).suggests((context, builder) -> {
-                    ServerPlayerEntity player = context.getSource().getPlayer();
-                    if (player == null) return builder.buildFuture();
+                ServerPlayerEntity player = context.getSource().getPlayer();
+                if (player == null) return builder.buildFuture();
 
-                    Map<String, SpatialPose> name2position = HomeInitializer.withHomes(player);
-                    name2position.keySet().forEach(builder::suggest);
-                    return builder.buildFuture();
-                }
+                Map<String, SpatialPose> name2position = HomeInitializer.withHomes(player);
+                name2position.keySet().forEach(builder::suggest);
+                return builder.buildFuture();
+            }
         );
     }
 }

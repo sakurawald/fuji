@@ -18,7 +18,7 @@ public class NbtElementArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return NbtElementArgumentType.getNbtElement(context,argument.getArgumentName());
+        return NbtElementArgumentType.getNbtElement(context, argument.getArgumentName());
     }
 
     @Override

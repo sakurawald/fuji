@@ -46,6 +46,10 @@ public class ChunkScore implements Comparable<ChunkScore> {
         this.chunkPos = chunkPos;
     }
 
+    public static boolean hasPermissionToClickToTeleport(@NotNull ServerPlayerEntity player) {
+        return player.hasPermissionLevel(4) || PermissionHelper.hasPermission(player.getUuid(), "top_chunks.teleport");
+    }
+
     public void plusEntity(@NotNull Entity entity) {
         String type = entity.getType().getTranslationKey();
         type = TypeFormatter.type2transform_type.getOrDefault(type, type);
@@ -88,10 +92,6 @@ public class ChunkScore implements Comparable<ChunkScore> {
     @Override
     public int compareTo(@NotNull ChunkScore that) {
         return Integer.compare(that.score, this.score);
-    }
-
-    public static boolean hasPermissionToClickToTeleport(@NotNull ServerPlayerEntity player) {
-        return player.hasPermissionLevel(4) || PermissionHelper.hasPermission(player.getUuid(), "top_chunks.teleport");
     }
 
     public @NotNull Text asText(@NotNull ServerCommandSource source) {

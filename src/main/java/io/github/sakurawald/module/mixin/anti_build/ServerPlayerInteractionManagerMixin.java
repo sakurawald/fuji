@@ -38,7 +38,7 @@ public class ServerPlayerInteractionManagerMixin {
 
         String id = RegistryHelper.ofString(blockState);
         if (AntiBuildInitializer.config.model().anti.break_block.id.contains(id)
-                && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("break_block", id))
+            && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("break_block", id))
         ) {
             LocaleHelper.sendMessageByKey(player, "anti_build.disallow");
             cir.setReturnValue(false);
@@ -51,7 +51,7 @@ public class ServerPlayerInteractionManagerMixin {
         String id = RegistryHelper.ofString(itemStack);
 
         if (AntiBuildInitializer.config.model().anti.interact_item.id.contains(id)
-                && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_item", id))
+            && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_item", id))
         ) {
             LocaleHelper.sendMessageByKey(player, "anti_build.disallow");
             cir.setReturnValue(ActionResult.FAIL);
@@ -65,7 +65,7 @@ public class ServerPlayerInteractionManagerMixin {
         String id = RegistryHelper.ofString(blockState);
 
         if (AntiBuildInitializer.config.model().anti.interact_block.id.contains(id)
-                && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_block", id))
+            && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_block", id))
         ) {
             LocaleHelper.sendMessageByKey(player, "anti_build.disallow");
             cir.setReturnValue(ActionResult.FAIL);

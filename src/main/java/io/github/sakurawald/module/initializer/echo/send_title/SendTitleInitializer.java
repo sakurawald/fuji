@@ -20,11 +20,11 @@ public class SendTitleInitializer extends ModuleInitializer {
     @CommandNode("send-title")
     @CommandRequirement(level = 4)
     private static int sendTitle(@CommandSource ServerCommandSource source, ServerPlayerEntity player
-            , Optional<String> mainTitle
-            , Optional<String> subTitle
-            , Optional<Integer> fadeInTicks
-            , Optional<Integer> stayTicks
-            , Optional<Integer> fadeOutTicks
+        , Optional<String> mainTitle
+        , Optional<String> subTitle
+        , Optional<Integer> fadeInTicks
+        , Optional<Integer> stayTicks
+        , Optional<Integer> fadeOutTicks
     ) {
 
         String $mainTitle = mainTitle.orElse("main title");

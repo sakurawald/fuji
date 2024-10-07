@@ -90,12 +90,6 @@ public class KitInitializer extends ModuleInitializer {
         return new Kit(kitName, itemStacks);
     }
 
-    @SneakyThrows(IOException.class)
-    @Override
-    public void onInitialize() {
-        Files.createDirectories(KIT_DATA_DIR_PATH);
-    }
-
     @CommandNode("editor")
     private static int $editor(@CommandSource ServerPlayerEntity player) {
         List<Kit> kits = readKits();
@@ -134,6 +128,12 @@ public class KitInitializer extends ModuleInitializer {
 
         /* the inventory of player is full, just drop the item in the ground */
         tryAgainList.forEach(it -> player.dropItem(it, true));
+    }
+
+    @SneakyThrows(IOException.class)
+    @Override
+    public void onInitialize() {
+        Files.createDirectories(KIT_DATA_DIR_PATH);
     }
 
 }

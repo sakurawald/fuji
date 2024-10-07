@@ -6,9 +6,9 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public class PlayerEvents {
 
-    public static final Event<PlayerOnDamagedCallback> ON_DAMAGED = new Event<>((listeners) -> (p,s,a) -> {
+    public static final Event<PlayerOnDamagedCallback> ON_DAMAGED = new Event<>((listeners) -> (p, s, a) -> {
         for (PlayerOnDamagedCallback listener : listeners) {
-            listener.fire(p,s,a);
+            listener.fire(p, s, a);
         }
     });
 

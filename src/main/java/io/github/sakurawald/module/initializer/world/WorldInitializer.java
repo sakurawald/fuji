@@ -54,24 +54,6 @@ public class WorldInitializer extends ModuleInitializer {
     private static final BaseConfigurationHandler<WorldDataModel> storage = new ObjectConfigurationHandler<>("world.json", WorldDataModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("world.json"), WorldInitializer.class));
 
-    @Override
-    public void onInitialize() {
-        ServerLifecycleEvents.SERVER_STARTED.register(this::loadWorlds);
-    }
-
-    private void loadWorlds(@NotNull MinecraftServer server) {
-        storage.model().dimension_list.stream()
-            .filter(DimensionEntry::isEnable)
-            .forEach(it -> {
-                try {
-                    WorldManager.requestToCreateWorld(it);
-                    LogUtil.info("load dimension {} into server done.", it.getDimension());
-                } catch (Exception e) {
-                    LogUtil.error("failed to load dimension `{}`", it, e);
-                }
-            });
-    }
-
     private static void checkBlacklist(CommandContext<ServerCommandSource> ctx, String identifier) {
         if (config.model().blacklist.dimension_list.contains(identifier)) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.blacklist", identifier);
@@ -175,5 +157,23 @@ public class WorldInitializer extends ModuleInitializer {
 
         LocaleHelper.sendBroadcastByKey("world.dimension.reset", identifier);
         return CommandHelper.Return.SUCCESS;
+    }
+
+    @Override
+    public void onInitialize() {
+        ServerLifecycleEvents.SERVER_STARTED.register(this::loadWorlds);
+    }
+
+    private void loadWorlds(@NotNull MinecraftServer server) {
+        storage.model().dimension_list.stream()
+            .filter(DimensionEntry::isEnable)
+            .forEach(it -> {
+                try {
+                    WorldManager.requestToCreateWorld(it);
+                    LogUtil.info("load dimension {} into server done.", it.getDimension());
+                } catch (Exception e) {
+                    LogUtil.error("failed to load dimension `{}`", it, e);
+                }
+            });
     }
 }

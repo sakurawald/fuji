@@ -31,18 +31,6 @@ public class NametagInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<NametagConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, NametagConfigModel.class);
     private static Map<ServerPlayerEntity, DisplayEntity.TextDisplayEntity> player2nametag;
 
-    @Override
-    public void onInitialize() {
-        player2nametag = new ConcurrentHashMap<>();
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> new UpdateNametagJob().schedule());
-    }
-
-    @Override
-    public void onReload() {
-        // discard all existed nametags, since the `text format` may be changed after reload.
-        player2nametag.forEach((key, value) -> value.stopRiding());
-    }
-
     private static DisplayEntity.TextDisplayEntity makeNametag(ServerPlayerEntity player) {
         LogUtil.debug("make nametag for player: {}", player.getGameProfile().getName());
 
@@ -182,6 +170,18 @@ public class NametagInitializer extends ModuleInitializer {
             DisplayEntity.TextDisplayEntity nametag = player2nametag.get(player);
             renderNametag(nametag, player);
         });
+    }
+
+    @Override
+    public void onInitialize() {
+        player2nametag = new ConcurrentHashMap<>();
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> new UpdateNametagJob().schedule());
+    }
+
+    @Override
+    public void onReload() {
+        // discard all existed nametags, since the `text format` may be changed after reload.
+        player2nametag.forEach((key, value) -> value.stopRiding());
     }
 
 }

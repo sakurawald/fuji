@@ -9,14 +9,14 @@ public class RegexTest {
     @Test
     void testNormal() {
         assertEquals("/home tp default"
-                , "/home".replaceAll("/home", "/home tp default")
+            , "/home".replaceAll("/home", "/home tp default")
         );
     }
 
     @Test
     void testRef() {
         assertEquals("/aid alice"
-                , "/help alice".replaceAll("/help (.*)", "/aid $1")
+            , "/help alice".replaceAll("/help (.*)", "/aid $1")
         );
     }
 
@@ -24,7 +24,7 @@ public class RegexTest {
     @Test
     void testNoEffect() {
         assertEquals("/first alice"
-                , "/first alice".replaceAll("/help (.*)", "/aid $1")
+            , "/first alice".replaceAll("/help (.*)", "/aid $1")
         );
 
     }

@@ -18,7 +18,7 @@ public class IntRangeArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return NumberRangeArgumentType.IntRangeArgumentType.getRangeArgument(context,argument.getArgumentName());
+        return NumberRangeArgumentType.IntRangeArgumentType.getRangeArgument(context, argument.getArgumentName());
     }
 
     @Override

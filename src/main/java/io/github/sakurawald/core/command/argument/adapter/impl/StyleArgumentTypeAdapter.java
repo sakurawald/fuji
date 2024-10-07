@@ -19,7 +19,7 @@ public class StyleArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return StyleArgumentType.getStyle(context,argument.getArgumentName());
+        return StyleArgumentType.getStyle(context, argument.getArgumentName());
     }
 
     @Override

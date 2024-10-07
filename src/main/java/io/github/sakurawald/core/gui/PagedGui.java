@@ -25,8 +25,6 @@ public abstract class PagedGui<T> extends LayeredGui {
     private final int pageIndex;
     private final Text prefixTitle;
 
-    public abstract PagedGui<T> make(@Nullable SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<T> entities, int pageIndex);
-
     public PagedGui(@Nullable SimpleGui parent, ServerPlayerEntity player, Text prefixTitle, @NotNull List<T> entities, int pageIndex) {
         super(ScreenHandlerType.GENERIC_9X6, player, false);
 
@@ -45,6 +43,8 @@ public abstract class PagedGui<T> extends LayeredGui {
         // page layer
         this.drawNavigator(pageIndex);
     }
+
+    public abstract PagedGui<T> make(@Nullable SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<T> entities, int pageIndex);
 
     private void drawNavigator(int pageIndex) {
         SingleLineLayer pageLayer = new SingleLineLayer(GuiHelper.makeSlotPlaceholder());

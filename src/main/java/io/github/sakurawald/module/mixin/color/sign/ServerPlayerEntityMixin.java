@@ -19,12 +19,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin {
 
-    @Shadow
-    public abstract ServerWorld getServerWorld();
-
     @Unique
     @NotNull
     final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+
+    @Shadow
+    public abstract ServerWorld getServerWorld();
 
     @Inject(method = "openEditSignScreen", at = @At("HEAD"))
     private void sendBlockStateUpdatePacketOfSerializedTextBeforeTheClientOpenTheEditScreen(@NotNull SignBlockEntity signBlockEntity, boolean bl, @NotNull CallbackInfo ci) {

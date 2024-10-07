@@ -37,11 +37,6 @@ public class CleanerInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<CleanerConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, CleanerConfigModel.class);
 
-    @Override
-    public void onInitialize() {
-        ServerLifecycleEvents.SERVER_STARTED.register(server -> new CleanerJob().schedule());
-    }
-
     @SuppressWarnings("RedundantIfStatement")
     private static boolean ignoreEntity(Entity entity) {
         if (entity.getType().equals(EntityType.PLAYER)) return true;
@@ -119,6 +114,11 @@ public class CleanerInitializer extends ModuleInitializer {
                         .withHoverEvent(new net.minecraft.text.HoverEvent(net.minecraft.text.HoverEvent.Action.SHOW_TEXT, hoverText)));
             player.sendMessage(text);
         }
+    }
+
+    @Override
+    public void onInitialize() {
+        ServerLifecycleEvents.SERVER_STARTED.register(server -> new CleanerJob().schedule());
     }
 
 }

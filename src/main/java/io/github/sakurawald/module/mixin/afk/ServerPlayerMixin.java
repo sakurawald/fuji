@@ -37,19 +37,17 @@ public abstract class ServerPlayerMixin extends PlayerEntity implements AfkState
     @Shadow
     @Final
     public MinecraftServer server;
-
-    @Shadow
-    public abstract long getLastActionTime();
-
     @Unique
     private boolean afk = false;
-
     @Unique
     private long snapshotLastActionTime = 0;
 
     public ServerPlayerMixin(World world, BlockPos blockPos, float f, GameProfile gameProfile) {
         super(world, blockPos, f, gameProfile);
     }
+
+    @Shadow
+    public abstract long getLastActionTime();
 
     @ModifyReturnValue(method = "getPlayerListName", at = @At("RETURN"))
     public Text $getPlayerListName(Text original) {

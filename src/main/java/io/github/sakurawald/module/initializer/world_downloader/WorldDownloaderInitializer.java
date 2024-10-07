@@ -38,17 +38,6 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
     private static EvictingQueue<String> contextQueue;
     private static HttpServer server;
 
-
-    @Override
-    public void onInitialize() {
-        contextQueue = EvictingQueue.create(config.model().context_cache_size);
-    }
-
-    @Override
-    public void onReload() {
-        initServer();
-    }
-
     private static void initServer() {
         if (server != null) {
             server.stop(0);
@@ -135,6 +124,16 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
         }
         LogUtil.info("generate region file: {}", output.getAbsolutePath());
         return output;
+    }
+
+    @Override
+    public void onInitialize() {
+        contextQueue = EvictingQueue.create(config.model().context_cache_size);
+    }
+
+    @Override
+    public void onReload() {
+        initServer();
     }
 
 }

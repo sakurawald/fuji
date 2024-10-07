@@ -16,9 +16,9 @@ import java.util.function.Function;
 @UtilityClass
 public class PlaceholderHelper {
 
+    public static final Text INVALID = Text.literal("[INVALID]");
     private static final Text NO_PLAYER = Text.literal("[NO-PLAYER]");
     private static final Text NO_SERVER = Text.literal("[NO-SERVER]");
-    public static final Text INVALID = Text.literal("[INVALID]");
 
     @SuppressWarnings("resource")
     public static void withServer(String name, BiFunction<MinecraftServer, String, Text> function) {

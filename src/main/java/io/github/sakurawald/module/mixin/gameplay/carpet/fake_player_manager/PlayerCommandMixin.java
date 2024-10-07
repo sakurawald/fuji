@@ -25,16 +25,16 @@ public abstract class PlayerCommandMixin {
     }
 
     @Redirect(method = "cantSpawn", at = @At(
-            value = "INVOKE",
-            target = "Lcom/mojang/brigadier/arguments/StringArgumentType;getString(Lcom/mojang/brigadier/context/CommandContext;Ljava/lang/String;)Ljava/lang/String;"
+        value = "INVOKE",
+        target = "Lcom/mojang/brigadier/arguments/StringArgumentType;getString(Lcom/mojang/brigadier/context/CommandContext;Ljava/lang/String;)Ljava/lang/String;"
     ), remap = false)
     private static @NotNull String $canSpawn(final @NotNull CommandContext<?> context, final String name) {
         return transformFakePlayerName(StringArgumentType.getString(context, name));
     }
 
     @Redirect(method = "spawn", at = @At(
-            value = "INVOKE",
-            target = "Lcom/mojang/brigadier/arguments/StringArgumentType;getString(Lcom/mojang/brigadier/context/CommandContext;Ljava/lang/String;)Ljava/lang/String;"
+        value = "INVOKE",
+        target = "Lcom/mojang/brigadier/arguments/StringArgumentType;getString(Lcom/mojang/brigadier/context/CommandContext;Ljava/lang/String;)Ljava/lang/String;"
     ), remap = false)
     private static @NotNull String $spawn(final @NotNull CommandContext<?> context, final String name) {
         return transformFakePlayerName(StringArgumentType.getString(context, name));

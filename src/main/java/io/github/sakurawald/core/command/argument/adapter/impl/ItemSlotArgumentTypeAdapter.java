@@ -17,7 +17,7 @@ public class ItemSlotArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return ItemSlotArgumentType.getItemSlot(context,argument.getArgumentName());
+        return ItemSlotArgumentType.getItemSlot(context, argument.getArgumentName());
     }
 
     @Override
