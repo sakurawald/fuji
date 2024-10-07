@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 @UtilityClass
 public class DateParser {
 
+    /* DSL definition */
     private static final int SECOND_TO_SECOND = 1;
     private static final int MINUTE_TO_SECOND = 60;
     private static final int HOUR_TO_SECOND = 60 * MINUTE_TO_SECOND;
