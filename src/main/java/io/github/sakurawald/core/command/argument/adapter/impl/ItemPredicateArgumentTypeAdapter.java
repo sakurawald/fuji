@@ -23,7 +23,7 @@ public class ItemPredicateArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     public List<Class<?>> getTypeClasses() {
-        return List.of(ItemPredicateArgumentType.class);
+        return List.of(ItemPredicateArgumentType.ItemStackPredicateArgument.class);
     }
 
     @Override
