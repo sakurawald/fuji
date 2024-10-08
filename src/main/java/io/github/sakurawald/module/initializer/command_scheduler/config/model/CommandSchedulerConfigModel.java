@@ -15,7 +15,7 @@ public class CommandSchedulerConfigModel {
             this.add(new ScheduleJob("example_job", false, 3, List.of("0 0 * ? * *"),
                 List.of(
                     List.of("send-broadcast nobody gets the gift"),
-                    List.of("send-broadcast all players get the gift!", "give @a minecraft:diamond 16")
+                    List.of("send-broadcast all players get the gift!", "give @a minecraft:apple 16")
                 )));
         }
     };
