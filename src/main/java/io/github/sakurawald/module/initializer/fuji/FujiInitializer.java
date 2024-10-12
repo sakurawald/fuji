@@ -8,16 +8,18 @@ import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
+import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.command.processor.CommandAnnotationProcessor;
 import io.github.sakurawald.core.command.structure.CommandDescriptor;
 import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.gui.CommandDescriptorGui;
 import io.github.sakurawald.core.job.abst.BaseJob;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.structure.CommandNodeEntry;
 import io.github.sakurawald.core.structure.Pair;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.fuji.gui.AboutGui;
-import io.github.sakurawald.core.gui.CommandDescriptorGui;
+import io.github.sakurawald.module.initializer.fuji.gui.ArgumentTypeGui;
 import io.github.sakurawald.module.initializer.fuji.gui.ModulesGui;
 import io.github.sakurawald.module.initializer.fuji.gui.ServerCommandsGui;
 import net.fabricmc.loader.api.FabricLoader;
@@ -25,6 +27,7 @@ import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.fabricmc.loader.api.metadata.Person;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -96,6 +99,23 @@ public class FujiInitializer extends ModuleInitializer {
             .toList();
 
         new CommandDescriptorGui(player, descriptors, 0).open();
+
+        return CommandHelper.Return.SUCCESS;
+    }
+
+    @CommandNode("inspect argument-type")
+    private static int listCommandArgumentType(@CommandSource CommandContext<ServerCommandSource> ctx) {
+        List<BaseArgumentTypeAdapter> adapters = BaseArgumentTypeAdapter.getAdapters();
+
+        if (ctx.getSource().isExecutedByPlayer()) {
+            new ArgumentTypeGui(ctx.getSource().getPlayer(), adapters, 0).open();
+        } else {
+            adapters.forEach(adapter -> adapter.getTypeStrings().forEach(typeString -> {
+                String typeClass = adapter.getTypeClasses().getFirst().getSimpleName();
+                String string2types = "%s -> %s".formatted(typeString, typeClass);
+                ctx.getSource().sendMessage(Text.literal(string2types));
+            }));
+        }
 
         return CommandHelper.Return.SUCCESS;
     }
