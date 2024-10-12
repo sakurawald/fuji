@@ -15,14 +15,14 @@ The root command of this module.
     }
     \item {a powerful type-system to ensure the \ttt{type-safe} input, with fully command suggestion.
         \begin{tips}{To query all type strings}
-            \ic{/command-bundle list-type-strings}
+            \ic{/fuji inspect argument-type}
         \end{tips}
     }
     \item {register and un-register commands on the fly, without the server restart!
-    \begin{example}{Reload the bundle commands}
-        Each time you modify the configuration file, you should issue \ic{/fuji reload}, this will unregister all bundle commands in the server, and register the bundle commands defined in the file into the server.\\\\
-        Also, you can use the \ic{/command-bundle un-register} and \ic{/command-bundle register} manually.
-    \end{example}
+        \begin{example}{Reload the bundle commands}
+            Each time you modify the configuration file, you should issue \ic{/fuji reload}, this will unregister all bundle commands in the server, and register the bundle commands defined in the file into the server.\\\\
+            Also, you can use the \ic{/command-bundle un-register} and \ic{/command-bundle register} manually.
+        \end{example}
 
     }
 \end{enumerate}
