@@ -17,7 +17,7 @@ import io.github.sakurawald.core.structure.CommandNodeEntry;
 import io.github.sakurawald.core.structure.Pair;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.fuji.gui.AboutGui;
-import io.github.sakurawald.module.initializer.fuji.gui.CommandDescriptorGui;
+import io.github.sakurawald.core.gui.CommandDescriptorGui;
 import io.github.sakurawald.module.initializer.fuji.gui.ModulesGui;
 import io.github.sakurawald.module.initializer.fuji.gui.ServerCommandsGui;
 import net.fabricmc.loader.api.FabricLoader;
