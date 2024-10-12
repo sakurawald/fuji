@@ -16,6 +16,7 @@ public class ConfigModel {
         public Debug debug = new Debug();
         public Backup backup = new Backup();
         public Language language = new Language();
+        public Permission permission = new Permission();
         public Quartz quartz = new Quartz();
 
         public static class Quartz {
@@ -34,6 +35,11 @@ public class ConfigModel {
 
         public static class Language {
             public String default_language = "en_US";
+        }
+
+
+        public static class Permission {
+            public boolean all_commands_require_level_4_permission_to_use_by_default = false;
         }
 
         public static class Debug {

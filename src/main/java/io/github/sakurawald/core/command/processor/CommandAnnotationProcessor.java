@@ -130,9 +130,10 @@ public class CommandAnnotationProcessor {
             /* pass the class requirement down, if the method requirement is null */
             methodRequirement = method.getAnnotation(CommandRequirement.class);
             if (methodRequirement == null) {
-                methodRequirement = clazz.getAnnotation(CommandRequirement.class);
+                methodRequirement = classRequirement;
             }
 
+            /* make requirement descriptor */
             argumentList.add(Argument.makeLiteralArgument(argumentName, CommandRequirementDescriptor.of(methodRequirement)));
         }
 
