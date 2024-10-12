@@ -14,10 +14,10 @@ public class MoreInitializer extends ModuleInitializer {
     @CommandNode("more")
     @CommandRequirement(level = 4)
     private static int $more(@CommandSource CommandContext<ServerCommandSource> ctx) {
-        return CommandHelper.Pattern.itemInHandCommand(ctx, ((player, itemStack) -> {
+        return CommandHelper.Pattern.itemInHandCommand(ctx, (player, itemStack) -> {
             itemStack.setCount(itemStack.getMaxCount());
             return CommandHelper.Return.SUCCESS;
-        }));
+        });
     }
 
 }

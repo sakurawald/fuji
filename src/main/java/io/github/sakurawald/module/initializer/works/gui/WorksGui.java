@@ -114,10 +114,10 @@ public class WorksGui extends PagedGui<Work> {
         return this.getEntities().stream().filter(w ->
             w.creator.contains(keyword)
                 || w.name.contains(keyword)
-                || (w.introduction != null && w.introduction.contains(keyword))
+                || w.introduction != null && w.introduction.contains(keyword)
                 || w.level.contains(keyword)
                 || w.getIconItemIdentifier().contains(keyword)
-                || (w instanceof ProductionWork pw && pw.sample.sampleCounter != null && pw.sample.sampleCounter.keySet().stream().anyMatch(k -> k.contains(keyword)))
+                || w instanceof ProductionWork pw && pw.sample.sampleCounter != null && pw.sample.sampleCounter.keySet().stream().anyMatch(k -> k.contains(keyword))
         ).toList();
     }
 }

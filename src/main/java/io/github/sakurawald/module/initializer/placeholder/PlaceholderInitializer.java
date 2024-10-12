@@ -97,7 +97,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
     }
 
     private static void registerPlayerMinedPlaceholder() {
-        PlaceholderHelper.withPlayer("player_mined", (player -> Text.literal(String.valueOf(SumUpPlaceholder.ofPlayer(player.getUuidAsString()).mined))));
+        PlaceholderHelper.withPlayer("player_mined", player -> Text.literal(String.valueOf(SumUpPlaceholder.ofPlayer(player.getUuidAsString()).mined)));
     }
 
     @Override
@@ -216,13 +216,13 @@ public class PlaceholderInitializer extends ModuleInitializer {
     }
 
     private void registerHealthBarPlaceholder() {
-        PlaceholderHelper.withPlayer("health_bar", (player -> {
+        PlaceholderHelper.withPlayer("health_bar", player -> {
             int totalHearts = 10;
             int filledHearts = (int) (player.getHealth() / 2);
             int unfilledHearts = totalHearts - filledHearts;
             String str = "♥".repeat(filledHearts) + "♡".repeat(unfilledHearts);
             return Text.literal(str);
-        }));
+        });
     }
 
     private void registerRotatePlaceholder() {

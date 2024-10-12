@@ -55,7 +55,7 @@ public class UuidHelper {
 
     private static @NotNull NbtComponent setGeneratedUuidIfAbsent(@Nullable NbtComponent nbtComponent) {
         /* extract nbt compound */
-        NbtCompound root = (nbtComponent == null ? new NbtCompound() : nbtComponent.copyNbt());
+        NbtCompound root = nbtComponent == null ? new NbtCompound() : nbtComponent.copyNbt();
 
         /* put uuid if not exists */
         if (!root.contains(FUJI_UUID)) {

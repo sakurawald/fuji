@@ -15,7 +15,7 @@ public class EnchantmentScreenHandlerMixin {
     int modifyTheNumberOfPowerOfProviders(int i) {
         var enchantment = Configs.configHandler.model().modules.functional.enchantment;
         if (enchantment.enable) {
-            EnchantmentScreenHandler instance = ((EnchantmentScreenHandler) (Object) this);
+            EnchantmentScreenHandler instance = (EnchantmentScreenHandler) (Object) this;
             if (instance instanceof MyEnchantmentScreenHandler) {
                 return EnchantmentInitializer.config.model().enchantment.override_power.power_provider_amount;
             }

@@ -52,7 +52,7 @@ public class TabListEntry {
         int weight = getWeight(player);
         // reverse weight
         int maxIndex = AlphaTable.TABLE.length - 1;
-        int index = (maxIndex) - weight;
+        int index = maxIndex - weight;
         index = Math.min(maxIndex, index);
 
         // the "zzzz" string is used to force the dummy player listed in the last of `command suggestion`

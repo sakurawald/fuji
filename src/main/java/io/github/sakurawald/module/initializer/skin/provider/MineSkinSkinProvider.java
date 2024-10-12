@@ -17,7 +17,7 @@ public class MineSkinSkinProvider {
 
     public static @Nullable Property getSkin(String url, @NotNull SkinVariant variant) {
         try {
-            String param = ("{\"variant\":\"%s\",\"name\":\"%s\",\"visibility\":%d,\"url\":\"%s\"}")
+            String param = "{\"variant\":\"%s\",\"name\":\"%s\",\"visibility\":%d,\"url\":\"%s\"}"
                 .formatted(variant.toString(), "none", 1, url);
             JsonObject texture = JsonParser.parseString(IOUtil.post(URI.create(API_SERVER), param)).getAsJsonObject()
                 .getAsJsonObject("data").getAsJsonObject("texture");

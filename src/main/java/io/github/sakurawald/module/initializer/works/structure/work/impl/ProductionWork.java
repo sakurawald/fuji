@@ -75,7 +75,7 @@ public class ProductionWork extends Work {
         List<Text> ret = super.asLore(player);
         // note: hide sample info in lore if sample not exists
         if (this.sample.sampleStartTimeMS == 0) {
-            ret.addAll((LocaleHelper.getTextListByKey(player, "works.production_work.sample.not_exists")));
+            ret.addAll(LocaleHelper.getTextListByKey(player, "works.production_work.sample.not_exists"));
             return ret;
         }
 

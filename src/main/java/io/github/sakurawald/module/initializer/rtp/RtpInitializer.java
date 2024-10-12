@@ -43,7 +43,7 @@ public class RtpInitializer extends ModuleInitializer {
         TeleportSetup setup = withTeleportSetup(player, serverWorld);
 
         LocaleHelper.sendActionBarByKey(player, "rtp.tip");
-        RandomTeleporter.request(player, setup, (position -> LocaleHelper.sendMessageByKey(player, "rtp.success")));
+        RandomTeleporter.request(player, setup, (position) -> LocaleHelper.sendMessageByKey(player, "rtp.success"));
         return CommandHelper.Return.SUCCESS;
     }
 }
