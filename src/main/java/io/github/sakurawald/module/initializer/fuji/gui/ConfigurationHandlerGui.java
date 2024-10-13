@@ -35,7 +35,7 @@ public class ConfigurationHandlerGui extends PagedGui<BaseConfigurationHandler<?
             modelClassName = "ANONYMOUS-CLASS";
         }
         Path modelPath = entity.getPath();
-        String topLevelName = IOUtil.computeRelativePath(modelPath.getParent().getParent().toFile(), modelPath.toFile());
+        String topLevelName = IOUtil.computeRelativePath(modelPath.toFile());
 
         return new GuiElementBuilder()
             .setItem(Items.BOOKSHELF)
