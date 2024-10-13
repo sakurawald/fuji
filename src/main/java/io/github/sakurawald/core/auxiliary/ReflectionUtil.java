@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -90,5 +91,17 @@ public class ReflectionUtil {
             translation.append(character);
         }
         return translation.toString();
+    }
+
+    public static boolean isWrapperType(Type type) {
+        return type == Integer.class
+            || type == Float.class
+            || type == Byte.class
+            || type == Double.class
+            || type == Long.class
+            || type == Character.class
+            || type == Boolean.class
+            || type == Short.class
+            || type == Void.class;
     }
 }

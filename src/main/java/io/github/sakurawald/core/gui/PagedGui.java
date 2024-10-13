@@ -34,14 +34,8 @@ public abstract class PagedGui<T> extends LayeredGui {
         this.pageIndex = pageIndex;
         this.entities = entities;
 
-        // draw title
-        this.drawTitle();
-
-        // draw entities
-        this.drawEntities(entities);
-
-        // page layer
-        this.drawNavigator(pageIndex);
+        // draw
+        this.drawPagedGui();
     }
 
     public abstract PagedGui<T> make(@Nullable SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<T> entities, int pageIndex);
@@ -60,7 +54,18 @@ public abstract class PagedGui<T> extends LayeredGui {
         this.addLayer(pageLayer, 0, this.getHeight() - 1);
     }
 
-    private void drawEntities(@NotNull List<T> entities) {
+    protected void drawPagedGui() {
+        // draw title
+        this.drawTitle();
+
+        // draw entities
+        this.drawPagedGui(entities);
+
+        // page layer
+        this.drawNavigator(pageIndex);
+    }
+
+    private void drawPagedGui(@NotNull List<T> entities) {
         int slotIndex = 0;
         for (int i = getEntityBeginIndex(this.pageIndex); i < getEntityEndIndex(this.pageIndex); i++) {
             T entity = entities.get(i);
@@ -140,5 +145,9 @@ public abstract class PagedGui<T> extends LayeredGui {
         if (this.parent != null) {
             parent.open();
         }
+    }
+
+    protected @Nullable SimpleGui getGui() {
+        return this.gui;
     }
 }

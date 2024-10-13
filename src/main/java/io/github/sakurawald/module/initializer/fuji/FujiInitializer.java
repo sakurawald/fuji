@@ -12,6 +12,8 @@ import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeA
 import io.github.sakurawald.core.command.processor.CommandAnnotationProcessor;
 import io.github.sakurawald.core.command.structure.CommandDescriptor;
 import io.github.sakurawald.core.config.Configs;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
+import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.gui.CommandDescriptorGui;
 import io.github.sakurawald.core.job.abst.BaseJob;
 import io.github.sakurawald.core.manager.Managers;
@@ -20,6 +22,7 @@ import io.github.sakurawald.core.structure.Pair;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.fuji.gui.AboutGui;
 import io.github.sakurawald.module.initializer.fuji.gui.ArgumentTypeGui;
+import io.github.sakurawald.module.initializer.fuji.gui.ConfigurationHandlerGui;
 import io.github.sakurawald.module.initializer.fuji.gui.ModulesGui;
 import io.github.sakurawald.module.initializer.fuji.gui.ServerCommandsGui;
 import net.fabricmc.loader.api.FabricLoader;
@@ -117,6 +120,17 @@ public class FujiInitializer extends ModuleInitializer {
             }));
         }
 
+        return CommandHelper.Return.SUCCESS;
+    }
+
+    @CommandNode("inspect configuration")
+    private static int listConfiguration(@CommandSource ServerPlayerEntity player) {
+        List<BaseConfigurationHandler<?>> list = BaseConfigurationHandler.handlers.stream()
+            .filter(it -> it instanceof ObjectConfigurationHandler<?>)
+            .sorted(Comparator.comparing(BaseConfigurationHandler::getPath))
+            .toList();
+
+        new ConfigurationHandlerGui(player, list, 0).open();
         return CommandHelper.Return.SUCCESS;
     }
 }

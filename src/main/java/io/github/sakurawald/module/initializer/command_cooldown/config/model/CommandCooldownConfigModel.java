@@ -2,6 +2,7 @@ package io.github.sakurawald.module.initializer.command_cooldown.config.model;
 
 import com.google.gson.annotations.SerializedName;
 import io.github.sakurawald.core.structure.CommandCooldown;
+import lombok.Data;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +23,7 @@ public class CommandCooldownConfigModel {
 
     public NamedCooldown namedCooldown = new NamedCooldown();
 
-    @lombok.Data
+    @Data
     public static class NamedCooldown {
         public Map<String, CommandCooldown> list = new HashMap<>();
     }
