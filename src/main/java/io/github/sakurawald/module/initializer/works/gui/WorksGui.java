@@ -38,13 +38,13 @@ public class WorksGui extends PagedGui<Work> {
 
         if (entities == WorksInitializer.works.model().works) {
             controlLayer.addSlot(
-                GuiHelper.makeSkullButton(GuiHelper.Icon.QUESTION_MARK_ICON)
+                GuiHelper.makeQuestionMarkButton(player)
                     .setName(LocaleHelper.getTextByKey(player, "works.list.my_works"))
                     .setCallback(() -> search(player.getGameProfile().getName()).open())
             );
         } else {
             controlLayer.addSlot(
-                GuiHelper.makeSkullButton(GuiHelper.Icon.A_ICON)
+                GuiHelper.makeLetterAButton(player)
                     .setName(LocaleHelper.getTextByKey(player, "works.list.all_works"))
                     .setCallback(() -> new WorksGui(player, WorksInitializer.works.model().works, 0).open())
             );

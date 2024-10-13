@@ -4,11 +4,14 @@ import eu.pb4.sgui.api.ClickType;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.gui.PagedGui;
 import io.github.sakurawald.module.initializer.head.HeadInitializer;
 import io.github.sakurawald.module.initializer.head.structure.EconomyType;
 import io.github.sakurawald.module.initializer.head.structure.Head;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -54,6 +57,11 @@ public class CategoryHeadGui extends PagedGui<Head> {
 
         ItemStack cursorStack = player.currentScreenHandler.getCursorStack();
         ItemStack headStack = head.toItemStack();
+
+        /* happy debug */
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+            LogUtil.debug("head = {}", headStack.get(DataComponentTypes.PROFILE));
+        }
 
         if (cursorStack.isEmpty()) {
             if (type.shift) {
