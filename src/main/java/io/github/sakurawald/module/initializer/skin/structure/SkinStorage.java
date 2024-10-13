@@ -2,11 +2,19 @@ package io.github.sakurawald.module.initializer.skin.structure;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.RandomUtil;
+import io.github.sakurawald.core.auxiliary.ReflectionUtil;
+import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.module.initializer.skin.SkinInitializer;
-import lombok.Getter;
+import org.apache.commons.io.FileUtils;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -14,13 +22,12 @@ import java.util.UUID;
 
 public class SkinStorage {
 
-    private final Map<UUID, Property> skinMap = new HashMap<>();
+    private final Path rootPath = ReflectionUtil.getModuleConfigPath(SkinInitializer.class).resolve("skin-data");
 
-    @Getter
-    private final SkinIO skinIO;
+    private final Map<UUID, Property> uuid2skin = new HashMap<>();
 
-    public SkinStorage(SkinIO skinIO) {
-        this.skinIO = skinIO;
+    private Path computeFilePath(UUID uuid) {
+        return rootPath.resolve(uuid + ".json");
     }
 
     public Property getDefaultSkin() {
@@ -35,18 +42,12 @@ public class SkinStorage {
     }
 
     public Property getSkin(UUID uuid) {
-        if (!skinMap.containsKey(uuid)) {
-            Property skin = skinIO.loadSkin(uuid);
+        if (!uuid2skin.containsKey(uuid)) {
+            Property skin = this.readSkin(uuid);
             setSkin(uuid, skin);
         }
 
-        return skinMap.get(uuid);
-    }
-
-    public void saveSkin(UUID uuid) {
-        if (skinMap.containsKey(uuid)) {
-            skinIO.saveSkin(uuid, skinMap.get(uuid));
-        }
+        return uuid2skin.get(uuid);
     }
 
     public void setSkin(UUID uuid, @Nullable Property skin) {
@@ -54,6 +55,32 @@ public class SkinStorage {
         if (skin == null)
             skin = this.getDefaultSkin();
 
-        skinMap.put(uuid, skin);
+        uuid2skin.put(uuid, skin);
     }
+
+    public void writeSkin(UUID uuid) {
+        if (uuid2skin.containsKey(uuid)) {
+            Property skin = uuid2skin.get(uuid);
+            try {
+                File file = computeFilePath(uuid).toFile();
+                FileUtils.writeStringToFile(file, BaseConfigurationHandler.getGson().toJson(skin), StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                LogUtil.error("save skin failed: " + e.getMessage());
+            }
+        }
+    }
+
+    private @Nullable Property readSkin(UUID uuid) {
+        Path playerData = this.computeFilePath(uuid);
+        if (Files.notExists(playerData)) return null;
+
+        try {
+            String string = Files.readString(playerData);
+            return BaseConfigurationHandler.getGson().fromJson(string, Property.class);
+        } catch (IOException e) {
+            LogUtil.error("load skin failed: " + e.getMessage());
+        }
+        return null;
+    }
+
 }

@@ -18,7 +18,7 @@ public class WordArgumentTypeAdapter extends BaseArgumentTypeAdapter {
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return StringArgumentType.getString(context,argument.getArgumentName());
+        return new Word(StringArgumentType.getString(context, argument.getArgumentName()));
     }
 
     @Override

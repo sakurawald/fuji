@@ -60,27 +60,27 @@ public class SkinInitializer extends ModuleInitializer {
 
     @CommandNode("set web classic")
     private static int setWebClassic(@CommandSource CommandContext<ServerCommandSource> ctx, String url) {
-        doSkin(ctx.getSource(), () -> MineSkinSkinProvider.getSkin(url, SkinVariant.CLASSIC));
+        doSkin(ctx.getSource(), () -> MineSkinSkinProvider.fetchSkin(url, SkinVariant.CLASSIC));
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("set web classic")
     @CommandRequirement(level = 4)
     private static int setWebClassicOthers(@CommandSource CommandContext<ServerCommandSource> ctx, String url, GameProfileCollection target) {
-        doSkin(ctx.getSource(), target.getValue(), true, () -> MineSkinSkinProvider.getSkin(StringArgumentType.getString(ctx, "url"), SkinVariant.CLASSIC));
+        doSkin(ctx.getSource(), target.getValue(), true, () -> MineSkinSkinProvider.fetchSkin(StringArgumentType.getString(ctx, "url"), SkinVariant.CLASSIC));
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("set web slim")
     private static int setWebSlim(@CommandSource CommandContext<ServerCommandSource> ctx, String url) {
-        doSkin(ctx.getSource(), () -> MineSkinSkinProvider.getSkin(url, SkinVariant.SLIM));
+        doSkin(ctx.getSource(), () -> MineSkinSkinProvider.fetchSkin(url, SkinVariant.SLIM));
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("set web slim")
     @CommandRequirement(level = 4)
     private static int setWebSlimOthers(@CommandSource CommandContext<ServerCommandSource> ctx, String url, GameProfileCollection target) {
-        doSkin(ctx.getSource(), target.getValue(), true, () -> MineSkinSkinProvider.getSkin(StringArgumentType.getString(ctx, "url"), SkinVariant.SLIM));
+        doSkin(ctx.getSource(), target.getValue(), true, () -> MineSkinSkinProvider.fetchSkin(StringArgumentType.getString(ctx, "url"), SkinVariant.SLIM));
         return CommandHelper.Return.SUCCESS;
     }
 

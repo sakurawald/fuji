@@ -21,11 +21,11 @@ public abstract class PlayerListMixin {
 
     @Inject(method = "remove", at = @At("TAIL"))
     private void remove(@NotNull ServerPlayerEntity player, CallbackInfo ci) {
-        SkinRestorer.getSkinStorage().saveSkin(player.getUuid());
+        SkinRestorer.getSkinStorage().writeSkin(player.getUuid());
     }
 
     @Inject(method = "disconnectAllPlayers", at = @At("HEAD"))
     private void disconnectAllPlayers(CallbackInfo ci) {
-        getPlayerList().forEach(player -> SkinRestorer.getSkinStorage().saveSkin(player.getUuid()));
+        getPlayerList().forEach(player -> SkinRestorer.getSkinStorage().writeSkin(player.getUuid()));
     }
 }

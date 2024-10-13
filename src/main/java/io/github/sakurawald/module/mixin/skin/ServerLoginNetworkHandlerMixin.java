@@ -25,12 +25,6 @@ public abstract class ServerLoginNetworkHandlerMixin {
     @Unique
     private CompletableFuture<Property> pendingSkins;
 
-    @Unique
-    private static void applyRestoredSkin(@NotNull GameProfile gameProfile, Property skin) {
-        gameProfile.getProperties().removeAll("textures");
-        gameProfile.getProperties().put("textures", skin);
-    }
-
     @Inject(method = "tickVerify", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;checkCanJoin(Ljava/net/SocketAddress;Lcom/mojang/authlib/GameProfile;)Lnet/minecraft/text/Text;"), cancellable = true)
     public void waitForSkin(@NotNull CallbackInfo ci) {
         if (pendingSkins == null) {
@@ -43,6 +37,7 @@ public abstract class ServerLoginNetworkHandlerMixin {
                 if (SkinRestorer.getSkinStorage().isDefaultSkin(profile)) {
                     SkinRestorer.getSkinStorage().setSkin(profile.getId(), MojangProfileFetcher.fetchOnlineSkin(profile.getName()));
                 }
+
                 return SkinRestorer.getSkinStorage().getSkin(profile.getId());
             });
         }
@@ -54,8 +49,10 @@ public abstract class ServerLoginNetworkHandlerMixin {
     }
 
     @Inject(method = "sendSuccessPacket", at = @At("HEAD"))
-    public void applyRestoredSkinHook(@NotNull GameProfile gameProfile, CallbackInfo ci) {
-        if (pendingSkins != null)
-            applyRestoredSkin(gameProfile, pendingSkins.getNow(SkinRestorer.getSkinStorage().getDefaultSkin()));
+    public void applyTheFetchedSkin(@NotNull GameProfile gameProfile, CallbackInfo ci) {
+        /* apply the skin if fetched skin is not empty */
+        if (pendingSkins != null) {
+            SkinRestorer.applySkin(gameProfile, pendingSkins.getNow(SkinRestorer.getSkinStorage().getDefaultSkin()));
+        }
     }
 }
