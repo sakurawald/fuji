@@ -5,6 +5,7 @@ import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.gui.PagedGui;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -17,7 +18,6 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +30,7 @@ public class JavaObjectGui extends PagedGui<Field> {
     private final Object instance;
 
     public JavaObjectGui(@Nullable SimpleGui parent, Object instance, ServerPlayerEntity player, @NotNull List<Field> entities, int pageIndex, String topLevel, @NotNull String path) {
-        super(parent, player, Text.of("%s -> %s".formatted(topLevel, path)), entities, pageIndex);
+        super(parent, player, LocaleHelper.getTextByKey(player, "object.gui.title", topLevel, path), entities, pageIndex);
         this.instance = instance;
         this.topLevel = topLevel;
         this.path = path;
@@ -38,8 +38,17 @@ public class JavaObjectGui extends PagedGui<Field> {
         /* add entities if empty */
         if (this.getEntities().isEmpty()) {
             this.getEntities().addAll(JavaObjectGui.inspectObject(this.instance));
-            this.drawPagedGui();
         }
+
+        this.drawPagedGui();
+    }
+
+    @Override
+    protected void drawPagedGui() {
+        // fix: when search a keyword, the `instance` will be null while initializing the super class.
+        if (this.instance == null) return;
+
+        super.drawPagedGui();
     }
 
     @Override
@@ -48,7 +57,7 @@ public class JavaObjectGui extends PagedGui<Field> {
     }
 
     private Item computeItem(Field field) {
-        return isAtom(field) ? Items.CHERRY_LEAVES : Items.CHERRY_LOG;
+        return isAtom(field) ? Items.PAPER : Items.BOOK;
     }
 
     private Text computeName(Field field) {
@@ -64,11 +73,10 @@ public class JavaObjectGui extends PagedGui<Field> {
         }
 
         return List.of(
-            Text.literal("type = %s".formatted(field.getType().getSimpleName()))
-            , Text.literal("value = %s".formatted(value))
+            LocaleHelper.getTextByKey(getPlayer(), "object.type", field.getType().getSimpleName())
+            , LocaleHelper.getTextByKey(getPlayer(), "object.value", value)
         );
     }
-
 
     @SuppressWarnings("RedundantIfStatement")
     private static boolean isAtom(Field field) {
@@ -79,10 +87,12 @@ public class JavaObjectGui extends PagedGui<Field> {
         if (type.isPrimitive()) return true;
         if (ReflectionUtil.isWrapperType(type)) return true;
         if (type.equals(String.class)) return true;
+
         if (type.isArray()) return true;
         if (type.isEnum()) return true;
         if (type.isAnnotation()) return true;
-        if (Collection.class.isAssignableFrom(type)) return true;
+
+        if (Iterable.class.isAssignableFrom(type)) return true;
         if (Map.class.isAssignableFrom(type)) return true;
 
         return false;
