@@ -278,7 +278,8 @@
   "fuji.inspect.configuration.gui.title": "<blue>Configuration Handlers",
   "fuji.inspect.configuration.class": "<orange>Class -> %s",
   "fuji.inspect.configuration.path": "<orange>Path -> %s",
-  "object.gui.title": "<blue>%s -> %s",
+  "object.gui.title": "<blue>Path: %s",
+  "object.top_level": "<blue>Top Level -> %s",
   "object.type": "<orange>Type -> %s",
   "object.value": "<orange>Value -> %.128s"
 }

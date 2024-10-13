@@ -5,8 +5,10 @@ import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
+import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.gui.PagedGui;
+import io.github.sakurawald.core.gui.layer.SingleLineLayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -31,7 +33,7 @@ public class JavaObjectGui extends PagedGui<Field> {
     private final Object instance;
 
     public JavaObjectGui(@Nullable SimpleGui parent, Object instance, ServerPlayerEntity player, @NotNull List<Field> entities, int pageIndex, String topLevel, @NotNull String path) {
-        super(parent, player, LocaleHelper.getTextByKey(player, "object.gui.title", topLevel, path), entities, pageIndex);
+        super(parent, player, LocaleHelper.getTextByKey(player, "object.gui.title", path), entities, pageIndex);
         this.instance = instance;
         this.topLevel = topLevel;
         this.path = path;
@@ -40,8 +42,15 @@ public class JavaObjectGui extends PagedGui<Field> {
         if (this.getEntities().isEmpty()) {
             this.getEntities().addAll(JavaObjectGui.inspectObject(this.instance));
         }
-
         this.drawPagedGui();
+
+        /* add footer */
+        SingleLineLayer footer = new SingleLineLayer();
+        footer.setSlot(4, GuiHelper.makeHelpButton(player)
+            .setLore(List.of(
+                LocaleHelper.getTextByKey(player, "object.top_level", topLevel)
+            )));
+        this.addLayer(footer, 0, this.getHeight() - 1);
     }
 
     @Override
