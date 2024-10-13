@@ -1,11 +1,10 @@
-package io.github.sakurawald.module.initializer.fuji.gui;
+package io.github.sakurawald.core.gui;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.command.structure.CommandDescriptor;
-import io.github.sakurawald.core.gui.PagedGui;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;

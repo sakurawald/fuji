@@ -39,10 +39,12 @@ public abstract class HopperBlockEntityMixin extends LootableContainerBlockEntit
     }
 
 
-    @Inject(method = "transfer(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/inventory/Inventory;Lnet/minecraft/item/ItemStack;ILnet/minecraft/util/math/Direction;)Lnet/minecraft/item/ItemStack;", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;decrement(I)V", shift = At.Shift.BEFORE))
+    @Inject(method = "transfer(Lnet/minecraft/inventory/Inventory;Lnet/minecraft/inventory/Inventory;Lnet/minecraft/item/ItemStack;ILnet/minecraft/util/math/Direction;)Lnet/minecraft/item/ItemStack;", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;increment(I)V", shift = At.Shift.AFTER))
     private static void $ifHopperHasMergableSlot(Inventory container, Inventory container2, @NotNull ItemStack itemStack, int i, Direction direction, CallbackInfoReturnable<ItemStack> cir, @Local(ordinal = 2) int k) {
-        // Note: here we must copy the itemstack before ItemStack#shrink.
-        // If the count of itemStack is shark to 0, then it may become AIR, and then we can't count it any more.
+        /*
+         We injected in the increment() instead of decrement().
+         If the count of itemStack is shark to 0, then it may become AIR, and then we can't count it any more.
+         */
         ItemStack copy = itemStack.copy();
         copy.setCount(k);
 
@@ -51,7 +53,7 @@ public abstract class HopperBlockEntityMixin extends LootableContainerBlockEntit
 
     @Unique
     private static void count(@Nullable Inventory container, Inventory container2, @NotNull ItemStack itemStack) {
-        // note: if the container == null, then means it's the source-hopper
+        // note: if the container == null, then means it's the source-hopper. We only count the source-hopper.
         if (container != null) return;
         if (itemStack.isEmpty()) return;
 

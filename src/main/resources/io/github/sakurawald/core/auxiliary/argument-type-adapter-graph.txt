@@ -47,6 +47,7 @@ io.github.sakurawald.core.command.argument.adapter.impl.TeamArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.TextArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.Vec2ArgumentTypeAdapter
 io.github.sakurawald.core.command.argument.adapter.impl.Vec3ArgumentTypeAdapter
+io.github.sakurawald.core.command.argument.adapter.impl.WordArgumentTypeAdapter
 io.github.sakurawald.module.initializer.command_attachment.command.argument.adapter.ExecuteAsTypeArgumentTypeAdapter
 io.github.sakurawald.module.initializer.command_attachment.command.argument.adapter.InteractTypeArgumentTypeAdapter
 io.github.sakurawald.module.initializer.command_cooldown.command.argument.adapter.CommandCooldownArgumentTypeAdapter

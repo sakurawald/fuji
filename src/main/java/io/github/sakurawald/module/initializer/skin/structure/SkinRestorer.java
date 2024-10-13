@@ -1,14 +1,11 @@
-package io.github.sakurawald.module.initializer.skin;
+package io.github.sakurawald.module.initializer.skin.structure;
 
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.core.annotation.Cite;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
-import io.github.sakurawald.module.initializer.skin.config.SkinIO;
-import io.github.sakurawald.module.initializer.skin.config.SkinStorage;
 import it.unimi.dsi.fastutil.Pair;
 import lombok.Getter;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -41,7 +38,7 @@ import java.util.function.Supplier;
 public class SkinRestorer {
 
     @Getter
-    private static final SkinStorage skinStorage = new SkinStorage(new SkinIO(ReflectionUtil.getModuleConfigPath(SkinInitializer.class).resolve("skin-data")));
+    private static final SkinStorage skinStorage = new SkinStorage();
 
     public static CompletableFuture<Pair<Collection<ServerPlayerEntity>, Collection<GameProfile>>> setSkinAsync(@NotNull MinecraftServer server, @NotNull Collection<GameProfile> targets, @NotNull Supplier<Property> skinSupplier) {
         return CompletableFuture.<Pair<Property, Collection<GameProfile>>>supplyAsync(() -> {
@@ -61,21 +58,28 @@ public class SkinRestorer {
 
             return Pair.of(skin, acceptedProfiles);
         }).<Pair<Collection<ServerPlayerEntity>, Collection<GameProfile>>>thenApplyAsync(pair -> {
+
             Property skin = pair.left();
             if (skin == null)
                 return Pair.of(Collections.emptySet(), Collections.emptySet());
 
             Collection<GameProfile> acceptedProfiles = pair.right();
             Set<ServerPlayerEntity> acceptedPlayers = new HashSet<>();
+
             JsonObject newSkinJson = BaseConfigurationHandler.getGson().fromJson(new String(Base64.getDecoder().decode(skin.value()), StandardCharsets.UTF_8), JsonObject.class);
             newSkinJson.remove("timestamp");
+
             for (GameProfile profile : acceptedProfiles) {
                 ServerPlayerEntity player = server.getPlayerManager().getPlayer(profile.getId());
 
+                /* skip identical skin */
                 if (player == null || arePropertiesEquals(newSkinJson, player.getGameProfile()))
                     continue;
 
-                applyRestoredSkin(player, skin);
+                /* apply the skin */
+                applySkin(player.getGameProfile(), skin);
+
+                /* broadcast the skin */
                 for (PlayerEntity observer : player.getWorld().getPlayers()) {
                     ServerPlayerEntity observer1 = (ServerPlayerEntity) observer;
                     observer1.networkHandler.sendPacket(new PlayerRemoveS2CPacket(Collections.singletonList(player.getUuid())));
@@ -101,13 +105,14 @@ public class SkinRestorer {
                 }
                 acceptedPlayers.add(player);
             }
+
             return Pair.of(acceptedPlayers, acceptedProfiles);
         }, server).orTimeout(10, TimeUnit.SECONDS).exceptionally(e -> Pair.of(Collections.emptySet(), Collections.emptySet()));
     }
 
-    private static void applyRestoredSkin(@NotNull ServerPlayerEntity playerEntity, Property skin) {
-        playerEntity.getGameProfile().getProperties().removeAll("textures");
-        playerEntity.getGameProfile().getProperties().put("textures", skin);
+    public static void applySkin(@NotNull GameProfile gameProfile, Property skin) {
+        gameProfile.getProperties().removeAll("textures");
+        gameProfile.getProperties().put("textures", skin);
     }
 
     private static boolean arePropertiesEquals(@NotNull JsonObject x, @NotNull GameProfile y) {
@@ -120,7 +125,7 @@ public class SkinRestorer {
             jy.remove("timestamp");
             return x.equals(jy);
         } catch (Exception ex) {
-            LogUtil.info("can not compare skin", ex);
+            LogUtil.error("can not compare skin", ex);
             return false;
         }
     }

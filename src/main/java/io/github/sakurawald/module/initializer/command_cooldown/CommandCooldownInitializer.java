@@ -161,7 +161,7 @@ public class CommandCooldownInitializer extends ModuleInitializer {
 
     @Override
     public void registerPlaceholder() {
-        PlaceholderHelper.withPlayer("command_cooldown_left_time", ((player, args) -> {
+        PlaceholderHelper.withPlayer("command_cooldown_left_time", (player, args) -> {
             CommandCooldown cooldown = config.model().namedCooldown.list.get(args);
             if (cooldown == null) return NOT_COOLDOWN_FOUND;
 
@@ -169,9 +169,9 @@ public class CommandCooldownInitializer extends ModuleInitializer {
             long leftTime = cooldown.computeCooldown(key, cooldown.getCooldownMs());
             leftTime = Math.max(0, leftTime);
             return Text.literal(String.valueOf(leftTime));
-        }));
+        });
 
-        PlaceholderHelper.withPlayer("command_cooldown_left_usage", ((player, args) -> {
+        PlaceholderHelper.withPlayer("command_cooldown_left_usage", (player, args) -> {
             CommandCooldown cooldown = config.model().namedCooldown.list.get(args);
             if (cooldown == null) return NOT_COOLDOWN_FOUND;
 
@@ -179,7 +179,7 @@ public class CommandCooldownInitializer extends ModuleInitializer {
             int usage = cooldown.getUsage().getOrDefault(key, 0);
             int leftUsage = cooldown.getMaxUsage() - usage;
             return Text.literal(String.valueOf(leftUsage));
-        }));
+        });
     }
 
 }

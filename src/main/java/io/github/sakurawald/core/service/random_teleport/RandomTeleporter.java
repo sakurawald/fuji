@@ -110,9 +110,9 @@ public class RandomTeleporter {
 
         int r_min = setup.getMinRange();
         int r_max = setup.getMaxRange();
-        int r = (r_max == r_min
+        int r = r_max == r_min
             ? r_max
-            : rand.nextInt(r_min, r_max));
+            : rand.nextInt(r_min, r_max);
         final double angle = rand.nextDouble() * 2 * Math.PI;
         final double delta_x = r * Math.cos(angle);
         final double delta_z = r * Math.sin(angle);

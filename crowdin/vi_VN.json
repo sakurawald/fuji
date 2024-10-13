@@ -271,5 +271,15 @@
   "echo.send_custom.custom_text.invalid_page": "<red>Trang không hợp lệ.",
   "echo.send_custom.custom_text.paginator.first_page": "<dark_green>-----<< <grey><hover:show_text:'This is the first page'>Prev</grey> <green>%d<grey>/<green>%d <orange><click:run_command:'%s'><hover:show_text:'Next Page'>Next</hover></click></orange><dark_green> >>----",
   "echo.send_custom.custom_text.paginator.middle_page": "<dark_green>-----<< <orange><click:run_command:'%s'><hover:show_text:'Prev Page'>Prev</click></orange> <green>%d<grey>/<green>%d <orange><click:run_command:'%s'><hover:show_text:'Next Page'>Next</hover></click></orange><dark_green> >>----",
-  "echo.send_custom.custom_text.paginator.last_page": "<dark_green>-----<< <orange><click:run_command:'%s'><hover:show_text:'Prev Page'>Prev</click></orange> <green>%d<grey>/<green>%d <grey><hover:show_text:'This is the last page'>Next</hover></grey><dark_green> >>----"
+  "echo.send_custom.custom_text.paginator.last_page": "<dark_green>-----<< <orange><click:run_command:'%s'><hover:show_text:'Prev Page'>Prev</click></orange> <green>%d<grey>/<green>%d <grey><hover:show_text:'This is the last page'>Next</hover></grey><dark_green> >>----",
+  "command.argument.type.gui.title": "<blue>Argument Type",
+  "command.argument.type.class": "<blue>Type Class: %s",
+  "command.argument.type.string": "<blue>Type String: %s",
+  "fuji.inspect.configuration.gui.title": "<blue>Configuration Handlers",
+  "fuji.inspect.configuration.class": "<orange>Class -> %s",
+  "fuji.inspect.configuration.path": "<orange>Path -> %s",
+  "object.gui.title": "<blue>Path: %s",
+  "object.top_level": "<blue>Top Level -> %s",
+  "object.type": "<orange>Type -> %s",
+  "object.value": "<orange>Value -> %.128s"
 }

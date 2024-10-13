@@ -59,7 +59,7 @@ public class SumUpPlaceholder {
             if (custom == null) return ret;
             int moved_all = sumUpStats(custom, ".+_cm") / CM_TO_KM_DIVISOR;
             JsonElement mobKills = custom.get("minecraft:mob_kills");
-            int mob_kills = (mobKills == null ? 0 : mobKills.getAsInt());
+            int mob_kills = mobKills == null ? 0 : mobKills.getAsInt();
             JsonElement playTime = custom.get("minecraft:play_time");
             int play_time = (playTime == null ? 0 : playTime.getAsInt()) / GT_TO_H_DIVISOR;
 

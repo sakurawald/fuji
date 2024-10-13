@@ -1,33 +1,33 @@
 package io.github.sakurawald.core.command.argument.adapter.impl;
 
 import com.mojang.brigadier.arguments.ArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.command.argument.structure.Argument;
-import io.github.sakurawald.core.command.processor.CommandAnnotationProcessor;
-import net.minecraft.command.argument.ItemPredicateArgumentType;
+import io.github.sakurawald.core.command.argument.wrapper.impl.Word;
 import net.minecraft.server.command.ServerCommandSource;
 
 import java.util.List;
 
-public class ItemPredicateArgumentTypeAdapter extends BaseArgumentTypeAdapter {
+public class WordArgumentTypeAdapter extends BaseArgumentTypeAdapter {
     @Override
     protected ArgumentType<?> makeArgumentType() {
-        return ItemPredicateArgumentType.itemPredicate(CommandAnnotationProcessor.getRegistryAccess());
+        return StringArgumentType.word();
     }
 
     @Override
     protected Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
-        return ItemPredicateArgumentType.getItemStackPredicate(context, argument.getArgumentName());
+        return new Word(StringArgumentType.getString(context, argument.getArgumentName()));
     }
 
     @Override
     public List<Class<?>> getTypeClasses() {
-        return List.of(ItemPredicateArgumentType.ItemStackPredicateArgument.class);
+        return List.of(Word.class);
     }
 
     @Override
     public List<String> getTypeStrings() {
-        return List.of("item-predicate");
+        return List.of("word");
     }
 }

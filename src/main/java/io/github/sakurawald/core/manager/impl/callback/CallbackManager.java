@@ -30,11 +30,11 @@ public class CallbackManager extends BaseManager {
     }
 
     private void registerCLI() {
-        CommandEvents.REGISTRATION.register(((dispatcher, registryAccess, environment) -> dispatcher.register(
+        CommandEvents.REGISTRATION.register((dispatcher, registryAccess, environment) -> dispatcher.register(
             literal(COMMAND_CALLBACK)
                 .then(argument(CommandHelper.UUID, StringArgumentType.greedyString())
                     .executes(this::$executeCallback)
-                ))));
+                )));
     }
 
     private int $executeCallback(CommandContext<ServerCommandSource> ctx) {

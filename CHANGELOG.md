@@ -1,15 +1,16 @@
 > The version number of fuji follows `semver` now: https://semver.org/ 
+ 
+> This version including the **breaking changes** if you are using them:
+> 1. refactor: rename the commands registered by `predicate module` into a unified style, all predicate commands are now suffixes with `?` character. (predicate module)
 
-- feature: now the command suggestion for dynamic contents will be updated on the fly, without the server restart.
-- feature: now will put a default kit set into a created new empty kit, as the slot placeholder to reduce the confusion. (kit module)
-- feature: enhance the render function of bossbar, so that an instant bossbar will not be drawn in the client-side screen, if it's aborted in the first game-tick. (teleport warmup module and command warmup module)
-- feature: now will not send the `Operation Success` as the command feedback if it has nothing to say. (follow the `no news is good news` rule.)
-  - Influence: `/send-title`, `/send-toast`, `/command-attachment`, `/attachment`, `/burn`, `/freeze` and `/json`
-- feature: now will not `info the console` on loading head categories, reducing the console spam. (head module)
-- feature: a clearer gui design, now making the `helper button` using `book` item.
-- feature: skip the un-necessary nametag making while the player is changing dimension. (nametag module) 
-- feature: set the default requirement of commands registered by `predicate module` to level 4, since these commands is useless for default player. (predicate module)
-- fix: the player stats of interact with functional blocks doesn't get increased when interact these functional blocks using `functional commands`: `/anvil`, `/grindstone`, `/stonecutter`. (functional module)
-- fix: now will not create a new kit using `/kit give` command if the kit is not-exist.
-- fix: ensure the kit item will be given even the specified slot is not empty.
-- refactor: simplify the `fake player manager` module.
+
+- feature: add `all_commands_require_level_4_permission_to_use_by_default` option.
+- feature: add `gui support` for `/command-bundle list` command. (command bundle module)
+- feature: add `/fuji inspect argument-types` command, to list all registered argument types. (fuji module)
+- feature: add `/fuji inspect configurations` command, to list loaded configuration files. (fuji module)
+- feature: only send the message feedback to player command source, to avoid the console spam. (predicate module)
+- feature: add `predicate commands`: `/is-op?`, `/is-holding?`, `/has-exp?`, `/has-exp-level?`, `/is-in-world?`, `/is-in-gamemode?` (predicate module)
+- feature: allow to define `multiple default skins`. (skin module)
+- refactor: enhance the compatibility of hopper mixin of `production work`. (works module)
+- refactor: change the ui style from `oak button` into `quartz button`, it's clearer.
+- refactor: remove the un-used option `random_skin`

@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 public class CommandBundleConfigModel {
 
-    List<BundleCommandEntry> entries = new ArrayList<>() {
+    public List<BundleCommandEntry> entries = new ArrayList<>() {
         {
             /* level 4 commands */
             this.add(new BundleCommandEntry(new CommandRequirementDescriptor(4, null), "my-command test-the-command-with-optional-arg <int int-arg-name> [str str-arg-name this is the default value]", List.of("say hello %player:name%", "say int is $int-arg-name", "say str is $str-arg-name")));

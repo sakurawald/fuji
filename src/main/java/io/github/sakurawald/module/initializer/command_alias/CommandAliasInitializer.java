@@ -23,13 +23,13 @@ public class CommandAliasInitializer extends ModuleInitializer {
 
     @Override
     public void onInitialize() {
-        ServerLifecycleEvents.SERVER_STARTED.register((server -> {
+        ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
             CommandDispatcher<ServerCommandSource> dispatcher = ServerHelper.getCommandDispatcher();
             config.model().alias.forEach(it -> {
                 assert dispatcher != null;
                 processCommandAliasEntry(dispatcher, it);
             });
-        }));
+        });
     }
 
     private void processCommandAliasEntry(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, @NotNull CommandPathMappingEntry entry) {

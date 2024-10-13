@@ -72,7 +72,7 @@ public class InteractModifierMixin {
 
         final double maxDist = config.max_distance_to_sit;
         double givenDist = hitBlockPos.getSquaredDistance(player.getBlockPos());
-        if (maxDist > 0 && (givenDist > (maxDist * maxDist))) return;
+        if (maxDist > 0 && givenDist > maxDist * maxDist) return;
 
         /* calc offset */
         Vec3d lookTarget = player.getPos().add(0.5, 0, 0.5);

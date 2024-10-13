@@ -147,7 +147,7 @@ public class SitInitializer extends ModuleInitializer {
 
         // chair entity props
         if (target != null) {
-            entity.lookAt(EntityAnchorArgumentType.EntityAnchor.EYES, target.subtract(0, (target.getY() * 2), 0));
+            entity.lookAt(EntityAnchorArgumentType.EntityAnchor.EYES, target.subtract(0, target.getY() * 2, 0));
         }
 
         entity.setInvisible(true);

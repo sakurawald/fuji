@@ -12,7 +12,7 @@ plugins {
 
 checkstyle {
     configFile = project.rootProject.file("checkstyle.xml")
-    toolVersion = '10.12.4'
+    toolVersion = '10.18.0'
 }
 
 repositories {

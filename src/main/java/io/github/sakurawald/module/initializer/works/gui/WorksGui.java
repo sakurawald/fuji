@@ -38,13 +38,13 @@ public class WorksGui extends PagedGui<Work> {
 
         if (entities == WorksInitializer.works.model().works) {
             controlLayer.addSlot(
-                GuiHelper.makeSkullButton(GuiHelper.Icon.QUESTION_MARK_ICON)
+                GuiHelper.makeQuestionMarkButton(player)
                     .setName(LocaleHelper.getTextByKey(player, "works.list.my_works"))
                     .setCallback(() -> search(player.getGameProfile().getName()).open())
             );
         } else {
             controlLayer.addSlot(
-                GuiHelper.makeSkullButton(GuiHelper.Icon.A_ICON)
+                GuiHelper.makeLetterAButton(player)
                     .setName(LocaleHelper.getTextByKey(player, "works.list.all_works"))
                     .setCallback(() -> new WorksGui(player, WorksInitializer.works.model().works, 0).open())
             );
@@ -114,10 +114,10 @@ public class WorksGui extends PagedGui<Work> {
         return this.getEntities().stream().filter(w ->
             w.creator.contains(keyword)
                 || w.name.contains(keyword)
-                || (w.introduction != null && w.introduction.contains(keyword))
+                || w.introduction != null && w.introduction.contains(keyword)
                 || w.level.contains(keyword)
                 || w.getIconItemIdentifier().contains(keyword)
-                || (w instanceof ProductionWork pw && pw.sample.sampleCounter != null && pw.sample.sampleCounter.keySet().stream().anyMatch(k -> k.contains(keyword)))
+                || w instanceof ProductionWork pw && pw.sample.sampleCounter != null && pw.sample.sampleCounter.keySet().stream().anyMatch(k -> k.contains(keyword))
         ).toList();
     }
 }

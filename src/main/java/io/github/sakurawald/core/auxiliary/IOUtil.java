@@ -1,5 +1,6 @@
 package io.github.sakurawald.core.auxiliary;
 
+import io.github.sakurawald.Fuji;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.io.IOUtils;
@@ -53,12 +54,20 @@ public class IOUtil {
         }
     }
 
-    @SneakyThrows(IOException.class)
     private static @NotNull String getEntryName(@NotNull File base, @NotNull File file) {
+        return computeRelativePath(base, file);
+    }
+
+    @SneakyThrows(IOException.class)
+    public static String computeRelativePath(@NotNull File base, @NotNull File file) {
         String baseStr = base.getCanonicalPath();
         String fileStr = file.getCanonicalPath();
 
         return fileStr.replace(baseStr, "");
+    }
+
+    public static String computeRelativePath(@NotNull File file) {
+        return computeRelativePath(Fuji.CONFIG_PATH.getParent().toFile(), file);
     }
 
     public static @NotNull List<Path> getLatestFiles(@NotNull Path path) {

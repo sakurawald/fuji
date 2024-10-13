@@ -50,7 +50,7 @@ public class CommandAnnotationProcessor {
          note that: the `/reload` will trigger the `REGISTRATION` event.
          Also, the vanilla minecraft will remove all commands, so we must register fuji commands after reload.
          */
-        CommandEvents.REGISTRATION.register(((dispatcher, registryAccess, environment) -> {
+        CommandEvents.REGISTRATION.register((dispatcher, registryAccess, environment) -> {
             /* environment */
             CommandAnnotationProcessor.dispatcher = dispatcher;
             CommandAnnotationProcessor.registryAccess = registryAccess;
@@ -61,7 +61,7 @@ public class CommandAnnotationProcessor {
             /* register commands */
             descriptors.clear();
             processClasses();
-        }));
+        });
     }
 
     private static void processClasses() {
@@ -130,9 +130,10 @@ public class CommandAnnotationProcessor {
             /* pass the class requirement down, if the method requirement is null */
             methodRequirement = method.getAnnotation(CommandRequirement.class);
             if (methodRequirement == null) {
-                methodRequirement = clazz.getAnnotation(CommandRequirement.class);
+                methodRequirement = classRequirement;
             }
 
+            /* make requirement descriptor */
             argumentList.add(Argument.makeLiteralArgument(argumentName, CommandRequirementDescriptor.of(methodRequirement)));
         }
 

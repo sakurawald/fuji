@@ -31,6 +31,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -53,6 +54,8 @@ public abstract class BaseConfigurationHandler<T> {
 
     public static final String CONFIG_JSON = "config.json";
 
+    public static final Set<BaseConfigurationHandler<?>> handlers = new HashSet<>();
+
     @Getter
     protected static Gson gson = new GsonBuilder()
         // the default naming policy is IDENTIFY, we ensure that the naming style is consistency, whatever the internal name is.
@@ -64,6 +67,7 @@ public abstract class BaseConfigurationHandler<T> {
         // null-value is value, we should serialize it.
         .serializeNulls()
         .create();
+
     /* json path */
     private static ParseContext jsonPathParser = null;
     @Getter
@@ -143,6 +147,9 @@ public abstract class BaseConfigurationHandler<T> {
         } catch (IOException e) {
             LogUtil.error("failed to read configuration file {} from disk.", this.path, e);
         }
+
+        /* track this */
+        handlers.add(this);
     }
 
     public void beforeWriteStorage() {

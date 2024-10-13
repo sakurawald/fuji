@@ -38,8 +38,8 @@ public class TpaRequest {
     }
 
     public boolean similarTo(@NotNull TpaRequest other) {
-        return (this.sender.equals(other.sender) && this.receiver.equals(other.receiver)) ||
-            (this.sender.equals(other.receiver) && this.receiver.equals(other.sender));
+        return this.sender.equals(other.sender) && this.receiver.equals(other.receiver)
+            || this.sender.equals(other.receiver) && this.receiver.equals(other.sender);
     }
 
     public ServerPlayerEntity getTeleportWho() {

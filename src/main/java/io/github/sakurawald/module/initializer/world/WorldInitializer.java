@@ -170,7 +170,7 @@ public class WorldInitializer extends ModuleInitializer {
             .forEach(it -> {
                 try {
                     WorldManager.requestToCreateWorld(it);
-                    LogUtil.info("load dimension {} into server done.", it.getDimension());
+                    LogUtil.info("load dimension {} into the server done.", it.getDimension());
                 } catch (Exception e) {
                     LogUtil.error("failed to load dimension `{}`", it, e);
                 }
