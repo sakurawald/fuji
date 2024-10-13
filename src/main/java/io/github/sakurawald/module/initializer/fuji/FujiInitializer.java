@@ -130,7 +130,7 @@ public class FujiInitializer extends ModuleInitializer {
             .sorted(Comparator.comparing(BaseConfigurationHandler::getPath))
             .toList();
 
-        new ConfigurationHandlerGui(player, list, 0).open();
+        new ConfigurationHandlerGui(null, player, list, 0).open();
         return CommandHelper.Return.SUCCESS;
     }
 }

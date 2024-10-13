@@ -280,5 +280,5 @@
   "fuji.inspect.configuration.path": "<orange>Path -> %s",
   "object.gui.title": "<blue>%s -> %s",
   "object.type": "<orange>Type -> %s",
-  "object.value": "<orange>Value -> %.48s"
+  "object.value": "<orange>Value -> %.128s"
 }

@@ -19,18 +19,21 @@ import java.util.List;
 
 public class ConfigurationHandlerGui extends PagedGui<BaseConfigurationHandler<?>> {
 
-    public ConfigurationHandlerGui(ServerPlayerEntity player, @NotNull List<BaseConfigurationHandler<?>> entities, int pageIndex) {
-        super(null, player, LocaleHelper.getTextByKey(player, "fuji.inspect.configuration.gui.title"), entities, pageIndex);
+    public ConfigurationHandlerGui(@Nullable SimpleGui parent, ServerPlayerEntity player, @NotNull List<BaseConfigurationHandler<?>> entities, int pageIndex) {
+        super(parent, player, LocaleHelper.getTextByKey(player, "fuji.inspect.configuration.gui.title"), entities, pageIndex);
     }
 
     @Override
     public PagedGui<BaseConfigurationHandler<?>> make(@Nullable SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<BaseConfigurationHandler<?>> entities, int pageIndex) {
-        return new ConfigurationHandlerGui(player, entities, pageIndex);
+        return new ConfigurationHandlerGui(getGui(), player, entities, pageIndex);
     }
 
     @Override
     public GuiElementInterface toGuiElement(BaseConfigurationHandler<?> entity) {
         String modelClassName = entity.getClass().getSimpleName();
+        if (modelClassName.isBlank()) {
+            modelClassName = "ANONYMOUS-CLASS";
+        }
         Path modelPath = entity.getPath();
         String topLevelName = IOUtil.computeRelativePath(modelPath.getParent().getParent().toFile(), modelPath.toFile());
 

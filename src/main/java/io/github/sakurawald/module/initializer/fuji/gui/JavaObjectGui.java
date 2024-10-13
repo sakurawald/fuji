@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -65,13 +66,24 @@ public class JavaObjectGui extends PagedGui<Field> {
     }
 
     private List<Text> computeLore(Field field) {
+        /* get value */
         Object value;
         try {
+            field.setAccessible(true);
             value = field.get(instance);
-        } catch (IllegalAccessException e) {
+
+            /* transform into size if it's a collection */
+            if (value instanceof Collection<?> collection) {
+                value = collection.size() + " entries";
+            } else if (value instanceof Map<?, ?> map) {
+                value = map.size() + " entries";
+            }
+
+        } catch (Exception e) {
             value = "FAILED-TO-ACCESS";
         }
 
+        /* make lore */
         return List.of(
             LocaleHelper.getTextByKey(getPlayer(), "object.type", field.getType().getSimpleName())
             , LocaleHelper.getTextByKey(getPlayer(), "object.value", value)
