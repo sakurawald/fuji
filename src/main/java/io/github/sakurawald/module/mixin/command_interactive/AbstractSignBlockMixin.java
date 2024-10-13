@@ -1,13 +1,12 @@
 package io.github.sakurawald.module.mixin.command_interactive;
 
-import io.github.sakurawald.core.command.executor.CommandExecutor;
-import io.github.sakurawald.core.command.structure.ExtendedCommandSource;
 import net.minecraft.block.AbstractSignBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.block.entity.SignText;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.packet.c2s.play.CommandExecutionC2SPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -45,7 +44,7 @@ public class AbstractSignBlockMixin {
                     cir.setReturnValue(ActionResult.CONSUME);
                     List<String> commands = splitCommands(text);
 
-                    commands.forEach(command -> CommandExecutor.execute(ExtendedCommandSource.asPlayer(player.getCommandSource(), player), command));
+                    commands.forEach(command -> ((ServerPlayerEntity) player).networkHandler.onCommandExecution(new CommandExecutionC2SPacket(command)));
                 }
             }
         }
