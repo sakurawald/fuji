@@ -9,7 +9,6 @@ import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import it.unimi.dsi.fastutil.Pair;
 import lombok.Getter;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.EntitiesDestroyS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
@@ -79,28 +78,31 @@ public class SkinRestorer {
                 /* apply the skin */
                 applySkin(player.getGameProfile(), skin);
 
-                /* broadcast the skin */
-                for (PlayerEntity observer : player.getWorld().getPlayers()) {
-                    ServerPlayerEntity observer1 = (ServerPlayerEntity) observer;
-                    observer1.networkHandler.sendPacket(new PlayerRemoveS2CPacket(Collections.singletonList(player.getUuid())));
-                    observer1.networkHandler.sendPacket(new PlayerListS2CPacket(PlayerListS2CPacket.Action.ADD_PLAYER, player)); // refresh the player information
-                    if (player != observer1 && observer1.canSee(player)) {
-                        observer1.networkHandler.sendPacket(new EntitiesDestroyS2CPacket(player.getId()));
-                        observer1.networkHandler.sendPacket(new EntitySpawnS2CPacket(player, 0, player.getBlockPos()));
-                        observer1.networkHandler.sendPacket(new EntityPositionS2CPacket(player));
-                        observer1.networkHandler.sendPacket(new EntityTrackerUpdateS2CPacket(player.getId(), player.getDataTracker().getChangedEntries()));
-                    } else if (player == observer1) {
-                        observer1.networkHandler.sendPacket(new PlayerRespawnS2CPacket(player.createCommonPlayerSpawnInfo(player.getServerWorld()), (byte) 2));
-                        observer1.networkHandler.sendPacket(new UpdateSelectedSlotS2CPacket(observer1.getInventory().selectedSlot));
-                        observer1.sendAbilitiesUpdate();
-                        observer1.playerScreenHandler.updateToClient();
-                        for (StatusEffectInstance instance : observer1.getStatusEffects()) {
-                            // original code: observer1.networkHandler.sendPacket(new EntityStatusEffectS2CPacket(observer1.getId(), instance));
-                            observer1.networkHandler.sendPacket(new EntityStatusEffectS2CPacket(observer1.getId(), instance, false));
+                /* broadcast the change */
+                for (ServerPlayerEntity observer : player.getServerWorld().getPlayers()) {
+
+                    /* update the tablist */
+                    observer.networkHandler.sendPacket(new PlayerRemoveS2CPacket(Collections.singletonList(player.getUuid())));
+                    observer.networkHandler.sendPacket(new PlayerListS2CPacket(PlayerListS2CPacket.Action.ADD_PLAYER, player));
+
+                    /* update the player entity */
+                    if (player != observer && observer.canSee(player)) {
+                        observer.networkHandler.sendPacket(new EntitiesDestroyS2CPacket(player.getId()));
+                        observer.networkHandler.sendPacket(new EntitySpawnS2CPacket(player, 0, player.getBlockPos()));
+                        observer.networkHandler.sendPacket(new EntityPositionS2CPacket(player));
+                        observer.networkHandler.sendPacket(new EntityTrackerUpdateS2CPacket(player.getId(), player.getDataTracker().getChangedEntries()));
+
+                    } else if (player == observer) {
+                        observer.networkHandler.sendPacket(new PlayerRespawnS2CPacket(player.createCommonPlayerSpawnInfo(player.getServerWorld()), (byte) 2));
+                        observer.networkHandler.sendPacket(new UpdateSelectedSlotS2CPacket(observer.getInventory().selectedSlot));
+                        observer.sendAbilitiesUpdate();
+                        observer.playerScreenHandler.updateToClient();
+                        for (StatusEffectInstance instance : observer.getStatusEffects()) {
+                            observer.networkHandler.sendPacket(new EntityStatusEffectS2CPacket(observer.getId(), instance, false));
                         }
-                        observer1.networkHandler.requestTeleport(observer1.getX(), observer1.getY(), observer1.getZ(), observer1.getYaw(), observer1.getPitch());
-                        observer1.networkHandler.sendPacket(new EntityTrackerUpdateS2CPacket(player.getId(), player.getDataTracker().getChangedEntries()));
-                        observer1.networkHandler.sendPacket(new ExperienceBarUpdateS2CPacket(player.experienceProgress, player.totalExperience, player.experienceLevel));
+                        observer.networkHandler.requestTeleport(observer.getX(), observer.getY(), observer.getZ(), observer.getYaw(), observer.getPitch());
+                        observer.networkHandler.sendPacket(new EntityTrackerUpdateS2CPacket(player.getId(), player.getDataTracker().getChangedEntries()));
+                        observer.networkHandler.sendPacket(new ExperienceBarUpdateS2CPacket(player.experienceProgress, player.totalExperience, player.experienceLevel));
                     }
                 }
                 acceptedPlayers.add(player);
