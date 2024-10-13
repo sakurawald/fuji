@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.initializer.skin;
+package io.github.sakurawald.module.initializer.skin.structure;
 
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
@@ -7,8 +7,7 @@ import io.github.sakurawald.core.annotation.Cite;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
-import io.github.sakurawald.module.initializer.skin.config.SkinIO;
-import io.github.sakurawald.module.initializer.skin.config.SkinStorage;
+import io.github.sakurawald.module.initializer.skin.SkinInitializer;
 import it.unimi.dsi.fastutil.Pair;
 import lombok.Getter;
 import net.minecraft.entity.effect.StatusEffectInstance;

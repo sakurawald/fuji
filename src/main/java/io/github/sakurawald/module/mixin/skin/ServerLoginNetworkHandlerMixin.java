@@ -4,7 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.service.gameprofile_fetcher.MojangProfileFetcher;
-import io.github.sakurawald.module.initializer.skin.SkinRestorer;
+import io.github.sakurawald.module.initializer.skin.structure.SkinRestorer;
 import net.minecraft.server.network.ServerLoginNetworkHandler;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -40,7 +40,7 @@ public abstract class ServerLoginNetworkHandlerMixin {
                 // note: a fake-player will not trigger waitForSkin()
                 LogUtil.info("fetch skin for {}", profile.getName());
 
-                if (SkinRestorer.getSkinStorage().getSkin(profile.getId()) == SkinRestorer.getSkinStorage().getDefaultSkin()) {
+                if (SkinRestorer.getSkinStorage().isDefaultSkin(profile)) {
                     SkinRestorer.getSkinStorage().setSkin(profile.getId(), MojangProfileFetcher.fetchOnlineSkin(profile.getName()));
                 }
                 return SkinRestorer.getSkinStorage().getSkin(profile.getId());

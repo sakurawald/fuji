@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.skin;
 
-import io.github.sakurawald.module.initializer.skin.SkinRestorer;
+import io.github.sakurawald.module.initializer.skin.structure.SkinRestorer;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
@@ -21,11 +21,11 @@ public abstract class PlayerListMixin {
 
     @Inject(method = "remove", at = @At("TAIL"))
     private void remove(@NotNull ServerPlayerEntity player, CallbackInfo ci) {
-        SkinRestorer.getSkinStorage().removeSkin(player.getUuid());
+        SkinRestorer.getSkinStorage().saveSkin(player.getUuid());
     }
 
     @Inject(method = "disconnectAllPlayers", at = @At("HEAD"))
     private void disconnectAllPlayers(CallbackInfo ci) {
-        getPlayerList().forEach(player -> SkinRestorer.getSkinStorage().removeSkin(player.getUuid()));
+        getPlayerList().forEach(player -> SkinRestorer.getSkinStorage().saveSkin(player.getUuid()));
     }
 }

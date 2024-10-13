@@ -1,6 +1,8 @@
-package io.github.sakurawald.module.initializer.skin.config;
+package io.github.sakurawald.module.initializer.skin.structure;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import io.github.sakurawald.core.auxiliary.RandomUtil;
 import io.github.sakurawald.module.initializer.skin.SkinInitializer;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +24,14 @@ public class SkinStorage {
     }
 
     public Property getDefaultSkin() {
-        return SkinInitializer.config.model().default_skin;
+        return RandomUtil.drawList(SkinInitializer.config.model().default_skins);
+    }
+
+    public boolean isDefaultSkin(GameProfile gameProfile) {
+        Property textures = gameProfile.getProperties().get("textures").stream().findFirst().orElse(null);
+        if (textures == null) return false;
+
+        return SkinInitializer.config.model().default_skins.stream().anyMatch(it -> it.value().equals(textures.value()));
     }
 
     public Property getSkin(UUID uuid) {
@@ -34,7 +43,7 @@ public class SkinStorage {
         return skinMap.get(uuid);
     }
 
-    public void removeSkin(UUID uuid) {
+    public void saveSkin(UUID uuid) {
         if (skinMap.containsKey(uuid)) {
             skinIO.saveSkin(uuid, skinMap.get(uuid));
         }
