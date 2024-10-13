@@ -106,7 +106,7 @@ public class FujiInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @CommandNode("inspect argument-type")
+    @CommandNode("inspect argument-types")
     private static int listCommandArgumentType(@CommandSource CommandContext<ServerCommandSource> ctx) {
         List<BaseArgumentTypeAdapter> adapters = BaseArgumentTypeAdapter.getAdapters();
 
@@ -123,7 +123,7 @@ public class FujiInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @CommandNode("inspect configuration")
+    @CommandNode("inspect configurations")
     private static int listConfiguration(@CommandSource ServerPlayerEntity player) {
         List<BaseConfigurationHandler<?>> list = BaseConfigurationHandler.handlers.stream()
             .filter(it -> it instanceof ObjectConfigurationHandler<?>)
