@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.properties.Property;
 import io.github.sakurawald.core.auxiliary.IOUtil;
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.module.initializer.skin.structure.SkinVariant;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,12 +19,19 @@ public class MineSkinSkinProvider {
     public static @Nullable Property fetchSkin(String url, @NotNull SkinVariant variant) {
         try {
             String param = "{\"variant\":\"%s\",\"name\":\"%s\",\"visibility\":%d,\"url\":\"%s\"}"
-                .formatted(variant.toString(), "none", 1, url);
-            JsonObject texture = JsonParser.parseString(IOUtil.post(URI.create(API_ENDPOINT), param)).getAsJsonObject()
-                .getAsJsonObject("data").getAsJsonObject("texture");
+                .formatted(variant.toString(), "none", 0, url);
+            String json = IOUtil.post(URI.create(API_ENDPOINT), param);
+
+            JsonObject texture = JsonParser.parseString(json)
+                .getAsJsonObject()
+                .getAsJsonObject("data")
+                .getAsJsonObject("texture");
+
             return new Property("textures", texture.get("value").getAsString(), texture.get("signature").getAsString());
         } catch (IOException e) {
-            return null;
+            LogUtil.debug("failed to fetch skin from mine-skin server: url = {}", url);
         }
+
+        return null;
     }
 }

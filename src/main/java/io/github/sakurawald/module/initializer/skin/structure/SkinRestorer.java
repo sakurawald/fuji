@@ -9,7 +9,9 @@ import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import it.unimi.dsi.fastutil.Pair;
 import lombok.Getter;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.network.packet.s2c.play.DifficultyS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntitiesDestroyS2CPacket;
+import net.minecraft.network.packet.s2c.play.EntityPassengersSetS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityPositionS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityStatusEffectS2CPacket;
@@ -46,7 +48,7 @@ public class SkinRestorer {
 
             LogUtil.debug("skinSupplier.get() -> skin = {}", skin);
             if (skin == null) {
-                LogUtil.error("cannot get the skin for {}", targets.stream().findFirst().orElseThrow());
+                LogUtil.error("cannot get the skin for {}", targets.stream().findFirst().orElseThrow().getName());
                 return Pair.of(null, Collections.emptySet());
             }
 
@@ -91,18 +93,23 @@ public class SkinRestorer {
                         observer.networkHandler.sendPacket(new EntitySpawnS2CPacket(player, 0, player.getBlockPos()));
                         observer.networkHandler.sendPacket(new EntityPositionS2CPacket(player));
                         observer.networkHandler.sendPacket(new EntityTrackerUpdateS2CPacket(player.getId(), player.getDataTracker().getChangedEntries()));
+                        observer.networkHandler.sendPacket(new EntityPassengersSetS2CPacket(player));
 
                     } else if (player == observer) {
                         observer.networkHandler.sendPacket(new PlayerRespawnS2CPacket(player.createCommonPlayerSpawnInfo(player.getServerWorld()), (byte) 2));
+                        observer.networkHandler.requestTeleport(observer.getX(), observer.getY(), observer.getZ(), observer.getYaw(), observer.getPitch());
+
+                        observer.networkHandler.sendPacket(new DifficultyS2CPacket(observer.getServerWorld().getDifficulty(), player.getServerWorld().getLevelProperties().isDifficultyLocked()));
+
                         observer.networkHandler.sendPacket(new UpdateSelectedSlotS2CPacket(observer.getInventory().selectedSlot));
                         observer.sendAbilitiesUpdate();
                         observer.playerScreenHandler.updateToClient();
                         for (StatusEffectInstance instance : observer.getStatusEffects()) {
                             observer.networkHandler.sendPacket(new EntityStatusEffectS2CPacket(observer.getId(), instance, false));
                         }
-                        observer.networkHandler.requestTeleport(observer.getX(), observer.getY(), observer.getZ(), observer.getYaw(), observer.getPitch());
                         observer.networkHandler.sendPacket(new EntityTrackerUpdateS2CPacket(player.getId(), player.getDataTracker().getChangedEntries()));
                         observer.networkHandler.sendPacket(new ExperienceBarUpdateS2CPacket(player.experienceProgress, player.totalExperience, player.experienceLevel));
+                        observer.networkHandler.sendPacket(new EntityPassengersSetS2CPacket(observer));
                     }
                 }
                 acceptedPlayers.add(player);
