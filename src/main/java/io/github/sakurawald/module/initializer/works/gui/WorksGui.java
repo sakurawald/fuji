@@ -47,9 +47,7 @@ public class WorksGui extends PagedGui<Work> {
                     .setCallback(() -> new WorksGui(player, WorksInitializer.works.model().works, 0).open())
             );
         }
-
     }
-
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean hasPermission(@NotNull ServerPlayerEntity player, @NotNull Work work) {
@@ -58,7 +56,7 @@ public class WorksGui extends PagedGui<Work> {
 
     @Override
     public PagedGui<Work> make(@Nullable SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<Work> entities, int pageIndex) {
-        return new WorksGui(player, entities, 0);
+        return new WorksGui(player, entities, pageIndex);
     }
 
     @Override
