@@ -48,7 +48,7 @@ public class SkinRestorer {
 
             LogUtil.debug("skinSupplier.get() -> skin = {}", skin);
             if (skin == null) {
-                LogUtil.error("cannot get the skin for {}", targets.stream().findFirst().orElseThrow().getName());
+                LogUtil.debug("cannot get the skin for {}", targets.stream().findFirst().orElseThrow().getName());
                 return Pair.of(null, Collections.emptySet());
             }
 
