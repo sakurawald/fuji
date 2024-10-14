@@ -3,7 +3,6 @@ package io.github.sakurawald.module.initializer.works.gui;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import eu.pb4.sgui.api.gui.layered.Layer;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
@@ -28,30 +27,27 @@ public class WorksGui extends PagedGui<Work> {
     public WorksGui(ServerPlayerEntity player, @NotNull List<Work> entities, int pageIndex) {
         super(null, player, LocaleHelper.getTextByKey(player, "works.list.title"), entities, pageIndex);
 
-        Layer controlLayer = new Layer(1, 3);
-        controlLayer.addSlot(GuiHelper.makeAddButton(player)
+        getFooter().setSlot(3, GuiHelper.makeAddButton(player)
             .setName(LocaleHelper.getTextByKey(player, "works.list.add"))
             .setCallback(() -> new AddWorkGui(player).open())
         );
-        controlLayer.addSlot(GuiHelper.makeHelpButton(player)
+        getFooter().setSlot(4, GuiHelper.makeHelpButton(player)
             .setLore(LocaleHelper.getTextListByKey(player, "works.list.help.lore")));
 
         if (entities == WorksInitializer.works.model().works) {
-            controlLayer.addSlot(
+            getFooter().setSlot(5,
                 GuiHelper.makeQuestionMarkButton(player)
                     .setName(LocaleHelper.getTextByKey(player, "works.list.my_works"))
                     .setCallback(() -> search(player.getGameProfile().getName()).open())
             );
         } else {
-            controlLayer.addSlot(
+            getFooter().setSlot(5,
                 GuiHelper.makeLetterAButton(player)
                     .setName(LocaleHelper.getTextByKey(player, "works.list.all_works"))
                     .setCallback(() -> new WorksGui(player, WorksInitializer.works.model().works, 0).open())
             );
         }
 
-        // note: in this closure, it's important to call `the.addLayer`, not `this.addLayer() or super.addLayer()`
-        this.addLayer(controlLayer, 3, this.getHeight() - 1);
     }
 
 

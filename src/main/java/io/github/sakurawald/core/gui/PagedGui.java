@@ -24,6 +24,8 @@ public abstract class PagedGui<T> extends LayeredGui {
     private final List<T> entities;
     private final int pageIndex;
     private final Text prefixTitle;
+    @Getter
+    private final SingleLineLayer footer = new SingleLineLayer();
 
     public PagedGui(@Nullable SimpleGui parent, ServerPlayerEntity player, Text prefixTitle, @NotNull List<T> entities, int pageIndex) {
         super(ScreenHandlerType.GENERIC_9X6, player, false);
@@ -61,8 +63,11 @@ public abstract class PagedGui<T> extends LayeredGui {
         // draw entities
         this.drawPagedGui(entities);
 
-        // page layer
+        // draw navigator
         this.drawNavigator(pageIndex);
+
+        // draw footer
+        this.addLayer(footer, 0, this.getHeight() - 1);
     }
 
     private void drawPagedGui(@NotNull List<T> entities) {

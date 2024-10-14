@@ -9,7 +9,6 @@ import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.gui.PagedGui;
-import io.github.sakurawald.core.gui.layer.SingleLineLayer;
 import io.github.sakurawald.core.service.gameprofile_fetcher.MojangProfileFetcher;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ContactInformation;
@@ -36,16 +35,15 @@ public class AboutGui extends PagedGui<Person> {
         super(null, player, LocaleHelper.getTextByKey(player, "about"), entities, pageIndex);
 
         ModMetadata metadata = FabricLoader.getInstance().getModContainer(Fuji.MOD_ID).get().getMetadata();
-        SingleLineLayer footer = new SingleLineLayer();
-        footer.setSlot(1, new GuiElementBuilder(Items.BOOK)
+
+        getFooter().setSlot(1, new GuiElementBuilder(Items.BOOK)
             .setName(LocaleHelper.getTextByKey(player, "version.format", metadata.getVersion().getFriendlyString())));
-        footer.setSlot(4, new GuiElementBuilder(Items.NETHER_STAR)
+        getFooter().setSlot(4, new GuiElementBuilder(Items.NETHER_STAR)
             .setName(LocaleHelper.getTextByKey(player, "homepage.project"))
             .setCallback(() -> {
                 LocaleHelper.sendMessageByKey(player, "homepage.project.visit", metadata.getContact().get("sources").orElse("can't read project homepage from metadata"));
                 this.close();
             }));
-        this.addLayer(footer, 0, this.getHeight() - 1);
 
         // fetch heads async
         fetchHeads();

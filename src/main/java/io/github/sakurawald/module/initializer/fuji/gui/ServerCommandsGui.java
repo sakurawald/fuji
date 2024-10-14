@@ -6,7 +6,6 @@ import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.gui.PagedGui;
-import io.github.sakurawald.core.gui.layer.SingleLineLayer;
 import io.github.sakurawald.core.structure.CommandNode;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -21,10 +20,8 @@ public class ServerCommandsGui extends PagedGui<CommandNode> {
     public ServerCommandsGui(ServerPlayerEntity player, @NotNull List<CommandNode> entities, int pageIndex) {
         super(null, player, LocaleHelper.getTextByKey(player, "fuji.inspect.server_commands.gui.title"), entities, pageIndex);
 
-        SingleLineLayer footer = new SingleLineLayer();
-        footer.setSlot(4, GuiHelper.makeHelpButton(player)
+        getFooter().setSlot(4, GuiHelper.makeHelpButton(player)
             .setLore(LocaleHelper.getTextListByKey(player, "fuji.inspect.server_commands.gui.help.lore")));
-        this.addLayer(footer, 0, this.getHeight() - 1);
     }
 
     @Override

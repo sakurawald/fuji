@@ -6,7 +6,6 @@ import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.gui.PagedGui;
-import io.github.sakurawald.core.gui.layer.SingleLineLayer;
 import io.github.sakurawald.module.initializer.command_permission.CommandPermissionInitializer;
 import io.github.sakurawald.module.initializer.command_permission.structure.CommandNodePermission;
 import net.minecraft.item.Items;
@@ -22,10 +21,8 @@ public class CommandPermissionGui extends PagedGui<CommandNodePermission> {
     public CommandPermissionGui(ServerPlayerEntity player, @NotNull List<CommandNodePermission> entities, int pageIndex) {
         super(null, player, LocaleHelper.getTextByKey(player, "command_permission.list.gui.title"), entities, pageIndex);
 
-        SingleLineLayer footer = new SingleLineLayer();
-        footer.setSlot(4, GuiHelper.makeHelpButton(player)
+        getFooter().setSlot(4, GuiHelper.makeHelpButton(player)
             .setLore(LocaleHelper.getTextListByKey(player, "command_permission.list.gui.help.lore")));
-        this.addLayer(footer, 0, this.getHeight() - 1);
     }
 
     @Override

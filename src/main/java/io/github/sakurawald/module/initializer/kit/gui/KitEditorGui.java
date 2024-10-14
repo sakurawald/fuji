@@ -7,7 +7,6 @@ import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.gui.InputSignGui;
 import io.github.sakurawald.core.gui.PagedGui;
-import io.github.sakurawald.core.gui.layer.SingleLineLayer;
 import io.github.sakurawald.module.initializer.kit.KitInitializer;
 import io.github.sakurawald.module.initializer.kit.structure.Kit;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,10 +31,9 @@ public class KitEditorGui extends PagedGui<Kit> {
         super(null, player, LocaleHelper.getTextByKey(player, "kit.gui.editor.title"), entities, pageIndex);
 
         /* make footer */
-        SingleLineLayer footer = new SingleLineLayer();
-        footer.setSlot(1, GuiHelper.makeHelpButton(player)
+        getFooter().setSlot(1, GuiHelper.makeHelpButton(player)
             .setLore(LocaleHelper.getTextListByKey(player, "kit.gui.editor.help.lore")));
-        footer.setSlot(4, GuiHelper.makeAddButton(player).setCallback(() -> new InputSignGui(player, LocaleHelper.getTextByKey(player, "prompt.input.name")) {
+        getFooter().setSlot(4, GuiHelper.makeAddButton(player).setCallback(() -> new InputSignGui(player, LocaleHelper.getTextByKey(player, "prompt.input.name")) {
 
             @Override
             public void onClose() {
@@ -50,7 +48,6 @@ public class KitEditorGui extends PagedGui<Kit> {
                 openKitEditingGui(getPlayer(), KitInitializer.readKit(name));
             }
         }.open()));
-        this.addLayer(footer, 0, this.getHeight() - 1);
     }
 
     private void openKitEditingGui(@NotNull ServerPlayerEntity player, @NotNull Kit kit) {
