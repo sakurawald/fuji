@@ -72,8 +72,7 @@ public class GuiHelper {
     }
 
     public static GuiElementBuilder makeHelpButton(ServerPlayerEntity player) {
-        return new GuiElementBuilder()
-            .setItem(Items.BOOK)
+        return makeQuestionMarkButton(player)
             .setName(LocaleHelper.getTextByKey(player, "help"));
     }
 
@@ -83,6 +82,10 @@ public class GuiHelper {
 
     public static GuiElementBuilder makeQuestionMarkButton(ServerPlayerEntity player) {
         return makeSkullButton(Icon.QUESTION_MARK_ICON);
+    }
+
+    public static GuiElementBuilder makeHeartButton(ServerPlayerEntity player) {
+        return makeSkullButton(Icon.HEART_ICON);
     }
 
     public static GuiElementBuilder makeLetterAButton(ServerPlayerEntity player) {
