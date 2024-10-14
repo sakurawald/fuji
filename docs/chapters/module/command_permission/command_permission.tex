@@ -6,7 +6,7 @@ This module provides the customization of \tbf{the requirement of all commands}.
 \LevelTwo{Command}
 \LevelThree{/command-permission}
 
-\LevelTwo{How it works}
+\LevelTwo{How it works?}
 The vanilla minecraft use a command system named brigadier.\\
 All the commands are registered, parsed and executed by brigadier. \\
 In this system, all commands are build into \tbf{a tree structure}, that is to say, all commands are a direct or in-direct child of the \tbf{root command node}.
@@ -37,6 +37,10 @@ Also, each \tbf{command node} has its \tbf{requirement}, which is a \tbf{predica
 \LevelTwo{Example}
 \begin{example}{Allow everyone to use \ic{/gamemode} command}
     \ic{/lp group default permission set fuji.permission.gamemode true}
+
+    \begin{tips}{Allow the client-side to use gamemode switcher menu}
+        After you assign the \ttt{/gamemode} command permission for players, the client-side also requires to install a mod to bypass the client-side permission checking: \url{https://modrinth.com/mod/switcher}
+    \end{tips}
 \end{example}
 
 \begin{example}{Allow everyone to use \ic{/gamemode} command except the player Alice}
@@ -54,10 +58,6 @@ Also, each \tbf{command node} has its \tbf{requirement}, which is a \tbf{predica
     If you really want to assign only 1 single gamemode for everyone, you can use~\nameref{ch:command_bundle} to create a new command, which only switch the gamemode of player into spectator.
 
 \end{example}
-
-\begin{tips}{Allow the client-side to use gamemode switcher menu}
-    After you assign the \ttt{/gamemode} command permission for players, the client-side also requires to install a mod to bypass the client-side permission checking: \url{https://modrinth.com/mod/switcher}
-\end{tips}
 
 \begin{example}{More examples}
     See~\nameref{ch:permission}
