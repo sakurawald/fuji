@@ -1,5 +1,7 @@
 > The version number of fuji follows `semver` now: https://semver.org/ 
- 
+
+- feature: add `/command-scheduler` list command, to list all jobs. (command scheduler module)
+- feature: now will log the console on executing commands of jobs. (command scheduler module)
+- feature: add `ignore` option. (command spy module)
 - i18n: new translation for `zh_tw`. @yichifauzi
-- fix: swap the icon of `my-works` and `all-works` in `/works` gui. (works module)
-- refactor: use quartz button to mean the help button, for ui consistency.
+- docs: enrich the docs.
