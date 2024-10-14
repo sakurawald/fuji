@@ -5,62 +5,72 @@ import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
+import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
-import io.github.sakurawald.module.initializer.command_scheduler.command.argument.wrapper.ScheduleJobName;
+import io.github.sakurawald.module.initializer.command_scheduler.command.argument.wrapper.JobName;
 import io.github.sakurawald.module.initializer.command_scheduler.config.model.CommandSchedulerConfigModel;
+import io.github.sakurawald.module.initializer.command_scheduler.gui.JobGui;
 import io.github.sakurawald.module.initializer.command_scheduler.job.CommandScheduleJob;
-import lombok.Getter;
+import io.github.sakurawald.module.initializer.command_scheduler.structure.Job;
+import net.minecraft.server.network.ServerPlayerEntity;
 import org.quartz.JobDataMap;
+
+import java.util.List;
 
 
 @CommandNode("command-scheduler")
 @CommandRequirement(level = 4)
 public class CommandSchedulerInitializer extends ModuleInitializer {
 
-    @Getter
-    private static final BaseConfigurationHandler<CommandSchedulerConfigModel> schedulerHandler = new ObjectConfigurationHandler<>("scheduler.json", CommandSchedulerConfigModel.class)
+    public static final BaseConfigurationHandler<CommandSchedulerConfigModel> scheduler = new ObjectConfigurationHandler<>("scheduler.json", CommandSchedulerConfigModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("scheduler.json"), CommandSchedulerInitializer.class));
-
-    @CommandNode("trigger")
-    private static int $trigger(ScheduleJobName jobName) {
-        schedulerHandler.model().jobs.forEach(job -> {
-            if (job.getName().equals(jobName.getValue())) {
-                job.trigger();
-            }
-        });
-
-        return CommandHelper.Return.SUCCESS;
-    }
-
-    private void updateJobs() {
-        Managers.getScheduleManager().deleteJobs(CommandScheduleJob.class);
-        schedulerHandler.model().jobs.forEach(scheduleJob -> {
-            if (scheduleJob.isEnable()) {
-                scheduleJob.getCrons().forEach(cron -> new CommandScheduleJob(new JobDataMap() {
-                    {
-                        this.put("job", scheduleJob);
-                    }
-                }, () -> cron).schedule());
-
-                LogUtil.info("[command scheduler] schedule job -> {}", scheduleJob.getName());
-            }
-        });
-    }
 
     @Override
     public void onInitialize() {
-        schedulerHandler.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
+        scheduler.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
         updateJobs();
     }
 
     @Override
     public void onReload() {
         updateJobs();
+    }
+
+    @CommandNode("list")
+    private static int list(@CommandSource ServerPlayerEntity player) {
+        List<Job> jobs = scheduler.model().jobs;
+        new JobGui(player, jobs, 0).open();
+        return CommandHelper.Return.SUCCESS;
+    }
+
+    @CommandNode("trigger")
+    private static int trigger(JobName jobName) {
+        scheduler.model().jobs.stream()
+            .filter(it -> it.getName().equals(jobName.getValue()))
+            .findFirst()
+            .ifPresent(Job::trigger);
+
+        return CommandHelper.Return.SUCCESS;
+    }
+
+    private void updateJobs() {
+        LogUtil.info("un-schedule jobs");
+        Managers.getScheduleManager().deleteJobs(CommandScheduleJob.class);
+
+        scheduler.model().jobs.forEach(scheduleJob -> {
+            scheduleJob.getCrons().forEach(cron -> new CommandScheduleJob(new JobDataMap() {
+                {
+                    this.put("job", scheduleJob);
+                }
+            }, () -> cron).schedule());
+
+            LogUtil.info("schedule job -> {}", scheduleJob.getName());
+        });
     }
 
 }
