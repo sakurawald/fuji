@@ -14,6 +14,7 @@ import java.util.Random;
 @Data
 @AllArgsConstructor
 public class Job {
+
     String name;
     boolean enable;
     @SerializedName(value = "left_times", alternate = "left_trigger_times")
