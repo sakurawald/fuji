@@ -1,8 +1,43 @@
 \LevelOne{command\_scheduler}\label{ch:command_scheduler}
 
 \LevelTwo{Purpose}
-This module allows you to define jobs using cron expression to run commands.
+Define \ttt{jobs} using \ttt{cron expression} to execute commands.
+
+\LevelTwo{How it works?}
+A~\nameref{sec:job} is defined by crons, with conditions like \ttt{left times}.\\
+A job will be \ttt{triggered} if current time meets any of its cron expressions.\\
+A random \ttt{commands} will be chosen from the \ttt{commands list} of the job and executed if the following conditions are meet:
+\begin{enumerate}
+    \item The \ttt{enable} of the job is \ttt{true}
+    \item The \ttt{left times} of the job >= 0
+\end{enumerate}
+The commands will be executed as console.
 
 \LevelTwo{Command}
 \LevelThree{/command-scheduler trigger}
 Immediately trigger a job.
+
+\LevelThree{/command-scheduler list}
+List all defined jobs.
+
+\LevelTwo{Example}
+\begin{example}{Define a job that executes commands 32 times on every minute}
+    \begin{json}
+    {
+        "name": "example_job",
+        "enable": true,
+        "left_times": 32,
+        "crons": [
+        "0 * * ? * * *"
+        ],
+        "commands_list": [
+        [
+        "say 1 minute passed"
+        ],
+        [
+        "say 60 seconds passed"
+        ]
+        ]
+    }
+    \end{json}
+\end{example}

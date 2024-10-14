@@ -54,7 +54,7 @@ io.github.sakurawald.module.initializer.command_cooldown.command.argument.adapte
 io.github.sakurawald.module.initializer.command_meta.attachment.command.argument.adapter.SubjectIdArgumentTypeAdapter
 io.github.sakurawald.module.initializer.command_meta.attachment.command.argument.adapter.SubjectNameArgumentTypeAdapter
 io.github.sakurawald.module.initializer.command_meta.json.command.argument.adapter.JsonValueTypeArgumentTypeAdapter
-io.github.sakurawald.module.initializer.command_scheduler.command.argument.adapter.ScheduleJobArgumentTypeAdapter
+io.github.sakurawald.module.initializer.command_scheduler.command.argument.adapter.JobNameArgumentTypeAdapter
 io.github.sakurawald.module.initializer.command_toolbox.warp.command.argument.adapter.WarpNameArgumentTypeAdapter
 io.github.sakurawald.module.initializer.echo.send_custom.command.argument.adapter.CustomTextNameArgumentTypeAdapter
 io.github.sakurawald.module.initializer.echo.send_toast.command.argument.adapter.AdvancementFrameArgumentTypeAdapter
