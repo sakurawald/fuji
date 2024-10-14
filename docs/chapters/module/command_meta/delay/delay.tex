@@ -1,6 +1,11 @@
 \LevelThree{delay}
 \LevelFour{Purpose}
-Delay command allows you to execute a command in specific seconds.
+Delay command allows you to execute a command in specified seconds.
+
+\begin{note}{Delay command is only used for short term job}
+    The command \ic{/delay} is only used to perform short-term job, and will not be persisted on server shutdown.
+    If you want to define long-term job, using~\nameref{ch:command_scheduler}
+\end{note}
 
 \LevelFour{Command}
 \LevelFive{/delay}

@@ -8,7 +8,7 @@ Provides a unified world management.
 
 \LevelTwo{Concept}
 
-\begin{example}{What is the difference between world\tcomma\ dimension and dimension type?}
+\begin{note}{What is the difference between world\tcomma\ dimension and dimension type?}
     Well, in the early stage of minecraft, a \tbf{world} only support \tbf{single-dimension}, which means 1 world only contains 1 dimension.\\
     But now, 1 world supports multi dimension.
     Sometimes, you will see \tbf{world} and \tbf{dimension} means the same thing.\\
@@ -17,9 +17,9 @@ Provides a unified world management.
     Usually, you can say a mod adds extra dimension type and \tbf{creates an extra dimension} with that dimension type instead of \tbf{creating extra world}.\\
     See also: \url{https://minecraft.wiki/w/Dimension_definition}\\
     See also: \url{https://minecraft.wiki/w/Dimension_type}
-\end{example}
+\end{note}
 
-\begin{tips}{The dimension and dimension types in vanilla minecraft}
+\begin{note}{The dimension and dimension types in vanilla minecraft}
     In vanilla minecraft, 1 world contains 3 dimensions:
     \begin{enumerate}
         \item minecraft:overworld
@@ -37,7 +37,7 @@ Provides a unified world management.
     \end{enumerate}
 
     The file \tbf{server.properties} is used for \tbf{the only and default world}.
-\end{tips}
+\end{note}
 
 \LevelTwo{Configuration}
 \begin{Configuration}
@@ -61,8 +61,8 @@ Provides a unified world management.
 \end{example}
 
 \begin{example}{Specify a seed for an extra dimension.}
-    \ic{/world create my\_nether minecraft:the\_nether --seed 1234567890}\\
-    \ic{/world reset --use-the-same-seed true fuji:my\_nether}
+    \ic{/world create my\_nether --seed 1234567890 minecraft:the\_nether}\\
+    \ic{/world reset --useTheSameSeed true fuji:my\_nether}
 \end{example}
 
 \begin{tips}{Make a resource-world that automatically reset every day}

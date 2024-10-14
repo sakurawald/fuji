@@ -2,6 +2,17 @@
 \LevelTwo{Purpose}
 This module allows you to write commands in \tbf{sign block}.
 
+\LevelTwo{How it works?}
+When a player \ttt{right click} a \ttt{sign block}, this module will check if the sign block contains the character \str{/}.
+If contains, then we \ttt{treat as} the player issue the command followed by the character.
+
+\LevelTwo{Definition}
+A \ttt{sign block} that contains the character \str{/} is named \ttt{an interactive sign block}.
+
+\begin{note}{How can i edit an interactive sign block?}
+    You need to press \ttt{shift + right click} to edit an interactive sign.
+\end{note}
+
 \LevelTwo{Example}
 \begin{example}{Basic usage}
     /say hi \ph{player:name}\\
@@ -23,11 +34,3 @@ This module allows you to write commands in \tbf{sign block}.
     second\\
     line 4 empty
 \end{example}
-
-\begin{tips}{}
-    \begin{enumerate}
-        \item You need to press shift + right click to edit an interactive sign
-        \item The command is executed as the player.
-    \end{enumerate}
-    
-\end{tips}

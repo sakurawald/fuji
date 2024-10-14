@@ -80,7 +80,7 @@ public class WorksGui extends PagedGui<Work> {
                     if (level != null) {
                         player.teleport(level, entity.x, entity.y, entity.z, entity.yaw, entity.pitch);
                     } else {
-                        LocaleHelper.sendMessageByKey(player, "world.dimension.not_found");
+                        LocaleHelper.sendMessageByKey(player, "world.dimension.not_found", entity.level);
                     }
 
                     this.close();

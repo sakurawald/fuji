@@ -1,6 +1,5 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
-/* gradle env */
 plugins {
     id "fabric-loom" version "1.7.+"
     id "maven-publish"

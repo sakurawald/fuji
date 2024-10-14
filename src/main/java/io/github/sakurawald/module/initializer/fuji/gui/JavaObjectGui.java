@@ -93,10 +93,13 @@ public class JavaObjectGui extends PagedGui<Field> {
         }
 
         /* make lore */
+        Text valueText = LocaleHelper.getTextByKey(getPlayer(), "object.value");
+        String abbreviate = StringUtils.abbreviate(value.toString(), "...", 128);
+        valueText = LocaleHelper.replaceText(valueText, "[value]", Text.literal(abbreviate));
+
         return List.of(
             LocaleHelper.getTextByKey(getPlayer(), "object.type", field.getType().getSimpleName())
-            , LocaleHelper.getTextByKey(getPlayer(), "object.value", value)
-        );
+            , valueText);
     }
 
     @SuppressWarnings("RedundantIfStatement")

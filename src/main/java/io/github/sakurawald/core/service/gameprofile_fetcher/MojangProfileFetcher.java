@@ -41,7 +41,12 @@ public class MojangProfileFetcher {
     public static @Nullable Property fetchOnlineSkin(String playerName) {
         try {
             UUID uuid = fetchOnlineUUID(playerName);
-            JsonObject texture = JsonParser.parseString(IOUtil.get(URI.create(SESSION_SERVER + uuid + "?unsigned=false"))).getAsJsonObject().getAsJsonArray("properties").get(0).getAsJsonObject();
+            String json = IOUtil.get(URI.create(SESSION_SERVER + uuid + "?unsigned=false"));
+
+            JsonObject texture = JsonParser.parseString(json)
+                .getAsJsonObject()
+                .getAsJsonArray("properties")
+                .get(0).getAsJsonObject();
 
             return new Property("textures", texture.get("value").getAsString(), texture.get("signature").getAsString());
         } catch (Exception e) {

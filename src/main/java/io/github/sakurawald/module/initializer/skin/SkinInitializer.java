@@ -32,16 +32,22 @@ public class SkinInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<SkinConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, SkinConfigModel.class);
 
-    @CommandNode("clear")
-    private static int clear(@CommandSource CommandContext<ServerCommandSource> ctx) {
+    @CommandNode("use-default-skins")
+    private static int useDefault(@CommandSource CommandContext<ServerCommandSource> ctx) {
         doSkin(ctx.getSource(), () -> SkinRestorer.getSkinStorage().getDefaultSkin());
         return CommandHelper.Return.SUCCESS;
     }
 
-    @CommandNode("clear")
+    @CommandNode("use-default-skins")
     @CommandRequirement(level = 4)
-    private static int clearOthers(@CommandSource CommandContext<ServerCommandSource> ctx, GameProfileCollection target) {
+    private static int useDefaultOthers(@CommandSource CommandContext<ServerCommandSource> ctx, GameProfileCollection target) {
         doSkin(ctx.getSource(), target.getValue(), true, () -> SkinRestorer.getSkinStorage().getDefaultSkin());
+        return CommandHelper.Return.SUCCESS;
+    }
+
+    @CommandNode("use-online-skin")
+    private static int useOnlineSkin(@CommandSource CommandContext<ServerCommandSource> ctx) {
+        doSkin(ctx.getSource(), () -> MojangProfileFetcher.fetchOnlineSkin(ctx.getSource().getName()));
         return CommandHelper.Return.SUCCESS;
     }
 
