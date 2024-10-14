@@ -21,7 +21,7 @@ import io.github.sakurawald.core.event.impl.ServerLifecycleEvents;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.world.config.model.WorldConfigModel;
 import io.github.sakurawald.module.initializer.world.config.model.WorldDataModel;
-import io.github.sakurawald.module.initializer.world.structure.DimensionEntry;
+import io.github.sakurawald.module.initializer.world.structure.DimensionNode;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -96,12 +96,12 @@ public class WorldInitializer extends ModuleInitializer {
         /* make dimension entry */
         long $seed = seed.orElse(RandomSeed.getSeed());
         Identifier dimensionTypeIdentifier = Identifier.of(dimensionType.getValue());
-        DimensionEntry dimensionEntry = new DimensionEntry(true, dimensionIdentifier.toString(), dimensionTypeIdentifier.toString(), $seed);
-        storage.model().dimension_list.add(dimensionEntry);
+        DimensionNode dimensionNode = new DimensionNode(true, dimensionIdentifier.toString(), dimensionTypeIdentifier.toString(), $seed);
+        storage.model().dimension_list.add(dimensionNode);
         storage.writeStorage();
 
         /* request creation */
-        WorldManager.requestToCreateWorld(dimensionEntry);
+        WorldManager.requestToCreateWorld(dimensionNode);
 
         LocaleHelper.sendBroadcastByKey("world.dimension.created", dimensionIdentifier);
         return CommandHelper.Return.SUCCESS;
@@ -118,7 +118,7 @@ public class WorldInitializer extends ModuleInitializer {
         WorldManager.requestToDeleteWorld(world);
 
         /* write entry */
-        Optional<DimensionEntry> first = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
+        Optional<DimensionNode> first = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
         if (first.isEmpty()) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found", identifier);
             return CommandHelper.Return.FAIL;
@@ -137,7 +137,7 @@ public class WorldInitializer extends ModuleInitializer {
         String identifier = RegistryHelper.ofString(world);
         checkBlacklist(ctx, identifier);
 
-        Optional<DimensionEntry> dimensionEntryOpt = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
+        Optional<DimensionNode> dimensionEntryOpt = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
         if (dimensionEntryOpt.isEmpty()) {
             LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found");
             return CommandHelper.Return.FAIL;
@@ -166,7 +166,7 @@ public class WorldInitializer extends ModuleInitializer {
 
     private void loadWorlds(@NotNull MinecraftServer server) {
         storage.model().dimension_list.stream()
-            .filter(DimensionEntry::isEnable)
+            .filter(DimensionNode::isEnable)
             .forEach(it -> {
                 try {
                     WorldManager.requestToCreateWorld(it);

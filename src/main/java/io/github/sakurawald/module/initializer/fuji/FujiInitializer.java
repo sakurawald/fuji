@@ -5,7 +5,6 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
@@ -17,7 +16,7 @@ import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.gui.CommandDescriptorGui;
 import io.github.sakurawald.core.job.abst.BaseJob;
 import io.github.sakurawald.core.manager.Managers;
-import io.github.sakurawald.core.structure.CommandNodeEntry;
+import io.github.sakurawald.core.structure.CommandNode;
 import io.github.sakurawald.core.structure.Pair;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.fuji.gui.AboutGui;
@@ -37,11 +36,11 @@ import java.util.Comparator;
 import java.util.List;
 
 
-@CommandNode("fuji")
+@io.github.sakurawald.core.command.annotation.CommandNode("fuji")
 @CommandRequirement(level = 4)
 public class FujiInitializer extends ModuleInitializer {
 
-    @CommandNode("reload")
+    @io.github.sakurawald.core.command.annotation.CommandNode("reload")
     private static int $reload(@CommandSource CommandContext<ServerCommandSource> ctx) {
         // reload main-control file
         Configs.configHandler.readStorage();
@@ -56,7 +55,7 @@ public class FujiInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @CommandNode("about")
+    @io.github.sakurawald.core.command.annotation.CommandNode("about")
     private static int $about(@CommandSource ServerPlayerEntity player) {
         ModMetadata metadata = FabricLoader.getInstance().getModContainer(Fuji.MOD_ID)
             .orElseThrow(() -> new IllegalStateException("failed to get the metadata of this mod."))
@@ -70,17 +69,17 @@ public class FujiInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @CommandNode("inspect server-commands")
+    @io.github.sakurawald.core.command.annotation.CommandNode("inspect server-commands")
     private static int $listServerCommands(@CommandSource ServerPlayerEntity player) {
-        List<CommandNodeEntry> entities = CommandHelper.getCommandNodes().stream()
-            .map(CommandNodeEntry::new)
-            .sorted(Comparator.comparing(CommandNodeEntry::getPath))
+        List<CommandNode> entities = CommandHelper.getCommandNodes().stream()
+            .map(CommandNode::new)
+            .sorted(Comparator.comparing(CommandNode::getPath))
             .toList();
         new ServerCommandsGui(player, entities, 0).open();
         return CommandHelper.Return.SUCCESS;
     }
 
-    @CommandNode("inspect modules")
+    @io.github.sakurawald.core.command.annotation.CommandNode("inspect modules")
     private static int $listModules(@CommandSource ServerPlayerEntity player) {
         List<Pair<String, Boolean>> list = Managers.getModuleManager().getModule2enable()
             .entrySet()
@@ -93,7 +92,7 @@ public class FujiInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @CommandNode("inspect fuji-commands")
+    @io.github.sakurawald.core.command.annotation.CommandNode("inspect fuji-commands")
     private static int $listFujiCommands(@CommandSource ServerPlayerEntity player) {
         List<CommandDescriptor> descriptors = CommandAnnotationProcessor
             .descriptors
@@ -106,7 +105,7 @@ public class FujiInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @CommandNode("inspect argument-types")
+    @io.github.sakurawald.core.command.annotation.CommandNode("inspect argument-types")
     private static int listCommandArgumentType(@CommandSource CommandContext<ServerCommandSource> ctx) {
         List<BaseArgumentTypeAdapter> adapters = BaseArgumentTypeAdapter.getAdapters();
 
@@ -123,7 +122,7 @@ public class FujiInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @CommandNode("inspect configurations")
+    @io.github.sakurawald.core.command.annotation.CommandNode("inspect configurations")
     private static int listConfiguration(@CommandSource ServerPlayerEntity player) {
         List<BaseConfigurationHandler<?>> list = BaseConfigurationHandler.handlers.stream()
             .filter(it -> it instanceof ObjectConfigurationHandler<?>)

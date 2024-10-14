@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class BundleCommandEntry {
+public class BundleCommandNode {
 
     CommandRequirementDescriptor requirement;
 

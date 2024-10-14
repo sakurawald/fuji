@@ -8,7 +8,7 @@ import lombok.Data;
 @SuppressWarnings({"UnusedAssignment", "unused"})
 @Data
 @AllArgsConstructor
-public class CommandAttachmentEntry {
+public class CommandAttachmentNode {
     public CommandAttackmentType type = CommandAttackmentType.ITEMSTACK;
     public String command;
     public InteractType interactType;

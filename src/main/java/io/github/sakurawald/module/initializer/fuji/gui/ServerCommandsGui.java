@@ -7,7 +7,7 @@ import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.gui.PagedGui;
 import io.github.sakurawald.core.gui.layer.SingleLineLayer;
-import io.github.sakurawald.core.structure.CommandNodeEntry;
+import io.github.sakurawald.core.structure.CommandNode;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -16,9 +16,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ServerCommandsGui extends PagedGui<CommandNodeEntry> {
+public class ServerCommandsGui extends PagedGui<CommandNode> {
 
-    public ServerCommandsGui(ServerPlayerEntity player, @NotNull List<CommandNodeEntry> entities, int pageIndex) {
+    public ServerCommandsGui(ServerPlayerEntity player, @NotNull List<CommandNode> entities, int pageIndex) {
         super(null, player, LocaleHelper.getTextByKey(player, "fuji.inspect.server_commands.gui.title"), entities, pageIndex);
 
         SingleLineLayer footer = new SingleLineLayer();
@@ -28,12 +28,12 @@ public class ServerCommandsGui extends PagedGui<CommandNodeEntry> {
     }
 
     @Override
-    public PagedGui<CommandNodeEntry> make(@Nullable SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<CommandNodeEntry> entities, int pageIndex) {
+    public PagedGui<CommandNode> make(@Nullable SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<CommandNode> entities, int pageIndex) {
         return new ServerCommandsGui(player, entities, pageIndex);
     }
 
     @Override
-    public GuiElementInterface toGuiElement(CommandNodeEntry entity) {
+    public GuiElementInterface toGuiElement(CommandNode entity) {
         return new GuiElementBuilder()
             .setItem(Items.COMMAND_BLOCK)
             .setName(Text.literal(entity.getPath()))
@@ -48,7 +48,7 @@ public class ServerCommandsGui extends PagedGui<CommandNodeEntry> {
     }
 
     @Override
-    public List<CommandNodeEntry> filter(String keyword) {
+    public List<CommandNode> filter(String keyword) {
         return getEntities().stream()
             .filter(it -> it.getPath().contains(keyword))
             .toList();

@@ -15,7 +15,7 @@ import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_toolbox.warp.command.argument.wrapper.WarpName;
 import io.github.sakurawald.module.initializer.command_toolbox.warp.config.model.WarpDataModel;
-import io.github.sakurawald.module.initializer.command_toolbox.warp.structure.WarpEntry;
+import io.github.sakurawald.module.initializer.command_toolbox.warp.structure.WarpNode;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.Optional;
@@ -39,7 +39,7 @@ public class WarpInitializer extends ModuleInitializer {
         ensureWarpExists(player, warpName);
 
         String name = warpName.getValue();
-        WarpEntry entry = data.model().name2warp.get(name);
+        WarpNode entry = data.model().name2warp.get(name);
         entry.getPosition().teleport(player);
         return CommandHelper.Return.SUCCESS;
     }
@@ -67,7 +67,7 @@ public class WarpInitializer extends ModuleInitializer {
             }
         }
 
-        data.model().name2warp.put(name, new WarpEntry(SpatialPose.of(player)));
+        data.model().name2warp.put(name, new WarpNode(SpatialPose.of(player)));
         LocaleHelper.sendMessageByKey(player, "warp.set.success", name);
         return CommandHelper.Return.SUCCESS;
     }

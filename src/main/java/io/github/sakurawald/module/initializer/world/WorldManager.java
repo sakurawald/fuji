@@ -11,7 +11,7 @@ import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.core.structure.TeleportTicket;
 import io.github.sakurawald.module.initializer.world.accessor.IDimensionOptions;
-import io.github.sakurawald.module.initializer.world.structure.DimensionEntry;
+import io.github.sakurawald.module.initializer.world.structure.DimensionNode;
 import io.github.sakurawald.module.initializer.world.structure.MyServerWorld;
 import io.github.sakurawald.module.initializer.world.structure.MyWorldProperties;
 import io.github.sakurawald.module.initializer.world.structure.VoidWorldGenerationProgressListener;
@@ -42,7 +42,7 @@ import java.util.Set;
 public class WorldManager {
 
     private static final Set<ServerWorld> deletionQueue = new ReferenceOpenHashSet<>();
-    private static final Set<DimensionEntry> creationQueue = new ReferenceOpenHashSet<>();
+    private static final Set<DimensionNode> creationQueue = new ReferenceOpenHashSet<>();
 
     static {
         ServerTickEvents.START_SERVER_TICK.register(server -> tick());
@@ -57,9 +57,9 @@ public class WorldManager {
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static void requestToCreateWorld(DimensionEntry dimensionEntry) {
+    public static void requestToCreateWorld(DimensionNode dimensionNode) {
         ServerHelper.getDefaultServer().submit(() -> {
-            creationQueue.add(dimensionEntry);
+            creationQueue.add(dimensionNode);
         });
     }
 
@@ -73,17 +73,17 @@ public class WorldManager {
         }
     }
 
-    private static boolean tryCreateWorld(@NotNull DimensionEntry dimensionEntry) {
+    private static boolean tryCreateWorld(@NotNull DimensionNode dimensionNode) {
         // wait until the deletion of this dimension is completed.
-        if (deletionQueue.stream().anyMatch(it -> RegistryHelper.ofString(it).equals(dimensionEntry.getDimension()))) {
+        if (deletionQueue.stream().anyMatch(it -> RegistryHelper.ofString(it).equals(dimensionNode.getDimension()))) {
             return false;
         }
 
         // register the dimension
         MinecraftServer server = ServerHelper.getDefaultServer();
-        Identifier dimension = Identifier.of(dimensionEntry.getDimension());
-        Identifier dimensionType = Identifier.of(dimensionEntry.getDimension_type());
-        long seed = dimensionEntry.getSeed();
+        Identifier dimension = Identifier.of(dimensionNode.getDimension());
+        Identifier dimensionType = Identifier.of(dimensionNode.getDimension_type());
+        long seed = dimensionNode.getSeed();
         registerWorld(server, dimension, dimensionType, seed);
         return true;
     }

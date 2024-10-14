@@ -46,11 +46,11 @@ public class BundleCommandDescriptor extends CommandDescriptor {
     private static final String ARGUMENT_NAME_PLACEHOLDER = "$";
 
     /* global environment */
-    final BundleCommandEntry entry;
+    final BundleCommandNode entry;
     @Getter
     final Map<String, String> optionalArgumentName2DefaultValue;
 
-    private BundleCommandDescriptor(Method method, List<Argument> arguments, BundleCommandEntry entry, Map<String, String> optionalArgumentName2DefaultValue) {
+    private BundleCommandDescriptor(Method method, List<Argument> arguments, BundleCommandNode entry, Map<String, String> optionalArgumentName2DefaultValue) {
         super(method, arguments);
         this.entry = entry;
         this.optionalArgumentName2DefaultValue = optionalArgumentName2DefaultValue;
@@ -115,7 +115,7 @@ public class BundleCommandDescriptor extends CommandDescriptor {
         return 1;
     }
 
-    public static BundleCommandDescriptor make(BundleCommandEntry entry) {
+    public static BundleCommandDescriptor make(BundleCommandNode entry) {
         /* make arguments */
         List<Argument> arguments = new ArrayList<>();
         Map<String, String> defaultValueForOptionalArguments = new HashMap<>();

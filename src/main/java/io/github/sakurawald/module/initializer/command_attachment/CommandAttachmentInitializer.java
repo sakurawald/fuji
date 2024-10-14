@@ -23,11 +23,11 @@ import io.github.sakurawald.module.initializer.command_attachment.command.argume
 import io.github.sakurawald.module.initializer.command_attachment.command.argument.wrapper.InteractType;
 import io.github.sakurawald.module.initializer.command_attachment.config.model.CommandAttachmentModel;
 import io.github.sakurawald.module.initializer.command_attachment.job.TestSteppingOnBlockJob;
-import io.github.sakurawald.module.initializer.command_attachment.structure.BlockCommandAttachmentEntry;
-import io.github.sakurawald.module.initializer.command_attachment.structure.CommandAttachmentEntry;
+import io.github.sakurawald.module.initializer.command_attachment.structure.BlockCommandAttachmentNode;
+import io.github.sakurawald.module.initializer.command_attachment.structure.CommandAttachmentNode;
 import io.github.sakurawald.module.initializer.command_attachment.structure.CommandAttackmentType;
-import io.github.sakurawald.module.initializer.command_attachment.structure.EntityCommandAttachmentEntry;
-import io.github.sakurawald.module.initializer.command_attachment.structure.ItemStackCommandAttachmentEntry;
+import io.github.sakurawald.module.initializer.command_attachment.structure.EntityCommandAttachmentNode;
+import io.github.sakurawald.module.initializer.command_attachment.structure.ItemStackCommandAttachmentNode;
 import lombok.SneakyThrows;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.entity.Entity;
@@ -106,7 +106,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         CommandAttachmentModel model = getAttachmentModel(uuid);
 
         // process
-        for (CommandAttachmentEntry e : model.getEntries()) {
+        for (CommandAttachmentNode e : model.getEntries()) {
             /* interaction type*/
             if (!receivedInteractTypes.contains(e.getInteractType())) continue;
 
@@ -124,7 +124,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
             /* item destroy */
             e.setUseTimes(e.getUseTimes() + 1);
-            if (e instanceof ItemStackCommandAttachmentEntry ie) {
+            if (e instanceof ItemStackCommandAttachmentNode ie) {
                 if (ie.isDestroyItem() && e.getUseTimes() >= e.getMaxUseTimes()) {
                     player.getMainHandStack().decrement(1);
                 }
@@ -157,7 +157,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         Integer $maxUseTimes = maxUseTimes.orElse(Integer.MAX_VALUE);
         Boolean $destroyItem = destroyItem.orElse(true);
 
-        model.getEntries().add(new ItemStackCommandAttachmentEntry($command, $interactType, $executeAsType, $maxUseTimes, 0, $destroyItem));
+        model.getEntries().add(new ItemStackCommandAttachmentNode($command, $interactType, $executeAsType, $maxUseTimes, 0, $destroyItem));
 
         // save model
         setAttachmentModel(uuid, model);
@@ -182,7 +182,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         ExecuteAsType $executeAsType = executeAsType.orElse(ExecuteAsType.FAKE_OP);
         Integer $maxUseTimes = maxUseTimes.orElse(Integer.MAX_VALUE);
 
-        model.getEntries().add(new EntityCommandAttachmentEntry($command, $interactType, $executeAsType, $maxUseTimes, 0));
+        model.getEntries().add(new EntityCommandAttachmentNode($command, $interactType, $executeAsType, $maxUseTimes, 0));
 
         // save model
         setAttachmentModel(uuid, model);
@@ -208,7 +208,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
         Integer $maxUseTimes = maxUseTimes.orElse(Integer.MAX_VALUE);
 
         String createdIn = UuidHelper.toUuid(player.getWorld(), blockPos);
-        model.getEntries().add(new BlockCommandAttachmentEntry(createdIn, $command, $interactType, $executeAsType, $maxUseTimes, 0));
+        model.getEntries().add(new BlockCommandAttachmentNode(createdIn, $command, $interactType, $executeAsType, $maxUseTimes, 0));
 
         // save model
         setAttachmentModel(uuid, model);
@@ -294,13 +294,13 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
     @Override
     public void registerGsonTypeAdapter() {
-        BaseConfigurationHandler.registerTypeAdapter(CommandAttachmentEntry.class, new CommandAttachmentEntryAdapter());
+        BaseConfigurationHandler.registerTypeAdapter(CommandAttachmentNode.class, new CommandAttachmentNodeAdapter());
     }
 
-    private static class CommandAttachmentEntryAdapter implements JsonDeserializer<CommandAttachmentEntry> {
+    private static class CommandAttachmentNodeAdapter implements JsonDeserializer<CommandAttachmentNode> {
 
         @Override
-        public @Nullable CommandAttachmentEntry deserialize(@NotNull JsonElement json, Type typeOfT, @NotNull JsonDeserializationContext context) throws JsonParseException {
+        public @Nullable CommandAttachmentNode deserialize(@NotNull JsonElement json, Type typeOfT, @NotNull JsonDeserializationContext context) throws JsonParseException {
             if (!json.getAsJsonObject().has("type")) {
                 // treat as item stack command attachment entry if type is null.
                 json.getAsJsonObject().addProperty("type", CommandAttackmentType.ITEMSTACK.name());
@@ -309,11 +309,11 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
             String type = json.getAsJsonObject().get("type").getAsString();
             if (type.equals(CommandAttackmentType.ITEMSTACK.name()))
-                return context.deserialize(json, ItemStackCommandAttachmentEntry.class);
+                return context.deserialize(json, ItemStackCommandAttachmentNode.class);
             if (type.equals(CommandAttackmentType.ENTITY.name()))
-                return context.deserialize(json, EntityCommandAttachmentEntry.class);
+                return context.deserialize(json, EntityCommandAttachmentNode.class);
             if (type.equals(CommandAttackmentType.BLOCK.name()))
-                return context.deserialize(json, BlockCommandAttachmentEntry.class);
+                return context.deserialize(json, BlockCommandAttachmentNode.class);
 
             throw new IllegalArgumentException("The type of command attachment entry is not supported");
         }

@@ -13,7 +13,7 @@ import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
 import io.github.sakurawald.core.job.impl.MentionPlayersJob;
-import io.github.sakurawald.core.structure.RegexRewriteEntry;
+import io.github.sakurawald.core.structure.RegexRewriteNode;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.chat.style.model.ChatFormatModel;
 import io.github.sakurawald.module.initializer.chat.style.model.ChatStyleConfigModel;
@@ -135,8 +135,8 @@ public class ChatStyleInitializer extends ModuleInitializer {
 
     private void compilePatterns() {
         patterns = new HashMap<>();
-        for (RegexRewriteEntry regexRewriteEntry : config.model().rewrite.regex) {
-            patterns.put(java.util.regex.Pattern.compile(regexRewriteEntry.getRegex()), regexRewriteEntry.getReplacement());
+        for (RegexRewriteNode regexRewriteNode : config.model().rewrite.regex) {
+            patterns.put(java.util.regex.Pattern.compile(regexRewriteNode.getRegex()), regexRewriteNode.getReplacement());
         }
     }
 
