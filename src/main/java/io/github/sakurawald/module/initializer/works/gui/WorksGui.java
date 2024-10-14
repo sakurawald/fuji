@@ -36,13 +36,13 @@ public class WorksGui extends PagedGui<Work> {
 
         if (entities == WorksInitializer.works.model().works) {
             getFooter().setSlot(5,
-                GuiHelper.makeQuestionMarkButton(player)
+                GuiHelper.makeLetterAButton(player)
                     .setName(LocaleHelper.getTextByKey(player, "works.list.my_works"))
                     .setCallback(() -> search(player.getGameProfile().getName()).open())
             );
         } else {
             getFooter().setSlot(5,
-                GuiHelper.makeLetterAButton(player)
+                GuiHelper.makeHeartButton(player)
                     .setName(LocaleHelper.getTextByKey(player, "works.list.all_works"))
                     .setCallback(() -> new WorksGui(player, WorksInitializer.works.model().works, 0).open())
             );
