@@ -6,15 +6,12 @@ import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyStringList;
+import io.github.sakurawald.core.service.string_splitter.StringSplitter;
 import net.minecraft.server.command.ServerCommandSource;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class GreedyStringListArgumentTypeAdapter extends BaseArgumentTypeAdapter {
-
-    private static final Pattern STRING_SPLITTER_DSL = Pattern.compile("(?<!\\\\)\\|");
 
     @Override
     public ArgumentType<?> makeArgumentType() {
@@ -24,8 +21,7 @@ public class GreedyStringListArgumentTypeAdapter extends BaseArgumentTypeAdapter
     @Override
     public Object makeArgumentObject(CommandContext<ServerCommandSource> context, Argument argument) {
         String string = StringArgumentType.getString(context, argument.getArgumentName());
-        List<String> stringList = Arrays.stream(STRING_SPLITTER_DSL.split(string)).toList();
-        return new GreedyStringList(stringList);
+        return new GreedyStringList(StringSplitter.split(string));
     }
 
     @Override
