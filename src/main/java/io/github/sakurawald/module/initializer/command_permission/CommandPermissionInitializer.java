@@ -9,7 +9,7 @@ import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.event.impl.ServerLifecycleEvents;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_permission.gui.CommandPermissionGui;
-import io.github.sakurawald.module.initializer.command_permission.structure.CommandNodePermissionEntry;
+import io.github.sakurawald.module.initializer.command_permission.structure.CommandNodePermission;
 import io.github.sakurawald.module.initializer.command_permission.structure.WrappedPredicate;
 import net.luckperms.api.util.Tristate;
 import net.minecraft.server.command.ServerCommandSource;
@@ -28,9 +28,9 @@ public class CommandPermissionInitializer extends ModuleInitializer {
 
     @CommandNode
     public static int gui(@CommandSource ServerPlayerEntity player) {
-        List<CommandNodePermissionEntry> entities = CommandHelper.getCommandNodes().stream()
-            .map(CommandNodePermissionEntry::new)
-            .sorted(Comparator.comparing(CommandNodePermissionEntry::getPath))
+        List<CommandNodePermission> entities = CommandHelper.getCommandNodes().stream()
+            .map(CommandNodePermission::new)
+            .sorted(Comparator.comparing(CommandNodePermission::getPath))
             .toList();
         new CommandPermissionGui(player, entities, 0).open();
         return CommandHelper.Return.SUCCESS;

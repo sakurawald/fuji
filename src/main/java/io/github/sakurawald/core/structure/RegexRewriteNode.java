@@ -4,7 +4,7 @@ import lombok.Data;
 
 @SuppressWarnings("unused")
 @Data
-public class RegexRewriteEntry {
+public class RegexRewriteNode {
     final String regex;
     final String replacement;
 }

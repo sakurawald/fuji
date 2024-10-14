@@ -4,7 +4,7 @@ import io.github.sakurawald.core.manager.impl.bossbar.structure.Interruptible;
 import lombok.Data;
 
 @Data
-public class CommandWarmupEntry {
+public class CommandWarmupNode {
 
 
     final Command command;

@@ -6,7 +6,7 @@ import java.util.List;
 
 @SuppressWarnings("unused")
 @Data
-public class CommandPathMappingEntry {
+public class CommandPathMappingNode {
     final List<String> from;
     final List<String> to;
 }

@@ -3,7 +3,7 @@ package io.github.sakurawald.module.mixin.command_warmup;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.command_warmup.CommandWarmupInitializer;
-import io.github.sakurawald.module.initializer.command_warmup.structure.CommandWarmupEntry;
+import io.github.sakurawald.module.initializer.command_warmup.structure.CommandWarmupNode;
 import io.github.sakurawald.module.initializer.command_warmup.structure.CommandWarmupTicket;
 import net.minecraft.network.packet.c2s.play.CommandExecutionC2SPacket;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
@@ -27,7 +27,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
 
         var config = CommandWarmupInitializer.config.model();
 
-        for (CommandWarmupEntry entry : config.entries) {
+        for (CommandWarmupNode entry : config.entries) {
             // cancel the usage of command, if a warmup entry matches.
             if (command.matches(entry.getCommand().getRegex())) {
                 Managers.getBossBarManager().addTicket(CommandWarmupTicket.make(player, command, entry));

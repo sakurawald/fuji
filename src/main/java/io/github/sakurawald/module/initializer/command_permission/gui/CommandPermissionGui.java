@@ -6,9 +6,8 @@ import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.gui.PagedGui;
-import io.github.sakurawald.core.gui.layer.SingleLineLayer;
 import io.github.sakurawald.module.initializer.command_permission.CommandPermissionInitializer;
-import io.github.sakurawald.module.initializer.command_permission.structure.CommandNodePermissionEntry;
+import io.github.sakurawald.module.initializer.command_permission.structure.CommandNodePermission;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -17,24 +16,22 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class CommandPermissionGui extends PagedGui<CommandNodePermissionEntry> {
+public class CommandPermissionGui extends PagedGui<CommandNodePermission> {
 
-    public CommandPermissionGui(ServerPlayerEntity player, @NotNull List<CommandNodePermissionEntry> entities, int pageIndex) {
+    public CommandPermissionGui(ServerPlayerEntity player, @NotNull List<CommandNodePermission> entities, int pageIndex) {
         super(null, player, LocaleHelper.getTextByKey(player, "command_permission.list.gui.title"), entities, pageIndex);
 
-        SingleLineLayer footer = new SingleLineLayer();
-        footer.setSlot(4, GuiHelper.makeHelpButton(player)
+        getFooter().setSlot(4, GuiHelper.makeHelpButton(player)
             .setLore(LocaleHelper.getTextListByKey(player, "command_permission.list.gui.help.lore")));
-        this.addLayer(footer, 0, this.getHeight() - 1);
     }
 
     @Override
-    public PagedGui<CommandNodePermissionEntry> make(@Nullable SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<CommandNodePermissionEntry> entities, int pageIndex) {
+    public PagedGui<CommandNodePermission> make(@Nullable SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<CommandNodePermission> entities, int pageIndex) {
         return new CommandPermissionGui(player, entities, pageIndex);
     }
 
     @Override
-    public GuiElementInterface toGuiElement(CommandNodePermissionEntry entity) {
+    public GuiElementInterface toGuiElement(CommandNodePermission entity) {
         List<Text> lore = List.of(LocaleHelper.getTextByKey(getPlayer(), "command_permission.list.gui.entry.lore", entity.isWrapped()));
 
         return new GuiElementBuilder()
@@ -62,7 +59,7 @@ public class CommandPermissionGui extends PagedGui<CommandNodePermissionEntry> {
     }
 
     @Override
-    public List<CommandNodePermissionEntry> filter(String keyword) {
+    public List<CommandNodePermission> filter(String keyword) {
         return getEntities().stream()
             .filter(it -> it.getPath().contains(keyword))
             .toList();

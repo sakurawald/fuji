@@ -4,6 +4,6 @@ import io.github.sakurawald.core.structure.SpatialPose;
 import lombok.Data;
 
 @Data
-public class WarpEntry {
+public class WarpNode {
     final SpatialPose position;
 }

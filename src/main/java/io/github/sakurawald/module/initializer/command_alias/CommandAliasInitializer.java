@@ -8,7 +8,7 @@ import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.event.impl.ServerLifecycleEvents;
-import io.github.sakurawald.core.structure.CommandPathMappingEntry;
+import io.github.sakurawald.core.structure.CommandPathMappingNode;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_alias.config.model.CommandAliasConfigModel;
 import net.minecraft.server.command.CommandManager;
@@ -32,7 +32,7 @@ public class CommandAliasInitializer extends ModuleInitializer {
         });
     }
 
-    private void processCommandAliasEntry(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, @NotNull CommandPathMappingEntry entry) {
+    private void processCommandAliasEntry(@NotNull CommandDispatcher<ServerCommandSource> dispatcher, @NotNull CommandPathMappingNode entry) {
         /* build the command node */
         LiteralArgumentBuilder<ServerCommandSource> builder = null;
         CommandNode<ServerCommandSource> target = dispatcher.findNode(entry.getTo());

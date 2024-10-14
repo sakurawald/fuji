@@ -8,7 +8,6 @@ import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.gui.PagedGui;
-import io.github.sakurawald.core.gui.layer.SingleLineLayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -45,12 +44,10 @@ public class JavaObjectGui extends PagedGui<Field> {
         this.drawPagedGui();
 
         /* add footer */
-        SingleLineLayer footer = new SingleLineLayer();
-        footer.setSlot(4, GuiHelper.makeHelpButton(player)
+        getFooter().setSlot(4, GuiHelper.makeHelpButton(player)
             .setLore(List.of(
                 LocaleHelper.getTextByKey(player, "object.top_level", topLevel)
             )));
-        this.addLayer(footer, 0, this.getHeight() - 1);
     }
 
     @Override

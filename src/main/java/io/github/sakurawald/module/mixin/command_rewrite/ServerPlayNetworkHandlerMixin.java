@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.command_rewrite;
 
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.structure.RegexRewriteEntry;
+import io.github.sakurawald.core.structure.RegexRewriteNode;
 import io.github.sakurawald.module.initializer.command_rewrite.CommandRewriteInitializer;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +14,7 @@ public class ServerPlayNetworkHandlerMixin {
 
     @ModifyVariable(method = "executeCommand", at = @At(value = "HEAD"), ordinal = 0, argsOnly = true)
     public String interceptPacketsOfIssuedCommand(@NotNull String string) {
-        for (RegexRewriteEntry entry : CommandRewriteInitializer.config.model().rewrite) {
+        for (RegexRewriteNode entry : CommandRewriteInitializer.config.model().rewrite) {
             if (entry.getRegex() == null || entry.getReplacement() == null) {
                 LogUtil.warn("there is an invalid `null` entry in `command_rewrite.regex`, you should remove it: {}", entry);
                 continue;

@@ -13,7 +13,7 @@ public class CommandWarmupTicket extends InterruptibleTicket {
 
     private final String input;
 
-    public CommandWarmupTicket(@NotNull ServerPlayerEntity player, @NotNull String input, CommandWarmupEntry entry) {
+    public CommandWarmupTicket(@NotNull ServerPlayerEntity player, @NotNull String input, CommandWarmupNode entry) {
         super(new ServerBossBar(LocaleHelper.getTextByKey(player, "command_warmup.bossbar.name", input), net.minecraft.entity.boss.BossBar.Color.GREEN, net.minecraft.entity.boss.BossBar.Style.PROGRESS)
             , entry.getCommand().getMs()
             , player
@@ -23,7 +23,7 @@ public class CommandWarmupTicket extends InterruptibleTicket {
         this.input = input;
     }
 
-    public static CommandWarmupTicket make(ServerPlayerEntity player, String input, CommandWarmupEntry entry) {
+    public static CommandWarmupTicket make(ServerPlayerEntity player, String input, CommandWarmupNode entry) {
         return new CommandWarmupTicket(player, input, entry);
     }
 

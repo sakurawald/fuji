@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.chat.style.model;
 
 import io.github.sakurawald.core.job.impl.MentionPlayersJob;
-import io.github.sakurawald.core.structure.RegexRewriteEntry;
+import io.github.sakurawald.core.structure.RegexRewriteNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +14,14 @@ public class ChatStyleConfigModel {
     public Spy spy = new Spy();
 
     public static class Rewrite {
-        public List<RegexRewriteEntry> regex = new ArrayList<>() {
+        public List<RegexRewriteNode> regex = new ArrayList<>() {
             {
-                this.add(new RegexRewriteEntry("^BV(\\w{10})", "<underline><blue><hover:show_text:'$1'><click:open_url:'https://www.bilibili.com/video/BV$1'>bilibili $1</click></hover></blue></underline>"));
-                this.add(new RegexRewriteEntry("(?<=^|\\s)item(?=\\s|$)", "%fuji:item%"));
-                this.add(new RegexRewriteEntry("(?<=^|\\s)inv(?=\\s|$)", "%fuji:inv%"));
-                this.add(new RegexRewriteEntry("(?<=^|\\s)ender(?=\\s|$)", "%fuji:ender%"));
-                this.add(new RegexRewriteEntry("(?<=^|\\s)pos(?=\\s|$)", "%fuji:pos%"));
-                this.add(new RegexRewriteEntry("((https?)://[^\\s/$.?#].\\S*)", "<underline><blue><hover:show_text:'$1'><click:open_url:'$1'>$1</click></hover></blue></underline>"));
+                this.add(new RegexRewriteNode("^BV(\\w{10})", "<underline><blue><hover:show_text:'$1'><click:open_url:'https://www.bilibili.com/video/BV$1'>bilibili $1</click></hover></blue></underline>"));
+                this.add(new RegexRewriteNode("(?<=^|\\s)item(?=\\s|$)", "%fuji:item%"));
+                this.add(new RegexRewriteNode("(?<=^|\\s)inv(?=\\s|$)", "%fuji:inv%"));
+                this.add(new RegexRewriteNode("(?<=^|\\s)ender(?=\\s|$)", "%fuji:ender%"));
+                this.add(new RegexRewriteNode("(?<=^|\\s)pos(?=\\s|$)", "%fuji:pos%"));
+                this.add(new RegexRewriteNode("((https?)://[^\\s/$.?#].\\S*)", "<underline><blue><hover:show_text:'$1'><click:open_url:'$1'>$1</click></hover></blue></underline>"));
             }
         };
     }
