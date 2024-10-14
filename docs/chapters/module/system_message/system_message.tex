@@ -3,8 +3,13 @@
 \LevelTwo{Purpose}
 This module provides \tbf{system message} customization.
 
-\begin{note}{What is system message?}
-    Here are some messages that are system message:
+\LevelTwo{How it works?}
+The server will send \ttt{translatable text} to the client, by default, the client will display the translatable text in the language used in client-side.
+This module will hijack the pre-define \ttt{translatable text} in the server-side, and sends the client a \ttt{customized text} directly.
+As a loss of this approach, the client will always receive the customized text defined in the server, instead of the \ttt{translatable text} defined in the client.
+
+\begin{note}{What is translatable text?}
+    For example:
     \begin{enumerate}
         \item player join and leave server message
         \item player advancement message
@@ -14,9 +19,10 @@ This module provides \tbf{system message} customization.
     \end{enumerate}
 \end{note}
 
-\begin{note}{Server-side message and Client-side message}
-    It should be noted that, no all messages inside \href{https://github.com/sakurawald/fuji/blob/dev/.github/files/en_us.json}{mojang's official language file} are server-side message.
-    If a message is client-side message, which means that the message is only used in client-side, then the module will have no effects on this message.
+\begin{note}{How to query the translatable text?}
+    See \href{https://github.com/sakurawald/fuji/blob/dev/.github/files/en_us.json}{mojang's official language file}, all keys inside the file are for \ttt{translatable text}.
+
+    Note that, some keys in the file are client-side only translatable text, which means that the server will never send this type of translatable text to the client.
 \end{note}
 
 \begin{warn}{Possible conflicting with StyledChat}

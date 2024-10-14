@@ -12,14 +12,20 @@ public class CommandSpyInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<CommandSpyConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, CommandSpyConfigModel.class);
 
     public static void process(ParseResults<ServerCommandSource> parseResults) {
-        // verify
+
+        // verify command source
         ServerCommandSource source = parseResults.getContext().getSource();
         if (!CommandSpyInitializer.config.model().spy_on_console
             && source.getPlayer() == null) return;
 
-        // spy
-        String name = source.getName();
+        // ignore
         String string = parseResults.getReader().getString();
+        if (config.model().ignore.stream().anyMatch(string::matches)) {
+            return;
+        }
+
+        // log
+        String name = source.getName();
         LogUtil.info("{} issued the server command: /{}", name, string);
     }
 }
