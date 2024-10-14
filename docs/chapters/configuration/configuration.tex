@@ -63,6 +63,19 @@
         \end{NestedList}
 
         \begin{NestedList}
+            \item[permission] {
+                \item[]
+                \begin{NestedList}
+                    \item[all\_commands\_require\_level\_4\_permission\_to\_use\_by\_default] {
+                        By default, most of commands registered by fuji requires level 0 permission to use. (e.g. /afk, /home, /warp).
+                        Some commands requires level 4 to use. (e.g. /fly, /god, /more).
+                        Enable this option will cause all commands registered by fuji require level 4 permission to use.
+                    }\label{itm:default_requirement}
+                \end{NestedList}
+            }
+        \end{NestedList}
+
+        \begin{NestedList}
             \item[quartz]{
                 Fuji use \ttt{quartz} library as scheduler, all the~\nameref{sec:job} are managed by quartz.
                 Quartz library use a language called \ttt{cron language} to define when to trigger a job.

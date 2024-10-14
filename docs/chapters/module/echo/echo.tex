@@ -1,10 +1,30 @@
 \LevelOne{echo}
 This module provides commands to send echo to players.
 
+\begin{note}{Many other modules require this moudle}
+    Other modules may generate a \ttt{default configuration} including the commands provided by \ttt{echo} module.
+    If the \ttt{echo module} is disabled, then these \ttt{echo commands} will not exist, causing a \ttt{command syntax error} while executing these commands.
+\end{note}
+
 \LevelTwo{Sub-Module}
 \LevelThree{/send-message}
+
+\begin{example}{Say hello to a player}
+    \ic{/send-message \player Hello \ph{player:name}}
+\end{example}
+
 \LevelThree{/send-broadcast}
+
+\begin{example}{Say hello to all players}
+    \ic{/send-broadcast Hello \ph{player:name}}
+\end{example}
+
 \LevelThree{/send-actionbar}
+
+\begin{example}{Say hello to a player}
+    \ic{/send-actionbar \player Hello \ph{player:name}}
+\end{example}
+
 \LevelThree{/send-title}
 \begin{example}{Send title to a player}
     \ic{/send-title \player --mainTitle "<rainbow>Hello" --subTitle "<blue>World" --fadeInTicks 60 --stayTicks 60 --fadeOutTicks 60}
@@ -30,6 +50,9 @@ This module provides commands to send echo to players.
 \end{example}
 
 \LevelThree{/send-bossbar}
+\begin{example}{A simple exapmle}
+    \ic{/send-bossbar \player Hello World}
+\end{example}
 
 \begin{example}{All in one exapmle}
     \ic{/send-bossbar \player --stepType BACKWARD --totalMs 5000 --color PURPLE --style NOTCHED\_6 --notifyMeOnComplete true --commandList "say the player \ph{player:name} is healed|heal \ph{player:name}" <rb>Healing is coming [elapsed\_time]/[total\_time]/[left\_time]}
