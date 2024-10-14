@@ -19,13 +19,20 @@ public class CommandSpyInitializer extends ModuleInitializer {
             && source.getPlayer() == null) return;
 
         // ignore
+        String name = source.getName();
         String string = parseResults.getReader().getString();
-        if (config.model().ignore.stream().anyMatch(string::matches)) {
+
+        if (config.model().ignore.stream().anyMatch(it -> {
+            boolean flag = string.matches(it);
+            if (flag) {
+                LogUtil.info("{} issued the ignored command: /{}", name, it);
+            }
+            return flag;
+        })) {
             return;
         }
 
         // log
-        String name = source.getName();
         LogUtil.info("{} issued the server command: /{}", name, string);
     }
 }
