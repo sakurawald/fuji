@@ -18,6 +18,7 @@
     "chat.display.ServerPlayNetworkHandlerMixin",
     "chat.history.PlayerManagerMixin",
     "chat.history.ServerPlayNetworkHandlerMixin",
+    "chat.mention.ServerPlayNetworkHandlerMixin",
     "chat.rewrite.ServerPlayNetworkHandlerMixin",
     "chat.style.ServerPlayNetworkHandlerMixin",
     "chat.style.message_type.MessageTypeMixin",

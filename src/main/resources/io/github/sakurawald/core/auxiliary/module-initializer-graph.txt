@@ -4,6 +4,7 @@ io.github.sakurawald.module.initializer.anti_build.AntiBuildInitializer
 io.github.sakurawald.module.initializer.back.BackInitializer
 io.github.sakurawald.module.initializer.chat.display.ChatDisplayInitializer
 io.github.sakurawald.module.initializer.chat.history.ChatHistoryInitializer
+io.github.sakurawald.module.initializer.chat.mention.ChatMentionInitializer
 io.github.sakurawald.module.initializer.chat.rewrite.ChatRewriteInitializer
 io.github.sakurawald.module.initializer.chat.style.ChatStyleInitializer
 io.github.sakurawald.module.initializer.cleaner.CleanerInitializer

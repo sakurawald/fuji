@@ -141,6 +141,7 @@ public class ConfigModel {
             public Display display = new Display();
             public History history = new History();
             public Rewrite rewrite = new Rewrite();
+            public Mention mention = new Mention();
 
             public static class Style {
                 public boolean enable = true;
@@ -155,6 +156,10 @@ public class ConfigModel {
             }
 
             public static class Rewrite {
+                public boolean enable = true;
+            }
+
+            public static class Mention {
                 public boolean enable = true;
             }
 

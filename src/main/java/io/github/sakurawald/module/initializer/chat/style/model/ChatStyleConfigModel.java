@@ -1,7 +1,5 @@
 package io.github.sakurawald.module.initializer.chat.style.model;
 
-import io.github.sakurawald.core.job.impl.MentionPlayersJob;
-
 public class ChatStyleConfigModel {
 
     public Style style = new Style();
@@ -12,11 +10,7 @@ public class ChatStyleConfigModel {
         public String content = "%s";
     }
 
-
-    public MentionPlayersJob.MentionPlayer mention_player = new MentionPlayersJob.MentionPlayer();
-
     public Spy spy = new Spy();
-
     public static class Spy {
         public boolean output_unparsed_message_into_console = false;
     }

@@ -3,14 +3,12 @@ package io.github.sakurawald.module.initializer.chat.style;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
-import io.github.sakurawald.core.job.impl.MentionPlayersJob;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.chat.style.model.ChatFormatModel;
 import io.github.sakurawald.module.initializer.chat.style.model.ChatStyleConfigModel;
@@ -23,11 +21,6 @@ import net.minecraft.text.Decoration;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 
 public class ChatStyleInitializer extends ModuleInitializer {
 
@@ -69,28 +62,6 @@ public class ChatStyleInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    private static String resolveMentionTag(@NotNull String string) {
-        /* resolve player tag */
-        List<ServerPlayerEntity> mentionedPlayers = new ArrayList<>();
-
-        String[] playerNames = ServerHelper.getDefaultServer().getPlayerNames();
-        // fix: mention the longest name first
-        Arrays.sort(playerNames, Comparator.comparingInt(String::length).reversed());
-
-        for (String playerName : playerNames) {
-            // here we must continue so that mentionPlayers will not be added
-            if (!string.contains(playerName)) continue;
-            string = string.replace(playerName, "<aqua>%s</aqua>".formatted(playerName));
-            mentionedPlayers.add(ServerHelper.getDefaultServer().getPlayerManager().getPlayer(playerName));
-        }
-
-        /* run mention player task */
-        if (!mentionedPlayers.isEmpty()) {
-            MentionPlayersJob.requestJob(config.model().mention_player, mentionedPlayers);
-        }
-
-        return string;
-    }
 
     public static @NotNull Text parseSenderText(@NotNull ServerPlayerEntity player) {
         String senderString = config.model().style.sender;
@@ -99,7 +70,6 @@ public class ChatStyleInitializer extends ModuleInitializer {
 
     public static @NotNull Text parseContentText(@NotNull ServerPlayerEntity player, String message) {
         String contentString = config.model().style.content.formatted(message);
-        contentString = resolveMentionTag(contentString);
 
         contentString = chat.model().format.player2format.getOrDefault(player.getGameProfile().getName(), "%message%").replace("%message%", contentString);
 
