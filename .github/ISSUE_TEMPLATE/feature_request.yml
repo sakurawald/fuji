@@ -14,7 +14,7 @@ body:
     attributes:
       label: What feature would you like?
       description: |
-        A clear and concise description of the feature you would like added to Session
+        A clear and concise description of the feature you would like added to Fuji
     validations:
       required: true
   - type: textarea
