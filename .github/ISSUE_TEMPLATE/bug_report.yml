@@ -1,0 +1,54 @@
+name: Bug Report
+description: Create a report to help us improve
+title: '[BUG] <title>'
+labels: [bug]
+body:
+  - type: checkboxes
+    attributes:
+      label: Is there an existing issue for this?
+      description: Please search to see if an issue already exists for the bug you encountered.
+      options:
+        - label: I have searched the existing issues
+          required: true
+  - type: textarea
+    attributes:
+      label: Current Behavior
+      description: A concise description of what you're experiencing.
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      description: A concise description of what you expected to happen.
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Steps To Reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. In this environment...
+        2. With this config...
+        3. Run '...'
+        4. See error...
+    validations:
+      required: false
+  - type: input
+    attributes:
+      label: Server Logs
+      description: Please upload the server logs using https://mclo.gs/
+      placeholder: paste your mclo.gs links here
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Anything else?
+      description: |
+        Add any other context about the problem here.
+
+        1. Device / Platform: [e.g. Windows, Linux, macOS]
+        2. Operating System: [e.g. Windows 11, Ubuntu 22.04, macOS 13.3.1]
+
+        Tip: You can attach screenshots or log files to help explain your problem by clicking this area to highlight it and then dragging files in.
+    validations:
+      required: false
