@@ -6,7 +6,7 @@ Define \ttt{jobs} using \ttt{cron expression} to execute commands.
 \LevelTwo{How it works?}
 A~\nameref{sec:job} is defined by crons, with conditions like \ttt{left times}.\\
 A job will be \ttt{triggered} if current time meets any of its cron expressions.\\
-A random \ttt{commands} will be chosen from the \ttt{commands list} of the job and executed if the following conditions are meet:
+A \ttt{commands} will be chosen randomly from the \ttt{commands list} of the job and executed if the following conditions are meet:
 \begin{enumerate}
     \item The \ttt{enable} of the job is \ttt{true}
     \item The \ttt{left times} of the job >= 0

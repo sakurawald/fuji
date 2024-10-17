@@ -8,6 +8,9 @@ import org.quartz.TriggerBuilder;
 
 import java.util.function.Supplier;
 
+/*
+ * Quartz will create a new instance of CronJob each time it calls execute(), so don't store persistent data inside the instance.
+* */
 @NoArgsConstructor
 public abstract class CronJob extends BaseJob {
 

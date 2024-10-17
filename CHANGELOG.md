@@ -1,7 +1,6 @@
 > The version number of fuji follows `semver` now: https://semver.org/ 
+ 
+- fix: a player will still be flagged as afk on moving. (afk module)
+- fix: there is 1 game tick delayed before leave afk state. (afk module)
 
-- feature: add `/command-scheduler` list command, to list all jobs. (command scheduler module)
-- feature: now will log the console on executing commands of jobs. (command scheduler module)
-- feature: add `ignore` option. (command spy module)
-- i18n: new translation for `zh_tw`. @yichifauzi
-- docs: enrich the docs.
+

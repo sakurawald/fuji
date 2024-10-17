@@ -19,10 +19,15 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class AfkInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<AfkConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, AfkConfigModel.class);
+
+    public static final Map<String, Long> player2prevInputCounter = new HashMap<>();
 
     // note: issue command will update lastLastActionTime, so it's impossible to use /afk to disable afk
     @CommandNode("afk")
@@ -36,7 +41,7 @@ public class AfkInitializer extends ModuleInitializer {
             return CommandHelper.Return.FAIL;
         }
 
-        ((AfkStateAccessor) player).fuji$setAfk(true);
+        ((AfkStateAccessor) player).fuji$changeAfk(true);
         LocaleHelper.sendMessageByKey(player, "afk.on");
         return CommandHelper.Return.SUCCESS;
     }
@@ -71,7 +76,6 @@ public class AfkInitializer extends ModuleInitializer {
     @Override
     public void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new AfkMarkerJob().schedule());
-
     }
 
 }

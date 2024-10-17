@@ -28,7 +28,7 @@
   "confirm": "<#FFA1F5>Xác nhận",
   "deleted": "<red>Đã xoá.",
   "deny": "<red>Từ chối",
-  "display.click.prompt": "<#D2E0FB>Click to view this display",
+  "display.click.prompt": "<#D2E0FB>Nhấn vào đây để xem display này",
   "display.ender_chest.text": "<#D2E0FB>[EnderChest Display]",
   "display.gui.title": "Player %s 's Display",
   "display.invalid": "This display is invalid",
@@ -285,5 +285,8 @@
   "object.gui.title": "<blue>Path: %s",
   "object.top_level": "<blue>Top Level -> %s",
   "object.type": "<orange>Type -> %s",
-  "object.value": "<orange>Value -> [value]"
+  "object.value": "<orange>Value -> [value]",
+  "job.list.gui.title": "<blue>Jobs",
+  "job.props.enabled": "<blue>Enabled: %s",
+  "job.props.left_times": "<blue>Left Times: %s"
 }

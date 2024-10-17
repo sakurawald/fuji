@@ -143,9 +143,11 @@ tasks.compileJava.dependsOn(validateAccessWidener)
 
 /* compile latex */
 def processTexDir = file("${layout.buildDirectory.get()}/processTeX")
+
+def outputTexDir = file("${layout.buildDirectory.get()}/outTeX")
 def outputTexFile = "fuji.pdf"
+
 def docsDir = file("$projectDir/docs")
-def texOutDir = file("${layout.buildDirectory.get()}/outTex")
 
 def recreateDir(File dir) {
     if (dir.exists()) {
@@ -172,13 +174,13 @@ tasks.register('processLatex', Copy) {
     filter(ReplaceTokens, tokens: [
             'TOKEN_MOD_VERSION' : project.version.toString(),
             'TOKEN_PROJECT_ROOT': project.rootDir.absolutePath,
-            'TOKEN_TEX_OUT_DIR' : texOutDir.toString()
+            'TOKEN_TEX_OUT_DIR' : outputTexDir.toString()
     ])
 }
 
 tasks.register('compileLatex') {
     doFirst {
-        recreateDir(texOutDir)
+        recreateDir(outputTexDir)
     }
 
     doLast {
@@ -190,7 +192,7 @@ tasks.register('compileLatex') {
                         "-interaction=nonstopmode",
                         "-synctex=1",
                         "-output-format=pdf",
-                        "-output-directory=${texOutDir}",
+                        "-output-directory=${outputTexDir}",
                         "-shell-escape",
                         "fuji.tex"
                 println("Compile TeX once.")
@@ -199,7 +201,7 @@ tasks.register('compileLatex') {
         println 'Finish the loop of compiling TeX.'
 
         copy {
-            from("${texOutDir}/${outputTexFile}")
+            from("${outputTexDir}/${outputTexFile}")
             into("${docsDir}/release")
         }
     }
