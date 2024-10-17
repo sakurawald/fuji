@@ -35,17 +35,11 @@ public abstract class ServerPlayNetworkHandlerMixin {
             LogUtil.info("[chat spy] <{}> {}", player.getGameProfile().getName(), contentString);
         }
 
-        Text contentText = ChatStyleInitializer.parseContent(player, contentString);
-        SignedMessage newSignedMessage = signedMessage.withUnsignedContent(contentText);
-        args.set(0, newSignedMessage);
+        Text contentText = ChatStyleInitializer.parseContentText(player, contentString);
+        args.set(0, signedMessage.withUnsignedContent(contentText));
 
         /* make sender text*/
-        Text senderText = ChatStyleInitializer.parseSender(player);
-
-        LogUtil.debug("sender = {}\n\n content = {}", senderText, contentText);
-
-        /* modify args */
-        MessageType.Parameters senderParams = MessageType.params(ChatStyleInitializer.MESSAGE_TYPE_KEY, ServerHelper.getDefaultServer().getRegistryManager(), senderText);
-        args.set(2, senderParams);
+        Text senderText = ChatStyleInitializer.parseSenderText(player);
+        args.set(2, MessageType.params(ChatStyleInitializer.MESSAGE_TYPE_KEY, ServerHelper.getDefaultServer().getRegistryManager(), senderText));
     }
 }

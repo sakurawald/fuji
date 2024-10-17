@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class DisplayGuiBuilder {
+public abstract class BaseDisplayGui {
 
     protected static final int LINE_SIZE = 9;
 
