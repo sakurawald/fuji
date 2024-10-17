@@ -20,6 +20,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.PlainTextContent;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextContent;
 import org.jetbrains.annotations.NotNull;
@@ -327,7 +328,7 @@ public class LocaleHelper {
     }
 
     public static MutableText replaceText(Text text, String charSeq, Text replacement) {
-        return replaceText0(text, charSeq, replacement, Text.empty());
+        return replaceText0(text, charSeq, replacement, Text.empty(), new ArrayList<>());
     }
 
     private static String visitString(TextContent textContent) {
@@ -339,19 +340,29 @@ public class LocaleHelper {
         return stringBuilder.toString();
     }
 
-    private static MutableText replaceText0(Text text, String marker, Text replacement, MutableText builder) {
+    private static MutableText replaceText0(Text text, String marker, Text replacement, MutableText builder, List<Style> stylePath) {
+
+        /* pass down style */
+        ArrayList<Style> newStylePath = new ArrayList<>(stylePath);
+        newStylePath.add(text.getStyle());
+
         /* process one */
-        splitText(text, marker, replacement).forEach(builder::append);
+        splitText(text, marker, replacement, newStylePath).forEach(builder::append);
 
         /* iterate children */
-        text.getSiblings().forEach(it -> replaceText0(it, marker, replacement, builder));
+        text.getSiblings().forEach(it -> replaceText0(it, marker, replacement, builder, newStylePath));
         return builder;
     }
 
-    private static List<Text> splitText(Text text, String marker, Text replacement) {
+    private static MutableText fillStyles(MutableText text, List<Style> stylePath) {
+        stylePath.forEach(text::fillStyle);
+        return text;
+    }
+
+    private static List<Text> splitText(Text text, String marker, Text replacement, List<Style> stylePath) {
         // copy the style form text to replacement.
-        replacement = replacement.copy()
-            .fillStyle(text.getStyle());
+        MutableText styledReplacement = replacement.copy();
+        fillStyles(styledReplacement, stylePath);
 
         /* get the string */
         String string = visitString(text.getContent());
@@ -379,18 +390,23 @@ public class LocaleHelper {
             // the part is empty, if the string starts with marker or ends with marker.
             if (!part.isEmpty()) {
                 // add non-marker.
-                ret.add(MutableText.of(PlainTextContent.of(part)).setStyle(text.getStyle()));
+                MutableText mutableText = MutableText.of(PlainTextContent.of(part));
+                fillStyles(mutableText, stylePath);
+                ret.add(mutableText);
             }
 
             // replace the marker with replacement
-            ret.add(replacement);
+            ret.add(styledReplacement);
             beginIndex = splitPoint + marker.length();
         }
 
         // handle the tail
         if (beginIndex < string.length()) {
             String part = string.substring(beginIndex);
-            ret.add(MutableText.of(PlainTextContent.of(part)).setStyle(text.getStyle()));
+
+            MutableText mutableText = MutableText.of(PlainTextContent.of(part));
+            fillStyles(mutableText, stylePath);
+            ret.add(mutableText);
         }
 
         return ret;

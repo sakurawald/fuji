@@ -26,23 +26,29 @@ public class TesterInitializer extends ModuleInitializer {
     @SneakyThrows(Exception.class)
     @CommandNode("run")
     private static int $run(@CommandSource ServerPlayerEntity player) {
+        testTextReplacement(player);
+        return 1;
+    }
+
+    private static void testTextReplacement(ServerPlayerEntity player) {
+        /* make */
+        MutableText root = Text.empty();
 
         MutableText first = Text.literal("first").formatted(Formatting.RED);
+        root.append(first);
 
-        MutableText second = Text.literal("second").formatted(Formatting.GREEN);
-        first.append(second);
+        MutableText first_first = Text.literal("second").formatted(Formatting.GREEN);
+        first.append(first_first);
 
-        MutableText third = Text.literal("third").formatted(Formatting.BLUE);
-        first.append(third);
+        MutableText first_second = Text.literal("third");
+        first.append(first_second);
 
-        LogUtil.debug("before = {}", first);
-        player.sendMessage(first);
-
-        MutableText after = LocaleHelper.replaceText(first, "hi", Text.literal("{good}"));
+        /* replace */
+        LogUtil.debug("before = {}", root);
+        player.sendMessage(root);
+        MutableText after = LocaleHelper.replaceText(root, "hi", Text.literal("{replacement}"));
         LogUtil.debug("after = {}", after);
         player.sendMessage(after);
-
-        return 1;
     }
 
     @CommandNode("$1 minus $2")
