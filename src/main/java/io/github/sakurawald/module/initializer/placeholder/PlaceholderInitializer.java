@@ -100,6 +100,20 @@ public class PlaceholderInitializer extends ModuleInitializer {
         PlaceholderHelper.withPlayer("player_mined", player -> Text.literal(String.valueOf(SumUpPlaceholder.ofPlayer(player.getUuidAsString()).mined)));
     }
 
+    public static void registerPrefixPlaceholder() {
+        PlaceholderHelper.withPlayer("player_prefix", (player, arg) -> {
+            String prefix = PermissionHelper.getPrefix(player.getUuid());
+            return LocaleHelper.getTextByValue(player, prefix);
+        });
+    }
+
+    public static void registerSuffixPlaceholder() {
+        PlaceholderHelper.withPlayer("player_suffix", (player, arg) -> {
+            String prefix = PermissionHelper.getSuffix(player.getUuid());
+            return LocaleHelper.getTextByValue(player, prefix);
+        });
+    }
+
     @Override
     protected void onInitialize() {
         /* register placeholders */
@@ -128,6 +142,9 @@ public class PlaceholderInitializer extends ModuleInitializer {
         registerEscapePlaceholder();
         registerProtectPlaceholder();
         registerDatePlaceholder();
+
+        registerPrefixPlaceholder();
+        registerSuffixPlaceholder();
 
         /* events */
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {

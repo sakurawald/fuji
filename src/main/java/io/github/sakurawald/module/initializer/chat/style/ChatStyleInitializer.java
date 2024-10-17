@@ -3,7 +3,6 @@ package io.github.sakurawald.module.initializer.chat.style;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PlaceholderHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -49,7 +48,7 @@ public class ChatStyleInitializer extends ModuleInitializer {
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("chat.json"), ChatStyleInitializer.class));
 
     @CommandNode("chat format set")
-    private static int $format(@CommandSource ServerPlayerEntity player, GreedyString format) {
+    private static int setPlayerFormat(@CommandSource ServerPlayerEntity player, GreedyString format) {
         /* save the format*/
         String name = player.getGameProfile().getName();
         String $format = format.getValue();
@@ -66,7 +65,7 @@ public class ChatStyleInitializer extends ModuleInitializer {
     }
 
     @CommandNode("chat format reset")
-    private static int $reset(@CommandSource ServerPlayerEntity player) {
+    private static int resetPlayerFormat(@CommandSource ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
         chatFormatHandler.model().format.player2format.remove(name);
         chatFormatHandler.writeStorage();
@@ -97,12 +96,12 @@ public class ChatStyleInitializer extends ModuleInitializer {
         return string;
     }
 
-    public static @NotNull Text parseSender(@NotNull ServerPlayerEntity player) {
+    public static @NotNull Text parseSenderText(@NotNull ServerPlayerEntity player) {
         String senderString = config.model().style.sender;
         return LocaleHelper.getTextByValue(player, senderString);
     }
 
-    public static @NotNull Text parseContent(@NotNull ServerPlayerEntity player, String message) {
+    public static @NotNull Text parseContentText(@NotNull ServerPlayerEntity player, String message) {
         String contentString = config.model().style.content.formatted(message);
         contentString = resolveMentionTag(contentString);
 
@@ -114,8 +113,6 @@ public class ChatStyleInitializer extends ModuleInitializer {
     @Override
     protected void registerPlaceholder() {
         registerPosPlaceholder();
-        registerPrefixPlaceholder();
-        registerSuffixPlaceholder();
     }
 
     private void registerPosPlaceholder() {
@@ -148,20 +145,6 @@ public class ChatStyleInitializer extends ModuleInitializer {
                     ))
                     .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand))
                 );
-        });
-    }
-
-    private void registerPrefixPlaceholder() {
-        PlaceholderHelper.withPlayer("player_prefix", (player, arg) -> {
-            String prefix = PermissionHelper.getPrefix(player.getUuid());
-            return LocaleHelper.getTextByValue(player, prefix);
-        });
-    }
-
-    private void registerSuffixPlaceholder() {
-        PlaceholderHelper.withPlayer("player_suffix", (player, arg) -> {
-            String prefix = PermissionHelper.getSuffix(player.getUuid());
-            return LocaleHelper.getTextByValue(player, prefix);
         });
     }
 
