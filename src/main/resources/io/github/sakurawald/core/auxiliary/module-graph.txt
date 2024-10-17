@@ -5,6 +5,7 @@ back
 chat
 chat.display
 chat.history
+chat.rewrite
 chat.style
 cleaner
 color

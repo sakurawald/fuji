@@ -13,7 +13,6 @@ import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
 import io.github.sakurawald.core.job.impl.MentionPlayersJob;
-import io.github.sakurawald.core.structure.RegexRewriteNode;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.chat.style.model.ChatFormatModel;
 import io.github.sakurawald.module.initializer.chat.style.model.ChatStyleConfigModel;
@@ -33,10 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 public class ChatStyleInitializer extends ModuleInitializer {
 
@@ -51,7 +47,6 @@ public class ChatStyleInitializer extends ModuleInitializer {
 
     private static final BaseConfigurationHandler<ChatFormatModel> chatFormatHandler = new ObjectConfigurationHandler<>("chat.json", ChatFormatModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("chat.json"), ChatStyleInitializer.class));
-    private static Map<Pattern, String> patterns;
 
     @CommandNode("chat format set")
     private static int $format(@CommandSource ServerPlayerEntity player, GreedyString format) {
@@ -102,13 +97,6 @@ public class ChatStyleInitializer extends ModuleInitializer {
         return string;
     }
 
-    private static String resolvePatterns(String string) {
-        for (Map.Entry<Pattern, String> entry : patterns.entrySet()) {
-            string = entry.getKey().matcher(string).replaceAll(entry.getValue());
-        }
-        return string;
-    }
-
     public static @NotNull Text parseSender(@NotNull ServerPlayerEntity player) {
         String senderString = config.model().style.sender;
         return LocaleHelper.getTextByValue(player, senderString);
@@ -116,7 +104,6 @@ public class ChatStyleInitializer extends ModuleInitializer {
 
     public static @NotNull Text parseContent(@NotNull ServerPlayerEntity player, String message) {
         String contentString = config.model().style.content.formatted(message);
-        contentString = resolvePatterns(contentString);
         contentString = resolveMentionTag(contentString);
 
         contentString = chatFormatHandler.model().format.player2format.getOrDefault(player.getGameProfile().getName(), "%message%").replace("%message%", contentString);
@@ -125,24 +112,10 @@ public class ChatStyleInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void onInitialize() {
-        compilePatterns();
-
+    public void registerPlaceholder() {
         registerPosPlaceholder();
         registerPrefixPlaceholder();
         registerSuffixPlaceholder();
-    }
-
-    @Override
-    public void onReload() {
-        compilePatterns();
-    }
-
-    private void compilePatterns() {
-        patterns = new HashMap<>();
-        for (RegexRewriteNode regexRewriteNode : config.model().rewrite.regex) {
-            patterns.put(java.util.regex.Pattern.compile(regexRewriteNode.getRegex()), regexRewriteNode.getReplacement());
-        }
     }
 
     private void registerPosPlaceholder() {

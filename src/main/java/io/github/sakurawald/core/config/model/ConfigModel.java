@@ -140,6 +140,7 @@ public class ConfigModel {
             public Style style = new Style();
             public Display display = new Display();
             public History history = new History();
+            public Rewrite rewrite = new Rewrite();
 
             public static class Style {
                 public boolean enable = true;
@@ -150,6 +151,10 @@ public class ConfigModel {
             }
 
             public static class Display {
+                public boolean enable = true;
+            }
+
+            public static class Rewrite {
                 public boolean enable = true;
             }
 
