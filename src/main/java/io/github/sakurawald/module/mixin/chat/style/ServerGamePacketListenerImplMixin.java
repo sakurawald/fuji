@@ -23,15 +23,22 @@ public abstract class ServerGamePacketListenerImplMixin {
 
     @WrapOperation(method = "handleDecoratedMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/PlayerManager;broadcast(Lnet/minecraft/network/message/SignedMessage;Lnet/minecraft/server/network/ServerPlayerEntity;Lnet/minecraft/network/message/MessageType$Parameters;)V"))
     public void modifyChatMessageSentByPlayers(PlayerManager instance, SignedMessage signedMessage, ServerPlayerEntity serverPlayerEntity, MessageType.Parameters parameters, Operation<Void> original) {
-        // visit the node and build the string.
-        String string = signedMessage.getContent().getString();
+        /* make content text */
+        String contentString = signedMessage.getContent().getString();
         if (ChatStyleInitializer.config.model().spy.output_unparsed_message_into_console) {
-            LogUtil.info("[chat spy] <{}> {}", player.getGameProfile().getName(), string);
+            LogUtil.info("[chat spy] <{}> {}", player.getGameProfile().getName(), contentString);
         }
 
-        // parse
-        Text text = ChatStyleInitializer.parseText(player, string);
-        signedMessage = signedMessage.withUnsignedContent(text);
-        ServerHelper.getPlayerManager().broadcast(signedMessage, player, MessageType.params(ChatStyleInitializer.MESSAGE_TYPE_KEY, player));
+        Text contentText = ChatStyleInitializer.parseContent(player, contentString);
+        signedMessage = signedMessage.withUnsignedContent(contentText);
+
+        /* make sender text*/
+        Text senderText = ChatStyleInitializer.parseSender(player);
+        MessageType.Parameters senderParams = MessageType.params(ChatStyleInitializer.MESSAGE_TYPE_KEY, ServerHelper.getDefaultServer().getRegistryManager(), senderText);
+
+        LogUtil.debug("sender = {}\n\n content = {}", senderText, contentText);
+
+        /* send */
+        ServerHelper.getPlayerManager().broadcast(signedMessage, player, senderParams);
     }
 }

@@ -42,8 +42,9 @@ public class ChatStyleInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<ChatStyleConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatStyleConfigModel.class);
     public static final RegistryKey<MessageType> MESSAGE_TYPE_KEY = RegistryKey.of(RegistryKeys.MESSAGE_TYPE, Identifier.ofVanilla("fuji_chat"));
     public static final MessageType MESSAGE_TYPE_VALUE = new MessageType(
-        new Decoration("%s", List.of(Decoration.Parameter.CONTENT), Style.EMPTY),
-        new Decoration("%s", List.of(Decoration.Parameter.CONTENT), Style.EMPTY));
+        Decoration.ofChat("%s%s"),
+        Decoration.ofChat("%s%s"));
+
     private static final BaseConfigurationHandler<ChatFormatModel> chatFormatHandler = new ObjectConfigurationHandler<>("chat.json", ChatFormatModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("chat.json"), ChatStyleInitializer.class));
     private static Map<Pattern, String> patterns;
@@ -104,19 +105,19 @@ public class ChatStyleInitializer extends ModuleInitializer {
         return string;
     }
 
-    public static @NotNull Text parseText(@NotNull ServerPlayerEntity player, String message) {
-        /* parse message */
-        message = resolvePatterns(message);
-        message = resolveMentionTag(message);
-        message = chatFormatHandler.model().format.player2format.getOrDefault(player.getGameProfile().getName(), message)
-            .replace("%message%", message);
+    public static @NotNull Text parseSender(@NotNull ServerPlayerEntity player) {
+        String senderString = config.model().style.sender;
+        return LocaleHelper.getTextByValue(player, senderString);
+    }
 
-        /* parse format */
-        String format = config.model().format;
+    public static @NotNull Text parseContent(@NotNull ServerPlayerEntity player, String message) {
+        String contentString = config.model().style.content.formatted(message);
+        contentString = resolvePatterns(contentString);
+        contentString = resolveMentionTag(contentString);
 
-        /* combine */
-        String string = format.replace("%message%", message);
-        return LocaleHelper.getTextByValue(player, string);
+        contentString = chatFormatHandler.model().format.player2format.getOrDefault(player.getGameProfile().getName(), "%message%").replace("%message%", contentString);
+
+        return LocaleHelper.getTextByValue(player, contentString);
     }
 
     @Override
