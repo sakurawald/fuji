@@ -12,7 +12,7 @@ import java.util.Queue;
 
 public class ChatHistoryInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<ChatHistoryConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatHistoryConfigModel.class);
+    private static final BaseConfigurationHandler<ChatHistoryConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatHistoryConfigModel.class);
 
     @Getter
     private static Queue<Text> chatHistory;
