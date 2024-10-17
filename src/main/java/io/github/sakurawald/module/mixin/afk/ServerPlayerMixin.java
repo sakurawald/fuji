@@ -3,6 +3,7 @@ package io.github.sakurawald.module.mixin.afk;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.authlib.GameProfile;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.executor.CommandExecutor;
 import io.github.sakurawald.core.command.structure.ExtendedCommandSource;
 import io.github.sakurawald.module.initializer.afk.AfkInitializer;
@@ -11,15 +12,12 @@ import io.github.sakurawald.module.initializer.afk.config.model.AfkConfigModel;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -34,42 +32,38 @@ public abstract class ServerPlayerMixin extends PlayerEntity implements AfkState
     @Unique
     private final ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
-    @Shadow
-    @Final
-    public MinecraftServer server;
+    /* props for afk state */
     @Unique
-    private boolean afk = false;
+    private boolean afk;
+
     @Unique
-    private long snapshotLastActionTime = 0;
+    private long inputCounter = 0;
 
     public ServerPlayerMixin(World world, BlockPos blockPos, float f, GameProfile gameProfile) {
         super(world, blockPos, f, gameProfile);
     }
 
-    @Shadow
-    public abstract long getLastActionTime();
-
     @ModifyReturnValue(method = "getPlayerListName", at = @At("RETURN"))
     public Text $getPlayerListName(Text original) {
-        AfkStateAccessor accessor = (AfkStateAccessor) player;
-        if (accessor.fuji$isAfk()) {
+        if (fuji$isAfk()) {
             return LocaleHelper.getTextByValue(player, AfkInitializer.config.model().format);
         }
 
         return original;
     }
 
-    @Inject(method = "updateLastActionTime", at = @At("HEAD"))
+    @Inject(method = "updateLastActionTime", at = @At("TAIL"))
     public void $updateLastActionTime(CallbackInfo ci) {
-        if (fuji$isAfk()) {
-            fuji$setAfk(false);
-        }
+        this.fuji$incrInputCounter();
     }
 
     @Override
-    public void fuji$setAfk(boolean flag) {
+    public void fuji$changeAfk(boolean flag) {
+        // change
         this.afk = flag;
-        this.server.getPlayerManager().sendToAll(new PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME, (ServerPlayerEntity) (Object) this));
+
+        // update tab list name
+        ServerHelper.sendPacketToAll(new PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_DISPLAY_NAME, (ServerPlayerEntity) (Object) this));
 
         // trigger event
         AfkConfigModel.AfkEvent afkEvent = AfkInitializer.config.model().afk_event;
@@ -83,25 +77,23 @@ public abstract class ServerPlayerMixin extends PlayerEntity implements AfkState
     }
 
     @Override
-    public void fuji$setSnapshotLastActionTime(long lastActionTime) {
-        this.snapshotLastActionTime = lastActionTime;
+    public void fuji$incrInputCounter() {
+        this.inputCounter++;
+
+        if (fuji$isAfk()) {
+            fuji$changeAfk(false);
+        }
     }
 
     @Override
-    public long fuji$getSnapshotLastActionTime() {
-        // init
-        if (this.snapshotLastActionTime == 0) {
-            this.fuji$setSnapshotLastActionTime(this.getLastActionTime());
-        }
-
-        return this.snapshotLastActionTime;
+    public long fuji$getInputCounter() {
+        return this.inputCounter;
     }
 
     @Override
     public void move(MovementType movementType, Vec3d vec3d) {
-        AfkStateAccessor afkStateAccessor = (AfkStateAccessor) player;
-        if (afkStateAccessor.fuji$isAfk() && AfkInitializer.isPlayerActuallyMovedItself(movementType, vec3d)) {
-            fuji$setAfk(false);
+        if (fuji$isAfk() && AfkInitializer.isPlayerActuallyMovedItself(movementType, vec3d)) {
+            fuji$changeAfk(false);
         }
 
         super.move(movementType, vec3d);

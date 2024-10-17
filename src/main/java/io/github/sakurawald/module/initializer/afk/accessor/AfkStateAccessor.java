@@ -2,11 +2,12 @@ package io.github.sakurawald.module.initializer.afk.accessor;
 
 public interface AfkStateAccessor {
 
-    void fuji$setAfk(boolean flag);
-
     boolean fuji$isAfk();
 
-    void fuji$setSnapshotLastActionTime(long lastActionTime);
+    void fuji$changeAfk(boolean afk);
 
-    long fuji$getSnapshotLastActionTime();
+    void fuji$incrInputCounter();
+
+    long fuji$getInputCounter();
+
 }

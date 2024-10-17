@@ -1,46 +1,43 @@
 package io.github.sakurawald.module.initializer.afk.job;
 
+import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
-import io.github.sakurawald.core.job.impl.NPassMarkerJob;
+import io.github.sakurawald.core.job.abst.CronJob;
 import io.github.sakurawald.module.initializer.afk.AfkInitializer;
 import io.github.sakurawald.module.initializer.afk.accessor.AfkStateAccessor;
-import net.minecraft.server.network.ServerPlayerEntity;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
-import java.util.Collection;
-
-public class AfkMarkerJob extends NPassMarkerJob<ServerPlayerEntity> {
+public class AfkMarkerJob extends CronJob {
 
     public AfkMarkerJob() {
-        super(1, () -> AfkInitializer.config.model().afk_checker.cron);
+        super(() -> AfkInitializer.config.model().afk_checker.cron);
     }
 
     @Override
-    public Collection<ServerPlayerEntity> getEntityList() {
-        return ServerHelper.getPlayers();
-    }
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        ServerHelper.getPlayers()
+            .stream()
+            .filter(it -> !it.isRemoved())
+            .forEach(it -> {
 
-    @Override
-    public boolean shouldMark(ServerPlayerEntity entity) {
-        if (entity.isRemoved()) return false;
+                /* update input counter */
+                String key = it.getGameProfile().getName();
 
-        // get last action time
-        AfkStateAccessor afk_player = (AfkStateAccessor) entity;
-        long lastActionTime = entity.getLastActionTime();
-        long snapshotLastActionTime = afk_player.fuji$getSnapshotLastActionTime();
+                long prevInputCounter = AfkInitializer.player2prevInputCounter.computeIfAbsent(key, k -> -1L);
+                long curInputCounter = ((AfkStateAccessor) it).fuji$getInputCounter();
+                LogUtil.debug("entity = {}, prev = {}, cur = {}", key, prevInputCounter, curInputCounter);
 
-        // update snapshotLastActionTime
-        afk_player.fuji$setSnapshotLastActionTime(lastActionTime);
+                AfkInitializer.player2prevInputCounter.put(key, curInputCounter);
 
-        // diff last action time
-        return (lastActionTime - snapshotLastActionTime) < 3000;
-    }
+                /* process */
+                AfkStateAccessor afkPlayer = (AfkStateAccessor) it;
+                if (prevInputCounter == curInputCounter
+                    && !afkPlayer.fuji$isAfk()) {
+                    afkPlayer.fuji$changeAfk(true);
+                }
 
-    @Override
-    public void onCompleted(ServerPlayerEntity entity) {
-        AfkStateAccessor afk_player = (AfkStateAccessor) entity;
-        // ignore if already in afk
-        if (!afk_player.fuji$isAfk()) {
-            afk_player.fuji$setAfk(true);
-        }
+            });
+
     }
 }

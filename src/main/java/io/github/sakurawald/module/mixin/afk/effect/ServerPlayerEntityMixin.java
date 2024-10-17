@@ -29,28 +29,31 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
     public void invulnerableEffect(DamageSource damageSource, float f, CallbackInfoReturnable<Boolean> cir) {
-        AfkStateAccessor afkStateAccessor = (AfkStateAccessor) player;
-        if (afkStateAccessor.fuji$isAfk()
-            && AfkEffectInitializer.config.model().invulnerable
-        ) {
+        if (AfkEffectInitializer.config.model().invulnerable && AfkInitializer.isAfk(player)) {
             cir.setReturnValue(false);
         }
     }
 
-    // note: function move() in 'afk.effect module' will that one in 'afk module', since the latter Mixin will override the original one.
+    // note: function move() in 'afk.effect module' will override that one in 'afk module', since the latter Mixin will override the original one.
     @Override
     public void move(MovementType movementType, Vec3d vec3d) {
 
         AfkStateAccessor afkStateAccessor = (AfkStateAccessor) player;
         if (!AfkEffectInitializer.config.model().moveable && afkStateAccessor.fuji$isAfk()) {
+
+            /* store the originalX before the call to move() */
             double originalX = player.getX();
             double originalY = player.getY();
             double originalZ = player.getZ();
 
-            // if a player moved itself
+            /* if a player moved itself */
             if (movementType == MovementType.PLAYER) {
+
                 if (AfkInitializer.isPlayerActuallyMovedItself(movementType, vec3d)) {
-                    afkStateAccessor.fuji$setAfk(false);
+                    // flag the afk state to false, if this movement comes from the player itself.
+                    afkStateAccessor.fuji$changeAfk(false);
+
+                    // call super to sync the position of player between client and server.
                     super.move(movementType, vec3d);
                 }
 
@@ -58,12 +61,12 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
                 return;
             }
 
-            // reset position to where the player enters afk state.
+            // send packet to force set the position of the player in client-side.
             player.requestTeleport(originalX, originalY, originalZ);
             return;
         }
 
-        // call super
+        // not interested event, call super
         super.move(movementType, vec3d);
     }
 
