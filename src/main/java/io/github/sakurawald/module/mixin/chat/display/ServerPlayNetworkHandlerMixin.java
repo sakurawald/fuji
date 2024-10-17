@@ -26,17 +26,17 @@ public abstract class ServerPlayNetworkHandlerMixin {
         MutableText newValue
             = LocaleHelper.replaceText(original
             , ChatDisplayInitializer.config.model().replace_token.item_display_token
-            , DisplayHelper.createItemDisplayText(player));
+            , () -> DisplayHelper.createItemDisplayText(player));
 
         newValue
             = LocaleHelper.replaceText(newValue
             , ChatDisplayInitializer.config.model().replace_token.inv_display_token
-            , DisplayHelper.createInvDisplayText(player));
+            , () -> DisplayHelper.createInvDisplayText(player));
 
         newValue
             = LocaleHelper.replaceText(newValue
             , ChatDisplayInitializer.config.model().replace_token.ender_display_token
-            , DisplayHelper.createEnderDisplayText(player));
+            , () -> DisplayHelper.createEnderDisplayText(player));
         return newValue;
     }
 
@@ -46,7 +46,9 @@ public abstract class ServerPlayNetworkHandlerMixin {
         return original.withUnsignedContent(newText);
     }
 
-    /* some chat-related mods will encode the content into the sender, or vice versa. */
+    /* some chat-related mods will encode the content into the sender, or vice versa.
+    * For this reason, we have to parse the display text twice.
+    *  */
     @ModifyVariable(method = "sendChatMessage", at = @At(value = "HEAD"), argsOnly = true)
     public MessageType.Parameters modifyChatMessageSentByPlayers(MessageType.Parameters original) {
         Text newText = replaceDisplayText(original.comp_920());

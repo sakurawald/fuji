@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 @UtilityClass
 public class LocaleHelper {
@@ -324,11 +325,15 @@ public class LocaleHelper {
             throw new IllegalArgumentException("The `charSeq` parameter must starts with '[' and ends with ']'");
         }
 
-        return replaceText(text, charSeq, replacement);
+        return replaceText(text, charSeq, () -> replacement);
     }
 
     public static MutableText replaceText(Text text, String charSeq, Text replacement) {
-        return replaceText0(text, charSeq, replacement, Text.empty(), new ArrayList<>());
+        return replaceText(text, charSeq, () -> replacement);
+    }
+
+    public static MutableText replaceText(Text text, String charSeq, Supplier<Text> replacementSupplier) {
+        return replaceText0(text, charSeq, replacementSupplier, Text.empty(), new ArrayList<>());
     }
 
     private static String visitString(TextContent textContent) {
@@ -340,7 +345,7 @@ public class LocaleHelper {
         return stringBuilder.toString();
     }
 
-    private static MutableText replaceText0(Text text, String marker, Text replacement, MutableText builder, List<Style> stylePath) {
+    private static MutableText replaceText0(Text text, String marker, Supplier<Text> replacement, MutableText builder, List<Style> stylePath) {
 
         /* pass down style */
         ArrayList<Style> newStylePath = new ArrayList<>(stylePath);
@@ -359,10 +364,7 @@ public class LocaleHelper {
         return text;
     }
 
-    private static List<Text> splitText(Text text, String marker, Text replacement, List<Style> stylePath) {
-        // copy the style form text to replacement.
-        MutableText styledReplacement = replacement.copy();
-        fillStyles(styledReplacement, stylePath);
+    private static List<Text> splitText(Text text, String marker, Supplier<Text> replacementSupplier, List<Style> stylePath) {
 
         /* get the string */
         String string = visitString(text.getContent());
@@ -382,6 +384,7 @@ public class LocaleHelper {
         /* construct result texts */
         List<Text> ret = new ArrayList<>();
         int beginIndex = 0;
+        Text replacement = null;
         for (Integer splitPoint : splitPoints) {
             int endIndex = splitPoint;
 
@@ -396,7 +399,13 @@ public class LocaleHelper {
             }
 
             // replace the marker with replacement
+            if (replacement == null) {
+                replacement = replacementSupplier.get();
+            }
+            MutableText styledReplacement = replacement.copy();
+            fillStyles(styledReplacement, stylePath);
             ret.add(styledReplacement);
+
             beginIndex = splitPoint + marker.length();
         }
 
