@@ -21,6 +21,9 @@ import io.github.sakurawald.module.initializer.placeholder.job.UpdateSumUpPlaceh
 import io.github.sakurawald.module.initializer.placeholder.structure.SumUpPlaceholder;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.StringUtils;
@@ -114,6 +117,39 @@ public class PlaceholderInitializer extends ModuleInitializer {
         });
     }
 
+    public static void registerPosPlaceholder() {
+        PlaceholderHelper.withPlayer("pos", (player) -> {
+            int x = player.getBlockX();
+            int y = player.getBlockY();
+            int z = player.getBlockZ();
+            String dim_name = player.getWorld().getRegistryKey().getValue().toString();
+            String dim_display_name = LocaleHelper.getValue(player, dim_name);
+            String hoverString = LocaleHelper.getValue(player, "chat.current_pos");
+            switch (dim_name) {
+                case "minecraft:overworld":
+                    hoverString += "\n" + LocaleHelper.getValue(player, "minecraft:the_nether")
+                        + ": %d %s %d".formatted(x / 8, y, z / 8);
+                    break;
+                case "minecraft:the_nether":
+                    hoverString += "\n" + LocaleHelper.getValue(player, "minecraft:overworld")
+                        + ": %d %s %d".formatted(x * 8, y, z * 8);
+                    break;
+            }
+
+            String clickCommand = LocaleHelper.getValue(player, "chat.xaero_waypoint_add.command");
+
+            return LocaleHelper.getTextByKey(player, "placeholder.pos", x, y, z, dim_display_name)
+                .copy()
+                .fillStyle(Style.EMPTY
+                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                        Text.literal(hoverString + "\n")
+                            .append(LocaleHelper.getTextByKey(player, "chat.xaero_waypoint_add"))
+                    ))
+                    .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand))
+                );
+        });
+    }
+
     @Override
     protected void onInitialize() {
         /* register placeholders */
@@ -145,6 +181,8 @@ public class PlaceholderInitializer extends ModuleInitializer {
 
         registerPrefixPlaceholder();
         registerSuffixPlaceholder();
+
+        registerPosPlaceholder();
 
         /* events */
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {

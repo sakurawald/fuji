@@ -3,7 +3,6 @@ package io.github.sakurawald.module.initializer.chat.style;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.PlaceholderHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -20,10 +19,7 @@ import net.minecraft.network.message.MessageType;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.ClickEvent;
 import net.minecraft.text.Decoration;
-import net.minecraft.text.HoverEvent;
-import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
@@ -37,14 +33,14 @@ public class ChatStyleInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<ChatStyleConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatStyleConfigModel.class);
 
-    // to avoid the message type already registered in the client-side.
+    // to avoid the message type already registered in the client-side, and the client-side message type will influence the client-side decorator.
     public static final RegistryKey<MessageType> MESSAGE_TYPE_KEY = RegistryKey.of(RegistryKeys.MESSAGE_TYPE, Identifier.ofVanilla("fuji_chat_" + FabricLoader.getInstance().getEnvironmentType().toString().toLowerCase()));
 
     public static final MessageType MESSAGE_TYPE_VALUE = new MessageType(
         Decoration.ofChat("%s%s"),
         Decoration.ofChat("%s%s"));
 
-    private static final BaseConfigurationHandler<ChatFormatModel> chatFormatHandler = new ObjectConfigurationHandler<>("chat.json", ChatFormatModel.class)
+    private static final BaseConfigurationHandler<ChatFormatModel> chat = new ObjectConfigurationHandler<>("chat.json", ChatFormatModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("chat.json"), ChatStyleInitializer.class));
 
     @CommandNode("chat format set")
@@ -52,8 +48,8 @@ public class ChatStyleInitializer extends ModuleInitializer {
         /* save the format*/
         String name = player.getGameProfile().getName();
         String $format = format.getValue();
-        chatFormatHandler.model().format.player2format.put(name, $format);
-        chatFormatHandler.writeStorage();
+        chat.model().format.player2format.put(name, $format);
+        chat.writeStorage();
 
         /* feedback */
         $format = LocaleHelper.getValue(player, "chat.format.set").replace("%s", $format);
@@ -67,8 +63,8 @@ public class ChatStyleInitializer extends ModuleInitializer {
     @CommandNode("chat format reset")
     private static int resetPlayerFormat(@CommandSource ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
-        chatFormatHandler.model().format.player2format.remove(name);
-        chatFormatHandler.writeStorage();
+        chat.model().format.player2format.remove(name);
+        chat.writeStorage();
         LocaleHelper.sendMessageByKey(player, "chat.format.reset");
         return CommandHelper.Return.SUCCESS;
     }
@@ -105,47 +101,9 @@ public class ChatStyleInitializer extends ModuleInitializer {
         String contentString = config.model().style.content.formatted(message);
         contentString = resolveMentionTag(contentString);
 
-        contentString = chatFormatHandler.model().format.player2format.getOrDefault(player.getGameProfile().getName(), "%message%").replace("%message%", contentString);
+        contentString = chat.model().format.player2format.getOrDefault(player.getGameProfile().getName(), "%message%").replace("%message%", contentString);
 
         return LocaleHelper.getTextByValue(player, contentString);
-    }
-
-    @Override
-    protected void registerPlaceholder() {
-        registerPosPlaceholder();
-    }
-
-    private void registerPosPlaceholder() {
-        PlaceholderHelper.withPlayer("pos", (player) -> {
-            int x = player.getBlockX();
-            int y = player.getBlockY();
-            int z = player.getBlockZ();
-            String dim_name = player.getWorld().getRegistryKey().getValue().toString();
-            String dim_display_name = LocaleHelper.getValue(player, dim_name);
-            String hoverString = LocaleHelper.getValue(player, "chat.current_pos");
-            switch (dim_name) {
-                case "minecraft:overworld":
-                    hoverString += "\n" + LocaleHelper.getValue(player, "minecraft:the_nether")
-                        + ": %d %s %d".formatted(x / 8, y, z / 8);
-                    break;
-                case "minecraft:the_nether":
-                    hoverString += "\n" + LocaleHelper.getValue(player, "minecraft:overworld")
-                        + ": %d %s %d".formatted(x * 8, y, z * 8);
-                    break;
-            }
-
-            String clickCommand = LocaleHelper.getValue(player, "chat.xaero_waypoint_add.command");
-
-            return LocaleHelper.getTextByKey(player, "placeholder.pos", x, y, z, dim_display_name)
-                .copy()
-                .fillStyle(Style.EMPTY
-                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                        Text.literal(hoverString + "\n")
-                            .append(LocaleHelper.getTextByKey(player, "chat.xaero_waypoint_add"))
-                    ))
-                    .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand))
-                );
-        });
     }
 
 }
