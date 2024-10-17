@@ -112,7 +112,7 @@ public class ChatStyleInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void registerPlaceholder() {
+    protected void registerPlaceholder() {
         registerPosPlaceholder();
         registerPrefixPlaceholder();
         registerSuffixPlaceholder();

@@ -33,7 +33,7 @@ public class DelayInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void onInitialize() {
+    protected void onInitialize() {
         ServerLifecycleEvents.SERVER_STOPPING.register((server) -> executor.shutdown());
     }
 }

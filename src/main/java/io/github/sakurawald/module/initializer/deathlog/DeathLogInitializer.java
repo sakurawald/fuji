@@ -203,7 +203,7 @@ public class DeathLogInitializer extends ModuleInitializer {
 
     @SneakyThrows(IOException.class)
     @Override
-    public void onInitialize() {
+    protected void onInitialize() {
         Files.createDirectories(DEATH_DATA_DIR_PATH);
     }
 

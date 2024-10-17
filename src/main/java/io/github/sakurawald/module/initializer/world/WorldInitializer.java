@@ -170,7 +170,7 @@ public class WorldInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void onInitialize() {
+    protected void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(this::loadWorlds);
     }
 

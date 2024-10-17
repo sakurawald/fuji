@@ -79,7 +79,7 @@ public class WarpInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void onInitialize() {
+    protected void onInitialize() {
         data.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 }

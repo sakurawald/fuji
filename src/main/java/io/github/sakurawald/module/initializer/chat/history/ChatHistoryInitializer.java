@@ -18,12 +18,12 @@ public class ChatHistoryInitializer extends ModuleInitializer {
     private static Queue<Text> chatHistory;
 
     @Override
-    public void onInitialize() {
+    protected void onInitialize() {
         chatHistory = EvictingQueue.create(config.model().buffer_size);
     }
 
     @Override
-    public void onReload() {
+    protected void onReload() {
         EvictingQueue<Text> newQueue = EvictingQueue.create(config.model().buffer_size);
         newQueue.addAll(chatHistory);
         chatHistory.clear();

@@ -288,12 +288,12 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void onInitialize() {
+    protected void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new TestSteppingOnBlockJob().schedule());
     }
 
     @Override
-    public void registerGsonTypeAdapter() {
+    protected void registerGsonTypeAdapter() {
         BaseConfigurationHandler.registerTypeAdapter(CommandAttachmentNode.class, new CommandAttachmentNodeAdapter());
     }
 

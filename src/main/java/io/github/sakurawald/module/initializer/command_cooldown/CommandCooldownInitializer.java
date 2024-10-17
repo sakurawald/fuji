@@ -155,12 +155,12 @@ public class CommandCooldownInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void onInitialize() {
+    protected void onInitialize() {
         config.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 
     @Override
-    public void registerPlaceholder() {
+    protected void registerPlaceholder() {
         PlaceholderHelper.withPlayer("command_cooldown_left_time", (player, args) -> {
             CommandCooldown cooldown = config.model().namedCooldown.list.get(args);
             if (cooldown == null) return NOT_COOLDOWN_FOUND;

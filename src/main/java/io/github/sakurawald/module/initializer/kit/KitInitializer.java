@@ -137,7 +137,7 @@ public class KitInitializer extends ModuleInitializer {
 
     @SneakyThrows(IOException.class)
     @Override
-    public void onInitialize() {
+    protected void onInitialize() {
         Files.createDirectories(KIT_DATA_DIR_PATH);
     }
 

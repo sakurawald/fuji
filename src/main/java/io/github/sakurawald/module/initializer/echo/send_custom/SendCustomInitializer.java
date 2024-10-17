@@ -92,7 +92,7 @@ public class SendCustomInitializer extends ModuleInitializer {
 
     @SneakyThrows
     @Override
-    public void onInitialize() {
+    protected void onInitialize() {
         Files.createDirectories(CUSTOM_TEXT_DIR_PATH);
     }
 }

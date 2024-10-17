@@ -22,7 +22,7 @@ public class CommandAliasInitializer extends ModuleInitializer {
     private static final BaseConfigurationHandler<CommandAliasConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, CommandAliasConfigModel.class);
 
     @Override
-    public void onInitialize() {
+    protected void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register((server) -> {
             CommandDispatcher<ServerCommandSource> dispatcher = ServerHelper.getCommandDispatcher();
             config.model().alias.forEach(it -> {
