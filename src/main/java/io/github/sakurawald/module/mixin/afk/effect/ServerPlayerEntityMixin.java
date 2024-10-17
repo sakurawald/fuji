@@ -37,9 +37,15 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     // note: function move() in 'afk.effect module' will override that one in 'afk module', since the latter Mixin will override the original one.
     @Override
     public void move(MovementType movementType, Vec3d vec3d) {
+        AfkStateAccessor afkEx = (AfkStateAccessor) player;
 
-        AfkStateAccessor afkStateAccessor = (AfkStateAccessor) player;
-        if (!AfkEffectInitializer.config.model().moveable && afkStateAccessor.fuji$isAfk()) {
+        /* count input on move */
+        if (AfkInitializer.isPlayerActuallyMovedItself(movementType, vec3d)) {
+            afkEx.fuji$incrInputCounter();
+        }
+
+        /* process moveable option */
+        if (!AfkEffectInitializer.config.model().moveable && afkEx.fuji$isAfk()) {
 
             /* store the originalX before the call to move() */
             double originalX = player.getX();
@@ -51,7 +57,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 
                 if (AfkInitializer.isPlayerActuallyMovedItself(movementType, vec3d)) {
                     // flag the afk state to false, if this movement comes from the player itself.
-                    afkStateAccessor.fuji$changeAfk(false);
+                    afkEx.fuji$incrInputCounter();
 
                     // call super to sync the position of player between client and server.
                     super.move(movementType, vec3d);
@@ -66,7 +72,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
             return;
         }
 
-        // not interested event, call super
+        /* not interested event, call super */
         super.move(movementType, vec3d);
     }
 
