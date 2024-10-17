@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.mixin.chat.style;
+package io.github.sakurawald.module.mixin.chat.style.message_type;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import io.github.sakurawald.core.annotation.Cite;

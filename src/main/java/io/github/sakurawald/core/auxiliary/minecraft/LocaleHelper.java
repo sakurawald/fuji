@@ -317,12 +317,16 @@ public class LocaleHelper {
         }
     }
 
-    public static MutableText replaceText(Text text, String charSeq, Text replacement) {
+    public static MutableText replaceBracketedText(Text text, String charSeq, Text replacement) {
         // verify the placeholder of replaceText
         if (!charSeq.startsWith("[") || !charSeq.endsWith("]")) {
             throw new IllegalArgumentException("The `charSeq` parameter must starts with '[' and ends with ']'");
         }
 
+        return replaceText(text, charSeq, replacement);
+    }
+
+    public static MutableText replaceText(Text text, String charSeq, Text replacement) {
         return replaceText0(text, charSeq, replacement, Text.empty());
     }
 
@@ -347,7 +351,7 @@ public class LocaleHelper {
     private static List<Text> splitText(Text text, String marker, Text replacement) {
         // copy the style form text to replacement.
         replacement = replacement.copy()
-            .setStyle(text.getStyle());
+            .fillStyle(text.getStyle());
 
         /* get the string */
         String string = visitString(text.getContent());
