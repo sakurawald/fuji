@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.initializer.afk.job;
 
-import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.job.abst.CronJob;
 import io.github.sakurawald.module.initializer.afk.AfkInitializer;
@@ -26,7 +25,6 @@ public class AfkMarkerJob extends CronJob {
 
                 long prevInputCounter = AfkInitializer.player2prevInputCounter.computeIfAbsent(key, k -> -1L);
                 long curInputCounter = ((AfkStateAccessor) it).fuji$getInputCounter();
-                LogUtil.debug("entity = {}, prev = {}, cur = {}", key, prevInputCounter, curInputCounter);
 
                 AfkInitializer.player2prevInputCounter.put(key, curInputCounter);
 
