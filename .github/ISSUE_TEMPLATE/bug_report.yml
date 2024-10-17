@@ -1,7 +1,7 @@
 name: 🐞 Bug Report
 description: Create a report to help us improve
 title: '[bug] <title>'
-labels: [bug]
+labels: [ bug ]
 body:
   - type: checkboxes
     attributes:
@@ -12,17 +12,6 @@ body:
           required: true
   - type: textarea
     attributes:
-      label: Steps To Reproduce
-      description: Steps to reproduce the behavior.
-      placeholder: |
-        1. In this environment...
-        2. With this config...
-        3. Run '...'
-        4. See error...
-    validations:
-      required: false
-  - type: textarea
-    attributes:
       label: Current Behavior
       description: A concise description of what you're experiencing.
     validations:
@@ -31,6 +20,17 @@ body:
     attributes:
       label: Expected Behavior
       description: A concise description of what you expected to happen.
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Steps To Reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. In this environment...
+        2. With this config...
+        3. Run '...'
+        4. See error...
     validations:
       required: false
   - type: input
