@@ -328,10 +328,6 @@ public class LocaleHelper {
         return replaceText(text, charSeq, () -> replacement);
     }
 
-    public static MutableText replaceText(Text text, String charSeq, Text replacement) {
-        return replaceText(text, charSeq, () -> replacement);
-    }
-
     public static MutableText replaceText(Text text, String charSeq, Supplier<Text> replacementSupplier) {
         return replaceText0(text, charSeq, replacementSupplier, Text.empty(), new ArrayList<>());
     }
@@ -346,12 +342,11 @@ public class LocaleHelper {
     }
 
     private static MutableText replaceText0(Text text, String marker, Supplier<Text> replacement, MutableText builder, List<Style> stylePath) {
-
         /* pass down style */
         ArrayList<Style> newStylePath = new ArrayList<>(stylePath);
         newStylePath.add(text.getStyle());
 
-        /* process one */
+        /* process the atom */
         splitText(text, marker, replacement, newStylePath).forEach(builder::append);
 
         /* iterate children */
