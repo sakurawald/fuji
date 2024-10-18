@@ -1,4 +1,6 @@
 \LevelThree{display}
+\LevelFour{Purpose}
+Allow players to share their item in hand, items in inventory and items in ender chest.
 
 \LevelFour{Placeholder}
 \begin{description}
@@ -12,6 +14,11 @@
     \item[expiration\_duration\_s]{
         For each display data, how long should we save in the memory.
         Note that if a player shares its inventory items, then fuji will save a copy of his inventory data in the memory.
+    }
+
+    \item[replace\_token] {
+        Define the \ttt{tokens} to be replaced in chat message.
+        By default, you can insert \str{[item]}, \str{[inv]} and \str{ender} to create displays.
     }
 
 \end{Configuration}

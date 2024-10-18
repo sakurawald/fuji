@@ -1,0 +1,31 @@
+\LevelThree{mention}
+\LevelFour{Purpose}
+Insert the player name in the chat message, and the target player will be mentioned and sound notified.
+
+\LevelFour{Configuration}
+\begin{Configuration}
+    \item[mention\_player]{
+        \label{itm:mention_player}
+        If you insert \tbf{Steve} in chat message, then the player named Steve will get audio mention.
+
+        \begin{NestedList}
+            \item[sound]{
+                The type of \tbf{sound} used to notify the mentioned player.
+                \begin{tips}{Query all identifiers of sound}
+                    \ic{/playsound \ldots}
+                \end{tips}
+            }
+
+            \item[volume]
+            \item[pitch]
+            \item[repeat\_count]{
+                The sound repeat count.
+            }
+
+            \item[interval\_ms]{
+                The interval between each repeat.
+            }
+        \end{NestedList}
+
+    }
+\end{Configuration}
