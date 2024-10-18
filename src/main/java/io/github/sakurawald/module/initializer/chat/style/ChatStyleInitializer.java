@@ -36,7 +36,7 @@ public class ChatStyleInitializer extends ModuleInitializer {
     private static final BaseConfigurationHandler<ChatFormatModel> chat = new ObjectConfigurationHandler<>("chat.json", ChatFormatModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("chat.json"), ChatStyleInitializer.class));
 
-    @CommandNode("chat format set")
+    @CommandNode("chat style set")
     private static int setPlayerFormat(@CommandSource ServerPlayerEntity player, GreedyString format) {
         /* save the format*/
         String name = player.getGameProfile().getName();
@@ -53,7 +53,7 @@ public class ChatStyleInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @CommandNode("chat format reset")
+    @CommandNode("chat style reset")
     private static int resetPlayerFormat(@CommandSource ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
         chat.model().format.player2format.remove(name);
