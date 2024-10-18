@@ -3,11 +3,15 @@ package io.github.sakurawald.module.initializer.tester;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import lombok.SneakyThrows;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryLoader;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
@@ -26,7 +30,17 @@ public class TesterInitializer extends ModuleInitializer {
     @SneakyThrows(Exception.class)
     @CommandNode("run")
     private static int $run(@CommandSource ServerPlayerEntity player) {
-        testTextReplacement(player);
+
+        RegistryLoader.DYNAMIC_REGISTRIES.forEach(it -> {
+            LogUtil.debug(it.toString());
+            RegistryKey<? extends Registry<?>> registryKey = it.comp_985();
+
+            Registry<Object> objects = RegistryHelper.ofRegistry(registryKey);
+            LogUtil.debug("registry {}, size = {}",objects.getKey(), objects.size());
+
+        });
+
+
         return 1;
     }
 
