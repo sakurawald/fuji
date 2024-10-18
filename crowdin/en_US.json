@@ -290,5 +290,6 @@
   "job.props.enabled": "<blue>Enabled: %s",
   "job.props.left_times": "<blue>Left Times: %s",
   "symbol.arrow.right": "<bold><orange>-></bold>",
-  "chat.spy.indicator": "<bold><orange>-SPY-></bold>"
+  "chat.spy.indicator": "<bold><orange>-SPY-></bold>",
+  "registry.list.gui.title": "<blue>Registry"
 }

@@ -5,6 +5,7 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
@@ -16,27 +17,30 @@ import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.gui.CommandDescriptorGui;
 import io.github.sakurawald.core.job.abst.BaseJob;
 import io.github.sakurawald.core.manager.Managers;
-import io.github.sakurawald.core.structure.CommandNode;
 import io.github.sakurawald.core.structure.Pair;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.fuji.gui.AboutGui;
 import io.github.sakurawald.module.initializer.fuji.gui.ArgumentTypeGui;
 import io.github.sakurawald.module.initializer.fuji.gui.ConfigurationHandlerGui;
 import io.github.sakurawald.module.initializer.fuji.gui.ModulesGui;
+import io.github.sakurawald.module.initializer.fuji.gui.RegistryGui;
 import io.github.sakurawald.module.initializer.fuji.gui.ServerCommandsGui;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.fabricmc.loader.api.metadata.Person;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 
-@io.github.sakurawald.core.command.annotation.CommandNode("fuji")
+@CommandNode("fuji")
 @CommandRequirement(level = 4)
 public class FujiInitializer extends ModuleInitializer {
 
@@ -55,7 +59,7 @@ public class FujiInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @io.github.sakurawald.core.command.annotation.CommandNode("about")
+    @CommandNode("about")
     private static int $about(@CommandSource ServerPlayerEntity player) {
         ModMetadata metadata = FabricLoader.getInstance().getModContainer(Fuji.MOD_ID)
             .orElseThrow(() -> new IllegalStateException("failed to get the metadata of this mod."))
@@ -69,17 +73,17 @@ public class FujiInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @io.github.sakurawald.core.command.annotation.CommandNode("inspect server-commands")
+    @CommandNode("inspect server-commands")
     private static int $listServerCommands(@CommandSource ServerPlayerEntity player) {
-        List<CommandNode> entities = CommandHelper.getCommandNodes().stream()
-            .map(CommandNode::new)
-            .sorted(Comparator.comparing(CommandNode::getPath))
+        List<io.github.sakurawald.core.structure.CommandNode> entities = CommandHelper.getCommandNodes().stream()
+            .map(io.github.sakurawald.core.structure.CommandNode::new)
+            .sorted(Comparator.comparing(io.github.sakurawald.core.structure.CommandNode::getPath))
             .toList();
         new ServerCommandsGui(player, entities, 0).open();
         return CommandHelper.Return.SUCCESS;
     }
 
-    @io.github.sakurawald.core.command.annotation.CommandNode("inspect modules")
+    @CommandNode("inspect modules")
     private static int $listModules(@CommandSource ServerPlayerEntity player) {
         List<Pair<String, Boolean>> list = Managers.getModuleManager().getModule2enable()
             .entrySet()
@@ -92,7 +96,7 @@ public class FujiInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @io.github.sakurawald.core.command.annotation.CommandNode("inspect fuji-commands")
+    @CommandNode("inspect fuji-commands")
     private static int $listFujiCommands(@CommandSource ServerPlayerEntity player) {
         List<CommandDescriptor> descriptors = CommandAnnotationProcessor
             .descriptors
@@ -105,7 +109,7 @@ public class FujiInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @io.github.sakurawald.core.command.annotation.CommandNode("inspect argument-types")
+    @CommandNode("inspect argument-types")
     private static int listCommandArgumentType(@CommandSource CommandContext<ServerCommandSource> ctx) {
         List<BaseArgumentTypeAdapter> adapters = BaseArgumentTypeAdapter.getAdapters();
 
@@ -122,7 +126,7 @@ public class FujiInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @io.github.sakurawald.core.command.annotation.CommandNode("inspect configurations")
+    @CommandNode("inspect configurations")
     private static int listConfiguration(@CommandSource ServerPlayerEntity player) {
         List<BaseConfigurationHandler<?>> list = BaseConfigurationHandler.handlers.stream()
             .filter(it -> it instanceof ObjectConfigurationHandler<?>)
@@ -132,4 +136,16 @@ public class FujiInitializer extends ModuleInitializer {
         new ConfigurationHandlerGui(null, player, list, 0).open();
         return CommandHelper.Return.SUCCESS;
     }
+
+    @CommandNode("inspect registry")
+    private static int listRegistry(@CommandSource ServerPlayerEntity player) {
+        List<Identifier> list = Registries.REGISTRIES.getKeys().stream()
+            .map(RegistryKey::getValue)
+            .sorted()
+            .toList();
+
+        new RegistryGui(null, player, Registries.REGISTRIES, list, 0).open();
+        return CommandHelper.Return.SUCCESS;
+    }
 }
+
