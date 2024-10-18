@@ -1,7 +1,9 @@
 package io.github.sakurawald.module.initializer.chat.display.helper;
 
 import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.module.initializer.chat.display.gui.DisplayGuiBuilder;
+import io.github.sakurawald.core.manager.Managers;
+import io.github.sakurawald.module.initializer.chat.display.ChatDisplayInitializer;
+import io.github.sakurawald.module.initializer.chat.display.gui.BaseDisplayGui;
 import io.github.sakurawald.module.initializer.chat.display.gui.EnderChestDisplayGui;
 import io.github.sakurawald.module.initializer.chat.display.gui.InventoryDisplayGui;
 import io.github.sakurawald.module.initializer.chat.display.gui.ItemDisplayGui;
@@ -9,55 +11,99 @@ import io.github.sakurawald.module.initializer.chat.display.gui.ShulkerBoxDispla
 import io.github.sakurawald.module.initializer.chat.display.structure.SoftReferenceMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.ClickEvent;
+import net.minecraft.text.HoverEvent;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class DisplayHelper {
 
-    private static final SoftReferenceMap<String, DisplayGuiBuilder> uuid2gui = new SoftReferenceMap<>();
+    private static final SoftReferenceMap<String, BaseDisplayGui> uuid2gui = new SoftReferenceMap<>();
 
-    public static String createInventoryDisplay(@NotNull ServerPlayerEntity player) {
+    private static String makeInventoryDisplayUuid(@NotNull ServerPlayerEntity player) {
         Text title = LocaleHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName());
         String uuid = UUID.randomUUID().toString();
         uuid2gui.put(uuid, new InventoryDisplayGui(title, player));
         return uuid;
     }
 
-    public static String createEnderChestDisplay(@NotNull ServerPlayerEntity player) {
+    private static String makeEnderChestDisplayUuid(@NotNull ServerPlayerEntity player) {
         Text title = LocaleHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName());
         String uuid = UUID.randomUUID().toString();
         uuid2gui.put(uuid, new EnderChestDisplayGui(title, player));
         return uuid;
     }
 
-    public static String createItemDisplay(@NotNull ServerPlayerEntity player) {
+    private static String makeItemDisplayUuid(@NotNull ServerPlayerEntity player) {
         /* new object */
-        DisplayGuiBuilder displayGuiBuilder;
+        BaseDisplayGui baseDisplayGui;
         Text title = LocaleHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName());
         ItemStack itemStack = player.getMainHandStack().copy();
-        if (DisplayGuiBuilder.isShulkerBox(itemStack)) {
+        if (BaseDisplayGui.isShulkerBox(itemStack)) {
             // shulker-box item
-            displayGuiBuilder = new ShulkerBoxDisplayGui(title, itemStack, null);
+            baseDisplayGui = new ShulkerBoxDisplayGui(title, itemStack, null);
         } else {
             // non-shulker-box item
-            displayGuiBuilder = new ItemDisplayGui(title, itemStack);
+            baseDisplayGui = new ItemDisplayGui(title, itemStack);
         }
 
         /* put object */
         String uuid = UUID.randomUUID().toString();
-        uuid2gui.put(uuid, displayGuiBuilder);
+        uuid2gui.put(uuid, baseDisplayGui);
         return uuid;
     }
 
     public static void viewDisplay(@NotNull ServerPlayerEntity player, String displayUUID) {
-        DisplayGuiBuilder displayGuiBuilder = uuid2gui.get(displayUUID);
-        if (displayGuiBuilder == null) {
+        BaseDisplayGui baseDisplayGui = uuid2gui.get(displayUUID);
+        if (baseDisplayGui == null) {
             LocaleHelper.sendMessageByKey(player, "display.invalid");
             return;
         }
-        displayGuiBuilder.build(player).open();
+        baseDisplayGui.build(player).open();
     }
 
+    public static MutableText createEnderDisplayText(ServerPlayerEntity player) {
+        String displayUUID = makeEnderChestDisplayUuid(player);
+        return LocaleHelper.getTextByKey(player, "display.ender_chest.text")
+            .copy()
+            .fillStyle(
+                Style.EMPTY
+                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, LocaleHelper.getTextByKey(player, "display.click.prompt")))
+                    .withClickEvent(makeDisplayClickEvent(displayUUID))
+            );
+    }
+
+    public static MutableText createInvDisplayText(ServerPlayerEntity player) {
+        String displayUUID = makeInventoryDisplayUuid(player);
+        return LocaleHelper.getTextByKey(player, "display.inventory.text")
+            .copy()
+            .fillStyle(Style.EMPTY
+                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, LocaleHelper.getTextByKey(player, "display.click.prompt")))
+                .withClickEvent(makeDisplayClickEvent(displayUUID))
+            );
+    }
+
+    public static @NotNull MutableText createItemDisplayText(ServerPlayerEntity player) {
+        String displayUUID = makeItemDisplayUuid(player);
+        MutableText text = LocaleHelper.getTextByKey(player, "display.item.text").copy();
+
+        MutableText translatable = Text.translatable(player.getMainHandStack().getTranslationKey());
+        translatable.fillStyle(Style.EMPTY
+            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, LocaleHelper.getTextByKey(player, "display.click.prompt")))
+            .withClickEvent(makeDisplayClickEvent(displayUUID))
+        );
+
+        text = LocaleHelper.replaceBracketedText(text, "[item]", translatable);
+        return text;
+    }
+
+    @NotNull
+    private static ClickEvent makeDisplayClickEvent(String displayUUID) {
+        return Managers.getCallbackManager().makeCallbackEvent((player) -> viewDisplay(player, displayUUID), ChatDisplayInitializer.config.model().expiration_duration_s, TimeUnit.SECONDS);
+    }
 }

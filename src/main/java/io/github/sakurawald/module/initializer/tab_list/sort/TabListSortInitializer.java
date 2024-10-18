@@ -13,7 +13,7 @@ import java.util.List;
 public class TabListSortInitializer extends ModuleInitializer {
 
     @Override
-    public void onReload() {
+    protected void onReload() {
 
         List<ServerPlayerEntity> copy1 = TabListEntry.getInstances().stream().map(TabListEntry::getRealPlayer).toList();
         List<ServerPlayerEntity> copy2 = TabListEntry.getInstances().stream().map(TabListEntry::getDummyPlayer).toList();

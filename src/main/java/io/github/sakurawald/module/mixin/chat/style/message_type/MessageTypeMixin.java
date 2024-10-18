@@ -1,4 +1,4 @@
-package io.github.sakurawald.module.mixin.chat.style;
+package io.github.sakurawald.module.mixin.chat.style.message_type;
 
 import io.github.sakurawald.module.initializer.chat.style.ChatStyleInitializer;
 import net.minecraft.network.message.MessageType;

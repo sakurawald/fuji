@@ -111,7 +111,9 @@ public class CommandAnnotationProcessor {
         CommandNode classAnnotation = clazz.getAnnotation(CommandNode.class);
         CommandRequirement classRequirement = clazz.getAnnotation(CommandRequirement.class);
         if (classAnnotation != null && !classAnnotation.value().isBlank()) {
-            argumentList.add(Argument.makeLiteralArgument(classAnnotation.value().trim(), CommandRequirementDescriptor.of(classRequirement)));
+            Arrays.stream(classAnnotation.value().trim().split(" "))
+                .filter(it -> !it.isBlank())
+                .forEach(argumentName -> argumentList.add(Argument.makeLiteralArgument(argumentName, CommandRequirementDescriptor.of(classRequirement))));
         }
 
         /* process the @CommandNode above the method. */

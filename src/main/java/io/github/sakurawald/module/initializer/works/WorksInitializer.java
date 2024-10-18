@@ -33,12 +33,12 @@ public class WorksInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void registerGsonTypeAdapter() {
+    protected void registerGsonTypeAdapter() {
         BaseConfigurationHandler.registerTypeAdapter(Work.class, new Work.WorkTypeAdapter());
     }
 
     @Override
-    public void onInitialize() {
+    protected void onInitialize() {
         works.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new WorksScheduleJob(new JobDataMap() {

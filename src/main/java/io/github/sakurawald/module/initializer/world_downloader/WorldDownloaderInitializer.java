@@ -127,12 +127,12 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void onInitialize() {
+    protected void onInitialize() {
         contextQueue = EvictingQueue.create(config.model().context_cache_size);
     }
 
     @Override
-    public void onReload() {
+    protected void onReload() {
         initServer();
     }
 

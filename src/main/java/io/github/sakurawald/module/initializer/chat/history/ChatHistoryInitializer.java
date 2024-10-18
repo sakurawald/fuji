@@ -12,18 +12,18 @@ import java.util.Queue;
 
 public class ChatHistoryInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<ChatHistoryConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatHistoryConfigModel.class);
+    private static final BaseConfigurationHandler<ChatHistoryConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatHistoryConfigModel.class);
 
     @Getter
     private static Queue<Text> chatHistory;
 
     @Override
-    public void onInitialize() {
+    protected void onInitialize() {
         chatHistory = EvictingQueue.create(config.model().buffer_size);
     }
 
     @Override
-    public void onReload() {
+    protected void onReload() {
         EvictingQueue<Text> newQueue = EvictingQueue.create(config.model().buffer_size);
         newQueue.addAll(chatHistory);
         chatHistory.clear();

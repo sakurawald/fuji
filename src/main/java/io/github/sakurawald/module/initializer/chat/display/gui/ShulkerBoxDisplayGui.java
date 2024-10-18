@@ -11,7 +11,7 @@ import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
 
-public class ShulkerBoxDisplayGui extends DisplayGuiBuilder {
+public class ShulkerBoxDisplayGui extends BaseDisplayGui {
 
     private final Text title;
     private final ItemStack itemStack;

@@ -11,7 +11,7 @@ import net.minecraft.util.collection.DefaultedList;
 import org.jetbrains.annotations.NotNull;
 
 
-public class EnderChestDisplayGui extends DisplayGuiBuilder {
+public class EnderChestDisplayGui extends BaseDisplayGui {
 
     private final Text title;
     private final DefaultedList<ItemStack> items = DefaultedList.of();

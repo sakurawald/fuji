@@ -94,7 +94,7 @@ public class HomeInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    public void onInitialize() {
+    protected void onInitialize() {
         storage.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 

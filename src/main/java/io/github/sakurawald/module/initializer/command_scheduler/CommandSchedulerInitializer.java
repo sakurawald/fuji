@@ -31,13 +31,13 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("scheduler.json"), CommandSchedulerInitializer.class));
 
     @Override
-    public void onInitialize() {
+    protected void onInitialize() {
         scheduler.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
         updateJobs();
     }
 
     @Override
-    public void onReload() {
+    protected void onReload() {
         updateJobs();
     }
 

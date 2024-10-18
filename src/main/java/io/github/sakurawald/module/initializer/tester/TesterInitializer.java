@@ -1,14 +1,22 @@
 package io.github.sakurawald.module.initializer.tester;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.core.auxiliary.LogUtil;
+import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import lombok.SneakyThrows;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryLoader;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,8 +31,38 @@ public class TesterInitializer extends ModuleInitializer {
     @CommandNode("run")
     private static int $run(@CommandSource ServerPlayerEntity player) {
 
+        RegistryLoader.DYNAMIC_REGISTRIES.forEach(it -> {
+            LogUtil.debug(it.toString());
+            RegistryKey<? extends Registry<?>> registryKey = it.comp_985();
+
+            Registry<Object> objects = RegistryHelper.ofRegistry(registryKey);
+            LogUtil.debug("registry {}, size = {}",objects.getKey(), objects.size());
+
+        });
+
 
         return 1;
+    }
+
+    private static void testTextReplacement(ServerPlayerEntity player) {
+        /* make */
+        MutableText root = Text.empty();
+
+        MutableText first = Text.literal("first").formatted(Formatting.RED);
+        root.append(first);
+
+        MutableText first_first = Text.literal("second").formatted(Formatting.GREEN);
+        first.append(first_first);
+
+        MutableText first_second = Text.literal("third");
+        first.append(first_second);
+
+        /* replace */
+        LogUtil.debug("before = {}", root);
+        player.sendMessage(root);
+        MutableText after = LocaleHelper.replaceText(root, "hi", () -> Text.literal("{replacement}"));
+        LogUtil.debug("after = {}", after);
+        player.sendMessage(after);
     }
 
     @CommandNode("$1 minus $2")

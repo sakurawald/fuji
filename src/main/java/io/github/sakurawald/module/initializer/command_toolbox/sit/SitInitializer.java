@@ -160,7 +160,7 @@ public class SitInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void onInitialize() {
+    protected void onInitialize() {
         // kill all sit entities on server stopping
         ServerLifecycleEvents.SERVER_STOPPING.register((server) -> CHAIR_ENTITY_LIST.forEach(e -> {
             if (e.isAlive()) e.kill();

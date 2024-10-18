@@ -1,5 +1,6 @@
 package io.github.sakurawald.core.job.impl;
 
+import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.job.abst.FixedIntervalJob;
 import lombok.NoArgsConstructor;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -27,7 +28,7 @@ public class MentionPlayersJob extends FixedIntervalJob {
 
         new MentionPlayersJob(new JobDataMap() {
             {
-                this.put(ArrayList.class.getName(), players);
+                this.put(List.class.getName(), players);
                 this.put(MentionPlayer.class.getName(), setup);
             }
         }, intervalMs, repeatCount).schedule();
@@ -40,15 +41,17 @@ public class MentionPlayersJob extends FixedIntervalJob {
     @SuppressWarnings("unchecked")
     @Override
     public void execute(@NotNull JobExecutionContext context) {
-        List<ServerPlayerEntity> players = (ArrayList<ServerPlayerEntity>) context.getJobDetail().getJobDataMap().get(ArrayList.class.getName());
+        List<ServerPlayerEntity> players = (List<ServerPlayerEntity>) context.getJobDetail().getJobDataMap().get(List.class.getName());
         MentionPlayer setup = (MentionPlayer) context.getJobDetail().getJobDataMap().get(MentionPlayer.class.getName());
 
         for (ServerPlayerEntity player : players) {
             if (player == null) continue;
 
-            SoundEvent soundEvent = SoundEvent.of(Identifier.of(setup.sound));
-            SoundCategory soundCategory = SoundCategory.MUSIC;
-            player.playSoundToPlayer(soundEvent, soundCategory, setup.volume, setup.pitch);
+            ServerHelper.getDefaultServer().executeSync(() -> {
+                SoundEvent soundEvent = SoundEvent.of(Identifier.of(setup.sound));
+                SoundCategory soundCategory = SoundCategory.MUSIC;
+                player.playSoundToPlayer(soundEvent, soundCategory, setup.volume, setup.pitch);
+            });
         }
     }
 

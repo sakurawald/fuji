@@ -11,7 +11,7 @@ import net.minecraft.util.collection.DefaultedList;
 import org.jetbrains.annotations.NotNull;
 
 
-public class InventoryDisplayGui extends DisplayGuiBuilder {
+public class InventoryDisplayGui extends BaseDisplayGui {
 
     private final Text title;
     private final DefaultedList<ItemStack> armor = DefaultedList.of();

@@ -68,7 +68,7 @@ public class CommandPermissionInitializer extends ModuleInitializer {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
-    public void onInitialize() {
+    protected void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             // ensure the getRequirement() is triggered.
             CommandHelper.getCommandNodes().forEach(com.mojang.brigadier.tree.CommandNode::getRequirement);

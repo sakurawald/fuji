@@ -28,7 +28,7 @@ public class TypeFormatter {
         MutableText ret = Text.empty();
         type2amount.forEach((k, v) -> {
             Text text = LocaleHelper.getTextByKey(source, "types.entry", v);
-            text = LocaleHelper.replaceText(text, "[type]", Text.translatable(k));
+            text = LocaleHelper.replaceBracketedText(text, "[type]", Text.translatable(k));
             ret.append(text);
         });
         return ret;

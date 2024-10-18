@@ -67,7 +67,7 @@ public class CommandBundleInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void onInitialize() {
+    protected void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             // register in server started.
             registerAllBundleCommands();
@@ -78,7 +78,7 @@ public class CommandBundleInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void onReload() {
+    protected void onReload() {
         unregisterAllBundleCommands();
         registerAllBundleCommands();
     }

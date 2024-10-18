@@ -59,7 +59,7 @@ public class ProductionWork extends Work {
             double rate = entry.getValue() * ((double) (3600 * 1000) / ((Math.min(this.sample.sampleEndTimeMS, currentTimeMS)) - this.sample.sampleStartTimeMS));
 
             Text text = LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_counter.entry", entry.getValue(), rate);
-            text = LocaleHelper.replaceText(text, "[item]", Text.translatable(key));
+            text = LocaleHelper.replaceBracketedText(text, "[item]", Text.translatable(key));
             ret.add(text);
         });
 

@@ -173,13 +173,13 @@ public class NametagInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void onInitialize() {
+    protected void onInitialize() {
         player2nametag = new ConcurrentHashMap<>();
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new UpdateNametagJob().schedule());
     }
 
     @Override
-    public void onReload() {
+    protected void onReload() {
         // discard all existed nametags, since the `text format` may be changed after reload.
         player2nametag.forEach((key, value) -> value.stopRiding());
     }

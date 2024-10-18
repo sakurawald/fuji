@@ -31,17 +31,17 @@ public class ModuleInitializer {
         this.onReload();
     }
 
-    public void registerPlaceholder() {
+    protected void registerPlaceholder() {
         // no-op
     }
 
-    public void registerGsonTypeAdapter() {
+    protected void registerGsonTypeAdapter() {
         // no-op
     }
 
     @SuppressWarnings("rawtypes")
     @SneakyThrows(IllegalAccessException.class)
-    public void loadConfigurationFiles() {
+    private void loadConfigurationFiles() {
         Field[] declaredFields = this.getClass().getDeclaredFields();
         for (Field declaredField : declaredFields) {
             declaredField.setAccessible(true);
@@ -53,11 +53,11 @@ public class ModuleInitializer {
         }
     }
 
-    public void onInitialize() {
+    protected void onInitialize() {
         // no-op
     }
 
-    public void onReload() {
+    protected void onReload() {
         // no-op
     }
 

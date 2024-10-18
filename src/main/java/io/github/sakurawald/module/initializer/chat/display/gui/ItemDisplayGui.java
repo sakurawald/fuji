@@ -8,7 +8,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 
-public class ItemDisplayGui extends DisplayGuiBuilder {
+public class ItemDisplayGui extends BaseDisplayGui {
 
     private final Text title;
     private final ItemStack itemStack;

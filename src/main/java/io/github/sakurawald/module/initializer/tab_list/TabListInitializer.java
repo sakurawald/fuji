@@ -33,12 +33,12 @@ public class TabListInitializer extends ModuleInitializer {
     }
 
     @Override
-    public void onInitialize() {
+    protected void onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new RenderHeaderAndFooterJob().schedule());
     }
 
     @Override
-    public void onReload() {
+    protected void onReload() {
         updateDisplayName();
     }
 
