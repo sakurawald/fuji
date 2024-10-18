@@ -30,6 +30,7 @@ import net.fabricmc.loader.api.metadata.ModMetadata;
 import net.fabricmc.loader.api.metadata.Person;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryLoader;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -139,12 +140,18 @@ public class FujiInitializer extends ModuleInitializer {
 
     @CommandNode("inspect registry")
     private static int listRegistry(@CommandSource ServerPlayerEntity player) {
-        List<Identifier> list = Registries.REGISTRIES.getKeys().stream()
+        List<Identifier> staticRegistries = Registries.REGISTRIES.getKeys().stream()
             .map(RegistryKey::getValue)
-            .sorted()
             .toList();
 
-        new RegistryGui(null, player, Registries.REGISTRIES, list, 0).open();
+        List<Identifier> dynamicRegistries = RegistryLoader.DYNAMIC_REGISTRIES.stream().map(it -> it.comp_985().getValue()).toList();
+
+        List<Identifier> identifiers = new ArrayList<>();
+        identifiers.addAll(staticRegistries);
+        identifiers.addAll(dynamicRegistries);
+        identifiers.sort(Comparator.comparing(Identifier::toString));
+
+        new RegistryGui(null, player, true, identifiers, 0).open();
         return CommandHelper.Return.SUCCESS;
     }
 }
