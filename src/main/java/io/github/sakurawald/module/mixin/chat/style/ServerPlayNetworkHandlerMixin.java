@@ -1,6 +1,5 @@
 package io.github.sakurawald.module.mixin.chat.style;
 
-import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.module.initializer.chat.style.ChatStyleInitializer;
 import net.minecraft.network.message.MessageType;
@@ -31,10 +30,6 @@ public abstract class ServerPlayNetworkHandlerMixin {
 
         /* make content text */
         String contentString = signedMessage.getContent().getString();
-        if (ChatStyleInitializer.config.model().spy.output_unparsed_message_into_console) {
-            LogUtil.info("[chat spy] <{}> {}", player.getGameProfile().getName(), contentString);
-        }
-
         Text contentText = ChatStyleInitializer.parseContentText(player, contentString);
         args.set(0, signedMessage.withUnsignedContent(contentText));
 

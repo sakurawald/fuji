@@ -48,7 +48,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
 
     /* some chat-related mods will encode the content into the sender, or vice versa.
     * For this reason, we have to parse the display text twice.
-    *  */
+    */
     @ModifyVariable(method = "sendChatMessage", at = @At(value = "HEAD"), argsOnly = true)
     public MessageType.Parameters modifyChatMessageSentByPlayers(MessageType.Parameters original) {
         Text newText = replaceDisplayText(original.comp_920());

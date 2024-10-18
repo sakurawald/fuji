@@ -20,6 +20,7 @@
     "chat.history.ServerPlayNetworkHandlerMixin",
     "chat.mention.ServerPlayNetworkHandlerMixin",
     "chat.rewrite.ServerPlayNetworkHandlerMixin",
+    "chat.spy.ServerPlayNetworkHandlerMixin",
     "chat.style.ServerPlayNetworkHandlerMixin",
     "chat.style.message_type.MessageTypeMixin",
     "chat.style.message_type.RegistryLoaderMixin",

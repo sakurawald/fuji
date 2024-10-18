@@ -142,6 +142,7 @@ public class ConfigModel {
             public History history = new History();
             public Rewrite rewrite = new Rewrite();
             public Mention mention = new Mention();
+            public Spy spy = new Spy();
 
             public static class Style {
                 public boolean enable = true;
@@ -161,6 +162,10 @@ public class ConfigModel {
 
             public static class Mention {
                 public boolean enable = true;
+            }
+
+            public static class Spy {
+                public boolean enable = false;
             }
 
         }

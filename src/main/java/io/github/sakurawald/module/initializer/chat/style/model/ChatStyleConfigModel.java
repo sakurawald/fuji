@@ -10,9 +10,4 @@ public class ChatStyleConfigModel {
         public String content = "%s";
     }
 
-    public Spy spy = new Spy();
-
-    public static class Spy {
-        public boolean output_unparsed_message_into_console = false;
-    }
 }

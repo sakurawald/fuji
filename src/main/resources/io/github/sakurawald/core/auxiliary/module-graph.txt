@@ -7,6 +7,7 @@ chat.display
 chat.history
 chat.mention
 chat.rewrite
+chat.spy
 chat.style
 cleaner
 color
