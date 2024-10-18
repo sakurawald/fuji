@@ -185,7 +185,7 @@ public abstract class BaseConfigurationHandler<T> {
      * This method exists for performance purpose.
      */
     public void scheduleWriteStorageJob(@NotNull String cron) {
-        String jobName = this.path.getFileName().toString();
+        String jobName = this.path.toString();
         new SaveConfigurationHandlerJob(jobName, new JobDataMap() {
             {
                 this.put(BaseConfigurationHandler.class.getName(), BaseConfigurationHandler.this);
