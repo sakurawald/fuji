@@ -155,13 +155,6 @@ public class ModuleManager extends BaseManager {
             return module2enable.get(modulePath);
         }
 
-        // soft fail if required mod is not installed.
-        if (!isRequiredModsInstalled(modulePath)) {
-            LogUtil.warn("refuse to enable module {} (reason: the required dependency mod for this module isn't installed, please read the official wiki!)", modulePath);
-            module2enable.put(modulePath, false);
-            return false;
-        }
-
         // check enable-supplier
         boolean enable = true;
         JsonObject parent = Configs.configHandler.convertModelToJsonTree().getAsJsonObject().get("modules").getAsJsonObject();
@@ -177,6 +170,12 @@ public class ModuleManager extends BaseManager {
                 enable = false;
                 break;
             }
+        }
+
+        // soft fail if required mod is not installed.
+        if (!isRequiredModsInstalled(modulePath)) {
+            LogUtil.debug("refuse to enable module {} (reason: the required dependency mod for this module isn't installed, please read the official wiki!)", modulePath);
+            enable = false;
         }
 
         // cache
