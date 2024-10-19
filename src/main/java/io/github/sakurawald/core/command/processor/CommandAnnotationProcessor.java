@@ -40,6 +40,7 @@ public class CommandAnnotationProcessor {
      Be careful don't write the hashCode() for command descriptor, just use the memory address, use the command path to identify a command descriptor is possible to broken in some cases of register() and unregister().
      */
     public static final Set<CommandDescriptor> descriptors = ConcurrentHashMap.newKeySet();
+
     @Getter
     private static CommandDispatcher<ServerCommandSource> dispatcher;
     @Getter

@@ -76,7 +76,7 @@ public class GuiHelper {
             .setName(TextHelper.getTextByKey(player, "help"));
     }
 
-    public static GuiElementBuilder makePlayerPlaceholder() {
+    public static GuiElementBuilder makeUnknownPlayerSkull() {
         return makeSkullButton(Icon.PLAYER_PLACEHOLDER_ICON);
     }
 
@@ -100,12 +100,6 @@ public class GuiHelper {
 
     public boolean isInvalidSlotInPlayerInventory(int index) {
         return index == 41 || index == 42 || index == 43 || index == 44;
-    }
-
-    @SuppressWarnings("unused")
-    public static class Item {
-        public static final ItemStack PLACEHOLDER = Items.GRAY_STAINED_GLASS_PANE.getDefaultStack();
-        public static final ItemStack EMPTY = Items.AIR.getDefaultStack();
     }
 
     private static class Icon {

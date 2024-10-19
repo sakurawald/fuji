@@ -8,6 +8,7 @@ public class AntiBuildConfigModel {
     public Anti anti = new Anti();
 
     public static class Anti {
+
         public Break break_block = new Break();
         public Place place_block = new Place();
         public InteractItem interact_item = new InteractItem();

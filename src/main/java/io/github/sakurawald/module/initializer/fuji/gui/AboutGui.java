@@ -119,7 +119,7 @@ public class AboutGui extends PagedGui<Person> {
 
     @Override
     public GuiElementInterface toGuiElement(Person entity) {
-        return GuiHelper.makePlayerPlaceholder()
+        return GuiHelper.makeUnknownPlayerSkull()
             .setName(TextHelper.getTextByKey(getPlayer(), "contact.name", entity.getName()))
             .setLore(makeTextListFromContact(entity.getContact()))
             .setCallback(makeCallback(entity))
