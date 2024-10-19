@@ -72,6 +72,7 @@
     "pvp.PvpToggleMixin",
     "skin.PlayerListMixin",
     "skin.ServerLoginNetworkHandlerMixin",
+    "system_message.ServerPlayerEntityMixin",
     "system_message.TextMixin",
     "tab_list.ShowTabListBodyStyleMixin",
     "tab_list.faker.FakePlayerPingMixin",

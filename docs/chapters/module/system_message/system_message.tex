@@ -78,3 +78,25 @@ As a loss of this approach, the client will always receive the customized text d
         },
     \end{json}
 \end{example}
+
+\begin{example}{Custom the player disconnect message}
+    \begin{json}
+        "system_message": {
+            "enable": true,
+            "key2value": {
+                "multiplayer.player.left": "<dark_gray>%s leeeeeeeeft the game"
+            }
+        },
+    \end{json}
+\end{example}
+
+\begin{example}{Cancel the player disconnect message}
+    \begin{json}
+        "system_message": {
+            "enable": true,
+            "key2value": {
+                "multiplayer.player.left": null
+            }
+        },
+    \end{json}
+\end{example}

@@ -41,8 +41,12 @@ public interface TextMixin {
                 return null;
             }
             String value = key2value.get(key);
-            String quickMessageString = MutableText.of(new TranslatableTextContent("force_fallback", value, args)).getString();
-            return TextHelper.getTextByValue(null, quickMessageString).copy();
+            if (value == null) {
+                return SystemMessageInitializer.CANCEL_TEXT_SENDING_MARKER;
+            }
+
+            String textString = MutableText.of(new TranslatableTextContent("force_fallback", value, args)).getString();
+            return TextHelper.getTextByValue(null, textString).copy();
         }
         return null;
     }
