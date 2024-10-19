@@ -1,6 +1,6 @@
 name: 🐞 Bug Report
 description: Create a report to help us improve
-title: '[bug] <title>'
+title: '[bug] <insert your title here>'
 labels: [ bug ]
 body:
   - type: checkboxes
