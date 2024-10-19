@@ -26,6 +26,10 @@ public class RegistryHelper {
         return Registries.ITEM.getId(item).toString();
     }
 
+    public static @NotNull String ofString(@NotNull Item item) {
+        return Registries.ITEM.getId(item).toString();
+    }
+
     public static @NotNull String ofString(@NotNull BlockState blockState) {
         return ofString(blockState.getBlock());
     }
