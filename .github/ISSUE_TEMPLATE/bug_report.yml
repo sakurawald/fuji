@@ -5,10 +5,10 @@ labels: [ bug ]
 body:
   - type: checkboxes
     attributes:
-      label: Are you using the latest possible version for your server?
-      description: The bug may be fixed in the latest possible version.
+      label: Are you using the latest available version for your server?
+      description: The bug may be fixed in the latest available version.
       options:
-        - label: I am using the latest possible version of fuji for my minecraft server.
+        - label: I am using the latest available version of fuji for my minecraft server.
           required: true
   - type: checkboxes
     attributes:
