@@ -9,13 +9,13 @@ public class AntiBuildConfigModel {
 
     public static class Anti {
 
-        public Break break_block = new Break();
-        public Place place_block = new Place();
+        public BreakBlock break_block = new BreakBlock();
+        public PlaceBlock place_block = new PlaceBlock();
         public InteractItem interact_item = new InteractItem();
         public InteractBlock interact_block = new InteractBlock();
         public InteractEntity interact_entity = new InteractEntity();
 
-        public static class Break {
+        public static class BreakBlock {
             public Set<String> id = new HashSet<>() {
                 {
                     this.add("minecraft:gold_block");
@@ -23,7 +23,7 @@ public class AntiBuildConfigModel {
             };
         }
 
-        public static class Place {
+        public static class PlaceBlock {
             public Set<String> id = new HashSet<>() {
                 {
                     this.add("minecraft:tnt");

@@ -1,7 +1,5 @@
 package io.github.sakurawald.module.mixin.anti_build;
 
-import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.module.initializer.anti_build.AntiBuildInitializer;
 import net.minecraft.entity.Entity;
@@ -23,16 +21,7 @@ public abstract class EntityMixin {
         Entity entity = (Entity) (Object) this;
         String id = RegistryHelper.ofString(entity);
 
-        if (AntiBuildInitializer.config.model().anti.interact_entity.id.contains(id)
-            && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_entity", id))
-        ) {
-
-            if (hand == Hand.MAIN_HAND) {
-                player.sendMessage(TextHelper.getTextByKey(player, "anti_build.disallow"));
-            }
-
-            cir.setReturnValue(ActionResult.FAIL);
-        }
+        AntiBuildInitializer.checkAntiBuild(player, "interact_entity", AntiBuildInitializer.config.model().anti.interact_entity.id, id, cir, ActionResult.FAIL,() -> hand == Hand.MAIN_HAND);
     }
 
 }
