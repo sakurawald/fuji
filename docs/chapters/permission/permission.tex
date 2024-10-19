@@ -45,6 +45,16 @@ However, if you want to use \ttt{string permission} for a \ttt{command}, you can
     To undo the operation in \ttt{the first example}, just issue \ic{/lp group default permission unset fuji.permission.seed}
 \end{example}
 
+\LevelOne{Advanced Usage}
+\LevelTwo{The string permission is calculated with a context}
+The luckperms mod provides the \ttt{context} to calculate a string permission.
+A context is a predicate which accepts a player, and output a boolean value according to its conditions.
+Luckperms pre-define some useful context like:
+\begin{description}
+    \item[world context]: the player should in a specified world, so that this string permission is valid.
+    \item[temporal context]: current time should not exceed the expiration time, so that this string permission is valid.
+\end{description}
+
 
 \LevelOne{Reference}
 \begin{enumerate}
