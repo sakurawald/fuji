@@ -10,7 +10,6 @@ import io.github.sakurawald.core.command.exception.AbortCommandExecutionExceptio
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
-import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_toolbox.warp.command.argument.wrapper.WarpName;
@@ -24,6 +23,7 @@ import java.util.Optional;
 public class WarpInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<WarpDataModel> data = new ObjectConfigurationHandler<>("warp.json", WarpDataModel.class)
+        .autoSaveEveryMinute()
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("warp.json"), WarpInitializer.class));
 
     private static void ensureWarpExists(ServerPlayerEntity player, WarpName warpName) {
@@ -78,8 +78,4 @@ public class WarpInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @Override
-    protected void onInitialize() {
-        data.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
-    }
 }

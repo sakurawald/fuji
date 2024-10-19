@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.initializer.command_cooldown;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PlaceholderHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -13,7 +13,6 @@ import io.github.sakurawald.core.command.executor.CommandExecutor;
 import io.github.sakurawald.core.command.structure.ExtendedCommandSource;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
-import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.core.structure.CommandCooldown;
 import io.github.sakurawald.core.structure.Cooldown;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -42,7 +41,7 @@ public class CommandCooldownInitializer extends ModuleInitializer {
                 // clear the timestamp for non-persistent cooldown before writing storage.
                 .forEach(it -> it.getTimestamp().clear());
         }
-    };
+    }.autoSaveEveryMinute();
 
     public static final MutableText NOT_COOLDOWN_FOUND = Text.literal("NOT_COOLDOWN_FOUND");
 
@@ -154,10 +153,6 @@ public class CommandCooldownInitializer extends ModuleInitializer {
         }
     }
 
-    @Override
-    protected void onInitialize() {
-        config.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
-    }
 
     @Override
     protected void registerPlaceholder() {

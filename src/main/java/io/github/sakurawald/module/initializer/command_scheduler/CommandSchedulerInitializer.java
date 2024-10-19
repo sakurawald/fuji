@@ -10,7 +10,6 @@ import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
 import io.github.sakurawald.core.manager.Managers;
-import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.command_scheduler.command.argument.wrapper.JobName;
 import io.github.sakurawald.module.initializer.command_scheduler.config.model.CommandSchedulerConfigModel;
@@ -28,11 +27,11 @@ import java.util.List;
 public class CommandSchedulerInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<CommandSchedulerConfigModel> scheduler = new ObjectConfigurationHandler<>("scheduler.json", CommandSchedulerConfigModel.class)
+        .autoSaveEveryMinute()
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("scheduler.json"), CommandSchedulerInitializer.class));
 
     @Override
     protected void onInitialize() {
-        scheduler.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
         updateJobs();
     }
 

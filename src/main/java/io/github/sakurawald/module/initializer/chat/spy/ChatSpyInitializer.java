@@ -7,7 +7,6 @@ import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
-import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.chat.spy.config.model.ChatSpyConfigModel;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -16,12 +15,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 @CommandRequirement(level = 4)
 public class ChatSpyInitializer extends ModuleInitializer {
 
-    public static final BaseConfigurationHandler<ChatSpyConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatSpyConfigModel.class);
-
-    @Override
-    protected void onInitialize() {
-        config.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
-    }
+    public static final BaseConfigurationHandler<ChatSpyConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatSpyConfigModel.class).autoSaveEveryMinute();
 
     @CommandNode("toggle")
     private static int toggle(@CommandSource ServerPlayerEntity player) {
