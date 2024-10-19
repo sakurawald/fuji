@@ -6,7 +6,7 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.RandomUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PlaceholderHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
@@ -58,7 +58,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
         , GreedyString input) {
         ServerPlayerEntity target = player.orElse(null);
 
-        Text text = LocaleHelper.getTextByValue(target, input.getValue());
+        Text text = TextHelper.getTextByValue(target, input.getValue());
         source.sendMessage(text);
         return CommandHelper.Return.SUCCESS;
     }
@@ -106,14 +106,14 @@ public class PlaceholderInitializer extends ModuleInitializer {
     public static void registerPrefixPlaceholder() {
         PlaceholderHelper.withPlayer("player_prefix", (player, arg) -> {
             String prefix = PermissionHelper.getPrefix(player.getUuid());
-            return LocaleHelper.getTextByValue(player, prefix);
+            return TextHelper.getTextByValue(player, prefix);
         });
     }
 
     public static void registerSuffixPlaceholder() {
         PlaceholderHelper.withPlayer("player_suffix", (player, arg) -> {
             String prefix = PermissionHelper.getSuffix(player.getUuid());
-            return LocaleHelper.getTextByValue(player, prefix);
+            return TextHelper.getTextByValue(player, prefix);
         });
     }
 
@@ -123,27 +123,27 @@ public class PlaceholderInitializer extends ModuleInitializer {
             int y = player.getBlockY();
             int z = player.getBlockZ();
             String dim_name = player.getWorld().getRegistryKey().getValue().toString();
-            String dim_display_name = LocaleHelper.getValue(player, dim_name);
-            String hoverString = LocaleHelper.getValue(player, "chat.current_pos");
+            String dim_display_name = TextHelper.getValue(player, dim_name);
+            String hoverString = TextHelper.getValue(player, "chat.current_pos");
             switch (dim_name) {
                 case "minecraft:overworld":
-                    hoverString += "\n" + LocaleHelper.getValue(player, "minecraft:the_nether")
+                    hoverString += "\n" + TextHelper.getValue(player, "minecraft:the_nether")
                         + ": %d %s %d".formatted(x / 8, y, z / 8);
                     break;
                 case "minecraft:the_nether":
-                    hoverString += "\n" + LocaleHelper.getValue(player, "minecraft:overworld")
+                    hoverString += "\n" + TextHelper.getValue(player, "minecraft:overworld")
                         + ": %d %s %d".formatted(x * 8, y, z * 8);
                     break;
             }
 
-            String clickCommand = LocaleHelper.getValue(player, "chat.xaero_waypoint_add.command");
+            String clickCommand = TextHelper.getValue(player, "chat.xaero_waypoint_add.command");
 
-            return LocaleHelper.getTextByKey(player, "placeholder.pos", x, y, z, dim_display_name)
+            return TextHelper.getTextByKey(player, "placeholder.pos", x, y, z, dim_display_name)
                 .copy()
                 .fillStyle(Style.EMPTY
                     .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                         Text.literal(hoverString + "\n")
-                            .append(LocaleHelper.getTextByKey(player, "chat.xaero_waypoint_add"))
+                            .append(TextHelper.getTextByKey(player, "chat.xaero_waypoint_add"))
                     ))
                     .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand))
                 );

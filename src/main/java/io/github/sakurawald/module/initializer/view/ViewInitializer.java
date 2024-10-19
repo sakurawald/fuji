@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.view;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -18,7 +18,7 @@ public class ViewInitializer extends ModuleInitializer {
 
     private static void checkSelfView(ServerPlayerEntity source, OfflinePlayerName target) {
         if (source.getGameProfile().getName().equals(target.getValue())) {
-            LocaleHelper.sendMessageByKey(source, "view.failed.self_view");
+            TextHelper.sendMessageByKey(source, "view.failed.self_view");
             throw new AbortCommandExecutionException();
         }
     }

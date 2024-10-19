@@ -34,7 +34,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 @UtilityClass
-public class LocaleHelper {
+public class TextHelper {
 
     public static final Text TEXT_NEWLINE = Text.of("\n");
     public static final Text TEXT_SPACE = Text.of(" ");
@@ -205,7 +205,7 @@ public class LocaleHelper {
     }
 
     public static @NotNull String resolvePlaceholder(@Nullable Object audience, String value) {
-        return LocaleHelper.getText(PLACEHOLDER_PARSER, audience, false, value).getString();
+        return TextHelper.getText(PLACEHOLDER_PARSER, audience, false, value).getString();
     }
 
     /* This is the core method to map `String` into `Text`.
@@ -315,7 +315,7 @@ public class LocaleHelper {
         LogUtil.info(text.getString());
 
         for (ServerPlayerEntity player : ServerHelper.getDefaultServer().getPlayerManager().getPlayerList()) {
-            LocaleHelper.sendMessageByKey(player, key, args);
+            TextHelper.sendMessageByKey(player, key, args);
         }
     }
 

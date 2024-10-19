@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.kit;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -101,7 +101,7 @@ public class KitInitializer extends ModuleInitializer {
     private static int $give(@CommandSource ServerCommandSource source, ServerPlayerEntity player, KitName kit) {
         /* verify */
         if (Files.notExists(computePath(kit.getValue()))) {
-            LocaleHelper.sendMessageByKey(source, "kit.kit.empty");
+            TextHelper.sendMessageByKey(source, "kit.kit.empty");
             return CommandHelper.Return.FAIL;
         }
 

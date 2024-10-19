@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.compass;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
@@ -24,7 +24,7 @@ public class CompassInitializer extends ModuleInitializer {
     private static int withCompassInHand(ServerPlayerEntity source, Function<ItemStack, Integer> function) {
         ItemStack itemStack = source.getMainHandStack();
         if (!itemStack.getItem().equals(Items.COMPASS)) {
-            LocaleHelper.sendMessageByKey(source, "compass.no_compass");
+            TextHelper.sendMessageByKey(source, "compass.no_compass");
             return CommandHelper.Return.FAIL;
         }
 

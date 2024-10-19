@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.command_toolbox.sit;
 
 import io.github.sakurawald.core.annotation.Cite;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
@@ -53,7 +53,7 @@ public class SitInitializer extends ModuleInitializer {
         BlockPos steppingBlockPos = player.getSteppingPos();
         BlockState steppingBlockState = player.getWorld().getBlockState(steppingBlockPos);
         if (!canSit(player) || steppingBlockState.isAir() || steppingBlockState.isLiquid()) {
-            LocaleHelper.sendActionBarByKey(player, "sit.fail");
+            TextHelper.sendActionBarByKey(player, "sit.fail");
             return CommandHelper.Return.FAIL;
         }
 

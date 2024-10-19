@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.top_chunks.structure;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.structure.TypeFormatter;
@@ -97,9 +97,9 @@ public class ChunkScore implements Comparable<ChunkScore> {
     public @NotNull Text asText(@NotNull ServerCommandSource source) {
         String chunkLocation;
         if (TopChunksInitializer.config.model().hide_location) {
-            chunkLocation = LocaleHelper.getValue(source, "top_chunks.prop.hidden");
+            chunkLocation = TextHelper.getValue(source, "top_chunks.prop.hidden");
             if (source.hasPermissionLevel(4)) {
-                chunkLocation = LocaleHelper.getValue(source, "top_chunks.prop.hidden.bypass", this.getChunkPos().toString());
+                chunkLocation = TextHelper.getValue(source, "top_chunks.prop.hidden.bypass", this.getChunkPos().toString());
             }
         } else {
             chunkLocation = this.getChunkPos().toString();
@@ -107,14 +107,14 @@ public class ChunkScore implements Comparable<ChunkScore> {
 
         MutableText hoverText = Text.empty()
             .formatted(Formatting.GOLD)
-            .append(LocaleHelper.getTextByKey(source, "top_chunks.prop.dimension", this.dimension.getRegistryKey().getValue()))
-            .append(LocaleHelper.TEXT_NEWLINE)
-            .append(LocaleHelper.getTextByKey(source, "top_chunks.prop.chunk", chunkLocation))
-            .append(LocaleHelper.TEXT_NEWLINE)
-            .append(LocaleHelper.getTextByKey(source, "top_chunks.prop.score", this.score))
-            .append(LocaleHelper.TEXT_NEWLINE)
-            .append(LocaleHelper.getTextByKey(source, "top_chunks.prop.players", this.players))
-            .append(LocaleHelper.TEXT_NEWLINE)
+            .append(TextHelper.getTextByKey(source, "top_chunks.prop.dimension", this.dimension.getRegistryKey().getValue()))
+            .append(TextHelper.TEXT_NEWLINE)
+            .append(TextHelper.getTextByKey(source, "top_chunks.prop.chunk", chunkLocation))
+            .append(TextHelper.TEXT_NEWLINE)
+            .append(TextHelper.getTextByKey(source, "top_chunks.prop.score", this.score))
+            .append(TextHelper.TEXT_NEWLINE)
+            .append(TextHelper.getTextByKey(source, "top_chunks.prop.players", this.players))
+            .append(TextHelper.TEXT_NEWLINE)
             .append(TypeFormatter.formatTypes(source, this.type2amount));
 
         return Text.empty()

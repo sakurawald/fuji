@@ -4,7 +4,7 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.gui.PagedGui;
 import io.github.sakurawald.core.structure.CommandNode;
 import net.minecraft.item.Items;
@@ -18,10 +18,10 @@ import java.util.List;
 public class ServerCommandsGui extends PagedGui<CommandNode> {
 
     public ServerCommandsGui(ServerPlayerEntity player, @NotNull List<CommandNode> entities, int pageIndex) {
-        super(null, player, LocaleHelper.getTextByKey(player, "fuji.inspect.server_commands.gui.title"), entities, pageIndex);
+        super(null, player, TextHelper.getTextByKey(player, "fuji.inspect.server_commands.gui.title"), entities, pageIndex);
 
         getFooter().setSlot(4, GuiHelper.makeHelpButton(player)
-            .setLore(LocaleHelper.getTextListByKey(player, "fuji.inspect.server_commands.gui.help.lore")));
+            .setLore(TextHelper.getTextListByKey(player, "fuji.inspect.server_commands.gui.help.lore")));
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ServerCommandsGui extends PagedGui<CommandNode> {
             .setCallback((index, clickType, actionType) -> {
                 String commandPath = entity.getPath();
                 if (clickType.isLeft) {
-                    LocaleHelper.sendMessageByKey(getPlayer(), "fuji.inspect.server_commands.gui.copy_command_path", commandPath, commandPath);
+                    TextHelper.sendMessageByKey(getPlayer(), "fuji.inspect.server_commands.gui.copy_command_path", commandPath, commandPath);
                 }
                 close();
             })

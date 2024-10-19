@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.command_meta.shell;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -31,17 +31,17 @@ public class ShellInitializer extends ModuleInitializer {
         var config = ShellInitializer.config.model();
 
         if (!config.enable_warning.equals("CONFIRM")) {
-            LocaleHelper.sendMessageByKey(ctx.getSource(), "shell.failed.rtfm");
+            TextHelper.sendMessageByKey(ctx.getSource(), "shell.failed.rtfm");
             throw new AbortCommandExecutionException();
         }
 
         if (config.security.only_allow_console && ctx.getSource().getPlayer() != null) {
-            LocaleHelper.sendMessageByKey(ctx.getSource(), "command.console_only");
+            TextHelper.sendMessageByKey(ctx.getSource(), "command.console_only");
             throw new AbortCommandExecutionException();
         }
 
         if (ctx.getSource().getName() != null && !config.security.allowed_player_names.contains(ctx.getSource().getName())) {
-            LocaleHelper.sendMessageByKey(ctx.getSource(), "shell.failed.not_in_allowed_list");
+            TextHelper.sendMessageByKey(ctx.getSource(), "shell.failed.not_in_allowed_list");
             throw new AbortCommandExecutionException();
         }
 

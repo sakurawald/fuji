@@ -5,7 +5,7 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.AnvilInputGui;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.service.gameprofile_fetcher.MojangProfileFetcher;
 import io.github.sakurawald.module.initializer.head.HeadInitializer;
 import io.github.sakurawald.module.initializer.head.structure.EconomyType;
@@ -24,7 +24,7 @@ public class PlayerHeadGui extends AnvilInputGui {
     public PlayerHeadGui(@NotNull HeadGui parentGui) {
         super(parentGui.player, false);
         this.parentGui = parentGui;
-        this.setTitle(LocaleHelper.getTextByKey(player, "head.category.player"));
+        this.setTitle(TextHelper.getTextByKey(player, "head.category.player"));
         this.setSlot(1, GuiHelper.makeBarrier());
         this.resetResultSlot();
     }
@@ -64,7 +64,7 @@ public class PlayerHeadGui extends AnvilInputGui {
                 /* make head item */
                 if (HeadInitializer.head.model().economy_type != EconomyType.FREE) {
                     builder.addLoreLine(Text.empty());
-                    builder.addLoreLine(LocaleHelper.getTextByKey(player, "head.price").copy().append(EconomyType.getCostText()));
+                    builder.addLoreLine(TextHelper.getTextByKey(player, "head.price").copy().append(EconomyType.getCostText()));
                 }
 
                 ItemStack headStack = builder.asStack();

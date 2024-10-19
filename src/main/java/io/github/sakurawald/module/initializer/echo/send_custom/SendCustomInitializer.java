@@ -4,7 +4,7 @@ import eu.pb4.sgui.api.elements.BookElementBuilder;
 import eu.pb4.sgui.api.gui.BookGui;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -37,7 +37,7 @@ public class SendCustomInitializer extends ModuleInitializer {
         try {
             return Files.readString(resolve);
         } catch (IOException e) {
-            LocaleHelper.sendMessageByKey(player, "echo.send_custom.custom_text.not_found", value);
+            TextHelper.sendMessageByKey(player, "echo.send_custom.custom_text.not_found", value);
             throw new AbortCommandExecutionException();
         }
     }
@@ -67,7 +67,7 @@ public class SendCustomInitializer extends ModuleInitializer {
         /* make book element */
         BookElementBuilder bookElementBuilder = new BookElementBuilder();
         author.ifPresent(bookElementBuilder::setAuthor);
-        title.ifPresent(it -> bookElementBuilder.setName(LocaleHelper.getTextByValue(player, it)));
+        title.ifPresent(it -> bookElementBuilder.setName(TextHelper.getTextByValue(player, it)));
         pagedText.getPages().forEach(bookElementBuilder::addPage);
 
         /* make the gui */

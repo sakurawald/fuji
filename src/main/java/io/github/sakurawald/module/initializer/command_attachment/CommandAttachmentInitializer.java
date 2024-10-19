@@ -5,7 +5,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.UuidHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -217,7 +217,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
 
     private static void checkItemStackInHand(ServerPlayerEntity player, ItemStack mainHandStack) {
         if (mainHandStack.isEmpty()) {
-            LocaleHelper.sendMessageByKey(player, "item.empty.not_allow");
+            TextHelper.sendMessageByKey(player, "item.empty.not_allow");
             throw new AbortCommandExecutionException();
         }
     }
@@ -279,7 +279,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     @SneakyThrows(IOException.class)
     private static void doQueryAttachment(ServerPlayerEntity player, String uuid) {
         if (!Managers.getAttachmentManager().existsAttachmentFile(COMMAND_ATTACHMENT_SUBJECT_NAME, uuid)) {
-            LocaleHelper.sendMessageByKey(player, "command_attachment.query.no_attachment");
+            TextHelper.sendMessageByKey(player, "command_attachment.query.no_attachment");
             throw new AbortCommandExecutionException();
         }
 

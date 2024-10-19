@@ -4,7 +4,7 @@ import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import eu.pb4.sgui.api.gui.layered.LayeredGui;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.gui.layer.SingleLineLayer;
 import lombok.Getter;
 import net.minecraft.screen.ScreenHandlerType;
@@ -86,7 +86,7 @@ public abstract class PagedGui<T> extends LayeredGui {
     }
 
     protected @NotNull PagedGui<T> search(String keywords) {
-        return make(this.parent, getPlayer(), LocaleHelper.getTextByKey(getPlayer(), "gui.search.title", keywords), filter(keywords), 0);
+        return make(this.parent, getPlayer(), TextHelper.getTextByKey(getPlayer(), "gui.search.title", keywords), filter(keywords), 0);
     }
 
     @SuppressWarnings("unused")
@@ -109,7 +109,7 @@ public abstract class PagedGui<T> extends LayeredGui {
     public abstract List<T> filter(String keyword);
 
     private void drawTitle() {
-        MutableText formatted = this.prefixTitle.copy().append(LocaleHelper.getTextByKey(getPlayer(), "gui.page.title", this.getCurrentPageNumber(), this.getMaxPageNumber()));
+        MutableText formatted = this.prefixTitle.copy().append(TextHelper.getTextByKey(getPlayer(), "gui.page.title", this.getCurrentPageNumber(), this.getMaxPageNumber()));
         this.setTitle(formatted);
     }
 

@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.glow;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -14,7 +14,7 @@ public class GlowInitializer extends ModuleInitializer {
     private static int $glow(@CommandSource ServerPlayerEntity player) {
         boolean flag = !player.isGlowing();
         player.setGlowing(flag);
-        LocaleHelper.sendMessageByKey(player, flag ? "glow.on" : "glow.off");
+        TextHelper.sendMessageByKey(player, flag ? "glow.on" : "glow.off");
         return CommandHelper.Return.SUCCESS;
     }
 

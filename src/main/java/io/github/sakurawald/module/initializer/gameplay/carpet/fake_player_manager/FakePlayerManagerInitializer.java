@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_mana
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -66,7 +66,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
 
                             /* kill all fake players due to expiration */
                             fakePlayer.kill();
-                            LocaleHelper.sendBroadcastByKey("fake_player_manager.kick_for_expiration", fakePlayer.getGameProfile().getName(), ownerPlayerName);
+                            TextHelper.sendBroadcastByKey("fake_player_manager.kick_for_expiration", fakePlayer.getGameProfile().getName(), ownerPlayerName);
                             return false;
                         }
 
@@ -76,7 +76,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
                             return true;
                         } else {
                             fakePlayer.kill();
-                            LocaleHelper.sendBroadcastByKey("fake_player_manager.kick_for_amount", fakePlayer.getGameProfile().getName(), ownerPlayerName);
+                            TextHelper.sendBroadcastByKey("fake_player_manager.kick_for_amount", fakePlayer.getGameProfile().getName(), ownerPlayerName);
                             return false;
                         }
 
@@ -104,7 +104,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         /* make text */
         ServerCommandSource source = context.getSource();
         source.sendMessage(
-            LocaleHelper.getTextByKey(source, "fake_player_manager.who.header")
+            TextHelper.getTextByKey(source, "fake_player_manager.who.header")
                 .copy()
                 .append(Text.literal(body.toString())));
         return CommandHelper.Return.SUCCESS;
@@ -115,7 +115,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         long newExpiration = System.currentTimeMillis() + renewDuration;
         player2expiration.put(player.getGameProfile().getName(), newExpiration);
 
-        LocaleHelper.sendMessageByKey(player, "fake_player_manager.renew.success", DateUtil.toStandardDateFormat(newExpiration));
+        TextHelper.sendMessageByKey(player, "fake_player_manager.renew.success", DateUtil.toStandardDateFormat(newExpiration));
     }
 
     public static void invalidFakePlayers() {

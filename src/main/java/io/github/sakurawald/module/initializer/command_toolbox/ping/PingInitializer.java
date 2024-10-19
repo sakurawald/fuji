@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.ping;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -16,7 +16,7 @@ public class PingInitializer extends ModuleInitializer {
         String name = target.getGameProfile().getName();
 
         int latency = target.networkHandler.getLatency();
-        LocaleHelper.sendMessageByKey(source, "ping.player", name, latency);
+        TextHelper.sendMessageByKey(source, "ping.player", name, latency);
 
         return CommandHelper.Return.SUCCESS;
     }

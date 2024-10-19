@@ -4,7 +4,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.event.impl.CommandEvents;
 import io.github.sakurawald.core.manager.abst.BaseManager;
 import io.github.sakurawald.core.manager.impl.callback.structure.TTLMap;
@@ -49,7 +49,7 @@ public class CallbackManager extends BaseManager {
     private void executeCallback(String uuid, ServerPlayerEntity player) {
         Consumer<ServerPlayerEntity> consumer = this.uuid2consumer.get(uuid);
         if (consumer == null) {
-            LocaleHelper.sendMessageByKey(player, "callback.invalid");
+            TextHelper.sendMessageByKey(player, "callback.invalid");
             return;
         }
 

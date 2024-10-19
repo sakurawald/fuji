@@ -6,3 +6,5 @@
   predicate,
   equal... (similar: skript, kubejs)
     - application: /air, /alert, /respawn, /vote
+
+- refactor: rename locale helper and its function names

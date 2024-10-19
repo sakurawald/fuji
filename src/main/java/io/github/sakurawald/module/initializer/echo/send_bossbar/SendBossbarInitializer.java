@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.echo.send_bossbar;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -50,7 +50,7 @@ public class SendBossbarInitializer extends ModuleInitializer {
 
             // notify
             if ($notifyMeOnComplete) {
-                LocaleHelper.sendMessageByKey(source, "echo.send_bossbar.notify", player.getGameProfile().getName(), $commandList.getValue());
+                TextHelper.sendMessageByKey(source, "echo.send_bossbar.notify", player.getGameProfile().getName(), $commandList.getValue());
             }
         });
         Managers.getBossBarManager().addTicket(bossBarTicket);

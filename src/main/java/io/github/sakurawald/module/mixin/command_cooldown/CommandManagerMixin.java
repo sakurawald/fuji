@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.command_cooldown;
 
 import com.mojang.brigadier.ParseResults;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.module.initializer.command_cooldown.CommandCooldownInitializer;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -23,7 +23,7 @@ public class CommandManagerMixin {
         long cooldownMs = CommandCooldownInitializer.computeCooldown(player, string);
 
         if (cooldownMs > 0) {
-            LocaleHelper.sendActionBarByKey(player, "command_cooldown.cooldown", cooldownMs / 1000);
+            TextHelper.sendActionBarByKey(player, "command_cooldown.cooldown", cooldownMs / 1000);
             ci.cancel();
         }
     }

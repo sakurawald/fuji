@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.deathlog;
 
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -66,13 +66,13 @@ public class DeathLogInitializer extends ModuleInitializer {
             NbtList deathsNode = NbtHelper.withNbtElement(root, DEATHS, new NbtList());
 
             if (index >= deathsNode.size()) {
-                LocaleHelper.sendMessageByKey(source, "deathlog.index.not_found", index);
+                TextHelper.sendMessageByKey(source, "deathlog.index.not_found", index);
                 throw new AbortCommandExecutionException();
             }
 
             // check the player's inventory for safety
             if (!to.getInventory().isEmpty()) {
-                LocaleHelper.sendMessageByKey(source, "deathlog.restore.target_player.inventory_not_empty", to.getGameProfile().getName());
+                TextHelper.sendMessageByKey(source, "deathlog.restore.target_player.inventory_not_empty", to.getGameProfile().getName());
                 throw new AbortCommandExecutionException();
             }
 
@@ -94,7 +94,7 @@ public class DeathLogInitializer extends ModuleInitializer {
             to.experienceLevel = inventoryNode.getInt(XP_LEVEL);
             to.experienceProgress = inventoryNode.getFloat(XP_PROGRESS);
 
-            LocaleHelper.sendMessageByKey(source, "deathlog.restore.success", from, index, to.getGameProfile().getName());
+            TextHelper.sendMessageByKey(source, "deathlog.restore.success", from, index, to.getGameProfile().getName());
         });
 
         return CommandHelper.Return.SUCCESS;
@@ -107,7 +107,7 @@ public class DeathLogInitializer extends ModuleInitializer {
 
     private static void ensureDeathlogNotEmpty(ServerCommandSource source, NbtCompound root) {
         if (root == null || root.isEmpty()) {
-            LocaleHelper.sendMessageByKey(source, "deathlog.empty");
+            TextHelper.sendMessageByKey(source, "deathlog.empty");
             throw new AbortCommandExecutionException();
         }
     }
@@ -137,13 +137,13 @@ public class DeathLogInitializer extends ModuleInitializer {
         NbtCompound remarkTag = node.getCompound(REMARK);
 
         MutableText hoverText = Text.empty()
-            .append(LocaleHelper.getTextByKey(audience, "deathlog.view.time", remarkTag.getString(TIME)))
-            .append(LocaleHelper.TEXT_NEWLINE)
-            .append(LocaleHelper.getTextByKey(audience, "deathlog.view.reason", remarkTag.getString(REASON)))
-            .append(LocaleHelper.TEXT_NEWLINE)
-            .append(LocaleHelper.getTextByKey(audience, "deathlog.view.dimension", remarkTag.getString(DIMENSION)))
-            .append(LocaleHelper.TEXT_NEWLINE)
-            .append(LocaleHelper.getTextByKey(audience, "deathlog.view.coordinate", remarkTag.getDouble(X), remarkTag.getDouble(Y), remarkTag.getDouble(Z)));
+            .append(TextHelper.getTextByKey(audience, "deathlog.view.time", remarkTag.getString(TIME)))
+            .append(TextHelper.TEXT_NEWLINE)
+            .append(TextHelper.getTextByKey(audience, "deathlog.view.reason", remarkTag.getString(REASON)))
+            .append(TextHelper.TEXT_NEWLINE)
+            .append(TextHelper.getTextByKey(audience, "deathlog.view.dimension", remarkTag.getString(DIMENSION)))
+            .append(TextHelper.TEXT_NEWLINE)
+            .append(TextHelper.getTextByKey(audience, "deathlog.view.coordinate", remarkTag.getDouble(X), remarkTag.getDouble(Y), remarkTag.getDouble(Z)));
 
         return Text
             .literal(String.valueOf(index))
@@ -152,7 +152,7 @@ public class DeathLogInitializer extends ModuleInitializer {
                 .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText))
                 .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/deathlog restore %s %d %s".formatted(from, index, to)))
             )
-            .append(LocaleHelper.TEXT_SPACE);
+            .append(TextHelper.TEXT_SPACE);
     }
 
     public static void store(@NotNull ServerPlayerEntity player) {

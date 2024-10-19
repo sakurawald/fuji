@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_cooldown;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PlaceholderHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -105,7 +105,7 @@ public class CommandCooldownInitializer extends ModuleInitializer {
         CommandCooldown commandCooldown = new CommandCooldown(name, cooldownMs, $maxUsage, $persistent, $global);
         config.model().namedCooldown.list.put(name, commandCooldown);
 
-        LocaleHelper.sendMessageByKey(source, "command_cooldown.created", name);
+        TextHelper.sendMessageByKey(source, "command_cooldown.created", name);
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -115,7 +115,7 @@ public class CommandCooldownInitializer extends ModuleInitializer {
 
         String key = name.getValue();
         config.model().namedCooldown.list.remove(key);
-        LocaleHelper.sendMessageByKey(source, "command_cooldown.deleted", name.getValue());
+        TextHelper.sendMessageByKey(source, "command_cooldown.deleted", name.getValue());
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -136,20 +136,20 @@ public class CommandCooldownInitializer extends ModuleInitializer {
         String key = player.getGameProfile().getName();
         commandCooldown.getTimestamp().put(key, 0L);
 
-        LocaleHelper.sendMessageByKey(source, "command_cooldown.reset", key, name.getValue());
+        TextHelper.sendMessageByKey(source, "command_cooldown.reset", key, name.getValue());
         return CommandHelper.Return.SUCCESS;
     }
 
     private static void ensureExist(ServerCommandSource source, CommandCooldownName name) {
         if (!config.model().namedCooldown.list.containsKey(name.getValue())) {
-            LocaleHelper.sendMessageByKey(source, "command_cooldown.not_found", name.getValue());
+            TextHelper.sendMessageByKey(source, "command_cooldown.not_found", name.getValue());
             throw new AbortCommandExecutionException();
         }
     }
 
     private static void ensureNotExist(ServerCommandSource source, String name) {
         if (config.model().namedCooldown.list.containsKey(name)) {
-            LocaleHelper.sendMessageByKey(source, "command_cooldown.already_exists", name);
+            TextHelper.sendMessageByKey(source, "command_cooldown.already_exists", name);
             throw new AbortCommandExecutionException();
         }
     }

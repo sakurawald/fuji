@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.top;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.structure.SpatialPose;
@@ -21,7 +21,7 @@ public class TopInitializer extends ModuleInitializer {
         SpatialPose spatialPose = SpatialPose.of(player).withY(topPosition.getY());
         spatialPose.teleport(player);
 
-        LocaleHelper.sendMessageByKey(player, "top");
+        TextHelper.sendMessageByKey(player, "top");
         return CommandHelper.Return.SUCCESS;
     }
 

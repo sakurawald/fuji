@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.echo.send_toast;
 
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -102,7 +102,7 @@ public class SendToastInitializer extends ModuleInitializer {
 
         Item $icon = icon.orElse(Items.SLIME_BALL);
         AdvancementFrame $toastType = toastType.orElse(AdvancementFrame.CHALLENGE);
-        Text title = LocaleHelper.getTextByValue(player, message.getValue());
+        Text title = TextHelper.getTextByValue(player, message.getValue());
         sendToast(player, $toastType, $icon, title);
 
         return CommandHelper.Return.SUCCESS;

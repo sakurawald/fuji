@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.chat.spy;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -28,7 +28,7 @@ public class ChatSpyInitializer extends ModuleInitializer {
         ChatSpyConfigModel.PerPlayerOptions options = getOptions(player);
         options.enabled = !options.enabled;
 
-        LocaleHelper.sendMessageByKey(player, options.enabled ? "on" : "off");
+        TextHelper.sendMessageByKey(player, options.enabled ? "on" : "off");
         return CommandHelper.Return.SUCCESS;
     }
 

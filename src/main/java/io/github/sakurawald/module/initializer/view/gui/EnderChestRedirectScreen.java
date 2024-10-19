@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.view.gui;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
@@ -9,7 +9,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class EnderChestRedirectScreen extends RedirectScreenHandlerFactory {
 
     public EnderChestRedirectScreen(ServerPlayerEntity sourcePlayer, String targetPlayerName) {
-        super(targetPlayerName, LocaleHelper.getTextByKey(sourcePlayer, "view.ender.title", targetPlayerName));
+        super(targetPlayerName, TextHelper.getTextByKey(sourcePlayer, "view.ender.title", targetPlayerName));
     }
 
     @Override

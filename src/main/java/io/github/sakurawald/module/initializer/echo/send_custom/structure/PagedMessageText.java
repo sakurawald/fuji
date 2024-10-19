@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.echo.send_custom.structure;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.manager.Managers;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
@@ -16,7 +16,7 @@ public class PagedMessageText extends PagedText {
         /* split pages */
         String[] split = string.split(NEW_PAGE_DELIMITER);
         this.pages = new ArrayList<>();
-        Arrays.stream(split).forEach(it -> pages.add(LocaleHelper.getTextByValue(player, it)));
+        Arrays.stream(split).forEach(it -> pages.add(TextHelper.getTextByValue(player, it)));
 
         /* generate page callbacks */
         List<String> pageCallbacks = new ArrayList<>();
@@ -32,11 +32,11 @@ public class PagedMessageText extends PagedText {
             int currentPage = i + 1;
             /* make the paginator */
             if (i == 0) {
-                text.append(LocaleHelper.getTextByKey(player, "echo.send_custom.custom_text.paginator.first_page", currentPage, totalPages, pageCallbacks.get(i + 1)));
+                text.append(TextHelper.getTextByKey(player, "echo.send_custom.custom_text.paginator.first_page", currentPage, totalPages, pageCallbacks.get(i + 1)));
             } else if (i == getPages().size() - 1) {
-                text.append(LocaleHelper.getTextByKey(player, "echo.send_custom.custom_text.paginator.last_page", pageCallbacks.get(i - 1), currentPage, totalPages));
+                text.append(TextHelper.getTextByKey(player, "echo.send_custom.custom_text.paginator.last_page", pageCallbacks.get(i - 1), currentPage, totalPages));
             } else {
-                text.append(LocaleHelper.getTextByKey(player, "echo.send_custom.custom_text.paginator.middle_page", pageCallbacks.get(i - 1), currentPage, totalPages, pageCallbacks.get(i + 1)));
+                text.append(TextHelper.getTextByKey(player, "echo.send_custom.custom_text.paginator.middle_page", pageCallbacks.get(i - 1), currentPage, totalPages, pageCallbacks.get(i + 1)));
             }
 
             /* append the paginator */
@@ -47,7 +47,7 @@ public class PagedMessageText extends PagedText {
     private String makeClickCallbackCommand(int pageIndex) {
         return Managers.getCallbackManager().makeCallbackCommand((player) -> {
             if (pageIndex < 0 || pageIndex >= this.getPages().size()) {
-                LocaleHelper.sendMessageByKey(player, "echo.send_custom.custom_text.invalid_page");
+                TextHelper.sendMessageByKey(player, "echo.send_custom.custom_text.invalid_page");
                 return;
             }
 

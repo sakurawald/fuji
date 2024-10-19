@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.head.structure;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -82,7 +82,7 @@ public enum Category {
     }
 
     public @NotNull Text getText(ServerPlayerEntity player) {
-        return LocaleHelper.getTextByKey(player, "head.category." + name);
+        return TextHelper.getTextByKey(player, "head.category." + name);
     }
 
 }

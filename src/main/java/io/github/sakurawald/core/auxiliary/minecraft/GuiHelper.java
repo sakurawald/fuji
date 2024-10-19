@@ -47,33 +47,33 @@ public class GuiHelper {
 
     public static GuiElementBuilder makePreviousPageButton(ServerPlayerEntity player) {
         return makeSkullButton(Icon.PREVIOUS_PAGE_ICON)
-            .setName(LocaleHelper.getTextByKey(player, "previous_page"));
+            .setName(TextHelper.getTextByKey(player, "previous_page"));
     }
 
     public static GuiElementBuilder makeNextPageButton(ServerPlayerEntity player) {
         return makeSkullButton(Icon.NEXT_PAGE_ICON)
-            .setName(LocaleHelper.getTextByKey(player, "next_page"));
+            .setName(TextHelper.getTextByKey(player, "next_page"));
     }
 
     public static GuiElementBuilder makeBackButton(ServerPlayerEntity player) {
         return makeSkullButton(Icon.PREVIOUS_PAGE_ICON)
-            .setName(LocaleHelper.getTextByKey(player, "back"));
+            .setName(TextHelper.getTextByKey(player, "back"));
     }
 
     public static GuiElementBuilder makeSearchButton(ServerPlayerEntity player) {
         return new GuiElementBuilder()
             .setItem(Items.COMPASS)
-            .setName(LocaleHelper.getTextByKey(player, "search"));
+            .setName(TextHelper.getTextByKey(player, "search"));
     }
 
     public static GuiElementBuilder makeAddButton(ServerPlayerEntity player) {
         return makeSkullButton(GuiHelper.Icon.PLUS_ICON)
-            .setName(LocaleHelper.getTextByKey(player, "add"));
+            .setName(TextHelper.getTextByKey(player, "add"));
     }
 
     public static GuiElementBuilder makeHelpButton(ServerPlayerEntity player) {
         return makeQuestionMarkButton(player)
-            .setName(LocaleHelper.getTextByKey(player, "help"));
+            .setName(TextHelper.getTextByKey(player, "help"));
     }
 
     public static GuiElementBuilder makePlayerPlaceholder() {

@@ -1,6 +1,6 @@
 package io.github.sakurawald.core.command.structure;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -74,9 +74,9 @@ public class ExtendedCommandSource {
 
         ServerPlayerEntity contextualPlayer = getPlaceholderParsingSource().getPlayer();
         if (contextualPlayer != null) {
-            string = LocaleHelper.resolvePlaceholder(contextualPlayer, string);
+            string = TextHelper.resolvePlaceholder(contextualPlayer, string);
         } else {
-            string = LocaleHelper.resolvePlaceholder(ServerHelper.getDefaultServer(), string);
+            string = TextHelper.resolvePlaceholder(ServerHelper.getDefaultServer(), string);
         }
 
         return string;

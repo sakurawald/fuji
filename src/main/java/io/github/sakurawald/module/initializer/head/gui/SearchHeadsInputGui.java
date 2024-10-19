@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.head.gui;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.gui.InputSignGui;
 import io.github.sakurawald.module.initializer.head.privoder.HeadProvider;
 import io.github.sakurawald.module.initializer.head.structure.Head;
@@ -31,7 +31,7 @@ public class SearchHeadsInputGui extends InputSignGui {
             .filter(head -> head.name.toLowerCase().contains(keywords.toLowerCase())
                 || head.getTagsOrEmpty().toLowerCase().contains(keywords.toLowerCase()))
             .collect(Collectors.toList());
-        Text title = LocaleHelper.getTextByKey(player, "gui.search.title", keywords);
+        Text title = TextHelper.getTextByKey(player, "gui.search.title", keywords);
         new CategoryHeadGui(this.parentGui, player, title, entities, 0).open();
     }
 }

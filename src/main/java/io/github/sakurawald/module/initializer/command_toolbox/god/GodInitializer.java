@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.god;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -18,7 +18,7 @@ public class GodInitializer extends ModuleInitializer {
         player.getAbilities().invulnerable = flag;
         player.sendAbilitiesUpdate();
 
-        LocaleHelper.sendMessageByKey(player, flag ? "god.on" : "god.off");
+        TextHelper.sendMessageByKey(player, flag ? "god.on" : "god.off");
         return CommandHelper.Return.SUCCESS;
     }
 

@@ -5,7 +5,7 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.annotation.Cite;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -58,7 +58,7 @@ public class WorldInitializer extends ModuleInitializer {
 
     private static void checkBlacklist(CommandContext<ServerCommandSource> ctx, String identifier) {
         if (config.model().blacklist.dimension_list.contains(identifier)) {
-            LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.blacklist", identifier);
+            TextHelper.sendMessageByKey(ctx.getSource(), "world.dimension.blacklist", identifier);
             throw new AbortCommandExecutionException();
         }
     }
@@ -82,7 +82,7 @@ public class WorldInitializer extends ModuleInitializer {
             ServerHelper.getWorlds().forEach(world -> {
                 String dimensionType = world.getDimensionEntry().getIdAsString();
                 String dimension = String.valueOf(world.getRegistryKey().getValue());
-                LocaleHelper.sendMessageByKey(source, "world.dimension.list.entry", dimension, dimensionType);
+                TextHelper.sendMessageByKey(source, "world.dimension.list.entry", dimension, dimensionType);
             });
         }
 
@@ -99,7 +99,7 @@ public class WorldInitializer extends ModuleInitializer {
 
         /* check exist */
         if (ServerHelper.getWorlds().stream().anyMatch(it -> RegistryHelper.ofString(it).equals(dimensionIdentifier.toString()))) {
-            LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.exist");
+            TextHelper.sendMessageByKey(ctx.getSource(), "world.dimension.exist");
             return CommandHelper.Return.FAIL;
         }
 
@@ -113,7 +113,7 @@ public class WorldInitializer extends ModuleInitializer {
         /* request creation */
         WorldManager.requestToCreateWorld(dimensionNode);
 
-        LocaleHelper.sendBroadcastByKey("world.dimension.created", dimensionIdentifier);
+        TextHelper.sendBroadcastByKey("world.dimension.created", dimensionIdentifier);
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -130,13 +130,13 @@ public class WorldInitializer extends ModuleInitializer {
         /* write entry */
         Optional<DimensionNode> first = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
         if (first.isEmpty()) {
-            LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found", identifier);
+            TextHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found", identifier);
             return CommandHelper.Return.FAIL;
         }
         storage.model().dimension_list.remove(first.get());
         storage.writeStorage();
 
-        LocaleHelper.sendBroadcastByKey("world.dimension.deleted", identifier);
+        TextHelper.sendBroadcastByKey("world.dimension.deleted", identifier);
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -149,7 +149,7 @@ public class WorldInitializer extends ModuleInitializer {
 
         Optional<DimensionNode> dimensionEntryOpt = storage.model().dimension_list.stream().filter(o -> o.getDimension().equals(identifier)).findFirst();
         if (dimensionEntryOpt.isEmpty()) {
-            LocaleHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found");
+            TextHelper.sendMessageByKey(ctx.getSource(), "world.dimension.not_found");
             return CommandHelper.Return.FAIL;
         }
 
@@ -165,7 +165,7 @@ public class WorldInitializer extends ModuleInitializer {
         // request the creation
         WorldManager.requestToCreateWorld(dimensionEntryOpt.get());
 
-        LocaleHelper.sendBroadcastByKey("world.dimension.reset", identifier);
+        TextHelper.sendBroadcastByKey("world.dimension.reset", identifier);
         return CommandHelper.Return.SUCCESS;
     }
 

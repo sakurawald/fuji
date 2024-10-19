@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.hat;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -20,7 +20,7 @@ public class HatInitializer extends ModuleInitializer {
 
         player.equipStack(EquipmentSlot.HEAD, mainHandItem);
         player.setStackInHand(Hand.MAIN_HAND, headSlotItem);
-        LocaleHelper.sendMessageByKey(player, "hat.success");
+        TextHelper.sendMessageByKey(player, "hat.success");
         return CommandHelper.Return.SUCCESS;
     }
 

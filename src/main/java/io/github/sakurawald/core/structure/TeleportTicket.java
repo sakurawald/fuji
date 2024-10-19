@@ -1,6 +1,6 @@
 package io.github.sakurawald.core.structure;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.manager.impl.bossbar.structure.Interruptible;
 import io.github.sakurawald.core.manager.impl.bossbar.structure.InterruptibleTicket;
 import lombok.Getter;
@@ -22,7 +22,7 @@ public class TeleportTicket extends InterruptibleTicket {
         , Interruptible interruptible
     ) {
         super(
-            new ServerBossBar(LocaleHelper.getTextByKey(player, "teleport_warmup.bossbar.name"), BossBar.Color.BLUE, net.minecraft.entity.boss.BossBar.Style.PROGRESS)
+            new ServerBossBar(TextHelper.getTextByKey(player, "teleport_warmup.bossbar.name"), BossBar.Color.BLUE, net.minecraft.entity.boss.BossBar.Style.PROGRESS)
             , totalMs
             , player
             , source

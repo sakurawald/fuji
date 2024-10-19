@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.anti_build;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.module.initializer.anti_build.AntiBuildInitializer;
@@ -40,7 +40,7 @@ public class ServerPlayerInteractionManagerMixin {
         if (AntiBuildInitializer.config.model().anti.break_block.id.contains(id)
             && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("break_block", id))
         ) {
-            LocaleHelper.sendMessageByKey(player, "anti_build.disallow");
+            TextHelper.sendMessageByKey(player, "anti_build.disallow");
             cir.setReturnValue(false);
         }
 
@@ -53,7 +53,7 @@ public class ServerPlayerInteractionManagerMixin {
         if (AntiBuildInitializer.config.model().anti.interact_item.id.contains(id)
             && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_item", id))
         ) {
-            LocaleHelper.sendMessageByKey(player, "anti_build.disallow");
+            TextHelper.sendMessageByKey(player, "anti_build.disallow");
             cir.setReturnValue(ActionResult.FAIL);
         }
     }
@@ -67,7 +67,7 @@ public class ServerPlayerInteractionManagerMixin {
         if (AntiBuildInitializer.config.model().anti.interact_block.id.contains(id)
             && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_block", id))
         ) {
-            LocaleHelper.sendMessageByKey(player, "anti_build.disallow");
+            TextHelper.sendMessageByKey(player, "anti_build.disallow");
             cir.setReturnValue(ActionResult.FAIL);
         }
     }

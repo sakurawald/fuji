@@ -1,7 +1,7 @@
 package io.github.sakurawald.core.manager.impl.bossbar.structure;
 
 import io.github.sakurawald.core.accessor.PlayerCombatExtension;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.manager.impl.bossbar.BossBarTicket;
 import io.github.sakurawald.core.structure.SpatialPose;
 import lombok.Getter;
@@ -40,7 +40,7 @@ public abstract class InterruptibleTicket extends BossBarTicket {
 
         // check in combat
         if (this.interruptible.isInterruptInCombat() && ((PlayerCombatExtension) player).fuji$inCombat()) {
-            LocaleHelper.sendActionBarByKey(player, "teleport_warmup.in_combat");
+            TextHelper.sendActionBarByKey(player, "teleport_warmup.in_combat");
             return false;
         }
 

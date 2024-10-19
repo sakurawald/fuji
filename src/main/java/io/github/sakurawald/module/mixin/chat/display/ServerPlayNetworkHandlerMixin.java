@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.chat.display;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.module.initializer.chat.display.ChatDisplayInitializer;
 import io.github.sakurawald.module.initializer.chat.display.helper.DisplayHelper;
 import net.minecraft.network.message.MessageType;
@@ -24,17 +24,17 @@ public abstract class ServerPlayNetworkHandlerMixin {
     @Unique
     private Text replaceDisplayText(Text original) {
         MutableText newValue
-            = LocaleHelper.replaceText(original
+            = TextHelper.replaceText(original
             , ChatDisplayInitializer.config.model().replace_token.item_display_token
             , () -> DisplayHelper.createItemDisplayText(player));
 
         newValue
-            = LocaleHelper.replaceText(newValue
+            = TextHelper.replaceText(newValue
             , ChatDisplayInitializer.config.model().replace_token.inv_display_token
             , () -> DisplayHelper.createInvDisplayText(player));
 
         newValue
-            = LocaleHelper.replaceText(newValue
+            = TextHelper.replaceText(newValue
             , ChatDisplayInitializer.config.model().replace_token.ender_display_token
             , () -> DisplayHelper.createEnderDisplayText(player));
         return newValue;

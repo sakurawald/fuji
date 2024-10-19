@@ -5,7 +5,7 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.gui.PagedGui;
 import io.github.sakurawald.module.initializer.head.HeadInitializer;
 import io.github.sakurawald.module.initializer.head.structure.EconomyType;
@@ -37,7 +37,7 @@ public class CategoryHeadGui extends PagedGui<Head> {
         var builder = GuiElementBuilder.from(entity.toItemStack());
         if (HeadInitializer.head.model().economy_type != EconomyType.FREE) {
             builder.addLoreLine(Text.empty());
-            builder.addLoreLine(LocaleHelper.getTextByKey(getPlayer(), "head.price").copy().append(EconomyType.getCostText()));
+            builder.addLoreLine(TextHelper.getTextByKey(getPlayer(), "head.price").copy().append(EconomyType.getCostText()));
         }
 
         builder.setCallback((index, type, action) -> handleEntityClick(entity, type));

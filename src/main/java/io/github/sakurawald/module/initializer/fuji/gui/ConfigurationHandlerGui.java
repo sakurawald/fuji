@@ -4,7 +4,7 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.core.auxiliary.IOUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.gui.PagedGui;
 import net.minecraft.item.Items;
@@ -20,7 +20,7 @@ import java.util.List;
 public class ConfigurationHandlerGui extends PagedGui<BaseConfigurationHandler<?>> {
 
     public ConfigurationHandlerGui(@Nullable SimpleGui parent, ServerPlayerEntity player, @NotNull List<BaseConfigurationHandler<?>> entities, int pageIndex) {
-        super(parent, player, LocaleHelper.getTextByKey(player, "fuji.inspect.configuration.gui.title"), entities, pageIndex);
+        super(parent, player, TextHelper.getTextByKey(player, "fuji.inspect.configuration.gui.title"), entities, pageIndex);
     }
 
     @Override
@@ -41,8 +41,8 @@ public class ConfigurationHandlerGui extends PagedGui<BaseConfigurationHandler<?
             .setItem(Items.BOOKSHELF)
             .setName(Text.literal(IOUtil.computeRelativePath(entity.getPath().toFile())))
             .setLore(List.of(
-                LocaleHelper.getTextByKey(getPlayer(), "fuji.inspect.configuration.class", modelClassName)
-                , LocaleHelper.getTextByKey(getPlayer(), "fuji.inspect.configuration.path", modelPath)
+                TextHelper.getTextByKey(getPlayer(), "fuji.inspect.configuration.class", modelClassName)
+                , TextHelper.getTextByKey(getPlayer(), "fuji.inspect.configuration.path", modelPath)
             ))
             .setCallback(new JavaObjectGui(getGui(), entity.model(), getPlayer(), new ArrayList<>(), 0, topLevelName, "")::open)
             .build();

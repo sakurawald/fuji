@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.chat.spy;
 
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.module.initializer.chat.spy.ChatSpyInitializer;
 import net.minecraft.network.message.MessageType;
@@ -46,9 +46,9 @@ public abstract class ServerPlayNetworkHandlerMixin {
         Text receiver = getPlayer().getDisplayName();
         MutableText spyText = Text.empty();
         spyText.append(content)
-            .append(LocaleHelper.TEXT_SPACE)
-            .append(LocaleHelper.getTextByKey(null, "chat.spy.indicator"))
-            .append(LocaleHelper.TEXT_SPACE)
+            .append(TextHelper.TEXT_SPACE)
+            .append(TextHelper.getTextByKey(null, "chat.spy.indicator"))
+            .append(TextHelper.TEXT_SPACE)
             .append(receiver);
 
         /* log console */

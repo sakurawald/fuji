@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.pvp;
 
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
@@ -29,11 +29,11 @@ public class PvpInitializer extends ModuleInitializer {
             whitelist.add(name);
             pvpHandler.writeStorage();
 
-            LocaleHelper.sendMessageByKey(player, "pvp.on");
+            TextHelper.sendMessageByKey(player, "pvp.on");
             return CommandHelper.Return.SUCCESS;
         }
 
-        LocaleHelper.sendMessageByKey(player, "pvp.on.already");
+        TextHelper.sendMessageByKey(player, "pvp.on.already");
         return CommandHelper.Return.FAIL;
     }
 
@@ -45,11 +45,11 @@ public class PvpInitializer extends ModuleInitializer {
             whitelist.remove(name);
             pvpHandler.writeStorage();
 
-            LocaleHelper.sendMessageByKey(player, "pvp.off");
+            TextHelper.sendMessageByKey(player, "pvp.off");
             return CommandHelper.Return.SUCCESS;
         }
 
-        LocaleHelper.sendMessageByKey(player, "pvp.off.already");
+        TextHelper.sendMessageByKey(player, "pvp.off.already");
         return CommandHelper.Return.FAIL;
     }
 
@@ -59,16 +59,16 @@ public class PvpInitializer extends ModuleInitializer {
 
         boolean flag = whitelist.contains(player.getGameProfile().getName());
         player.sendMessage(
-            LocaleHelper.getTextByKey(player, "pvp.status")
+            TextHelper.getTextByKey(player, "pvp.status")
                 .copy()
-                .append(LocaleHelper.getTextByKey(player, flag ? "on" : "off")));
+                .append(TextHelper.getTextByKey(player, flag ? "on" : "off")));
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("pvp list")
     private static int $list(@CommandSource ServerCommandSource source) {
         Set<String> whitelist = pvpHandler.model().whitelist;
-        LocaleHelper.sendMessageByKey(source, "pvp.list", whitelist);
+        TextHelper.sendMessageByKey(source, "pvp.list", whitelist);
         return CommandHelper.Return.SUCCESS;
     }
 

@@ -4,7 +4,7 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.gui.ConfirmGui;
 import io.github.sakurawald.core.gui.InputSignGui;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;
@@ -58,13 +58,13 @@ public class ProductionWork extends Work {
             String key = entry.getKey();
             double rate = entry.getValue() * ((double) (3600 * 1000) / ((Math.min(this.sample.sampleEndTimeMS, currentTimeMS)) - this.sample.sampleStartTimeMS));
 
-            Text text = LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_counter.entry", entry.getValue(), rate);
-            text = LocaleHelper.replaceBracketedText(text, "[item]", Text.translatable(key));
+            Text text = TextHelper.getTextByKey(player, "works.production_work.prop.sample_counter.entry", entry.getValue(), rate);
+            text = TextHelper.replaceBracketedText(text, "[item]", Text.translatable(key));
             ret.add(text);
         });
 
         if (ret.isEmpty()) {
-            ret.add(LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_counter.empty"));
+            ret.add(TextHelper.getTextByKey(player, "works.production_work.prop.sample_counter.empty"));
         }
         return ret;
     }
@@ -75,15 +75,15 @@ public class ProductionWork extends Work {
         List<Text> ret = super.asLore(player);
         // note: hide sample info in lore if sample not exists
         if (this.sample.sampleStartTimeMS == 0) {
-            ret.addAll(LocaleHelper.getTextListByKey(player, "works.production_work.sample.not_exists"));
+            ret.addAll(TextHelper.getTextListByKey(player, "works.production_work.sample.not_exists"));
             return ret;
         }
 
-        ret.add(LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_start_time", DateUtil.toStandardDateFormat(this.sample.sampleStartTimeMS)));
-        ret.add(LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_end_time", DateUtil.toStandardDateFormat(this.sample.sampleEndTimeMS)));
-        ret.add(LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_dimension", this.sample.sampleDimension));
-        ret.add(LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_coordinate", this.sample.sampleX, this.sample.sampleY, this.sample.sampleZ));
-        ret.add(LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_distance", this.sample.sampleDistance));
+        ret.add(TextHelper.getTextByKey(player, "works.production_work.prop.sample_start_time", DateUtil.toStandardDateFormat(this.sample.sampleStartTimeMS)));
+        ret.add(TextHelper.getTextByKey(player, "works.production_work.prop.sample_end_time", DateUtil.toStandardDateFormat(this.sample.sampleEndTimeMS)));
+        ret.add(TextHelper.getTextByKey(player, "works.production_work.prop.sample_dimension", this.sample.sampleDimension));
+        ret.add(TextHelper.getTextByKey(player, "works.production_work.prop.sample_coordinate", this.sample.sampleX, this.sample.sampleY, this.sample.sampleZ));
+        ret.add(TextHelper.getTextByKey(player, "works.production_work.prop.sample_distance", this.sample.sampleDistance));
 
         // check npe to avoid broken
         if (this.sample.sampleCounter != null) {
@@ -91,7 +91,7 @@ public class ProductionWork extends Work {
             if (this.sample.sampleCounter.size() > WorksInitializer.config.model().sample_counter_top_n) {
                 trimCounter();
             }
-            ret.add(LocaleHelper.getTextByKey(player, "works.production_work.prop.sample_counter"));
+            ret.add(TextHelper.getTextByKey(player, "works.production_work.prop.sample_counter"));
             ret.addAll(formatSampleCounter(player));
         }
         return ret;
@@ -103,7 +103,7 @@ public class ProductionWork extends Work {
     }
 
     public void openInputSampleDistanceGui(@NotNull ServerPlayerEntity player) {
-        new InputSignGui(player, LocaleHelper.getTextByKey(player, "works.production_work.prompt.input.sample_distance")) {
+        new InputSignGui(player, TextHelper.getTextByKey(player, "works.production_work.prompt.input.sample_distance")) {
             @Override
             public void onClose() {
                 int limit = WorksInitializer.config.model().sample_distance_limit;
@@ -111,12 +111,12 @@ public class ProductionWork extends Work {
                 try {
                     current = Integer.parseInt(this.getLine(0).getString());
                 } catch (NumberFormatException e) {
-                    LocaleHelper.sendActionBarByKey(player, "input.syntax.error");
+                    TextHelper.sendActionBarByKey(player, "input.syntax.error");
                     return;
                 }
 
                 if (current > limit) {
-                    LocaleHelper.sendActionBarByKey(player, "input.limit.error");
+                    TextHelper.sendActionBarByKey(player, "input.limit.error");
                     return;
                 }
 
@@ -135,12 +135,12 @@ public class ProductionWork extends Work {
     @Override
     public void openSpecializedSettingsGui(ServerPlayerEntity player, @NotNull SimpleGui parentGui) {
         final SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X1, player, false);
-        gui.setTitle(LocaleHelper.getTextByKey(player, "works.work.set.specialized_settings.title"));
+        gui.setTitle(TextHelper.getTextByKey(player, "works.work.set.specialized_settings.title"));
         gui.setLockPlayerInventory(true);
         gui.addSlot(new GuiElementBuilder()
             .setItem(Items.CLOCK)
-            .setName(LocaleHelper.getTextByKey(player, "works.production_work.set.sample"))
-            .setLore(LocaleHelper.getTextListByKey(player, "works.production_work.set.sample.lore"))
+            .setName(TextHelper.getTextByKey(player, "works.production_work.set.sample"))
+            .setLore(TextHelper.getTextListByKey(player, "works.production_work.set.sample.lore"))
             .setCallback(() -> new ConfirmGui(player) {
                     @Override
                     public void onConfirm() {
@@ -213,7 +213,7 @@ public class ProductionWork extends Work {
             }
         }
 
-        LocaleHelper.sendMessageByKey(player, "works.production_work.sample.resolve_hoppers.response", hopperBlockCount, minecartHopperCount);
+        TextHelper.sendMessageByKey(player, "works.production_work.sample.resolve_hoppers.response", hopperBlockCount, minecartHopperCount);
         return hopperBlockCount + minecartHopperCount;
     }
 
@@ -233,17 +233,17 @@ public class ProductionWork extends Work {
         this.sample.sampleZ = player.getZ();
         this.sample.sampleCounter = new HashMap<>();
         if (this.resolveHoppers(player) == 0) {
-            LocaleHelper.sendMessageByKey(player, "operation.cancelled");
+            TextHelper.sendMessageByKey(player, "operation.cancelled");
             return;
         }
 
-        LocaleHelper.sendBroadcastByKey("works.production_work.sample.start", name, this.creator);
+        TextHelper.sendBroadcastByKey("works.production_work.sample.start", name, this.creator);
     }
 
     private void endSample() {
         // unbind all block pos
         WorksBinding.unbind(this);
-        LocaleHelper.sendBroadcastByKey("works.production_work.sample.end", this.name, this.creator);
+        TextHelper.sendBroadcastByKey("works.production_work.sample.end", this.name, this.creator);
 
         // trim counter to avoid spam
         trimCounter();

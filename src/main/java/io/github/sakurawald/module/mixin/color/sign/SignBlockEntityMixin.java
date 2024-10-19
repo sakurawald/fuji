@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.color.sign;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.structure.SpatialBlock;
 import io.github.sakurawald.module.initializer.color.sign.SignInitializer;
 import io.github.sakurawald.module.initializer.color.sign.structure.SignCache;
@@ -33,7 +33,7 @@ public class SignBlockEntityMixin extends BlockEntity {
         Text[] newMessages = new Text[messages.length];
         for (int i = 0; i < messages.length; i++) {
             String string = messages[i].getString();
-            newMessages[i] = LocaleHelper.getTextByValue(null, string);
+            newMessages[i] = TextHelper.getTextByValue(null, string);
         }
 
         /* write cache */
