@@ -26,10 +26,7 @@ public class RegistryGui extends PagedGui<Identifier> {
 
     public RegistryGui(@Nullable SimpleGui parent, ServerPlayerEntity player, boolean isMetaRegistry, @NotNull List<Identifier> entities, int pageIndex) {
         super(parent, player, TextHelper.getTextByKey(player, "registry.list.gui.title"), entities, pageIndex);
-
-        // the field still not be initialized.
         this.isMetaRegistry = isMetaRegistry;
-        super.drawPagedGui();
     }
 
     @Override

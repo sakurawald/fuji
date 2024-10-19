@@ -41,21 +41,12 @@ public class JavaObjectGui extends PagedGui<Field> {
         if (this.getEntities().isEmpty()) {
             this.getEntities().addAll(JavaObjectGui.inspectObject(this.instance));
         }
-        this.drawPagedGui();
 
         /* add footer */
         getFooter().setSlot(4, GuiHelper.makeHelpButton(player)
             .setLore(List.of(
                 TextHelper.getTextByKey(player, "object.top_level", topLevel)
             )));
-    }
-
-    @Override
-    protected void drawPagedGui() {
-        // fix: when search a keyword, the `instance` will be null while initializing the super class.
-        if (this.instance == null) return;
-
-        super.drawPagedGui();
     }
 
     @Override

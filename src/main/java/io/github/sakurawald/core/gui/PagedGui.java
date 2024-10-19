@@ -29,15 +29,18 @@ public abstract class PagedGui<T> extends LayeredGui {
 
     public PagedGui(@Nullable SimpleGui parent, ServerPlayerEntity player, Text prefixTitle, @NotNull List<T> entities, int pageIndex) {
         super(ScreenHandlerType.GENERIC_9X6, player, false);
-
-        // props
         this.parent = parent;
         this.prefixTitle = prefixTitle;
         this.pageIndex = pageIndex;
         this.entities = entities;
+    }
 
-        // draw
+    @Override
+    public boolean open() {
+        /* evaluating the drawPagedGui() until it's ready to open, this makes it possible to let the subclass initialize its slots, and making it possible to insert new entities in search feature */
         this.drawPagedGui();
+
+        return super.open();
     }
 
     public abstract PagedGui<T> make(@Nullable SimpleGui parent, ServerPlayerEntity player, Text title, @NotNull List<T> entities, int pageIndex);
