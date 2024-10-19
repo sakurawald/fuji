@@ -5,10 +5,17 @@ labels: [ bug ]
 body:
   - type: checkboxes
     attributes:
+      label: Are you using the latest possible version for your server?
+      description: The bug may be fixed in the latest possible version.
+      options:
+        - label: I am using the latest possible version of fuji for my minecraft server.
+          required: true
+  - type: checkboxes
+    attributes:
       label: Is there an existing issue for this?
       description: Please search to see if an issue already exists for the bug you encountered.
       options:
-        - label: I have searched the existing issues
+        - label: I have searched the existing issues.
           required: true
   - type: textarea
     attributes:
