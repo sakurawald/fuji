@@ -160,6 +160,7 @@
   "warp.set.fail.need_override": "<red>Warp %s đã có sẵn, bạn cần thêm tham số `--override true` để ghi đè lên nó.",
   "warp.set.success": "<gold>Đã set warp %s.",
   "warp.unset.success": "<gold>Đã xoá warp %s.",
+  "warp.gui.title": "<blue>Warps",
   "works.list.add": "<#FFA1F5>Add work",
   "works.list.all_works": "<#FFA1F5>All works",
   "works.list.help.lore": "<green> - Left click -> Visit\n<green> - Right click -> Open general settings\n<green> - Shift + Right click -> Open specialized settings",

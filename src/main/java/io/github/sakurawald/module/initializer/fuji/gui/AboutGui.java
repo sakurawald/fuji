@@ -44,6 +44,11 @@ public class AboutGui extends PagedGui<Person> {
                 TextHelper.sendMessageByKey(player, "homepage.project.visit", metadata.getContact().get("sources").orElse("can't read project homepage from metadata"));
                 this.close();
             }));
+    }
+
+    @Override
+    protected void drawPagedGui() {
+        super.drawPagedGui();
 
         // fetch heads async
         fetchHeads();
