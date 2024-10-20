@@ -160,6 +160,7 @@
   "warp.set.fail.need_override": "<red>Warp %s υπάρχει, θα πρέπει να προσθέσετε `--override true` παράμετρο για να το παρακάμψετε.",
   "warp.set.success": "<gold>Warp %s set.",
   "warp.unset.success": "<gold>Warp %s αφαιρέθηκε.",
+  "warp.gui.title": "<blue>Warps",
   "works.list.add": "<#FFA1F5>Προσθήκη εργασίας",
   "works.list.all_works": "<#FFA1F5>Όλα τα έργα",
   "works.list.help.lore": "<green> - Left click -> Visit\n<green> - Right click -> Open general settings\n<green> - Shift + Right click -> Open specialized settings",
