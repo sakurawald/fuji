@@ -2,14 +2,11 @@
 \LevelFour{Purpose}
 Customize global chat style, and also allow players to use \ic{/chat style} to set their per-player chat style.
 
-\LevelFour{Command}
-\LevelFive{/chat style}
-
 \LevelFour{Feature}
 \begin{enumerate}
     \item You can use \ttt{mini-message language} to define complex format.
-    \item Besides the \ttt{server chat format}, each player can also set their per-player chat format.
-    \item This module doesn't \tbf{cancel} the vanilla chat events, so it can work with other chat related mods.
+    \item Besides the \ttt{server chat format}, each player can also set their \ttt{per-player chat format}.
+    \item This module doesn't \tbf{break} the vanilla chat events, so it can work with other chat related mods.
 \end{enumerate}
 
 \begin{tips}{Write complex style using mini-language}
@@ -22,13 +19,6 @@ Customize global chat style, and also allow players to use \ic{/chat style} to s
     \end{enumerate}
 \end{tips}
 
-\begin{note}{Set prefix and suffix for players}
-    Luckperms is required to set \ttt{prefix} and \ttt{suffix}. \\
-    \\
-    After you installed \ttt{luckperms} mod, just issue \ic{/lp group default meta setprefix <yellow>[awesome]} to assign prefix. \\
-    Don't forget to change the format in chat module, and issue \ic{/fuji reload}
-\end{note}
-
 \LevelFour{Configuration}
 \begin{Configuration}
 
@@ -37,3 +27,24 @@ Customize global chat style, and also allow players to use \ic{/chat style} to s
     }
 
 \end{Configuration}
+
+\begin{example}{Set prefix and suffix for players}
+    Luckperms is required to set \ttt{prefix} and \ttt{suffix}. \\
+    \\
+    After you installed \ttt{luckperms} mod, just issue \ic{/lp group default meta setprefix <yellow>[awesome]} to assign prefix. \\
+    Don't forget to insert \ph{fuji:player\_prefix} and \ph{fuji:player\_suffix} in \ttt{sender} option in configuration file, and issue \ic{/fuji reload}
+\end{example}
+
+\LevelFour{Example}
+\begin{example}{Set per-player chat style}
+    \ic{/chat style set prefix + \%message\% + suffix}
+\end{example}
+
+\begin{example}{Reset per-player chat style}
+    \ic{/chat style reset}
+\end{example}
+
+\begin{example}{Use chat stripe module to control the style tags usage}
+    By default, the \ttt{chat style} module allows any player to use any \ttt{style tags} in chat message, including \str{<click>} tag.\\
+    See~\nameref{ch:chat_stripe}
+\end{example}
