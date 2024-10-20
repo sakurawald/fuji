@@ -51,7 +51,7 @@ public class StyleStriper {
             tags.add(tag);
         }
 
-        LogUtil.debug("resolve tags: {}", tags);
+        LogUtil.debug("resolve style tags: {}", tags);
         return tags;
     }
 

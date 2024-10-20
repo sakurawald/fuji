@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-@Mixin(value = ServerPlayNetworkHandler.class, priority = 1000 + 500)
+@Mixin(value = ServerPlayNetworkHandler.class, priority = 1000 + 750)
 public abstract class ServerPlayNetworkHandlerMixin {
 
     @Unique
