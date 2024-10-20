@@ -160,6 +160,7 @@
   "warp.set.fail.need_override": "<red>Warp %s существует, необходимо добавить аргумент `--override true`, чтобы переопределить его.",
   "warp.set.success": "<gold>Warp %s set.",
   "warp.unset.success": "<gold>Warp %s удален.",
+  "warp.gui.title": "<blue>Warps",
   "works.list.add": "<#FFA1F5>Добавить работу",
   "works.list.all_works": "<#FFA1F5>Все работы",
   "works.list.help.lore": "<green> - щелчок левой кнопкой мыши -> Открыть общие настройки\n<green> - Правый клик -> Открыть общие настройки\n<green> - Shift + правый клик -> Открыть специализированные настройки",

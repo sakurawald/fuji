@@ -27,7 +27,7 @@ public enum HeightFindingStrategy implements HeightFinder {
     }
 
     private static int computeMaxY(@NotNull Chunk chunk) {
-        final int maxY = chunk.getTopY();
+        final int maxY = chunk.getTopYInclusive();
         ChunkSection[] sections = chunk.getSectionArray();
         int maxSectionIndex = Math.min(sections.length - 1, maxY >> 4);
 
@@ -106,7 +106,7 @@ public enum HeightFindingStrategy implements HeightFinder {
 
     public static int getChunkHighestNonEmptySectionYOffsetOrTopY(@NotNull Chunk chunk) {
         int i = chunk.getHighestNonEmptySection();
-        return i == chunk.getTopY() ? chunk.getBottomY() : ChunkSectionPos.getBlockCoord(chunk.sectionIndexToCoord(i));
+        return i == chunk.getTopYInclusive() ? chunk.getBottomY() : ChunkSectionPos.getBlockCoord(chunk.sectionIndexToCoord(i));
     }
 
     @Override
