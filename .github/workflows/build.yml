@@ -66,7 +66,10 @@ jobs:
             build/libs/!(*-@(dev|sources|javadoc)).jar
             build/libs/*-@(dev|sources|javadocs).jar
 
+          game-version-filter: any
+
           version-type: beta
+
           changelog-file: CHANGELOG.md
 
           modrinth-id: 1TowMm2v
