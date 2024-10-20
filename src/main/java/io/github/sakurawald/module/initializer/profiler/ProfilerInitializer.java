@@ -1,8 +1,9 @@
 package io.github.sakurawald.module.initializer.profiler;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -35,6 +36,7 @@ public class ProfilerInitializer extends ModuleInitializer {
     }
 
     @CommandNode("profiler")
+    @Document("Query the server health status.")
     private static int $profiler(@CommandSource CommandContext<ServerCommandSource> ctx) {
         ServerCommandSource source = ctx.getSource();
         CompletableFuture.runAsync(() -> {
@@ -47,7 +49,7 @@ public class ProfilerInitializer extends ModuleInitializer {
             String vmVersion = ManagementFactory.getRuntimeMXBean().getVmVersion();
 
             /* gc */
-            MutableText gcText = LocaleHelper.getTextByKey(source, "profiler.format.gc.head").copy();
+            MutableText gcText = TextHelper.getTextByKey(source, "profiler.format.gc.head").copy();
             List<GarbageCollectorMXBean> gcMXBeans = ManagementFactory.getGarbageCollectorMXBeans();
 
             long uptime = ManagementFactory.getRuntimeMXBean().getUptime();
@@ -60,12 +62,12 @@ public class ProfilerInitializer extends ModuleInitializer {
                 double avgFrequency = (double) uptime / totalGcCount / 1000;
                 double avgTime = (double) totalGcTime / totalGcCount;
 
-                gcText = gcText.append(LocaleHelper.getTextByKey(source, i == gcMXBeans.size() - 1 ? "profiler.format.gc.last" : "profiler.format.gc.no_last", name, avgFrequency, avgTime, totalGcCount, totalGcTime));
+                gcText = gcText.append(TextHelper.getTextByKey(source, i == gcMXBeans.size() - 1 ? "profiler.format.gc.last" : "profiler.format.gc.no_last", name, avgFrequency, avgTime, totalGcCount, totalGcTime));
                 i++;
             }
 
             /* mem */
-            MutableText memText = LocaleHelper.getTextByKey(source, "profiler.format.mem.head").copy();
+            MutableText memText = TextHelper.getTextByKey(source, "profiler.format.mem.head").copy();
             List<MemoryPoolMXBean> memoryPoolMXBeans = ManagementFactory.getMemoryPoolMXBeans();
             i = 0;
             for (MemoryPoolMXBean memoryPoolMXBean : memoryPoolMXBeans) {
@@ -76,18 +78,18 @@ public class ProfilerInitializer extends ModuleInitializer {
                 String used = formatBytes(memoryUsage.getUsed());
                 String committed = formatBytes(memoryUsage.getCommitted());
                 String max = formatBytes(memoryUsage.getMax());
-                memText = memText.append(LocaleHelper.getTextByKey(source, i == memoryPoolMXBeans.size() - 1 ? "profiler.format.mem.last" : "profiler.format.mem.no_last", name, type, init, used, committed, max));
+                memText = memText.append(TextHelper.getTextByKey(source, i == memoryPoolMXBeans.size() - 1 ? "profiler.format.mem.last" : "profiler.format.mem.no_last", name, type, init, used, committed, max));
                 i++;
             }
 
             /* output */
-            MutableText formatText = LocaleHelper.getTextByKey(source, "profiler.format"
+            MutableText formatText = TextHelper.getTextByKey(source, "profiler.format"
                 , os_name, os_version, os_arch
                 , vmName, vmVersion).copy();
             source.sendMessage(
                 formatText
-                    .append(LocaleHelper.TEXT_NEWLINE).append(memText)
-                    .append(LocaleHelper.TEXT_NEWLINE).append(gcText));
+                    .append(TextHelper.TEXT_NEWLINE).append(memText)
+                    .append(TextHelper.TEXT_NEWLINE).append(gcText));
         });
 
         return CommandHelper.Return.SUCCESS;

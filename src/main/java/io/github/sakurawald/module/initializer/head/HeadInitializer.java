@@ -3,6 +3,7 @@ package io.github.sakurawald.module.initializer.head;
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.annotation.Cite;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -26,6 +27,7 @@ public class HeadInitializer extends ModuleInitializer {
 
     @CommandNode("sync")
     @CommandRequirement(level = 4)
+    @Document("Download the head database from the internet. (You need to delete the existing head database file.)")
     private static int $sync(@CommandSource CommandContext<ServerCommandSource> ctx) {
         HeadProvider.fetchData();
         return CommandHelper.Return.SUCCESS;

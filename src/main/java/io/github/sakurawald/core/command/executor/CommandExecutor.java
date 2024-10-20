@@ -2,8 +2,8 @@ package io.github.sakurawald.core.command.executor;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.structure.ExtendedCommandSource;
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.NotNull;
@@ -33,11 +33,11 @@ public class CommandExecutor {
             return Objects.requireNonNull(ServerHelper.getCommandDispatcher()).execute(command, context.getExecutingSource());
         } catch (CommandSyntaxException e) {
             // echo to the executing source
-            LocaleHelper.sendMessageByKey(context.getExecutingSource(), "command.execute.echo.executing_source", command, e.getMessage());
+            TextHelper.sendMessageByKey(context.getExecutingSource(), "command.execute.echo.executing_source", command, e.getMessage());
 
             // echo to the initiating source
             if (!context.sameSource()) {
-                LocaleHelper.sendMessageByKey(context.getInitiatingSource(), "command.execute.echo.initiating_source", command, context.getExecutingSource().getName(), e.getMessage());
+                TextHelper.sendMessageByKey(context.getInitiatingSource(), "command.execute.echo.initiating_source", command, context.getExecutingSource().getName(), e.getMessage());
             }
         }
 

@@ -1,10 +1,11 @@
 package io.github.sakurawald.module.initializer.kit;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -91,6 +92,7 @@ public class KitInitializer extends ModuleInitializer {
     }
 
     @CommandNode("editor")
+    @Document("Open the kit editor gui.")
     private static int $editor(@CommandSource ServerPlayerEntity player) {
         List<Kit> kits = readKits();
         new KitEditorGui(player, kits, 0).open();
@@ -98,10 +100,11 @@ public class KitInitializer extends ModuleInitializer {
     }
 
     @CommandNode("give")
+    @Document("Give a kit to a player.")
     private static int $give(@CommandSource ServerCommandSource source, ServerPlayerEntity player, KitName kit) {
         /* verify */
         if (Files.notExists(computePath(kit.getValue()))) {
-            LocaleHelper.sendMessageByKey(source, "kit.kit.empty");
+            TextHelper.sendMessageByKey(source, "kit.kit.empty");
             return CommandHelper.Return.FAIL;
         }
 

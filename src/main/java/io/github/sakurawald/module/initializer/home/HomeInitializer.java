@@ -2,15 +2,14 @@ package io.github.sakurawald.module.initializer.home;
 
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.exception.AbortCommandExecutionException;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
-import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.home.command.argument.wrapper.HomeName;
@@ -27,6 +26,7 @@ public class HomeInitializer extends ModuleInitializer {
 
     @Getter
     private static final BaseConfigurationHandler<HomeDataModel> storage = new ObjectConfigurationHandler<>("home.json", HomeDataModel.class)
+        .autoSaveEveryMinute()
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("home.json"), HomeInitializer.class));
 
     public static Map<String, SpatialPose> withHomes(@NotNull ServerPlayerEntity player) {
@@ -49,7 +49,7 @@ public class HomeInitializer extends ModuleInitializer {
 
     private static void ensureHomeExists(ServerPlayerEntity player, Map<String, SpatialPose> homes, String homeName) {
         if (!homes.containsKey(homeName)) {
-            LocaleHelper.sendMessageByKey(player, "home.not_found", homeName);
+            TextHelper.sendMessageByKey(player, "home.not_found", homeName);
             throw new AbortCommandExecutionException();
         }
     }
@@ -61,7 +61,7 @@ public class HomeInitializer extends ModuleInitializer {
         ensureHomeExists(player, homes, homeName);
 
         homes.remove(homeName);
-        LocaleHelper.sendMessageByKey(player, "home.unset.success", homeName);
+        TextHelper.sendMessageByKey(player, "home.unset.success", homeName);
         return CommandHelper.Return.SUCCESS;
     }
 
@@ -72,30 +72,26 @@ public class HomeInitializer extends ModuleInitializer {
 
         if (name2position.containsKey(homeName)) {
             if (!override.orElse(false)) {
-                LocaleHelper.sendMessageByKey(player, "home.set.fail.need_override", homeName);
+                TextHelper.sendMessageByKey(player, "home.set.fail.need_override", homeName);
                 return CommandHelper.Return.FAIL;
             }
         }
 
         Optional<Integer> limit = PermissionHelper.getMeta(player.getUuid(), "fuji.home.home_limit", Integer::valueOf);
         if (limit.isPresent() && name2position.size() >= limit.get()) {
-            LocaleHelper.sendMessageByKey(player, "home.set.fail.limit");
+            TextHelper.sendMessageByKey(player, "home.set.fail.limit");
             return CommandHelper.Return.FAIL;
         }
 
         name2position.put(homeName, SpatialPose.of(player));
-        LocaleHelper.sendMessageByKey(player, "home.set.success", homeName);
+        TextHelper.sendMessageByKey(player, "home.set.success", homeName);
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("home list")
     private static int $list(@CommandSource ServerPlayerEntity player) {
-        LocaleHelper.sendMessageByKey(player, "home.list", withHomes(player).keySet());
+        TextHelper.sendMessageByKey(player, "home.list", withHomes(player).keySet());
         return CommandHelper.Return.SUCCESS;
-    }
-
-    protected void onInitialize() {
-        storage.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
     }
 
 }

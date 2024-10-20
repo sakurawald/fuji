@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.command_permission;
 
 import io.github.sakurawald.core.annotation.Cite;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -27,6 +28,7 @@ import java.util.function.Predicate;
 public class CommandPermissionInitializer extends ModuleInitializer {
 
     @CommandNode
+    @Document("Open the command permission gui.")
     public static int gui(@CommandSource ServerPlayerEntity player) {
         List<CommandNodePermission> entities = CommandHelper.getCommandNodes().stream()
             .map(CommandNodePermission::new)

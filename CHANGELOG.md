@@ -1,18 +1,22 @@
 > The version number of fuji follows `semver` now: https://semver.org/ 
  
-> This version including the following **breaking changes** is you are using them:
-> - In this version, the `chat related modules` are divided into small pieces, and intended to work with other chat-related mods, like: patbox's  `styled chat`.
->   - feature: split the `sender` and `content` in message, instead of encode the `sender` into the `content`, making it compatibility with other `chat linking mods`. (chat.style module)
->   - feature: make the joint-point of `chat.style module` more precises, with better compatibility.
->   - feature: extract `rewrite feature` from `chat.style module` into `chat.rewrite module`, making it possible to use with other chat-related mods.
->   - feature: extract `mention player feature` from `chat.style module` into `chat.mention module`, making it possible to use with other chat-related mods.
->   - feature: extract `chat spy feature` from `chat.style module` into `chat.spy module`, making it possible to use with other chat related mods.
->   - refactor: move `%fuji:player_prefix%`, `%fuji:player_suffix%` and `%fuji:pos%` placeholders from `chat.style module` into `placeholder module`.
->   - refactor: rename `/chat format` into `/chat style`. (chat.style module)
+> This version including the following **breaking changes** if you are using them:
+> - refactor: lower the power of `chat.style content parser`.
+>   - remove: the ability to parse `markdown language`. (This can be done via command rewrite if necessary, avoids the bypass of the usage of style tags.)
+>   - remove: the ability to parse `placeholders`, avoids the abuse of evaluating placeholders in chat message sent by players.
+> - refactor: set the default requirement of level permission to 4 for `/lore` command. (command_toolbox.lore module)
+> - refactor: set the default requirement of level permission to 4 for `/repair` command. (command_toolbox.repair module)
 
-
-- feature: add `/fuji inspect registry` command, to list all registries in the server, including static registries and dynamic registries.
-- feature: add `token replacement` for `chat.display module`, making it possible to use with other chat-related mods.
-- feature: support deeper-level style passing in language file when replacing texts.
-- feature: lazy computation for text replacement in language file.
-- fix: accessing legacy random source from multiple threads in `mention player task`.
+- feature: add `document string` for `/fuji inspect fuji-commands`, making all commands registered by fuji `self-explanatory`, with explanation of `function` and `argument`.
+- feature: add `gui support` for `/warp` command. (warp module)
+  - add `/warp set-name` to set the display name of a warp.
+  - add `/warp set-item` to set the item of a warp.
+  - add `/warp set-lore` to set the lore of a warp.
+- feature: add new module `chat.stripe` to stripe `style tags` based on permissions, making it possible to control the usage of style tags. (chat.stripe module)
+- feature: add `requires_corresponding_permission_to_use_style_tag` option for `color.anvil` and `color.sign` module. (color module)
+- feature: add the ability to `cancel` a system message. (system_message module)
+- feature: add `transform nickname` option, which allows to add prefix, suffix and truncate the input nickname. (nickname module)
+- feature: skip un-necessary re-draw for `/fuji inspect configuration` and `/fuji inspect registry`. (fuji module)
+- build: improve the github templates to use new features provided by github, providing a better experience for user feedback.
+- docs: enrich the `chat` modules.
+- fix: should not warn the console about `required mods not installed` if the related module is disabled in `config/fuji/config.json`. (carpet module)

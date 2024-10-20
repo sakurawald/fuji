@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.command_meta.attachment;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -31,7 +31,7 @@ public class AttachmentInitializer extends ModuleInitializer {
     @CommandNode("unset")
     private static int unset(@CommandSource CommandContext<ServerCommandSource> ctx, SubjectName subject, SubjectId uuid) {
         boolean flag = Managers.getAttachmentManager().unsetAttachment(subject.getValue(), uuid.getValue());
-        LocaleHelper.sendMessageByKey(ctx.getSource(), flag ? "operation.success" : "operation.fail");
+        TextHelper.sendMessageByKey(ctx.getSource(), flag ? "operation.success" : "operation.fail");
         return CommandHelper.Return.SUCCESS;
     }
 

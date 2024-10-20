@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.placeholder.gui;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.gui.PagedGui;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -17,7 +17,7 @@ import java.util.List;
 public class PlaceholderGui extends PagedGui<Identifier> {
 
     public PlaceholderGui(ServerPlayerEntity player, @NotNull List<Identifier> entities, int pageIndex) {
-        super(null, player, LocaleHelper.getTextByKey(player, "placeholder.list.gui.title"), entities, pageIndex);
+        super(null, player, TextHelper.getTextByKey(player, "placeholder.list.gui.title"), entities, pageIndex);
     }
 
     @Override

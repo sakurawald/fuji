@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.echo.send_title;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -33,8 +33,8 @@ public class SendTitleInitializer extends ModuleInitializer {
         int $stayTicks = stayTicks.orElse(70);
         int $fadeOutTicks = fadeOutTicks.orElse(20);
 
-        Text mainTitleComponent = LocaleHelper.getTextByValue(player, $mainTitle);
-        Text subTitleComponent = LocaleHelper.getTextByValue(player, $subTitle);
+        Text mainTitleComponent = TextHelper.getTextByValue(player, $mainTitle);
+        Text subTitleComponent = TextHelper.getTextByValue(player, $subTitle);
 
         player.networkHandler.sendPacket(new TitleFadeS2CPacket($fadeInTicks, $stayTicks, $fadeOutTicks));
         player.networkHandler.sendPacket(new TitleS2CPacket(mainTitleComponent));

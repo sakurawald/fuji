@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.command_warmup;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.command_warmup.CommandWarmupInitializer;
 import io.github.sakurawald.module.initializer.command_warmup.structure.CommandWarmupNode;
@@ -33,7 +33,7 @@ public abstract class ServerPlayNetworkHandlerMixin {
                 Managers.getBossBarManager().addTicket(CommandWarmupTicket.make(player, command, entry));
 
                 if (config.warn_for_move) {
-                    LocaleHelper.sendActionBarByKey(player, "command_warmup.warn_for_move", entry.getInterruptible().getInterruptDistance());
+                    TextHelper.sendActionBarByKey(player, "command_warmup.warn_for_move", entry.getInterruptible().getInterruptDistance());
                 }
 
                 ci.cancel();

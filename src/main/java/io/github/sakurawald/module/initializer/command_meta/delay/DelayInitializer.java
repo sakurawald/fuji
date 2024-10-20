@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.command_meta.delay;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -21,6 +22,7 @@ public class DelayInitializer extends ModuleInitializer {
 
     @CommandNode("delay")
     @CommandRequirement(level = 4)
+    @Document("Execute a command in seconds.")
     private static int delay(@CommandSource ServerCommandSource source, int time, GreedyString rest) {
 
         String $rest = rest.getValue();

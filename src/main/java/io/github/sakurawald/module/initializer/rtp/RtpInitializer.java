@@ -1,8 +1,9 @@
 package io.github.sakurawald.module.initializer.rtp;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.Dimension;
@@ -30,7 +31,7 @@ public class RtpInitializer extends ModuleInitializer {
 
         Optional<TeleportSetup> first = list.stream().filter(o -> o.getDimension().equals(dimension)).findFirst();
         if (first.isEmpty()) {
-            LocaleHelper.sendMessageByKey(player, "rtp.dimension.disallow", RegistryHelper.ofString(world));
+            TextHelper.sendMessageByKey(player, "rtp.dimension.disallow", RegistryHelper.ofString(world));
             throw new AbortCommandExecutionException();
         }
 
@@ -38,12 +39,13 @@ public class RtpInitializer extends ModuleInitializer {
     }
 
     @CommandNode("rtp")
+    @Document("Random rtp in specified dimension.")
     private static int $rtp(@CommandSource ServerPlayerEntity player, Optional<Dimension> dimension) {
         ServerWorld serverWorld = dimension.isPresent() ? dimension.get().getValue() : player.getServerWorld();
         TeleportSetup setup = withTeleportSetup(player, serverWorld);
 
-        LocaleHelper.sendActionBarByKey(player, "rtp.tip");
-        RandomTeleporter.request(player, setup, (position) -> LocaleHelper.sendMessageByKey(player, "rtp.success"));
+        TextHelper.sendActionBarByKey(player, "rtp.tip");
+        RandomTeleporter.request(player, setup, (position) -> TextHelper.sendMessageByKey(player, "rtp.success"));
         return CommandHelper.Return.SUCCESS;
     }
 }

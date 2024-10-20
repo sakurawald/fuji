@@ -1,7 +1,8 @@
 package io.github.sakurawald.module.initializer.top_chunks;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
@@ -34,6 +35,7 @@ public class TopChunksInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<TopChunksConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, TopChunksConfigModel.class);
 
     @CommandNode("chunks")
+    @Document("List all chunks ordered by lag score.")
     private static int $chunks(@CommandSource ServerCommandSource source) {
         CompletableFuture.runAsync(() -> {
 
@@ -81,15 +83,15 @@ public class TopChunksInitializer extends ModuleInitializer {
             for (int j = 0; j < config.top.rows; j++) {
                 for (int i = 0; i < config.top.columns; i++) {
                     if (PQ.isEmpty()) break outer;
-                    textComponentBuilder.append(PQ.poll().asText(source)).append(LocaleHelper.TEXT_SPACE);
+                    textComponentBuilder.append(PQ.poll().asText(source)).append(TextHelper.TEXT_SPACE);
                 }
-                textComponentBuilder.append(LocaleHelper.TEXT_NEWLINE);
+                textComponentBuilder.append(TextHelper.TEXT_NEWLINE);
             }
             source.sendMessage(textComponentBuilder);
 
             /* send click prompt */
             if (source.getPlayer() != null && ChunkScore.hasPermissionToClickToTeleport(source.getPlayer())) {
-                LocaleHelper.sendMessageByKey(source, "prompt.click.teleport");
+                TextHelper.sendMessageByKey(source, "prompt.click.teleport");
             }
         });
 
@@ -106,7 +108,7 @@ public class TopChunksInitializer extends ModuleInitializer {
             BlockPos blockPos = chunkPos.getStartPos();
             PlayerEntity nearestPlayer = world.getClosestPlayer(blockPos.getX(), blockPos.getY(), blockPos.getZ(), config.model().nearest_distance, false);
             if (nearestPlayer != null) {
-                chunkScore.getPlayers().add(LocaleHelper.getValue(source, "top_chunks.prop.players.nearest", nearestPlayer.getGameProfile().getName()));
+                chunkScore.getPlayers().add(TextHelper.getValue(source, "top_chunks.prop.players.nearest", nearestPlayer.getGameProfile().getName()));
             }
         }
     }

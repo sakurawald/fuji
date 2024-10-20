@@ -8,6 +8,7 @@ chat.history
 chat.mention
 chat.rewrite
 chat.spy
+chat.stripe
 chat.style
 cleaner
 color

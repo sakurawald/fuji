@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.heal;
 
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -22,7 +22,7 @@ public class HealInitializer extends ModuleInitializer {
     @CommandRequirement(level = 4)
     private static int $heal(@CommandSource ServerCommandSource source, ServerPlayerEntity target) {
         target.setHealth(target.getMaxHealth());
-        LocaleHelper.sendMessageByKey(target, "heal");
+        TextHelper.sendMessageByKey(target, "heal");
         return CommandHelper.Return.SUCCESS;
     }
 

@@ -112,7 +112,7 @@ public class CommandHelper {
         public static int playerOnlyCommand(@NotNull CommandContext<ServerCommandSource> ctx, @NotNull Function<ServerPlayerEntity, Integer> function) {
             ServerPlayerEntity player = ctx.getSource().getPlayer();
             if (player == null) {
-                LocaleHelper.sendMessageByKey(ctx.getSource(), "command.player_only");
+                TextHelper.sendMessageByKey(ctx.getSource(), "command.player_only");
                 return Return.SUCCESS;
             }
 
@@ -123,7 +123,7 @@ public class CommandHelper {
             return playerOnlyCommand(ctx, player -> {
                 ItemStack mainHandStack = player.getMainHandStack();
                 if (mainHandStack.isEmpty()) {
-                    LocaleHelper.sendMessageByKey(player, "item.empty.not_allow");
+                    TextHelper.sendMessageByKey(player, "item.empty.not_allow");
                     return Return.FAIL;
                 }
                 return consumer.apply(player, mainHandStack);

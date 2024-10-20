@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.command_meta.chain;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -18,6 +19,7 @@ public class ChainInitializer extends ModuleInitializer {
 
     @CommandNode("chain")
     @CommandRequirement(level = 4)
+    @Document("Chain commands and executes them in sequence, the chain will break if the previous one command fails.")
     private static int chain(@CommandSource ServerCommandSource source, GreedyString rest) {
 
         String $rest = rest.getValue();

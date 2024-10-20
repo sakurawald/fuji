@@ -1,10 +1,11 @@
 package io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
@@ -66,7 +67,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
 
                             /* kill all fake players due to expiration */
                             fakePlayer.kill();
-                            LocaleHelper.sendBroadcastByKey("fake_player_manager.kick_for_expiration", fakePlayer.getGameProfile().getName(), ownerPlayerName);
+                            TextHelper.sendBroadcastByKey("fake_player_manager.kick_for_expiration", fakePlayer.getGameProfile().getName(), ownerPlayerName);
                             return false;
                         }
 
@@ -76,7 +77,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
                             return true;
                         } else {
                             fakePlayer.kill();
-                            LocaleHelper.sendBroadcastByKey("fake_player_manager.kick_for_amount", fakePlayer.getGameProfile().getName(), ownerPlayerName);
+                            TextHelper.sendBroadcastByKey("fake_player_manager.kick_for_amount", fakePlayer.getGameProfile().getName(), ownerPlayerName);
                             return false;
                         }
 
@@ -89,12 +90,14 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
     }
 
     @CommandNode("player renew")
+    @Document("Renew the expiration time of all fake-players spawned by you.")
     private static int $renew(@CommandSource ServerPlayerEntity player) {
         renewMyFakePlayers(player);
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("player who")
+    @Document("List all fake-players and its owner.")
     private static int $who(@CommandSource CommandContext<ServerCommandSource> context) {
         /* make table */
         StringBuilder body = new StringBuilder();
@@ -104,7 +107,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         /* make text */
         ServerCommandSource source = context.getSource();
         source.sendMessage(
-            LocaleHelper.getTextByKey(source, "fake_player_manager.who.header")
+            TextHelper.getTextByKey(source, "fake_player_manager.who.header")
                 .copy()
                 .append(Text.literal(body.toString())));
         return CommandHelper.Return.SUCCESS;
@@ -115,7 +118,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
         long newExpiration = System.currentTimeMillis() + renewDuration;
         player2expiration.put(player.getGameProfile().getName(), newExpiration);
 
-        LocaleHelper.sendMessageByKey(player, "fake_player_manager.renew.success", DateUtil.toStandardDateFormat(newExpiration));
+        TextHelper.sendMessageByKey(player, "fake_player_manager.renew.success", DateUtil.toStandardDateFormat(newExpiration));
     }
 
     public static void invalidFakePlayers() {

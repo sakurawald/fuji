@@ -1,9 +1,10 @@
 package io.github.sakurawald.module.initializer.cleaner;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
@@ -66,6 +67,7 @@ public class CleanerInitializer extends ModuleInitializer {
     }
 
     @CommandNode("clean")
+    @Document("Trigger the cleaner manually.")
     public static int clean() {
         CompletableFuture.runAsync(() -> {
             Map<String, Integer> counter = new HashMap<>();
@@ -108,7 +110,7 @@ public class CleanerInitializer extends ModuleInitializer {
 
         for (ServerPlayerEntity player : ServerHelper.getPlayers()) {
             MutableText text = Text.empty()
-                .append(LocaleHelper.getTextByKey(player, "cleaner.broadcast", counter.values().stream().mapToInt(Integer::intValue).sum()))
+                .append(TextHelper.getTextByKey(player, "cleaner.broadcast", counter.values().stream().mapToInt(Integer::intValue).sum()))
                 .fillStyle(
                     Style.EMPTY
                         .withHoverEvent(new net.minecraft.text.HoverEvent(net.minecraft.text.HoverEvent.Action.SHOW_TEXT, hoverText)));

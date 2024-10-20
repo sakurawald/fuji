@@ -34,7 +34,7 @@ public class InventoryDisplayGui extends BaseDisplayGui {
         gui.setTitle(this.title);
 
         for (int i = 0; i < LINE_SIZE * 2; i++) {
-            gui.setSlot(i, GuiHelper.Item.PLACEHOLDER);
+            gui.setSlot(i, GuiHelper.makeSlotPlaceholder().getItemStack());
         }
 
         /* construct armor */

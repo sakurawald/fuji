@@ -208,6 +208,14 @@ tasks.register('compileLatex') {
 }
 tasks.compileLatex.dependsOn(processLatex)
 
+/* ensure the file is not locked */
+
+tasks.register('deleteWorldLockFile') {
+    outputs.upToDateWhen { false }
+    delete(file("$projectDir/run/world/session.lock"))
+}
+tasks.runServer.dependsOn(deleteWorldLockFile)
+
 /* generate graph */
 tasks.runServer.dependsOn(check)
 

@@ -4,8 +4,8 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.gui.PagedGui;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
@@ -25,25 +25,25 @@ import java.util.List;
 public class WorksGui extends PagedGui<Work> {
 
     public WorksGui(ServerPlayerEntity player, @NotNull List<Work> entities, int pageIndex) {
-        super(null, player, LocaleHelper.getTextByKey(player, "works.list.title"), entities, pageIndex);
+        super(null, player, TextHelper.getTextByKey(player, "works.list.title"), entities, pageIndex);
 
         getFooter().setSlot(3, GuiHelper.makeAddButton(player)
-            .setName(LocaleHelper.getTextByKey(player, "works.list.add"))
+            .setName(TextHelper.getTextByKey(player, "works.list.add"))
             .setCallback(() -> new AddWorkGui(player).open())
         );
         getFooter().setSlot(4, GuiHelper.makeHelpButton(player)
-            .setLore(LocaleHelper.getTextListByKey(player, "works.list.help.lore")));
+            .setLore(TextHelper.getTextListByKey(player, "works.list.help.lore")));
 
         if (entities == WorksInitializer.works.model().works) {
             getFooter().setSlot(5,
                 GuiHelper.makeLetterAButton(player)
-                    .setName(LocaleHelper.getTextByKey(player, "works.list.my_works"))
+                    .setName(TextHelper.getTextByKey(player, "works.list.my_works"))
                     .setCallback(() -> search(player.getGameProfile().getName()).open())
             );
         } else {
             getFooter().setSlot(5,
                 GuiHelper.makeHeartButton(player)
-                    .setName(LocaleHelper.getTextByKey(player, "works.list.all_works"))
+                    .setName(TextHelper.getTextByKey(player, "works.list.all_works"))
                     .setCallback(() -> new WorksGui(player, WorksInitializer.works.model().works, 0).open())
             );
         }
@@ -64,7 +64,7 @@ public class WorksGui extends PagedGui<Work> {
         ServerPlayerEntity player = getPlayer();
         return new GuiElementBuilder()
             .setItem(entity.getIconItem())
-            .setName(LocaleHelper.getTextByValue(null, entity.name))
+            .setName(TextHelper.getTextByValue(null, entity.name))
             .setLore(entity.asLore(player))
             .setCallback((index, clickType, actionType) -> {
                 /* left click -> visit */
@@ -74,7 +74,7 @@ public class WorksGui extends PagedGui<Work> {
                     if (level != null) {
                         player.teleport(level, entity.x, entity.y, entity.z, entity.yaw, entity.pitch);
                     } else {
-                        LocaleHelper.sendMessageByKey(player, "world.dimension.not_found", entity.level);
+                        TextHelper.sendMessageByKey(player, "world.dimension.not_found", entity.level);
                     }
 
                     this.close();
@@ -83,7 +83,7 @@ public class WorksGui extends PagedGui<Work> {
                 /* shift + right click -> specialized settings */
                 if (clickType.isRight && clickType.shift) {
                     if (!hasPermission(player, entity)) {
-                        LocaleHelper.sendActionBarByKey(player, "works.work.set.no_perm");
+                        TextHelper.sendActionBarByKey(player, "works.work.set.no_perm");
                         return;
                     }
                     entity.openSpecializedSettingsGui(player, gui);
@@ -94,7 +94,7 @@ public class WorksGui extends PagedGui<Work> {
                 if (clickType.isRight) {
                     // check permission
                     if (!hasPermission(player, entity)) {
-                        LocaleHelper.sendActionBarByKey(player, "works.work.set.no_perm");
+                        TextHelper.sendActionBarByKey(player, "works.work.set.no_perm");
                         return;
                     }
                     entity.openGeneralSettingsGui(player, gui);

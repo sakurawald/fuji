@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.command_bundle;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -29,6 +30,7 @@ public class CommandBundleInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<CommandBundleConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, CommandBundleConfigModel.class);
 
     @CommandNode("register")
+    @Document("Register all commands defined in bundle-command configuration file.")
     private static int registerAllBundleCommands() {
         LogUtil.info("register bundle commands.");
 
@@ -40,6 +42,7 @@ public class CommandBundleInitializer extends ModuleInitializer {
     }
 
     @CommandNode("un-register")
+    @Document("Un-register all bundle-commands registered in server.")
     private static int unregisterAllBundleCommands() {
         LogUtil.info("un-register bundle commands.");
 
@@ -52,6 +55,7 @@ public class CommandBundleInitializer extends ModuleInitializer {
     }
 
     @CommandNode("list")
+    @Document("List all registered bundle-commands in server.")
     private static int list(@CommandSource CommandContext<ServerCommandSource> ctx) {
         Stream<CommandDescriptor> commandDescriptorStream = CommandAnnotationProcessor.descriptors
             .stream()

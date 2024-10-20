@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.echo.send_bossbar.structure;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.argument.wrapper.StepType;
 import io.github.sakurawald.core.manager.impl.bossbar.BossBarTicket;
 import net.minecraft.entity.boss.BossBar;
@@ -35,7 +35,7 @@ public class SendBossbarTicket extends BossBarTicket {
             .replace("[total_time]", String.valueOf(totalSecond))
             .replace("[elapsed_time]", String.valueOf(elapsedSeconds))
             .replace("[left_time]", String.valueOf(leftSeconds));
-        Text title = LocaleHelper.getTextByValue(this.player, timeStr);
+        Text title = TextHelper.getTextByValue(this.player, timeStr);
         this.getBossBar().setName(title);
 
         this.elapsedTicks++;

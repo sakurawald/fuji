@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.command_scheduler.gui;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.gui.PagedGui;
 import io.github.sakurawald.module.initializer.command_scheduler.structure.Job;
 import net.minecraft.item.Item;
@@ -18,7 +18,7 @@ import java.util.List;
 public class JobGui extends PagedGui<Job> {
 
     public JobGui(ServerPlayerEntity player, @NotNull List<Job> entities, int pageIndex) {
-        super(null, player, LocaleHelper.getTextByKey(player, "job.list.gui.title"), entities, pageIndex);
+        super(null, player, TextHelper.getTextByKey(player, "job.list.gui.title"), entities, pageIndex);
     }
 
     @Override
@@ -32,8 +32,8 @@ public class JobGui extends PagedGui<Job> {
             .setName(Text.literal(entity.getName()))
             .setItem(this.computeItem(entity))
             .setLore(List.of(
-                LocaleHelper.getTextByKey(getPlayer(), "job.props.enabled", entity.isEnable())
-                , LocaleHelper.getTextByKey(getPlayer(), "job.props.left_times", entity.getLeftTimes())
+                TextHelper.getTextByKey(getPlayer(), "job.props.enabled", entity.isEnable())
+                , TextHelper.getTextByKey(getPlayer(), "job.props.left_times", entity.getLeftTimes())
             ))
             .build();
     }

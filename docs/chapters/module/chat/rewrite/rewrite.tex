@@ -1,0 +1,22 @@
+\LevelThree{rewrite}\label{ch:chat_rewrite}
+\LevelFour{Purpose}
+Allow you to define \ttt{regex} to replace \ttt{chat message} sent by players.
+
+\LevelFour{Example}
+\begin{example}{Rewrite the \str{item} into \str{[item]} as a shortcut.}
+    \begin{json}
+    {
+        "regex": "(?<=^|\\s)item(?=\\s|$)",
+        "replacement": "[item]"
+    }
+    \end{json}
+\end{example}
+
+\begin{example}{Rewrite badwords as a message filter.}
+    \begin{json}
+    {
+        "regex": "(bad-word)|(bad-word-2)|(bad-word-3)",
+        "replacement": "<st>***</st>"
+    }
+    \end{json}
+\end{example}

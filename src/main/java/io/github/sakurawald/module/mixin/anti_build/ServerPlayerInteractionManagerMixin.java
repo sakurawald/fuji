@@ -1,7 +1,5 @@
 package io.github.sakurawald.module.mixin.anti_build;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.module.initializer.anti_build.AntiBuildInitializer;
 import net.minecraft.block.BlockState;
@@ -35,27 +33,16 @@ public class ServerPlayerInteractionManagerMixin {
     @Inject(method = "tryBreakBlock", at = @At("HEAD"), cancellable = true)
     void $tryBreak(BlockPos blockPos, @NotNull CallbackInfoReturnable<Boolean> cir) {
         BlockState blockState = this.world.getBlockState(blockPos);
-
         String id = RegistryHelper.ofString(blockState);
-        if (AntiBuildInitializer.config.model().anti.break_block.id.contains(id)
-            && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("break_block", id))
-        ) {
-            LocaleHelper.sendMessageByKey(player, "anti_build.disallow");
-            cir.setReturnValue(false);
-        }
 
+        AntiBuildInitializer.checkAntiBuild(player, "break_block", AntiBuildInitializer.config.model().anti.break_block.id, id, cir, false, () -> true);
     }
 
     @Inject(method = "interactItem", at = @At("HEAD"), cancellable = true)
     void $interactItem(ServerPlayerEntity serverPlayerEntity, World world, @NotNull ItemStack itemStack, Hand hand, @NotNull CallbackInfoReturnable<ActionResult> cir) {
         String id = RegistryHelper.ofString(itemStack);
 
-        if (AntiBuildInitializer.config.model().anti.interact_item.id.contains(id)
-            && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_item", id))
-        ) {
-            LocaleHelper.sendMessageByKey(player, "anti_build.disallow");
-            cir.setReturnValue(ActionResult.FAIL);
-        }
+        AntiBuildInitializer.checkAntiBuild(player, "interact_item", AntiBuildInitializer.config.model().anti.interact_item.id, id, cir, ActionResult.FAIL, () -> true);
     }
 
     @Inject(method = "interactBlock", at = @At("HEAD"), cancellable = true)
@@ -64,12 +51,7 @@ public class ServerPlayerInteractionManagerMixin {
         BlockState blockState = world.getBlockState(blockPos);
         String id = RegistryHelper.ofString(blockState);
 
-        if (AntiBuildInitializer.config.model().anti.interact_block.id.contains(id)
-            && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted("interact_block", id))
-        ) {
-            LocaleHelper.sendMessageByKey(player, "anti_build.disallow");
-            cir.setReturnValue(ActionResult.FAIL);
-        }
+        AntiBuildInitializer.checkAntiBuild(player, "interact_block", AntiBuildInitializer.config.model().anti.interact_block.id, id, cir, ActionResult.FAIL, () -> true);
     }
 
 }

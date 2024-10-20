@@ -2,7 +2,7 @@ package io.github.sakurawald.module.initializer.head.gui;
 
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.module.initializer.head.privoder.HeadProvider;
 import io.github.sakurawald.module.initializer.head.structure.Category;
 import io.github.sakurawald.module.initializer.head.structure.Head;
@@ -29,14 +29,14 @@ public class HeadGui extends SimpleGui {
             index++;
         }
 
-        this.setTitle(LocaleHelper.getTextByKey(player, "head.title"));
+        this.setTitle(TextHelper.getTextByKey(player, "head.title"));
         this.setSlot(this.getSize() - 1, new GuiElementBuilder()
             .setItem(Items.COMPASS)
-            .setName(LocaleHelper.getTextByKey(player, "search"))
+            .setName(TextHelper.getTextByKey(player, "search"))
             .setCallback(() -> new SearchHeadsInputGui(this).open()));
         this.setSlot(this.getSize() - 2, new GuiElementBuilder()
             .setItem(Items.PLAYER_HEAD)
-            .setName(LocaleHelper.getTextByKey(player, "head.category.player"))
+            .setName(TextHelper.getTextByKey(player, "head.category.player"))
             .setCallback(() -> new PlayerHeadGui(this).open()));
     }
 

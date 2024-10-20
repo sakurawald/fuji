@@ -4,7 +4,7 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.gui.InputSignGui;
 import io.github.sakurawald.core.gui.PagedGui;
 import io.github.sakurawald.module.initializer.kit.KitInitializer;
@@ -28,19 +28,19 @@ import java.util.List;
 public class KitEditorGui extends PagedGui<Kit> {
 
     public KitEditorGui(ServerPlayerEntity player, @NotNull List<Kit> entities, int pageIndex) {
-        super(null, player, LocaleHelper.getTextByKey(player, "kit.gui.editor.title"), entities, pageIndex);
+        super(null, player, TextHelper.getTextByKey(player, "kit.gui.editor.title"), entities, pageIndex);
 
         /* make footer */
         getFooter().setSlot(1, GuiHelper.makeHelpButton(player)
-            .setLore(LocaleHelper.getTextListByKey(player, "kit.gui.editor.help.lore")));
-        getFooter().setSlot(4, GuiHelper.makeAddButton(player).setCallback(() -> new InputSignGui(player, LocaleHelper.getTextByKey(player, "prompt.input.name")) {
+            .setLore(TextHelper.getTextListByKey(player, "kit.gui.editor.help.lore")));
+        getFooter().setSlot(4, GuiHelper.makeAddButton(player).setCallback(() -> new InputSignGui(player, TextHelper.getTextByKey(player, "prompt.input.name")) {
 
             @Override
             public void onClose() {
                 /* input kit name */
                 String name = getLine(0).getString().trim();
                 if (name.isEmpty()) {
-                    LocaleHelper.sendActionBarByKey(player, "operation.cancelled");
+                    TextHelper.sendActionBarByKey(player, "operation.cancelled");
                     return;
                 }
 
@@ -96,7 +96,7 @@ public class KitEditorGui extends PagedGui<Kit> {
                     KitInitializer.writeKit(kit.withStackList(itemStacks));
                 }
 
-            }, LocaleHelper.getTextByKey(player, "kit.gui.editor.kit.title", kit.getName()));
+            }, TextHelper.getTextByKey(player, "kit.gui.editor.kit.title", kit.getName()));
         player.openHandledScreen(simpleNamedScreenHandlerFactory);
     }
 
@@ -118,7 +118,7 @@ public class KitEditorGui extends PagedGui<Kit> {
                 if (event.shift && event.isRight) {
                     KitInitializer.deleteKit(entity.getName());
                     deleteEntity(entity);
-                    LocaleHelper.sendActionBarByKey(getPlayer(), "deleted");
+                    TextHelper.sendActionBarByKey(getPlayer(), "deleted");
                 }
 
             })

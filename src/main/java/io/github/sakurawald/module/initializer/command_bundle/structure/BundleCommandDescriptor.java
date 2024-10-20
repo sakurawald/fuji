@@ -5,7 +5,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.context.ParsedArgument;
 import com.mojang.brigadier.context.StringRange;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.core.command.executor.CommandExecutor;
@@ -106,7 +106,7 @@ public class BundleCommandDescriptor extends CommandDescriptor {
 
         /* substitute the placeholders */
         ServerCommandSource source = ctx.getSource();
-        commands = commands.stream().map(command -> LocaleHelper.resolvePlaceholder(source, command)).toList();
+        commands = commands.stream().map(command -> TextHelper.resolvePlaceholder(source, command)).toList();
 
         /* execute the commands */
         LogUtil.debug("execute bundle command: {}", commands);

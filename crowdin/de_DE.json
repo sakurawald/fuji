@@ -160,6 +160,7 @@
   "warp.set.fail.need_override": "<red>Warp %s existiert, du musst `--override true` Argument hinzufügen, um es zu überschreiben.",
   "warp.set.success": "<gold>Warp %s set.",
   "warp.unset.success": "<gold>Warp %s entfernt.",
+  "warp.gui.title": "<blue>Warps",
   "works.list.add": "<#FFA1F5>Arbeit hinzufügen",
   "works.list.all_works": "<#FFA1F5>Alle funktioniert",
   "works.list.help.lore": "<green> - Linksklick -> Besuche\n<green> - Rechtsklick -> Allgemeine Einstellungen öffnen\n<green> - Shift + Rechtsklick -> Spezialeinstellungen öffnen",

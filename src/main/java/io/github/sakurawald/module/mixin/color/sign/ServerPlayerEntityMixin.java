@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.color.sign;
 
 import io.github.sakurawald.core.structure.SpatialBlock;
-import io.github.sakurawald.module.initializer.color.sign.SignInitializer;
+import io.github.sakurawald.module.initializer.color.sign.ColorSignInitializer;
 import io.github.sakurawald.module.initializer.color.sign.structure.SignCache;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.block.entity.SignText;
@@ -32,7 +32,7 @@ public abstract class ServerPlayerEntityMixin {
         if (ci.isCancelled()) return;
 
         /* update the sign text in server-side with the sign cahce value before the client-side open the sign editor screen. */
-        SignCache signCache = SignInitializer.readSignCache(new SpatialBlock(signBlockEntity.getWorld(), signBlockEntity.getPos()));
+        SignCache signCache = ColorSignInitializer.readSignCache(new SpatialBlock(signBlockEntity.getWorld(), signBlockEntity.getPos()));
         if (signCache == null) return;
 
         Text[] newTextList = new Text[4];

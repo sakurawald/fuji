@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.chat.display.helper;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.module.initializer.chat.display.ChatDisplayInitializer;
 import io.github.sakurawald.module.initializer.chat.display.gui.BaseDisplayGui;
@@ -26,14 +26,14 @@ public class DisplayHelper {
     private static final SoftReferenceMap<String, BaseDisplayGui> uuid2gui = new SoftReferenceMap<>();
 
     private static String makeInventoryDisplayUuid(@NotNull ServerPlayerEntity player) {
-        Text title = LocaleHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName());
+        Text title = TextHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName());
         String uuid = UUID.randomUUID().toString();
         uuid2gui.put(uuid, new InventoryDisplayGui(title, player));
         return uuid;
     }
 
     private static String makeEnderChestDisplayUuid(@NotNull ServerPlayerEntity player) {
-        Text title = LocaleHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName());
+        Text title = TextHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName());
         String uuid = UUID.randomUUID().toString();
         uuid2gui.put(uuid, new EnderChestDisplayGui(title, player));
         return uuid;
@@ -42,7 +42,7 @@ public class DisplayHelper {
     private static String makeItemDisplayUuid(@NotNull ServerPlayerEntity player) {
         /* new object */
         BaseDisplayGui baseDisplayGui;
-        Text title = LocaleHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName());
+        Text title = TextHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName());
         ItemStack itemStack = player.getMainHandStack().copy();
         if (BaseDisplayGui.isShulkerBox(itemStack)) {
             // shulker-box item
@@ -61,7 +61,7 @@ public class DisplayHelper {
     public static void viewDisplay(@NotNull ServerPlayerEntity player, String displayUUID) {
         BaseDisplayGui baseDisplayGui = uuid2gui.get(displayUUID);
         if (baseDisplayGui == null) {
-            LocaleHelper.sendMessageByKey(player, "display.invalid");
+            TextHelper.sendMessageByKey(player, "display.invalid");
             return;
         }
         baseDisplayGui.build(player).open();
@@ -69,36 +69,36 @@ public class DisplayHelper {
 
     public static MutableText createEnderDisplayText(ServerPlayerEntity player) {
         String displayUUID = makeEnderChestDisplayUuid(player);
-        return LocaleHelper.getTextByKey(player, "display.ender_chest.text")
+        return TextHelper.getTextByKey(player, "display.ender_chest.text")
             .copy()
             .fillStyle(
                 Style.EMPTY
-                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, LocaleHelper.getTextByKey(player, "display.click.prompt")))
+                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextHelper.getTextByKey(player, "display.click.prompt")))
                     .withClickEvent(makeDisplayClickEvent(displayUUID))
             );
     }
 
     public static MutableText createInvDisplayText(ServerPlayerEntity player) {
         String displayUUID = makeInventoryDisplayUuid(player);
-        return LocaleHelper.getTextByKey(player, "display.inventory.text")
+        return TextHelper.getTextByKey(player, "display.inventory.text")
             .copy()
             .fillStyle(Style.EMPTY
-                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, LocaleHelper.getTextByKey(player, "display.click.prompt")))
+                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextHelper.getTextByKey(player, "display.click.prompt")))
                 .withClickEvent(makeDisplayClickEvent(displayUUID))
             );
     }
 
     public static @NotNull MutableText createItemDisplayText(ServerPlayerEntity player) {
         String displayUUID = makeItemDisplayUuid(player);
-        MutableText text = LocaleHelper.getTextByKey(player, "display.item.text").copy();
+        MutableText text = TextHelper.getTextByKey(player, "display.item.text").copy();
 
         MutableText translatable = Text.translatable(player.getMainHandStack().getTranslationKey());
         translatable.fillStyle(Style.EMPTY
-            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, LocaleHelper.getTextByKey(player, "display.click.prompt")))
+            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextHelper.getTextByKey(player, "display.click.prompt")))
             .withClickEvent(makeDisplayClickEvent(displayUUID))
         );
 
-        text = LocaleHelper.replaceBracketedText(text, "[item]", translatable);
+        text = TextHelper.replaceBracketedText(text, "[item]", translatable);
         return text;
     }
 

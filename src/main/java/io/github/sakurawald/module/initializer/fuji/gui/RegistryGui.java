@@ -3,8 +3,8 @@ package io.github.sakurawald.module.initializer.fuji.gui;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.gui.PagedGui;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
@@ -25,11 +25,8 @@ public class RegistryGui extends PagedGui<Identifier> {
     private final boolean isMetaRegistry;
 
     public RegistryGui(@Nullable SimpleGui parent, ServerPlayerEntity player, boolean isMetaRegistry, @NotNull List<Identifier> entities, int pageIndex) {
-        super(parent, player, LocaleHelper.getTextByKey(player, "registry.list.gui.title"), entities, pageIndex);
-
-        // the field still not be initialized.
+        super(parent, player, TextHelper.getTextByKey(player, "registry.list.gui.title"), entities, pageIndex);
         this.isMetaRegistry = isMetaRegistry;
-        super.drawPagedGui();
     }
 
     @Override

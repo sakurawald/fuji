@@ -6,8 +6,8 @@ import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.gui.PagedGui;
 import io.github.sakurawald.core.service.gameprofile_fetcher.MojangProfileFetcher;
 import net.fabricmc.loader.api.FabricLoader;
@@ -32,16 +32,16 @@ import java.util.concurrent.CompletableFuture;
 public class AboutGui extends PagedGui<Person> {
 
     public AboutGui(ServerPlayerEntity player, @NotNull List<Person> entities, int pageIndex) {
-        super(null, player, LocaleHelper.getTextByKey(player, "about"), entities, pageIndex);
+        super(null, player, TextHelper.getTextByKey(player, "about"), entities, pageIndex);
 
         ModMetadata metadata = FabricLoader.getInstance().getModContainer(Fuji.MOD_ID).get().getMetadata();
 
         getFooter().setSlot(1, new GuiElementBuilder(Items.BOOK)
-            .setName(LocaleHelper.getTextByKey(player, "version.format", metadata.getVersion().getFriendlyString())));
+            .setName(TextHelper.getTextByKey(player, "version.format", metadata.getVersion().getFriendlyString())));
         getFooter().setSlot(4, new GuiElementBuilder(Items.NETHER_STAR)
-            .setName(LocaleHelper.getTextByKey(player, "homepage.project"))
+            .setName(TextHelper.getTextByKey(player, "homepage.project"))
             .setCallback(() -> {
-                LocaleHelper.sendMessageByKey(player, "homepage.project.visit", metadata.getContact().get("sources").orElse("can't read project homepage from metadata"));
+                TextHelper.sendMessageByKey(player, "homepage.project.visit", metadata.getContact().get("sources").orElse("can't read project homepage from metadata"));
                 this.close();
             }));
 
@@ -96,11 +96,11 @@ public class AboutGui extends PagedGui<Person> {
         return (a, b, c, d) -> {
             // construct the text
             MutableText text = Text.empty();
-            text.append(LocaleHelper.getTextByKey(getPlayer(), "contact.visit.name", entity.getName()))
-                .append(LocaleHelper.TEXT_NEWLINE);
+            text.append(TextHelper.getTextByKey(getPlayer(), "contact.visit.name", entity.getName()))
+                .append(TextHelper.TEXT_NEWLINE);
             entity.getContact().asMap().forEach((k, v) -> text
-                .append(LocaleHelper.getTextByKey(getPlayer(), isUrl(v) ? "contact.visit.entry.is_url" : "contact.visit.entry.is_not_url", k, v, v))
-                .append(LocaleHelper.TEXT_NEWLINE));
+                .append(TextHelper.getTextByKey(getPlayer(), isUrl(v) ? "contact.visit.entry.is_url" : "contact.visit.entry.is_not_url", k, v, v))
+                .append(TextHelper.TEXT_NEWLINE));
 
             // send it
             getPlayer().sendMessage(text);
@@ -110,17 +110,17 @@ public class AboutGui extends PagedGui<Person> {
 
     public List<Text> makeTextListFromContact(ContactInformation contact) {
         List<Text> ret = new ArrayList<>();
-        contact.asMap().forEach((k, v) -> ret.add(LocaleHelper.getTextByKey(getPlayer(), "contact.entry", k, v)));
+        contact.asMap().forEach((k, v) -> ret.add(TextHelper.getTextByKey(getPlayer(), "contact.entry", k, v)));
 
         // add visit hint lore
-        ret.add(LocaleHelper.getTextByKey(getPlayer(), "contact.click.prompt"));
+        ret.add(TextHelper.getTextByKey(getPlayer(), "contact.click.prompt"));
         return ret;
     }
 
     @Override
     public GuiElementInterface toGuiElement(Person entity) {
-        return GuiHelper.makePlayerPlaceholder()
-            .setName(LocaleHelper.getTextByKey(getPlayer(), "contact.name", entity.getName()))
+        return GuiHelper.makeUnknownPlayerSkull()
+            .setName(TextHelper.getTextByKey(getPlayer(), "contact.name", entity.getName()))
             .setLore(makeTextListFromContact(entity.getContact()))
             .setCallback(makeCallback(entity))
             .build();

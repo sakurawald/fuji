@@ -1,7 +1,8 @@
 package io.github.sakurawald.module.initializer.view;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -18,12 +19,13 @@ public class ViewInitializer extends ModuleInitializer {
 
     private static void checkSelfView(ServerPlayerEntity source, OfflinePlayerName target) {
         if (source.getGameProfile().getName().equals(target.getValue())) {
-            LocaleHelper.sendMessageByKey(source, "view.failed.self_view");
+            TextHelper.sendMessageByKey(source, "view.failed.self_view");
             throw new AbortCommandExecutionException();
         }
     }
 
     @CommandNode("inv")
+    @Document("View the player's inventory.")
     private static int inv(@CommandSource ServerPlayerEntity source, OfflinePlayerName target) {
         checkSelfView(source, target);
 
@@ -32,6 +34,7 @@ public class ViewInitializer extends ModuleInitializer {
     }
 
     @CommandNode("ender")
+    @Document("View the player's enderchest.")
     private static int ender(@CommandSource ServerPlayerEntity source, OfflinePlayerName target) {
         checkSelfView(source, target);
 

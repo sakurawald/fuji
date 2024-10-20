@@ -1,8 +1,9 @@
 package io.github.sakurawald.module.initializer.command_cooldown;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PlaceholderHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -13,7 +14,6 @@ import io.github.sakurawald.core.command.executor.CommandExecutor;
 import io.github.sakurawald.core.command.structure.ExtendedCommandSource;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
-import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import io.github.sakurawald.core.structure.CommandCooldown;
 import io.github.sakurawald.core.structure.Cooldown;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -42,7 +42,7 @@ public class CommandCooldownInitializer extends ModuleInitializer {
                 // clear the timestamp for non-persistent cooldown before writing storage.
                 .forEach(it -> it.getTimestamp().clear());
         }
-    };
+    }.autoSaveEveryMinute();
 
     public static final MutableText NOT_COOLDOWN_FOUND = Text.literal("NOT_COOLDOWN_FOUND");
 
@@ -63,11 +63,12 @@ public class CommandCooldownInitializer extends ModuleInitializer {
     }
 
     @CommandNode("test")
+    @Document("Test a named-cooldown, and execute success commands or failed commands.")
     private static int test(@CommandSource ServerCommandSource source
-        , CommandCooldownName name
-        , ServerPlayerEntity player
-        , Optional<StringList> onFailed
-        , GreedyStringList onSuccess
+        , @Document("The named-cooldown.") CommandCooldownName name
+        , @Document("The target player.") ServerPlayerEntity player
+        , @Document("The commands to execute if the test is failed.") Optional<StringList> onFailed
+        , @Document("The commands to execute if the test is success.") GreedyStringList onSuccess
     ) {
         ensureExist(source, name);
 
@@ -90,12 +91,13 @@ public class CommandCooldownInitializer extends ModuleInitializer {
     }
 
     @CommandNode("create")
+    @Document("Create a named-cooldown.")
     private static int create(@CommandSource ServerCommandSource source
-        , String name
-        , long cooldownMs
-        , Optional<Integer> maxUsage
-        , Optional<Boolean> persistent
-        , Optional<Boolean> global) {
+        , @Document("The name for named-cooldown.") String name
+        , @Document("How long is the cooling time ms of this named-cooldown.") long cooldownMs
+        , @Document("Max usage times of this named-cooldown. (per-player/global)") Optional<Integer> maxUsage
+        , @Document("Should we persist this named-cooldown on server shutdown.") Optional<Boolean> persistent
+        , @Document("Is this named-cooldown global or per-player.") Optional<Boolean> global) {
         ensureNotExist(source, name);
 
         int $maxUsage = maxUsage.orElse(Integer.MAX_VALUE);
@@ -105,27 +107,30 @@ public class CommandCooldownInitializer extends ModuleInitializer {
         CommandCooldown commandCooldown = new CommandCooldown(name, cooldownMs, $maxUsage, $persistent, $global);
         config.model().namedCooldown.list.put(name, commandCooldown);
 
-        LocaleHelper.sendMessageByKey(source, "command_cooldown.created", name);
+        TextHelper.sendMessageByKey(source, "command_cooldown.created", name);
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("delete")
+    @Document("Delete a named-cooldown.")
     private static int delete(@CommandSource ServerCommandSource source, CommandCooldownName name) {
         ensureExist(source, name);
 
         String key = name.getValue();
         config.model().namedCooldown.list.remove(key);
-        LocaleHelper.sendMessageByKey(source, "command_cooldown.deleted", name.getValue());
+        TextHelper.sendMessageByKey(source, "command_cooldown.deleted", name.getValue());
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("list")
+    @Document("List all named-cooldown.")
     private static int list(@CommandSource ServerCommandSource source) {
         config.model().namedCooldown.list.keySet().forEach(it -> source.sendMessage(Text.literal(it)));
         return CommandHelper.Return.SUCCESS;
     }
 
     @CommandNode("reset")
+    @Document("Reset the timestamp of a named-cooldown for a player. (The usage times will not be reset)")
     private static int reset(@CommandSource ServerCommandSource source
         , CommandCooldownName name
         , ServerPlayerEntity player) {
@@ -136,28 +141,24 @@ public class CommandCooldownInitializer extends ModuleInitializer {
         String key = player.getGameProfile().getName();
         commandCooldown.getTimestamp().put(key, 0L);
 
-        LocaleHelper.sendMessageByKey(source, "command_cooldown.reset", key, name.getValue());
+        TextHelper.sendMessageByKey(source, "command_cooldown.reset", key, name.getValue());
         return CommandHelper.Return.SUCCESS;
     }
 
     private static void ensureExist(ServerCommandSource source, CommandCooldownName name) {
         if (!config.model().namedCooldown.list.containsKey(name.getValue())) {
-            LocaleHelper.sendMessageByKey(source, "command_cooldown.not_found", name.getValue());
+            TextHelper.sendMessageByKey(source, "command_cooldown.not_found", name.getValue());
             throw new AbortCommandExecutionException();
         }
     }
 
     private static void ensureNotExist(ServerCommandSource source, String name) {
         if (config.model().namedCooldown.list.containsKey(name)) {
-            LocaleHelper.sendMessageByKey(source, "command_cooldown.already_exists", name);
+            TextHelper.sendMessageByKey(source, "command_cooldown.already_exists", name);
             throw new AbortCommandExecutionException();
         }
     }
 
-    @Override
-    protected void onInitialize() {
-        config.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
-    }
 
     @Override
     protected void registerPlaceholder() {

@@ -8,10 +8,11 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.mojang.brigadier.tree.RootCommandNode;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.command.argument.structure.Argument;
 import io.github.sakurawald.core.command.exception.AbortCommandExecutionException;
@@ -45,6 +46,15 @@ public class CommandDescriptor {
 
     // it's null if get before register()
     private @Nullable LiteralArgumentBuilder<ServerCommandSource> registerReturnValue;
+
+    public @Nullable String document;
+
+    public CommandDescriptor withDocument(@Nullable Document document) {
+        if (document == null) return this;
+
+        this.document = document.value();
+        return this;
+    }
 
     public CommandDescriptor(Method method, List<Argument> arguments) {
         this.method = method;
@@ -225,7 +235,7 @@ public class CommandDescriptor {
 
         /* report to command source */
         String stacktrace = String.join("\n", LogUtil.getStackTraceAsList(throwable));
-        MutableText report = LocaleHelper.getTextByValue(source, string)
+        MutableText report = TextHelper.getTextByValue(source, string)
             .copy()
             .setStyle(Style.EMPTY
                 .withColor(CommandHelper.EXCEPTION_COLOR)

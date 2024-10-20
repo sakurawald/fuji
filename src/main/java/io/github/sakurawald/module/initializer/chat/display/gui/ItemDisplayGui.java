@@ -26,7 +26,7 @@ public class ItemDisplayGui extends BaseDisplayGui {
 
         /* construct base */
         for (int i = 0; i < 9; i++) {
-            gui.setSlot(i, GuiHelper.Item.PLACEHOLDER);
+            gui.setSlot(i, GuiHelper.makeSlotPlaceholder().getItemStack());
         }
         /* construct item */
         gui.setSlot(4, itemStack);

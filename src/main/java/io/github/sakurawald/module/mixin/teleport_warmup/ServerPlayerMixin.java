@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.mixin.teleport_warmup;
 
 import io.github.sakurawald.core.auxiliary.minecraft.EntityHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.core.structure.TeleportTicket;
@@ -43,7 +43,7 @@ public abstract class ServerPlayerMixin {
             Managers.getBossBarManager().addTicket(ticket);
             ci.cancel();
         } else if (!ticket.isCompleted()) {
-            LocaleHelper.sendActionBarByKey(player, "teleport_warmup.another_teleportation_in_progress");
+            TextHelper.sendActionBarByKey(player, "teleport_warmup.another_teleportation_in_progress");
             ci.cancel();
         }
 

@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.mixin.command_interactive;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import net.minecraft.block.AbstractSignBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -46,7 +46,7 @@ public class AbstractSignBlockMixin {
 
                     List<String> commands = splitCommands(text)
                         .stream()
-                        .map(str -> LocaleHelper.resolvePlaceholder(player, str))
+                        .map(str -> TextHelper.resolvePlaceholder(player, str))
                         .toList();
 
                     commands.forEach(command -> ((ServerPlayerEntity) player).networkHandler.onCommandExecution(new CommandExecutionC2SPacket(command)));

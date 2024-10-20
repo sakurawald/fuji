@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.jump;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -15,7 +16,9 @@ public class JumpInitializer extends ModuleInitializer {
 
     @CommandNode("jump")
     @CommandRequirement(level = 4)
-    private static int jump(@CommandSource ServerPlayerEntity player, Optional<Integer> distance) {
+    @Document("Jump to the position looking at.")
+    private static int jump(@CommandSource ServerPlayerEntity player
+        , @Document("The max distance to jump.") Optional<Integer> distance) {
         int $distance = distance.orElse(128);
         HitResult raycast = player.raycast($distance, 0, false);
         Vec3d hitPos = raycast.getPos();

@@ -1,8 +1,9 @@
 package io.github.sakurawald.module.initializer.afk;
 
 import io.github.sakurawald.core.accessor.PlayerCombatExtension;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -31,18 +32,19 @@ public class AfkInitializer extends ModuleInitializer {
 
     // note: issue command will update lastLastActionTime, so it's impossible to use /afk to disable afk
     @CommandNode("afk")
+    @Document("Enter afk state.")
     private static int $afk(@CommandSource ServerPlayerEntity player) {
         if (!player.isOnGround()
             || player.isOnFire()
             || player.inPowderSnow
             || ((PlayerCombatExtension) player).fuji$inCombat()) {
 
-            LocaleHelper.sendMessageByKey(player, "afk.on.failed");
+            TextHelper.sendMessageByKey(player, "afk.on.failed");
             return CommandHelper.Return.FAIL;
         }
 
         ((AfkStateAccessor) player).fuji$changeAfk(true);
-        LocaleHelper.sendMessageByKey(player, "afk.on");
+        TextHelper.sendMessageByKey(player, "afk.on");
         return CommandHelper.Return.SUCCESS;
     }
 

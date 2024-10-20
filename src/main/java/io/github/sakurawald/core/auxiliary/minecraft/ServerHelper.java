@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class ServerHelper {
 
@@ -54,6 +55,13 @@ public class ServerHelper {
 
     public static @Nullable ServerPlayerEntity getPlayer(String name) {
         return getPlayerManager().getPlayer(name);
+    }
+
+    public static Optional<ServerPlayerEntity> getPlayerByUuid(UUID uuid) {
+        return getPlayers()
+            .stream()
+            .filter(player -> player.getUuid().equals(uuid))
+            .findFirst();
     }
 
     public static boolean isPlayerOnline(String name) {

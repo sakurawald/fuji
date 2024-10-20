@@ -1,8 +1,8 @@
 package io.github.sakurawald.core.structure;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import lombok.Data;
 import lombok.With;
 import net.minecraft.registry.RegistryKey;
@@ -73,7 +73,7 @@ public class SpatialPose {
         RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(this.level));
         ServerWorld serverLevel = ServerHelper.getDefaultServer().getWorld(worldKey);
         if (serverLevel == null) {
-            LocaleHelper.sendMessageByKey(player, "world.dimension.not_found", this.level);
+            TextHelper.sendMessageByKey(player, "world.dimension.not_found", this.level);
             return;
         }
 

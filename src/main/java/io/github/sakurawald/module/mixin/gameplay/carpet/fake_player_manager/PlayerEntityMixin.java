@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.mixin.gameplay.carpet.fake_player_manager;
 
 import carpet.patches.EntityPlayerMPFake;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.module.initializer.gameplay.carpet.fake_player_manager.FakePlayerManagerInitializer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -36,7 +36,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                 cir.setReturnValue(ActionResult.FAIL);
 
                 if (hand == Hand.MAIN_HAND) {
-                    LocaleHelper.sendMessageByKey(source, "fake_player_manager.manipulate.forbidden");
+                    TextHelper.sendMessageByKey(source, "fake_player_manager.manipulate.forbidden");
                 }
             }
         }

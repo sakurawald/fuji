@@ -2,8 +2,8 @@ package io.github.sakurawald.module.initializer.tester;
 
 import com.mojang.brigadier.context.CommandContext;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -60,7 +60,7 @@ public class TesterInitializer extends ModuleInitializer {
         /* replace */
         LogUtil.debug("before = {}", root);
         player.sendMessage(root);
-        MutableText after = LocaleHelper.replaceText(root, "hi", () -> Text.literal("{replacement}"));
+        MutableText after = TextHelper.replaceText(root, "hi", () -> Text.literal("{replacement}"));
         LogUtil.debug("after = {}", after);
         player.sendMessage(after);
     }

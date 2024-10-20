@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.RandomUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -66,7 +66,7 @@ public class MotdInitializer extends ModuleInitializer {
         var motdList = config.model().list;
         String string = motdList.get(new Random().nextInt(motdList.size()));
 
-        return LocaleHelper.getTextByValue(null, string);
+        return TextHelper.getTextByValue(null, string);
     }
 
 }

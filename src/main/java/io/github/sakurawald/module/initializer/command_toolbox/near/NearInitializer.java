@@ -1,8 +1,9 @@
 package io.github.sakurawald.module.initializer.command_toolbox.near;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -20,6 +21,7 @@ public class NearInitializer extends ModuleInitializer {
     }
 
     @CommandNode("near")
+    @Document("List nearby players.")
     private static int near(@CommandSource ServerPlayerEntity player, Optional<Integer> distance) {
         MinecraftServer server = ServerHelper.getDefaultServer();
 
@@ -28,7 +30,7 @@ public class NearInitializer extends ModuleInitializer {
         int sd = $distance * $distance;
         List<String> result = ServerHelper.getPlayers().stream().filter(p -> p != player && distance(player, p) <= sd).map(p -> p.getGameProfile().getName()).toList();
 
-        LocaleHelper.sendMessageByKey(player, "near.format", result);
+        TextHelper.sendMessageByKey(player, "near.format", result);
         return CommandHelper.Return.SUCCESS;
     }
 

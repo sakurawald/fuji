@@ -1,7 +1,7 @@
 package io.github.sakurawald.module.initializer.works.structure.work.impl;
 
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import lombok.NoArgsConstructor;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -25,6 +25,6 @@ public class NonProductionWork extends Work {
 
     @Override
     public void openSpecializedSettingsGui(@NotNull ServerPlayerEntity player, SimpleGui parentGui) {
-        LocaleHelper.sendActionBarByKey(player, "works.non_production_work.specialized_settings.not_found");
+        TextHelper.sendActionBarByKey(player, "works.non_production_work.specialized_settings.not_found");
     }
 }

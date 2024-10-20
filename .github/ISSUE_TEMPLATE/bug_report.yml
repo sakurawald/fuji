@@ -1,14 +1,21 @@
 name: 🐞 Bug Report
 description: Create a report to help us improve
-title: '[bug] <title>'
+title: '[bug] <insert your title here>'
 labels: [ bug ]
 body:
+  - type: checkboxes
+    attributes:
+      label: Are you using the latest available version for your server?
+      description: The bug may be fixed in the latest available version.
+      options:
+        - label: I am using the latest available version of fuji for my minecraft server.
+          required: true
   - type: checkboxes
     attributes:
       label: Is there an existing issue for this?
       description: Please search to see if an issue already exists for the bug you encountered.
       options:
-        - label: I have searched the existing issues
+        - label: I have searched the existing issues.
           required: true
   - type: textarea
     attributes:

@@ -8,8 +8,8 @@ import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.gui.ConfirmGui;
 import io.github.sakurawald.core.gui.InputSignGui;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;
@@ -103,70 +103,70 @@ public abstract class Work {
         Work work = this;
         final SimpleGui gui = new SimpleGui(ScreenHandlerType.GENERIC_9X1, player, false);
         gui.setLockPlayerInventory(true);
-        gui.setTitle(LocaleHelper.getTextByKey(player, "works.work.set.general_settings.title"));
+        gui.setTitle(TextHelper.getTextByKey(player, "works.work.set.general_settings.title"));
         gui.addSlot(new GuiElementBuilder()
             .setItem(Items.NAME_TAG)
-            .setName(LocaleHelper.getTextByKey(player, "works.work.set.target.name"))
+            .setName(TextHelper.getTextByKey(player, "works.work.set.target.name"))
             .setCallback(() -> new InputSignGui(player, null) {
                 @Override
                 public void onClose() {
                     String newValue = this.reduceInput();
                     if (newValue == null) {
-                        LocaleHelper.sendActionBarByKey(player, "works.work.add.empty_name");
+                        TextHelper.sendActionBarByKey(player, "works.work.add.empty_name");
                         return;
                     }
                     work.name = newValue;
-                    LocaleHelper.sendMessageByKey(player, "works.work.set.done", work.name);
+                    TextHelper.sendMessageByKey(player, "works.work.set.done", work.name);
                 }
             }.open())
         );
         gui.addSlot(new GuiElementBuilder()
             .setItem(Items.CHERRY_HANGING_SIGN)
-            .setName(LocaleHelper.getTextByKey(player, "works.work.set.target.introduction"))
+            .setName(TextHelper.getTextByKey(player, "works.work.set.target.introduction"))
             .setCallback(() -> new InputSignGui(player, null) {
                 @Override
                 public void onClose() {
                     work.introduction = this.reduceInput();
-                    LocaleHelper.sendMessageByKey(player, "works.work.set.done", work.introduction);
+                    TextHelper.sendMessageByKey(player, "works.work.set.done", work.introduction);
                 }
             }.open())
         );
         gui.addSlot(new GuiElementBuilder()
             .setItem(Items.END_PORTAL_FRAME)
-            .setName(LocaleHelper.getTextByKey(player, "works.work.set.target.position"))
+            .setName(TextHelper.getTextByKey(player, "works.work.set.target.position"))
             .setCallback(() -> {
                 work.level = player.getServerWorld().getRegistryKey().getValue().toString();
                 work.x = player.getPos().x;
                 work.y = player.getPos().y;
                 work.z = player.getPos().z;
-                LocaleHelper.sendMessageByKey(player, "works.work.set.done", "(%s, %f, %f, %f)".formatted(work.level, work.x, work.y, work.z));
+                TextHelper.sendMessageByKey(player, "works.work.set.done", "(%s, %f, %f, %f)".formatted(work.level, work.x, work.y, work.z));
                 gui.close();
             })
         );
         gui.addSlot(new GuiElementBuilder()
             .setItem(Items.PAINTING)
-            .setName(LocaleHelper.getTextByKey(player, "works.work.set.target.icon"))
+            .setName(TextHelper.getTextByKey(player, "works.work.set.target.icon"))
             .setCallback(() -> {
                 ItemStack mainHandItem = player.getMainHandStack();
                 if (mainHandItem.isEmpty()) {
-                    LocaleHelper.sendActionBarByKey(player, "works.work.set.target.icon.no_item");
+                    TextHelper.sendActionBarByKey(player, "works.work.set.target.icon.no_item");
                     gui.close();
                     return;
                 }
                 work.icon = Registries.ITEM.getId(mainHandItem.getItem()).toString();
-                LocaleHelper.sendMessageByKey(player, "works.work.set.done", work.icon);
+                TextHelper.sendMessageByKey(player, "works.work.set.done", work.icon);
                 gui.close();
             })
         );
 
         gui.addSlot(new GuiElementBuilder()
             .setItem(Items.BARRIER)
-            .setName(LocaleHelper.getTextByKey(player, "works.work.set.target.delete"))
+            .setName(TextHelper.getTextByKey(player, "works.work.set.target.delete"))
             .setCallback(() -> new ConfirmGui(player) {
                 @Override
                 public void onConfirm() {
                     WorksInitializer.works.model().works.remove(work);
-                    LocaleHelper.sendActionBarByKey(player, "works.work.delete.done");
+                    TextHelper.sendActionBarByKey(player, "works.work.delete.done");
                 }
             }.open())
 
@@ -199,13 +199,13 @@ public abstract class Work {
 
     public List<Text> asLore(ServerPlayerEntity player) {
         List<Text> ret = new ArrayList<>();
-        ret.add(LocaleHelper.getTextByKey(player, "works.work.prop.creator", this.creator));
+        ret.add(TextHelper.getTextByKey(player, "works.work.prop.creator", this.creator));
         if (this.introduction != null) {
-            ret.add(LocaleHelper.getTextByKey(player, "works.work.prop.introduction", this.introduction));
+            ret.add(TextHelper.getTextByKey(player, "works.work.prop.introduction", this.introduction));
         }
-        ret.add(LocaleHelper.getTextByKey(player, "works.work.prop.time", DateUtil.toStandardDateFormat(this.createTimeMS)));
-        ret.add(LocaleHelper.getTextByKey(player, "works.work.prop.dimension", this.level));
-        ret.add(LocaleHelper.getTextByKey(player, "works.work.prop.coordinate", this.x, this.y, this.z));
+        ret.add(TextHelper.getTextByKey(player, "works.work.prop.time", DateUtil.toStandardDateFormat(this.createTimeMS)));
+        ret.add(TextHelper.getTextByKey(player, "works.work.prop.dimension", this.level));
+        ret.add(TextHelper.getTextByKey(player, "works.work.prop.coordinate", this.x, this.y, this.z));
         return ret;
     }
 

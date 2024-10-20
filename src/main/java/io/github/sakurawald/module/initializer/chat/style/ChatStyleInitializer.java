@@ -1,14 +1,16 @@
 package io.github.sakurawald.module.initializer.chat.style;
 
+import eu.pb4.placeholders.api.parsers.NodeParser;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
+import io.github.sakurawald.core.service.style_striper.StyleStriper;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.chat.style.model.ChatFormatModel;
 import io.github.sakurawald.module.initializer.chat.style.model.ChatStyleConfigModel;
@@ -22,6 +24,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
+@CommandNode("chat style")
 public class ChatStyleInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<ChatStyleConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatStyleConfigModel.class);
@@ -36,36 +39,41 @@ public class ChatStyleInitializer extends ModuleInitializer {
     private static final BaseConfigurationHandler<ChatFormatModel> chat = new ObjectConfigurationHandler<>("chat.json", ChatFormatModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("chat.json"), ChatStyleInitializer.class));
 
-    @CommandNode("chat style set")
+    private static final NodeParser CHAT_STYLE_PARSER = NodeParser.builder()
+        .quickText()
+        .simplifiedTextFormat()
+        .build();
+
+    @CommandNode("set")
     private static int setPlayerFormat(@CommandSource ServerPlayerEntity player, GreedyString format) {
         /* save the format*/
         String name = player.getGameProfile().getName();
         String $format = format.getValue();
+        $format = StyleStriper.stripe(player, StyleStriper.STYLE_TYPE_CHAT, $format);
         chat.model().format.player2format.put(name, $format);
         chat.writeStorage();
 
         /* feedback */
-        $format = LocaleHelper.getValue(player, "chat.format.set").replace("%s", $format);
-        $format = $format.replace("%message%", LocaleHelper.getValue(player, "chat.format.show"));
-        Text text = LocaleHelper.getTextByValue(null, $format);
-
+        $format = TextHelper.getValue(player, "chat.format.set").replace("%s", $format);
+        $format = $format.replace("%message%", TextHelper.getValue(player, "chat.format.show"));
+        Text text = CHAT_STYLE_PARSER.parseNode($format).toText();
         player.sendMessage(text);
         return CommandHelper.Return.SUCCESS;
     }
 
-    @CommandNode("chat style reset")
+    @CommandNode("reset")
     private static int resetPlayerFormat(@CommandSource ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
         chat.model().format.player2format.remove(name);
         chat.writeStorage();
-        LocaleHelper.sendMessageByKey(player, "chat.format.reset");
+        TextHelper.sendMessageByKey(player, "chat.format.reset");
         return CommandHelper.Return.SUCCESS;
     }
 
 
     public static @NotNull Text parseSenderText(@NotNull ServerPlayerEntity player) {
         String senderString = config.model().style.sender;
-        return LocaleHelper.getTextByValue(player, senderString);
+        return TextHelper.getTextByValue(player, senderString);
     }
 
     public static @NotNull Text parseContentText(@NotNull ServerPlayerEntity player, String message) {
@@ -73,7 +81,7 @@ public class ChatStyleInitializer extends ModuleInitializer {
 
         contentString = chat.model().format.player2format.getOrDefault(player.getGameProfile().getName(), "%message%").replace("%message%", contentString);
 
-        return LocaleHelper.getTextByValue(player, contentString);
+        return CHAT_STYLE_PARSER.parseNode(contentString).toText();
     }
 
 }

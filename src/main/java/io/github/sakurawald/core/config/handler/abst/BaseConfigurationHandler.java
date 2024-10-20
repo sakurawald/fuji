@@ -16,6 +16,7 @@ import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.config.job.SaveConfigurationHandlerJob;
 import io.github.sakurawald.core.config.transformer.abst.ConfigurationTransformer;
 import io.github.sakurawald.core.event.impl.ServerLifecycleEvents;
+import io.github.sakurawald.core.manager.impl.scheduler.ScheduleManager;
 import lombok.Cleanup;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -184,7 +185,8 @@ public abstract class BaseConfigurationHandler<T> {
     /**
      * This method exists for performance purpose.
      */
-    public void scheduleWriteStorageJob(@NotNull String cron) {
+    @SuppressWarnings("SameParameterValue")
+    private void scheduleWriteStorageJob(@NotNull String cron) {
         String jobName = this.path.toString();
         new SaveConfigurationHandlerJob(jobName, new JobDataMap() {
             {
@@ -197,6 +199,11 @@ public abstract class BaseConfigurationHandler<T> {
             LogUtil.debug("write storage on server stopping: {}", this.path);
             this.writeStorage();
         });
+    }
+
+    public BaseConfigurationHandler<T> autoSaveEveryMinute() {
+        this.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
+        return this;
     }
 
     public @NotNull T model() {

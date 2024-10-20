@@ -2,8 +2,8 @@ package io.github.sakurawald.module.mixin.afk;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.authlib.GameProfile;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.executor.CommandExecutor;
 import io.github.sakurawald.core.command.structure.ExtendedCommandSource;
 import io.github.sakurawald.module.initializer.afk.AfkInitializer;
@@ -46,7 +46,7 @@ public abstract class ServerPlayerMixin extends PlayerEntity implements AfkState
     @ModifyReturnValue(method = "getPlayerListName", at = @At("RETURN"))
     public Text $getPlayerListName(Text original) {
         if (fuji$isAfk()) {
-            return LocaleHelper.getTextByValue(player, AfkInitializer.config.model().format);
+            return TextHelper.getTextByValue(player, AfkInitializer.config.model().format);
         }
 
         return original;

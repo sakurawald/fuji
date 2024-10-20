@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.works;
 
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -22,11 +23,13 @@ import org.quartz.JobDataMap;
 public class WorksInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<WorksDataModel> works = new ObjectConfigurationHandler<>("works.json", WorksDataModel.class)
+        .autoSaveEveryMinute()
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("works.json"), WorksInitializer.class));
 
     public static final BaseConfigurationHandler<WorksConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, WorksConfigModel.class);
 
     @CommandNode("works")
+    @Document("Open works gui.")
     private static int $works(@CommandSource ServerPlayerEntity player) {
         new WorksGui(player, works.model().works, 0).open();
         return CommandHelper.Return.SUCCESS;
@@ -39,8 +42,6 @@ public class WorksInitializer extends ModuleInitializer {
 
     @Override
     protected void onInitialize() {
-        works.scheduleWriteStorageJob(ScheduleManager.CRON_EVERY_MINUTE);
-
         ServerLifecycleEvents.SERVER_STARTED.register(server -> new WorksScheduleJob(new JobDataMap() {
             {
                 this.put(MinecraftServer.class.getName(), server);

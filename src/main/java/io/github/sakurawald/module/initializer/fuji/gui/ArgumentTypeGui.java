@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.fuji.gui;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.argument.adapter.abst.BaseArgumentTypeAdapter;
 import io.github.sakurawald.core.gui.PagedGui;
 import net.minecraft.item.Items;
@@ -17,7 +17,7 @@ import java.util.List;
 public class ArgumentTypeGui extends PagedGui<BaseArgumentTypeAdapter> {
 
     public ArgumentTypeGui(ServerPlayerEntity player, @NotNull List<BaseArgumentTypeAdapter> entities, int pageIndex) {
-        super(null, player, LocaleHelper.getTextByKey(player, "command.argument.type.gui.title"), entities, pageIndex);
+        super(null, player, TextHelper.getTextByKey(player, "command.argument.type.gui.title"), entities, pageIndex);
     }
 
     @Override
@@ -31,8 +31,8 @@ public class ArgumentTypeGui extends PagedGui<BaseArgumentTypeAdapter> {
             .setName(Text.literal(entity.getClass().getSimpleName()))
             .setItem(Items.HOPPER)
             .setLore(List.of(
-                LocaleHelper.getTextByKey(getPlayer(), "command.argument.type.class", entity.getTypeClasses().stream().map(Class::getSimpleName).toList())
-                , LocaleHelper.getTextByKey(getPlayer(), "command.argument.type.string", entity.getTypeStrings())
+                TextHelper.getTextByKey(getPlayer(), "command.argument.type.class", entity.getTypeClasses().stream().map(Class::getSimpleName).toList())
+                , TextHelper.getTextByKey(getPlayer(), "command.argument.type.string", entity.getTypeStrings())
             ))
             .build();
     }

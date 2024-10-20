@@ -25,6 +25,14 @@ This module provides some simple commands.
 \LevelThree{/nickname}
 \LevelThree{/repair}
 \LevelThree{/reply}
+\LevelFour{How it works?}
+When a player use the command \ic{/msg} or \ic{/tell}, we track the usage, and allow the target player to use \ic{/reply} to send message to the player recently meg he.
+
+\begin{tips}{Create a command alias like \ic{/r}}
+    You can use~\nameref{ch:command_alias} module to create a command alias from \ic{/r} to \ic{/reply}.
+\end{tips}
+
+
 \LevelThree{/seen}
 \LevelThree{/suicide}
 \LevelThree{/top}
@@ -51,6 +59,16 @@ This module provides some simple commands.
 \end{example}
 
 \LevelThree{/warp}
+\LevelFour{Example}
+\begin{example}{Set a display name for a warp}
+    \ic{/warp set-name <warp> <blue>This is the display name}
+\end{example}
+
+\begin{example}{Set a lore for a warp}
+    \ic{/warp set-lore <warp> <blue>This is the first line|<red>This is the second line}
+\end{example}
+
+
 \LevelThree{/burn}
 \LevelThree{/help-op}
 \LevelThree{/near}

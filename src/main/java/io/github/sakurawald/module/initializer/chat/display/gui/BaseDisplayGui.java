@@ -6,7 +6,7 @@ import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import eu.pb4.sgui.api.gui.SlotGuiInterface;
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
@@ -20,7 +20,7 @@ public abstract class BaseDisplayGui {
     protected static void $setSlot(@NotNull SimpleGui gui, int i, @NotNull ItemStack itemStack, SlotClickForDeeperDisplayCallback slotClickForDeeperDisplayCallback) {
         GuiElementBuilder guiElementBuilder = GuiElementBuilder.from(itemStack).setCallback(slotClickForDeeperDisplayCallback);
         if (isShulkerBox(itemStack)) {
-            guiElementBuilder.addLoreLine(LocaleHelper.getTextByKey(gui.getPlayer(), "display.click.prompt"));
+            guiElementBuilder.addLoreLine(TextHelper.getTextByKey(gui.getPlayer(), "display.click.prompt"));
         }
         gui.setSlot(i, guiElementBuilder.build());
     }
@@ -43,7 +43,7 @@ public abstract class BaseDisplayGui {
 
             ItemStack itemStack = slot.getItemStack();
             if (isShulkerBox(itemStack)) {
-                ShulkerBoxDisplayGui shulkerBoxDisplayGui = new ShulkerBoxDisplayGui(LocaleHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName()), itemStack, parentGui);
+                ShulkerBoxDisplayGui shulkerBoxDisplayGui = new ShulkerBoxDisplayGui(TextHelper.getTextByKey(player, "display.gui.title", player.getGameProfile().getName()), itemStack, parentGui);
                 shulkerBoxDisplayGui.build(player).open();
             }
         }

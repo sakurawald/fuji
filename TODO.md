@@ -5,4 +5,5 @@
 - feature: a lisp-like DSL, including a parse, transformer, analyzer, code-walker, with some built-in functions:
   predicate,
   equal... (similar: skript, kubejs)
-    - application: /air, /alert, /respawn, /vote
+  - interop: /lisp eval
+  - application: /air, /alert, /respawn, /vote

@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Set;
 
 // the priority of carpet's is 1000
-@Mixin(value = HopperBlockEntity.class, priority = 999)
+@Mixin(value = HopperBlockEntity.class, priority = 1000 - 1)
 
 public abstract class HopperBlockEntityMixin extends LootableContainerBlockEntity {
 

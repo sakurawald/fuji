@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.tppos;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.EntityHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
@@ -21,22 +22,23 @@ public class TpposInitializer extends ModuleInitializer {
 
     @CommandNode("tppos")
     @CommandRequirement(level = 4)
+    @Document("The unified teleport command.")
     private static int tppos(@CommandSource ServerPlayerEntity player
-        , Optional<Dimension> dimension
-        , Optional<Double> x
-        , Optional<Double> y
-        , Optional<Double> z
-        , Optional<Float> yaw
-        , Optional<Float> pitch
-        , Optional<Integer> centerX
-        , Optional<Integer> centerZ
-        , Optional<Boolean> circle
-        , Optional<Integer> minRange
-        , Optional<Integer> maxRange
-        , Optional<Integer> minY
-        , Optional<Integer> maxY
-        , Optional<Integer> maxTryTimes
-        , Optional<ServerPlayerEntity> targetPlayer
+        , @Document("the target player") Optional<ServerPlayerEntity> targetPlayer
+        , @Document("the target dimension") Optional<Dimension> dimension
+        , @Document("the target x for fixed-tp") Optional<Double> x
+        , @Document("the target y for fixed-tp") Optional<Double> y
+        , @Document("the target z for fixed-tp") Optional<Double> z
+        , @Document("the target yaw for fixed-tp") Optional<Float> yaw
+        , @Document("the target pitch for fixed-tp") Optional<Float> pitch
+        , @Document("center x for rtp") Optional<Integer> centerX
+        , @Document("center z for rtp") Optional<Integer> centerZ
+        , @Document("is the shape of rtp circle or square") Optional<Boolean> circle
+        , @Document("min radius for rtp") Optional<Integer> minRange
+        , @Document("max radius for rtp") Optional<Integer> maxRange
+        , @Document("min y for rtp") Optional<Integer> minY
+        , @Document("max y for rtp") Optional<Integer> maxY
+        , @Document("max try times for rtp") Optional<Integer> maxTryTimes
     ) {
         // specify another player
         if (targetPlayer.isPresent()) {
@@ -77,6 +79,7 @@ public class TpposInitializer extends ModuleInitializer {
 
     @CommandNode("tppos offline")
     @CommandRequirement(level = 4)
+    @Document("Teleport to the offline position of a player.")
     private static int tppos(@CommandSource ServerPlayerEntity source, OfflinePlayerName player) {
         ServerPlayerEntity dummy = EntityHelper.loadOfflinePlayer(player.getValue());
         source.teleport(dummy.getServerWorld(), dummy.getX(), dummy.getY(), dummy.getZ(), dummy.getYaw(), dummy.getPitch());

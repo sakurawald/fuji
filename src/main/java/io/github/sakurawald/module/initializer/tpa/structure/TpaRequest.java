@@ -1,6 +1,6 @@
 package io.github.sakurawald.module.initializer.tpa.structure;
 
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.module.initializer.tpa.TpaInitializer;
 import lombok.Getter;
 import lombok.ToString;
@@ -72,8 +72,8 @@ public class TpaRequest {
     }
 
     public @NotNull Text asSenderText$Description() {
-        return tpahere ? LocaleHelper.getTextByKey(getSender(), "tpa.others_to_you", receiver.getGameProfile().getName())
-            : LocaleHelper.getTextByKey(getSender(), "tpa.you_to_others", receiver.getGameProfile().getName());
+        return tpahere ? TextHelper.getTextByKey(getSender(), "tpa.others_to_you", receiver.getGameProfile().getName())
+            : TextHelper.getTextByKey(getSender(), "tpa.you_to_others", receiver.getGameProfile().getName());
     }
 
     public MutableText asSenderText$Sent() {
@@ -81,69 +81,69 @@ public class TpaRequest {
             Text.literal(CROSS)
                 .fillStyle(Style.EMPTY
                     .withFormatting(Formatting.RED)
-                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, LocaleHelper.getTextByKey(getSender(), "cancel")))
+                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextHelper.getTextByKey(getSender(), "cancel")))
                     .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpacancel %s".formatted(getReceiver().getGameProfile().getName())))
                 );
 
         return asSenderText$Description()
             .copy()
-            .append(LocaleHelper.TEXT_SPACE)
+            .append(TextHelper.TEXT_SPACE)
             .append(cancelText);
     }
 
     public @NotNull Text asReceiverText$Description() {
-        return tpahere ? LocaleHelper.getTextByKey(getReceiver(), "tpa.you_to_others", sender.getGameProfile().getName())
-            : LocaleHelper.getTextByKey(getReceiver(), "tpa.others_to_you", sender.getGameProfile().getName());
+        return tpahere ? TextHelper.getTextByKey(getReceiver(), "tpa.you_to_others", sender.getGameProfile().getName())
+            : TextHelper.getTextByKey(getReceiver(), "tpa.others_to_you", sender.getGameProfile().getName());
     }
 
     public @NotNull MutableText asReceiverText$Sent() {
         Text acceptText = Text.literal(TICK)
             .fillStyle(Style.EMPTY
                 .withFormatting(Formatting.GREEN)
-                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, LocaleHelper.getTextByKey(getReceiver(), "accept")))
+                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextHelper.getTextByKey(getReceiver(), "accept")))
                 .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpaaccept %s".formatted(sender.getGameProfile().getName()))));
 
         Text denyText =
             Text.literal(CROSS)
                 .fillStyle(Style.EMPTY
                     .withFormatting(Formatting.RED)
-                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, LocaleHelper.getTextByKey(getReceiver(), "deny")))
+                    .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextHelper.getTextByKey(getReceiver(), "deny")))
                     .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tpadeny %s".formatted(sender.getGameProfile().getName())))
                 );
 
         return asReceiverText$Description()
             .copy()
-            .append(LocaleHelper.TEXT_SPACE)
+            .append(TextHelper.TEXT_SPACE)
             .append(acceptText)
-            .append(LocaleHelper.TEXT_SPACE)
+            .append(TextHelper.TEXT_SPACE)
             .append(denyText);
     }
 
     public MutableText asSenderText$Accepted() {
         return asSenderText$Description()
             .copy()
-            .append(LocaleHelper.TEXT_SPACE)
+            .append(TextHelper.TEXT_SPACE)
             .append(Text.literal(CIRCLE).formatted(Formatting.GREEN));
     }
 
     public MutableText asReceiverText$Accepted() {
         return asReceiverText$Description()
             .copy()
-            .append(LocaleHelper.TEXT_SPACE)
+            .append(TextHelper.TEXT_SPACE)
             .append(Text.literal(CIRCLE).formatted(Formatting.GREEN));
     }
 
     public MutableText asSenderText$Denied() {
         return asSenderText$Description()
             .copy()
-            .append(LocaleHelper.TEXT_SPACE)
+            .append(TextHelper.TEXT_SPACE)
             .append(Text.literal(CIRCLE).formatted(Formatting.RED));
     }
 
     public MutableText asReceiverText$Denied() {
         return asReceiverText$Description()
             .copy()
-            .append(LocaleHelper.TEXT_SPACE)
+            .append(TextHelper.TEXT_SPACE)
             .append(Text.literal(CIRCLE).formatted(Formatting.RED));
     }
 

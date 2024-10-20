@@ -6,7 +6,7 @@ import eu.pb4.sgui.api.gui.SimpleGui;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.gui.PagedGui;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -32,7 +32,7 @@ public class JavaObjectGui extends PagedGui<Field> {
     private final Object instance;
 
     public JavaObjectGui(@Nullable SimpleGui parent, Object instance, ServerPlayerEntity player, @NotNull List<Field> entities, int pageIndex, String topLevel, @NotNull String path) {
-        super(parent, player, LocaleHelper.getTextByKey(player, "object.gui.title", path), entities, pageIndex);
+        super(parent, player, TextHelper.getTextByKey(player, "object.gui.title", path), entities, pageIndex);
         this.instance = instance;
         this.topLevel = topLevel;
         this.path = path;
@@ -41,21 +41,12 @@ public class JavaObjectGui extends PagedGui<Field> {
         if (this.getEntities().isEmpty()) {
             this.getEntities().addAll(JavaObjectGui.inspectObject(this.instance));
         }
-        this.drawPagedGui();
 
         /* add footer */
         getFooter().setSlot(4, GuiHelper.makeHelpButton(player)
             .setLore(List.of(
-                LocaleHelper.getTextByKey(player, "object.top_level", topLevel)
+                TextHelper.getTextByKey(player, "object.top_level", topLevel)
             )));
-    }
-
-    @Override
-    protected void drawPagedGui() {
-        // fix: when search a keyword, the `instance` will be null while initializing the super class.
-        if (this.instance == null) return;
-
-        super.drawPagedGui();
     }
 
     @Override
@@ -90,12 +81,12 @@ public class JavaObjectGui extends PagedGui<Field> {
         }
 
         /* make lore */
-        Text valueText = LocaleHelper.getTextByKey(getPlayer(), "object.value");
+        Text valueText = TextHelper.getTextByKey(getPlayer(), "object.value");
         String abbreviate = StringUtils.abbreviate(value.toString(), "...", 128);
-        valueText = LocaleHelper.replaceBracketedText(valueText, "[value]", Text.literal(abbreviate));
+        valueText = TextHelper.replaceBracketedText(valueText, "[value]", Text.literal(abbreviate));
 
         return List.of(
-            LocaleHelper.getTextByKey(getPlayer(), "object.type", field.getType().getSimpleName())
+            TextHelper.getTextByKey(getPlayer(), "object.type", field.getType().getSimpleName())
             , valueText);
     }
 

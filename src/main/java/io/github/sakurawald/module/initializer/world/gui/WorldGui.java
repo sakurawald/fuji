@@ -3,7 +3,7 @@ package io.github.sakurawald.module.initializer.world.gui;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.elements.GuiElementInterface;
 import eu.pb4.sgui.api.gui.SimpleGui;
-import io.github.sakurawald.core.auxiliary.minecraft.LocaleHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.gui.PagedGui;
 import io.github.sakurawald.module.initializer.world.structure.DimensionNode;
 import net.minecraft.item.Item;
@@ -19,7 +19,7 @@ import java.util.List;
 public class WorldGui extends PagedGui<DimensionNode> {
 
     public WorldGui(ServerPlayerEntity player, @NotNull List<DimensionNode> entities, int pageIndex) {
-        super(null, player, LocaleHelper.getTextByKey(player, "world.dimension.list.gui.title"), entities, pageIndex);
+        super(null, player, TextHelper.getTextByKey(player, "world.dimension.list.gui.title"), entities, pageIndex);
     }
 
     @Override
@@ -49,9 +49,9 @@ public class WorldGui extends PagedGui<DimensionNode> {
             .setName(Text.of(entity.getDimension()))
             .setItem(this.computeItem(entity))
             .setLore(List.of(
-                LocaleHelper.getTextByKey(getPlayer(), "world.dimension.loaded", entity.isDimensionLoaded())
-                , LocaleHelper.getTextByKey(getPlayer(), "world.dimension.dimension_type", entity.getDimension_type())
-                , LocaleHelper.getTextByKey(getPlayer(), "world.dimension.seed", entity.getSeed())
+                TextHelper.getTextByKey(getPlayer(), "world.dimension.loaded", entity.isDimensionLoaded())
+                , TextHelper.getTextByKey(getPlayer(), "world.dimension.dimension_type", entity.getDimension_type())
+                , TextHelper.getTextByKey(getPlayer(), "world.dimension.seed", entity.getSeed())
             ))
             .build();
     }
