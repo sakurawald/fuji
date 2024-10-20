@@ -70,7 +70,7 @@ public class NbtHelper {
 
     public static NbtList writeSlotsNode(@NotNull NbtList node, @NotNull List<ItemStack> itemStackList) {
         for (ItemStack item : itemStackList) {
-            node.add(item.encodeAllowEmpty(RegistryHelper.getDefaultWrapperLookup()));
+            node.add(item.toNbtAllowEmpty(RegistryHelper.getDefaultWrapperLookup()));
         }
         return node;
     }

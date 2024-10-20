@@ -85,7 +85,7 @@ public class InteractModifierMixin {
         }
         player.startRiding(chair, true);
 
-        callbackInfoReturnable.setReturnValue(ActionResult.success(true));
+        callbackInfoReturnable.setReturnValue(ActionResult.SUCCESS);
     }
 
     @Inject(method = "setGameMode(Lnet/minecraft/world/GameMode;Lnet/minecraft/world/GameMode;)V", at = @At("HEAD"))

@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.mixin.disabler.move_speed_disabler;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,15 +14,9 @@ public abstract class ServerGamePacketListenerImplMixin {
     @Shadow
     public ServerPlayerEntity player;
 
-    @ModifyExpressionValue(
-        method = "onPlayerMove",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/server/network/ServerPlayNetworkHandler;isHost()Z"
-        )
-    )
+    @ModifyReturnValue(method = "shouldCheckMovement", at = @At("RETURN"))
     public boolean disablePlayerMoveTooQuickly(boolean original) {
-        return true;
+        return false;
     }
 
     @ModifyExpressionValue(

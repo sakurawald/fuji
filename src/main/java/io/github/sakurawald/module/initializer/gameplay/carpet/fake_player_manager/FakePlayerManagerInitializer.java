@@ -66,7 +66,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
                             }
 
                             /* kill all fake players due to expiration */
-                            fakePlayer.kill();
+                            fakePlayer.kill(fakePlayer.getServerWorld());
                             TextHelper.sendBroadcastByKey("fake_player_manager.kick_for_expiration", fakePlayer.getGameProfile().getName(), ownerPlayerName);
                             return false;
                         }
@@ -76,7 +76,7 @@ public class FakePlayerManagerInitializer extends ModuleInitializer {
                             allowFakePlayers[0]++;
                             return true;
                         } else {
-                            fakePlayer.kill();
+                            fakePlayer.kill(fakePlayer.getServerWorld());
                             TextHelper.sendBroadcastByKey("fake_player_manager.kick_for_amount", fakePlayer.getGameProfile().getName(), ownerPlayerName);
                             return false;
                         }

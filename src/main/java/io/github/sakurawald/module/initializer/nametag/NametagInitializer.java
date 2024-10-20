@@ -9,6 +9,7 @@ import io.github.sakurawald.core.event.impl.ServerLifecycleEvents;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.nametag.config.model.NametagConfigModel;
 import io.github.sakurawald.module.initializer.nametag.job.UpdateNametagJob;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.decoration.Brightness;
@@ -34,7 +35,7 @@ public class NametagInitializer extends ModuleInitializer {
     private static DisplayEntity.TextDisplayEntity makeNametag(ServerPlayerEntity player) {
         LogUtil.debug("make nametag for player: {}", player.getGameProfile().getName());
 
-        DisplayEntity.TextDisplayEntity nametag = new DisplayEntity.TextDisplayEntity(EntityType.TEXT_DISPLAY, player.getWorld()) {
+        DisplayEntity.TextDisplayEntity nametag = new DisplayEntity.TextDisplayEntity(EntityType.TEXT_DISPLAY, player.getServerWorld()) {
 
             private void discardNametag() {
                 ServerHelper.sendPacketToAll(new EntitiesDestroyS2CPacket(this.getId()));
@@ -61,10 +62,13 @@ public class NametagInitializer extends ModuleInitializer {
             }
         };
 
-        // let the nametag riding in internal server-side, so that the server will handle the position update for nametags.
+        /* let the nametag riding in internal server-side, so that the server will handle the position update for nametags. */
         nametag.setInvulnerable(true);
-        nametag.startRiding(player);
+        nametag.setPose(EntityPose.STANDING);
+        nametag.vehicle = player;
+        nametag.vehicle.addPassenger(nametag);
 
+        /* send packet to client */
         sendExistingNametagsToTheNewJoinedPlayer(player);
         broadcastTheNewNametagToAllPlayers(player, nametag);
         return nametag;

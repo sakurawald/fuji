@@ -67,7 +67,7 @@ public class TpposInitializer extends ModuleInitializer {
         int $minRange = minRange.orElse(0);
         int $maxRange = maxRange.orElse((int) world.getWorldBorder().getSize() / 2);
         int $minY = minY.orElse(world.getBottomY());
-        int $maxY = maxY.orElse(world.getTopY());
+        int $maxY = maxY.orElse(world.getTopYInclusive());
         int $maxTryTimes = maxTryTimes.orElse(8);
 
         TeleportSetup teleportSetup = new TeleportSetup(RegistryHelper.ofString(world), $centerX, $centerZ, $circle, $minRange, $maxRange, $minY
@@ -82,7 +82,7 @@ public class TpposInitializer extends ModuleInitializer {
     @Document("Teleport to the offline position of a player.")
     private static int tppos(@CommandSource ServerPlayerEntity source, OfflinePlayerName player) {
         ServerPlayerEntity dummy = EntityHelper.loadOfflinePlayer(player.getValue());
-        source.teleport(dummy.getServerWorld(), dummy.getX(), dummy.getY(), dummy.getZ(), dummy.getYaw(), dummy.getPitch());
+        new SpatialPose(dummy.getServerWorld(), dummy.getX(), dummy.getY(), dummy.getZ(), dummy.getYaw(), dummy.getPitch()).teleport(source);
         return CommandHelper.Return.SUCCESS;
     }
 

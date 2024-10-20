@@ -28,13 +28,8 @@ public abstract class ServerPlayerEntityMixin {
         BackInitializer.saveCurrentPosition(player);
     }
 
-    @Inject(method = "teleport(Lnet/minecraft/server/world/ServerWorld;DDDFF)V", at = @At("HEAD"))
-    public void saveCurPos(ServerWorld serverWorld, double d, double e, double f, float g, float h, CallbackInfo ci) {
-        BackInitializer.saveCurrentPosition(player);
-    }
-
-    @Inject(method = "teleport(Lnet/minecraft/server/world/ServerWorld;DDDLjava/util/Set;FF)Z", at = @At("HEAD"))
-    public void saveCurPos(ServerWorld serverWorld, double d, double e, double f, Set<PositionFlag> set, float g, float h, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "teleport", at = @At("HEAD"))
+    public void saveCurPos(ServerWorld serverWorld, double d, double e, double f, Set<PositionFlag> set, float g, float h, boolean bl, CallbackInfoReturnable<Boolean> cir) {
         BackInitializer.saveCurrentPosition(player);
     }
 

@@ -289,7 +289,7 @@ public class TextHelper {
 
         /* dispatch by type */
         if (audience instanceof PlayerEntity playerEntity) {
-            playerEntity.sendMessage(text);
+            playerEntity.sendMessage(text, false);
             return;
         }
 
