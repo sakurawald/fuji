@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.chat.spy;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -18,6 +19,7 @@ public class ChatSpyInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<ChatSpyConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatSpyConfigModel.class).autoSaveEveryMinute();
 
     @CommandNode("toggle")
+    @Document("Toggle the chat spy mode.")
     private static int toggle(@CommandSource ServerPlayerEntity player) {
         ChatSpyConfigModel.PerPlayerOptions options = getOptions(player);
         options.enabled = !options.enabled;

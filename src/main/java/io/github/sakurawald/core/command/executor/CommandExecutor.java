@@ -2,8 +2,8 @@ package io.github.sakurawald.core.command.executor;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.structure.ExtendedCommandSource;
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.NotNull;

@@ -2,8 +2,8 @@ package io.github.sakurawald.module.mixin.tab_list.sort;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import io.github.sakurawald.core.auxiliary.RandomUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.module.initializer.tab_list.TabListInitializer;
 import io.github.sakurawald.module.initializer.tab_list.sort.structure.TabListEntry;
 import net.minecraft.server.MinecraftServer;

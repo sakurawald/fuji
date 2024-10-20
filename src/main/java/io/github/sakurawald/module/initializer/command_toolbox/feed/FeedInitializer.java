@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.feed;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -14,6 +15,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 public class FeedInitializer extends ModuleInitializer {
 
     @CommandNode("feed")
+    @Document("Set food level, saturation level and exhaustion to healthy state.")
     private static int $feed(@CommandSource ServerPlayerEntity player) {
         return $feed(player.getCommandSource(), player);
     }

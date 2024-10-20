@@ -4,9 +4,10 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.UuidHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -136,12 +137,13 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     }
 
     @CommandNode("attach-item-one")
+    @Document("Attach one command to an item.")
     private static int attachItemOne(@CommandSource ServerPlayerEntity player
-        , Optional<InteractType> interactType
-        , Optional<Integer> maxUseTimes
-        , Optional<ExecuteAsType> executeAsType
-        , Optional<Boolean> destroyItem
-        , GreedyString command
+        , @Document("The interaction type to trigger this command.") Optional<InteractType> interactType
+        , @Document("Max use times of this command.") Optional<Integer> maxUseTimes
+        , @Document("Execute this command as who?") Optional<ExecuteAsType> executeAsType
+        , @Document("Should we destroy the item if the use times exceed.") Optional<Boolean> destroyItem
+        , @Document("The command.") GreedyString command
     ) {
         // get model
         ItemStack mainHandStack = player.getMainHandStack();
@@ -165,12 +167,13 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     }
 
     @CommandNode("attach-entity-one")
+    @Document("Attach one command to an entity.")
     private static int attachEntityOne(@CommandSource ServerPlayerEntity player
-        , Entity entity
-        , Optional<InteractType> interactType
-        , Optional<Integer> maxUseTimes
-        , Optional<ExecuteAsType> executeAsType
-        , GreedyString command
+        , @Document("The target entity.") Entity entity
+        , @Document("The interaction type to trigger this command.") Optional<InteractType> interactType
+        , @Document("Max use times of this command.") Optional<Integer> maxUseTimes
+        , @Document("Execute this command as who?") Optional<ExecuteAsType> executeAsType
+        , @Document("The command") GreedyString command
     ) {
         // get entity id
         String uuid = entity.getUuidAsString();
@@ -192,10 +195,10 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     @CommandNode("attach-block-one")
     private static int attachBlockOne(@CommandSource ServerPlayerEntity player
         , BlockPos blockPos
-        , Optional<InteractType> interactType
-        , Optional<Integer> maxUseTimes
-        , Optional<ExecuteAsType> executeAsType
-        , GreedyString command
+        , @Document("The interaction type to trigger this command.") Optional<InteractType> interactType
+        , @Document("Max use times of this command.") Optional<Integer> maxUseTimes
+        , @Document("Execute this command as who?") Optional<ExecuteAsType> executeAsType
+        , @Document("The command") GreedyString command
     ) {
         // get entity id
         String uuid = UuidHelper.getAttachedUuid(player.getServerWorld(), blockPos);
@@ -223,6 +226,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     }
 
     @CommandNode("detach-item-all")
+    @Document("Detach all attached commands in the item.")
     private static int detachItemAll(@CommandSource ServerPlayerEntity player) {
         ItemStack mainHandStack = player.getMainHandStack();
         checkItemStackInHand(player, mainHandStack);
@@ -233,6 +237,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     }
 
     @CommandNode("detach-entity-all")
+    @Document("Detach all attached commands in the entity.")
     private static int detachEntityAll(@CommandSource ServerPlayerEntity player, Entity entity) {
         String uuid = entity.getUuidAsString();
 
@@ -241,6 +246,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     }
 
     @CommandNode("detach-block-all")
+    @Document("Detach all attached commands in the block.")
     private static int detachBlockAll(@CommandSource ServerPlayerEntity player, BlockPos blockPos) {
         String uuid = UuidHelper.getAttachedUuid(player.getServerWorld(), blockPos);
 
@@ -253,6 +259,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     }
 
     @CommandNode("query-item")
+    @Document("Query all attached commands in the item.")
     private static int queryItem(@CommandSource ServerPlayerEntity player) {
         ItemStack mainHandStack = player.getMainHandStack();
         checkItemStackInHand(player, mainHandStack);
@@ -263,6 +270,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     }
 
     @CommandNode("query-entity")
+    @Document("Query all attached commands in the entity.")
     private static int queryEntity(@CommandSource ServerPlayerEntity player, Entity entity) {
         String uuid = entity.getUuidAsString();
         doQueryAttachment(player, uuid);
@@ -270,6 +278,7 @@ public class CommandAttachmentInitializer extends ModuleInitializer {
     }
 
     @CommandNode("query-block")
+    @Document("Query all attached commands in the block.")
     private static int queryBlock(@CommandSource ServerPlayerEntity player, BlockPos blockPos) {
         String uuid = UuidHelper.getAttachedUuid(player.getServerWorld(), blockPos);
         doQueryAttachment(player, uuid);

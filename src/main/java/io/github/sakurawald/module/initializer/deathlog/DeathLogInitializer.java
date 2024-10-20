@@ -1,9 +1,10 @@
 package io.github.sakurawald.module.initializer.deathlog;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.NbtHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -58,7 +59,11 @@ public class DeathLogInitializer extends ModuleInitializer {
     private static final String INVENTORY = "inventory";
 
     @CommandNode("restore")
-    private static int restore(@CommandSource ServerCommandSource source, String from, int index, ServerPlayerEntity to) {
+    @Document("Restore a deathlog.")
+    private static int restore(@CommandSource ServerCommandSource source
+        , @Document("Where the deathlog from?") String from
+        , @Document("The index to select a deathlog.") int index
+        , @Document("Where the deathlog is restored to?") ServerPlayerEntity to) {
         /* read from file */
         NbtHelper.withNbtFile(computePath(from), root -> {
             ensureDeathlogNotEmpty(source, root);
@@ -113,6 +118,7 @@ public class DeathLogInitializer extends ModuleInitializer {
     }
 
     @CommandNode("view")
+    @Document("List all deathlog of a player.")
     private static int view(@CommandSource ServerPlayerEntity player, OfflinePlayerName from) {
         String $from = from.getValue();
 

@@ -3,13 +3,14 @@ package io.github.sakurawald.module.initializer.placeholder;
 import eu.pb4.placeholders.api.PlaceholderResult;
 import eu.pb4.placeholders.api.Placeholders;
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.RandomUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PermissionHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.PlaceholderHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -46,6 +47,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
     private static final Pattern ESCAPE_PARSER = Pattern.compile("\\s*([\\s\\S]+)\\s+(\\d+)\\s*");
 
     @CommandNode("list")
+    @Document("List all placeholders registered in server.")
     private static int list(@CommandSource ServerPlayerEntity player) {
         List<Identifier> list = Placeholders.getPlaceholders().keySet().asList();
         new PlaceholderGui(player, list, 0).open();
@@ -53,6 +55,7 @@ public class PlaceholderInitializer extends ModuleInitializer {
     }
 
     @CommandNode("parse")
+    @Document("Parse a placeholder with a contextual player.")
     private static int list(@CommandSource ServerCommandSource source
         , Optional<ServerPlayerEntity> player
         , GreedyString input) {

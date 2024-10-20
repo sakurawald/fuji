@@ -1,7 +1,7 @@
 package io.github.sakurawald.core.command.structure;
 
-import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;

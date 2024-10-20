@@ -1,8 +1,9 @@
 package io.github.sakurawald.module.initializer.command_toolbox.bed;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
@@ -16,6 +17,7 @@ import net.minecraft.world.World;
 public class BedInitializer extends ModuleInitializer {
 
     @CommandNode("bed")
+    @Document("Teleport to the bed location.")
     private static int $bed(@CommandSource ServerPlayerEntity player) {
         BlockPos respawnPosition = player.getSpawnPointPosition();
         RegistryKey<World> respawnDimension = player.getSpawnPointDimension();

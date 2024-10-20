@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.lore;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -17,6 +18,7 @@ import java.util.List;
 public class LoreInitializer extends ModuleInitializer {
 
     @CommandNode("lore unset")
+    @Document("Clear all lore in item.")
     private static int $unset(@CommandSource CommandContext<ServerCommandSource> ctx) {
         return CommandHelper.Pattern.itemInHandCommand(ctx, (player, item) -> {
             LoreComponent loreComponent = new LoreComponent(List.of());
@@ -26,6 +28,7 @@ public class LoreInitializer extends ModuleInitializer {
     }
 
     @CommandNode("lore set")
+    @Document("Set lore for item.")
     private static int $set(@CommandSource CommandContext<ServerCommandSource> ctx, GreedyString lore) {
         return CommandHelper.Pattern.itemInHandCommand(ctx, (player, item) -> {
             List<Text> texts = TextHelper.getTextListByValue(player, lore.getValue());

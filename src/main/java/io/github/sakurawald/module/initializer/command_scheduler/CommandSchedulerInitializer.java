@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.command_scheduler;
 
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -41,6 +42,7 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
     }
 
     @CommandNode("list")
+    @Document("List all defined jobs.")
     private static int list(@CommandSource ServerPlayerEntity player) {
         List<Job> jobs = scheduler.model().jobs;
         new JobGui(player, jobs, 0).open();
@@ -48,6 +50,7 @@ public class CommandSchedulerInitializer extends ModuleInitializer {
     }
 
     @CommandNode("trigger")
+    @Document("Trigger a job manually.")
     private static int trigger(JobName jobName) {
         scheduler.model().jobs.stream()
             .filter(it -> it.getName().equals(jobName.getValue()))

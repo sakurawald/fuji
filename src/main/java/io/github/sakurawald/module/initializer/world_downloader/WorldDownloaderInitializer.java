@@ -3,6 +3,7 @@ package io.github.sakurawald.module.initializer.world_downloader;
 import com.google.common.collect.EvictingQueue;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.IOUtil;
 import io.github.sakurawald.core.auxiliary.LogUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
@@ -64,6 +65,7 @@ public class WorldDownloaderInitializer extends ModuleInitializer {
     }
 
     @CommandNode("download")
+    @Document("Download the region file around you.")
     private static int $download(@CommandSource ServerPlayerEntity player) {
         /* init server */
         if (server == null) {

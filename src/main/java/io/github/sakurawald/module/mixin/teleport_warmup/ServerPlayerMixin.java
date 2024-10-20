@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.mixin.teleport_warmup;
 
 import io.github.sakurawald.core.auxiliary.minecraft.EntityHelper;
-import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.manager.Managers;
 import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.core.structure.TeleportTicket;

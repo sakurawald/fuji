@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.realname;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -16,6 +17,7 @@ public class RealnameInitializer extends ModuleInitializer {
 
     @SuppressWarnings("UnnecessaryLocalVariable")
     @CommandNode("realname")
+    @Document("Query the nickname-realname mapping.")
     private static int $realname(@CommandSource ServerCommandSource source) {
         MutableText builder = Text.empty();
 

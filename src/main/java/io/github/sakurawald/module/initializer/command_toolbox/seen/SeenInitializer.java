@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.seen;
 
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.DateUtil;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
@@ -24,6 +25,7 @@ public class SeenInitializer extends ModuleInitializer {
 
     @CommandNode("seen")
     @CommandRequirement(level = 4)
+    @Document("Query the last online time of a player.")
     private static int $seen(@CommandSource ServerCommandSource source, OfflinePlayerName playerName) {
         String target = playerName.getValue();
 

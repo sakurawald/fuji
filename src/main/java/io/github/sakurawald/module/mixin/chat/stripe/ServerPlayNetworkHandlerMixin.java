@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
+// the chat stripe should process before the chat rewrite, making the possibility to combo.
 @Mixin(value = ServerPlayNetworkHandler.class, priority = 1000 + 500)
 public abstract class ServerPlayNetworkHandlerMixin {
 

@@ -1,8 +1,8 @@
 package io.github.sakurawald.module.mixin.chat.spy;
 
 import io.github.sakurawald.core.auxiliary.LogUtil;
-import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
+import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.module.initializer.chat.spy.ChatSpyInitializer;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.network.message.SignedMessage;

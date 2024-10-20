@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.profiler;
 
 import com.mojang.brigadier.context.CommandContext;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -35,6 +36,7 @@ public class ProfilerInitializer extends ModuleInitializer {
     }
 
     @CommandNode("profiler")
+    @Document("Query the server health status.")
     private static int $profiler(@CommandSource CommandContext<ServerCommandSource> ctx) {
         ServerCommandSource source = ctx.getSource();
         CompletableFuture.runAsync(() -> {

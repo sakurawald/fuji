@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.top;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -14,6 +15,7 @@ import net.minecraft.world.World;
 public class TopInitializer extends ModuleInitializer {
 
     @CommandNode("top")
+    @Document("Teleport to the top of your current position.")
     private static int top(@CommandSource ServerPlayerEntity player) {
         World world = player.getWorld();
         BlockPos topPosition = world.getTopPosition(Heightmap.Type.MOTION_BLOCKING, player.getBlockPos());

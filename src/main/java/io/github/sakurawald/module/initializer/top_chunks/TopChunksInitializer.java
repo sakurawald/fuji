@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.top_chunks;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -34,6 +35,7 @@ public class TopChunksInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<TopChunksConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, TopChunksConfigModel.class);
 
     @CommandNode("chunks")
+    @Document("List all chunks ordered by lag score.")
     private static int $chunks(@CommandSource ServerCommandSource source) {
         CompletableFuture.runAsync(() -> {
 

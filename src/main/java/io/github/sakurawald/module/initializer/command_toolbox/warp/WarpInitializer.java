@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.warp;
 
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.RegistryHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
@@ -104,6 +105,7 @@ public class WarpInitializer extends ModuleInitializer {
 
     @CommandNode("set-name")
     @CommandRequirement(level = 4)
+    @Document("Set the display name for a warp.")
     private static int $setName(@CommandSource ServerPlayerEntity player, WarpName warp, GreedyString name) {
         return withWarpNode(player, warp, warpNode -> {
             warpNode.setName(name.getValue());
@@ -113,6 +115,7 @@ public class WarpInitializer extends ModuleInitializer {
 
     @CommandNode("set-item")
     @CommandRequirement(level = 4)
+    @Document("Set the item for a warp.")
     private static int $setItem(@CommandSource ServerPlayerEntity player, WarpName warp, Item item) {
         return withWarpNode(player, warp, warpNode -> {
             warpNode.setItem(RegistryHelper.ofString(item));
@@ -122,6 +125,7 @@ public class WarpInitializer extends ModuleInitializer {
 
     @CommandNode("set-lore")
     @CommandRequirement(level = 4)
+    @Document("Set the lore for a warp.")
     private static int $setLore(@CommandSource ServerPlayerEntity player, WarpName warp, GreedyString lore) {
         return withWarpNode(player, warp, warpNode -> {
             List<String> split = StringSplitter.split(lore.getValue());

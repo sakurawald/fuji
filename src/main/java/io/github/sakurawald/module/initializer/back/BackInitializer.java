@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.back;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -23,6 +24,7 @@ public class BackInitializer extends ModuleInitializer {
     private static final HashMap<String, SpatialPose> player2lastPos = new HashMap<>();
 
     @CommandNode("back")
+    @Document("Back to the recent death location or recent teleport location.")
     private static int $back(@CommandSource ServerPlayerEntity player) {
         SpatialPose lastPos = player2lastPos.get(player.getName().getString());
         if (lastPos == null) {

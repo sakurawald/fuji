@@ -2,6 +2,7 @@ package io.github.sakurawald.core.command.processor;
 
 import com.mojang.brigadier.CommandDispatcher;
 import io.github.sakurawald.core.annotation.Cite;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.ReflectionUtil;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandRequirement;
@@ -114,7 +115,9 @@ public class CommandAnnotationProcessor {
         if (classAnnotation != null && !classAnnotation.value().isBlank()) {
             Arrays.stream(classAnnotation.value().trim().split(" "))
                 .filter(it -> !it.isBlank())
-                .forEach(argumentName -> argumentList.add(Argument.makeLiteralArgument(argumentName, CommandRequirementDescriptor.of(classRequirement))));
+                .forEach(argumentName -> argumentList.add(
+                    Argument.makeLiteralArgument(argumentName, CommandRequirementDescriptor.of(classRequirement))
+                ));
         }
 
         /* process the @CommandNode above the method. */
@@ -154,7 +157,10 @@ public class CommandAnnotationProcessor {
                 Parameter parameter = method.getParameters()[methodParameterIndex];
                 Class<?> type = unbox(parameter);
                 boolean isOptional = parameter.getType().equals(Optional.class);
-                argumentList.set(argumentIndex, Argument.makeRequiredArgument(type, parameter.getName(), methodParameterIndex, isOptional, CommandRequirementDescriptor.of(methodRequirement)));
+                argumentList.set(argumentIndex, Argument
+                    .makeRequiredArgument(type, parameter.getName(), methodParameterIndex, isOptional, CommandRequirementDescriptor.of(methodRequirement))
+                    .withDocument(parameter.getAnnotation(Document.class))
+                );
             }
             /* generate the command source argument for lazy programmers. */
             for (int parameterIndex = 0; parameterIndex < method.getParameters().length; parameterIndex++) {
@@ -162,7 +168,10 @@ public class CommandAnnotationProcessor {
                 if (parameter.getAnnotation(CommandSource.class) == null) continue;
                 Class<?> type = unbox(parameter);
                 // for a command source argument, we don't care the index
-                argumentList.addFirst(Argument.makeRequiredArgument(type, parameter.getName(), parameterIndex, false, CommandRequirementDescriptor.of(methodRequirement)).markAsCommandSource());
+                argumentList.addFirst(Argument
+                    .makeRequiredArgument(type, parameter.getName(), parameterIndex, false, CommandRequirementDescriptor.of(methodRequirement)).markAsCommandSource()
+                    .withDocument(parameter.getAnnotation(Document.class))
+                );
             }
         } else {
             /* generate the mappings between argument and parameter automatically. */
@@ -172,7 +181,9 @@ public class CommandAnnotationProcessor {
                 Parameter parameter = parameters[parameterIndex];
                 Class<?> type = unbox(parameter);
                 boolean isOptional = parameter.getType().equals(Optional.class);
-                Argument argument = Argument.makeRequiredArgument(type, parameter.getName(), parameterIndex, isOptional, CommandRequirementDescriptor.of(methodRequirement));
+                Argument argument = Argument
+                    .makeRequiredArgument(type, parameter.getName(), parameterIndex, isOptional, CommandRequirementDescriptor.of(methodRequirement))
+                    .withDocument(parameter.getAnnotation(Document.class));
                 argumentList.add(argument);
 
                 /* mark as command source */
@@ -187,7 +198,8 @@ public class CommandAnnotationProcessor {
             throw new RuntimeException("The argument list of @CommandNode annotated in method `%s` in class `%s` is empty.".formatted(method.getName(), clazz.getName()));
         }
 
-        return new CommandDescriptor(method, argumentList);
+        return new CommandDescriptor(method, argumentList)
+            .withDocument(method.getAnnotation(Document.class));
     }
 
 }

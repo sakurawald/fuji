@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.compass;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -37,6 +38,7 @@ public class CompassInitializer extends ModuleInitializer {
     }
 
     @CommandNode("track pos")
+    @Document("Let the compass in hand track a specified position.")
     private static int track(@CommandSource ServerPlayerEntity player, Dimension dimension, BlockPos blockPos) {
         return withCompassInHand(player, (itemStack) -> {
             setTrackedTarget(itemStack, dimension.getValue(), blockPos);
@@ -45,6 +47,7 @@ public class CompassInitializer extends ModuleInitializer {
     }
 
     @CommandNode("track player")
+    @Document("Let the compass in hand track a specified player.")
     private static int track(@CommandSource ServerPlayerEntity player, ServerPlayerEntity target) {
         return withCompassInHand(player, (itemStack) -> {
             setTrackedTarget(itemStack, target.getServerWorld(), target.getBlockPos());
@@ -53,6 +56,7 @@ public class CompassInitializer extends ModuleInitializer {
     }
 
     @CommandNode("reset")
+    @Document("Let the compass in hand track nothing.")
     private static int reset(@CommandSource ServerPlayerEntity player) {
         return withCompassInHand(player, (itemStack) -> {
             itemStack.set(DataComponentTypes.LODESTONE_TRACKER, null);

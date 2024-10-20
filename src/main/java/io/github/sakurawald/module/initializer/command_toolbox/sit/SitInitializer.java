@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.sit;
 
 import io.github.sakurawald.core.annotation.Cite;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -48,6 +49,7 @@ public class SitInitializer extends ModuleInitializer {
 
     @SuppressWarnings("deprecation")
     @CommandNode("sit")
+    @Document("Sit in current position.")
     private static int $sit(@CommandSource ServerPlayerEntity player) {
         // fix: if the player stand in the slab/stair block
         BlockPos steppingBlockPos = player.getSteppingPos();

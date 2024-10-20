@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.view;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -24,6 +25,7 @@ public class ViewInitializer extends ModuleInitializer {
     }
 
     @CommandNode("inv")
+    @Document("View the player's inventory.")
     private static int inv(@CommandSource ServerPlayerEntity source, OfflinePlayerName target) {
         checkSelfView(source, target);
 
@@ -32,6 +34,7 @@ public class ViewInitializer extends ModuleInitializer {
     }
 
     @CommandNode("ender")
+    @Document("View the player's enderchest.")
     private static int ender(@CommandSource ServerPlayerEntity source, OfflinePlayerName target) {
         checkSelfView(source, target);
 

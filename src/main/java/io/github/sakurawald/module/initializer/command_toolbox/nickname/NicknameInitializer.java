@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.command_toolbox.nickname;
 
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -29,6 +30,7 @@ public class NicknameInitializer extends ModuleInitializer {
     }
 
     @CommandNode("set")
+    @Document("Set the display name.")
     private static int $set(@CommandSource ServerPlayerEntity player, GreedyString format) {
         String name = player.getGameProfile().getName();
         String value = format.getValue();
@@ -44,6 +46,7 @@ public class NicknameInitializer extends ModuleInitializer {
     }
 
     @CommandNode("reset")
+    @Document("Clear the display name.")
     private static int $reset(@CommandSource ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
         data.model().format.player2format.remove(name);

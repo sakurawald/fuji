@@ -1,6 +1,7 @@
 package io.github.sakurawald.module.initializer.works;
 
 import io.github.sakurawald.Fuji;
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
 import io.github.sakurawald.core.command.annotation.CommandSource;
@@ -28,6 +29,7 @@ public class WorksInitializer extends ModuleInitializer {
     public static final BaseConfigurationHandler<WorksConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, WorksConfigModel.class);
 
     @CommandNode("works")
+    @Document("Open works gui.")
     private static int $works(@CommandSource ServerPlayerEntity player) {
         new WorksGui(player, works.model().works, 0).open();
         return CommandHelper.Return.SUCCESS;

@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.command_toolbox.hat;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
@@ -14,6 +15,7 @@ import net.minecraft.util.Hand;
 public class HatInitializer extends ModuleInitializer {
 
     @CommandNode("hat")
+    @Document("Wear the item in hand.")
     private static int $hat(@CommandSource ServerPlayerEntity player) {
         ItemStack mainHandItem = player.getMainHandStack();
         ItemStack headSlotItem = player.getEquippedStack(EquipmentSlot.HEAD);
