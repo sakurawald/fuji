@@ -1,5 +1,6 @@
 package io.github.sakurawald.module.initializer.chat.style;
 
+import eu.pb4.placeholders.api.parsers.NodeParser;
 import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
@@ -38,6 +39,11 @@ public class ChatStyleInitializer extends ModuleInitializer {
     private static final BaseConfigurationHandler<ChatFormatModel> chat = new ObjectConfigurationHandler<>("chat.json", ChatFormatModel.class)
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("chat.json"), ChatStyleInitializer.class));
 
+    private static final NodeParser CHAT_STYLE_PARSER = NodeParser.builder()
+        .quickText()
+        .simplifiedTextFormat()
+        .build();
+
     @CommandNode("chat style set")
     @CommandRequirement(level = 4)
     private static int setPlayerFormat(@CommandSource ServerPlayerEntity player, GreedyString format) {
@@ -51,8 +57,7 @@ public class ChatStyleInitializer extends ModuleInitializer {
         /* feedback */
         $format = TextHelper.getValue(player, "chat.format.set").replace("%s", $format);
         $format = $format.replace("%message%", TextHelper.getValue(player, "chat.format.show"));
-        Text text = TextHelper.getTextByValue(null, $format);
-
+        Text text = CHAT_STYLE_PARSER.parseNode($format).toText();
         player.sendMessage(text);
         return CommandHelper.Return.SUCCESS;
     }
@@ -78,7 +83,7 @@ public class ChatStyleInitializer extends ModuleInitializer {
 
         contentString = chat.model().format.player2format.getOrDefault(player.getGameProfile().getName(), "%message%").replace("%message%", contentString);
 
-        return TextHelper.getTextByValue(player, contentString);
+        return CHAT_STYLE_PARSER.parseNode(contentString).toText();
     }
 
 }
