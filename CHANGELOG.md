@@ -18,4 +18,5 @@
 - feature: add `transform nickname` option, which allows to add prefix, suffix and truncate the input nickname. (nickname module)
 - feature: skip un-necessary re-draw for `/fuji inspect configuration` and `/fuji inspect registry`. (fuji module)
 - build: improve the github templates to use new features provided by github, providing a better experience for user feedback.
+- docs: enrich the `chat` modules.
 - fix: should not warn the console about `required mods not installed` if the related module is disabled in `config/fuji/config.json`. (carpet module)
