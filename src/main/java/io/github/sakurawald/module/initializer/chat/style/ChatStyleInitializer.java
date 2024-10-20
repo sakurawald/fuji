@@ -5,7 +5,6 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
-import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
@@ -25,6 +24,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
+@CommandNode("chat style")
 public class ChatStyleInitializer extends ModuleInitializer {
 
     public static final BaseConfigurationHandler<ChatStyleConfigModel> config = new ObjectConfigurationHandler<>(BaseConfigurationHandler.CONFIG_JSON, ChatStyleConfigModel.class);
@@ -44,8 +44,7 @@ public class ChatStyleInitializer extends ModuleInitializer {
         .simplifiedTextFormat()
         .build();
 
-    @CommandNode("chat style set")
-    @CommandRequirement(level = 4)
+    @CommandNode("set")
     private static int setPlayerFormat(@CommandSource ServerPlayerEntity player, GreedyString format) {
         /* save the format*/
         String name = player.getGameProfile().getName();
@@ -62,8 +61,7 @@ public class ChatStyleInitializer extends ModuleInitializer {
         return CommandHelper.Return.SUCCESS;
     }
 
-    @CommandNode("chat style reset")
-    @CommandRequirement(level = 4)
+    @CommandNode("reset")
     private static int resetPlayerFormat(@CommandSource ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
         chat.model().format.player2format.remove(name);
