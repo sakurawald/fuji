@@ -13,6 +13,7 @@
   - add `/warp set-item` to set the item of a warp.
   - add `/warp set-lore` to set the lore of a warp.
 - feature: add new module `chat.stripe` to stripe `style tags` based on permissions, making it possible to control the usage of style tags. (chat.stripe module)
+- feature: add `requires_corresponding_permission_to_use_style_tag` option for `color.anvil` and `color.sign` module. (color module)
 - feature: add the ability to `cancel` a system message. (system_message module)
 - feature: add `transform nickname` option, which allows to add prefix, suffix and truncate the input nickname. (nickname module)
 - feature: skip un-necessary re-draw for `/fuji inspect configuration` and `/fuji inspect registry`. (fuji module)

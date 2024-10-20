@@ -31,7 +31,10 @@ public class StyleStriper {
     private static String extractTagType(String tag) {
         tag = tag.trim();
 
-        if (tag.startsWith("/")) return tag.substring(1);
+        if (tag.startsWith("/")) tag = tag.substring(1);
+
+        // remove the escape character for vanilla minecraft sign.
+        if (tag.endsWith("\\")) tag = tag.substring(0, tag.length() - 1);
 
         int colonIndex = tag.indexOf(':');
         if (colonIndex != -1) return tag.substring(0, colonIndex);
