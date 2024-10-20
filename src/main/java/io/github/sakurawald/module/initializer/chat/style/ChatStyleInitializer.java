@@ -4,11 +4,13 @@ import io.github.sakurawald.Fuji;
 import io.github.sakurawald.core.auxiliary.minecraft.CommandHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.command.annotation.CommandNode;
+import io.github.sakurawald.core.command.annotation.CommandRequirement;
 import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.command.argument.wrapper.impl.GreedyString;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
+import io.github.sakurawald.core.service.style_striper.StyleStriper;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.chat.style.model.ChatFormatModel;
 import io.github.sakurawald.module.initializer.chat.style.model.ChatStyleConfigModel;
@@ -37,10 +39,12 @@ public class ChatStyleInitializer extends ModuleInitializer {
         .addTransformer(new MoveFileIntoModuleConfigDirectoryTransformer(Fuji.CONFIG_PATH.resolve("chat.json"), ChatStyleInitializer.class));
 
     @CommandNode("chat style set")
+    @CommandRequirement(level = 4)
     private static int setPlayerFormat(@CommandSource ServerPlayerEntity player, GreedyString format) {
         /* save the format*/
         String name = player.getGameProfile().getName();
         String $format = format.getValue();
+        $format = StyleStriper.stripe(player, StyleStriper.STYLE_TYPE_CHAT, $format);
         chat.model().format.player2format.put(name, $format);
         chat.writeStorage();
 
@@ -54,6 +58,7 @@ public class ChatStyleInitializer extends ModuleInitializer {
     }
 
     @CommandNode("chat style reset")
+    @CommandRequirement(level = 4)
     private static int resetPlayerFormat(@CommandSource ServerPlayerEntity player) {
         String name = player.getGameProfile().getName();
         chat.model().format.player2format.remove(name);
