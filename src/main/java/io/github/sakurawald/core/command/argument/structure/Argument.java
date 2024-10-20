@@ -1,5 +1,6 @@
 package io.github.sakurawald.core.command.argument.structure;
 
+import io.github.sakurawald.core.annotation.Document;
 import io.github.sakurawald.core.command.structure.CommandRequirementDescriptor;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +26,8 @@ public class Argument {
     int methodParameterIndex;
     boolean isCommandSource;
 
+    @Nullable String document;
+
     private Argument(@Nullable Class<?> type, @NotNull String argumentName, int methodParameterIndex, boolean isOptional, @Nullable CommandRequirementDescriptor requirement) {
         this.type = type;
         this.argumentName = argumentName;
@@ -42,6 +45,13 @@ public class Argument {
 
     public static Argument makeLiteralArgument(@NotNull String argumentName, @Nullable CommandRequirementDescriptor requirement) {
         return new Argument(null, argumentName, THE_METHOD_PARAMETER_INDEX_FOR_LITERAL_ARGUMENT, false, requirement);
+    }
+
+    public Argument withDocument(@Nullable Document document) {
+        if (document == null) return this;
+
+        this.document = document.value();
+        return this;
     }
 
     public boolean isRequiredArgument() {
