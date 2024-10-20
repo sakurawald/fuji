@@ -160,6 +160,7 @@
   "warp.set.fail.need_override": "<red>Warp %s findes, du skal tilføje `--override true` argument for at tilsidesætte det.",
   "warp.set.success": "<gold>Warp %s set.",
   "warp.unset.success": "<gold>Warp %s fjernet.",
+  "warp.gui.title": "<blue>Warps",
   "works.list.add": "<#FFA1F5>Tilføj arbejde",
   "works.list.all_works": "<#FFA1F5>Alle værker",
   "works.list.help.lore": "<green> - Venstreklik -> Besøg\n<green> - Højreklik -> Åbn generelle indstillinger\n<green> - Skift + Højreklik -> Åbn specialiserede indstillinger",
