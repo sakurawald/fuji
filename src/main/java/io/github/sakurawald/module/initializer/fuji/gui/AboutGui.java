@@ -35,7 +35,6 @@ public class AboutGui extends PagedGui<Person> {
         super(null, player, TextHelper.getTextByKey(player, "about"), entities, pageIndex);
 
         ModMetadata metadata = FabricLoader.getInstance().getModContainer(Fuji.MOD_ID).get().getMetadata();
-
         getFooter().setSlot(1, new GuiElementBuilder(Items.BOOK)
             .setName(TextHelper.getTextByKey(player, "version.format", metadata.getVersion().getFriendlyString())));
         getFooter().setSlot(4, new GuiElementBuilder(Items.NETHER_STAR)
@@ -44,6 +43,11 @@ public class AboutGui extends PagedGui<Person> {
                 TextHelper.sendMessageByKey(player, "homepage.project.visit", metadata.getContact().get("sources").orElse("can't read project homepage from metadata"));
                 this.close();
             }));
+    }
+
+    @Override
+    protected void drawPagedGui() {
+        super.drawPagedGui();
 
         // fetch heads async
         fetchHeads();
