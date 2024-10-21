@@ -8,6 +8,7 @@ import net.minecraft.entity.MovementType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -28,7 +29,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     }
 
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
-    public void invulnerableEffect(DamageSource damageSource, float f, CallbackInfoReturnable<Boolean> cir) {
+    public void invulnerableEffect(ServerWorld serverWorld, DamageSource damageSource, float f, CallbackInfoReturnable<Boolean> cir) {
         if (AfkEffectInitializer.config.model().invulnerable && AfkInitializer.isAfk(player)) {
             cir.setReturnValue(false);
         }

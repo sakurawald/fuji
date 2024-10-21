@@ -78,7 +78,7 @@ public class CleanerInitializer extends ModuleInitializer {
 
                     String key;
                     if (entity instanceof ItemEntity itemEntity) {
-                        key = itemEntity.getStack().getTranslationKey();
+                        key = itemEntity.getStack().getItem().getTranslationKey();
                     } else {
                         key = entity.getType().getTranslationKey();
                     }

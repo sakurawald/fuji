@@ -7,12 +7,12 @@ import io.github.sakurawald.core.command.annotation.CommandSource;
 import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.job.impl.MentionPlayersJob;
+import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.tpa.config.model.TpaConfigModel;
 import io.github.sakurawald.module.initializer.tpa.structure.TpaRequest;
 import lombok.Getter;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +70,8 @@ public class TpaInitializer extends ModuleInitializer {
             ServerPlayerEntity who = request.getTeleportWho();
             ServerPlayerEntity to = request.getTeleportTo();
             MentionPlayersJob.requestJob(config.model().mention_player, request.isTpahere() ? to : who);
-            who.teleport((ServerWorld) to.getWorld(), to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch());
+            new SpatialPose(to.getWorld(), to.getX(), to.getY(), to.getZ(), to.getYaw(), to.getPitch())
+                .teleport(who);
         } else if (status == ResponseStatus.DENY) {
             request.getSender().sendMessage(request.asSenderText$Denied(), true);
             request.getReceiver().sendMessage(request.asReceiverText$Denied());

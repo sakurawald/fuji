@@ -7,6 +7,7 @@ import io.github.sakurawald.core.auxiliary.minecraft.GuiHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import io.github.sakurawald.core.gui.PagedGui;
+import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.module.initializer.works.WorksInitializer;
 import io.github.sakurawald.module.initializer.works.structure.work.abst.Work;
 import io.github.sakurawald.module.initializer.works.structure.work.impl.ProductionWork;
@@ -72,7 +73,8 @@ public class WorksGui extends PagedGui<Work> {
                     RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(entity.level));
                     ServerWorld level = ServerHelper.getDefaultServer().getWorld(worldKey);
                     if (level != null) {
-                        player.teleport(level, entity.x, entity.y, entity.z, entity.yaw, entity.pitch);
+                        new SpatialPose(level, entity.x, entity.y, entity.z, entity.yaw, entity.pitch)
+                            .teleport(player);
                     } else {
                         TextHelper.sendMessageByKey(player, "world.dimension.not_found", entity.level);
                     }

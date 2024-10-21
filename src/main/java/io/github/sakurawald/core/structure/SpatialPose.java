@@ -5,6 +5,7 @@ import io.github.sakurawald.core.auxiliary.minecraft.ServerHelper;
 import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import lombok.Data;
 import lombok.With;
+import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -13,6 +14,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.EnumSet;
 
 @Data
 @With
@@ -77,6 +80,8 @@ public class SpatialPose {
             return;
         }
 
-        player.teleport(serverLevel, this.x, this.y, this.z, this.yaw, this.pitch);
+        /* make position flags */
+        EnumSet<PositionFlag> flags = EnumSet.noneOf(PositionFlag.class);
+        player.teleport(serverLevel, this.x, this.y, this.z, flags, this.yaw, this.pitch, true);
     }
 }

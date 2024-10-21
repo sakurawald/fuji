@@ -9,6 +9,7 @@ import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import it.unimi.dsi.fastutil.Pair;
 import lombok.Getter;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.player.PlayerPosition;
 import net.minecraft.network.packet.s2c.play.DifficultyS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntitiesDestroyS2CPacket;
 import net.minecraft.network.packet.s2c.play.EntityPassengersSetS2CPacket;
@@ -91,7 +92,7 @@ public class SkinRestorer {
                     if (player != observer && observer.canSee(player)) {
                         observer.networkHandler.sendPacket(new EntitiesDestroyS2CPacket(player.getId()));
                         observer.networkHandler.sendPacket(new EntitySpawnS2CPacket(player, 0, player.getBlockPos()));
-                        observer.networkHandler.sendPacket(new EntityPositionS2CPacket(player));
+                        observer.networkHandler.sendPacket(EntityPositionS2CPacket.create(player.getId(), PlayerPosition.fromEntity(player), Set.of(), player.isOnGround()));
                         observer.networkHandler.sendPacket(new EntityTrackerUpdateS2CPacket(player.getId(), player.getDataTracker().getChangedEntries()));
                         observer.networkHandler.sendPacket(new EntityPassengersSetS2CPacket(player));
 

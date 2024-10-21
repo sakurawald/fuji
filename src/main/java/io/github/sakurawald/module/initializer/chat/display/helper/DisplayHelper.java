@@ -92,7 +92,7 @@ public class DisplayHelper {
         String displayUUID = makeItemDisplayUuid(player);
         MutableText text = TextHelper.getTextByKey(player, "display.item.text").copy();
 
-        MutableText translatable = Text.translatable(player.getMainHandStack().getTranslationKey());
+        MutableText translatable = Text.translatable(player.getMainHandStack().getItem().getTranslationKey());
         translatable.fillStyle(Style.EMPTY
             .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextHelper.getTextByKey(player, "display.click.prompt")))
             .withClickEvent(makeDisplayClickEvent(displayUUID))

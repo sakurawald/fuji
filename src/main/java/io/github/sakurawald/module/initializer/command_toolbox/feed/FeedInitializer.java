@@ -26,7 +26,6 @@ public class FeedInitializer extends ModuleInitializer {
         HungerManager foodData = target.getHungerManager();
         foodData.setFoodLevel(20);
         foodData.setSaturationLevel(5);
-        foodData.setExhaustion(0);
 
         TextHelper.sendMessageByKey(target, "feed");
         return CommandHelper.Return.SUCCESS;

@@ -20,7 +20,7 @@ public class AntiBuildInitializer extends ModuleInitializer {
             && !PermissionHelper.hasPermission(player.getUuid(), "fuji.anti_build.%s.bypass.%s".formatted(antiType, id))
         ) {
             if (shouldSendFeedback.get()) {
-                player.sendMessage(TextHelper.getTextByKey(player, "anti_build.disallow"));
+                TextHelper.sendMessageByKey(player, "anti_build.disallow");
             }
 
             cir.setReturnValue(cancelWithValue);

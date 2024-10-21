@@ -19,6 +19,7 @@ import io.github.sakurawald.core.config.handler.abst.BaseConfigurationHandler;
 import io.github.sakurawald.core.config.handler.impl.ObjectConfigurationHandler;
 import io.github.sakurawald.core.config.transformer.impl.MoveFileIntoModuleConfigDirectoryTransformer;
 import io.github.sakurawald.core.event.impl.ServerLifecycleEvents;
+import io.github.sakurawald.core.structure.SpatialPose;
 import io.github.sakurawald.module.initializer.ModuleInitializer;
 import io.github.sakurawald.module.initializer.world.config.model.WorldConfigModel;
 import io.github.sakurawald.module.initializer.world.config.model.WorldDataModel;
@@ -69,7 +70,8 @@ public class WorldInitializer extends ModuleInitializer {
     private static int $tp(@CommandSource ServerPlayerEntity player, Dimension dimension) {
         ServerWorld world = dimension.getValue();
         BlockPos spawnPos = world.getSpawnPos();
-        player.teleport(world, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), player.getYaw(), player.getPitch());
+        new SpatialPose(world, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), player.getYaw(), player.getPitch())
+            .teleport(player);
         return CommandHelper.Return.SUCCESS;
     }
 

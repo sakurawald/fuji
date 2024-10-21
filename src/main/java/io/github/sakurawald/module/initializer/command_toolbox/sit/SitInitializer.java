@@ -18,6 +18,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
@@ -40,11 +41,12 @@ public class SitInitializer extends ModuleInitializer {
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean canSit(ServerPlayerEntity player) {
-        return !player.hasVehicle()
-            && !player.isFallFlying()
-            && !player.isSleeping()
-            && !player.isSwimming()
-            && !player.isSpectator();
+        return
+            player.isOnGround()
+                && !player.hasVehicle()
+                && !player.isSleeping()
+                && !player.isSwimming()
+                && !player.isSpectator();
     }
 
     @SuppressWarnings("deprecation")
@@ -84,7 +86,7 @@ public class SitInitializer extends ModuleInitializer {
             private boolean hasPassenger = false;
 
             @Override
-            protected void addPassenger(Entity passenger) {
+            public void addPassenger(Entity passenger) {
                 super.addPassenger(passenger);
                 hasPassenger = true;
             }
@@ -127,11 +129,11 @@ public class SitInitializer extends ModuleInitializer {
             @Override
             public void tick() {
                 if (hasPassenger && getPassengerList().isEmpty()) {
-                    kill();
+                    kill((ServerWorld) this.getWorld());
                 }
 
                 if (isChairBlockBroken()) {
-                    kill();
+                    kill((ServerWorld) this.getWorld());
                 }
 
                 // sync the leg position
@@ -165,7 +167,7 @@ public class SitInitializer extends ModuleInitializer {
     protected void onInitialize() {
         // kill all sit entities on server stopping
         ServerLifecycleEvents.SERVER_STOPPING.register((server) -> CHAIR_ENTITY_LIST.forEach(e -> {
-            if (e.isAlive()) e.kill();
+            if (e.isAlive()) e.kill((ServerWorld) e.getWorld());
         }));
     }
 }

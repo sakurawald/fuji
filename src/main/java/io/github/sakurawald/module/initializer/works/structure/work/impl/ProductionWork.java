@@ -264,7 +264,7 @@ public class ProductionWork extends Work {
 
     public void addCounter(@NotNull ItemStack itemStack) {
         HashMap<String, Long> counter = this.sample.sampleCounter;
-        String key = itemStack.getTranslationKey();
+        String key = itemStack.getItem().getTranslationKey();
         counter.put(key, counter.getOrDefault(key, 0L) + itemStack.getCount());
     }
 

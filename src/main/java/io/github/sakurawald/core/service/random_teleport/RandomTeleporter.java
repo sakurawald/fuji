@@ -139,7 +139,7 @@ public class RandomTeleporter {
             && blockState.getBlock() != Blocks.POWDER_SNOW
             && blockState.getBlock() != Blocks.FIRE
             && pos.getY() >= chunk.getBottomY()
-            && pos.getY() <= chunk.getTopY();
+            && pos.getY() <= chunk.getTopYInclusive();
     }
 
     public static @NotNull Iterable<BlockPos.Mutable> getChunkCandidateBlocks(@NotNull ChunkPos chunkPos) {

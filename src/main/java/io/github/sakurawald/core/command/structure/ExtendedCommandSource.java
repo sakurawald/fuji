@@ -5,7 +5,6 @@ import io.github.sakurawald.core.auxiliary.minecraft.TextHelper;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import org.jetbrains.annotations.NotNull;
@@ -35,11 +34,11 @@ public class ExtendedCommandSource {
         return new ExtendedCommandSource(initiatingSource, ServerHelper.getDefaultServer().getCommandSource(), parsePlaceholder);
     }
 
-    public static ExtendedCommandSource asPlayer(@NotNull ServerCommandSource initiatingSource, PlayerEntity executingPlayer, boolean parsePlaceholder) {
+    public static ExtendedCommandSource asPlayer(@NotNull ServerCommandSource initiatingSource, ServerPlayerEntity executingPlayer, boolean parsePlaceholder) {
         return new ExtendedCommandSource(initiatingSource, executingPlayer.getCommandSource(), parsePlaceholder);
     }
 
-    public static ExtendedCommandSource asFakeOp(@NotNull ServerCommandSource initiatingSource, PlayerEntity executingPlayer, boolean parsePlaceholder) {
+    public static ExtendedCommandSource asFakeOp(@NotNull ServerCommandSource initiatingSource, ServerPlayerEntity executingPlayer, boolean parsePlaceholder) {
         return new ExtendedCommandSource(initiatingSource, executingPlayer.getCommandSource().withLevel(4), parsePlaceholder);
     }
 
@@ -47,11 +46,11 @@ public class ExtendedCommandSource {
         return asConsole(initiatingSource, true);
     }
 
-    public static ExtendedCommandSource asPlayer(@NotNull ServerCommandSource initiatingSource, PlayerEntity executingPlayer) {
+    public static ExtendedCommandSource asPlayer(@NotNull ServerCommandSource initiatingSource, ServerPlayerEntity executingPlayer) {
         return asPlayer(initiatingSource, executingPlayer, true);
     }
 
-    public static ExtendedCommandSource asFakeOp(@NotNull ServerCommandSource initiatingSource, PlayerEntity executingPlayer) {
+    public static ExtendedCommandSource asFakeOp(@NotNull ServerCommandSource initiatingSource, ServerPlayerEntity executingPlayer) {
         return asFakeOp(initiatingSource, executingPlayer, true);
     }
 
