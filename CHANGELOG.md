@@ -1,3 +1,3 @@
 > The version number of fuji follows `semver` now: https://semver.org/ 
  
-- fix: the `network protocol error` while join a single-player world, using fuji in client-side only mode. (chat.style module)
+- fix: the console will display `if you see this text...` message while canceling the broadcasting a translatable text. (system_message module)

@@ -7,5 +7,3 @@
   equal... (similar: skript, kubejs)
   - interop: /lisp eval
   - application: /air, /alert, /respawn, /vote
-
-- fix: client side network protocol error 
