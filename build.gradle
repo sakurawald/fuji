@@ -29,7 +29,7 @@ group = project.maven_group
 
 /* jar file name */
 def details = versionDetails()
-version = "v${project.mod_version}-mc${project.minecraft_version}-br-${details.branchName}-${details.gitHash}"
+version = "${project.mod_version}-${details.branchName}-${details.gitHash}"
 
 /* fabric env */
 loom {
@@ -117,6 +117,8 @@ jar {
     from("LICENSE") {
         rename { "${it}" }
     }
+
+    archiveFileName = "${archiveBaseName.get()}-v${archiveVersion.get()}-mc${project.minecraft_version}.jar"
 }
 
 /* publish */
