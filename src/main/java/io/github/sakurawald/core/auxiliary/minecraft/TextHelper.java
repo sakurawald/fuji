@@ -30,7 +30,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 @UtilityClass
@@ -341,16 +343,16 @@ public class TextHelper {
         return stringBuilder.toString();
     }
 
-    private static MutableText replaceText0(Text text, String marker, Supplier<Text> replacement, MutableText builder, List<Style> stylePath) {
+    private static MutableText replaceText0(Text text, String marker, Supplier<Text> replacementSupplier, MutableText builder, List<Style> stylePath) {
         /* pass down style */
         ArrayList<Style> newStylePath = new ArrayList<>(stylePath);
         newStylePath.add(text.getStyle());
 
         /* process the atom */
-        splitText(text, marker, replacement, newStylePath).forEach(builder::append);
+        splitText(text, marker, replacementSupplier, newStylePath).forEach(builder::append);
 
         /* iterate children */
-        text.getSiblings().forEach(it -> replaceText0(it, marker, replacement, builder, newStylePath));
+        text.getSiblings().forEach(it -> replaceText0(it, marker, replacementSupplier, builder, newStylePath));
         return builder;
     }
 
@@ -424,4 +426,15 @@ public class TextHelper {
         return ret;
     }
 
+    private static <T> Supplier<T> memoize(Supplier<T> delegate) {
+        AtomicReference<T> value = new AtomicReference<>();
+        return () -> {
+            T val = value.get();
+            if (val == null) {
+                val = value.updateAndGet(cur -> cur == null ?
+                    Objects.requireNonNull(delegate.get()) : cur);
+            }
+            return val;
+        };
+    }
 }
