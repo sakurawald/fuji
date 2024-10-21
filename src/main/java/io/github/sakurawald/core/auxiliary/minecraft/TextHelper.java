@@ -404,7 +404,15 @@ public class TextHelper {
             beginIndex = splitPoint + marker.length();
         }
 
-        // handle the tail
+        /* handle the tail */
+        if (beginIndex == 0) {
+            // keep translatable text
+            MutableText mutableText = text.copyContentOnly();
+            fillStyles(mutableText, stylePath);
+            ret.add(mutableText);
+            return ret;
+        }
+
         if (beginIndex < string.length()) {
             String part = string.substring(beginIndex);
 
