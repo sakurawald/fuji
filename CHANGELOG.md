@@ -1,3 +1,3 @@
 > The version number of fuji follows `semver` now: https://semver.org/ 
  
-- fix: keep the translatable text for `[item]`. (chat.display module)
+- fix: the `network protocol error` while join a single-player world, using fuji in client-side only mode. (chat.style module)

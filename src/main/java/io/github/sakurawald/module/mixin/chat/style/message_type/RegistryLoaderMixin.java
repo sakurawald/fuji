@@ -34,7 +34,11 @@ public class RegistryLoaderMixin {
 
             if (registryKey.equals(RegistryKeys.MESSAGE_TYPE)) {
                 Registry<MessageType> registryForMessageType = (Registry<MessageType>) registry;
-                Registry.register(registryForMessageType, ChatStyleInitializer.MESSAGE_TYPE_KEY, ChatStyleInitializer.MESSAGE_TYPE_VALUE);
+
+                // note: in single-player world, the MESSAGE_TYPE_KEY will be registered twice, causing a `network protocol error` while join the world.
+                if (!registryForMessageType.contains(ChatStyleInitializer.MESSAGE_TYPE_KEY)) {
+                    Registry.register(registryForMessageType, ChatStyleInitializer.MESSAGE_TYPE_KEY, ChatStyleInitializer.MESSAGE_TYPE_VALUE);
+                }
             }
         }
     }
