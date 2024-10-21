@@ -36,15 +36,19 @@ public interface TextMixin {
     private static @Nullable MutableText transform(String key, Object... args) {
         Map<String, String> key2value = SystemMessageInitializer.config.model().key2value;
         if (key2value.containsKey(key)) {
+            /* prevent hijack too early */
             if (ServerHelper.getDefaultServer() == null) {
                 LogUtil.warn("server is null currently -> cannot hijack the text with the key: {}", key);
                 return null;
             }
+
+            /* if the value is defined to `null`, then we ignore the modification at this point, and hijack it at sentMessageToClient() */
             String value = key2value.get(key);
             if (value == null) {
-                return SystemMessageInitializer.CANCEL_TEXT_SENDING_MARKER;
+                return null;
             }
 
+            /* hijack the translatable text */
             String textString = MutableText.of(new TranslatableTextContent("force_fallback", value, args)).getString();
             return TextHelper.getTextByValue(null, textString).copy();
         }
