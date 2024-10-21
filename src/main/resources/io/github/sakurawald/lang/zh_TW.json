@@ -160,7 +160,7 @@
   "warp.set.fail.need_override": "<red>傳送點 %s 已存在, 您需要新增 `--override` 參數來覆蓋它.",
   "warp.set.success": "<gold>傳送點 %s 已設定.",
   "warp.unset.success": "<gold>傳送點 %s 已移除.",
-  "warp.gui.title": "<blue>Warps",
+  "warp.gui.title": "<blue>傳送點",
   "works.list.add": "<#FFA1F5>新增作品",
   "works.list.all_works": "<#FFA1F5>所有作品",
   "works.list.help.lore": "<green> - 左鍵 -> 參觀\n<green> - 右鍵 -> 開啟通用設定\n<green> - SHIFT + 右鍵 -> 開啟特殊設定",
@@ -291,6 +291,6 @@
   "job.props.enabled": "<blue>已啟用：%s",
   "job.props.left_times": "<blue>剩餘次數：%s",
   "symbol.arrow.right": "<bold><orange>-></bold>",
-  "chat.spy.indicator": "<bold><orange>-SPY-></bold>",
-  "registry.list.gui.title": "<blue>Registry"
+  "chat.spy.indicator": "<bold><orange>-監聽-></bold>",
+  "registry.list.gui.title": "<blue>登錄清單"
 }
