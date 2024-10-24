@@ -68,7 +68,7 @@ jobs:
 
           game-version-filter: any
 
-          version-type: beta
+          version-type: release
 
           changelog-file: CHANGELOG.md
 
