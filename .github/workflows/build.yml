@@ -56,7 +56,7 @@ jobs:
           path: build/libs/
       - name: mc-publish
         uses: Kir-Antipov/mc-publish@v3.3.0
-        if: github.ref == 'refs/heads/release'
+        if: github.ref == 'refs/heads/release' || contains(github.event.head_commit.message, '[publish]')
         with:
           loaders:
             fabric
@@ -68,7 +68,7 @@ jobs:
 
           game-version-filter: any
 
-          version-type: beta
+          version-type: release
 
           changelog-file: CHANGELOG.md
 

@@ -62,6 +62,7 @@ It's good to have a checklist, to avoid forgetting something.
     - in spectator gamemode
     - in the end portal
 - Test `/stop` and see if the server closed (in production server).
+- Test the translatable text in `[item]` in chat message.
 
 ## Publish a new version
 
