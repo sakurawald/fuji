@@ -73,6 +73,7 @@ public class AboutGui extends PagedGui<Person> {
                     .setName(itemStack.getName())
                     .setCallback(slot.getGuiCallback())
                     .setSkullOwner(gameProfile, ServerHelper.getDefaultServer());
+
                 LoreComponent loreComponent = itemStack.get(DataComponentTypes.LORE);
                 if (loreComponent != null) {
                     builder.setLore(loreComponent.comp_2400());
