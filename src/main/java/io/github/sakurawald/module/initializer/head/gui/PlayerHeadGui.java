@@ -32,6 +32,7 @@ public class PlayerHeadGui extends AnvilInputGui {
     @Override
     public void setDefaultInputValue(String input) {
         this.setSlot(0, GuiHelper.makeBarrier());
+        super.setDefaultInputValue("");
     }
 
     @Override
