@@ -81,7 +81,9 @@ public class WarpInitializer extends ModuleInitializer {
             }
         }
 
-        data.model().name2warp.put(name, new WarpNode(SpatialPose.of(player)));
+        WarpNode value = new WarpNode(SpatialPose.of(player))
+            .withName(name);
+        data.model().name2warp.put(name, value);
         TextHelper.sendMessageByKey(player, "warp.set.success", name);
         return CommandHelper.Return.SUCCESS;
     }
