@@ -29,16 +29,25 @@ public class NametagEntity extends Display.TextDisplay {
 
     boolean shouldRenderPreviousValue = false;
 
-    private NametagEntity(@NotNull EntityType<?> entityType, @NotNull Level world, @NotNull ServerPlayer ownerPlayer) {
-        super(entityType, world);
+    private NametagEntity(@NotNull Level world, @NotNull ServerPlayer ownerPlayer) {
+        super(getTextDisplayEntityType(), world);
         this.ownerPlayer = ownerPlayer;
+    }
+
+    private static EntityType
+    getTextDisplayEntityType() {
+        #if MC_VER < MC_26_2
+        return net.minecraft.world.entity.EntityType.TEXT_DISPLAY;
+        #elif MC_VER >= MC_26_2
+        return net.minecraft.world.entity.EntityTypes.TEXT_DISPLAY;
+        #endif
     }
 
     public static @NotNull NametagEntity make(@NotNull ServerPlayer player) {
         LogUtil.debug("Make nametag for player: {}", PlayerHelper.getPlayerName(player));
 
         /* Subclassing the display entity to make nametag entity. */
-        NametagEntity nametagEntity = new NametagEntity(EntityType.TEXT_DISPLAY, EntityHelper.getServerWorld(player), player);
+        NametagEntity nametagEntity = new NametagEntity(EntityHelper.getServerWorld(player), player);
 
         /* Make the nametag entity invulnerable. */
         nametagEntity.setInvulnerable(true);
