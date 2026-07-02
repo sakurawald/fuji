@@ -4,7 +4,6 @@ mod.fuji.core.command.argument.adapter.impl.BlockStateArgumentTypeAdapter
 mod.fuji.core.command.argument.adapter.impl.BooleanArgumentTypeAdapter
 mod.fuji.core.command.argument.adapter.impl.BossBarColorArgumentTypeAdapter
 mod.fuji.core.command.argument.adapter.impl.BossBarStyleArgumentTypeAdapter
-mod.fuji.core.command.argument.adapter.impl.ColorArgumentTypeAdapter
 mod.fuji.core.command.argument.adapter.impl.ColumnPosArgumentTypeAdapter
 mod.fuji.core.command.argument.adapter.impl.CommandActorArgumentTypeAdapter
 mod.fuji.core.command.argument.adapter.impl.CommandContextArgumentTypeAdapter
@@ -52,6 +51,7 @@ mod.fuji.core.command.argument.adapter.impl.StringArgumentTypeAdapter
 mod.fuji.core.command.argument.adapter.impl.StringListArgumentTypeAdapter
 mod.fuji.core.command.argument.adapter.impl.StyleArgumentTypeAdapter
 mod.fuji.core.command.argument.adapter.impl.TeamArgumentTypeAdapter
+mod.fuji.core.command.argument.adapter.impl.TeamColorArgumentTypeAdapter
 mod.fuji.core.command.argument.adapter.impl.TextArgumentTypeAdapter
 mod.fuji.core.command.argument.adapter.impl.Vec2ArgumentTypeAdapter
 mod.fuji.core.command.argument.adapter.impl.Vec3ArgumentTypeAdapter
