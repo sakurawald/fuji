@@ -421,6 +421,12 @@
 - Target: Issue `/world create void minecraft:overworld --chunkGeneratorType FLAT --chunkGeneratorParameters "minecraft:air;minecraft:the_void"`
 
 [Test Case]
+- Module: world
+- Action: **Test the extra dimension whose dimension type is `minecraft:the_end`.**
+- Target: Issue `/world create another_end minecraft:the_end` to see if the `dragon fight` is initialized.
+- Target: Kill the dragon to see if the ender gate works.
+
+[Test Case]
 - Module: world.border
 - Action: **Issue `/tp` and `/world tp` between dimensions.**
 - Target: The per-dimension border should be synced on the client-side.

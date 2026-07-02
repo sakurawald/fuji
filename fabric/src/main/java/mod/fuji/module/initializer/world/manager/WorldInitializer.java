@@ -318,6 +318,10 @@ import org.jetbrains.annotations.Nullable;
     "Issue `/world create flat minecraft:overworld --chunkGeneratorType FLAT`",
     "Issue `/world create void minecraft:overworld --chunkGeneratorType FLAT --chunkGeneratorParameters \"minecraft:air;minecraft:the_void\"`"
 })
+@TestCase(action = "Test the extra dimension whose dimension type is `minecraft:the_end`.", targets = {
+    "Issue `/world create another_end minecraft:the_end` to see if the `dragon fight` is initialized.",
+    "Kill the dragon to see if the ender gate works."
+})
 
 
 @CommandNode("world")

@@ -82,7 +82,7 @@ public @interface ColorBox {
 
             private static @NotNull Item getRedCandle() {
             #if MC_VER < MC_26_2
-            return Items.RED_CANDLE
+            return Items.RED_CANDLE;
             #elif MC_VER >= MC_26_2
             return Items.DYED_CANDLE.pick(DyeColor.RED);
             #endif
