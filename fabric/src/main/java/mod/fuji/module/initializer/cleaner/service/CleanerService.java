@@ -30,7 +30,7 @@ public class CleanerService {
         if (entity == null) return true;
 
         /* Ignore player entity. */
-        if (entity.getType().equals(EntityType.PLAYER)) return true;
+        if (PlayerHelper.Kind.isServerPlayer(entity)) return true;
 
         /* Ignore entities by config. */
         var config = CleanerInitializer.config.model().getIgnore();

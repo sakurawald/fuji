@@ -153,8 +153,8 @@ public class SitInitializer extends ModuleInitializer {
             }
 
             private Vec3 getDismountPosition() {
-                return getChairBlockPos()
-                    .getCenter()
+                return WorldHelper
+                    .toCenterPos(getChairBlockPos())
                     .add(dismountOffset);
             }
 

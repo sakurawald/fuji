@@ -1,6 +1,7 @@
 package mod.fuji.module.initializer.command_toolbox.near;
 
 import mod.fuji.core.auxiliary.minecraft.PlayerHelper;
+import mod.fuji.core.auxiliary.minecraft.WorldHelper;
 import mod.fuji.core.document.annotation.Document;
 import mod.fuji.core.auxiliary.minecraft.CommandHelper;
 import mod.fuji.core.auxiliary.minecraft.EntityHelper;
@@ -13,12 +14,14 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.List;
 import java.util.Optional;
+import net.minecraft.world.phys.Vec3;
 
 public class NearInitializer extends ModuleInitializer {
 
     private static int distance(ServerPlayer a, ServerPlayer b) {
         if (EntityHelper.getServerWorld(a) != EntityHelper.getServerWorld(b)) return Integer.MAX_VALUE;
-        return (int) a.blockPosition().distToCenterSqr(b.blockPosition().getCenter());
+        Vec3 center = WorldHelper.toCenterPos(b.blockPosition());
+        return (int) a.blockPosition().distToCenterSqr(center);
     }
 
     @Document(id = 1751825090796L, value = "List nearby players.")

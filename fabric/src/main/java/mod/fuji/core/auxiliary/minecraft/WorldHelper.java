@@ -37,8 +37,12 @@ import org.jetbrains.annotations.Nullable;
 
 public class WorldHelper {
 
-    public static Vec3 toBottomCenterPos(BlockPos pos) {
-        return Vec3.atLowerCornerWithOffset(pos, 0.5, 0.0, 0.5);
+    public static @NotNull Vec3 toBottomCenterPos(@NotNull BlockPos blockPos) {
+        return Vec3.atLowerCornerWithOffset(blockPos, 0.5, 0.0, 0.5);
+    }
+
+    public static @NotNull Vec3 toCenterPos(@NotNull BlockPos blockPos ) {
+        return Vec3.atLowerCornerWithOffset(blockPos, 0.5, 0.5, 0.5);
     }
 
     public static double squareDistance(@NotNull Vec3 vec3d, double x2, double y2, double z2) {
