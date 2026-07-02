@@ -9,7 +9,7 @@
 # 📑 Changelog
 
 ## ✨ Features
-- None
+- Support Minecraft 26.2 version
 
 ## 🐞 Fixes
-- [world] fix: failed to `load` the dimension whose dimension type is `minecraft:the_end`. (#582)
+- None
