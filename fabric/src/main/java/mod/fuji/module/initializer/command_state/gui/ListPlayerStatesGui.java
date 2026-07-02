@@ -3,6 +3,7 @@ package mod.fuji.module.initializer.command_state.gui;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import mod.fuji.core.auxiliary.ChronosUtil;
+import mod.fuji.core.auxiliary.minecraft.GuiHelper;
 import mod.fuji.core.auxiliary.minecraft.PlayerHelper;
 import mod.fuji.core.auxiliary.minecraft.TextHelper;
 import mod.fuji.core.gui.component.gui.PagedGui;
@@ -12,7 +13,6 @@ import mod.fuji.module.initializer.command_state.service.CommandStateService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import net.minecraft.world.item.Items;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
@@ -42,7 +42,7 @@ public class ListPlayerStatesGui extends PagedGui<GuiElementIR> {
                 GuiElementBuilder builder = new GuiElementBuilder();
                 builder.setName(Component.literal(stateId));
                 boolean isInState = stateCache.getValue();
-                builder.setItem(isInState ? Items.GREEN_BANNER : Items.RED_BANNER);
+                builder.setItem(GuiHelper.Material.toBannerItem(isInState));
                 builder.setLore(List.of(
                     TextHelper.getTextByKey(source, "entity.value", isInState),
                     TextHelper.getTextByKey(source, "entity.updated_timestamp", ChronosUtil.Formatter.formatDate(stateCache.getUpdatedTimestamp()))

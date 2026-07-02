@@ -35,7 +35,7 @@ public class CommandPermissionGui extends PagedGui<CommandNodePermissionWrapper>
         boolean commandNodeWrapped = CommandPermissionService.isCommandNodeWrapped(entity.getNode());
 
         return GuiElementIR.of(new GuiElementBuilder()
-            .setItem(GuiHelper.Material.fromBooleanValue(commandNodeWrapped))
+            .setItem(GuiHelper.Material.toStainedGlassItem(commandNodeWrapped))
             .setName(Component.literal(entity.getPath()))
             .setCallback((index, clickType, actionType, gui) -> {
                 String commandPathString = entity.getPath();

@@ -10,6 +10,7 @@ import mod.fuji.core.gui.component.gui.PagedGui;
 import mod.fuji.core.document.gui.CommandsInspectionGui;
 import mod.fuji.core.document.annotation.ColorBox;
 import mod.fuji.core.gui.structure.GuiElementIR;
+import mod.fuji.core.gui.structure.GuiItems;
 import mod.fuji.core.module.ModulePathResolver;
 import mod.fuji.module.initializer.fuji.FujiInitializer;
 
@@ -79,7 +80,7 @@ public class ModuleDetailsInspectionGui extends PagedGui<GuiElementIR> {
         /* Place debug button. */
         var debugConfig = Configs.MAIN_CONTROL_CONFIG.model().core.debug;
         GuiElementBuilder debugButton = new GuiElementBuilder()
-            .setItem(debugConfig.print_debug_messages_in_console ? Items.GREEN_BANNER : Items.RED_BANNER)
+            .setItem(GuiHelper.Material.toBannerItem(debugConfig.print_debug_messages_in_console))
             .setName(TextHelper.getTextByKey(player, "debug"))
             .setLore(List.of(TextHelper.getTextByKey(player, "prompt.click.apply_it")))
             .setCallback(() -> {
@@ -139,7 +140,7 @@ public class ModuleDetailsInspectionGui extends PagedGui<GuiElementIR> {
     private static void placeModuleDisabledTipsItem(ServerPlayer player, ModuleDetailsInspectionGui gui) {
         /* Make the item. */
         GuiElementBuilder builder = new GuiElementBuilder()
-            .setItem(Items.RED_STAINED_GLASS_PANE)
+            .setItem(GuiItems.getRedStainedGlassPaneItem())
             .setName(TextHelper.getTextByKey(player, "module.status.disabled.gui.name"))
             .setLore(TextHelper.getTextListByKey(player, "module.status.disabled.gui.lore"));
 

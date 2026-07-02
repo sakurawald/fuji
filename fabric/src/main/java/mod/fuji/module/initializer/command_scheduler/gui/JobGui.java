@@ -29,7 +29,7 @@ public class JobGui extends PagedGui<CommandSchedulerJobDescriptor> {
     protected @NotNull GuiElementIR toGuiElement(@NotNull CommandSchedulerJobDescriptor entity) {
         return GuiElementIR.of(new GuiElementBuilder()
             .setName(Component.literal(entity.getName()))
-            .setItem(GuiHelper.Material.fromBooleanValue(entity.isEnable()))
+            .setItem(GuiHelper.Material.toStainedGlassItem(entity.isEnable()))
             .setLore(List.of(
                 TextHelper.getTextByKey(getPlayer(), "job.props.enabled", entity.isEnable())
                 , TextHelper.getTextByKey(getPlayer(), "job.props.left_times", entity.getRemainingRuns())

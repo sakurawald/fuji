@@ -44,7 +44,7 @@ public class JailInfoGui extends PagedGui<JailRecord> {
 
         ServerPlayer player = getPlayer();
         builder
-            .setItem(GuiHelper.Material.fromBooleanValue(entity.isEnable()))
+            .setItem(GuiHelper.Material.toStainedGlassItem(entity.isEnable()))
             .setName(TextHelper.getTextByKey(player, "player.name", entity.getPrisonerName()))
             .setLore(List.of(
                 TextHelper.getTextByKey(player, "jail.record.enable", entity.isEnable())

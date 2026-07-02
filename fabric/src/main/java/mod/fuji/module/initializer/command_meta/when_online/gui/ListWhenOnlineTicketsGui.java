@@ -57,7 +57,7 @@ public class ListWhenOnlineTicketsGui extends PagedGui<WhenOnlineTicket> {
 
         lore.add(TextHelper.getTextByKey(getPlayer(), "prompt.click.delete.right_click"));
 
-        Item item = GuiHelper.Material.fromBooleanValue(entity.isExecuted());
+        Item item = GuiHelper.Material.toStainedGlassItem(entity.isExecuted());
         builder
             .setItem(item)
             .setName(TextHelper.getTextByKey(getPlayer(),"command_meta.when_online.gui.name"))

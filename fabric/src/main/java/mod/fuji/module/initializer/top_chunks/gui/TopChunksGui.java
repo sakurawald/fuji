@@ -6,10 +6,10 @@ import mod.fuji.core.auxiliary.minecraft.RegistryHelper;
 import mod.fuji.core.auxiliary.minecraft.TextHelper;
 import mod.fuji.core.gui.component.gui.PagedGui;
 import mod.fuji.core.gui.structure.GuiElementIR;
+import mod.fuji.core.gui.structure.GuiItems;
 import mod.fuji.core.service.type_formatter.TypeFormatter;
 import mod.fuji.module.initializer.top_chunks.service.TopChunksService;
 import mod.fuji.module.initializer.top_chunks.structure.ChunkScore;
-import net.minecraft.world.item.Items;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.chat.Component;
@@ -49,7 +49,7 @@ public class TopChunksGui extends PagedGui<ChunkScore> {
 
         Component scoreText = TextHelper.getTextByKey(getPlayer(), "top_chunks.prop.score", entity.getScore());
         return GuiElementIR.of(new GuiElementBuilder()
-            .setItem(entity.getPlayers().isEmpty() ? Items.WHITE_STAINED_GLASS : Items.LIME_STAINED_GLASS)
+            .setItem(entity.getPlayers().isEmpty() ? GuiItems.getWhiteStainedGlassItem() : GuiItems.getLimeStainedGlassItem())
             .setName(scoreText)
             .setLore(lore)
             .setCallback(()-> {

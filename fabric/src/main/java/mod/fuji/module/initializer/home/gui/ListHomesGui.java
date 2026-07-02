@@ -12,6 +12,8 @@ import mod.fuji.core.structure.GlobalPos;
 import mod.fuji.module.initializer.home.service.HomeService;
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.chat.Component;
@@ -57,7 +59,7 @@ public class ListHomesGui extends PagedGui<Map.Entry<String, GlobalPos>> {
         lore.add(TextHelper.getTextByKey(player, "prompt.click.teleport"));
 
         return GuiElementIR.of(new GuiElementBuilder()
-            .setItem(Items.PINK_BED)
+            .setItem(getPinkBedItem())
             .setName(Component.literal(homeName))
             .setLore(lore)
             .setCallback((clickType) -> {
@@ -85,5 +87,13 @@ public class ListHomesGui extends PagedGui<Map.Entry<String, GlobalPos>> {
 
             })
             .build());
+    }
+
+    private static @NotNull Item getPinkBedItem() {
+        #if MC_VER < MC_26_2
+        return Items.PINK_BED;
+        #elif MC_VER >= MC_26_2
+        return Items.BED.pick(DyeColor.PINK);
+        #endif
     }
 }

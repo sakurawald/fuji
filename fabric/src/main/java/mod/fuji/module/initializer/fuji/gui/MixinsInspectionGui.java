@@ -44,7 +44,7 @@ public class MixinsInspectionGui extends PagedGui<MixinApplicationInfo> {
         GuiElementBuilder builder = new GuiElementBuilder();
 
         builder
-            .setItem(GuiHelper.Material.fromBooleanValue(entity.isApplied()))
+            .setItem(GuiHelper.Material.toStainedGlassItem(entity.isApplied()))
             .setName(TextHelper.getTextByKey(player, "mixin"))
             .setLore(List.of(
                 TextHelper.getTextByKey(player, "from_module", ModulePathResolver.computeModulePathString(entity.getMixinClassName())),

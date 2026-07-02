@@ -61,6 +61,6 @@ public class Warning {
     }
 
     public @NotNull Item asItem() {
-        return GuiHelper.Material.fromBooleanValue(this.isActive());
+        return GuiHelper.Material.toStainedGlassItem(this.isActive());
     }
 }

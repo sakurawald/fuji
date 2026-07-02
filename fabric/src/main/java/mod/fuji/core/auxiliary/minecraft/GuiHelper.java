@@ -10,12 +10,14 @@ import mod.fuji.core.auxiliary.AsyncUtil;
 import mod.fuji.core.auxiliary.LogUtil;
 import mod.fuji.core.config.mapper.structure.GameProfileIR;
 import mod.fuji.core.gui.structure.GuiElementIR;
+import mod.fuji.core.gui.structure.GuiItems;
 import mod.fuji.core.gui.structure.SlotGuiInterfaceDuck;
 import mod.fuji.core.service.cache.service.GameProfileCacheService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiPredicate;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -223,7 +225,7 @@ public class GuiHelper {
     public static class Button {
 
         public static GuiElementIR makeSlotPlaceholderButton() {
-            return GuiElementIR.of(hideTooltip(new GuiElementBuilder().setItem(Items.GRAY_STAINED_GLASS_PANE))
+            return GuiElementIR.of(hideTooltip(new GuiElementBuilder().setItem(GuiItems.getGrayStainedGlassPaneItem()))
                 .build());
         }
 
@@ -401,8 +403,8 @@ public class GuiHelper {
 
     public static class Material {
 
-        public static @NotNull Item fromBooleanValue(boolean value) {
-            return value ? Items.GREEN_STAINED_GLASS : Items.RED_STAINED_GLASS;
+        public static @NotNull Item toStainedGlassItem(boolean value) {
+            return value ? GuiItems.getGreenStainedGlassItem() : GuiItems.getRedStainedGlassItem();
         }
 
         public static @NotNull Item fromObjectType(@NotNull Optional<Object> objectValue, @NotNull Class<?> objectType) {
@@ -414,7 +416,7 @@ public class GuiHelper {
                 || boolean.class.isAssignableFrom(objectType)) {
                 /* If the type of field is boolean, try to get its value. */
                 return objectValue
-                    .map($objectValue -> (Boolean) $objectValue ? Items.GREEN_BANNER : Items.RED_BANNER)
+                    .map($objectValue -> toBannerItem((Boolean) $objectValue))
                     .orElse(Items.STRUCTURE_VOID);
             }
 
@@ -446,7 +448,15 @@ public class GuiHelper {
                 return Items.REPEATER;
             }
 
+            return getPinkShulkerBox();
+        }
+
+        private static @NotNull Item getPinkShulkerBox() {
+            #if MC_VER < MC_26_2
             return Items.PINK_SHULKER_BOX;
+            #elif MC_VER >= MC_26_2
+            return Items.DYED_SHULKER_BOX.pick(DyeColor.PINK);
+            #endif
         }
 
         private static @NotNull Item getIronChainItem() {
@@ -455,6 +465,10 @@ public class GuiHelper {
             #elif MC_VER >= MC_1_21_9
             return Items.IRON_CHAIN;
             #endif
+        }
+
+        public static @NotNull Item toBannerItem(boolean value) {
+            return value ? GuiItems.getGreenBannerItem() : GuiItems.getRedBannerItem();
         }
     }
 

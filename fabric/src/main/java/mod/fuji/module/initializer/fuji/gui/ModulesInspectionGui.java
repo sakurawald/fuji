@@ -114,7 +114,7 @@ public class ModulesInspectionGui extends PagedGui<Pair<String, Boolean>> {
         }
 
         Boolean moduleEnableStatus = entity.getValue();
-        return GuiHelper.Material.fromBooleanValue(moduleEnableStatus);
+        return GuiHelper.Material.toStainedGlassItem(moduleEnableStatus);
     }
 
     @SuppressWarnings("SameParameterValue")
