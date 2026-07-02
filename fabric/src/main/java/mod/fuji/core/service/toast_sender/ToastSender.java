@@ -10,7 +10,6 @@ import java.util.Set;
 import mod.fuji.core.structure.AdvancementFrameTypeIR;
 import mod.fuji.core.structure.IdentifierIR;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.advancements.AdvancementRewards;
@@ -36,6 +35,7 @@ public class ToastSender {
             , title
             , Component.empty()
             ,
+                /* Pass the background texture argument. */
                 #if MC_VER <= MC_1_20_2
                 dummyResourceId
                 #elif MC_VER > MC_1_20_2 && MC_VER <= MC_1_21_4
@@ -83,20 +83,25 @@ public class ToastSender {
     @SuppressWarnings("UnnecessaryLocalVariable")
     private static
     #if MC_VER <= MC_1_20_1
-    Criterion
+    net.minecraft.advancements.Criterion
     #elif MC_VER > MC_1_20_1 && MC_VER < MC_1_21_11
-    Criterion<net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance>
-    #elif MC_VER >= MC_1_21_11
-    Criterion<net.minecraft.advancements.criterion.ImpossibleTrigger.TriggerInstance>
+    net.minecraft.advancements.Criterion<net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance>
+    #elif MC_VER >= MC_1_21_11 && MC_VER < MC_26_2
+    net.minecraft.advancements.Criterion<net.minecraft.advancements.criterion.ImpossibleTrigger.TriggerInstance>
+    #elif MC_VER >= MC_26_2
+    net.minecraft.advancements.triggers.Criterion<net.minecraft.advancements.triggers.ImpossibleTrigger.TriggerInstance>
     #endif
     makeAdvancementCriterion() {
         #if MC_VER <= MC_1_20_1
-        Criterion advancementCriterion = new Criterion(new net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance());
+        net.minecraft.advancements.Criterion advancementCriterion = new net.minecraft.advancements.Criterion(new net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance());
         #elif MC_VER > MC_1_20_1 && MC_VER < MC_1_21_11
-        Criterion<net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance> advancementCriterion = new net.minecraft.advancements.critereon.ImpossibleTrigger().createCriterion(new net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance());
-        #elif MC_VER >= MC_1_21_11
-        Criterion<net.minecraft.advancements.criterion.ImpossibleTrigger.TriggerInstance> advancementCriterion = new net.minecraft.advancements.criterion.ImpossibleTrigger().createCriterion(new net.minecraft.advancements.criterion.ImpossibleTrigger.TriggerInstance());
+        net.minecraft.advancements.Criterion<net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance> advancementCriterion = new net.minecraft.advancements.critereon.ImpossibleTrigger().createCriterion(new net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance());
+        #elif MC_VER >= MC_1_21_11 && MC_VER < MC_26_2
+        net.minecraft.advancements.Criterion<net.minecraft.advancements.criterion.ImpossibleTrigger.TriggerInstance> advancementCriterion = new net.minecraft.advancements.criterion.ImpossibleTrigger().createCriterion(new net.minecraft.advancements.criterion.ImpossibleTrigger.TriggerInstance());
+        #elif MC_VER >= MC_26_2
+        net.minecraft.advancements.triggers.Criterion<net.minecraft.advancements.triggers.ImpossibleTrigger.TriggerInstance> advancementCriterion = new net.minecraft.advancements.triggers.ImpossibleTrigger().createCriterion(new net.minecraft.advancements.triggers.ImpossibleTrigger.TriggerInstance());
         #endif
+
 
         return advancementCriterion;
     }
@@ -123,8 +128,8 @@ public class ToastSender {
         AdvancementProgress advancementProgress = new AdvancementProgress();
 
         #if MC_VER <= MC_1_20_1
-        Map<String, Criterion> maps = new java.util.HashMap<>();
-        maps.put(IMPOSSIBLE, new Criterion(new net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance()));
+        Map<String, net.minecraft.advancements.Criterion> maps = new java.util.HashMap<>();
+        maps.put(IMPOSSIBLE, new net.minecraft.advancements.Criterion(new net.minecraft.advancements.critereon.ImpossibleTrigger.TriggerInstance()));
         advancementProgress.update(maps, makeAdvancementRequirements());
         #elif MC_VER > MC_1_20_1
         advancementProgress.update(makeAdvancementRequirements());
@@ -199,6 +204,7 @@ public class ToastSender {
         #elif MC_VER > MC_1_20_1
         Collection<net.minecraft.advancements.AdvancementHolder> toEarn = List.of();
         #endif
+
         var toRemove = Set.of(identifier.getNativeValue());
         Map<#if MC_VER < MC_1_21_11
     net.minecraft.resources.ResourceLocation
