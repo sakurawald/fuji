@@ -10,7 +10,9 @@ import mod.fuji.module.initializer.leaderboard.structure.LeaderBoardData;
 import mod.fuji.module.initializer.leaderboard.structure.LeaderBoardDescriptor;
 import mod.fuji.module.initializer.leaderboard.structure.LeaderBoardSnapshot;
 import mod.fuji.module.initializer.leaderboard.structure.LeaderBoardTimeWindow;
+import mod.fuji.core.auxiliary.ChronosUtil;
 import java.time.DayOfWeek;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -41,15 +43,27 @@ public class LeaderBoardService {
         return LeaderBoardInitializer.config.model().getPageSize();
     }
 
-    public static List<LeaderBoardSnapshot> getLeaderBoardSnapshots(@NotNull LeaderBoardDescriptor descriptor, @NotNull LeaderBoardTimeWindow timeWindow) {
+    public static List<LeaderBoardSnapshot> getLeaderBoardSnapshots(
+        @NotNull LeaderBoardDescriptor descriptor,
+        @NotNull LeaderBoardTimeWindow timeWindow) {
+        long currentWindowStart = getCurrentWindowStart(timeWindow);
+
         return withLeaderBoardData(descriptor, leaderBoardData -> leaderBoardData
             .getCaches()
             .stream()
-            .map(it -> {
-                LeaderBoardSnapshot snapshot = it.getSnapshot(timeWindow);
-                snapshot.setOwnerCache(it);
+            .map(cache -> {
+                LeaderBoardSnapshot snapshot = cache.getSnapshot(timeWindow);
+                snapshot.setOwnerCache(cache);
                 return snapshot;
             })
+
+            // Do not display scores belonging to an expired time window.
+            .filter(snapshot ->
+                    snapshot.getBeginningOfCurrentTimeWindow() != null
+                            && snapshot.getBeginningOfCurrentTimeWindow()
+                            == currentWindowStart
+            )
+
             .filter(LeaderBoardSnapshot::hasEffectiveScore)
             .toList());
     }
@@ -157,4 +171,40 @@ public class LeaderBoardService {
         });
     }
 
+    private static long getCurrentWindowStart(
+        @NotNull LeaderBoardTimeWindow timeWindow) {
+        ZonedDateTime now = ChronosUtil.getZonedDateTime();
+
+        return switch (timeWindow) {
+            case HOURLY ->
+                ChronosUtil.toTimestamp(
+                        ChronosUtil.Boundary.getBeginningOfCurrentHour(now)
+                );
+
+            case DAILY ->
+                ChronosUtil.toTimestamp(
+                        ChronosUtil.Boundary.getBeginningOfTheDay(now)
+                );
+
+            case WEEKLY ->
+                ChronosUtil.toTimestamp(
+                        ChronosUtil.Boundary.getBeginningOfCurrentWeek(
+                                now,
+                                getBeginningOfTheWeek()
+                        )
+                );
+
+            case MONTHLY ->
+                ChronosUtil.toTimestamp(
+                        ChronosUtil.Boundary.getBeginningOfCurrentMonth(now)
+                );
+
+            case YEARLY ->
+                ChronosUtil.toTimestamp(
+                        ChronosUtil.Boundary.getBeginningOfCurrentYear(now)
+                );
+
+            case ALL_TIME -> 0L;
+        };
+    }
 }
