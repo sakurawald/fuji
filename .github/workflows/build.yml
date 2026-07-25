@@ -111,5 +111,5 @@ jobs:
 
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-          curseforge-id: 1096649
-          curseforge-token: "${{secrets.CURSEFORGE_TOKEN}}"
+#          curseforge-id: 1096649
+#          curseforge-token: "${{secrets.CURSEFORGE_TOKEN}}"
