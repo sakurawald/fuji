@@ -9,7 +9,9 @@
 # 📑 Changelog
 
 ## ✨ Features
-- Support Minecraft 26.2 version
+- None
 
 ## 🐞 Fixes
-- None
+- [leaderboard] fix: the leaderboard placeholders should not display the outdated scores for a specified time window. (Thanks to @PeterTerpe)
+- [view/jail/warning/tppos] (MC >= 1.21.9) fix: the dummy player's nbt data didn't get loaded. (#590)
+- [view] fix: when editing an offline-player, the last changed slot didn't get synced if the player joins the server during the editing session.
