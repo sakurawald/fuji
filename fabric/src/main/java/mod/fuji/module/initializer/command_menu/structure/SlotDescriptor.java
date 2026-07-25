@@ -185,7 +185,8 @@ public class SlotDescriptor {
     }
 
     public GuiElementIR buildGuiElement(ServerPlayer viewingPlayer, MenuDescriptor menuDescriptor) {
-        ItemStack itemStack = ItemStackHelper.Parser.parseItemStack(this.item);
+        String itemString = TextHelper.Parsers.parsePlaceholderString(viewingPlayer, this.item);
+        ItemStack itemStack = ItemStackHelper.Parser.parseItemStack(itemString);
         GuiElementBuilder slotElementBuilder = GuiElementBuilder.from(itemStack);
 
         slotElementBuilder.setCount(this.count);
