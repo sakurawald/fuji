@@ -54,9 +54,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * A command descriptor is used to describe a command instance.
- * <p>
- * To be simple: A command descriptor = command action method + command argument list
+ * A command descriptor is used to describe and manage the lifecycle of a command.
+ * A command is an action with arguments.
  **/
 public class CommandDescriptor implements SourceModuleGetter, ConsoleSpammer {
 

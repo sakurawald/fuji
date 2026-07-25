@@ -12,6 +12,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class RedirectScreenHandlerFactory {
 
@@ -19,17 +20,16 @@ public abstract class RedirectScreenHandlerFactory {
     private final Component title;
 
     private boolean onlineEditMode;
-    private ServerPlayer targetPlayer;
+    private @NotNull ServerPlayer targetPlayer;
 
     public RedirectScreenHandlerFactory(String targetPlayerName, Component title) {
         this.targetPlayerName = targetPlayerName;
         this.title = title;
 
-        // load
         this.loadTargetPlayer();
     }
 
-    protected ServerPlayer getTargetPlayer() {
+    protected @NotNull ServerPlayer getTargetPlayer() {
         return this.targetPlayer;
     }
 

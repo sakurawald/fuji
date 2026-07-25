@@ -148,7 +148,7 @@ public class PlayerHelper {
             world.ifPresent(player::setServerLevel);
         }
 
-        public static ServerPlayer loadDummyPlayer(@NotNull String playerName) {
+        public static @NotNull ServerPlayer loadDummyPlayer(@NotNull String playerName) {
             /* Check if the target player is online. */
             Optional<ServerPlayer> player = Lookup.getOnlinePlayerByName(playerName);
             if (player.isPresent()) {
@@ -175,6 +175,7 @@ public class PlayerHelper {
             applyPlayerData($player, playerData.orElse(null));
             #elif MC_VER >= MC_1_21_9
             Optional<net.minecraft.nbt.CompoundTag> playerData = getPlayerManager().loadPlayerData($player.nameAndId());
+            playerData.ifPresent($playerData -> EntityHelper.Loader.loadNbt($player, $playerData));
             applyPlayerData($player, playerData.orElse(null));
             #endif
 

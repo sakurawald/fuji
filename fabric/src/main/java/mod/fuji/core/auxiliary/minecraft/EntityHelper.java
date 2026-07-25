@@ -1,5 +1,6 @@
 package mod.fuji.core.auxiliary.minecraft;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -134,4 +135,15 @@ public class EntityHelper {
             }
         }
     }
+
+    public static class Loader {
+        private static final org.slf4j.Logger LOGGER = com.mojang.logging.LogUtils.getLogger();
+        public static void loadNbt(@NotNull Entity entity, @NotNull CompoundTag tag) {
+            try (var reporter = new net.minecraft.util.ProblemReporter.ScopedCollector(entity.problemPath(), LOGGER)) {
+                var tagValueInput = net.minecraft.world.level.storage.TagValueInput.create(reporter, ServerHelper.getServer().registryAccess(), tag);
+                entity.load(tagValueInput);
+            }
+        }
+    }
+
 }
