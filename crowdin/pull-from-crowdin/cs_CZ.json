@@ -1,7 +1,7 @@
 {
   "about": "<#6528F7>O pluginu",
   "accept": "<green>Přijmout",
-  "accept.button": "<green>[✔️]</green>",
+  "accept.button": "<green>[✔]</green>",
   "accept.circle": "<green>●</green>",
   "add": "<#FFA1F5>Přidat",
   "afk.kick": "<red>Byli jste vyhozeni za dlouhé AFK.",
@@ -24,7 +24,7 @@
   "chat.format.show": "Vaše-Zpráva",
   "chat.spy.indicator": "<bold><orange>-SPY-></orange></bold>",
   "checkbox.false": "<grey> - <red>[❌] %s",
-  "checkbox.true": "<grey> - <green>[✔️] %s",
+  "checkbox.true": "<grey> - <green>[✔] %s",
   "cleaner.broadcast": "<red>Čistič právě dokončil čištění. (%s entit)",
   "colorbox.danger.name": "<red><b>Nebezpečí",
   "colorbox.example.name": "<grey><b>Příklad",
