@@ -138,7 +138,7 @@ public class EntityHelper {
 
     public static class Loader {
 
-        #if MC_VER >= MC_MC_1_21_9
+        #if MC_VER >= MC_1_21_9
         // FIXME Use the loadNbt function where possible
         private static final org.slf4j.Logger LOGGER = com.mojang.logging.LogUtils.getLogger();
         public static void loadNbt(@NotNull Entity entity, @NotNull CompoundTag tag) {
