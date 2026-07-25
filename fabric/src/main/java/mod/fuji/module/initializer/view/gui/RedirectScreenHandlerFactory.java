@@ -73,13 +73,16 @@ public abstract class RedirectScreenHandlerFactory {
             public void clicked(int i, int j, net.minecraft.world.inventory.ContainerInput slotActionType, Player playerEntity)
             #endif
             {
+                // Call the super method first, to ensure I can see the latest version of the data. It ensures the last changed slot is synced when the target offline player joins the server during the editing session.
+                super.clicked(i, j, slotActionType, playerEntity);
+
+                // Filter invalid actions for IO performance.
                 if (!canClick(this, i)) return;
 
-                // save player data in time, in keep sync if player gets online.
+                // Save the data immediately, to ensure the data in the storage is the latest version.
                 if (!onlineEditMode) {
                     savePlayerData();
                 }
-                super.clicked(i, j, slotActionType, playerEntity);
             }
 
             @Override
