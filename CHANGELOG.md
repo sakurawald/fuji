@@ -9,7 +9,7 @@
 # 📑 Changelog
 
 ## ✨ Features
-- [command_menu] feature: support placeholders for the `item` field when building the gui slot. (#591)
+- None
 
 ## 🐞 Fixes
-- None
+- [pvp] Should be able to detect the damage causing entity and cancels the damages from arrow.
