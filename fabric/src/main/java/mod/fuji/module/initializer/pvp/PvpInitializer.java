@@ -18,6 +18,8 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Set;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @Document(id = 1751826840711L, value = """
     Provides PvP management for players.
@@ -88,7 +90,13 @@ public class PvpInitializer extends ModuleInitializer {
 
     @EventConsumer
     private static void processPvpDamage(PlayerDamageEvent event) {
-        Entity damageSourceEntity = event.getDamageSource().getDirectEntity();
+        processPvpDamageSourceEntity(event, event.getDamageSource().getDirectEntity());
+        processPvpDamageSourceEntity(event, event.getDamageSource().getEntity());
+    }
+
+    private static void processPvpDamageSourceEntity(@NotNull PlayerDamageEvent event, @Nullable Entity damageSourceEntity) {
+        if (event.getDamage() == 0) return;
+
         if (damageSourceEntity instanceof ServerPlayer damageSourcePlayer) {
             /* Don't flint a TNT to kill yourself. */
             if (damageSourceEntity.equals(event.getPlayer())) return;
