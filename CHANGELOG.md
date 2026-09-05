@@ -12,4 +12,4 @@
 - None
 
 ## 🐞 Fixes
-- [pvp] Should be able to detect the damage causing entity and cancels the damages from arrow.
+- [anti_build] Should not run the `attack entity` logics on a client player, to avoid the client crash if the mod is installed on client side. (#595)
